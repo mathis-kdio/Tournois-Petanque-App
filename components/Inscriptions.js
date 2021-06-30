@@ -22,13 +22,15 @@ class Inscription extends React.Component {
   } 
 
   _ajoutJoueur() {
-    const action = { type: "AJOUT_JOUEUR", value: [this.joueurText, this.state.isChecked] }
-    this.props.dispatch(action);
-    this.addPlayerTextInput.current.clear();
-    this.joueurText = "";
-    this.setState({
-      isChecked: false
-    })
+    if( this.joueurText != '') {
+      const action = { type: "AJOUT_JOUEUR", value: [this.joueurText, this.state.isChecked] }
+      this.props.dispatch(action);
+      this.addPlayerTextInput.current.clear();
+      this.joueurText = "";
+      this.setState({
+        isChecked: false
+      })
+    }
   }
   _supprimerJoueur = (idJoueur) => {
     const action = { type: "SUPPR_JOUEUR", value: idJoueur }
