@@ -59,8 +59,10 @@ class Inscription extends React.Component {
   }
 
   _supprimerJoueur = (idJoueur) => {
-    const action = { type: "SUPPR_JOUEUR", value: idJoueur }
-    this.props.dispatch(action);
+    const actionSuppr = { type: "SUPPR_JOUEUR", value: idJoueur }
+    this.props.dispatch(actionSuppr);
+    const actionUpdate = { type: "UPDATE_ALL_JOUEURS_ID"}
+    this.props.dispatch(actionUpdate);
   }
 
   _commencer() {

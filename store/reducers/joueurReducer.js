@@ -32,6 +32,16 @@ function toggleJoueur(state = initialState, action) {
         nextState.listeJoueurs.splice( indexJoueur, 0, newJoueur);
       }
       return nextState || state
+    case 'UPDATE_ALL_JOUEURS_ID':
+      const listeJoueursNewId = state.listeJoueurs.slice()
+      for (let i = 0; i < listeJoueursNewId.length; i++) {
+        listeJoueursNewId[i].id = i + 1
+      }
+      nextState = {
+        ...state,
+        listeJoueurs: listeJoueursNewId
+      }
+      return nextState
     case 'SUPPR_JOUEUR':
       const listeJoueurIndex = state.listeJoueurs.findIndex(item => item.id === action.value)
       if (listeJoueurIndex !== -1) {
