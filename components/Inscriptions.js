@@ -44,6 +44,8 @@ class Inscription extends React.Component {
         isChecked: false,
         etatBouton: false
       })
+      //Ne fonctionne pas avec: "this.addPlayerTextInput.current.focus()" quand validation avec clavier donc "hack" ci-dessous
+      setTimeout(() => this.addPlayerTextInput.current.focus(), 0)
     }
   }
 
@@ -73,6 +75,7 @@ class Inscription extends React.Component {
     if (this.props.listeJoueurs !== undefined) {
       return (
         <FlatList
+          persistentScrollbar={true}
           data={this.props.listeJoueurs}
           keyExtractor={(item) => item.id.toString() }
           renderItem={({item}) => (
@@ -105,6 +108,7 @@ class Inscription extends React.Component {
             <TextInput
               style={styles.textinput}
               placeholder="Nom du joueur"
+              autoFocus={true}
               onChangeText={(text) => this._ajoutJoueurTextInputChanged(text)}
               onSubmitEditing={() => this._ajoutJoueur()}
               ref={this.addPlayerTextInput}
