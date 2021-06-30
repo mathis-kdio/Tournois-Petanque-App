@@ -41,6 +41,12 @@ function toggleJoueur(state = initialState, action) {
         }
       }
       return nextState || state
+    case 'SUPPR_ALL_JOUEURS':
+      nextState = {
+        ...state,
+        listeJoueurs: initialState.listeJoueurs
+      }
+      return nextState
   default:
     return state
   }

@@ -14,8 +14,8 @@ class BoutonMenuHeaderNav extends React.Component {
   };
 
   showSettings = () => {
-    alert("Bientot");
     this._menu.hide();
+    this.props.navigation.navigate('ParametresTournoi')
   };
 
   showJoueurs = () => {
@@ -40,7 +40,7 @@ class BoutonMenuHeaderNav extends React.Component {
           button={<Text onPress={this.showMenu}>Menu</Text>}
         >
           <MenuItem onPress={this.showJoueurs}>Liste des joueurs</MenuItem>
-          <MenuItem onPress={this.showSettings}>Paramètres</MenuItem>
+          <MenuItem onPress={this.showSettings}>Paramètres du tournois</MenuItem>
           <MenuDivider />
           <MenuItem onPress={this.showAccueil}>Accueil</MenuItem>
         </Menu>
