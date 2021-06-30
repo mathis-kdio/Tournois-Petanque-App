@@ -1,6 +1,8 @@
 import React from 'react'
 import { StyleSheet, View, Text, Button } from 'react-native'
-import {expo} from '../app.json'
+import { expo } from '../app.json'
+import { connect } from 'react-redux'
+
 
 class Accueil extends React.Component {
   _showMatchs() {
@@ -9,6 +11,15 @@ class Accueil extends React.Component {
 
   _showInscription() {
     this.props.navigation.navigate('InscriptionGeneral');
+  }
+
+  _buttonShowMatchs() {
+    if(this.props.listeMatchs && this.props.listeMatchs.length != 0) {
+      return <Button title='Reprendre le tournois' onPress={() => this._showMatchs()}/>
+    }
+    else {
+      return <Button disabled title='Pas de tournois en cours'/>
+    }
   }
 
   render() {
@@ -22,7 +33,7 @@ class Accueil extends React.Component {
         <View style={styles.body_container}>
           <View style={styles.menu_container}>
             <View style={styles.buttonView}>
-              <Button title='Reprendre le tournois' onPress={() => this._showMatchs()}/>
+              {this._buttonShowMatchs()}
             </View>
             <View style={styles.buttonView}>
               <Button title='Nouveau tournois' onPress={() => this._showInscription()}/>
@@ -86,4 +97,11 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Accueil
+const mapStateToProps = (state) => {
+  return {
+    listeJoueurs: state.toggleJoueur.listeJoueurs,
+    listeMatchs: state.gestionMatchs.listematchs
+  }
+}
+
+export default connect(mapStateToProps)(Accueil)
