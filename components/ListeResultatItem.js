@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, Image } from 'react-native'
 import { connect } from 'react-redux'
 
 class ListeResultatItem extends React.Component {
@@ -19,6 +19,30 @@ class ListeResultatItem extends React.Component {
     }
   }
 
+  _fanny(joueurNumber) {
+    let listeMatchs = this.props.listeMatchs
+    let fanny = false
+    let nbFanny = 0
+    for (let i = 0; i < listeMatchs.length; i++) {
+      if ((listeMatchs[i].joueur1 == joueurNumber || listeMatchs[i].joueur2 == joueurNumber) && listeMatchs[i].score1 == '0') {
+        fanny = true
+        nbFanny++
+      }
+      else if ((listeMatchs[i].joueur3 == joueurNumber || listeMatchs[i].joueur4 == joueurNumber) && listeMatchs[i].score2 == '0') {
+        fanny = true
+        nbFanny++
+      }
+    }
+    if (fanny == true) {
+      return (
+        <View style={styles.fanny_container}>
+          <Image source={require('../images/fanny.png')} style={styles.icon}/>
+          <Text>X{nbFanny}</Text>
+        </View>
+      )
+    }
+  }
+
   render() {
     let { joueur } = this.props;
     return (
@@ -32,6 +56,7 @@ class ListeResultatItem extends React.Component {
         <View style={styles.victoires_container}>
           <Text style={styles.joueurName}>Victoire(s): {joueur.victoires}</Text>
         </View>
+        {this._fanny(joueur.joueurId)}
         <View style={styles.points_container}>
           <Text style={styles.joueurName}>point(s): {joueur.points}</Text>
         </View>
@@ -65,14 +90,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     alignItems: 'center',
   },
+  fanny_container: {
+    flexDirection: 'row',
+  },
   points_container: {
     marginRight: '5%',
   },
+  icon: {
+    width: 30,
+    height: 30
+  }
 })
 
 const mapStateToProps = (state) => {
   return {
     listeJoueurs: state.toggleJoueur.listeJoueurs,
+    listeMatchs: state.gestionMatchs.listematchs
   }
 }
 
