@@ -13,25 +13,49 @@ class Inscription extends React.Component {
     this.addPlayerTextInput = React.createRef()
     this.state = {
       joueur: undefined,
-      isChecked: false
+      isChecked: false,
+      etatBouton: false
     }
   }
 
   _ajoutJoueurTextInputChanged = (text) => {
-    this.joueurText = text;
+    this.joueurText = text
+    //Possible d'utiliser le bouton sauf si pas de lettre
+    if (this.joueurText != '') {
+      this.setState({
+        etatBouton: true
+      })
+    }
+    else {
+      this.setState({
+        etatBouton: false
+      })
+    }
   } 
 
   _ajoutJoueur() {
-    if( this.joueurText != '') {
+    //Test si au moins 1 caractère
+    if(this.joueurText != '') {
       const action = { type: "AJOUT_JOUEUR", value: [this.joueurText, this.state.isChecked] }
       this.props.dispatch(action);
       this.addPlayerTextInput.current.clear();
       this.joueurText = "";
       this.setState({
-        isChecked: false
+        isChecked: false,
+        etatBouton: false
       })
     }
   }
+
+  _ajoutJoueurBouton() {
+    if (this.state.etatBouton == true) {
+      return <Button color='#32cd32' title='Ajouter' onPress={() => this._ajoutJoueur()}/>
+    }
+    else {
+      return <Button disabled title='Ajouter' onPress={() => this._ajoutJoueur()}/>
+    }
+  }
+
   _supprimerJoueur = (idJoueur) => {
     const action = { type: "SUPPR_JOUEUR", value: idJoueur }
     this.props.dispatch(action);
@@ -97,8 +121,8 @@ class Inscription extends React.Component {
               rightText={"Femme/Enfant"}
             />
           </View>
-          <View style={styles.button_ajoutjoueur_container}> 
-            <Button color='#32cd32' title='Ajouter' onPress={() => this._ajoutJoueur()}/>
+          <View style={styles.button_ajoutjoueur_container}>
+            {this._ajoutJoueurBouton()}
           </View>
         </View>
         <View style={styles.flatList} >
