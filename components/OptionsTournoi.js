@@ -10,7 +10,8 @@ class OptionsTournoi extends React.Component {
     this.nbTours = 5
     this.state = {
       speciauxIncompatibles: true,
-      isChecked: true
+      memesEquipes: true,
+      memesAdversaires: true
     }
   }
 
@@ -30,30 +31,41 @@ class OptionsTournoi extends React.Component {
               keyboardType="numeric"
               defaultValue= "5"
               onChangeText={(text) => this._optionsNombreToursTextInputChanged(text)}
-              onSubmitEditing={() => this._optionsNombreToursTextInputChanged()}
+              onSubmitEditing={(text) => this._optionsNombreToursTextInputChanged(text)}
               ref={this.addPlayerTextInput}
             />
           </View>
-          <View style={styles.checkbox_ajoutjoueur_container}>
+          <View style={styles.checkbox_container}>
             <CheckBox
               onClick={()=>{
                 this.setState({
-                  speciauxIncompatibles:!this.state.speciauxIncompatibles
+                  speciauxIncompatibles: !this.state.speciauxIncompatibles
                 })
               }}
               isChecked={this.state.speciauxIncompatibles}
               leftText={"Ne pas faire jouer 2 femme/enfant ensembles"}
             />
           </View>
-          <View style={styles.checkbox_ajoutjoueur_container}>
+          <View style={styles.checkbox_container}>
             <CheckBox
               onClick={()=>{
                 this.setState({
-                  isChecked:!this.state.isChecked
+                  memesEquipes: !this.state.memesEquipes
                 })
               }}
-              isChecked={this.state.isChecked}
-              leftText={"Femme/Enfant"}
+              isChecked={this.state.memesEquipes}
+              leftText={"Eviter de former les mêmes équipes"}
+            />
+          </View>
+          <View style={styles.checkbox_container}>
+            <CheckBox
+              onClick={()=>{
+                this.setState({
+                  memesAdversaires: !this.state.memesAdversaires
+                })
+              }}
+              isChecked={this.state.memesAdversaires}
+              leftText={"Eviter de faire s'affronter les mêmes personnes"}
             />
           </View>
         </View>
@@ -79,7 +91,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-  checkbox_ajoutjoueur_container: {
+  checkbox_container: {
     marginBottom: 10,
   },
   textinput: {
