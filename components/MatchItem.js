@@ -10,8 +10,20 @@ class MatchItem extends React.Component {
     }
   }
 
-  _displayName = (joueurNumber, equipe) => {
-    let nomJoueur = {};
+  _displayName = (joueurNumber, equipe, matchID) => {
+    let nomJoueur = {}
+    let colorEquipe1 = 'black'
+    let colorEquipe2 = 'black'
+    let score1 = this.props.listeMatchs[matchID].score1;
+    let score2 = this.props.listeMatchs[matchID].score2;
+    if (score1 == 13) {
+      colorEquipe1 = 'green'
+      colorEquipe2 = 'red'
+    }
+    else if (score2 == 13) {
+      colorEquipe1 = 'red'
+      colorEquipe2 = 'green'
+    }
     nomJoueur = this.props.listeJoueurs.find(item => item.id === joueurNumber)
     if(nomJoueur === undefined) {
       return (
@@ -19,23 +31,21 @@ class MatchItem extends React.Component {
       )
     }
     else {
-      if(nomJoueur.special === true) {
-        if (equipe === 1) {
-          return (
-            <Text style={styles.joueurName} >{nomJoueur.name} Femme/enfant</Text>
-          )
+      if (equipe === 1) {
+        if(nomJoueur.special === true) {
+          return <Text style={[styles.joueurName, {color:colorEquipe1}]} >{nomJoueur.name} Femme/enfant</Text>
         }
-        else
-        {
-          return (
-            <Text style={styles.joueurName} >Femme/enfant {nomJoueur.name}</Text>
-          )
+        else {
+          return <Text style={[styles.joueurName, {color:colorEquipe1}]} >{nomJoueur.name}</Text>
         }
       }
       else {
-        return (
-          <Text style={styles.joueurName} >{nomJoueur.name}</Text>
-        )
+        if(nomJoueur.special === true) {
+          return <Text style={[styles.joueurName, {color:colorEquipe2}]} >Femme/enfant {nomJoueur.name}</Text>
+        }
+        else {
+          return <Text style={[styles.joueurName, {color:colorEquipe2}]} >{nomJoueur.name}</Text>
+        }
       }
     }
   }
@@ -43,6 +53,12 @@ class MatchItem extends React.Component {
   _displayScore = (matchID) => {
     let score1 = this.props.listeMatchs[matchID].score1;
     let score2 = this.props.listeMatchs[matchID].score2;
+    if (score1 == undefined) {
+      score1 = '?'
+    }
+    if (score2 == undefined) {
+      score2 = '?'
+    }
     return (
       <Text style={styles.vs}>{score1} VS {score2}</Text>
     )
@@ -65,15 +81,15 @@ class MatchItem extends React.Component {
             </View>
             <View style={styles.equipe_container}>
               <View style={styles.equipe1}>
-                {this._displayName(match.joueur1, 1)}
-                {this._displayName(match.joueur2, 1)}
+                {this._displayName(match.joueur1, 1, match.id)}
+                {this._displayName(match.joueur2, 1, match.id)}
               </View>
               <View style={styles.vs_container}>
                 {this._displayScore(match.id)}
               </View>
               <View style={styles.equipe2}>
-                {this._displayName(match.joueur3, 2)}
-                {this._displayName(match.joueur4, 2)}
+                {this._displayName(match.joueur3, 2, match.id)}
+                {this._displayName(match.joueur4, 2, match.id)}
               </View>
             </View>
           </View>
@@ -121,7 +137,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   joueurName: {
-    fontSize: 15
+    fontSize: 20,
   }
 })
 
