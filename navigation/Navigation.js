@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Image } from 'react-native';
+import { useBackHandler } from '@react-native-community/hooks'
 
 import { useNavigation, NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -87,6 +88,10 @@ function ResultatsStack() {
 }
 
 function MatchsResultatsBottomNavigator() {
+  //Empeche retour en arrière avec bouton hardware
+  useBackHandler(() => {
+    return true
+  })
   return (
     <BottomTab.Navigator initialRouteName="ListeMatchsBottom">
       <BottomTab.Screen
@@ -130,9 +135,7 @@ function InscriptionStack() {
 
 function General() {
   return (
-    <Stack.Navigator
-      initialRouteName='AccueilGeneral'
-    >
+    <Stack.Navigator initialRouteName='AccueilGeneral'>
       <Stack.Screen name="AccueilGeneral" component={Accueil} options={{title: 'Accueil - Pétanque GCU', headerTitleAlign: 'center'}} />
       <Stack.Screen name="InscriptionGeneral" component={InscriptionStack} options={{headerShown: false}} />
     </Stack.Navigator>
