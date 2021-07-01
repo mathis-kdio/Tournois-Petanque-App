@@ -48,10 +48,12 @@ class MatchDetail extends React.Component {
   }
 
   _envoyerResultat() {
-    let info = {idMatch: this.state.match, score1: this.score1, score2: this.score2};
-    const action = { type: "AJOUT_SCORE", value: info};
-    this.props.dispatch(action);
-    this.props.navigation.goBack();
+    if (this.score1 && this.score2) {
+      let info = {idMatch: this.state.match, score1: this.score1, score2: this.score2};
+      const action = { type: "AJOUT_SCORE", value: info};
+      this.props.dispatch(action);
+      this.props.navigation.goBack();
+    }
   }
 
   _supprimerResultat() {
@@ -99,6 +101,7 @@ class MatchDetail extends React.Component {
             ref={ref => {this.secondInput = ref}}
             placeholder="score équipe 2"
             onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 2)}
+            onSubmitEditing={() => this._envoyerResultat()}
           />
         </View>
         <View style={styles.buttonView}>
