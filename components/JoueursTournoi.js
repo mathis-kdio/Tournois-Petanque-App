@@ -26,7 +26,7 @@ class JoueursTournoi extends React.Component {
           renderItem={({item}) => (
             <ListeJoueur
               joueur={item}
-              supprimerJoueur={this._supprimerJoueur}
+              supprimerJoueur={undefined}
               isInscription={false}
             />
           )}

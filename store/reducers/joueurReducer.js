@@ -57,6 +57,15 @@ function toggleJoueur(state = initialState, action) {
         listeJoueurs: initialState.listeJoueurs
       }
       return nextState
+    case 'RENOMMER_JOUEUR':
+      if (action.value != "") {
+        nextState = {
+          ...state,
+          listeJoueurs: [...state.listeJoueurs]
+        }
+        nextState.listeJoueurs[action.value[0]].name = action.value[1];
+      }
+      return nextState || state
   default:
     return state
   }
