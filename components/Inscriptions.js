@@ -99,6 +99,18 @@ class Inscription extends React.Component {
     )
   }
 
+  _boutonCommencer() {
+    let boutonActive = true
+    let boutonTitle = "Nombre de joueurs n'est pas un multiple de 4"
+    if (this.props.listeJoueurs.length % 4 == 0) {
+      boutonActive = false
+      boutonTitle = 'Commencer le tournoi'
+    }
+    return (
+      <Button disabled={boutonActive} color='#32cd32' title={boutonTitle} onPress={() => this._commencer()}/>
+    )
+  }
+
   render() {
     return (
       <View style={styles.main_container} >
@@ -135,10 +147,10 @@ class Inscription extends React.Component {
           {this._displayListeJoueur()}
         </View>
         <View style={styles.buttonView}>
-          <Button color='#32cd32' title='Options Tounrois' onPress={() => this._parametres()}/>
+          <Button color='#32cd32' title='Options Tournoi' onPress={() => this._parametres()}/>
         </View>
         <View style={styles.buttonView}>
-          <Button color='#32cd32' title='Commencer' onPress={() => this._commencer()}/>
+          {this._boutonCommencer()}
         </View>
       </View>
     )
@@ -174,8 +186,8 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     marginBottom: 10,
-    paddingLeft: 20,
-    paddingRight: 20
+    paddingLeft: 15,
+    paddingRight: 15
   },
   flatList: {
     flex: 1
