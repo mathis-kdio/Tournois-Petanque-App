@@ -7,9 +7,6 @@ class ListeMatchs extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-
-    }
   }
 
   _displayDetailForMatch = (idMatch, match) => {
@@ -26,7 +23,8 @@ class ListeMatchs extends React.Component {
     return (
       <FlatList
         data={this.props.listeMatchs}
-        keyExtractor={(item) => {return item.id.toString();}}
+        initialNumToRender={this.props.listeMatchs.length}
+        keyExtractor={(item) => item.id.toString() }
         renderItem={({item}) => (
           <MatchItem
             match={item}

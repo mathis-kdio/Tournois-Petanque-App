@@ -1,7 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
-import FadeIn from '../animations/FadeIn'
 
 class MatchItem extends React.Component {
 
@@ -55,33 +54,30 @@ class MatchItem extends React.Component {
 
   render() {
     let { match, displayDetailForMatch, manche } = this.props;
-    if (match.manche == manche)
-    {
+    if (match.manche == manche) {
       return (
-        <FadeIn>
-          <TouchableOpacity
-            style={styles.main_container}
-            onPress={() => displayDetailForMatch(match.id, match)}>
-            <View style={styles.content_container}>
-              <View>
-                <Text style={styles.title}>Match n°{match.id}</Text>
+        <TouchableOpacity
+          style={styles.main_container}
+          onPress={() => displayDetailForMatch(match.id, match)}>
+          <View style={styles.content_container}>
+            <View>
+              <Text style={styles.title}>Match n°{match.id}</Text>
+            </View>
+            <View style={styles.equipe_container}>
+              <View style={styles.equipe1}>
+                {this._displayName(match.joueur1, 1)}
+                {this._displayName(match.joueur2, 1)}
               </View>
-              <View style={styles.equipe_container}>
-                <View style={styles.equipe1}>
-                  {this._displayName(match.joueur1, 1)}
-                  {this._displayName(match.joueur2, 1)}
-                </View>
-                <View style={styles.vs_container}>
-                  {this._displayScore(match.id)}
-                </View>
-                <View style={styles.equipe2}>
-                  {this._displayName(match.joueur3, 2)}
-                  {this._displayName(match.joueur4, 2)}
-                </View>
+              <View style={styles.vs_container}>
+                {this._displayScore(match.id)}
+              </View>
+              <View style={styles.equipe2}>
+                {this._displayName(match.joueur3, 2)}
+                {this._displayName(match.joueur4, 2)}
               </View>
             </View>
-          </TouchableOpacity>
-        </FadeIn>
+          </View>
+        </TouchableOpacity>
       )
     }
     return (null);
