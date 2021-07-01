@@ -74,7 +74,7 @@ function MatchsStack() {
       />
       <Stack.Screen name="MatchDetailStack" component={MatchDetail} options={{title: 'Détail du match', headerTitleAlign: 'center'}} />        
       <Stack.Screen name="ListeJoueur" component={JoueursTournoi} options={{title: 'Liste des joueurs inscrits', headerTitleAlign: 'center'}} />    
-      <Stack.Screen name="ParametresTournoi" component={ParametresTournoi} options={{title: 'Paramètres du tournois', headerTitleAlign: 'center'}} />    
+      <Stack.Screen name="ParametresTournoi" component={ParametresTournoi} options={{title: 'Paramètres du tournoi', headerTitleAlign: 'center'}} />    
     </Stack.Navigator>
   );
 }

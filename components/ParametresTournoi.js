@@ -22,7 +22,7 @@ class ParametresTournoi extends React.Component {
         <View style={styles.body_container}>
           <View style={styles.menu_container}>
             <View style={styles.buttonView}>
-              <Button color='red' title='Supprimer le tournois' onPress={() => this._supprimerTournoi()}/>
+              <Button color='red' title='Supprimer le tournoi' onPress={() => this._supprimerTournoi()}/>
             </View>
             <View style={styles.buttonView}>
               <Button title='Retourner à la liste des matchs' onPress={() => this._showMatchs()}/>

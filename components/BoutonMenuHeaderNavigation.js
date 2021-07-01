@@ -40,7 +40,7 @@ class BoutonMenuHeaderNav extends React.Component {
           button={<Text onPress={this.showMenu}>Menu</Text>}
         >
           <MenuItem onPress={this.showJoueurs}>Liste des joueurs</MenuItem>
-          <MenuItem onPress={this.showSettings}>Paramètres du tournois</MenuItem>
+          <MenuItem onPress={this.showSettings}>Paramètres du tournoi</MenuItem>
           <MenuDivider />
           <MenuItem onPress={this.showAccueil}>Accueil</MenuItem>
         </Menu>

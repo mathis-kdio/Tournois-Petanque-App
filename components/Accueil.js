@@ -15,10 +15,10 @@ class Accueil extends React.Component {
 
   _buttonShowMatchs() {
     if(this.props.listeMatchs && this.props.listeMatchs.length != 0) {
-      return <Button title='Reprendre le tournois' onPress={() => this._showMatchs()}/>
+      return <Button title='Reprendre le tournoi' onPress={() => this._showMatchs()}/>
     }
     else {
-      return <Button disabled title='Pas de tournois en cours'/>
+      return <Button disabled title='Pas de tournoi en cours'/>
     }
   }
 
@@ -28,7 +28,7 @@ class Accueil extends React.Component {
         <View style={styles.beta_container}>
           <Text style={[{color: 'red'}, styles.informations_titre]}>Attention</Text>
           <Text style={[{color: 'red'}, styles.informations_texte]}>Vous utilisez une version en test ! Il se peut que certaines fonctionnalités ne marche pas !</Text>
-          <Text style={[{color: 'red'}, styles.informations_texte]}>- Les paramètres de tournois ne marchent pas!</Text>
+          <Text style={[{color: 'red'}, styles.informations_texte]}>- Les paramètres de tournois ne marchent pas !</Text>
         </View>
         <View style={styles.body_container}>
           <View style={styles.menu_container}>
@@ -36,7 +36,7 @@ class Accueil extends React.Component {
               {this._buttonShowMatchs()}
             </View>
             <View style={styles.buttonView}>
-              <Button title='Nouveau tournois' onPress={() => this._showInscription()}/>
+              <Button title='Nouveau tournoi' onPress={() => this._showInscription()}/>
             </View>
             <View style={styles.buttonView}>
               <Button disabled title='Voir les anciens tournois' onPress={() => this._showInscription()}/>
