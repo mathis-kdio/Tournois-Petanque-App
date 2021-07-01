@@ -54,6 +54,13 @@ class MatchDetail extends React.Component {
     this.props.navigation.goBack();
   }
 
+  _supprimerResultat() {
+    let info = {idMatch: this.state.match, score1: undefined, score2: undefined};
+    const action = { type: "AJOUT_SCORE", value: info};
+    this.props.dispatch(action);
+    this.props.navigation.goBack();
+  }
+
   render() {
     let match = this.props.route.params.match;
     return (
@@ -95,7 +102,10 @@ class MatchDetail extends React.Component {
           />
         </View>
         <View style={styles.buttonView}>
-          <Button style={styles.button} title='Valider le résultat' onPress={() => this._envoyerResultat()}/>
+          <Button color="red" title='Supprimer le score' onPress={() => this._supprimerResultat()}/>
+        </View>
+        <View style={styles.buttonView}>
+          <Button color="green" title='Valider le score' onPress={() => this._envoyerResultat()}/>
         </View>
       </View>
     )
@@ -140,12 +150,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   buttonView: {
-    flex: 1,
     paddingLeft: 20,
-    paddingRight: 20
-  },
-  button: {
-    color: '#00FF00'
+    paddingRight: 20,
+    marginBottom: 20,
   },
   textinput: {
     height: 50,
