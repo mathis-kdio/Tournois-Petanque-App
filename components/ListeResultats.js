@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, FlatList } from 'react-native'
+import { StyleSheet, View, FlatList, Text } from 'react-native'
 import { connect } from 'react-redux'
 import ListeResultatItem from '../components/ListeResultatItem'
 
@@ -55,7 +55,18 @@ class ListeResultats extends React.Component {
 
   render() {
     return (
-      <View style={styles.main_container} >
+      <View style={styles.main_container}>
+        <View style={styles.entete}>
+          <View style={styles.position_container}>
+            <Text style={styles.text}>Place</Text>
+          </View>
+          <View style={styles.victoires_container}>
+            <Text style={styles.text}>Victoire(s)</Text>
+          </View>
+          <View style={styles.points_container}>
+            <Text style={styles.text}>Point(s)</Text>
+          </View>
+        </View>
         <FlatList
           data={this._calculVictoire()}
           keyExtractor={(item) => item.joueurId.toString()}
@@ -73,7 +84,30 @@ class ListeResultats extends React.Component {
 const styles = StyleSheet.create({
   main_container: {
     flex: 1,
-  }
+  },
+  entete: {
+    flexDirection: 'row',
+    borderBottomWidth: 2,
+  },
+  position_container: {
+    flex: 1
+  },
+  victoires_container: {
+    position: 'absolute', 
+    top: 0, 
+    left: 0, 
+    right: 0, 
+    bottom: 0, 
+    justifyContent: 'center', 
+    alignItems: 'center',
+  },
+  points_container: {
+
+  },
+  text: {
+    fontSize: 20,
+    textAlign: 'left'
+  },
 })
 
 const mapStateToProps = (state) => {
