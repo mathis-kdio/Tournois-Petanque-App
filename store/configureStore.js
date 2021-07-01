@@ -4,7 +4,7 @@ import { createStore } from 'redux'
 import toggleJoueur from './reducers/joueurReducer'
 import gestionMatchs from './reducers/matchsReducer'
 import { persistCombineReducers } from 'redux-persist'
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const rootPersistConfig = {
   key: 'root',

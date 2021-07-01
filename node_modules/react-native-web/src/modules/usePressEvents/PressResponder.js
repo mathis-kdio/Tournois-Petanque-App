@@ -130,13 +130,11 @@ const isTerminalSignal = (signal) =>
   signal === RESPONDER_TERMINATED || signal === RESPONDER_RELEASE;
 
 const isValidKeyPress = (event) => {
-  const key = event.key;
-  const target = event.currentTarget;
+  const { key, target } = event;
   const role = target.getAttribute('role');
   const isSpacebar = key === ' ' || key === 'Spacebar';
-  return (
-    !event.repeat && (key === 'Enter' || (isSpacebar && (role === 'button' || role === 'menuitem')))
-  );
+
+  return key === 'Enter' || (isSpacebar && role === 'button');
 };
 
 const DEFAULT_LONG_PRESS_DELAY_MS = 450; // 500 - 50
@@ -224,7 +222,6 @@ export default class PressResponder {
   _longPressDispatched: ?boolean = false;
   _pressDelayTimeout: ?TimeoutID = null;
   _pressOutDelayTimeout: ?TimeoutID = null;
-  _responder: ?any;
   _selectionTerminated: ?boolean;
   _touchActivatePosition: ?$ReadOnly<{|
     pageX: number,
@@ -266,7 +263,6 @@ export default class PressResponder {
       this._cancelPressOutDelayTimeout();
 
       this._longPressDispatched = false;
-      this._responder = event.currentTarget;
       this._selectionTerminated = false;
       this._touchState = NOT_RESPONDER;
       this._isPointerTouch = event.nativeEvent.type === 'touchstart';
@@ -302,9 +298,27 @@ export default class PressResponder {
     };
 
     const keyupHandler = (event: KeyboardEvent) => {
-      if (this._touchState !== NOT_RESPONDER) {
+      const { onPress } = this._config;
+      const { target } = event;
+
+      if (this._touchState !== NOT_RESPONDER && isValidKeyPress(event)) {
         end(event);
         document.removeEventListener('keyup', keyupHandler);
+
+        const role = target.getAttribute('role');
+        const elementType = target.tagName.toLowerCase();
+
+        const isNativeInteractiveElement =
+          role === 'link' ||
+          elementType === 'a' ||
+          elementType === 'button' ||
+          elementType === 'input' ||
+          elementType === 'select' ||
+          elementType === 'textarea';
+
+        if (onPress != null && !isNativeInteractiveElement) {
+          onPress(event);
+        }
       }
     };
 
@@ -321,12 +335,21 @@ export default class PressResponder {
       },
 
       onKeyDown: (event) => {
-        if (isValidKeyPress(event)) {
+        const { disabled } = this._config;
+        const { key, target } = event;
+        if (!disabled && isValidKeyPress(event)) {
           if (this._touchState === NOT_RESPONDER) {
             start(event, false);
             // Listen to 'keyup' on document to account for situations where
             // focus is moved to another element during 'keydown'.
             document.addEventListener('keyup', keyupHandler);
+          }
+          const role = target.getAttribute('role');
+          const isSpacebarKey = key === ' ' || key === 'Spacebar';
+          const isButtonRole = role === 'button' || role === 'menuitem';
+          if (isSpacebarKey && isButtonRole) {
+            // Prevent spacebar scrolling the window
+            event.preventDefault();
           }
           event.stopPropagation();
         }
@@ -392,7 +415,7 @@ export default class PressResponder {
           event.stopPropagation();
           if (this._longPressDispatched || this._selectionTerminated) {
             event.preventDefault();
-          } else if (onPress != null && event.ctrlKey === false && event.altKey === false) {
+          } else if (onPress != null && event.altKey === false) {
             onPress(event);
           }
         } else {
@@ -430,7 +453,7 @@ export default class PressResponder {
     if (Transitions[prevState] != null) {
       nextState = Transitions[prevState][signal];
     }
-    if (this._responder == null && signal === RESPONDER_RELEASE) {
+    if (this._touchState === NOT_RESPONDER && signal === RESPONDER_RELEASE) {
       return;
     }
     if (nextState == null || nextState === ERROR) {
