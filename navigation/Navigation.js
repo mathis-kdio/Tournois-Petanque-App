@@ -1,5 +1,7 @@
 import React from 'react';
-import { StyleSheet, Image } from 'react-native';
+import { StyleSheet, Image, Text } from 'react-native';
+import { connect } from 'react-redux';
+
 import { useBackHandler } from '@react-native-community/hooks'
 
 import { useNavigation, NavigationContainer } from '@react-navigation/native';
@@ -30,26 +32,42 @@ const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
 
+function texteTitleTopTab({ value, numero }) {
+  let titleColor = 'orange'
+  let testTourFiltre = value.filter(el => el.manche === numero)
+  //Test si tous les matchs d'un tour sont finis si oui alors vert
+  if (testTourFiltre.every(e => e.score1 != undefined && e.score2 != undefined) == true) {
+    titleColor = 'green'
+  } //Test si tous les matchs d'un tour ne sont pas commencé si oui alors rouge
+  else if (testTourFiltre.every(e => e.score1 == undefined && e.score2 == undefined) == true) {
+    titleColor = 'red'
+  }
+  return <Text style={{color:titleColor}}>Tour {numero}</Text>
+}
+
+const TitleTopTabContainer = connect((state, numero) => ({ value: state.gestionMatchs.listematchs}))(texteTitleTopTab);
+
 function ManchesTopTabNavigator() {
+  let titleTour1 = {tabBarLabel: () => <TitleTopTabContainer numero={1} /> }
+  let titleTour2 = {tabBarLabel: () => <TitleTopTabContainer numero={2} />}
+  let titleTour3 = {tabBarLabel: () => <TitleTopTabContainer numero={3} />}
+  let titleTour4 = {tabBarLabel: () => <TitleTopTabContainer numero={4} />}
+  let titleTour5 = {tabBarLabel: () => <TitleTopTabContainer numero={5} />}
   return (
-    <TopTab.Navigator
-      lazy='true'
-      initialRouteName='Screen1Manche'
-      tabBarOptions={{scrollEnabled: true}}    
-    >
-      <TopTab.Screen name="Screen1Manche" options={{title: 'Tour 1'}}>
+    <TopTab.Navigator initialRouteName='Screen1Manche' tabBarOptions={{scrollEnabled: true}}>
+      <TopTab.Screen name="Screen1Manche" options={titleTour1}>
         {props => <ListeMatchs {...props} extraData={1} />}
       </TopTab.Screen>
-      <TopTab.Screen name="Screen2Manche" options={{title: 'Tour 2'}}>      
+      <TopTab.Screen name="Screen2Manche" options={titleTour2}>      
         {props => <ListeMatchs {...props} extraData={2} />}
       </TopTab.Screen>
-      <TopTab.Screen name="Screen3Manche" options={{title: 'Tour 3'}}>
+      <TopTab.Screen name="Screen3Manche" options={titleTour3}>
         {props => <ListeMatchs {...props} extraData={3} />}
       </TopTab.Screen>
-      <TopTab.Screen name="Screen4Manche" options={{title: 'Tour 4'}}>
+      <TopTab.Screen name="Screen4Manche" options={titleTour4}>
         {props => <ListeMatchs {...props} extraData={4} />}
       </TopTab.Screen>
-      <TopTab.Screen name="Screen5Manche" options={{title: 'Tour 5'}}>
+      <TopTab.Screen name="Screen5Manche" options={titleTour5}>
         {props => <ListeMatchs {...props} extraData={5} />}
       </TopTab.Screen>
     </TopTab.Navigator>
