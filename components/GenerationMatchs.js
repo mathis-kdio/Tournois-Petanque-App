@@ -105,7 +105,7 @@ class GenerationMatchs extends React.Component {
     let joueurs = [];
 
     if (this.props.route.params != undefined) {
-      routeparams = this.props.route.params;
+      let routeparams = this.props.route.params;
       if (routeparams.nbTours != undefined) {
         nbManches = routeparams.nbTours
       }
