@@ -122,7 +122,7 @@ class Inscription extends React.Component {
   _boutonCommencer() {
     let boutonActive = true
     let boutonTitle = "Nombre de joueurs n'est pas un multiple de 4"
-    if (this.props.listeJoueurs.length % 4 == 0) {
+    if (this.props.listeJoueurs.length % 4 == 0 && this.props.listeJoueurs.length != 0) {
       boutonActive = false
       boutonTitle = 'Commencer le tournoi'
     }
