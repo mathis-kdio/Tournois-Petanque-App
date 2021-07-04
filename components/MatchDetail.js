@@ -69,7 +69,7 @@ class MatchDetail extends React.Component {
       <View style={styles.main_container}>
         <View style={styles.content_container} >
           <View>
-            <Text style={styles.title}>Match n°{this.state.match}</Text>
+            <Text style={styles.title}>Partie n°{(this.state.match + 1)}</Text>
           </View>
           <View style={styles.equipe_container}>
             <View style={styles.equipe1}>

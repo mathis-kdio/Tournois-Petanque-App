@@ -77,7 +77,7 @@ class MatchItem extends React.Component {
           onPress={() => displayDetailForMatch(match.id, match)}>
           <View style={styles.content_container}>
             <View>
-              <Text style={styles.title}>Match n°{match.id}</Text>
+              <Text style={styles.title}>Partie n°{(match.id + 1)}</Text>
             </View>
             <View style={styles.equipe_container}>
               <View style={styles.equipe1}>

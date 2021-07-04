@@ -84,7 +84,7 @@ function MatchsStack() {
         name="ListeMatchsStack"
         component={ManchesTopTabNavigator}
         options={{
-          title: 'Liste des matchs',
+          title: 'Liste des parties',
           headerTitleAlign: 'center',
           herderLeft: () => (null),
           headerRight: () => (
@@ -92,7 +92,7 @@ function MatchsStack() {
           )
         }}
       />
-      <Stack.Screen name="MatchDetailStack" component={MatchDetail} options={{title: 'Détail du match', headerTitleAlign: 'center'}} />        
+      <Stack.Screen name="MatchDetailStack" component={MatchDetail} options={{title: 'Détail de la partie', headerTitleAlign: 'center'}} />        
       <Stack.Screen name="ListeJoueur" component={JoueursTournoi} options={{title: 'Liste des joueurs inscrits', headerTitleAlign: 'center'}} />    
       <Stack.Screen name="ParametresTournoi" component={ParametresTournoi} options={{title: 'Paramètres du tournoi', headerTitleAlign: 'center'}} />    
     </Stack.Navigator>
@@ -135,7 +135,7 @@ function MatchsResultatsBottomNavigator() {
             source={require('../images/ic_menu.png')}
             style={styles.icon}/>
           },
-          title: 'Matchs & Détails'
+          title: 'Parties & Détails'
         }}
       />
     </BottomTab.Navigator>
@@ -147,7 +147,7 @@ function InscriptionStack() {
     <Stack.Navigator initialRouteName='InscriptionStack'>
       <Stack.Screen name="InscriptionStack" component={Inscription} options={{title: 'Inscription', headerTitleAlign: 'center'}} />
       <Stack.Screen name="OptionsTournoi" component={OptionsTournoi} options={{title: 'Paramètres du tournoi', headerTitleAlign: 'center'}} />      
-      <Stack.Screen name="GenerationMatchs" component={GenerationMatchs} options={{title: 'Générations des matchs en cours', headerTitleAlign: 'center'}} />
+      <Stack.Screen name="GenerationMatchs" component={GenerationMatchs} options={{title: 'Générations des parties en cours', headerTitleAlign: 'center'}} />
       <Stack.Screen name="ListeMatchsInscription" component={MatchsResultatsBottomNavigator} options={{headerShown: false}} />    
     </Stack.Navigator>
   );

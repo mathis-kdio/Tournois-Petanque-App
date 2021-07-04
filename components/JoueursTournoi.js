@@ -52,7 +52,7 @@ class JoueursTournoi extends React.Component {
           {this._displayListeJoueur()}
         </View>
         <View style={styles.buttonView}>
-          <Button color='#32cd32' title='Retourner à la liste des matchs' onPress={() => this._retourMatchs()}/>
+          <Button color='#32cd32' title='Retourner à la liste des parties' onPress={() => this._retourMatchs()}/>
         </View>
       </View>
     )

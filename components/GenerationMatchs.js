@@ -281,7 +281,7 @@ class GenerationMatchs extends React.Component {
       return (
         <View style={styles.loading_container}>
           <ActivityIndicator size='large' color="#00ff00"/>
-          <Text>Génération des matchs, veuillez patienter</Text>
+          <Text>Génération des parties, veuillez patienter</Text>
         </View>
       )
     }
