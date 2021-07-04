@@ -53,7 +53,6 @@ class OptionsTournoi extends React.Component {
               keyboardType="numeric"
               defaultValue= {this.state.nbTours}
               onChangeText={(text) => this._optionsNombreToursTextInputChanged(text)}
-              onSubmitEditing={(text) => this._optionsNombreToursTextInputChanged(text)}
               ref={this.addPlayerTextInput}
             />
           </View>
