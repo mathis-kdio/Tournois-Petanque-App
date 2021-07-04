@@ -104,7 +104,16 @@ class GenerationMatchs extends React.Component {
     let joueursNonSpe = [];
     let joueurs = [];
 
-    console.log("test")
+    if (this.props.route.params != undefined) {
+      routeparams = this.props.route.params;
+      if (routeparams.nbTours != undefined) {
+        nbManches = routeparams.nbTours
+      }
+      else {
+        nbManches = 5
+      }
+    }
+
     //Test si nombre de joueurs multiple de 4
     if (nbjoueurs % 4 !== 0) {
       this.setState({
@@ -249,6 +258,12 @@ class GenerationMatchs extends React.Component {
       }
       idMatch = (nbjoueurs / 4) * (i + 1);
     }
+
+    matchs.push({
+      tournoiID: 0,
+      nbManches: nbManches,
+      nbMatchs: nbMatchs
+    })
 
     this._ajoutMatchs(matchs);
 

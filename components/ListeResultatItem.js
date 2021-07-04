@@ -23,7 +23,7 @@ class ListeResultatItem extends React.Component {
     let listeMatchs = this.props.listeMatchs
     let fanny = false
     let nbFanny = 0
-    for (let i = 0; i < listeMatchs.length; i++) {
+    for (let i = 0; i < listeMatchs[listeMatchs.length - 1].nbMatchs; i++) {
       if ((listeMatchs[i].joueur1 == joueurNumber || listeMatchs[i].joueur2 == joueurNumber) && listeMatchs[i].score1 == '0') {
         fanny = true
         nbFanny++

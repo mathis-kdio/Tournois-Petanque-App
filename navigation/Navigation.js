@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Image, Text } from 'react-native';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 
 import { useBackHandler } from '@react-native-community/hooks'
 
@@ -32,9 +32,30 @@ const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
 
-function texteTitleTopTab({ value, numero }) {
+function topTabScreens() {
+  const counter = useSelector(state => state.gestionMatchs.listematchs)
+  let nbManches = 5
+  if (counter != undefined) {
+    nbManches = counter[counter.length - 1].nbManches
+  }
+  let TopTabScreenListe = []
+  for (let i = 0; i < nbManches; i++) {
+    const name = "Screen"+ (i + 1) +"Manche"
+    let titleTour = {tabBarLabel: () => <TitleTopTabContainer numero={i + 1} />}
+    TopTabScreenListe.push(
+      <TopTab.Screen key={i} name={name} options={titleTour}>
+        {props => <ListeMatchs {...props} extraData={i + 1} />}
+      </TopTab.Screen>
+    )
+  }
+  return TopTabScreenListe
+}
+
+const TitleTopTabContainer = connect((state, numero) => ({ listeMatchs: state.gestionMatchs.listematchs}))(texteTitleTopTab);
+
+function texteTitleTopTab({ listeMatchs, numero }) {
   let titleColor = 'orange'
-  let testTourFiltre = value.filter(el => el.manche === numero)
+  let testTourFiltre = listeMatchs.filter(el => el.manche === numero)
   //Test si tous les matchs d'un tour sont finis si oui alors vert
   if (testTourFiltre.every(e => e.score1 != undefined && e.score2 != undefined) == true) {
     titleColor = 'green'
@@ -45,31 +66,10 @@ function texteTitleTopTab({ value, numero }) {
   return <Text style={{color:titleColor}}>Tour {numero}</Text>
 }
 
-const TitleTopTabContainer = connect((state, numero) => ({ value: state.gestionMatchs.listematchs}))(texteTitleTopTab);
-
 function ManchesTopTabNavigator() {
-  let titleTour1 = {tabBarLabel: () => <TitleTopTabContainer numero={1} /> }
-  let titleTour2 = {tabBarLabel: () => <TitleTopTabContainer numero={2} />}
-  let titleTour3 = {tabBarLabel: () => <TitleTopTabContainer numero={3} />}
-  let titleTour4 = {tabBarLabel: () => <TitleTopTabContainer numero={4} />}
-  let titleTour5 = {tabBarLabel: () => <TitleTopTabContainer numero={5} />}
   return (
     <TopTab.Navigator initialRouteName='Screen1Manche' tabBarOptions={{scrollEnabled: true}}>
-      <TopTab.Screen name="Screen1Manche" options={titleTour1}>
-        {props => <ListeMatchs {...props} extraData={1} />}
-      </TopTab.Screen>
-      <TopTab.Screen name="Screen2Manche" options={titleTour2}>      
-        {props => <ListeMatchs {...props} extraData={2} />}
-      </TopTab.Screen>
-      <TopTab.Screen name="Screen3Manche" options={titleTour3}>
-        {props => <ListeMatchs {...props} extraData={3} />}
-      </TopTab.Screen>
-      <TopTab.Screen name="Screen4Manche" options={titleTour4}>
-        {props => <ListeMatchs {...props} extraData={4} />}
-      </TopTab.Screen>
-      <TopTab.Screen name="Screen5Manche" options={titleTour5}>
-        {props => <ListeMatchs {...props} extraData={5} />}
-      </TopTab.Screen>
+      {topTabScreens()}
     </TopTab.Navigator>
   );
 }
@@ -142,7 +142,7 @@ function MatchsResultatsBottomNavigator() {
 
 function InscriptionStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName='InscriptionStack'>
       <Stack.Screen name="InscriptionStack" component={Inscription} options={{title: 'Inscription', headerTitleAlign: 'center'}} />
       <Stack.Screen name="OptionsTournoi" component={OptionsTournoi} options={{title: 'Paramètres du tournoi', headerTitleAlign: 'center'}} />      
       <Stack.Screen name="GenerationMatchs" component={GenerationMatchs} options={{title: 'Générations des matchs en cours', headerTitleAlign: 'center'}} />

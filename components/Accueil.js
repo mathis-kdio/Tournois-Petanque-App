@@ -26,9 +26,9 @@ class Accueil extends React.Component {
     return (
       <View style={styles.main_container} >
         <View style={styles.beta_container}>
-          <Text style={[{color: 'red'}, styles.informations_titre]}>Attention</Text>
-          <Text style={[{color: 'red'}, styles.informations_texte]}>Vous utilisez une version en test ! Il se peut que certaines fonctionnalités ne marche pas !</Text>
-          <Text style={[{color: 'red'}, styles.informations_texte]}>- Les paramètres de tournois ne marchent pas !</Text>
+          <Text style={[{color: 'red'}, styles.informations_titre]}>Avertissements :</Text>
+          <Text style={[{color: 'red'}, styles.informations_texte]}>La génération de tournois ne fonctionne pas complètement.</Text>
+          <Text style={[{color: 'red'}, styles.informations_texte]}>Seul le nombre de tours fonctionne dans les paramètres de tournois !</Text>
         </View>
         <View style={styles.body_container}>
           <View style={styles.menu_container}>

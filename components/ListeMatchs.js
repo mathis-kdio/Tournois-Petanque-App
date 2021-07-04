@@ -20,10 +20,13 @@ class ListeMatchs extends React.Component {
   }
 
   _displayListeMatch() {
+    let tournoi = this.props.listeMatchs //tournoi contient les matchs + la config du tournoi en dernière position
+    let nbMatchs = tournoi[tournoi.length - 1].nbMatchs //On récup nb matchs dans la config
+    let matchs = tournoi.slice(0, -1) //On retire la config et donc seulement la liste des matchs
     return (
       <FlatList
-        data={this.props.listeMatchs}
-        initialNumToRender={this.props.listeMatchs.length}
+        data={matchs}
+        initialNumToRender={nbMatchs}
         keyExtractor={(item) => item.id.toString() }
         renderItem={({item}) => (
           <MatchItem

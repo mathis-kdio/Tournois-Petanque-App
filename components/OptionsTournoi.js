@@ -7,16 +7,38 @@ class OptionsTournoi extends React.Component {
 
   constructor(props) {
     super(props)
-    this.nbTours = 5
+    this.nbTours = "5"
     this.state = {
       speciauxIncompatibles: true,
       memesEquipes: true,
-      memesAdversaires: true
+      memesAdversaires: true,
+      nbTours: "5"
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.route.params != undefined) {
+      let routeparams = this.props.route.params;
+      if (routeparams.nbTours != undefined) {
+        this.setState({
+          nbTours: routeparams.nbTours
+        })
+        this.nbTours = routeparams.nbTours
+      }
     }
   }
 
   _optionsNombreToursTextInputChanged(text) {
-    this.nbTours = text;
+    this.nbTours = text
+  }
+
+  _retourInscription() {
+    this.props.navigation.navigate({
+      name: 'InscriptionStack',
+      params: {
+        nbTours: this.nbTours
+      }
+    })
   }
 
   render() {
@@ -29,7 +51,7 @@ class OptionsTournoi extends React.Component {
               style={styles.textinput}
               placeholder="Nombre de tours"
               keyboardType="numeric"
-              defaultValue= "5"
+              defaultValue= {this.state.nbTours}
               onChangeText={(text) => this._optionsNombreToursTextInputChanged(text)}
               onSubmitEditing={(text) => this._optionsNombreToursTextInputChanged(text)}
               ref={this.addPlayerTextInput}
@@ -70,7 +92,7 @@ class OptionsTournoi extends React.Component {
           </View>
         </View>
         <View style={styles.buttonView}>
-          <Button color='#32cd32' title='Valider les paramètres' onPress={() => this.props.navigation.goBack()}/>
+          <Button color='#32cd32' title='Valider les paramètres' onPress={() => this._retourInscription()}/>
         </View>
       </View>
     )

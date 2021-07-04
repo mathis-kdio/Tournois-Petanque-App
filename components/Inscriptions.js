@@ -11,10 +11,20 @@ class Inscription extends React.Component {
     super(props)
     this.joueurText = "",
     this.addPlayerTextInput = React.createRef()
+    this.nbTours = "5"
     this.state = {
       joueur: undefined,
       isChecked: false,
       etatBouton: false
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.route.params != undefined) {
+      let routeparams = this.props.route.params;
+      if (routeparams.nbTours != undefined) {
+        this.nbTours = routeparams.nbTours
+      }
     }
   }
 
@@ -66,11 +76,21 @@ class Inscription extends React.Component {
   }
 
   _commencer() {
-    this.props.navigation.navigate('GenerationMatchs');
+    this.props.navigation.navigate({
+      name: 'GenerationMatchs',
+      params: {
+        nbTours: parseInt(this.nbTours)
+      }
+    })
   }
 
   _parametres() {
-    this.props.navigation.navigate('OptionsTournoi');   
+    this.props.navigation.navigate({
+      name: 'OptionsTournoi',
+      params: {
+        nbTours: this.nbTours
+      }
+    })
   }
 
   _displayListeJoueur() {
