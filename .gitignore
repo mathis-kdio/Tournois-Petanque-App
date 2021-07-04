@@ -4,5 +4,6 @@
 .vscode/.react/node_modules%5Cexpo%5CAppEntry.bundle
 .vscode/.react/debuggerWorker.js
 .expo
+.expo/
 .expo/packager-info.json
 .expo/settings.json

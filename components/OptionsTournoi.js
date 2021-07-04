@@ -29,7 +29,7 @@ class OptionsTournoi extends React.Component {
   }
 
   _optionsNombreToursTextInputChanged(text) {
-    this.nbTours = text
+    this.nbTours = text.toString()
   }
 
   _retourInscription() {
