@@ -86,7 +86,7 @@ function MatchsStack() {
         options={{
           title: 'Liste des parties',
           headerTitleAlign: 'center',
-          herderLeft: () => (null),
+          headerLeft: () => (null),
           headerRight: () => (
             <BoutonMenuHeaderNav navigation={navigation}/>
           )
