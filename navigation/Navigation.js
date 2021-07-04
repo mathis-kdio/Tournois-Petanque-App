@@ -55,13 +55,15 @@ const TitleTopTabContainer = connect((state, numero) => ({ listeMatchs: state.ge
 
 function texteTitleTopTab({ listeMatchs, numero }) {
   let titleColor = 'orange'
-  let testTourFiltre = listeMatchs.filter(el => el.manche === numero)
-  //Test si tous les matchs d'un tour sont finis si oui alors vert
-  if (testTourFiltre.every(e => e.score1 != undefined && e.score2 != undefined) == true) {
-    titleColor = 'green'
-  } //Test si tous les matchs d'un tour ne sont pas commencé si oui alors rouge
-  else if (testTourFiltre.every(e => e.score1 == undefined && e.score2 == undefined) == true) {
-    titleColor = 'red'
+  if (listeMatchs) {
+    let testTourFiltre = listeMatchs.filter(el => el.manche === numero)
+    //Test si tous les matchs d'un tour sont finis si oui alors vert
+    if (testTourFiltre.every(e => e.score1 != undefined && e.score2 != undefined) == true) {
+      titleColor = 'green'
+    } //Test si tous les matchs d'un tour ne sont pas commencé si oui alors rouge
+    else if (testTourFiltre.every(e => e.score1 == undefined && e.score2 == undefined) == true) {
+      titleColor = 'red'
+    }
   }
   return <Text style={{color:titleColor}}>Tour {numero}</Text>
 }
