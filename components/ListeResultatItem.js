@@ -43,21 +43,37 @@ class ListeResultatItem extends React.Component {
     }
   }
 
+  _partieJoue(joueurNumber) {
+    let partieJoue = 0
+    let listeMatchs = this.props.listeMatchs
+    for (let i = 0; i < listeMatchs[listeMatchs.length - 1].nbMatchs; i++) {
+      if (listeMatchs[i].joueur1 == joueurNumber || listeMatchs[i].joueur2 == joueurNumber || listeMatchs[i].joueur3 == joueurNumber || listeMatchs[i].joueur4 == joueurNumber) {
+        if (listeMatchs[i].score1 && listeMatchs[i].score2) {
+          partieJoue++
+        }
+      }
+    }
+    return (
+      <Text style={styles.text}>{partieJoue}</Text>
+    )
+  }
+
   render() {
     let { joueur } = this.props;
     return (
       <View style={styles.main_container}>
-        <View style={styles.position_container}>
+        <View style={styles.position_nom_container}>
           <Text style={styles.text}>{joueur.position} - </Text>
-        </View>
-        <View style={styles.nom_container}>
           {this._displayName(joueur.joueurId)}
         </View>
         <View style={styles.victoires_container}>
           <Text style={styles.text}>{joueur.victoires}</Text>
         </View>
-        {this._fanny(joueur.joueurId)}
+        <View style={styles.mj_container}>
+          {this._partieJoue(joueur.joueurId)}
+        </View>
         <View style={styles.points_container}>
+          {this._fanny(joueur.joueurId)}
           <Text style={styles.text}>{joueur.points}</Text>
         </View>
       </View>
@@ -68,35 +84,33 @@ class ListeResultatItem extends React.Component {
 const styles = StyleSheet.create({
   main_container: {
     flexDirection: 'row',
-    borderBottomWidth: 1,
+    borderBottomWidth: 1
   },
-  position_container: {
-    marginLeft: '5%',
-    marginRight: 5
-  },
-  nom_container: {
+  position_nom_container: {
     flex: 1,
+    flexDirection: 'row'
+  },
+  victoires_container: {
+    flex: 1,
+    alignItems: 'center'
+  },
+  mj_container: {
+    flex: 1,
+    alignItems: 'center'
+  },
+  fanny_container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent:'center'
+  },
+  points_container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
   },
   text: {
     fontSize: 20,
     textAlign: 'left'
-  },
-  victoires_container: {
-    position: 'absolute', 
-    top: 0, 
-    left: 0, 
-    right: 0, 
-    bottom: 0, 
-    justifyContent: 'center', 
-    alignItems: 'center',
-  },
-  fanny_container: {
-    flexDirection: 'row',
-    flex: 1,
-    justifyContent:'center',
-  },
-  points_container: {
-    marginRight: '5%',
   },
   icon: {
     width: 30,

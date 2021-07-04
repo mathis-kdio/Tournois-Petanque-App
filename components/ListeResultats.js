@@ -63,6 +63,9 @@ class ListeResultats extends React.Component {
           <View style={styles.victoires_container}>
             <Text style={styles.text}>Victoire(s)</Text>
           </View>
+          <View style={styles.mj_container}>
+            <Text style={styles.text}>MJ</Text>
+          </View>
           <View style={styles.points_container}>
             <Text style={styles.text}>Point(s)</Text>
           </View>
@@ -93,16 +96,16 @@ const styles = StyleSheet.create({
     flex: 1
   },
   victoires_container: {
-    position: 'absolute', 
-    top: 0, 
-    left: 0, 
-    right: 0, 
-    bottom: 0, 
-    justifyContent: 'center', 
-    alignItems: 'center',
+    flex: 1,
+    alignItems: 'center'
+  },
+  mj_container: {
+    flex: 1,
+    alignItems: 'center'
   },
   points_container: {
-
+    flex: 1,
+    alignItems: 'flex-end'
   },
   text: {
     fontSize: 20,
