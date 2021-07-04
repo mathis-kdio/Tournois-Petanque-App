@@ -37,7 +37,7 @@ class ListeJoueur extends React.Component {
       if (this.state.renommerOn == false) {
         return (
           <View>
-            <Button color='red' title='Renommer' onPress={() => this._renommerJoueurInput(joueur)}/>
+            <Button color='blue' title='Renommer' onPress={() => this._renommerJoueurInput(joueur)}/>
           </View>
         )
       }
