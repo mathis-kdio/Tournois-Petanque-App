@@ -16,7 +16,9 @@ class GenerationMatchs extends React.Component {
     this.state = {
       isLoading: true,
       isValid: true,
-      isGenerationSuccess: true
+      isGenerationSuccess: true,
+      erreurSpeciaux: false,
+      erreurMemesEquipes: false
     }
   }
 
@@ -109,6 +111,7 @@ class GenerationMatchs extends React.Component {
     let joueursNonSpe = [];
     let joueurs = [];
 
+    //Récupération des options que l'utilisateur a modifié ou laissé par défaut
     if (this.props.route.params != undefined) {
       let routeparams = this.props.route.params;
       if (routeparams.nbTours != undefined) {
@@ -129,15 +132,18 @@ class GenerationMatchs extends React.Component {
       }
     }
 
-    //Test si nombre de joueurs multiple de 4
-    if (nbjoueurs % 4 !== 0) {
-      this.setState({
-        isValid: false,
-        isLoading: false
-      })
-      return 0;
+    //Initialisation des matchs dans un tableau
+    let nbMatchs = nbManches * (nbjoueurs / 4)
+    idMatch = 0;
+    for (let i = 1; i < nbManches + 1; i++) {
+      for (let j = 0; j < nbjoueurs / 4; j++) {
+        matchs.push({id: idMatch, manche: i, joueur1: 0, joueur2: 0, joueur3: 0, joueur4: 0, score1: undefined, score2: undefined});
+        idMatch++;
+      }      
     }
 
+    //Création d'un tableau contenant tous les joueurs, un autre les non spéciaux et un autre les spéciaux
+    //Le tableau contenant les tous les joueurs permettra de connaitre dans quel équipe chaque joueur a été
     for (let i = 0; i < nbjoueurs; i++) {
       if (this.props.listeJoueurs[i].special === true) {
         joueursSpe.push(this.props.listeJoueurs[i]);
@@ -149,18 +155,10 @@ class GenerationMatchs extends React.Component {
       joueurs[i].equipe = [];
     }
 
-    idMatch = 0;
-    for (let i = 1; i < nbManches + 1; i++) {
-      for (let j = 0; j < nbjoueurs / 4; j++) {
-        matchs.push({id: idMatch, manche: i, joueur1: 0, joueur2: 0, joueur3: 0, joueur4: 0, score1: undefined, score2: undefined});
-        idMatch++;
-      }      
-    }
-
-    //TEST si trop de femmes/enfants
-    //On assigne les enfants et les femmes
-    //Si + de la moitié des joueurs sont des enfants ou des femmes alors ça ne sert à rien de les séparer
+    //Assignation des joueurs spéciaux
+    //Test si joueurs spéciaux ne sont pas trop nombreux
     if (joueursSpe.length <= nbjoueurs / 2) {
+      //Joueurs spéciaux seront toujours joueur 1 ou joueur 3 si tous les joueurs 1 sont déjà spéciaux
       idMatch = 0;
       for (let i = 0; i < nbManches; i++) {
         for (let j = 0; j < joueursSpe.length; j++) {
@@ -178,6 +176,15 @@ class GenerationMatchs extends React.Component {
         idMatch = (nbjoueurs / 4) * (i + 1);
       }
     }
+    //Si trop nombreux et règle est de ne pas les faire jouer ensemble alors message et retour à l'inscription
+    else if (speciauxIncompatibles == true) {
+      this.setState({
+        erreurSpeciaux: true,
+        isLoading: false
+      })
+      return 0
+    }
+    //Si trop nombreux mais règle désactivée alors les joueurs spéciaux et les non spéciaux sont regroupés
     else {
       joueursNonSpe.splice(0, joueursNonSpe.length)
       for (let i = 0; i < nbjoueurs; i++) {
@@ -186,48 +193,61 @@ class GenerationMatchs extends React.Component {
     }
 
     //Test si possible d'appliquer la règle jamaisMemeCoequipier
-    let nbMatchs = nbManches * (nbjoueurs / 4);
-    let nbCombinaisons = Math.pow(nbjoueurs / 2, nbjoueurs - 1);
-    //Si on applique la règle de ne pas mettre des femmes et des enfants ensemble alors moins de combinaisons
-    if(joueursSpe.length <= nbjoueurs / 2) {
-      nbCombinaisons -= joueursSpe.length;
-    }
-
-    //Si + de matchs que de combinaisons alors on désactive la règle de ne jamais faire jouer dans la même équipe
-    if (nbMatchs >= nbCombinaisons) {
-      jamaisMemeCoequipier = false;
-      /*this.setState({
-        isValid: false,
-        isLoading: false
-      })
-      return 0;*/      
+    //TO DO : réussir à trouver les bons paramètres pour déclencher le message d'erreur sans empecher trop de tournois
+    if (jamaisMemeCoequipier == true) {
+      let nbCombinaisons = nbjoueurs - 1
+      //Si option de ne pas mettre spéciaux ensemble alors moins de combinaisons possibles
+      if (speciauxIncompatibles == true) {
+        if (joueursSpe.length <= nbjoueurs / 2) {
+          nbCombinaisons -= joueursSpe.length;
+        }
+      }
+      //Si + de matchs que de combinaisons alors on désactive la règle de ne jamais faire jouer avec la même personne
+      if (nbCombinaisons < nbManches) { //TODO message au-dessus
+        this.setState({
+          erreurMemesEquipes: true,
+          isLoading: false
+        })
+        return 0
+      }
     }
 
     //Test si possible d'appliquer la règle jamaisMemeAdversaire
     //jamaisMemeAdversaire = false;
 
 
-    //On ordonne aléatoirement les ids des joueurs non spé à chaque début de manche
-    let numbers = [];
+    //On ordonne aléatoirement les ids des joueurs non spéciaux à chaque début de manche
+    let joueursNonSpeId = [];
     for (let i = 0; i < joueursNonSpe.length; i++) {
-      numbers.push(joueursNonSpe[i].id);
+      joueursNonSpeId.push(joueursNonSpe[i].id);
     }
     function shuffle(o) {
       for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
       return o;
     };
 
-
+    //FONCTIONNEMENT
+    //S'il y a eu des joueurs spéciaux avant alors ils ont déjà été affectés
+    //On complète avec tous les joueurs non spéciaux
+    //Pour conpléter remplissage des matchs tour par tour
+    //A chaque tour les joueurs libres sont pris un par un dans une liste les triant aléatoirement à chaque début de tour
+    //Ils sont ensuite ajouté si possible (selon les options) dans le 1er match du tour en tant que joueur 1
+    //Si joueur 1 déjà pris alors joueur 2 et si déjà pris alors joueur 3 etc
+    //Si impossible d'être ajouté dans le match alors tentative dans le match suivant du même tour
+    //Si impossible dans aucun match du tour alors breaker rentre en action et affiche un message
     idMatch = 0;
-    let breaker = 0
+    let breaker = 0 //permet de détecter quand boucle infinie
     for (let i = 0; i < nbManches; i++) {
       breaker = 0
-      let random = shuffle(numbers);
+      let random = shuffle(joueursNonSpeId);
       for (let j = 0; j < joueursNonSpe.length;) {
+        //Affectation joueur 1
         if (matchs[idMatch].joueur1 == 0) {
           matchs[idMatch].joueur1 = random[j];
           j++
+          breaker = 0
         }
+        //Affectation joueur 2
         else if (matchs[idMatch].joueur2 == 0) {
           //Empeche que le joueur 1 joue plusieurs fois dans la même équipe avec le même joueur
           //Ne s'applique qu'à partir de la manche 2
@@ -235,6 +255,7 @@ class GenerationMatchs extends React.Component {
             if (joueurs[random[j] - 1].equipe.includes(matchs[idMatch].joueur1) == false) {
               matchs[idMatch].joueur2 = random[j];
               j++
+              breaker = 0
             }
             else {
               breaker++
@@ -243,12 +264,16 @@ class GenerationMatchs extends React.Component {
           else {
             matchs[idMatch].joueur2 = random[j];
             j++
+            breaker = 0
           }
         }
+        //Affectation joueur 3
         else if (matchs[idMatch].joueur3 == 0) {
           matchs[idMatch].joueur3 = random[j];
           j++
+          breaker = 0
         }
+        //Affectation joueur 4
         else if (matchs[idMatch].joueur4 == 0) {
           //Empeche que le joueur 4 joue plusieurs fois dans la même équipe avec le même joueur
           //Ne s'applique qu'à partir de la manche 2
@@ -256,6 +281,7 @@ class GenerationMatchs extends React.Component {
             if (joueurs[random[j] - 1].equipe.includes(matchs[idMatch].joueur3) == false) {
               matchs[idMatch].joueur4 = random[j];
               j++
+              breaker = 0
             }
             else {
               breaker++
@@ -264,25 +290,25 @@ class GenerationMatchs extends React.Component {
           else {
             matchs[idMatch].joueur4 = random[j];
             j++
+            breaker = 0
           }
-        }
-        else {
-          breaker++
         }
 
         idMatch++;
+        //Si l'id du Match correspond à un match du prochain tour alors retour au premier match du tour en cours
         if (idMatch >= (nbjoueurs / 4) * (i + 1)) {
           idMatch = i * (nbjoueurs / 4);
         }
 
-        if (breaker > nbjoueurs * nbjoueurs) {
+        //En cas de trop nombreuses tentatives, arret de la génération
+        //L'utilisateur est invité à changer les paramètres ou à relancer la génération
+        if (breaker > nbMatchs) {
           this.setState({
             isGenerationSuccess: false,
             isLoading: false
           })
           return 0
         }
-
       }
 
       idMatch = i * (nbjoueurs / 4);
@@ -295,21 +321,27 @@ class GenerationMatchs extends React.Component {
       idMatch = (nbjoueurs / 4) * (i + 1);
     }
 
+    //Ajout des options du match à la fin du tableau contenant les matchs
     matchs.push({
       tournoiID: 0,
       nbManches: nbManches,
-      nbMatchs: nbMatchs
+      nbMatchs: nbMatchs,
+      speciauxIncompatibles: this.speciauxIncompatibles,
+      memesEquipes: this.jamaisMemeCoequipier,
+      memesAdversaires: this.jamaisMemeAdversaire
     })
 
+    //Ajout dans ke store
     this._ajoutMatchs(matchs);
 
+    //Désactivation de l'affichage du _displayLoading 
     this.setState({
       isLoading: false,
       isValid: true,
     })
 
+    //Affichage des matchs
     this._displayListeMatch(matchs);
-
   }
 
   _displayLoading() {
@@ -323,23 +355,37 @@ class GenerationMatchs extends React.Component {
     }
   }
 
-  _displayErrorNbJoueur() {
-    if (this.state.isValid === false && this.state.isLoading === false) {
+  _displayErrorGenerationFail() {
+    if (this.state.isGenerationSuccess === false && this.state.isLoading === false) {
       return (
-        <View style={styles.loading_container}>
-          <Text>Nombre de joueurs non pris en charge, il faut un multiple de 4 !</Text>
-          <Button title='Ajouter ou supprimer un joueur' onPress={() => this._retourInscription()}/>
+        <View style={styles.error_container}>
+          <Text>La générations n'a pas réussie, certaines options rendent la génération compliqué.</Text>
+          <Text>Mais avant de les changer, il est conseillé de relancer la générations plusieurs fois sans y toucher.</Text>
+          <Button title='Relancer ou changer des options' onPress={() => this._retourInscription()}/>
         </View>
       )
     }
   }
 
-  _displayErrorGenerationFail() {
-    if (this.state.isGenerationSuccess === false && this.state.isLoading === false) {
+  _displayErreurSpeciaux() {
+    if (this.state.erreurSpeciaux == true && this.state.isLoading == false) {
       return (
         <View style={styles.error_container}>
-          <Text>La générations n'a pas réussie, vous avez peut-être trop de femmes/enfants ou pas assez de joueurs pour valider toutes les conditions. Vous pouvez essayer de relancer la générations plusieurs fois sans changer vos options de tournoi</Text>
-          <Button title='Ajouter un joueur ou modifier les conditions' onPress={() => this._retourInscription()}/>
+          <Text>La générations ne peux pas fonctionner avec les options.</Text>
+          <Text>Il y a trop de Femmes et Enfants pour appliquer l'option de les faire jouer séparement</Text>
+          <Button title="Désactiver l'option ou enlever des Enfants/Femmes" onPress={() => this._retourInscription()}/>
+        </View>
+      )
+    }
+  }
+
+  _displayErreurMemesEquipes() {
+    if (this.state.erreurMemesEquipes == true && this.state.isLoading == false) {
+      return (
+        <View style={styles.error_container}>
+          <Text>La générations ne peux pas fonctionner avec les options.</Text>
+          <Text>Il y semble trop compliqué de ne jamais faire jouer des équipes identiques</Text>
+          <Button title="Désactiver l'option ou rajouter des joueurs ou diminuer le nombre de tours" onPress={() => this._retourInscription()}/>
         </View>
       )
     }
@@ -361,7 +407,8 @@ class GenerationMatchs extends React.Component {
     return (
       <View style={styles.main_container}>
         {this._displayLoading()}
-        {this._displayErrorNbJoueur()}
+        {this._displayErreurSpeciaux()}
+        {this._displayErreurMemesEquipes()}
         {this._displayErrorGenerationFail()}
       </View>
     )
