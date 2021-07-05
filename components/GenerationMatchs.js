@@ -9,6 +9,7 @@ class GenerationMatchs extends React.Component {
     this.nonDisponibleManche = []; //Joueur déjà choisi pour la manche
     this.dejaPartenaires = []; //Joueur déjà été partenaires
     this.dejaJouerContre = []; //Joueur déjà joué contre
+    this.nbManches = "5"
     this.state = {
       isLoading: true,
       isValid: true,
@@ -108,6 +109,7 @@ class GenerationMatchs extends React.Component {
       let routeparams = this.props.route.params;
       if (routeparams.nbTours != undefined) {
         nbManches = routeparams.nbTours
+        this.nbManches = nbManches.toString()
       }
       else {
         nbManches = 5
@@ -313,7 +315,7 @@ class GenerationMatchs extends React.Component {
       return (
         <View style={styles.loading_container}>
           <Text>Nombre de joueurs non pris en charge, il faut un multiple de 4 !</Text>
-          <Button title='Ajouter ou supprimer un joueur' onPress={() => this.props.navigation.goBack()}/>
+          <Button title='Ajouter ou supprimer un joueur' onPress={() => this._retourInscription()}/>
         </View>
       )
     }
@@ -323,11 +325,20 @@ class GenerationMatchs extends React.Component {
     if (this.state.isGenerationSuccess === false && this.state.isLoading === false) {
       return (
         <View style={styles.error_container}>
-          <Text>La générations n'a pas réussie, vous avez peut-être trop de femmes/enfants ou pas assez de joueurs pour valider toutes les conditions. Vous pouvez aussi essayer en relancant sans rien changer et croiser les doigts.</Text>
-          <Button title='Ajouter un joueur ou modifier les conditions' onPress={() => this.props.navigation.goBack()}/>
+          <Text>La générations n'a pas réussie, vous avez peut-être trop de femmes/enfants ou pas assez de joueurs pour valider toutes les conditions. Vous pouvez essayer de relancer la générations plusieurs fois sans changer vos options de tournoi</Text>
+          <Button title='Ajouter un joueur ou modifier les conditions' onPress={() => this._retourInscription()}/>
         </View>
       )
     }
+  }
+
+  _retourInscription() {
+    this.props.navigation.navigate({
+      name: 'InscriptionStack',
+      params: {
+        nbTours: this.nbTours
+      }
+    })
   }
 
   render() {
@@ -355,7 +366,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  loading_container: {
+  error_container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
