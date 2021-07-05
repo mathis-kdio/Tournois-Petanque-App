@@ -10,6 +10,9 @@ class GenerationMatchs extends React.Component {
     this.dejaPartenaires = []; //Joueur déjà été partenaires
     this.dejaJouerContre = []; //Joueur déjà joué contre
     this.nbTours = "5"
+    this.speciauxIncompatibles = true
+    this.jamaisMemeCoequipier = true
+    this.jamaisMemeAdversaire = true
     this.state = {
       isLoading: true,
       isValid: true,
@@ -114,12 +117,15 @@ class GenerationMatchs extends React.Component {
       }
       if (routeparams.speciauxIncompatibles != undefined) {
         speciauxIncompatibles = routeparams.speciauxIncompatibles
+        this.speciauxIncompatibles = routeparams.speciauxIncompatibles
       }
       if (routeparams.memesEquipes != undefined) {
         jamaisMemeCoequipier = routeparams.memesEquipes
+        this.jamaisMemeCoequipier = routeparams.memesEquipes
       }
       if (routeparams.memesAdversaires != undefined) {
         jamaisMemeAdversaire = routeparams.memesAdversaires
+        this.jamaisMemeAdversaire = routeparams.memesAdversaires
       }
     }
 
@@ -343,7 +349,10 @@ class GenerationMatchs extends React.Component {
     this.props.navigation.navigate({
       name: 'InscriptionStack',
       params: {
-        nbTours: this.nbTours
+        nbTours: this.nbTours,
+        speciauxIncompatibles: this.speciauxIncompatibles,
+        memesEquipes: this.jamaisMemeCoequipier,
+        memesAdversaires: this.jamaisMemeAdversaire
       }
     })
   }
