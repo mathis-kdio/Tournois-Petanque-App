@@ -28,7 +28,7 @@ class Accueil extends React.Component {
         <View style={styles.beta_container}>
           <Text style={[{color: 'red'}, styles.informations_titre]}>Avertissements :</Text>
           <Text style={[{color: 'red'}, styles.informations_texte]}>La génération de tournois ne fonctionne pas complètement.</Text>
-          <Text style={[{color: 'red'}, styles.informations_texte]}>Seul le nombre de tours fonctionne dans les paramètres de tournois !</Text>
+          <Text style={[{color: 'red'}, styles.informations_texte]}>Ne pas jouer contre les mêmes personnes ne fonctionne pas encore !</Text>
         </View>
         <View style={styles.body_container}>
           <View style={styles.menu_container}>
@@ -44,7 +44,8 @@ class Accueil extends React.Component {
           </View>
           <View style={styles.informations_container}>
             <Text style={styles.informations_titre}>Informations</Text>
-            <Text style={styles.informations_texte}>Le seul mode de tournois disponible pour l'instant est : - mêlée-démélée</Text>
+            <Text style={styles.informations_texte}>Mode de tournois disponible :</Text>
+            <Text style={styles.informations_texte}>- mêlée-démélée</Text>
           </View>
         </View>
         <View style={styles.create_container} >
