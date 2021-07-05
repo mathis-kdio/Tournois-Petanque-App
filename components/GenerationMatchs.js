@@ -204,7 +204,9 @@ class GenerationMatchs extends React.Component {
 
 
     idMatch = 0;
+    let breaker = 0
     for (let i = 0; i < nbManches; i++) {
+      breaker = 0
       let random = shuffle(numbers);
       for (let j = 0; j < joueursNonSpe.length;) {
         if (matchs[idMatch].joueur1 == 0) {
@@ -218,6 +220,9 @@ class GenerationMatchs extends React.Component {
             if (joueurs[random[j] - 1].equipe.includes(matchs[idMatch].joueur1) == false) {
               matchs[idMatch].joueur2 = random[j];
               j++
+            }
+            else {
+              breaker++
             }
           }
           else {
@@ -237,16 +242,32 @@ class GenerationMatchs extends React.Component {
               matchs[idMatch].joueur4 = random[j];
               j++
             }
+            else {
+              breaker++
+            }
           }
           else {
             matchs[idMatch].joueur4 = random[j];
             j++
           }
         }
+        else {
+          breaker++
+        }
+
         idMatch++;
         if (idMatch >= (nbjoueurs / 4) * (i + 1)) {
           idMatch = i * (nbjoueurs / 4);
         }
+
+        if (breaker > nbjoueurs * nbjoueurs) {
+          this.setState({
+            isGenerationSuccess: false,
+            isLoading: false
+          })
+          return 0
+        }
+
       }
 
       idMatch = i * (nbjoueurs / 4);
