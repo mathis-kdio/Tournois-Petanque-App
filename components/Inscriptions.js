@@ -12,6 +12,9 @@ class Inscription extends React.Component {
     this.joueurText = "",
     this.addPlayerTextInput = React.createRef()
     this.nbTours = "5"
+    this.speciauxIncompatibles = true
+    this.memesEquipes = true
+    this.memesAdversaires = true
     this.state = {
       joueur: undefined,
       isChecked: false,
@@ -24,6 +27,15 @@ class Inscription extends React.Component {
       let routeparams = this.props.route.params;
       if (routeparams.nbTours != undefined) {
         this.nbTours = routeparams.nbTours
+      }
+      if (routeparams.speciauxIncompatibles != undefined) {
+        this.speciauxIncompatibles = routeparams.speciauxIncompatibles
+      }
+      if (routeparams.memesEquipes != undefined) {
+        this.memesEquipes = routeparams.memesEquipes
+      }
+      if (routeparams.memesAdversaires != undefined) {
+        this.memesAdversaires = routeparams.memesAdversaires
       }
     }
   }
@@ -79,16 +91,22 @@ class Inscription extends React.Component {
     this.props.navigation.navigate({
       name: 'GenerationMatchs',
       params: {
-        nbTours: parseInt(this.nbTours)
+        nbTours: parseInt(this.nbTours),
+        speciauxIncompatibles: this.speciauxIncompatibles,
+        memesEquipes: this.memesEquipes,
+        memesAdversaires: this.memesAdversaires
       }
     })
   }
 
-  _parametres() {
+  _options() {
     this.props.navigation.navigate({
       name: 'OptionsTournoi',
       params: {
-        nbTours: this.nbTours
+        nbTours: this.nbTours,
+        speciauxIncompatibles: this.speciauxIncompatibles,
+        memesEquipes: this.memesEquipes,
+        memesAdversaires: this.memesAdversaires
       }
     })
   }
@@ -167,7 +185,7 @@ class Inscription extends React.Component {
           {this._displayListeJoueur()}
         </View>
         <View style={styles.buttonView}>
-          <Button color='#32cd32' title='Options Tournoi' onPress={() => this._parametres()}/>
+          <Button color='#32cd32' title='Options Tournoi' onPress={() => this._options()}/>
         </View>
         <View style={styles.buttonView}>
           {this._boutonCommencer()}

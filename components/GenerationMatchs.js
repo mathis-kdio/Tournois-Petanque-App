@@ -9,7 +9,7 @@ class GenerationMatchs extends React.Component {
     this.nonDisponibleManche = []; //Joueur déjà choisi pour la manche
     this.dejaPartenaires = []; //Joueur déjà été partenaires
     this.dejaJouerContre = []; //Joueur déjà joué contre
-    this.nbManches = "5"
+    this.nbTours = "5"
     this.state = {
       isLoading: true,
       isValid: true,
@@ -97,6 +97,7 @@ class GenerationMatchs extends React.Component {
   _generation() {
     let nbjoueurs = this.props.listeJoueurs.length;
     let nbManches = 5;
+    let speciauxIncompatibles = true
     let jamaisMemeCoequipier = true;
     let jamaisMemeAdversaire = true;
     let matchs = [];
@@ -109,10 +110,16 @@ class GenerationMatchs extends React.Component {
       let routeparams = this.props.route.params;
       if (routeparams.nbTours != undefined) {
         nbManches = routeparams.nbTours
-        this.nbManches = nbManches.toString()
+        this.nbTours = nbManches.toString()
       }
-      else {
-        nbManches = 5
+      if (routeparams.speciauxIncompatibles != undefined) {
+        speciauxIncompatibles = routeparams.speciauxIncompatibles
+      }
+      if (routeparams.memesEquipes != undefined) {
+        jamaisMemeCoequipier = routeparams.memesEquipes
+      }
+      if (routeparams.memesAdversaires != undefined) {
+        jamaisMemeAdversaire = routeparams.memesAdversaires
       }
     }
 

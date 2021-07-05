@@ -21,9 +21,24 @@ class OptionsTournoi extends React.Component {
       let routeparams = this.props.route.params;
       if (routeparams.nbTours != undefined) {
         this.setState({
-          nbTours: routeparams.nbTours
+          nbTours: routeparams.nbTours,
         })
         this.nbTours = routeparams.nbTours
+      }
+      if (routeparams.speciauxIncompatibles != undefined) {
+        this.setState({
+          speciauxIncompatibles: routeparams.speciauxIncompatibles,
+        })
+      }
+      if (routeparams.memesEquipes != undefined) {
+        this.setState({
+          memesEquipes: routeparams.memesEquipes,
+        })
+      }
+      if (routeparams.memesAdversaires != undefined) {
+        this.setState({
+          memesAdversaires: routeparams.memesAdversaires,
+        })
       }
     }
   }
@@ -36,7 +51,10 @@ class OptionsTournoi extends React.Component {
     this.props.navigation.navigate({
       name: 'InscriptionStack',
       params: {
-        nbTours: this.nbTours
+        nbTours: this.nbTours,
+        speciauxIncompatibles: this.state.speciauxIncompatibles,
+        memesEquipes: this.state.memesEquipes,
+        memesAdversaires: this.state.memesAdversaires
       }
     })
   }
@@ -91,7 +109,7 @@ class OptionsTournoi extends React.Component {
           </View>
         </View>
         <View style={styles.buttonView}>
-          <Button color='#32cd32' title='Valider les paramètres' onPress={() => this._retourInscription()}/>
+          <Button color='#32cd32' title='Valider les options' onPress={() => this._retourInscription()}/>
         </View>
       </View>
     )
