@@ -26,9 +26,16 @@ class MatchItem extends React.Component {
     }
     nomJoueur = this.props.listeJoueurs.find(item => item.id === joueurNumber)
     if(nomJoueur === undefined) {
-      return (
-        <Text style={styles.joueurName}>Complément</Text>
-      )
+      if (equipe === 1) {
+        return (
+          <Text style={styles.joueurName}>joueur 1 :</Text>
+        )
+      }
+      else {
+        return (
+          <Text style={styles.joueurName}>joueur 2 :</Text>
+        )
+      }
     }
     else {
       if (equipe === 1) {

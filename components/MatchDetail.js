@@ -32,14 +32,21 @@ class MatchDetail extends React.Component {
     })
   }
 
-  _displayName = (joueurNumber) => {
+  _displayName = (joueurNumber, equipe) => {
     let nomJoueur = {};
     nomJoueur = this.props.listeJoueurs.find(item => item.id === joueurNumber)
     if(nomJoueur === undefined)
     {
-      return (
-        <Text style={styles.joueurName}>Complément</Text>
-      )
+      if (equipe == 1) {
+        return (
+          <Text style={styles.joueurName}>joueur 1 :</Text>
+        )
+      }
+      else {
+        return (
+          <Text style={styles.joueurName}>joueur 2 :</Text>
+        )
+      }
     }
     else
     {
@@ -85,13 +92,13 @@ class MatchDetail extends React.Component {
           </View>
           <View style={styles.equipe_container}>
             <View style={styles.equipe1}>
-              {this._displayName(match.joueur1)}
-              {this._displayName(match.joueur2)}
+              {this._displayName(match.joueur1, 1)}
+              {this._displayName(match.joueur2, 1)}
             </View>
             <Text style={styles.vs}>VS</Text>
             <View style={styles.equipe2}>
-              {this._displayName(match.joueur3)}
-              {this._displayName(match.joueur4)}
+              {this._displayName(match.joueur3, 2)}
+              {this._displayName(match.joueur4, 2)}
             </View>
           </View>
         </View>
