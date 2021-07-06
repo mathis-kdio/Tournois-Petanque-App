@@ -156,7 +156,7 @@ function InscriptionStack() {
 function General() {
   return (
     <Stack.Navigator initialRouteName='AccueilGeneral'>
-      <Stack.Screen name="AccueilGeneral" component={Accueil} options={{title: 'Accueil - Pétanque GCU', headerTitleAlign: 'center'}} />
+      <Stack.Screen name="AccueilGeneral" component={Accueil} options={{title: 'Accueil - Pétanque GCU', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
       <Stack.Screen name="InscriptionGeneral" component={InscriptionStack} options={{headerShown: false}} />
     </Stack.Navigator>
   );
