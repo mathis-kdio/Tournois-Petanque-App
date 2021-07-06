@@ -2,7 +2,7 @@
   "expo": {
     "name": "Pétanque GCU",
     "slug": "PetanqueGCU",
-    "version": "Beta.7.0",
+    "version": "Beta.8.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -18,12 +18,12 @@
     ],
     "ios": {
       "bundleIdentifier": "com.MK.PetanqueGCU",
-      "buildNumber": "Beta.7.0",
+      "buildNumber": "Beta.8.0",
       "supportsTablet": true
     },
     "android": {
       "package": "com.MK.PetanqueGCU",
-      "versionCode": 12,
+      "versionCode": 13,
       "permissions": []
     },
     "web": {
