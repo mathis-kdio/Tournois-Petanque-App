@@ -5,21 +5,23 @@ import { connect } from 'react-redux'
 class MatchDetail extends React.Component {
   constructor(props) {
     super(props)
-    this.score1 = "",
-    this.score2 = "",
     this.state = {
       match: undefined,
+      score1: undefined,
+      score2: undefined
     }
   }
 
   _ajoutScoreTextInputChanged = (score, equipe) => {
-    if(equipe === 1)
-    {
-      this.score1 = score;
+    if(equipe === 1) {
+      this.setState({
+        score1: score
+      })
     }
-    if(equipe === 2)
-    {
-      this.score2 = score;
+    else if(equipe === 2) {
+      this.setState({
+        score2: score
+      })
     }
   } 
 
@@ -48,8 +50,8 @@ class MatchDetail extends React.Component {
   }
 
   _envoyerResultat() {
-    if (this.score1 && this.score2) {
-      let info = {idMatch: this.state.match, score1: this.score1, score2: this.score2};
+    if (this.state.score1 && this.state.score2) {
+      let info = {idMatch: this.state.match, score1: this.state.score1, score2: this.state.score2};
       const action = { type: "AJOUT_SCORE", value: info};
       this.props.dispatch(action);
       this.props.navigation.goBack();
@@ -61,6 +63,16 @@ class MatchDetail extends React.Component {
     const action = { type: "AJOUT_SCORE", value: info};
     this.props.dispatch(action);
     this.props.navigation.goBack();
+  }
+
+  _boutonValider() {
+    let boutonActive = true
+    if (this.state.score1 && this.state.score2) {
+      boutonActive = false
+    }
+    return (
+      <Button disabled={boutonActive} color="green" title='Valider le score' onPress={() => this._envoyerResultat()}/>
+    )
   }
 
   render() {
@@ -108,7 +120,7 @@ class MatchDetail extends React.Component {
           <Button color="red" title='Supprimer le score' onPress={() => this._supprimerResultat()}/>
         </View>
         <View style={styles.buttonView}>
-          <Button color="green" title='Valider le score' onPress={() => this._envoyerResultat()}/>
+          {this._boutonValider()}
         </View>
       </View>
     )
@@ -136,6 +148,7 @@ const styles = StyleSheet.create({
     marginLeft: 10
   },  
   equipe2: {
+    alignItems: 'flex-end',
     marginRight: 10
   },
   joueurName: {
