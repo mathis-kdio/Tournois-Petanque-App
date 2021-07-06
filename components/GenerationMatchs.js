@@ -34,9 +34,8 @@ class GenerationMatchs extends React.Component {
   }
 
   componentDidMount() {
-    let matchs = 0;
     setTimeout(() => {
-      this._generation();
+      this._lanceurGeneration();
     }, 1000);
   }
 
@@ -44,6 +43,8 @@ class GenerationMatchs extends React.Component {
     this.props.navigation.navigate('ListeMatchsInscription');
   }
 
+
+  /*
   //Test si joueur randomNum déjà affecté pour cette manche
   _testNonDisponible = (randomNum) => {
     const excluIndex = this.nonDisponibleManche.findIndex(item => item === randomNum);
@@ -97,6 +98,35 @@ class GenerationMatchs extends React.Component {
       }
     }
     return 0;
+  }
+  */
+
+  _lanceurGeneration() {
+    let nbjoueurs = this.props.listeJoueurs.length;
+    let nbGenerationsRatee = 0
+    let nbEssaisPossibles = Math.pow(nbjoueurs, nbjoueurs)
+    let returnType = 0
+    // 3 types de retour possible: 
+    // 0 si trop de personnes spéciaux ou règle pas memeEquipes impossible; 
+    // 1 si breaker activé
+    // 2 si génération réussie
+    //Tant que la génération échoue à cause du breaker alors on relancer
+    while (nbGenerationsRatee < nbEssaisPossibles) {
+      returnType = this._generation()
+      if (returnType == 0 || returnType == 2) {
+        break
+      }
+      else {
+        nbGenerationsRatee++
+      }
+    }
+    //Si la génération échoue trop de fois à cause du breaker alors affichage d'un message pour indiquer de changer les options
+    if (nbGenerationsRatee == nbEssaisPossibles) {
+      this.setState({
+        isGenerationSuccess: false,
+        isLoading: false
+      })
+    }
   }
 
   _generation() {
@@ -213,6 +243,7 @@ class GenerationMatchs extends React.Component {
     }
 
     //Test si possible d'appliquer la règle jamaisMemeAdversaire
+    //TODO
     //jamaisMemeAdversaire = false;
 
 
@@ -235,6 +266,9 @@ class GenerationMatchs extends React.Component {
     //Si joueur 1 déjà pris alors joueur 2 et si déjà pris alors joueur 3 etc
     //Si impossible d'être ajouté dans le match alors tentative dans le match suivant du même tour
     //Si impossible dans aucun match du tour alors breaker rentre en action et affiche un message
+
+    //TODO appliquer règle aucun même adversaire
+
     idMatch = 0;
     let breaker = 0 //permet de détecter quand boucle infinie
     for (let i = 0; i < nbManches; i++) {
@@ -305,11 +339,7 @@ class GenerationMatchs extends React.Component {
         //TODO condition de break à affiner
         //nbMatchs devrait être assez car le + opti devrait être : nbMatchs / nbManches
         if (breaker > nbMatchs) {
-          this.setState({
-            isGenerationSuccess: false,
-            isLoading: false
-          })
-          return 0
+          return 1
         }
       }
 
@@ -344,6 +374,9 @@ class GenerationMatchs extends React.Component {
 
     //Affichage des matchs
     this._displayListeMatch(matchs);
+
+    //Si génération valide alors return 2
+    return 2
   }
 
   _displayLoading() {
@@ -361,9 +394,8 @@ class GenerationMatchs extends React.Component {
     if (this.state.isGenerationSuccess === false && this.state.isLoading === false) {
       return (
         <View style={styles.error_container}>
-          <Text>La générations n'a pas réussie, certaines options rendent la génération compliqué.</Text>
-          <Text>Mais avant de les changer, il est conseillé de relancer la générations plusieurs fois sans y toucher.</Text>
-          <Button title='Relancer ou changer des options' onPress={() => this._retourInscription()}/>
+          <Text>La générations n'a pas réussie, certaines options rendent la génération trop compliqué.</Text>
+          <Button title='Changer des options' onPress={() => this._retourInscription()}/>
         </View>
       )
     }
