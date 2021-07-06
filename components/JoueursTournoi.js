@@ -21,6 +21,7 @@ class JoueursTournoi extends React.Component {
     if (this.props.listeJoueurs !== undefined) {
       return (
         <FlatList
+          removeClippedSubviews={false}
           data={this.props.listeJoueurs}
           keyExtractor={(item) => item.id.toString() }
           renderItem={({item}) => (
