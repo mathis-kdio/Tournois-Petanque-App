@@ -82,7 +82,7 @@ class OptionsTournoi extends React.Component {
                 })
               }}
               isChecked={this.state.speciauxIncompatibles}
-              leftText={"Ne pas faire jouer 2 femme/enfant ensembles"}
+              leftText={"Ne jamais faire jouer 2 femme/enfant dans la même équipe"}
             />
           </View>
           <View style={styles.checkbox_container}>
@@ -93,7 +93,7 @@ class OptionsTournoi extends React.Component {
                 })
               }}
               isChecked={this.state.memesEquipes}
-              leftText={"Eviter de former les mêmes équipes"}
+              leftText={"Ne jamais former les mêmes équipes"}
             />
           </View>
           <View style={styles.checkbox_container}>
@@ -104,7 +104,7 @@ class OptionsTournoi extends React.Component {
                 })
               }}
               isChecked={this.state.memesAdversaires}
-              leftText={"Eviter de faire s'affronter les mêmes personnes"}
+              leftText={"Empecher 2 joueurs de jouer + de la moitié des matchs contre et ensemble"}
             />
           </View>
         </View>

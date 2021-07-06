@@ -24,9 +24,9 @@ class ParametresTournoi extends React.Component {
           <View style={styles.options_container}>
             <Text style={styles.titre}>Les options du tournois :</Text>
             <Text style={styles.texte}>- Nombre de tours: {parametresTournoi.nbManches}</Text>
-            <Text style={styles.texte}>- Les joueurs spéciaux ne peuvent pas être dans la même équipe : {parametresTournoi.speciauxIncompatibles.toString()}</Text>
-            <Text style={styles.texte}>- Les joueurs ne peuvent pas jouer avec la même personne plusieurs fois : {parametresTournoi.memesEquipes.toString()}</Text>
-            <Text style={styles.texte}>- Les joueurs ne peuvent pas jouer contre la même personne plusieurs fois : {parametresTournoi.memesAdversaires.toString()}</Text>
+            <Text style={styles.texte}>- Ne jamais faire jouer 2 joueurs spéciaux dans la même équipe : {parametresTournoi.speciauxIncompatibles.toString() ? "Activé" : "Désactivé"}</Text>
+            <Text style={styles.texte}>- Ne jamais former les mêmes équipes : {parametresTournoi.memesEquipes.toString() ? "Activé" : "Désactivé"}</Text>
+            <Text style={styles.texte}>- Empecher 2 joueurs de jouer + de la moitié des matchs contre et ensemble : {parametresTournoi.memesAdversaires.toString() ? "Activé" : "Désactivé"}</Text>
           </View>
           <View style={styles.bouton_container}>
             <View style={styles.buttonView}>
