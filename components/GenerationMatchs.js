@@ -195,7 +195,7 @@ class GenerationMatchs extends React.Component {
     //Test si possible d'appliquer la règle jamaisMemeCoequipier
     //TO DO : réussir à trouver les bons paramètres pour déclencher le message d'erreur sans empecher trop de tournois
     if (jamaisMemeCoequipier == true) {
-      let nbCombinaisons = nbjoueurs - 1
+      let nbCombinaisons = nbjoueurs
       //Si option de ne pas mettre spéciaux ensemble alors moins de combinaisons possibles
       if (speciauxIncompatibles == true) {
         if (joueursSpe.length <= nbjoueurs / 2) {
@@ -302,6 +302,8 @@ class GenerationMatchs extends React.Component {
 
         //En cas de trop nombreuses tentatives, arret de la génération
         //L'utilisateur est invité à changer les paramètres ou à relancer la génération
+        //TODO condition de break à affiner
+        //nbMatchs devrait être assez car le + opti devrait être : nbMatchs / nbManches
         if (breaker > nbMatchs) {
           this.setState({
             isGenerationSuccess: false,
