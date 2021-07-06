@@ -5,10 +5,6 @@ import { connect } from 'react-redux'
 class GenerationMatchs extends React.Component {
   constructor(props) {
     super(props)
-    this.incompatibleMatch = []; //Joueur incompatible pour le match
-    this.nonDisponibleManche = []; //Joueur déjà choisi pour la manche
-    this.dejaPartenaires = []; //Joueur déjà été partenaires
-    this.dejaJouerContre = []; //Joueur déjà joué contre
     this.nbTours = "5"
     this.speciauxIncompatibles = true
     this.jamaisMemeCoequipier = true
@@ -42,64 +38,6 @@ class GenerationMatchs extends React.Component {
   _displayListeMatch () {
     this.props.navigation.navigate('ListeMatchsInscription');
   }
-
-
-  /*
-  //Test si joueur randomNum déjà affecté pour cette manche
-  _testNonDisponible = (randomNum) => {
-    const excluIndex = this.nonDisponibleManche.findIndex(item => item === randomNum);
-    if (excluIndex !== -1) {
-      this.incompatibleMatch.push(randomNum);
-      return 1;
-    }
-    return 0
-  }
-
-  _testNonCompatible = (randomNum) => {
-    const excluIndex = this.incompatibleMatch.findIndex(item => item === randomNum);
-    if (excluIndex !== -1) {
-      console.log('Joueur déjà marqué incompatible pour ce match avec rand=', randomNum);
-      return 1;
-    }
-    return 0
-  }
-
-  //Test si le 1er joueur déjà choisi et le nouveau joueur sont tout les 2 femme/enfant
-  _testSpeciaux = (randomNum, partenaire) => {
-    let joueurSpecial1 = this.props.listeJoueurs.find(item => item.id === partenaire);
-    let joueurSpecial2 = this.props.listeJoueurs.find(item => item.id === randomNum);
-    if (joueurSpecial1.special === true && joueurSpecial2.special === true) {
-      console.log('Joueurs sont spéciaux: j1: ', randomNum, '  j2: ', partenaire);
-      this.incompatibleMatch.push(randomNum);
-      return 1;
-    }
-    return 0;
-  }
-  
-  //Test si les joueurs ont déjà joués en tant que partenaires dans les manches précédentes
-  _testDejaEtePartenaires = (randomNum, partenaire) =>  {
-    let dejaJoueAvecIndex = this.dejaPartenaires[randomNum].findIndex(item => item === partenaire)
-    if (dejaJoueAvecIndex !== -1) {
-      console.log('Joueur deja partenaires');
-      this.incompatibleMatch.push(randomNum);
-      return 1;
-    }
-    return 0;
-  }
-  
-  //Test si randomNum a déjà jouer contre joueur 1 ou joueur 2 dans une manche précédente
-  _testDejaJouerContre = (randomNum, joueurAdverse) =>  {
-    if (this.dejaJouerContre[randomNum] !== undefined) {
-      let dejaJoueContreIndex = this.dejaJouerContre[randomNum].findIndex(item => item.joueur === joueurAdverse)
-      if (dejaJoueContreIndex !== -1) {
-        console.log('Joueur à déjà joué un joueur en face comme adversaire')
-        this.incompatibleMatch.push(randomNum);
-        return 1;
-      }
-    }
-    return 0;
-  }
-  */
 
   _lanceurGeneration() {
     let nbjoueurs = this.props.listeJoueurs.length;
@@ -163,10 +101,11 @@ class GenerationMatchs extends React.Component {
     }
 
     //Initialisation des matchs dans un tableau
-    let nbMatchs = nbManches * (nbjoueurs / 4)
+    let nbMatchsParTour =  Math.ceil(nbjoueurs / 4)
+    let nbMatchs = nbManches * nbMatchsParTour
     idMatch = 0;
     for (let i = 1; i < nbManches + 1; i++) {
-      for (let j = 0; j < nbjoueurs / 4; j++) {
+      for (let j = 0; j < nbMatchsParTour; j++) {
         matchs.push({id: idMatch, manche: i, joueur1: 0, joueur2: 0, joueur3: 0, joueur4: 0, score1: undefined, score2: undefined});
         idMatch++;
       }      
@@ -184,28 +123,47 @@ class GenerationMatchs extends React.Component {
       joueurs.push(this.props.listeJoueurs[i]);
       joueurs[i].equipe = [];
     }
+    let nbJoueursSpe = joueursSpe.length
+    //Test si le nombre de joueurs est un multiple de 2 (test lors de l'inscription) mais pas de 4
+    //Si c'est le cas il faut donc ajouter 2 joueurs (joueur 1 et joueur 3) au dernier match de chaque tour
+    if (nbjoueurs % 4 != 0) {
+      joueurs.push({name: "Complément 1", special: true, id: (nbjoueurs + 1)})
+      joueurs[nbjoueurs].equipe = []
+      joueurs.push({name: "Complément 2", special: true, id: (nbjoueurs + 2)})
+      joueurs[nbjoueurs + 1].equipe = []
+      nbJoueursSpe++
+      
+      for (let i = 1; i < nbManches + 1; i++) {
+        matchs[nbMatchsParTour * i - 1].joueur1 = nbjoueurs + 1
+        matchs[nbMatchsParTour * i - 1].joueur3 = nbjoueurs + 2
+      }
+    }
 
     //Assignation des joueurs spéciaux
     //Test si joueurs spéciaux ne sont pas trop nombreux
-    if (joueursSpe.length <= nbjoueurs / 2) {
+    if (nbJoueursSpe <= nbjoueurs / 2) {
       //Joueurs spéciaux seront toujours joueur 1 ou joueur 3 si tous les joueurs 1 sont déjà spéciaux
       idMatch = 0;
       for (let i = 0; i < nbManches; i++) {
-        for (let j = 0; j < joueursSpe.length; j++) {
+        for (let j = 0; j < joueursSpe.length;) {
           if (matchs[idMatch].joueur1 == 0) {
             matchs[idMatch].joueur1 = joueursSpe[j].id;
+            j++
           }
           else if (matchs[idMatch].joueur3 == 0) {
             matchs[idMatch].joueur3 = joueursSpe[j].id;
+            j++
           }
           idMatch++;
-          if (idMatch > (nbjoueurs / 4) * (i + 1) - 1) {
-            idMatch = i * (nbjoueurs / 4);
+          if (idMatch > nbMatchsParTour * (i + 1) - 1) {
+            idMatch = i * nbMatchsParTour;
           }
         }
-        idMatch = (nbjoueurs / 4) * (i + 1);
+        idMatch = nbMatchsParTour * (i + 1);
       }
     }
+
+
     //Si trop nombreux et règle est de ne pas les faire jouer ensemble alors message et retour à l'inscription
     else if (speciauxIncompatibles == true) {
       this.setState({
@@ -228,8 +186,8 @@ class GenerationMatchs extends React.Component {
       let nbCombinaisons = nbjoueurs
       //Si option de ne pas mettre spéciaux ensemble alors moins de combinaisons possibles
       if (speciauxIncompatibles == true) {
-        if (joueursSpe.length <= nbjoueurs / 2) {
-          nbCombinaisons -= joueursSpe.length;
+        if (nbJoueursSpe <= nbjoueurs / 2) {
+          nbCombinaisons -= nbJoueursSpe
         }
       }
       //Si + de matchs que de combinaisons alors on désactive la règle de ne jamais faire jouer avec la même personne
@@ -365,8 +323,8 @@ class GenerationMatchs extends React.Component {
 
         idMatch++;
         //Si l'id du Match correspond à un match du prochain tour alors retour au premier match du tour en cours
-        if (idMatch >= (nbjoueurs / 4) * (i + 1)) {
-          idMatch = i * (nbjoueurs / 4);
+        if (idMatch >= nbMatchsParTour * (i + 1)) {
+          idMatch = i * nbMatchsParTour;
         }
 
         //En cas de trop nombreuses tentatives, arret de la génération
@@ -378,14 +336,14 @@ class GenerationMatchs extends React.Component {
         }
       }
 
-      idMatch = i * (nbjoueurs / 4);
-      for (let j = 0; j < nbjoueurs / 4; j++) {
+      idMatch = i * nbMatchsParTour;
+      for (let j = 0; j < nbMatchsParTour; j++) {
         joueurs[matchs[idMatch + j].joueur1 - 1].equipe.push(matchs[idMatch + j].joueur2);
         joueurs[matchs[idMatch + j].joueur2 - 1].equipe.push(matchs[idMatch + j].joueur1);
         joueurs[matchs[idMatch + j].joueur3 - 1].equipe.push(matchs[idMatch + j].joueur4);
         joueurs[matchs[idMatch + j].joueur4 - 1].equipe.push(matchs[idMatch + j].joueur3);
       }
-      idMatch = (nbjoueurs / 4) * (i + 1);
+      idMatch = nbMatchsParTour * (i + 1);
     }
 
     //Ajout des options du match à la fin du tableau contenant les matchs

@@ -38,7 +38,7 @@ class MatchDetail extends React.Component {
     if(nomJoueur === undefined)
     {
       return (
-        <Text style={styles.joueurName} >manque J:{joueurNumber}</Text>
+        <Text style={styles.joueurName}>Complément</Text>
       )
     }
     else

@@ -27,7 +27,7 @@ class MatchItem extends React.Component {
     nomJoueur = this.props.listeJoueurs.find(item => item.id === joueurNumber)
     if(nomJoueur === undefined) {
       return (
-        <Text style={styles.joueurName}>Sans Nom{joueurNumber}</Text>
+        <Text style={styles.joueurName}>Complément</Text>
       )
     }
     else {
