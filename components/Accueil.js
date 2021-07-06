@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Text, Button } from 'react-native'
+import { StyleSheet, View, Text, Button, Image } from 'react-native'
 import { expo } from '../app.json'
 import { connect } from 'react-redux'
 
@@ -24,11 +24,9 @@ class Accueil extends React.Component {
 
   render() {
     return (
-      <View style={styles.main_container} >
-        <View style={styles.beta_container}>
-          <Text style={[{color: 'red'}, styles.informations_titre]}>Avertissements :</Text>
-          <Text style={[{color: 'red'}, styles.informations_texte]}>La génération de tournois ne fonctionne pas complètement.</Text>
-          <Text style={[{color: 'red'}, styles.informations_texte]}>Ne pas jouer contre les mêmes personnes ne fonctionne pas encore !</Text>
+      <View style={styles.main_container}>
+        <View style={styles.logo_container}>
+          <Image style={styles.logo} source={require('../assets/icon.png')}/>
         </View>
         <View style={styles.body_container}>
           <View style={styles.menu_container}>
@@ -48,7 +46,7 @@ class Accueil extends React.Component {
             <Text style={styles.informations_texte}>- mêlée-démélée</Text>
           </View>
         </View>
-        <View style={styles.create_container} >
+        <View style={styles.create_container}>
           <Text style={styles.create_text}>Par Mathis Cadio</Text>
           <Text style={styles.create_text}>Version: {expo.version}</Text>
         </View>
@@ -61,15 +59,17 @@ const styles = StyleSheet.create({
   main_container: {
     flex: 1
   },
-  beta_container: {
+  logo_container: {
     alignItems: 'center',
-    paddingLeft: '5%',
-    paddingRight: '5%'
+  },
+  logo: {
+    width: 200,
+    height: 200
   },
   body_container : {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'space-around',
   },
   menu_container : {
 
