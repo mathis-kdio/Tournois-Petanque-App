@@ -12,8 +12,8 @@ class MatchItem extends React.Component {
 
   _displayName = (joueurNumber, equipe, matchID) => {
     let nomJoueur = {}
-    let colorEquipe1 = 'black'
-    let colorEquipe2 = 'black'
+    let colorEquipe1 = 'white'
+    let colorEquipe2 = 'white'
     let score1 = this.props.listeMatchs[matchID].score1;
     let score2 = this.props.listeMatchs[matchID].score2;
     if (score1 == 13) {
@@ -28,21 +28,21 @@ class MatchItem extends React.Component {
     if(nomJoueur === undefined) {
       if (equipe === 1) {
         return (
-          <Text style={styles.joueurName}>joueur 1 :</Text>
+          <Text style={{color:colorEquipe1, fontSize: 20}}>joueur 1 :</Text>
         )
       }
       else {
         return (
-          <Text style={styles.joueurName}>joueur 2 :</Text>
+          <Text style={{color:colorEquipe2, fontSize: 20}}>joueur 2 :</Text>
         )
       }
     }
     else {
       if (equipe === 1) {
-        return <Text style={[styles.joueurName, {color:colorEquipe1}]}>{nomJoueur.name}</Text>
+        return <Text style={{color:colorEquipe1, fontSize: 20}}>{nomJoueur.name}</Text>
       }
       else {
-        return <Text style={[styles.joueurName, {color:colorEquipe2}]}>{nomJoueur.name}</Text>
+        return <Text style={{color:colorEquipe2, fontSize: 20}}>{nomJoueur.name}</Text>
       }
     }
   }
@@ -59,10 +59,6 @@ class MatchItem extends React.Component {
     return (
       <Text style={styles.vs}>{score1} VS {score2}</Text>
     )
-  }
-
-  _displayItem () {
-    
   }
 
   render() {
@@ -100,7 +96,8 @@ class MatchItem extends React.Component {
 const styles = StyleSheet.create({
   main_container: {
     flexDirection: 'row',
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
+    borderColor: 'white'
   },
   content_container: {
     flex: 1,
@@ -108,7 +105,8 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: 'center',
-    fontSize: 20
+    fontSize: 20,
+    color: 'white'
   },
   vs_container: {
     position: 'absolute', 
@@ -120,7 +118,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   vs: {
-    fontSize: 20
+    fontSize: 20,
+    color: 'white'
   },
   equipe_container: {
     flexDirection: 'row',
@@ -132,9 +131,6 @@ const styles = StyleSheet.create({
   equipe2: {
     marginRight: 10,
     alignItems: 'flex-end',
-  },
-  joueurName: {
-    fontSize: 20,
   }
 })
 

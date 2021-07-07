@@ -73,7 +73,7 @@ class Inscription extends React.Component {
 
   _ajoutJoueurBouton() {
     if (this.state.etatBouton == true) {
-      return <Button color='#32cd32' title='Ajouter' onPress={() => this._ajoutJoueur()}/>
+      return <Button color='green' title='Ajouter' onPress={() => this._ajoutJoueur()}/>
     }
     else {
       return <Button disabled title='Ajouter' onPress={() => this._ajoutJoueur()}/>
@@ -140,18 +140,12 @@ class Inscription extends React.Component {
   _boutonCommencer() {
     let boutonActive = true
     let boutonTitle = "Nombre de joueurs n'est pas un multiple de 2"
-    if (this.props.listeJoueurs.length != 0) {
-      if (this.props.listeJoueurs.length % 4 == 0) {
-        boutonTitle = 'Commencer le tournoi'
-        boutonActive = false
-      }
-      else if (this.props.listeJoueurs.length % 2 == 0) {
-        boutonTitle = 'Commencer le tournoi (2 joueurs en complément seront rajoutés)'
-        boutonActive = false
-      }
+    if (this.props.listeJoueurs.length % 2 == 0 && this.props.listeJoueurs.length != 0) {
+      boutonTitle = 'Commencer le tournoi'
+      boutonActive = false
     }
     return (
-      <Button disabled={boutonActive} color='#32cd32' title={boutonTitle} onPress={() => this._commencer()}/>
+      <Button disabled={boutonActive} color='green' title={boutonTitle} onPress={() => this._commencer()}/>
     )
   }
 
@@ -159,12 +153,14 @@ class Inscription extends React.Component {
     return (
       <View style={styles.main_container} >
         <View style={styles.nbjoueur_container}>
-          <Text style={styles.text_nbjoueur}>Il y a : {this._showNbJoueur()} joueur.se.s inscrit.e.s</Text>
+          <Text style={styles.text_nbjoueur}>Il y a : {this._showNbJoueur()} inscrit.e.s</Text>
         </View>
         <View style={styles.ajoutjoueur_container}>
           <View style={styles.textinput_ajoutjoueur_container}>
             <TextInput
               style={styles.textinput}
+              placeholderTextColor='white'
+              underlineColorAndroid='white'
               placeholder="Nom du joueur"
               autoFocus={true}
               onChangeText={(text) => this._ajoutJoueurTextInputChanged(text)}
@@ -180,7 +176,9 @@ class Inscription extends React.Component {
                 })
               }}
               isChecked={this.state.isChecked}
-              rightText={"Femme/Enfant"}
+              rightText={"Femme / Enfant"}
+              rightTextStyle={{color: "white", fontSize: 15}}
+              checkBoxColor={'white'}
             />
           </View>
           <View style={styles.button_ajoutjoueur_container}>
@@ -191,7 +189,7 @@ class Inscription extends React.Component {
           {this._displayListeJoueur()}
         </View>
         <View style={styles.buttonView}>
-          <Button color='#32cd32' title='Options Tournoi' onPress={() => this._options()}/>
+          <Button color='#1c3969' title='Options Tournoi' onPress={() => this._options()}/>
         </View>
         <View style={styles.buttonView}>
           {this._boutonCommencer()}
@@ -203,7 +201,8 @@ class Inscription extends React.Component {
 
 const styles = StyleSheet.create({
   main_container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: "#0594ae"
   },
   ajoutjoueur_container: {
     flexDirection: 'row',
@@ -217,7 +216,7 @@ const styles = StyleSheet.create({
     marginLeft: 5
   },
   checkbox_ajoutjoueur_container: {
-    flex: 1,
+    flex: 1
   },
   button_ajoutjoueur_container: {
     flex: 1,
@@ -225,11 +224,11 @@ const styles = StyleSheet.create({
   },
   textinput: {
     height: 50,
-    borderBottomWidth: 1,
     paddingLeft: 5,
+    color: 'white'
   },
   buttonView: {
-    marginBottom: 10,
+    marginBottom: 20,
     paddingLeft: 15,
     paddingRight: 15
   },
@@ -242,6 +241,7 @@ const styles = StyleSheet.create({
   },
   text_nbjoueur: {
     fontSize: 20,
+    color: 'white'
   }
 })
 

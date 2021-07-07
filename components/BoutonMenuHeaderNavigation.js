@@ -35,14 +35,11 @@ class BoutonMenuHeaderNav extends React.Component {
   render() {
     return (
       <View style={styles.main_container}>
-        <Menu
-          ref={this.setMenuRef}
-          button={<Text onPress={this.showMenu}>Menu</Text>}
-        >
-          <MenuItem onPress={this.showJoueurs}>Liste des joueurs</MenuItem>
-          <MenuItem onPress={this.showSettings}>Paramètres du tournoi</MenuItem>
+        <Menu ref={this.setMenuRef} button={<Text onPress={this.showMenu}>Menu</Text>}>
+          <MenuItem style={styles.menuItem} textStyle={styles.texte_menuItem} onPress={this.showJoueurs}>Liste des joueurs</MenuItem>
+          <MenuItem style={styles.menuItem} textStyle={styles.texte_menuItem} onPress={this.showSettings}>Paramètres du tournoi</MenuItem>
           <MenuDivider />
-          <MenuItem onPress={this.showAccueil}>Accueil</MenuItem>
+          <MenuItem style={styles.menuItem} textStyle={styles.texte_menuItem} onPress={this.showAccueil}>Accueil</MenuItem>
         </Menu>
       </View>
     );
@@ -55,6 +52,12 @@ const styles = StyleSheet.create({
     marginRight: 10,
     justifyContent: 'center',
   },
+  menuItem: {
+    backgroundColor: "#1c3969",
+  },
+  texte_menuItem: {
+    color: 'white'
+  }
 })
 
 export default BoutonMenuHeaderNav

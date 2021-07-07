@@ -9,12 +9,12 @@ class ListeResultatItem extends React.Component {
     nomJoueur = this.props.listeJoueurs.find(item => item.id === joueurNumber)
     if(nomJoueur === undefined) {
       return (
-        <Text style={styles.text} >manque J:{joueurNumber}</Text>
+        <Text style={styles.texte}>manque J:{joueurNumber}</Text>
       )
     }
     else {
       return (
-      <Text style={styles.text} >{nomJoueur.name}</Text>
+      <Text style={styles.texte}>{nomJoueur.name}</Text>
       )
     }
   }
@@ -37,7 +37,7 @@ class ListeResultatItem extends React.Component {
       return (
         <View style={styles.fanny_container}>
           <Image source={require('../images/fanny.png')} style={styles.icon}/>
-          <Text style={styles.text}>X{nbFanny}</Text>
+          <Text style={styles.texte}>X{nbFanny}</Text>
         </View>
       )
     }
@@ -54,7 +54,7 @@ class ListeResultatItem extends React.Component {
       }
     }
     return (
-      <Text style={styles.text}>{partieJoue}</Text>
+      <Text style={styles.texte}>{partieJoue}</Text>
     )
   }
 
@@ -63,18 +63,18 @@ class ListeResultatItem extends React.Component {
     return (
       <View style={styles.main_container}>
         <View style={styles.position_nom_container}>
-          <Text style={styles.text}>{joueur.position} - </Text>
+          <Text style={styles.texte}>{joueur.position} - </Text>
           {this._displayName(joueur.joueurId)}
         </View>
         <View style={styles.victoires_container}>
-          <Text style={styles.text}>{joueur.victoires}</Text>
+          <Text style={styles.texte}>{joueur.victoires}</Text>
         </View>
         <View style={styles.mj_container}>
           {this._partieJoue(joueur.joueurId)}
         </View>
         <View style={styles.points_container}>
           {this._fanny(joueur.joueurId)}
-          <Text style={styles.text}>{joueur.points}</Text>
+          <Text style={styles.texte}>{joueur.points}</Text>
         </View>
       </View>
     )
@@ -108,9 +108,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end'
   },
-  text: {
+  texte: {
     fontSize: 20,
-    textAlign: 'left'
+    textAlign: 'left',
+    color: 'white'
   },
   icon: {
     width: 30,

@@ -376,8 +376,8 @@ class GenerationMatchs extends React.Component {
     if (this.state.isLoading === true) {
       return (
         <View style={styles.loading_container}>
-          <ActivityIndicator size='large' color="#00ff00"/>
-          <Text>Génération des parties, veuillez patienter</Text>
+          <ActivityIndicator size='large' color="#ffda00"/>
+          <Text style={styles.texte}>Génération des parties, veuillez patienter</Text>
         </View>
       )
     }
@@ -387,7 +387,7 @@ class GenerationMatchs extends React.Component {
     if (this.state.isGenerationSuccess === false && this.state.isLoading === false) {
       return (
         <View style={styles.error_container}>
-          <Text>La générations n'a pas réussie, certaines options rendent la génération trop compliqué.</Text>
+          <Text style={styles.texte}>La générations n'a pas réussie, certaines options rendent la génération trop compliqué.</Text>
           <Button title='Changer des options' onPress={() => this._retourInscription()}/>
         </View>
       )
@@ -398,8 +398,8 @@ class GenerationMatchs extends React.Component {
     if (this.state.erreurSpeciaux == true && this.state.isLoading == false) {
       return (
         <View style={styles.error_container}>
-          <Text>La générations ne peux pas fonctionner avec les options.</Text>
-          <Text>Il y a trop de Femmes et Enfants pour appliquer l'option de les faire jouer séparement</Text>
+          <Text style={styles.texte}>La générations ne peux pas fonctionner avec les options.</Text>
+          <Text style={styles.texte}>Il y a trop de Femmes et Enfants pour appliquer l'option de les faire jouer séparement</Text>
           <Button title="Désactiver l'option ou enlever des Enfants/Femmes" onPress={() => this._retourInscription()}/>
         </View>
       )
@@ -410,8 +410,8 @@ class GenerationMatchs extends React.Component {
     if (this.state.erreurMemesEquipes == true && this.state.isLoading == false) {
       return (
         <View style={styles.error_container}>
-          <Text>La générations ne peux pas fonctionner avec les options.</Text>
-          <Text>Il y semble trop compliqué de ne jamais faire jouer des équipes identiques</Text>
+          <Text style={styles.texte}>La générations ne peux pas fonctionner avec les options.</Text>
+          <Text style={styles.texte}>Il y semble trop compliqué de ne jamais faire jouer des équipes identiques</Text>
           <Button title="Désactiver l'option ou rajouter des joueurs ou diminuer le nombre de tours" onPress={() => this._retourInscription()}/>
         </View>
       )
@@ -445,7 +445,8 @@ class GenerationMatchs extends React.Component {
 
 const styles = StyleSheet.create({
   main_container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: "#0594ae"
   },
   loading_container: {
     position: 'absolute',
@@ -462,6 +463,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginHorizontal: '5%'
   },
+  texte: {
+    fontSize: 15,
+    color: 'white'
+  }
 })
 
 const mapStateToProps = (state) => {

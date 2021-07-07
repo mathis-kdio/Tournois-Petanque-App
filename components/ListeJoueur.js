@@ -16,7 +16,7 @@ class ListeJoueur extends React.Component {
     if (joueurSpecial === true) {
       return (
         <View style={styles.special_container}>
-          <Text style={styles.name_text}>Femme/Enfant</Text>
+          <Text style={styles.special_text}>Femme/Enfant</Text>
         </View>
       )
     }
@@ -37,7 +37,7 @@ class ListeJoueur extends React.Component {
       if (this.state.renommerOn == false) {
         return (
           <View>
-            <Button color='blue' title='Renommer' onPress={() => this._renommerJoueurInput(joueur)}/>
+            <Button color='green' title='Renommer' onPress={() => this._renommerJoueurInput(joueur)}/>
           </View>
         )
       }
@@ -127,19 +127,29 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     marginHorizontal: 10,
     borderBottomWidth: 1,
+    borderColor: 'white'
   },
   name_container: {
     flex: 1,
-
+  },
+  name_text: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    color: 'white'
   },
   special_container: {
     marginLeft: 5,
     marginRight: 5,
   },
-  name_text: {
-    fontWeight: 'bold',
-    fontSize: 20
-  }
+  special_text: {
+    fontSize: 20,
+    color: 'white'
+  },
+  textinput: {
+    height: 50,
+    paddingLeft: 5,
+    color: 'white'
+  },
 })
 
 const mapStateToProps = (state) => {

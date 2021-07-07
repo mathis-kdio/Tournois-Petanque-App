@@ -55,6 +55,7 @@ class ListeMatchs extends React.Component {
 const styles = StyleSheet.create({
   main_container: {
     flex: 1,
+    backgroundColor: "#0594ae"
   }
 })
 

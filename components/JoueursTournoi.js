@@ -53,7 +53,7 @@ class JoueursTournoi extends React.Component {
           {this._displayListeJoueur()}
         </View>
         <View style={styles.buttonView}>
-          <Button color='#32cd32' title='Retourner à la liste des parties' onPress={() => this._retourMatchs()}/>
+          <Button color='#1c3969' title='Retourner à la liste des parties' onPress={() => this._retourMatchs()}/>
         </View>
       </View>
     )
@@ -62,12 +62,13 @@ class JoueursTournoi extends React.Component {
 
 const styles = StyleSheet.create({
   main_container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: "#0594ae"
   },
   buttonView: {
-    marginBottom: 10,
-    paddingLeft: 20,
-    paddingRight: 20
+    marginBottom: 20,
+    paddingLeft: 15,
+    paddingRight: 15
   },
   flatList: {
     flex: 1
@@ -78,6 +79,7 @@ const styles = StyleSheet.create({
   },
   text_nbjoueur: {
     fontSize: 20,
+    color: 'white'
   }
 })
 

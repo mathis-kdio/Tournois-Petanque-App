@@ -63,10 +63,12 @@ class OptionsTournoi extends React.Component {
     return (
       <View style={styles.main_container} >
         <View style={styles.body_container} >
-          <View style={styles.textinput_nbtours_container}>
-            <Text>Nombre de tours: </Text>
+          <View style={styles.input_nbtours_container}>
+            <Text style={styles.texte}>Nombre de tours: </Text>
             <TextInput
               style={styles.textinput}
+              placeholderTextColor='white'
+              underlineColorAndroid='white'
               placeholder="Nombre de tours"
               keyboardType="numeric"
               defaultValue= {this.state.nbTours}
@@ -83,6 +85,8 @@ class OptionsTournoi extends React.Component {
               }}
               isChecked={this.state.speciauxIncompatibles}
               leftText={"Ne jamais faire jouer 2 femme/enfant dans la même équipe"}
+              leftTextStyle={{color: "white", fontSize: 15}}
+              checkBoxColor={'white'}
             />
           </View>
           <View style={styles.checkbox_container}>
@@ -94,6 +98,8 @@ class OptionsTournoi extends React.Component {
               }}
               isChecked={this.state.memesEquipes}
               leftText={"Ne jamais former les mêmes équipes"}
+              leftTextStyle={{color: "white", fontSize: 15}}
+              checkBoxColor={'white'}
             />
           </View>
           <View style={styles.checkbox_container}>
@@ -105,11 +111,13 @@ class OptionsTournoi extends React.Component {
               }}
               isChecked={this.state.memesAdversaires}
               leftText={"Empecher 2 joueurs de jouer + de la moitié des matchs contre et ensemble"}
+              leftTextStyle={{color: "white", fontSize: 15}}
+              checkBoxColor={'white'}
             />
           </View>
         </View>
         <View style={styles.buttonView}>
-          <Button color='#32cd32' title='Valider les options' onPress={() => this._retourInscription()}/>
+          <Button color='green' title='Valider les options' onPress={() => this._retourInscription()}/>
         </View>
       </View>
     )
@@ -119,13 +127,13 @@ class OptionsTournoi extends React.Component {
 const styles = StyleSheet.create({
   main_container: {
     flex: 1,
-    marginLeft: '5%',
-    marginRight: '5%'
+    backgroundColor: "#0594ae"
   },
   body_container: {
     flex:1,
+    marginHorizontal: '5%'
   },
-  textinput_nbtours_container: {
+  input_nbtours_container: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
@@ -135,12 +143,17 @@ const styles = StyleSheet.create({
   },
   textinput: {
     height: 50,
-    borderColor: '#000000',
-    borderBottomWidth: 1,
     paddingLeft: 5,
+    color: 'white'
   },
   buttonView: {
-    marginBottom: 10
+    marginBottom: 20,
+    paddingLeft: 15,
+    paddingRight: 15
+  },
+  texte: {
+    fontSize: 15,
+    color: 'white'
   }
 })
 

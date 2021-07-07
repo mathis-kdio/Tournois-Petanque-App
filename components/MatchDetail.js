@@ -86,48 +86,54 @@ class MatchDetail extends React.Component {
     let match = this.props.route.params.match;
     return (
       <View style={styles.main_container}>
-        <View style={styles.content_container} >
-          <View>
-            <Text style={styles.title}>Partie n°{(this.state.match + 1)}</Text>
-          </View>
-          <View style={styles.equipe_container}>
-            <View style={styles.equipe1}>
-              {this._displayName(match.joueur1, 1)}
-              {this._displayName(match.joueur2, 1)}
+        <View style={styles.body_container}>
+          <View style={styles.content_container} >
+            <View>
+              <Text style={styles.title}>Partie n°{(this.state.match + 1)}</Text>
             </View>
-            <Text style={styles.vs}>VS</Text>
-            <View style={styles.equipe2}>
-              {this._displayName(match.joueur3, 2)}
-              {this._displayName(match.joueur4, 2)}
+            <View style={styles.equipe_container}>
+              <View style={styles.equipe1}>
+                {this._displayName(match.joueur1, 1)}
+                {this._displayName(match.joueur2, 1)}
+              </View>
+              <Text style={styles.vs}>VS</Text>
+              <View style={styles.equipe2}>
+                {this._displayName(match.joueur3, 2)}
+                {this._displayName(match.joueur4, 2)}
+              </View>
             </View>
           </View>
-        </View>
-        <View style={styles.resultat_container} >
-          <TextInput
-            style={styles.textinput}
-            keyboardType={'decimal-pad'}
-            maxLength={2}
-            autoFocus = {true}
-            returnKeyType= {'next'}
-            placeholder="score équipe 1"
-            onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 1)}
-            onSubmitEditing={() => this.secondInput.focus()}
-          />
-          <TextInput
-            style={styles.textinput}
-            keyboardType={'decimal-pad'}
-            maxLength={2}
-            ref={ref => {this.secondInput = ref}}
-            placeholder="score équipe 2"
-            onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 2)}
-            onSubmitEditing={() => this._envoyerResultat()}
-          />
-        </View>
-        <View style={styles.buttonView}>
-          <Button color="red" title='Supprimer le score' onPress={() => this._supprimerResultat()}/>
-        </View>
-        <View style={styles.buttonView}>
-          {this._boutonValider()}
+          <View style={styles.resultat_container} >
+            <TextInput
+              style={styles.textinput}
+              placeholderTextColor='white'
+              underlineColorAndroid='white'
+              keyboardType={'decimal-pad'}
+              maxLength={2}
+              autoFocus = {true}
+              returnKeyType= {'next'}
+              placeholder="score équipe 1"
+              onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 1)}
+              onSubmitEditing={() => this.secondInput.focus()}
+            />
+            <TextInput
+              style={styles.textinput}
+              placeholderTextColor='white'
+              underlineColorAndroid='white'
+              keyboardType={'decimal-pad'}
+              maxLength={2}
+              ref={ref => {this.secondInput = ref}}
+              placeholder="score équipe 2"
+              onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 2)}
+              onSubmitEditing={() => this._envoyerResultat()}
+            />
+          </View>
+          <View style={styles.buttonView}>
+            <Button color="red" title='Supprimer le score' onPress={() => this._supprimerResultat()}/>
+          </View>
+          <View style={styles.buttonView}>
+            {this._boutonValider()}
+          </View>
         </View>
       </View>
     )
@@ -138,6 +144,10 @@ const styles = StyleSheet.create({
   main_container: {
     flex: 1,
     flexDirection: 'column',
+    backgroundColor: "#0594ae",
+  },
+  body_container: {
+    flex: 1,
     marginHorizontal: '5%'
   },
   content_container: {
@@ -145,7 +155,8 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: 'center',
-    fontSize: 20
+    fontSize: 20,
+    color: 'white'
   },
   equipe_container: {
     flexDirection: 'row',
@@ -159,13 +170,15 @@ const styles = StyleSheet.create({
     marginRight: 10
   },
   joueurName: {
-    fontSize:15
+    fontSize: 15,
+    color: 'white'
   },
   vs_container: {
     justifyContent: 'center'
   },
   vs: {
-    fontSize: 20
+    fontSize: 20,
+    color: 'white'
   },
   resultat_container: {
     flex: 1,
@@ -173,14 +186,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   buttonView: {
-    paddingLeft: 20,
-    paddingRight: 20,
     marginBottom: 20,
+    paddingLeft: 15,
+    paddingRight: 15
   },
   textinput: {
     height: 50,
-    borderBottomWidth: 1,
-    paddingLeft: 5
+    paddingLeft: 5,
+    color: 'white'
   }
 })
 

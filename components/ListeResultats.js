@@ -58,16 +58,16 @@ class ListeResultats extends React.Component {
       <View style={styles.main_container}>
         <View style={styles.entete}>
           <View style={styles.position_container}>
-            <Text style={styles.text}>Place</Text>
+            <Text style={styles.texte}>Place</Text>
           </View>
           <View style={styles.victoires_container}>
-            <Text style={styles.text}>Victoire(s)</Text>
+            <Text style={styles.texte}>Victoire(s)</Text>
           </View>
           <View style={styles.mj_container}>
-            <Text style={styles.text}>MJ</Text>
+            <Text style={styles.texte}>MJ</Text>
           </View>
           <View style={styles.points_container}>
-            <Text style={styles.text}>Point(s)</Text>
+            <Text style={styles.texte}>Point(s)</Text>
           </View>
         </View>
         <FlatList
@@ -87,10 +87,12 @@ class ListeResultats extends React.Component {
 const styles = StyleSheet.create({
   main_container: {
     flex: 1,
+    backgroundColor: "#0594ae"
   },
   entete: {
     flexDirection: 'row',
     borderBottomWidth: 2,
+    borderColor: 'white'
   },
   position_container: {
     flex: 1
@@ -107,9 +109,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-end'
   },
-  text: {
+  texte: {
     fontSize: 20,
-    textAlign: 'left'
+    textAlign: 'left',
+    color: 'white'
   },
 })
 

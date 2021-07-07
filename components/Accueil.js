@@ -15,10 +15,10 @@ class Accueil extends React.Component {
 
   _buttonShowMatchs() {
     if(this.props.listeMatchs && this.props.listeMatchs.length != 0) {
-      return <Button title='Reprendre le tournoi' onPress={() => this._showMatchs()}/>
+      return <Button color="#1c3969" title='Reprendre le tournoi' onPress={() => this._showMatchs()}/>
     }
     else {
-      return <Button disabled title='Pas de tournoi en cours'/>
+      return <Button color="#1c3969" disabled title='Pas de tournoi en cours'/>
     }
   }
 
@@ -34,16 +34,15 @@ class Accueil extends React.Component {
               {this._buttonShowMatchs()}
             </View>
             <View style={styles.buttonView}>
-              <Button title='Nouveau tournoi' onPress={() => this._showInscription()}/>
+              <Button color="#1c3969" title='Nouveau tournoi' onPress={() => this._showInscription()}/>
             </View>
             <View style={styles.buttonView}>
-              <Button disabled title='Voir les anciens tournois' onPress={() => this._showInscription()}/>
+              <Button color="#1c3969" disabled title='Voir les anciens tournois' onPress={() => this._showInscription()}/>
             </View>
           </View>
           <View style={styles.informations_container}>
-            <Text style={styles.informations_titre}>Informations</Text>
-            <Text style={styles.informations_texte}>Mode de tournois disponible :</Text>
-            <Text style={styles.informations_texte}>- mêlée-démélée</Text>
+            <Text style={styles.informations_texte}>Mode de tournoi :</Text>
+            <Text style={styles.informations_texte}>mêlée-démélée</Text>
           </View>
         </View>
         <View style={styles.create_container}>
@@ -57,7 +56,8 @@ class Accueil extends React.Component {
 
 const styles = StyleSheet.create({
   main_container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: "#0594ae"
   },
   logo_container: {
     alignItems: 'center',
@@ -75,26 +75,27 @@ const styles = StyleSheet.create({
 
   },
   buttonView: {
-    marginBottom: 20
+    marginBottom: 20,
+    paddingLeft: 15,
+    paddingRight: 15
   },
   informations_container: {
     alignItems: 'center',
     paddingLeft: '10%',
     paddingRight: '10%'
   },
-  informations_titre: {
-    fontSize: 27
-  },
   informations_texte: {
     fontSize: 20,
-    textAlign: "justify"
+    textAlign: "justify",
+    color: 'white'
   },
   create_container: {
     alignItems: 'center',
     paddingBottom: 10
   },
   create_text: {
-    fontSize: 15
+    fontSize: 15,
+    color: 'white'
   },
 })
 

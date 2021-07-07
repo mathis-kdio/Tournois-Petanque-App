@@ -54,7 +54,7 @@ function topTabScreens() {
 const TitleTopTabContainer = connect((state, numero) => ({ listeMatchs: state.gestionMatchs.listematchs}))(texteTitleTopTab);
 
 function texteTitleTopTab({ listeMatchs, numero }) {
-  let titleColor = 'orange'
+  let titleColor = '#1c3969'
   if (listeMatchs) {
     let testTourFiltre = listeMatchs.filter(el => el.manche === numero)
     //Test si tous les matchs d'un tour sont finis si oui alors vert
@@ -65,12 +65,13 @@ function texteTitleTopTab({ listeMatchs, numero }) {
       titleColor = 'red'
     }
   }
-  return <Text style={{color:titleColor}}>Tour {numero}</Text>
+  return <Text style={{color:titleColor, fontSize: 20}}>Tour {numero}</Text>
 }
 
 function ManchesTopTabNavigator() {
+  //tabBarOptions={{style: {backgroundColor: '#ffda00'}, activeTintColor: '#1c3969', labelStyle: {fontSize: 15}}
   return (
-    <TopTab.Navigator initialRouteName='Screen1Manche' tabBarOptions={{scrollEnabled: true}}>
+    <TopTab.Navigator initialRouteName='Screen1Manche' tabBarOptions={{scrollEnabled: true, style: {backgroundColor: '#ffda00'}, indicatorStyle: {backgroundColor: "#1c3969"}}}>
       {topTabScreens()}
     </TopTab.Navigator>
   );
@@ -89,12 +90,14 @@ function MatchsStack() {
           headerLeft: () => (null),
           headerRight: () => (
             <BoutonMenuHeaderNav navigation={navigation}/>
-          )
+          ),
+          headerStyle: {backgroundColor: '#ffda00'},
+          headerTitleStyle: {color: '#1c3969'}
         }}
       />
-      <Stack.Screen name="MatchDetailStack" component={MatchDetail} options={{title: 'Détail de la partie', headerTitleAlign: 'center'}} />        
-      <Stack.Screen name="ListeJoueur" component={JoueursTournoi} options={{title: 'Liste des joueurs inscrits', headerTitleAlign: 'center'}} />    
-      <Stack.Screen name="ParametresTournoi" component={ParametresTournoi} options={{title: 'Paramètres du tournoi', headerTitleAlign: 'center'}} />    
+      <Stack.Screen name="MatchDetailStack" component={MatchDetail} options={{title: 'Détail de la partie', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />        
+      <Stack.Screen name="ListeJoueur" component={JoueursTournoi} options={{title: 'Liste des joueurs inscrits', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />    
+      <Stack.Screen name="ParametresTournoi" component={ParametresTournoi} options={{title: 'Paramètres du tournoi', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />    
     </Stack.Navigator>
   );
 }
@@ -102,7 +105,7 @@ function MatchsStack() {
 function ResultatsStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="ListeResultatsStack" component={ListeResultats} options={{title: 'Résultats & Classement', headerTitleAlign: 'center', headerLeft: null}} />
+      <Stack.Screen name="ListeResultatsStack" component={ListeResultats} options={{title: 'Résultats & Classement', headerTitleAlign: 'center', headerLeft: null, headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
     </Stack.Navigator>
   );
 }
@@ -113,7 +116,7 @@ function MatchsResultatsBottomNavigator() {
     return true
   })
   return (
-    <BottomTab.Navigator initialRouteName="ListeMatchsBottom">
+    <BottomTab.Navigator initialRouteName="ListeMatchsBottom" tabBarOptions={{style: {backgroundColor: '#ffda00'}, activeTintColor: '#1c3969', labelStyle: {fontSize: 15}}}>
       <BottomTab.Screen
         name="ListeResultatsBottom"
         component={ResultatsStack}
@@ -145,9 +148,9 @@ function MatchsResultatsBottomNavigator() {
 function InscriptionStack() {
   return (
     <Stack.Navigator initialRouteName='InscriptionStack'>
-      <Stack.Screen name="InscriptionStack" component={Inscription} options={{title: 'Inscription', headerTitleAlign: 'center'}} />
-      <Stack.Screen name="OptionsTournoi" component={OptionsTournoi} options={{title: 'Paramètres du tournoi', headerTitleAlign: 'center'}} />      
-      <Stack.Screen name="GenerationMatchs" component={GenerationMatchs} options={{title: 'Générations des parties en cours', headerTitleAlign: 'center'}} />
+      <Stack.Screen name="InscriptionStack" component={Inscription} options={{title: 'Inscription', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
+      <Stack.Screen name="OptionsTournoi" component={OptionsTournoi} options={{title: 'Options du tournoi', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />      
+      <Stack.Screen name="GenerationMatchs" component={GenerationMatchs} options={{title: 'Générations des parties en cours', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
       <Stack.Screen name="ListeMatchsInscription" component={MatchsResultatsBottomNavigator} options={{headerShown: false}} />    
     </Stack.Navigator>
   );
