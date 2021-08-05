@@ -94,7 +94,8 @@ class Inscription extends React.Component {
         nbTours: parseInt(this.nbTours),
         speciauxIncompatibles: this.speciauxIncompatibles,
         memesEquipes: this.memesEquipes,
-        memesAdversaires: this.memesAdversaires
+        memesAdversaires: this.memesAdversaires,
+        screenStackName: 'InscriptionStack'
       }
     })
   }
@@ -106,7 +107,8 @@ class Inscription extends React.Component {
         nbTours: this.nbTours,
         speciauxIncompatibles: this.speciauxIncompatibles,
         memesEquipes: this.memesEquipes,
-        memesAdversaires: this.memesAdversaires
+        memesAdversaires: this.memesAdversaires,
+        screenStackName: 'InscriptionStack'
       }
     })
   }

@@ -433,7 +433,7 @@ class GenerationMatchs extends React.Component {
 
   _retourInscription() {
     this.props.navigation.navigate({
-      name: 'InscriptionStack',
+      name: this.props.route.params.screenStackName,
       params: {
         nbTours: this.nbTours,
         speciauxIncompatibles: this.speciauxIncompatibles,

@@ -27,8 +27,8 @@ class ChoixTournois extends React.Component {
     if (this.state.avecNom == true) {
       screenName = 'InscriptionGeneral'
     }
-    else if (this.state.avecNom == true) {
-      screenName = 'InscriptionGeneral'
+    else if (this.state.sansNom == true) {
+      screenName = 'InscriptionsSansNoms'
     }
     else {
       screenName = 'InscriptionGeneral'

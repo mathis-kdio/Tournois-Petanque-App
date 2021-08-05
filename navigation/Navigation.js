@@ -12,6 +12,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import Accueil from '../components/Accueil'
 import ChoixTournois from '../components/ChoixTournois'
 import Inscription from '../components/Inscriptions'
+import InscriptionsSansNoms from '../components/InscriptionsSansNoms'
 import OptionsTournoi from '../components/OptionsTournoi'
 import GenerationMatchs from '../components/GenerationMatchs'
 import ListeResultats from '../components/ListeResultats'
@@ -157,12 +158,24 @@ function InscriptionStack() {
   );
 }
 
+function InscriptionsSansNomsStack() {
+  return (
+    <Stack.Navigator initialRouteName='InscriptionsSansNomsStack'>
+      <Stack.Screen name="InscriptionsSansNomsStack" component={InscriptionsSansNoms} options={{title: 'Inscription Sans Noms', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
+      <Stack.Screen name="OptionsTournoi" component={OptionsTournoi} options={{title: 'Options du tournoi', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />      
+      <Stack.Screen name="GenerationMatchs" component={GenerationMatchs} options={{title: 'Générations des parties en cours', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
+      <Stack.Screen name="ListeMatchsInscription" component={MatchsResultatsBottomNavigator} options={{headerShown: false}} />    
+    </Stack.Navigator>
+  );
+}
+
 function General() {
   return (
     <Stack.Navigator initialRouteName='AccueilGeneral'>
       <Stack.Screen name="AccueilGeneral" component={Accueil} options={{title: 'Accueil - Pétanque GCU', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
       <Stack.Screen name="ChoixTournois" component={ChoixTournois} options={{title: 'Choix du mode de tournoi', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
       <Stack.Screen name="InscriptionGeneral" component={InscriptionStack} options={{headerShown: false}} />
+      <Stack.Screen name="InscriptionsSansNoms" component={InscriptionsSansNomsStack} options={{headerShown: false}} />
     </Stack.Navigator>
   );
 }
