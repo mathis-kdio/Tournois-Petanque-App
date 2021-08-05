@@ -39,10 +39,10 @@ class MatchItem extends React.Component {
     }
     else {
       if (equipe === 1) {
-        return <Text style={{color:colorEquipe1, fontSize: 20}}>{nomJoueur.name}</Text>
+        return <Text style={{color:colorEquipe1, fontSize: 20}}>{nomJoueur.id} {nomJoueur.name}</Text>
       }
       else {
-        return <Text style={{color:colorEquipe2, fontSize: 20}}>{nomJoueur.name}</Text>
+        return <Text style={{color:colorEquipe2, fontSize: 20}}>{nomJoueur.id} {nomJoueur.name}</Text>
       }
     }
   }

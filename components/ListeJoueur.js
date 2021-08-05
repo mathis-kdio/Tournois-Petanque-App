@@ -99,7 +99,7 @@ class ListeJoueur extends React.Component {
     }
     else {
       return(
-        <Text style={styles.name_text}>{joueur.name}</Text>
+        <Text style={styles.name_text}>{joueur.id} {joueur.name}</Text>
       )
     }
   }
