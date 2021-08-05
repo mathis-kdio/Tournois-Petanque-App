@@ -10,7 +10,7 @@ class Accueil extends React.Component {
   }
 
   _showInscription() {
-    this.props.navigation.navigate('InscriptionGeneral');
+    this.props.navigation.navigate('ChoixTournois');
   }
 
   _buttonShowMatchs() {
