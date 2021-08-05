@@ -412,8 +412,8 @@ class GenerationMatchs extends React.Component {
       return (
         <View style={styles.error_container}>
           <Text style={styles.texte}>La générations ne peux pas fonctionner avec les options.</Text>
-          <Text style={styles.texte}>Il y a trop de Femmes et Enfants pour appliquer l'option de les faire jouer séparement</Text>
-          <Button title="Désactiver l'option ou enlever des Enfants/Femmes" onPress={() => this._retourInscription()}/>
+          <Text style={styles.texte}>Il y a trop d'enfants pour appliquer l'option de les faire jouer séparement</Text>
+          <Button title="Désactiver l'option ou enlever des enfants" onPress={() => this._retourInscription()}/>
         </View>
       )
     }

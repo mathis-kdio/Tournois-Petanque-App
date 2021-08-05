@@ -16,7 +16,7 @@ class ListeJoueur extends React.Component {
     if (joueurSpecial === true) {
       return (
         <View style={styles.special_container}>
-          <Text style={styles.special_text}>Femme/Enfant</Text>
+          <Text style={styles.special_text}>Enfant</Text>
         </View>
       )
     }

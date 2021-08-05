@@ -84,7 +84,7 @@ class OptionsTournoi extends React.Component {
                 })
               }}
               isChecked={this.state.speciauxIncompatibles}
-              leftText={"Ne jamais faire jouer 2 femme/enfant dans la même équipe"}
+              leftText={"Ne jamais faire jouer 2 enfants dans la même équipe"}
               leftTextStyle={{color: "white", fontSize: 15}}
               checkBoxColor={'white'}
             />

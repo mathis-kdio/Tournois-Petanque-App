@@ -176,7 +176,7 @@ class Inscription extends React.Component {
                 })
               }}
               isChecked={this.state.isChecked}
-              rightText={"Femme / Enfant"}
+              rightText={"Enfant"}
               rightTextStyle={{color: "white", fontSize: 15}}
               checkBoxColor={'white'}
             />
