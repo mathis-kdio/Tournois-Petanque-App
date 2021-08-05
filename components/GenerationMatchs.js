@@ -67,6 +67,23 @@ class GenerationMatchs extends React.Component {
     }
   }
 
+  randomBetween(a, b) {
+    return (parseInt((Math.random() * (b - a)) + a))
+  }
+  randomBetweenRange (num, range) {
+    const res = [];
+    for (let i = 0; i < num; ) {
+        const random = this.randomBetween(range[0], range[1])
+        if (this.countOccurrences(res, random) < 2) {
+          res.push(random)
+          i++
+        }
+    }
+    return res
+  }
+
+  countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+
   _generation() {
     let nbjoueurs = this.props.listeJoueurs.length;
     let nbManches = 5;
@@ -140,39 +157,35 @@ class GenerationMatchs extends React.Component {
     }
 
     //Assignation des joueurs spéciaux
-    //Test si joueurs spéciaux ne sont pas trop nombreux
-    if (nbJoueursSpe <= nbjoueurs / 2) {
-      //Joueurs spéciaux seront toujours joueur 1 ou joueur 3 si tous les joueurs 1 sont déjà spéciaux
-      idMatch = 0;
-      for (let i = 0; i < nbManches; i++) {
-        for (let j = 0; j < joueursSpe.length;) {
-          if (matchs[idMatch].joueur1 == 0) {
-            matchs[idMatch].joueur1 = joueursSpe[j].id;
-            j++
-          }
-          else if (matchs[idMatch].joueur3 == 0) {
-            matchs[idMatch].joueur3 = joueursSpe[j].id;
-            j++
-          }
-          idMatch++;
-          if (idMatch > nbMatchsParTour * (i + 1) - 1) {
-            idMatch = i * nbMatchsParTour;
+    if (speciauxIncompatibles == true) {
+      //Test si joueurs spéciaux ne sont pas trop nombreux
+      if (nbJoueursSpe <= nbjoueurs / 2) {
+        //Joueurs spéciaux seront toujours joueur 1 ou joueur 3
+        for (let i = 0; i < nbManches; i++) {
+          let idsMatchsSpe = []
+          idsMatchsSpe = this.randomBetweenRange(joueursSpe.length, [i * nbMatchsParTour, i * nbMatchsParTour + nbMatchsParTour])
+          for (let j = 0; j < joueursSpe.length;) {
+            if (matchs[idsMatchsSpe[j]].joueur1 == 0) {
+              matchs[idsMatchsSpe[j]].joueur1 = joueursSpe[j].id;
+              j++
+            }
+            else if (matchs[idsMatchsSpe[j]].joueur3 == 0) {
+              matchs[idsMatchsSpe[j]].joueur3 = joueursSpe[j].id;
+              j++
+            }
           }
         }
-        idMatch = nbMatchsParTour * (i + 1);
+      }
+      //Si trop nombreux alors message et retour à l'inscription
+      else {
+        this.setState({
+          erreurSpeciaux: true,
+          isLoading: false
+        })
+        return 0
       }
     }
-
-
-    //Si trop nombreux et règle est de ne pas les faire jouer ensemble alors message et retour à l'inscription
-    else if (speciauxIncompatibles == true) {
-      this.setState({
-        erreurSpeciaux: true,
-        isLoading: false
-      })
-      return 0
-    }
-    //Si trop nombreux mais règle désactivée alors les joueurs spéciaux et les non spéciaux sont regroupés
+    //Sinon la règle est désactivée et donc les joueurs spéciaux et les non spéciaux sont regroupés
     else {
       joueursNonSpe.splice(0, joueursNonSpe.length)
       for (let i = 0; i < nbjoueurs; i++) {
