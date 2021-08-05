@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 class ParametresTournoi extends React.Component {
   _showMatchs() {
-    this.props.navigation.goBack();   
+    this.props.navigation.navigate('ListeMatchsStack');   
   }
 
   _supprimerTournoi() {

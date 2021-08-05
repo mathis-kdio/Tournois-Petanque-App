@@ -61,7 +61,7 @@ class MatchDetail extends React.Component {
       let info = {idMatch: this.state.match, score1: this.state.score1, score2: this.state.score2};
       const action = { type: "AJOUT_SCORE", value: info};
       this.props.dispatch(action);
-      this.props.navigation.goBack();
+      this.props.navigation.navigate('ListeMatchsStack');
     }
   }
 
@@ -69,7 +69,7 @@ class MatchDetail extends React.Component {
     let info = {idMatch: this.state.match, score1: undefined, score2: undefined};
     const action = { type: "AJOUT_SCORE", value: info};
     this.props.dispatch(action);
-    this.props.navigation.goBack();
+    this.props.navigation.navigate('ListeMatchsStack');
   }
 
   _boutonValider() {

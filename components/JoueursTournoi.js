@@ -14,7 +14,7 @@ class JoueursTournoi extends React.Component {
   }
 
   _retourMatchs() {
-    this.props.navigation.goBack();   
+    this.props.navigation.navigate('ListeMatchsStack');   
   }
 
   _displayListeJoueur() {
