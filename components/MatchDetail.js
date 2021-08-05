@@ -33,10 +33,9 @@ class MatchDetail extends React.Component {
   }
 
   _displayName = (joueurNumber, equipe) => {
-    let nomJoueur = {};
-    nomJoueur = this.props.listeJoueurs.find(item => item.id === joueurNumber)
-    if(nomJoueur === undefined)
-    {
+    let joueur = {};
+    joueur = this.props.listeJoueurs.find(item => item.id === joueurNumber)
+    if(joueur === undefined) {
       if (equipe == 1) {
         return (
           <Text style={styles.joueurName}>joueur 1 :</Text>
@@ -48,10 +47,9 @@ class MatchDetail extends React.Component {
         )
       }
     }
-    else
-    {
+    else {
       return (
-        <Text style={styles.joueurName} >{nomJoueur.name}</Text>
+        <Text style={styles.joueurName} >{joueur.name} ({joueur.id})</Text>
       )
     }
   }
