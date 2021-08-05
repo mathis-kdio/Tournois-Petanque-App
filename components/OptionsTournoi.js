@@ -45,6 +45,9 @@ class OptionsTournoi extends React.Component {
 
   _optionsNombreToursTextInputChanged(text) {
     this.nbTours = text.toString()
+    this.setState({
+      nbTours: this.nbTours
+    })
   }
 
   _retourInscription() {
@@ -57,6 +60,18 @@ class OptionsTournoi extends React.Component {
         memesAdversaires: this.state.memesAdversaires
       }
     })
+  }
+
+  _boutonValider() {
+    let boutonActive = true
+    let boutonTitle = "Vous devez indiquer un nombre de tours"
+    if (this.state.nbTours != "" && this.state.nbTours != "0") {
+      boutonTitle = 'Valider les options'
+      boutonActive = false
+    }
+    return (
+      <Button disabled={boutonActive} color='green' title={boutonTitle} onPress={() => this._retourInscription()}/>
+    )
   }
 
   render() {
@@ -117,7 +132,7 @@ class OptionsTournoi extends React.Component {
           </View>
         </View>
         <View style={styles.buttonView}>
-          <Button color='green' title='Valider les options' onPress={() => this._retourInscription()}/>
+          {this._boutonValider()}
         </View>
       </View>
     )
