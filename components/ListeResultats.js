@@ -61,13 +61,13 @@ class ListeResultats extends React.Component {
             <Text style={styles.texte}>Place</Text>
           </View>
           <View style={styles.victoires_container}>
-            <Text style={styles.texte}>Victoire(s)</Text>
+            <Text style={styles.texte}>Victoire</Text>
           </View>
           <View style={styles.mj_container}>
             <Text style={styles.texte}>MJ</Text>
           </View>
           <View style={styles.points_container}>
-            <Text style={styles.texte}>Point(s)</Text>
+            <Text style={styles.texte}>Point</Text>
           </View>
         </View>
         <FlatList
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     borderColor: 'white'
   },
   position_container: {
-    flex: 1
+    flex: 2
   },
   victoires_container: {
     flex: 1,

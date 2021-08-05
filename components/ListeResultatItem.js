@@ -4,17 +4,17 @@ import { connect } from 'react-redux'
 
 class ListeResultatItem extends React.Component {
 
-  _displayName = (joueurNumber) => {
-    let nomJoueur = {};
-    nomJoueur = this.props.listeJoueurs.find(item => item.id === joueurNumber)
-    if(nomJoueur === undefined) {
+  _displayName(joueurId) {
+    let joueur = {}
+    joueur = this.props.listeJoueurs.find(item => item.id === joueurId)
+    if(joueur.name === undefined) {
       return (
-        <Text style={styles.texte}>manque J:{joueurNumber}</Text>
+        <Text style={styles.texte}>SansNom ({joueur.id})</Text>
       )
     }
     else {
       return (
-      <Text style={styles.texte}>{nomJoueur.name}</Text>
+        <Text style={styles.texte}>{joueur.name} ({joueur.id})</Text>
       )
     }
   }
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1
   },
   position_nom_container: {
-    flex: 1,
+    flex: 2,
     flexDirection: 'row'
   },
   victoires_container: {
