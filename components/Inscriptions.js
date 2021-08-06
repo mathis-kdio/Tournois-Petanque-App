@@ -153,14 +153,30 @@ class Inscription extends React.Component {
   }
 
   _boutonCommencer() {
-    let boutonActive = true
-    let boutonTitle = "Nombre de joueurs n'est pas un multiple de 2"
-    if (this.props.listeJoueurs.length % 2 == 0 && this.props.listeJoueurs.length != 0) {
-      boutonTitle = 'Commencer le tournoi'
-      boutonActive = false
+    let boutonDesactive
+    let boutonTitle = ''
+    if (this.state.equipe == 'doublette') {
+      if (this.props.listeJoueurs.length % 2 == 0 && this.props.listeJoueurs.length != 0) {
+        boutonTitle = 'Commencer le tournoi'
+        boutonDesactive = false
+      }
+      else {
+        boutonTitle = "Nombre de joueurs n'est pas un multiple de 2"
+        boutonDesactive = true
+      }
+    }
+    else {
+      if (this.props.listeJoueurs.length % 6 == 0 && this.props.listeJoueurs.length >= 6) {
+        boutonTitle = 'Commencer le tournoi'
+        boutonDesactive = false
+      }
+      else {
+        boutonTitle = "En triplette, le nombre de joueurs doit être un multiple de 6"
+        boutonDesactive = true
+      }
     }
     return (
-      <Button disabled={boutonActive} color='green' title={boutonTitle} onPress={() => this._commencer()}/>
+      <Button disabled={boutonDesactive} color='green' title={boutonTitle} onPress={() => this._commencer()}/>
     )
   }
 
