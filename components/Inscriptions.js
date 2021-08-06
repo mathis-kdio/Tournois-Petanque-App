@@ -18,7 +18,19 @@ class Inscription extends React.Component {
     this.state = {
       joueur: undefined,
       isChecked: false,
-      etatBouton: false
+      etatBouton: false,
+      equipe: 'doublette'
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.route.params != undefined) {
+      let routeparams = this.props.route.params
+      if (routeparams.equipe != undefined) {
+        this.setState({
+          equipe: routeparams.equipe
+        })
+      }
     }
   }
 
@@ -95,6 +107,7 @@ class Inscription extends React.Component {
         speciauxIncompatibles: this.speciauxIncompatibles,
         memesEquipes: this.memesEquipes,
         memesAdversaires: this.memesAdversaires,
+        equipe: this.state.equipe,
         screenStackName: 'InscriptionStack'
       }
     })
