@@ -51,7 +51,6 @@ class ListeResultats extends React.Component {
       }
       position++;
     }
-    //console.log(victoires)
     return victoires
   }
 
