@@ -78,17 +78,30 @@ class InscriptionsSansNoms extends React.Component {
       this._ajoutJoueur(true)
     }
 
-    this.props.navigation.navigate({
-      name: 'GenerationMatchs',
-      params: {
-        nbTours: parseInt(this.nbTours),
-        speciauxIncompatibles: this.speciauxIncompatibles,
-        memesEquipes: this.memesEquipes,
-        memesAdversaires: this.memesAdversaires,
-        equipe: this.state.equipe,
-        screenStackName: 'InscriptionsSansNomsStack'
-      }
-    })
+    if (this.state.equipe == "doublette") {
+      this.props.navigation.navigate({
+        name: 'GenerationMatchs',
+        params: {
+          nbTours: parseInt(this.nbTours),
+          speciauxIncompatibles: this.speciauxIncompatibles,
+          memesEquipes: this.memesEquipes,
+          memesAdversaires: this.memesAdversaires,
+          screenStackName: 'InscriptionsSansNomsStack'
+        }
+      })
+    }
+    else {
+      this.props.navigation.navigate({
+        name: 'GenerationMatchsTriplettes',
+        params: {
+          nbTours: parseInt(this.nbTours),
+          speciauxIncompatibles: this.speciauxIncompatibles,
+          memesEquipes: this.memesEquipes,
+          memesAdversaires: this.memesAdversaires,
+          screenStackName: 'InscriptionsSansNomsStack'
+        }
+      })
+    }
   }
 
   _options() {

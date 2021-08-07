@@ -100,17 +100,30 @@ class Inscription extends React.Component {
   }
 
   _commencer() {
-    this.props.navigation.navigate({
-      name: 'GenerationMatchs',
-      params: {
-        nbTours: parseInt(this.nbTours),
-        speciauxIncompatibles: this.speciauxIncompatibles,
-        memesEquipes: this.memesEquipes,
-        memesAdversaires: this.memesAdversaires,
-        equipe: this.state.equipe,
-        screenStackName: 'InscriptionStack'
-      }
-    })
+    if (this.state.equipe == "doublette") {
+      this.props.navigation.navigate({
+        name: 'GenerationMatchs',
+        params: {
+          nbTours: parseInt(this.nbTours),
+          speciauxIncompatibles: this.speciauxIncompatibles,
+          memesEquipes: this.memesEquipes,
+          memesAdversaires: this.memesAdversaires,
+          screenStackName: 'InscriptionStack'
+        }
+      })
+    }
+    else {
+      this.props.navigation.navigate({
+        name: 'GenerationMatchsTriplettes',
+        params: {
+          nbTours: parseInt(this.nbTours),
+          speciauxIncompatibles: this.speciauxIncompatibles,
+          memesEquipes: this.memesEquipes,
+          memesAdversaires: this.memesAdversaires,
+          screenStackName: 'InscriptionStack'
+        }
+      })
+    }
   }
 
   _options() {
