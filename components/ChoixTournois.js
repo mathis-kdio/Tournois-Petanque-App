@@ -130,8 +130,9 @@ class ChoixTournois extends React.Component {
               }}
               isChecked={this.state.avecEquipes}
               leftText={"Tournoi mêlée avec équipes constituées"}
-              leftTextStyle={{color: "white", fontSize: 15}}
-              checkBoxColor={'white'}
+              leftTextStyle={{color: "gray", fontSize: 15}}
+              checkBoxColor={'gray'}
+              disabled={true}
               />
             </View>
           </View>
