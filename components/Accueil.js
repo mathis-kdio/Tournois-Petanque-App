@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Text, Button, Image } from 'react-native'
 import { expo } from '../app.json'
 import { connect } from 'react-redux'
-
+import * as Linking from 'expo-linking'
 
 class Accueil extends React.Component {
   _showMatchs() {
@@ -46,6 +46,12 @@ class Accueil extends React.Component {
           </View>
         </View>
         <View style={styles.create_container}>
+          <View style={styles.buttonViewCreate}>
+            <Button color="#1c3969" title='Noter et laisser un commentaire' onPress={() => Linking.openURL('market://details?id=com.MK.PetanqueGCU&showAllReviews=true')}/>
+          </View>
+          <View style={styles.buttonViewCreate}>
+            <Button color="#1c3969" title='Changelog' onPress={() => this.props.navigation.navigate('Changelog')}/>
+          </View>
           <Text style={styles.create_text}>Par Mathis Cadio</Text>
           <Text style={styles.create_text}>Version: {expo.version}</Text>
         </View>
@@ -71,9 +77,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
   },
-  menu_container : {
-
-  },
   buttonView: {
     marginBottom: 20,
     paddingLeft: 15,
@@ -97,6 +100,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: 'white'
   },
+  buttonViewCreate: {
+    marginBottom: 10
+  }
 })
 
 const mapStateToProps = (state) => {
