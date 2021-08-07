@@ -2,14 +2,14 @@ import React from 'react'
 import { StyleSheet, View, ActivityIndicator, Text, Button } from 'react-native'
 import { connect } from 'react-redux'
 
-class GenerationMatchs extends React.Component {
+class GenerationMatchsTriplette extends React.Component {
   constructor(props) {
     super(props)
     this.nbTours = "5"
     this.speciauxIncompatibles = true
     this.jamaisMemeCoequipier = true
     this.eviterMemeAdversaire = true
-    this.equipe = "doublette"
+    this.equipe = "triplette"
     this.state = {
       isLoading: true,
       isValid: true,
@@ -91,7 +91,7 @@ class GenerationMatchs extends React.Component {
     let speciauxIncompatibles = true
     let jamaisMemeCoequipier = true;
     let eviterMemeAdversaire = true;
-    let equipe = "doublette"
+    let equipe = "triplette"
     let matchs = [];
     let idMatch = 0;
     let joueursSpe = [];
@@ -492,4 +492,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(GenerationMatchs)
+export default connect(mapStateToProps)(GenerationMatchsTriplette)
