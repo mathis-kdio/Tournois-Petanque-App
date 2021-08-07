@@ -74,15 +74,15 @@ class MatchItem extends React.Component {
             </View>
             <View style={styles.equipe_container}>
               <View style={styles.equipe1}>
-                {this._displayName(match.joueur1, 1, match.id)}
-                {this._displayName(match.joueur2, 1, match.id)}
+                {this._displayName(match.equipe[0][0], 1, match.id)}
+                {this._displayName(match.equipe[0][1], 1, match.id)}
               </View>
               <View style={styles.vs_container}>
                 {this._displayScore(match.id)}
               </View>
               <View style={styles.equipe2}>
-                {this._displayName(match.joueur3, 2, match.id)}
-                {this._displayName(match.joueur4, 2, match.id)}
+                {this._displayName(match.equipe[1][0], 2, match.id)}
+                {this._displayName(match.equipe[1][1], 2, match.id)}
               </View>
             </View>
           </View>

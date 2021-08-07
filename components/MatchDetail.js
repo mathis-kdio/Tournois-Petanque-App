@@ -91,13 +91,13 @@ class MatchDetail extends React.Component {
             </View>
             <View style={styles.equipe_container}>
               <View style={styles.equipe1}>
-                {this._displayName(match.joueur1, 1)}
-                {this._displayName(match.joueur2, 1)}
+                {this._displayName(match.equipe[0][0], 1)}
+                {this._displayName(match.equipe[0][1], 1)}
               </View>
               <Text style={styles.vs}>VS</Text>
               <View style={styles.equipe2}>
-                {this._displayName(match.joueur3, 2)}
-                {this._displayName(match.joueur4, 2)}
+                {this._displayName(match.equipe[1][0], 2)}
+                {this._displayName(match.equipe[1][1], 2)}
               </View>
             </View>
           </View>
