@@ -42,7 +42,9 @@ class Accueil extends React.Component {
           </View>
           <View style={styles.informations_container}>
             <Text style={styles.informations_texte}>Mode de tournoi :</Text>
-            <Text style={styles.informations_texte}>mêlée-démélée</Text>
+            <Text style={styles.informations_texte}>Mêlée-démélée</Text>
+            <Text style={styles.informations_texte}>Doublettes ou triplettes</Text>
+            <Text style={styles.informations_texte}>Avec ou sans noms</Text>
           </View>
         </View>
         <View style={styles.create_container}>
