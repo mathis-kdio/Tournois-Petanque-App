@@ -127,7 +127,7 @@ class GenerationMatchsTriplette extends React.Component {
       for (let j = 0; j < nbMatchsParTour; j++) {
         matchs.push({id: idMatch, manche: i, equipe: [[0,0,0],[0,0,0]], score1: undefined, score2: undefined});
         idMatch++;
-      }      
+      }
     }
 
     //Création d'un tableau contenant tous les joueurs, un autre les non spéciaux et un autre les spéciaux
@@ -218,11 +218,6 @@ class GenerationMatchsTriplette extends React.Component {
       }
     }
 
-    //Test si possible d'appliquer la règle eviterMemeAdversaire
-    //TODO
-    //eviterMemeAdversaire = false;
-
-
     //On ordonne aléatoirement les ids des joueurs non spéciaux à chaque début de manche
     let joueursNonSpeId = [];
     for (let i = 0; i < joueursNonSpe.length; i++) {
@@ -243,20 +238,13 @@ class GenerationMatchsTriplette extends React.Component {
     //Si impossible d'être ajouté dans le match alors tentative dans le match suivant du même tour
     //Si impossible dans aucun match du tour alors breaker rentre en action et affiche un message
 
-    //Lors de l'affectation des joueurs 3 et 4 la règle aucun même adversaire est appliquée
-    //Elle consiste à compter le nombre de fois que le joueur qui va être affecté à déjà jouer dans la même équipe ou contre le joueur 1 et 2
-    //Si ce nombre est supérieur à la moitié inférieur du nombre de manche alors on passe au match du tour suivant
-    //Exemple 5 manches: si joueur 8 à déjà joué 1 fois contre et 1 fois avec joueur 9 alors pas affecté en joueur 3 ou 4
-    //Par contre possible que joueur 8 est déjà joué 2 fois contre joueur 9 et pourra après être avec joueur 9
-
+    const countOccuEquipe = (arr, val) => arr.filter(x => x === val).length
 
     idMatch = 0;
     let breaker = 0 //permet de détecter quand boucle infinie
     for (let i = 0; i < nbManches; i++) {
       breaker = 0
       let random = shuffle(joueursNonSpeId);
-      console.log("test0")
-      console.log(joueursNonSpe.length)
       for (let j = 0; j < joueursNonSpe.length;) {
         //Affectation J1 E1
         if (matchs[idMatch].equipe[0][0] == 0) {
@@ -269,7 +257,7 @@ class GenerationMatchsTriplette extends React.Component {
           //Empeche que le J1 E1 joue plusieurs fois dans la même équipe avec le même joueur
           //Ne s'applique qu'à partir de la manche 2
           if (jamaisMemeCoequipier == true && i > 0) {
-            if (joueurs[random[j] - 1].equipe.includes(matchs[idMatch].equipe[0][0]) == false) {
+            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[0][0]) < 3) {
               matchs[idMatch].equipe[0][1] = random[j];
               j++
               breaker = 0
@@ -289,7 +277,7 @@ class GenerationMatchsTriplette extends React.Component {
           //Empeche que le J1 E1 ou le J2 E1 joue plusieurs fois dans la même équipe avec le même joueur
           //Ne s'applique qu'à partir de la manche 2
           if (jamaisMemeCoequipier == true && i > 0) {
-            if (joueurs[random[j] - 1].equipe.includes(matchs[idMatch].equipe[0][0]) == false && joueurs[random[j] - 1].equipe.includes(matchs[idMatch].equipe[0][1]) == false) {
+            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[0][0]) < 3 && countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[0][1]) < 3) {
               matchs[idMatch].equipe[0][2] = random[j];
               j++
               breaker = 0
@@ -304,90 +292,55 @@ class GenerationMatchsTriplette extends React.Component {
             breaker = 0
           }
         }
-        //Affectation joueur J1 E2 & J2 E2 & J3 E2
-        else if (matchs[idMatch].equipe[1][0] == 0 || matchs[idMatch].equipe[1][1] == 0 || matchs[idMatch].equipe[1][2] == 0) {
-          //Test si le J1 E1 ou J2 E1 n'a pas déjà joué (ensemble et contre) + de la moitié de ses matchs contre le joueur en cours d'affectation
-          let affectationPossible = true
-          /*if (eviterMemeAdversaire == true) {
-            let moitieNbManches = Math.floor(nbManches / 2)
-            let totPartiesJ1 = 0
-            let totPartiesJ2 = 0
-            let joueur1 = matchs[idMatch].equipe[0][0]
-            let joueur2 = matchs[idMatch].equipe[0][1]
-            //Compte le nombre de fois ou joueur 1 ou 2 a été l'adverse de joueur en affectation + ou bien si joueur 3 ou 4 a été l'adverse de joueur en affectation
-            const occurrencesAdversaireDansEquipe1 = (arr, joueurAdverse, joueurAffect) => arr.reduce((a, v) => ((v.equipe[0][0] === joueurAdverse || v.equipe[0][1] === joueurAdverse) && (v.equipe[1][0] === joueurAffect || v.equipe[1][1] === joueurAffect) ? a + 1 : a), 0);
-            const occurrencesAdversaireDansEquipe2 = (arr, joueurAdverse, joueurAffect) => arr.reduce((a, v) => ((v.equipe[1][0] === joueurAdverse || v.equipe[1][1] === joueurAdverse) && (v.equipe[0][0] === joueurAffect || v.equipe[0][1] === joueurAffect) ? a + 1 : a), 0);
-            totPartiesJ1 += occurrencesAdversaireDansEquipe1(matchs, joueur1, random[j])
-            totPartiesJ1 += occurrencesAdversaireDansEquipe2(matchs, joueur1, random[j])
-            totPartiesJ2 += occurrencesAdversaireDansEquipe1(matchs, joueur2, random[j])
-            totPartiesJ2 += occurrencesAdversaireDansEquipe2(matchs, joueur2, random[j])
-            //+1 si joueur en cours d'affectation a déjà joué dans la même équipe
-            totPartiesJ1 += joueurs[joueur1 - 1].equipe.includes(random[j]) ? 1 : 0
-            totPartiesJ2 += joueurs[joueur2 - 1].equipe.includes(random[j]) ? 1 : 0
-            if (totPartiesJ1 >= moitieNbManches || totPartiesJ2 >= moitieNbManches) {
-              affectationPossible = false
-            }
-          }*/
-          if (affectationPossible == true) {
-            //Affectation J1 E2
-            console.log("avant equipe2")
-            console.log(matchs[idMatch])
-            if (matchs[idMatch].equipe[1][0] == 0) {
-              matchs[idMatch].equipe[1][0] = random[j];
+        //Affectation J1 E2
+        if (matchs[idMatch].equipe[1][0] == 0) {
+          matchs[idMatch].equipe[1][0] = random[j];
+          j++
+          breaker = 0
+        }
+        //Affectation J2 E2
+        else if (matchs[idMatch].equipe[1][1] == 0) {
+          //Empeche que le J1 E2 joue plusieurs fois dans la même équipe avec le même joueur
+          //Ne s'applique qu'à partir de la manche 2
+          if (jamaisMemeCoequipier == true && i > 0) {
+            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[1][0]) < 3) {
+              matchs[idMatch].equipe[1][1] = random[j];
               j++
               breaker = 0
             }
-            //Affectation J2 E2
-            else if (matchs[idMatch].equipe[1][1] == 0) {
-              //Empeche que le J1 E2 joue plusieurs fois dans la même équipe avec le même joueur
-              //Ne s'applique qu'à partir de la manche 2
-              if (jamaisMemeCoequipier == true && i > 0) {
-                console.log("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
-                if (joueurs[random[j] - 1].equipe.includes(matchs[idMatch].equipe[1][0]) == false) {
-                  matchs[idMatch].equipe[1][1] = random[j];
-                  console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
-                  j++
-                  breaker = 0
-                }
-                else {
-                  breaker++
-                }
-              }
-              else {
-                matchs[idMatch].equipe[1][1] = random[j];
-                console.log("2EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
-                j++
-                breaker = 0
-              }
-            }
-            //Affectation J3 E2
-            else if (matchs[idMatch].equipe[1][2] == 0) {
-              //Empeche que le J1 E2 ou J2 E2 joue plusieurs fois dans la même équipe avec le même joueur
-              //Ne s'applique qu'à partir de la manche 2
-              if (jamaisMemeCoequipier == true && i > 0) {
-                if (joueurs[random[j] - 1].equipe.includes(matchs[idMatch].equipe[1][0]) == false && joueurs[random[j] - 1].equipe.includes(matchs[idMatch].equipe[1][1]) == false) {
-                  matchs[idMatch].equipe[1][2] = random[j];
-                  j++
-                  breaker = 0
-                }
-                else {
-                  breaker++
-                }
-              }
-              else {
-                matchs[idMatch].equipe[1][2] = random[j];
-                j++
-                breaker = 0
-              }
+            else {
+              breaker++
             }
           }
           else {
-            breaker++
+            matchs[idMatch].equipe[1][1] = random[j];
+            j++
+            breaker = 0
           }
         }
-
-        console.log("après equipe2")
-        console.log(matchs[idMatch])
+        //Affectation J3 E2
+        else if (matchs[idMatch].equipe[1][2] == 0) {
+          //Empeche que le J1 E2 ou J2 E2 joue plusieurs fois dans la même équipe avec le même joueur
+          //Ne s'applique qu'à partir de la manche 2
+          if (jamaisMemeCoequipier == true && i > 0) {
+            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[1][0]) < 3 && countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[1][1]) < 3) {
+              matchs[idMatch].equipe[1][2] = random[j];
+              j++
+              breaker = 0
+            }
+            else {
+              breaker++
+            }
+          }
+          else {
+            matchs[idMatch].equipe[1][2] = random[j];
+            j++
+            breaker = 0
+          }
+        }
+        else {
+          breaker++
+        }
 
         idMatch++;
         //Si l'id du Match correspond à un match du prochain tour alors retour au premier match du tour en cours
@@ -418,11 +371,6 @@ class GenerationMatchsTriplette extends React.Component {
         joueurs[matchs[idMatch + j].equipe[1][0] - 1].equipe.push(matchs[idMatch + j].equipe[1][1])
         joueurs[matchs[idMatch + j].equipe[1][0] - 1].equipe.push(matchs[idMatch + j].equipe[1][2])
 
-        console.log("test1")
-        console.log(joueurs[0])
-        console.log("test2")
-        console.log(matchs[idMatch + j].equipe[1][1] - 1)
-        console.log(matchs[idMatch + j].equipe[1][1])
         joueurs[matchs[idMatch + j].equipe[1][1] - 1].equipe.push(matchs[idMatch + j].equipe[1][0])
         joueurs[matchs[idMatch + j].equipe[1][1] - 1].equipe.push(matchs[idMatch + j].equipe[1][2])
 
