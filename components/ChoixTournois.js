@@ -38,7 +38,7 @@ class ChoixTournois extends React.Component {
       navigatorScreenName = 'InscriptionStack'
     }
     this.props.navigation.navigate(screenName, {
-      screen: 'InscriptionStack', 
+      screen: navigatorScreenName, 
       params: { equipe: equipe }
     })
   }
