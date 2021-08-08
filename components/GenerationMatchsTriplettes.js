@@ -257,7 +257,7 @@ class GenerationMatchsTriplette extends React.Component {
           //Empeche que le J1 E1 joue plusieurs fois dans la même équipe avec le même joueur
           //Ne s'applique qu'à partir de la manche 2
           if (jamaisMemeCoequipier == true && i > 0) {
-            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[0][0]) < nbManches / 2) {
+            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[0][0]) < 3) {
               matchs[idMatch].equipe[0][1] = random[j];
               j++
               breaker = 0
@@ -277,7 +277,7 @@ class GenerationMatchsTriplette extends React.Component {
           //Empeche que le J1 E1 ou le J2 E1 joue plusieurs fois dans la même équipe avec le même joueur
           //Ne s'applique qu'à partir de la manche 2
           if (jamaisMemeCoequipier == true && i > 0) {
-            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[0][0]) < nbManches / 2 && countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[0][1]) < nbManches / 2) {
+            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[0][0]) < 3 && countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[0][1]) < 3) {
               matchs[idMatch].equipe[0][2] = random[j];
               j++
               breaker = 0
@@ -303,7 +303,7 @@ class GenerationMatchsTriplette extends React.Component {
           //Empeche que le J1 E2 joue plusieurs fois dans la même équipe avec le même joueur
           //Ne s'applique qu'à partir de la manche 2
           if (jamaisMemeCoequipier == true && i > 0) {
-            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[1][0]) < nbManches / 2) {
+            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[1][0]) < 3) {
               matchs[idMatch].equipe[1][1] = random[j];
               j++
               breaker = 0
@@ -323,7 +323,7 @@ class GenerationMatchsTriplette extends React.Component {
           //Empeche que le J1 E2 ou J2 E2 joue plusieurs fois dans la même équipe avec le même joueur
           //Ne s'applique qu'à partir de la manche 2
           if (jamaisMemeCoequipier == true && i > 0) {
-            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[1][0]) < nbManches / 2 && countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[1][1]) < nbManches / 2) {
+            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[1][0]) < 3 && countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[1][1]) < 3) {
               matchs[idMatch].equipe[1][2] = random[j];
               j++
               breaker = 0
