@@ -24,11 +24,11 @@ class ListeResultatItem extends React.Component {
     let fanny = false
     let nbFanny = 0
     for (let i = 0; i < listeMatchs[listeMatchs.length - 1].nbMatchs; i++) {
-      if ((listeMatchs[i].equipe[0][0] == joueurNumber || listeMatchs[i].equipe[0][1] == joueurNumber) && listeMatchs[i].score1 == '0') {
+      if (listeMatchs[i].equipe[0].includes(joueurNumber) && listeMatchs[i].score1 == '0') {
         fanny = true
         nbFanny++
       }
-      else if ((listeMatchs[i].equipe[1][0] == joueurNumber || listeMatchs[i].equipe[1][1] == joueurNumber) && listeMatchs[i].score2 == '0') {
+      else if (listeMatchs[i].equipe[1].includes(joueurNumber) && listeMatchs[i].score2 == '0') {
         fanny = true
         nbFanny++
       }
@@ -47,7 +47,7 @@ class ListeResultatItem extends React.Component {
     let partieJoue = 0
     let listeMatchs = this.props.listeMatchs
     for (let i = 0; i < listeMatchs[listeMatchs.length - 1].nbMatchs; i++) {
-      if (listeMatchs[i].equipe[0][0] == joueurNumber || listeMatchs[i].equipe[0][1] == joueurNumber || listeMatchs[i].equipe[1][0] == joueurNumber || listeMatchs[i].equipe[1][1] == joueurNumber) {
+      if (listeMatchs[i].equipe.some(row => row.includes(joueurNumber))) {
         if (listeMatchs[i].score1 && listeMatchs[i].score2) {
           partieJoue++
         }

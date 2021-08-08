@@ -12,7 +12,7 @@ class ListeResultats extends React.Component {
       let nbPoints = 0;
       let listeMatchs = this.props.listeMatchs
       for (let j = 0; j < listeMatchs[listeMatchs.length - 1].nbMatchs; j++) {
-        if ((listeMatchs[j].equipe[0][0] == i || listeMatchs[j].equipe[0][1] == i) && listeMatchs[j].score1  !== undefined) {
+        if (listeMatchs[j].equipe[0].includes(i) && listeMatchs[j].score1) {
           if (listeMatchs[j].score1 == 13) {
             nbVictoire++;
             nbPoints += 13 - listeMatchs[j].score2;
@@ -21,7 +21,7 @@ class ListeResultats extends React.Component {
             nbPoints -= 13 - listeMatchs[j].score1;
           }
          }
-        if ((listeMatchs[j].equipe[1][0] == i || listeMatchs[j].equipe[1][1] == i) && listeMatchs[j].score2  !== undefined) {
+        if (listeMatchs[j].equipe[1].includes(i) && listeMatchs[j].score2) {
           if (listeMatchs[j].score2 == 13) {
             nbVictoire++;
             nbPoints += 13 - listeMatchs[j].score1;
