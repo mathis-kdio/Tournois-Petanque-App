@@ -33,24 +33,36 @@ class MatchDetail extends React.Component {
   }
 
   _displayName = (joueurNumber, equipe) => {
-    let joueur = {};
-    joueur = this.props.listeJoueurs.find(item => item.id === joueurNumber)
-    if(joueur === undefined) {
+    let nomJoueur = this.props.listeJoueurs.find(item => item.id === joueurNumber)
+    let joueur = nomJoueur
+    if(nomJoueur === undefined) {
+      joueur = {}
+      joueur.id = ""
       if (equipe == 1) {
-        return (
-          <Text style={styles.joueurName}>joueur 1 :</Text>
-        )
+        joueur.name = "joueur 1"
       }
       else {
-        return (
-          <Text style={styles.joueurName}>joueur 2 :</Text>
-        )
+        joueur.name = "joueur 2"
       }
     }
+    
+    return <Text style={styles.joueurName}>{joueur.id} {joueur.name}</Text>
+  }
+
+  _displayEquipe(equipe, match, equipeType) {
+    let nbJoueur = equipeType
+    let nomsJoueurs = []
+    if (equipe == 1) {
+      for (let i = 0; i < nbJoueur; i++) {
+        nomsJoueurs.push(this._displayName(match.equipe[0][i], 1))
+      }
+      return nomsJoueurs
+    }
     else {
-      return (
-        <Text style={styles.joueurName} >{joueur.name} ({joueur.id})</Text>
-      )
+      for (let i = 0; i < nbJoueur; i++) {
+        nomsJoueurs.push(this._displayName(match.equipe[1][i], 2))
+      }
+      return nomsJoueurs
     }
   }
 
@@ -81,7 +93,8 @@ class MatchDetail extends React.Component {
   }
 
   render() {
-    let match = this.props.route.params.match;
+    let match = this.props.route.params.match
+    let equipeType =  this.props.route.params.equipeType
     return (
       <View style={styles.main_container}>
         <View style={styles.body_container}>
@@ -91,13 +104,11 @@ class MatchDetail extends React.Component {
             </View>
             <View style={styles.equipe_container}>
               <View style={styles.equipe1}>
-                {this._displayName(match.equipe[0][0], 1)}
-                {this._displayName(match.equipe[0][1], 1)}
+                {this._displayEquipe(1, match, equipeType)}
               </View>
               <Text style={styles.vs}>VS</Text>
               <View style={styles.equipe2}>
-                {this._displayName(match.equipe[1][0], 2)}
-                {this._displayName(match.equipe[1][1], 2)}
+                {this._displayEquipe(2, match, equipeType)}
               </View>
             </View>
           </View>
