@@ -11,6 +11,16 @@ class Changelog extends React.Component {
           <View style={styles.body_container}>
             <Text style={styles.titre}>Version actuelle : {expo.version}</Text>
             <View style={styles.informations_container}>
+              <Text style={styles.titre}>Version 1.4 :</Text>
+              <Text style={styles.informations_texte}>
+                - Tournoi en triplettes disponible{"\n"}
+                <Text style={{color: 'red'}}>Attentions : Si vous avez un tournoi en cours, vous ne pourrez plus y acceder après cette mise à jour !</Text>{"\n"}
+                - Page de changelog{"\n"}
+                - Bouton pour noter et laisser un commentaire{"\n"}
+                - Corrections de bugs{"\n"}
+              </Text>
+            </View>
+            <View style={styles.informations_container}>
               <Text style={styles.titre}>Version 1.3 :</Text>
               <Text style={styles.informations_texte}>
                 - Menu pour choisir modes de tournois et doublettes ou triplettes{"\n"}
