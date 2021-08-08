@@ -10,26 +10,27 @@ class ListeResultats extends React.Component {
     for (let i = 1; i < this.props.listeJoueurs.length + 1; i++) {
       let nbVictoire = 0;
       let nbPoints = 0;
-      this.props.listeMatchs.forEach(element => {
-        if ((element.joueur1 == i || element.joueur2 == i) && element.score1  !== undefined) {
-          if (element.score1 == 13) {
+      let listeMatchs = this.props.listeMatchs
+      for (let j = 0; j < listeMatchs[listeMatchs.length - 1].nbMatchs; j++) {
+        if (listeMatchs[j].equipe[0].includes(i) && listeMatchs[j].score1) {
+          if (listeMatchs[j].score1 == 13) {
             nbVictoire++;
-            nbPoints += 13 - element.score2;
+            nbPoints += 13 - listeMatchs[j].score2;
           }
           else {
-            nbPoints -= 13 - element.score1;
+            nbPoints -= 13 - listeMatchs[j].score1;
           }
          }
-        if ((element.joueur3 == i || element.joueur4 == i) && element.score2  !== undefined) {
-          if (element.score2 == 13) {
+        if (listeMatchs[j].equipe[1].includes(i) && listeMatchs[j].score2) {
+          if (listeMatchs[j].score2 == 13) {
             nbVictoire++;
-            nbPoints += 13 - element.score1;
+            nbPoints += 13 - listeMatchs[j].score1;
           }
           else {
-            nbPoints -= 13 - element.score2;
+            nbPoints -= 13 - listeMatchs[j].score2;
           }
         }
-      });
+      }
       victoires[i-1] = {joueurId: i, victoires: nbVictoire, points: nbPoints, position: undefined};
     }
     victoires.sort(

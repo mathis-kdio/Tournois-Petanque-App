@@ -12,6 +12,18 @@ class InscriptionsSansNoms extends React.Component {
     this.state = {
       nbJoueurNormaux: 0,
       nbJoueurSpeciaux: 0,
+      equipe: 'doublette'
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.route.params != undefined) {
+      let routeparams = this.props.route.params
+      if (routeparams.equipe != undefined) {
+        this.setState({
+          equipe: routeparams.equipe
+        })
+      }
     }
   }
 
@@ -66,16 +78,30 @@ class InscriptionsSansNoms extends React.Component {
       this._ajoutJoueur(true)
     }
 
-    this.props.navigation.navigate({
-      name: 'GenerationMatchs',
-      params: {
-        nbTours: parseInt(this.nbTours),
-        speciauxIncompatibles: this.speciauxIncompatibles,
-        memesEquipes: this.memesEquipes,
-        memesAdversaires: this.memesAdversaires,
-        screenStackName: 'InscriptionsSansNomsStack'
-      }
-    })
+    if (this.state.equipe == "doublette") {
+      this.props.navigation.navigate({
+        name: 'GenerationMatchs',
+        params: {
+          nbTours: parseInt(this.nbTours),
+          speciauxIncompatibles: this.speciauxIncompatibles,
+          memesEquipes: this.memesEquipes,
+          memesAdversaires: this.memesAdversaires,
+          screenStackName: 'InscriptionsSansNomsStack'
+        }
+      })
+    }
+    else {
+      this.props.navigation.navigate({
+        name: 'GenerationMatchsTriplettes',
+        params: {
+          nbTours: parseInt(this.nbTours),
+          speciauxIncompatibles: this.speciauxIncompatibles,
+          memesEquipes: this.memesEquipes,
+          memesAdversaires: this.memesAdversaires,
+          screenStackName: 'InscriptionsSansNomsStack'
+        }
+      })
+    }
   }
 
   _options() {

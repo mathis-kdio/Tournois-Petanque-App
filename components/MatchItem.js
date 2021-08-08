@@ -10,8 +10,24 @@ class MatchItem extends React.Component {
     }
   }
 
+  _displayEquipe(equipe, match, equipeType) {
+    let nbJoueur = equipeType
+    let nomsJoueurs = []
+    if (equipe == 1) {
+      for (let i = 0; i < nbJoueur; i++) {
+        nomsJoueurs.push(this._displayName(match.equipe[0][i], 1, match.id))
+      }
+      return nomsJoueurs
+    }
+    else {
+      for (let i = 0; i < nbJoueur; i++) {
+        nomsJoueurs.push(this._displayName(match.equipe[1][i], 2, match.id))
+      }
+      return nomsJoueurs
+    }
+  }
+
   _displayName = (joueurNumber, equipe, matchID) => {
-    let nomJoueur = {}
     let colorEquipe1 = 'white'
     let colorEquipe2 = 'white'
     let score1 = this.props.listeMatchs[matchID].score1;
@@ -24,27 +40,27 @@ class MatchItem extends React.Component {
       colorEquipe1 = 'red'
       colorEquipe2 = 'green'
     }
-    nomJoueur = this.props.listeJoueurs.find(item => item.id === joueurNumber)
-    if(nomJoueur === undefined) {
-      if (equipe === 1) {
-        return (
-          <Text style={{color:colorEquipe1, fontSize: 20}}>joueur 1 :</Text>
-        )
-      }
-      else {
-        return (
-          <Text style={{color:colorEquipe2, fontSize: 20}}>joueur 2 :</Text>
-        )
+    let joueur = this.props.listeJoueurs.find(item => item.id === joueurNumber)
+    let styleColor
+    let joueurName
+    let joueurId
+    if (joueur) {
+      joueurId = joueur.id
+      joueurName = joueur.name
+    }
+    if (equipe == 1) {
+      styleColor = colorEquipe1
+      if(joueur === undefined) {
+        joueurName = "joueur 1 :"
       }
     }
     else {
-      if (equipe === 1) {
-        return <Text style={{color:colorEquipe1, fontSize: 20}}>{nomJoueur.id} {nomJoueur.name}</Text>
-      }
-      else {
-        return <Text style={{color:colorEquipe2, fontSize: 20}}>{nomJoueur.id} {nomJoueur.name}</Text>
+      styleColor = colorEquipe2
+      if(joueur === undefined) {
+        joueurName = "joueur 2 :"
       }
     }
+    return <Text style={{color:styleColor, fontSize: 20}}>{joueurId} {joueurName}</Text>
   }
 
   _displayScore = (matchID) => {
@@ -62,27 +78,25 @@ class MatchItem extends React.Component {
   }
 
   render() {
-    let { match, displayDetailForMatch, manche } = this.props;
+    let { match, displayDetailForMatch, manche, equipeType } = this.props;
     if (match.manche == manche) {
       return (
         <TouchableOpacity
           style={styles.main_container}
-          onPress={() => displayDetailForMatch(match.id, match)}>
+          onPress={() => displayDetailForMatch(match.id, match, equipeType)}>
           <View style={styles.content_container}>
             <View>
               <Text style={styles.title}>Partie n°{(match.id + 1)}</Text>
             </View>
             <View style={styles.equipe_container}>
               <View style={styles.equipe1}>
-                {this._displayName(match.joueur1, 1, match.id)}
-                {this._displayName(match.joueur2, 1, match.id)}
+                {this._displayEquipe(1, match, equipeType)}
               </View>
               <View style={styles.vs_container}>
                 {this._displayScore(match.id)}
               </View>
               <View style={styles.equipe2}>
-                {this._displayName(match.joueur3, 2, match.id)}
-                {this._displayName(match.joueur4, 2, match.id)}
+                {this._displayEquipe(2, match, equipeType)}
               </View>
             </View>
           </View>
