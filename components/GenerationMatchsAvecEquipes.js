@@ -147,7 +147,6 @@ class GenerationMatchsAvecEquipes extends React.Component {
         }
       }
     }
-    console.log(equipe)
 
     //On place les ids des équipes dans un tableau qui sera mélanger à chaque nouveaux tour
     let equipesIds = [];
