@@ -202,6 +202,14 @@ class Inscription extends React.Component {
     )
   }
 
+  _showEquipeEntete() {
+    if (this.state.avecEquipes == true) {
+      return (
+        <Text style={styles.texte_entete}>Equipe</Text>
+      )
+    }
+  }
+
   render() {
     return (
       <View style={styles.main_container} >
@@ -243,7 +251,7 @@ class Inscription extends React.Component {
             <Text style={styles.texte_entete}>N° Prénom</Text>
           </View>
           <View style={styles.equipe_container}>
-            <Text style={styles.texte_entete}>Equipe</Text>
+            {this._showEquipeEntete()}
           </View>
           <View style={styles.renommer_container}>
             <Text style={styles.texte_entete}>Renommer</Text>
