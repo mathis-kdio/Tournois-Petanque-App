@@ -11,6 +11,15 @@ class Changelog extends React.Component {
           <View style={styles.body_container}>
             <Text style={styles.titre}>Version actuelle : {expo.version}</Text>
             <View style={styles.informations_container}>
+              <Text style={styles.titre}>Version 1.5 :</Text>
+              <Text style={styles.informations_texte}>
+                - Tournoi en avec équipes formées disponible{"\n"}
+                - Tournois en triplette possible avec les tournois sans noms{"\n"}
+                - Améliorations de la répartition des joueurs pour les tournois en triplette{"\n"}
+                - Corrections de bugs{"\n"}
+              </Text>
+            </View>
+            <View style={styles.informations_container}>
               <Text style={styles.titre}>Version 1.4 :</Text>
               <Text style={styles.informations_texte}>
                 - Tournoi en triplettes disponible{"\n"}
