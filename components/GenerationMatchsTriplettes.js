@@ -388,7 +388,7 @@ class GenerationMatchsTriplette extends React.Component {
       speciauxIncompatibles: this.speciauxIncompatibles,
       memesEquipes: this.jamaisMemeCoequipier,
       memesAdversaires: this.eviterMemeAdversaire,
-      equipe: 'triplette'
+      typeEquipes: 'triplette'
     })
 
     //Ajout dans ke store

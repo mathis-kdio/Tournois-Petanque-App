@@ -369,7 +369,7 @@ class GenerationMatchs extends React.Component {
       speciauxIncompatibles: this.speciauxIncompatibles,
       memesEquipes: this.jamaisMemeCoequipier,
       memesAdversaires: this.eviterMemeAdversaire,
-      equipe: 'doublette'
+      typeEquipes: 'doublette'
     })
 
     //Ajout dans ke store

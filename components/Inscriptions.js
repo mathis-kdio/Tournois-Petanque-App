@@ -106,30 +106,28 @@ class Inscription extends React.Component {
   }
 
   _commencer() {
-    if (this.state.avecEquipes == "doublette") {
-      this.props.navigation.navigate({
-        name: 'GenerationMatchs',
-        params: {
-          nbTours: parseInt(this.nbTours),
-          speciauxIncompatibles: this.speciauxIncompatibles,
-          memesEquipes: this.memesEquipes,
-          memesAdversaires: this.memesAdversaires,
-          screenStackName: 'InscriptionStack'
-        }
-      })
+    let screenName
+    if (this.state.avecEquipes == true) {
+      screenName = 'GenerationMatchsAvecEquipes'
+    }
+    else if (this.state.typeEquipes == "triplette") {
+      screenName = 'GenerationMatchsTriplettes'
     }
     else {
-      this.props.navigation.navigate({
-        name: 'GenerationMatchsTriplettes',
-        params: {
-          nbTours: parseInt(this.nbTours),
-          speciauxIncompatibles: this.speciauxIncompatibles,
-          memesEquipes: this.memesEquipes,
-          memesAdversaires: this.memesAdversaires,
-          screenStackName: 'InscriptionStack'
-        }
-      })
+      screenName = 'GenerationMatchs'
     }
+
+    this.props.navigation.navigate({
+      name: screenName,
+      params: {
+        nbTours: parseInt(this.nbTours),
+        speciauxIncompatibles: this.speciauxIncompatibles,
+        memesEquipes: this.memesEquipes,
+        memesAdversaires: this.memesAdversaires,
+        typeEquipes: this.state.typeEquipes,
+        screenStackName: 'InscriptionStack'
+      }
+    })
   }
 
   _options() {
@@ -192,7 +190,6 @@ class Inscription extends React.Component {
         boutonDesactive = true
       }
       else if (this.state.typeEquipes == "doublette") {
-        console.log(nbEquipes)
         for (let i = 0; i < nbEquipes; i++) {
           let count = this.props.listeJoueurs.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
           if (count > 2) {
