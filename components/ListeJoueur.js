@@ -134,7 +134,16 @@ class ListeJoueur extends React.Component {
 
       let pickerItem = []
       for (let i = 1; i <= nbEquipes; i++) {
-        pickerItem.push(this._equipePickerItem(i))
+        let count =  this.props.listeJoueurs.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
+        if (typeEquipes == "doublette" && count < 2) {
+          pickerItem.push(this._equipePickerItem(i))
+        }
+        else if (typeEquipes == "triplette" && count < 3) {
+          pickerItem.push(this._equipePickerItem(i))
+        }
+        else if (joueur.equipe == i) {
+          pickerItem.push(this._equipePickerItem(i))
+        }
       }
       return (
         <View style={styles.pickerContainer}>
