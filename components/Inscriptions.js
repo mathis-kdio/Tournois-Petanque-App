@@ -19,16 +19,22 @@ class Inscription extends React.Component {
       joueur: undefined,
       isChecked: false,
       etatBouton: false,
-      equipe: 'doublette'
+      typeEquipes: 'doublette',
+      avecEquipes: false
     }
   }
 
   componentDidMount() {
     if (this.props.route.params != undefined) {
       let routeparams = this.props.route.params
-      if (routeparams.equipe != undefined) {
+      if (routeparams.typeEquipes != undefined) {
         this.setState({
-          equipe: routeparams.equipe
+          typeEquipes: routeparams.typeEquipes
+        })
+      }
+      if (routeparams.avecEquipes != undefined) {
+        this.setState({
+          avecEquipes: routeparams.avecEquipes
         })
       }
     }
@@ -100,7 +106,7 @@ class Inscription extends React.Component {
   }
 
   _commencer() {
-    if (this.state.equipe == "doublette") {
+    if (this.state.avecEquipes == "doublette") {
       this.props.navigation.navigate({
         name: 'GenerationMatchs',
         params: {
@@ -151,6 +157,7 @@ class Inscription extends React.Component {
               joueur={item}
               supprimerJoueur={this._supprimerJoueur}
               isInscription={true}
+              avecEquipes={this.state.avecEquipes}
             />
           )}
         />
@@ -168,7 +175,7 @@ class Inscription extends React.Component {
   _boutonCommencer() {
     let boutonDesactive
     let boutonTitle = ''
-    if (this.state.equipe == 'doublette') {
+    if (this.state.avecEquipes == 'doublette') {
       if (this.props.listeJoueurs.length % 2 == 0 && this.props.listeJoueurs.length != 0) {
         boutonTitle = 'Commencer le tournoi'
         boutonDesactive = false

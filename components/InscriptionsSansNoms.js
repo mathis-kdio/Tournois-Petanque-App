@@ -12,16 +12,16 @@ class InscriptionsSansNoms extends React.Component {
     this.state = {
       nbJoueurNormaux: 0,
       nbJoueurSpeciaux: 0,
-      equipe: 'doublette'
+      typeEquipes: 'doublette'
     }
   }
 
   componentDidMount() {
     if (this.props.route.params != undefined) {
       let routeparams = this.props.route.params
-      if (routeparams.equipe != undefined) {
+      if (routeparams.typeEquipes != undefined) {
         this.setState({
-          equipe: routeparams.equipe
+          typeEquipes: routeparams.typeEquipes
         })
       }
     }
@@ -78,7 +78,7 @@ class InscriptionsSansNoms extends React.Component {
       this._ajoutJoueur(true)
     }
 
-    if (this.state.equipe == "doublette") {
+    if (this.state.typeEquipes == "doublette") {
       this.props.navigation.navigate({
         name: 'GenerationMatchs',
         params: {
@@ -128,7 +128,7 @@ class InscriptionsSansNoms extends React.Component {
     let boutonDesactive
     let boutonTitle = ''
     let nbJoueurs = this.state.nbJoueurNormaux + this.state.nbJoueurSpeciaux
-    if (this.state.equipe == 'doublette') {
+    if (this.state.typeEquipes == 'doublette') {
       if (nbJoueurs % 2 == 0 && nbJoueurs != 0) {
         boutonTitle = 'Commencer le tournoi'
         boutonDesactive = false
