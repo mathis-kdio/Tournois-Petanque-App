@@ -144,6 +144,7 @@ class ListeJoueur extends React.Component {
             style={styles.picker}
             dropdownIconColor="white"
           >
+            <Picker.Item label="Choisir" value="0" key="0"/>
             {pickerItem}
           </Picker>
         </View>
@@ -210,7 +211,7 @@ const styles = StyleSheet.create({
   },
   picker: {
     color: 'white',
-    width: 85
+    width: 115
   }
 })
 
