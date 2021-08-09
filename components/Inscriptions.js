@@ -176,10 +176,32 @@ class Inscription extends React.Component {
 
   _boutonCommencer() {
     let boutonDesactive
-    let boutonTitle = ''
-    if (this.state.avecEquipes == true && this.props.listeJoueurs.find(el => el.equipe == undefined) != undefined) {
-      boutonTitle = "Les joueurs n'ont pas tous une équipe"
-      boutonDesactive = true
+    let boutonTitle = 'Commencer le tournoi'
+
+    let nbEquipes
+    if (this.state.typeEquipes == "doublette") {
+      nbEquipes = Math.ceil(this.props.listeJoueurs.length / 2)
+    }
+    else {
+      nbEquipes = Math.ceil(this.props.listeJoueurs.length / 3)
+    }
+
+    if (this.state.avecEquipes == true) {
+      if (this.props.listeJoueurs.find(el => el.equipe == undefined) != undefined || this.props.listeJoueurs.find(el => el.equipe > nbEquipes) != undefined) {
+        boutonTitle = "Les joueurs n'ont pas tous une équipe"
+        boutonDesactive = true
+      }
+      else if (this.state.typeEquipes == "doublette") {
+        console.log(nbEquipes)
+        for (let i = 0; i < nbEquipes; i++) {
+          let count = this.props.listeJoueurs.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
+          if (count > 2) {
+            boutonTitle = "Il y a des joueurs en trop dans certaines équipes"
+            boutonDesactive = true
+            break
+          }
+        }
+      }
     }
     else if (this.state.typeEquipes == "doublette") {
       if (this.props.listeJoueurs.length % 2 == 0 && this.props.listeJoueurs.length != 0) {
