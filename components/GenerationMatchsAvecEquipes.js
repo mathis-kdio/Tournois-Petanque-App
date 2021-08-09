@@ -139,14 +139,15 @@ class GenerationMatchsAvecEquipes extends React.Component {
     }
 
     //Création d'un tableau dans lequel les joueurs sont regroupés par équipes
-    for (let i = 0; i < nbEquipes; i++) {
+    for (let i = 1; i <= nbEquipes; i++) {
       equipe.push([])
       for (let j = 0; j < nbjoueurs; j++) {
-        if(this.props.listeJoueurs[j].equipe == nbEquipes) {
-          equipe[i].push(this.props.listeJoueurs[j].id)
+        if(this.props.listeJoueurs[j].equipe == i) {
+          equipe[i - 1].push(this.props.listeJoueurs[j].id)
         }
       }
     }
+    console.log(equipe)
 
     //On place les ids des équipes dans un tableau qui sera mélanger à chaque nouveaux tour
     let equipesIds = [];
@@ -159,12 +160,11 @@ class GenerationMatchsAvecEquipes extends React.Component {
     }
 
     //FONCTIONNEMENT
-
     idMatch = 0;
     let breaker = 0 //permet de détecter quand boucle infinie
     for (let i = 0; i < nbManches; i++) {
       breaker = 0
-      let randomEquipesIds = shuffle(equipesIds);
+      let randomEquipesIds = shuffle(equipesIds)
       for (let j = 0; j < equipe.length;) {
         //Affectation equipe 1
         if (matchs[idMatch].equipe[0][0] == 0) {
@@ -219,7 +219,6 @@ class GenerationMatchsAvecEquipes extends React.Component {
       idMatch = nbMatchsParTour * (i + 1);
     }
 
-    console.log(this.typeEquipes)
     //Ajout des options du match à la fin du tableau contenant les matchs
     matchs.push({
       tournoiID: 0,
