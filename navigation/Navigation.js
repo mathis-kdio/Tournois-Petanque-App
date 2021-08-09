@@ -17,6 +17,7 @@ import InscriptionsSansNoms from '../components/InscriptionsSansNoms'
 import OptionsTournoi from '../components/OptionsTournoi'
 import GenerationMatchs from '../components/GenerationMatchs'
 import GenerationMatchsTriplettes from '../components/GenerationMatchsTriplettes'
+import GenerationMatchsAvecEquipes from '../components/GenerationMatchsAvecEquipes'
 import ListeResultats from '../components/ListeResultats'
 import ListeMatchs from '../components/ListeMatchs'
 import MatchDetail from '../components/MatchDetail'
@@ -156,6 +157,7 @@ function InscriptionStack() {
       <Stack.Screen name="OptionsTournoi" component={OptionsTournoi} options={{title: 'Options du tournoi', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />      
       <Stack.Screen name="GenerationMatchs" component={GenerationMatchs} options={{title: 'Générations des parties en cours', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
       <Stack.Screen name="GenerationMatchsTriplettes" component={GenerationMatchsTriplettes} options={{title: 'Générations des parties en cours', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
+      <Stack.Screen name="GenerationMatchsAvecEquipes" component={GenerationMatchsAvecEquipes} options={{title: 'Générations des parties en cours', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
       <Stack.Screen name="ListeMatchsInscription" component={MatchsResultatsBottomNavigator} options={{headerShown: false}} />    
     </Stack.Navigator>
   );

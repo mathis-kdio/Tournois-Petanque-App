@@ -15,31 +15,35 @@ class ChoixTournois extends React.Component {
   }
 
   _inscription() {
-    let equipe
+    let typeEquipes
     if (this.state.doublette == true) {
-      equipe = 'doublette'
+      typeEquipes = 'doublette'
     }
     else {
-      equipe = 'triplette'
+      typeEquipes = 'triplette'
     }
 
     let screenName
     let navigatorScreenName
+    let avecEquipes
     if (this.state.avecNom == true) {
       screenName = 'InscriptionGeneral'
       navigatorScreenName = 'InscriptionStack'
+      avecEquipes = false
     }
     else if (this.state.sansNom == true) {
       screenName = 'InscriptionsSansNoms'
       navigatorScreenName = 'InscriptionsSansNomsStack'
+      avecEquipes = false
     }
     else {
       screenName = 'InscriptionGeneral'
       navigatorScreenName = 'InscriptionStack'
+      avecEquipes = true
     }
     this.props.navigation.navigate(screenName, {
       screen: navigatorScreenName, 
-      params: { equipe: equipe }
+      params: { typeEquipes: typeEquipes, avecEquipes: avecEquipes }
     })
   }
 
@@ -131,9 +135,8 @@ class ChoixTournois extends React.Component {
               }}
               isChecked={this.state.avecEquipes}
               leftText={"Tournoi mêlée avec équipes constituées"}
-              leftTextStyle={{color: "gray", fontSize: 15}}
-              checkBoxColor={'gray'}
-              disabled={true}
+              leftTextStyle={{color: "white", fontSize: 15}}
+              checkBoxColor={'white'}
               />
             </View>
           </View>

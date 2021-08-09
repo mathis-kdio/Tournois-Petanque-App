@@ -19,16 +19,22 @@ class Inscription extends React.Component {
       joueur: undefined,
       isChecked: false,
       etatBouton: false,
-      equipe: 'doublette'
+      typeEquipes: 'doublette',
+      avecEquipes: false
     }
   }
 
   componentDidMount() {
     if (this.props.route.params != undefined) {
       let routeparams = this.props.route.params
-      if (routeparams.equipe != undefined) {
+      if (routeparams.typeEquipes != undefined) {
         this.setState({
-          equipe: routeparams.equipe
+          typeEquipes: routeparams.typeEquipes
+        })
+      }
+      if (routeparams.avecEquipes != undefined) {
+        this.setState({
+          avecEquipes: routeparams.avecEquipes
         })
       }
     }
@@ -100,30 +106,28 @@ class Inscription extends React.Component {
   }
 
   _commencer() {
-    if (this.state.equipe == "doublette") {
-      this.props.navigation.navigate({
-        name: 'GenerationMatchs',
-        params: {
-          nbTours: parseInt(this.nbTours),
-          speciauxIncompatibles: this.speciauxIncompatibles,
-          memesEquipes: this.memesEquipes,
-          memesAdversaires: this.memesAdversaires,
-          screenStackName: 'InscriptionStack'
-        }
-      })
+    let screenName
+    if (this.state.avecEquipes == true) {
+      screenName = 'GenerationMatchsAvecEquipes'
+    }
+    else if (this.state.typeEquipes == "triplette") {
+      screenName = 'GenerationMatchsTriplettes'
     }
     else {
-      this.props.navigation.navigate({
-        name: 'GenerationMatchsTriplettes',
-        params: {
-          nbTours: parseInt(this.nbTours),
-          speciauxIncompatibles: this.speciauxIncompatibles,
-          memesEquipes: this.memesEquipes,
-          memesAdversaires: this.memesAdversaires,
-          screenStackName: 'InscriptionStack'
-        }
-      })
+      screenName = 'GenerationMatchs'
     }
+
+    this.props.navigation.navigate({
+      name: screenName,
+      params: {
+        nbTours: parseInt(this.nbTours),
+        speciauxIncompatibles: this.speciauxIncompatibles,
+        memesEquipes: this.memesEquipes,
+        memesAdversaires: this.memesAdversaires,
+        typeEquipes: this.state.typeEquipes,
+        screenStackName: 'InscriptionStack'
+      }
+    })
   }
 
   _options() {
@@ -151,6 +155,9 @@ class Inscription extends React.Component {
               joueur={item}
               supprimerJoueur={this._supprimerJoueur}
               isInscription={true}
+              avecEquipes={this.state.avecEquipes}
+              typeEquipes={this.state.typeEquipes}
+              nbJoueurs={this.props.listeJoueurs.length}
             />
           )}
         />
@@ -167,8 +174,33 @@ class Inscription extends React.Component {
 
   _boutonCommencer() {
     let boutonDesactive
-    let boutonTitle = ''
-    if (this.state.equipe == 'doublette') {
+    let boutonTitle = 'Commencer le tournoi'
+
+    let nbEquipes
+    if (this.state.typeEquipes == "doublette") {
+      nbEquipes = Math.ceil(this.props.listeJoueurs.length / 2)
+    }
+    else {
+      nbEquipes = Math.ceil(this.props.listeJoueurs.length / 3)
+    }
+
+    if (this.state.avecEquipes == true) {
+      if (this.props.listeJoueurs.find(el => el.equipe == undefined) != undefined || this.props.listeJoueurs.find(el => el.equipe > nbEquipes) != undefined) {
+        boutonTitle = "Les joueurs n'ont pas tous une équipe"
+        boutonDesactive = true
+      }
+      else if (this.state.typeEquipes == "doublette") {
+        for (let i = 0; i < nbEquipes; i++) {
+          let count = this.props.listeJoueurs.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
+          if (count > 2) {
+            boutonTitle = "Il y a des joueurs en trop dans certaines équipes"
+            boutonDesactive = true
+            break
+          }
+        }
+      }
+    }
+    else if (this.state.typeEquipes == "doublette") {
       if (this.props.listeJoueurs.length % 2 == 0 && this.props.listeJoueurs.length != 0) {
         boutonTitle = 'Commencer le tournoi'
         boutonDesactive = false
@@ -191,6 +223,14 @@ class Inscription extends React.Component {
     return (
       <Button disabled={boutonDesactive} color='green' title={boutonTitle} onPress={() => this._commencer()}/>
     )
+  }
+
+  _showEquipeEntete() {
+    if (this.state.avecEquipes == true) {
+      return (
+        <Text style={styles.texte_entete}>Equipe</Text>
+      )
+    }
   }
 
   render() {
@@ -227,6 +267,20 @@ class Inscription extends React.Component {
           </View>
           <View style={styles.button_ajoutjoueur_container}>
             {this._ajoutJoueurBouton()}
+          </View>
+        </View>
+        <View style={styles.entete}>
+          <View style={styles.prenom_container}>
+            <Text style={styles.texte_entete}>N° Prénom</Text>
+          </View>
+          <View style={styles.equipe_container}>
+            {this._showEquipeEntete()}
+          </View>
+          <View style={styles.renommer_container}>
+            <Text style={styles.texte_entete}>Renommer</Text>
+          </View>
+          <View style={styles.supprimer_container}>
+            <Text style={styles.texte_entete}>Supprimer</Text>
           </View>
         </View>
         <View style={styles.flatList} >
@@ -286,7 +340,33 @@ const styles = StyleSheet.create({
   text_nbjoueur: {
     fontSize: 20,
     color: 'white'
-  }
+  },
+  entete: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    borderBottomWidth: 2,
+    borderColor: 'white'
+  },
+  prenom_container: {
+    flex: 3,
+  },
+  equipe_container: {
+    flex: 2,
+    alignItems: 'center',
+  },
+  renommer_container: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  supprimer_container: {
+    flex: 1,
+    alignItems: 'flex-end',
+  },
+  texte_entete: {
+    textAlign: 'center',
+    fontSize: 15,
+    color: 'white'
+  },
 })
 
 const mapStateToProps = (state) => {
