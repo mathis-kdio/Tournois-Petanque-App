@@ -1,6 +1,8 @@
 import React from 'react'
-import { StyleSheet, View, Text, Button, TextInput } from 'react-native'
+import { StyleSheet, View, Text, TextInput } from 'react-native'
 import { connect } from 'react-redux'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import { Picker } from '@react-native-picker/picker'
 
 class ListeJoueur extends React.Component {
   constructor(props) {
@@ -8,7 +10,8 @@ class ListeJoueur extends React.Component {
     this.joueurText = ""
     this.state = {
       renommerOn: false,
-      disabledBoutonRenommer: true
+      disabledBoutonRenommer: true,
+      equipeSelect: 1
     }
   }
 
@@ -26,25 +29,32 @@ class ListeJoueur extends React.Component {
     if (isInscription === true) {
       return (
         <View>
-          <Button color='#ff0000' title='Supprimer' onPress={() => supprimerJoueur(joueur.id)}/>
+            <Icon.Button name="times" backgroundColor="red" onPress={() => supprimerJoueur(joueur.id)}/>
         </View>
       )
     }
   }
 
-  _showRenommerJoueur(joueur, isInscription) {
-    if (isInscription === false) {
-      if (this.state.renommerOn == false) {
+  _showRenommerJoueur(joueur) {
+    if (this.state.renommerOn == false) {
+      return (
+        <View>
+            <Icon.Button name="edit" backgroundColor="green" onPress={() => this._renommerJoueurInput(joueur)}/>
+        </View>
+      )
+    }
+    else {
+      if (this.state.disabledBoutonRenommer == true) {
         return (
           <View>
-            <Button color='green' title='Renommer' onPress={() => this._renommerJoueurInput(joueur)}/>
+            <Icon.Button name="edit" backgroundColor="gray"/>
           </View>
         )
       }
       else {
         return (
           <View>
-            <Button disabled={this.state.disabledBoutonRenommer} color='green' title='Valider' onPress={() => this._renommerJoueur(joueur)}/>
+            <Icon.Button name="edit" backgroundColor="green" onPress={() => this._renommerJoueur(joueur)}/>
           </View>
         )
       }
@@ -104,16 +114,59 @@ class ListeJoueur extends React.Component {
     }
   }
 
+  _ajoutEquipe(itemValue, itemIndex) {
+    this.setState({
+      equipeSelect: itemValue
+    })
+
+  }
+
+  _equipePicker(avecEquipes, typeEquipes, nbJoueurs) {
+    if (avecEquipes == true) {
+      let nbEquipes
+      if (typeEquipes == "doublette") {
+        nbEquipes = Math.ceil(nbJoueurs / 2)
+      }
+      else {
+        nbEquipes = Math.ceil(nbJoueurs / 3)
+      }
+
+      let pickerItem = []
+      for (let i = 1; i <= nbEquipes; i++) {
+        pickerItem.push(this._equipePickerItem(i))
+      }
+      return (
+        <View style={styles.pickerContainer}>
+          <Picker
+            selectedValue={this.state.equipeSelect}
+            onValueChange={(itemValue, itemIndex) => this._ajoutEquipe(itemValue)}
+            style={styles.picker}
+            dropdownIconColor="white"
+          >
+            {pickerItem}
+          </Picker>
+        </View>
+      )
+    }
+  }
+
+  _equipePickerItem(equipe) {
+    return (
+      <Picker.Item label={equipe.toString()} value={equipe} key={equipe}/>
+    )
+  }
+
   render() {
-    const { joueur, supprimerJoueur, isInscription } = this.props;
+    const { joueur, supprimerJoueur, isInscription, avecEquipes, typeEquipes, nbJoueurs } = this.props;
     return (
       <View style={styles.main_container}>
         <View style={styles.name_container}>
           {this._joueurName(joueur)}
         </View>
+        {this._equipePicker(avecEquipes, typeEquipes, nbJoueurs)}
         {this._isSpecial(joueur.special)}
+        {this._showRenommerJoueur(joueur)}
         {this._showSupprimerJoueur(joueur, supprimerJoueur, isInscription)}
-        {this._showRenommerJoueur(joueur, isInscription)}
       </View>
     )
   }
@@ -150,6 +203,14 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     color: 'white'
   },
+  pickerContainer: {
+    flex: 1,
+    alignItems: 'flex-end',
+  },
+  picker: {
+    color: 'white',
+    width: 85
+  }
 })
 
 const mapStateToProps = (state) => {
