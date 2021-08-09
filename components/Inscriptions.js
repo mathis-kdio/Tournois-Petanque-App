@@ -177,7 +177,11 @@ class Inscription extends React.Component {
   _boutonCommencer() {
     let boutonDesactive
     let boutonTitle = ''
-    if (this.state.typeEquipes == "doublette") {
+    if (this.state.avecEquipes == true && this.props.listeJoueurs.find(el => el.equipe == undefined) != undefined) {
+      boutonTitle = "Les joueurs n'ont pas tous une équipe"
+      boutonDesactive = true
+    }
+    else if (this.state.typeEquipes == "doublette") {
       if (this.props.listeJoueurs.length % 2 == 0 && this.props.listeJoueurs.length != 0) {
         boutonTitle = 'Commencer le tournoi'
         boutonDesactive = false

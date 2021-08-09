@@ -144,7 +144,7 @@ class ListeJoueur extends React.Component {
             style={styles.picker}
             dropdownIconColor="white"
           >
-            <Picker.Item label="Choisir" value="0" key="0"/>
+            <Picker.Item label="Choisir" value={undefined} key="0"/>
             {pickerItem}
           </Picker>
         </View>
