@@ -11,7 +11,6 @@ class ListeJoueur extends React.Component {
     this.state = {
       renommerOn: false,
       disabledBoutonRenommer: true,
-      equipeSelect: 0
     }
   }
 
@@ -115,15 +114,16 @@ class ListeJoueur extends React.Component {
   }
 
   _ajoutEquipe(joueurId, equipeId) {
-    this.setState({
-      equipeSelect: equipeId
-    })
     const action = { type: "AJOUT_EQUIPE_JOUEUR", value: [joueurId - 1, equipeId] }
     this.props.dispatch(action)
   }
 
-  _equipePicker(joueurId, avecEquipes, typeEquipes, nbJoueurs) {
+  _equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs) {
     if (avecEquipes == true) {
+      let selectedValue = 0
+      if (joueur.equipe) {
+        selectedValue = joueur.equipe
+      }
       let nbEquipes
       if (typeEquipes == "doublette") {
         nbEquipes = Math.ceil(nbJoueurs / 2)
@@ -139,8 +139,8 @@ class ListeJoueur extends React.Component {
       return (
         <View style={styles.pickerContainer}>
           <Picker
-            selectedValue={this.state.equipeSelect}
-            onValueChange={(itemValue, itemIndex) => this._ajoutEquipe(joueurId, itemValue)}
+            selectedValue={selectedValue}
+            onValueChange={(itemValue, itemIndex) => this._ajoutEquipe(joueur.id, itemValue)}
             style={styles.picker}
             dropdownIconColor="white"
           >
@@ -165,7 +165,7 @@ class ListeJoueur extends React.Component {
         <View style={styles.name_container}>
           {this._joueurName(joueur)}
         </View>
-        {this._equipePicker(joueur.id, avecEquipes, typeEquipes, nbJoueurs)}
+        {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
         {this._isSpecial(joueur.special)}
         {this._showRenommerJoueur(joueur)}
         {this._showSupprimerJoueur(joueur, supprimerJoueur, isInscription)}
