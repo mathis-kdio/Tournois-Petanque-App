@@ -158,6 +158,8 @@ class Inscription extends React.Component {
               supprimerJoueur={this._supprimerJoueur}
               isInscription={true}
               avecEquipes={this.state.avecEquipes}
+              typeEquipes={this.state.typeEquipes}
+              nbJoueurs={this.props.listeJoueurs.length}
             />
           )}
         />
@@ -236,6 +238,20 @@ class Inscription extends React.Component {
             {this._ajoutJoueurBouton()}
           </View>
         </View>
+        <View style={styles.entete}>
+          <View style={styles.prenom_container}>
+            <Text style={styles.texte_entete}>N° Prénom</Text>
+          </View>
+          <View style={styles.equipe_container}>
+            <Text style={styles.texte_entete}>Equipe</Text>
+          </View>
+          <View style={styles.renommer_container}>
+            <Text style={styles.texte_entete}>Renommer</Text>
+          </View>
+          <View style={styles.supprimer_container}>
+            <Text style={styles.texte_entete}>Supprimer</Text>
+          </View>
+        </View>
         <View style={styles.flatList} >
           {this._displayListeJoueur()}
         </View>
@@ -293,7 +309,33 @@ const styles = StyleSheet.create({
   text_nbjoueur: {
     fontSize: 20,
     color: 'white'
-  }
+  },
+  entete: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    borderBottomWidth: 2,
+    borderColor: 'white'
+  },
+  prenom_container: {
+    flex: 3,
+  },
+  equipe_container: {
+    flex: 2,
+    alignItems: 'center',
+  },
+  renommer_container: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  supprimer_container: {
+    flex: 1,
+    alignItems: 'flex-end',
+  },
+  texte_entete: {
+    textAlign: 'center',
+    fontSize: 15,
+    color: 'white'
+  },
 })
 
 const mapStateToProps = (state) => {
