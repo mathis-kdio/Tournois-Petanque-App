@@ -18,7 +18,7 @@
     ],
     "ios": {
       "bundleIdentifier": "com.MK.PetanqueGCU",
-      "buildNumber": "1.5 Beta 1",
+      "buildNumber": "1.5.Beta.1",
       "supportsTablet": true
     },
     "android": {
