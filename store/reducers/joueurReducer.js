@@ -21,7 +21,8 @@ function toggleJoueur(state = initialState, action) {
         let newJoueur = {
           name: action.value[0],
           special: action.value[1],
-          id: idNewJoueur
+          id: idNewJoueur,
+          equipe: undefined
         }
 
         nextState = {
@@ -64,6 +65,15 @@ function toggleJoueur(state = initialState, action) {
           listeJoueurs: [...state.listeJoueurs]
         }
         nextState.listeJoueurs[action.value[0]].name = action.value[1];
+      }
+      return nextState || state
+    case 'AJOUT_EQUIPE_JOUEUR':
+      if (action.value != "") {
+        nextState = {
+          ...state,
+          listeJoueurs: [...state.listeJoueurs]
+        }
+        nextState.listeJoueurs[action.value[0]].equipe = action.value[1];
       }
       return nextState || state
   default:
