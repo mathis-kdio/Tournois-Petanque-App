@@ -173,7 +173,7 @@ class Inscription extends React.Component {
   }
 
   _boutonCommencer() {
-    let boutonDesactive
+    let boutonDesactive = false
     let boutonTitle = 'Commencer le tournoi'
 
     let nbEquipes
@@ -186,36 +186,36 @@ class Inscription extends React.Component {
 
     if (this.state.avecEquipes == true) {
       if (this.props.listeJoueurs.find(el => el.equipe == undefined) != undefined || this.props.listeJoueurs.find(el => el.equipe > nbEquipes) != undefined) {
-        boutonTitle = "Les joueurs n'ont pas tous une équipe"
+        boutonTitle = "Des joueurs n'ont pas d'équipe"
         boutonDesactive = true
       }
       else if (this.state.typeEquipes == "doublette") {
-        for (let i = 0; i < nbEquipes; i++) {
-          let count = this.props.listeJoueurs.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
-          if (count > 2) {
-            boutonTitle = "Il y a des joueurs en trop dans certaines équipes"
-            boutonDesactive = true
-            break
+        if (this.props.listeJoueurs.length % 4 != 0) {
+          boutonTitle = "Avec des équipes en doublette, le nombre de joueurs doit être un multiple de 4"
+          boutonDesactive = true
+        }
+        else {
+          for (let i = 0; i < nbEquipes; i++) {
+            let count = this.props.listeJoueurs.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
+            if (count > 2) {
+              boutonTitle = "Des équipes ont trop de joueurs"
+              boutonDesactive = true
+              break
+            }
           }
         }
       }
-    }
-    else if (this.state.typeEquipes == "doublette") {
-      if (this.props.listeJoueurs.length % 2 == 0 && this.props.listeJoueurs.length != 0) {
-        boutonTitle = 'Commencer le tournoi'
-        boutonDesactive = false
-      }
-      else {
-        boutonTitle = "Nombre de joueurs n'est pas un multiple de 2"
+      else if (this.state.typeEquipes == "triplette" && this.props.listeJoueurs.length % 6 != 0) {
+        boutonTitle = "Avec des équipes en triplette, le nombre de joueurs doit être un multiple de 6"
         boutonDesactive = true
       }
     }
     else {
-      if (this.props.listeJoueurs.length % 6 == 0 && this.props.listeJoueurs.length >= 6) {
-        boutonTitle = 'Commencer le tournoi'
-        boutonDesactive = false
+      if (this.state.typeEquipes == "doublette" && (this.props.listeJoueurs.length % 2 != 0 || this.props.listeJoueurs.length == 0)) {
+        boutonTitle = "En doublette, le nombre de joueurs doit être un multiple de 2"
+        boutonDesactive = true
       }
-      else {
+      if (this.state.typeEquipes == "triplette" && (this.props.listeJoueurs.length % 6 != 0 || this.props.listeJoueurs.length < 6)) {
         boutonTitle = "En triplette, le nombre de joueurs doit être un multiple de 6"
         boutonDesactive = true
       }
