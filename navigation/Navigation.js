@@ -39,12 +39,12 @@ const TopTab = createMaterialTopTabNavigator();
 
 function topTabScreens() {
   const counter = useSelector(state => state.gestionMatchs.listematchs)
-  let nbManches = 5
+  let nbTours = 5
   if (counter != undefined) {
-    nbManches = counter[counter.length - 1].nbManches
+    nbTours = counter[counter.length - 1].nbTours
   }
   let TopTabScreenListe = []
-  for (let i = 0; i < nbManches; i++) {
+  for (let i = 0; i < nbTours; i++) {
     const name = "Screen"+ (i + 1) +"Manche"
     let titleTour = {tabBarLabel: () => <TitleTopTabContainer numero={i + 1} />}
     TopTabScreenListe.push(

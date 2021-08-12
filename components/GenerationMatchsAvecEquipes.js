@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 class GenerationMatchsAvecEquipes extends React.Component {
   constructor(props) {
     super(props)
-    this.nbTours = "5"
+    this.nbTours = 5
     this.speciauxIncompatibles = true
     this.jamaisMemeCoequipier = true
     this.eviterMemeAdversaire = true
@@ -87,7 +87,6 @@ class GenerationMatchsAvecEquipes extends React.Component {
 
   _generation() {
     let nbjoueurs = this.props.listeJoueurs.length;
-    let nbManches = 5;
     let speciauxIncompatibles = true
     let jamaisMemeCoequipier = true
     let eviterMemeAdversaire = true;
@@ -99,8 +98,7 @@ class GenerationMatchsAvecEquipes extends React.Component {
     if (this.props.route.params != undefined) {
       let routeparams = this.props.route.params;
       if (routeparams.nbTours != undefined) {
-        nbManches = routeparams.nbTours
-        this.nbTours = nbManches.toString()
+        this.nbTours = routeparams.nbTours
       }
       if (routeparams.speciauxIncompatibles != undefined) {
         speciauxIncompatibles = routeparams.speciauxIncompatibles
@@ -121,7 +119,7 @@ class GenerationMatchsAvecEquipes extends React.Component {
 
     //Initialisation des matchs dans un tableau
     let nbMatchsParTour =  Math.ceil(nbjoueurs / 4)
-    let nbMatchs = nbManches * nbMatchsParTour
+    let nbMatchs = this.nbTours * nbMatchsParTour
     let nbEquipes
     if (this.typeEquipes == "doublette") {
       nbEquipes = this.props.listeJoueurs.length / 2
@@ -131,7 +129,7 @@ class GenerationMatchsAvecEquipes extends React.Component {
     }
 
     idMatch = 0;
-    for (let i = 1; i < nbManches + 1; i++) {
+    for (let i = 1; i < this.nbTours + 1; i++) {
       for (let j = 0; j < nbMatchsParTour; j++) {
         matchs.push({id: idMatch, manche: i, equipe: [[0,0,0],[0,0,0]], score1: undefined, score2: undefined});
         idMatch++;
@@ -161,7 +159,7 @@ class GenerationMatchsAvecEquipes extends React.Component {
     //FONCTIONNEMENT
     idMatch = 0;
     let breaker = 0 //permet de détecter quand boucle infinie
-    for (let i = 0; i < nbManches; i++) {
+    for (let i = 0; i < this.nbTours; i++) {
       breaker = 0
       let randomEquipesIds = shuffle(equipesIds)
       for (let j = 0; j < equipe.length;) {
@@ -201,7 +199,7 @@ class GenerationMatchsAvecEquipes extends React.Component {
         //En cas de trop nombreuses tentatives, arret de la génération
         //L'utilisateur est invité à changer les paramètres ou à relancer la génération
         //TODO condition de break à affiner
-        //nbMatchs devrait être assez car le + opti devrait être : nbMatchs / nbManches
+        //nbMatchs devrait être assez car le + opti devrait être : nbMatchs / this.nbTours
         if (breaker > nbMatchs) {
           return 1
         }
@@ -221,7 +219,7 @@ class GenerationMatchsAvecEquipes extends React.Component {
     //Ajout des options du match à la fin du tableau contenant les matchs
     matchs.push({
       tournoiID: 0,
-      nbManches: nbManches,
+      nbTours: this.nbTours,
       nbMatchs: nbMatchs,
       speciauxIncompatibles: this.speciauxIncompatibles,
       memesEquipes: this.jamaisMemeCoequipier,
@@ -271,7 +269,7 @@ class GenerationMatchsAvecEquipes extends React.Component {
     this.props.navigation.navigate({
       name: this.props.route.params.screenStackName,
       params: {
-        nbTours: this.nbTours,
+        nbTours: this.nbTours.toString(),
         speciauxIncompatibles: this.speciauxIncompatibles,
         memesEquipes: this.jamaisMemeCoequipier,
         memesAdversaires: this.eviterMemeAdversaire,

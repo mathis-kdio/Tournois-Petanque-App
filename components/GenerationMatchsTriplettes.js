@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 class GenerationMatchsTriplette extends React.Component {
   constructor(props) {
     super(props)
-    this.nbTours = "5"
+    this.nbTours = 5
     this.speciauxIncompatibles = true
     this.jamaisMemeCoequipier = true
     this.eviterMemeAdversaire = true
@@ -87,7 +87,6 @@ class GenerationMatchsTriplette extends React.Component {
 
   _generation() {
     let nbjoueurs = this.props.listeJoueurs.length;
-    let nbManches = 5;
     let speciauxIncompatibles = true
     let jamaisMemeCoequipier = true;
     let eviterMemeAdversaire = true;
@@ -102,8 +101,7 @@ class GenerationMatchsTriplette extends React.Component {
     if (this.props.route.params != undefined) {
       let routeparams = this.props.route.params;
       if (routeparams.nbTours != undefined) {
-        nbManches = routeparams.nbTours
-        this.nbTours = nbManches.toString()
+        this.nbTours = routeparams.nbTours
       }
       if (routeparams.speciauxIncompatibles != undefined) {
         speciauxIncompatibles = routeparams.speciauxIncompatibles
@@ -121,9 +119,9 @@ class GenerationMatchsTriplette extends React.Component {
 
     //Initialisation des matchs dans un tableau
     let nbMatchsParTour =  Math.ceil(nbjoueurs / 6)
-    let nbMatchs = nbManches * nbMatchsParTour
+    let nbMatchs = this.nbTours * nbMatchsParTour
     idMatch = 0;
-    for (let i = 1; i < nbManches + 1; i++) {
+    for (let i = 1; i < this.nbTours + 1; i++) {
       for (let j = 0; j < nbMatchsParTour; j++) {
         matchs.push({id: idMatch, manche: i, equipe: [[0,0,0],[0,0,0]], score1: undefined, score2: undefined});
         idMatch++;
@@ -154,7 +152,7 @@ class GenerationMatchsTriplette extends React.Component {
       joueurs[nbjoueurs + 1].equipe = []
       nbJoueursSpe++
       
-      for (let i = 1; i < nbManches + 1; i++) {
+      for (let i = 1; i < this.nbTours + 1; i++) {
         matchs[nbMatchsParTour * i - 1].equipe[0][0] = nbjoueurs + 1
         matchs[nbMatchsParTour * i - 1].equipe[1][0] = nbjoueurs + 2
       }
@@ -166,7 +164,7 @@ class GenerationMatchsTriplette extends React.Component {
       //Test si joueurs spéciaux ne sont pas + que 1/3 des joueurs
       if (nbJoueursSpe <= nbjoueurs / 3) {
         //Joueurs spéciaux seront toujours J1 E1 ou J1 E2
-        for (let i = 0; i < nbManches; i++) {
+        for (let i = 0; i < this.nbTours; i++) {
           let idsMatchsSpe = []
           idsMatchsSpe = this.randomBetweenRange(joueursSpe.length, [i * nbMatchsParTour, i * nbMatchsParTour + nbMatchsParTour])
           for (let j = 0; j < joueursSpe.length;) {
@@ -209,7 +207,7 @@ class GenerationMatchsTriplette extends React.Component {
         }
       }
       //Si + de matchs que de combinaisons alors on désactive la règle de ne jamais faire jouer avec la même personne
-      if (nbCombinaisons < nbManches) { //TODO: voir TODO au-dessus
+      if (nbCombinaisons < this.nbTours) { //TODO: voir TODO au-dessus
         this.setState({
           erreurMemesEquipes: true,
           isLoading: false
@@ -242,7 +240,7 @@ class GenerationMatchsTriplette extends React.Component {
 
     idMatch = 0;
     let breaker = 0 //permet de détecter quand boucle infinie
-    for (let i = 0; i < nbManches; i++) {
+    for (let i = 0; i < this.nbTours; i++) {
       breaker = 0
       let random = shuffle(joueursNonSpeId);
       for (let j = 0; j < joueursNonSpe.length;) {
@@ -257,7 +255,7 @@ class GenerationMatchsTriplette extends React.Component {
           //Empeche que le J1 E1 joue plusieurs fois dans la même équipe avec le même joueur
           //Ne s'applique qu'à partir de la manche 2
           if (jamaisMemeCoequipier == true && i > 0) {
-            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[0][0]) < nbManches / 3) {
+            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[0][0]) < this.nbTours / 3) {
               matchs[idMatch].equipe[0][1] = random[j];
               j++
               breaker = 0
@@ -277,7 +275,7 @@ class GenerationMatchsTriplette extends React.Component {
           //Empeche que le J1 E1 ou le J2 E1 joue plusieurs fois dans la même équipe avec le même joueur
           //Ne s'applique qu'à partir de la manche 2
           if (jamaisMemeCoequipier == true && i > 0) {
-            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[0][0]) < nbManches / 3 && countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[0][1]) < nbManches / 3) {
+            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[0][0]) < this.nbTours / 3 && countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[0][1]) < this.nbTours / 3) {
               matchs[idMatch].equipe[0][2] = random[j];
               j++
               breaker = 0
@@ -303,7 +301,7 @@ class GenerationMatchsTriplette extends React.Component {
           //Empeche que le J1 E2 joue plusieurs fois dans la même équipe avec le même joueur
           //Ne s'applique qu'à partir de la manche 2
           if (jamaisMemeCoequipier == true && i > 0) {
-            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[1][0]) < nbManches / 3) {
+            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[1][0]) < this.nbTours / 3) {
               matchs[idMatch].equipe[1][1] = random[j];
               j++
               breaker = 0
@@ -323,7 +321,7 @@ class GenerationMatchsTriplette extends React.Component {
           //Empeche que le J1 E2 ou J2 E2 joue plusieurs fois dans la même équipe avec le même joueur
           //Ne s'applique qu'à partir de la manche 2
           if (jamaisMemeCoequipier == true && i > 0) {
-            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[1][0]) < nbManches / 3 && countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[1][1]) < nbManches / 3) {
+            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[1][0]) < this.nbTours / 3 && countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[1][1]) < this.nbTours / 3) {
               matchs[idMatch].equipe[1][2] = random[j];
               j++
               breaker = 0
@@ -351,7 +349,7 @@ class GenerationMatchsTriplette extends React.Component {
         //En cas de trop nombreuses tentatives, arret de la génération
         //L'utilisateur est invité à changer les paramètres ou à relancer la génération
         //TODO condition de break à affiner
-        //nbMatchs devrait être assez car le + opti devrait être : nbMatchs / nbManches
+        //nbMatchs devrait être assez car le + opti devrait être : nbMatchs / this.nbTours
         if (breaker > nbMatchs) {
           return 1
         }
@@ -383,7 +381,7 @@ class GenerationMatchsTriplette extends React.Component {
     //Ajout des options du match à la fin du tableau contenant les matchs
     matchs.push({
       tournoiID: 0,
-      nbManches: nbManches,
+      nbTours: this.nbTours,
       nbMatchs: nbMatchs,
       speciauxIncompatibles: this.speciauxIncompatibles,
       memesEquipes: this.jamaisMemeCoequipier,
@@ -457,7 +455,7 @@ class GenerationMatchsTriplette extends React.Component {
     this.props.navigation.navigate({
       name: this.props.route.params.screenStackName,
       params: {
-        nbTours: this.nbTours,
+        nbTours: this.nbTours.toString(),
         speciauxIncompatibles: this.speciauxIncompatibles,
         memesEquipes: this.jamaisMemeCoequipier,
         memesAdversaires: this.eviterMemeAdversaire,

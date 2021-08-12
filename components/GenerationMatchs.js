@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 class GenerationMatchs extends React.Component {
   constructor(props) {
     super(props)
-    this.nbTours = "5"
+    this.nbTours = 5
     this.speciauxIncompatibles = true
     this.jamaisMemeCoequipier = true
     this.eviterMemeAdversaire = true
@@ -87,7 +87,6 @@ class GenerationMatchs extends React.Component {
 
   _generation() {
     let nbjoueurs = this.props.listeJoueurs.length;
-    let nbManches = 5;
     let speciauxIncompatibles = true
     let jamaisMemeCoequipier = true;
     let eviterMemeAdversaire = true;
@@ -102,8 +101,7 @@ class GenerationMatchs extends React.Component {
     if (this.props.route.params != undefined) {
       let routeparams = this.props.route.params;
       if (routeparams.nbTours != undefined) {
-        nbManches = routeparams.nbTours
-        this.nbTours = nbManches.toString()
+        this.nbTours = routeparams.nbTours
       }
       if (routeparams.speciauxIncompatibles != undefined) {
         speciauxIncompatibles = routeparams.speciauxIncompatibles
@@ -123,7 +121,7 @@ class GenerationMatchs extends React.Component {
     let nbMatchsParTour =  Math.ceil(nbjoueurs / 4)
     let nbMatchs = nbManches * nbMatchsParTour
     idMatch = 0;
-    for (let i = 1; i < nbManches + 1; i++) {
+    for (let i = 1; i < this.nbTours + 1; i++) {
       for (let j = 0; j < nbMatchsParTour; j++) {
         matchs.push({id: idMatch, manche: i, equipe: [[0,0],[0,0]], score1: undefined, score2: undefined});
         idMatch++;
@@ -163,7 +161,7 @@ class GenerationMatchs extends React.Component {
       //Test si joueurs spéciaux ne sont pas trop nombreux
       if (nbJoueursSpe <= nbjoueurs / 2) {
         //Joueurs spéciaux seront toujours joueur 1 ou joueur 3
-        for (let i = 0; i < nbManches; i++) {
+        for (let i = 0; i < this.nbTours; i++) {
           let idsMatchsSpe = []
           idsMatchsSpe = this.randomBetweenRange(joueursSpe.length, [i * nbMatchsParTour, i * nbMatchsParTour + nbMatchsParTour])
           for (let j = 0; j < joueursSpe.length;) {
@@ -206,7 +204,7 @@ class GenerationMatchs extends React.Component {
         }
       }
       //Si + de matchs que de combinaisons alors on désactive la règle de ne jamais faire jouer avec la même personne
-      if (nbCombinaisons < nbManches) { //TODO message au-dessus
+      if (nbCombinaisons < this.nbTours) { //TODO message au-dessus
         this.setState({
           erreurMemesEquipes: true,
           isLoading: false
@@ -249,7 +247,7 @@ class GenerationMatchs extends React.Component {
 
     idMatch = 0;
     let breaker = 0 //permet de détecter quand boucle infinie
-    for (let i = 0; i < nbManches; i++) {
+    for (let i = 0; i < this.nbTours; i++) {
       breaker = 0
       let random = shuffle(joueursNonSpeId);
       for (let j = 0; j < joueursNonSpe.length;) {
@@ -284,7 +282,7 @@ class GenerationMatchs extends React.Component {
           //Test si le joueur 1 ou 2 n'a pas déjà joué (ensemble et contre) + de la moitié de ses matchs contre le joueur en cours d'affectation
           let affectationPossible = true
           if (eviterMemeAdversaire == true) {
-            let moitieNbManches = Math.floor(nbManches / 2)
+            let moitieNbManches = Math.floor(this.nbTours / 2)
             let totPartiesJ1 = 0
             let totPartiesJ2 = 0
             let joueur1 = matchs[idMatch].equipe[0][0]
@@ -345,7 +343,7 @@ class GenerationMatchs extends React.Component {
         //En cas de trop nombreuses tentatives, arret de la génération
         //L'utilisateur est invité à changer les paramètres ou à relancer la génération
         //TODO condition de break à affiner
-        //nbMatchs devrait être assez car le + opti devrait être : nbMatchs / nbManches
+        //nbMatchs devrait être assez car le + opti devrait être : nbMatchs / this.nbTours
         if (breaker > nbMatchs) {
           return 1
         }
@@ -364,7 +362,7 @@ class GenerationMatchs extends React.Component {
     //Ajout des options du match à la fin du tableau contenant les matchs
     matchs.push({
       tournoiID: 0,
-      nbManches: nbManches,
+      nbTours: this.nbTours,
       nbMatchs: nbMatchs,
       speciauxIncompatibles: this.speciauxIncompatibles,
       memesEquipes: this.jamaisMemeCoequipier,
@@ -372,7 +370,7 @@ class GenerationMatchs extends React.Component {
       typeEquipes: 'doublette'
     })
 
-    //Ajout dans ke store
+    //Ajout dans le store
     this._ajoutMatchs(matchs);
 
     //Désactivation de l'affichage du _displayLoading 
@@ -438,7 +436,7 @@ class GenerationMatchs extends React.Component {
     this.props.navigation.navigate({
       name: this.props.route.params.screenStackName,
       params: {
-        nbTours: this.nbTours,
+        nbTours: this.nbTours.toString(),
         speciauxIncompatibles: this.speciauxIncompatibles,
         memesEquipes: this.jamaisMemeCoequipier,
         memesAdversaires: this.eviterMemeAdversaire,
