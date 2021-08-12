@@ -16,6 +16,7 @@ class Changelog extends React.Component {
                 - Tournoi en avec équipes formées disponible{"\n"}
                 - Tournois en triplette possible avec les tournois sans noms{"\n"}
                 - Améliorations de la répartition des joueurs pour les tournois en triplette{"\n"}
+                - En doublette, quand le nombre de joueurs est impair, il est possible d'avoir des équipes en triplettes
                 - Corrections de bugs{"\n"}
               </Text>
             </View>
