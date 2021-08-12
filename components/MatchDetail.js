@@ -52,8 +52,11 @@ class MatchDetail extends React.Component {
     return <Text style={styles.joueurName}>{joueurId} {joueurName}</Text>
   }
 
-  _displayEquipe(equipe, match, equipeType) {
-    let nbJoueur = equipeType
+  _displayEquipe(equipe, match) {
+    let nbJoueur = 2
+    if (match.equipe[equipe - 1][2] != 0) {
+      nbJoueur = 3
+    }
     let nomsJoueurs = []
     if (equipe == 1) {
       for (let i = 0; i < nbJoueur; i++) {
@@ -97,7 +100,6 @@ class MatchDetail extends React.Component {
 
   render() {
     let match = this.props.route.params.match
-    let equipeType =  this.props.route.params.equipeType
     return (
       <View style={styles.main_container}>
         <View style={styles.body_container}>
@@ -107,11 +109,11 @@ class MatchDetail extends React.Component {
             </View>
             <View style={styles.equipe_container}>
               <View style={styles.equipe1}>
-                {this._displayEquipe(1, match, equipeType)}
+                {this._displayEquipe(1, match)}
               </View>
               <Text style={styles.vs}>VS</Text>
               <View style={styles.equipe2}>
-                {this._displayEquipe(2, match, equipeType)}
+                {this._displayEquipe(2, match)}
               </View>
             </View>
           </View>

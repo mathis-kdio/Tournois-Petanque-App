@@ -10,8 +10,11 @@ class MatchItem extends React.Component {
     }
   }
 
-  _displayEquipe(equipe, match, equipeType) {
-    let nbJoueur = equipeType
+  _displayEquipe(equipe, match) {
+    let nbJoueur = 2
+    if (match.equipe[equipe - 1][2] != 0) {
+      nbJoueur = 3
+    }
     let nomsJoueurs = []
     if (equipe == 1) {
       for (let i = 0; i < nbJoueur; i++) {
@@ -78,25 +81,25 @@ class MatchItem extends React.Component {
   }
 
   render() {
-    let { match, displayDetailForMatch, manche, equipeType } = this.props;
+    let { match, displayDetailForMatch, manche } = this.props;
     if (match.manche == manche) {
       return (
         <TouchableOpacity
           style={styles.main_container}
-          onPress={() => displayDetailForMatch(match.id, match, equipeType)}>
+          onPress={() => displayDetailForMatch(match.id, match )}>
           <View style={styles.content_container}>
             <View>
               <Text style={styles.title}>Partie n°{(match.id + 1)}</Text>
             </View>
             <View style={styles.equipe_container}>
               <View style={styles.equipe1}>
-                {this._displayEquipe(1, match, equipeType)}
+                {this._displayEquipe(1, match)}
               </View>
               <View style={styles.vs_container}>
                 {this._displayScore(match.id)}
               </View>
               <View style={styles.equipe2}>
-                {this._displayEquipe(2, match, equipeType)}
+                {this._displayEquipe(2, match)}
               </View>
             </View>
           </View>

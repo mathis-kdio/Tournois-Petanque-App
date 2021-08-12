@@ -9,13 +9,12 @@ class ListeMatchs extends React.Component {
     super(props)
   }
 
-  _displayDetailForMatch = (idMatch, match, equipeType) => {
+  _displayDetailForMatch = (idMatch, match) => {
     this.props.navigation.navigate({
       name: 'MatchDetailStack', 
       params: {
         idMatch: idMatch, 
         match: match,
-        equipeType: equipeType
       }
     })
   }
@@ -23,16 +22,9 @@ class ListeMatchs extends React.Component {
   _displayListeMatch() {
     let nbMatchs = 0
     let matchs = []
-    let equipeType
     if (this.props.listeMatchs != undefined) {
       let tournoi = this.props.listeMatchs //tournoi contient les matchs + la config du tournoi en dernière position
       nbMatchs = tournoi[tournoi.length - 1].nbMatchs //On récup nb matchs dans la config
-      if (tournoi[tournoi.length - 1].typeEquipes == "doublette") {
-        equipeType = 2
-      }
-      else {
-        equipeType = 3
-      }
       matchs = tournoi.slice(0, -1) //On retire la config et donc seulement la liste des matchs
     }
     return (
@@ -45,7 +37,6 @@ class ListeMatchs extends React.Component {
             match={item}
             displayDetailForMatch={this._displayDetailForMatch}
             manche={this.props.extraData}
-            equipeType={equipeType}
           />
         )}
       />
