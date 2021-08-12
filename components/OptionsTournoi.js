@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, View, TextInput, Text, Button } from 'react-native'
 import CheckBox from 'react-native-check-box'
 import { connect } from 'react-redux'
+import { Picker } from '@react-native-picker/picker'
 
 class OptionsTournoi extends React.Component {
 
@@ -12,6 +13,7 @@ class OptionsTournoi extends React.Component {
       speciauxIncompatibles: true,
       memesEquipes: true,
       memesAdversaires: true,
+      complement: "3",
       nbTours: "5"
     }
   }
@@ -40,6 +42,11 @@ class OptionsTournoi extends React.Component {
           memesAdversaires: routeparams.memesAdversaires,
         })
       }
+      if (routeparams.complement != undefined) {
+        this.setState({
+          complement: routeparams.complement
+        })
+      }
     }
   }
 
@@ -57,7 +64,8 @@ class OptionsTournoi extends React.Component {
         nbTours: this.nbTours,
         speciauxIncompatibles: this.state.speciauxIncompatibles,
         memesEquipes: this.state.memesEquipes,
-        memesAdversaires: this.state.memesAdversaires
+        memesAdversaires: this.state.memesAdversaires,
+        complement: this.state.complement
       }
     })
   }
@@ -130,6 +138,20 @@ class OptionsTournoi extends React.Component {
               checkBoxColor={'white'}
             />
           </View>
+          <View style={styles.checkbox_container}>
+            <Text style={styles.texte}>En doublette, si le nombre de joueur n'est pas multiple de 4 alors les joueurs en trop seront mis en :</Text>
+            <View style={styles.pickerContainer}>
+              <Picker
+                selectedValue={this.state.complement}
+                onValueChange={(itemValue, itemIndex) => this.setState({complement: itemValue})}
+                style={styles.picker}
+                dropdownIconColor="white"
+              >
+                <Picker.Item label="Triplette" value="3"/>
+                <Picker.Item label="Tête-à-Tête" value="1"/>
+              </Picker>
+            </View>
+          </View>
         </View>
         <View style={styles.buttonView}>
           {this._boutonValider()}
@@ -169,6 +191,14 @@ const styles = StyleSheet.create({
   texte: {
     fontSize: 15,
     color: 'white'
+  },
+  pickerContainer: {
+    flex: 1,
+    alignItems: 'flex-end',
+  },
+  picker: {
+    color: 'white',
+    width: 150
   }
 })
 

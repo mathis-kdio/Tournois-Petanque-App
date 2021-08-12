@@ -10,6 +10,7 @@ class GenerationMatchs extends React.Component {
     this.jamaisMemeCoequipier = true
     this.eviterMemeAdversaire = true
     this.equipe = "doublette"
+    this.complement = "3"
     this.state = {
       isLoading: true,
       isValid: true,
@@ -87,9 +88,6 @@ class GenerationMatchs extends React.Component {
 
   _generation() {
     let nbjoueurs = this.props.listeJoueurs.length;
-    let speciauxIncompatibles = true
-    let jamaisMemeCoequipier = true;
-    let eviterMemeAdversaire = true;
     let equipe = "doublette"
     let matchs = [];
     let idMatch = 0;
@@ -104,26 +102,32 @@ class GenerationMatchs extends React.Component {
         this.nbTours = routeparams.nbTours
       }
       if (routeparams.speciauxIncompatibles != undefined) {
-        speciauxIncompatibles = routeparams.speciauxIncompatibles
         this.speciauxIncompatibles = routeparams.speciauxIncompatibles
       }
       if (routeparams.memesEquipes != undefined) {
-        jamaisMemeCoequipier = routeparams.memesEquipes
         this.jamaisMemeCoequipier = routeparams.memesEquipes
       }
       if (routeparams.memesAdversaires != undefined) {
-        eviterMemeAdversaire = routeparams.memesAdversaires
         this.eviterMemeAdversaire = routeparams.memesAdversaires
+      }
+      if (routeparams.complement != undefined) {
+        this.complement = routeparams.complement
       }
     }
 
     //Initialisation des matchs dans un tableau
-    let nbMatchsParTour =  Math.ceil(nbjoueurs / 4)
-    let nbMatchs = nbManches * nbMatchsParTour
+    let nbMatchsParTour
+    if (this.complement == "1") {
+      nbMatchsParTour = Math.ceil(nbjoueurs / 4)
+    }
+    else {
+      nbMatchsParTour = Math.floor(nbjoueurs / 4)
+    }
+    let nbMatchs = this.nbTours * nbMatchsParTour
     idMatch = 0;
     for (let i = 1; i < this.nbTours + 1; i++) {
       for (let j = 0; j < nbMatchsParTour; j++) {
-        matchs.push({id: idMatch, manche: i, equipe: [[0,0],[0,0]], score1: undefined, score2: undefined});
+        matchs.push({id: idMatch, manche: i, equipe: [[0,0,0],[0,0,0]], score1: undefined, score2: undefined});
         idMatch++;
       }      
     }
@@ -141,23 +145,56 @@ class GenerationMatchs extends React.Component {
       joueurs[i].equipe = [];
     }
     let nbJoueursSpe = joueursSpe.length
-    //Test si le nombre de joueurs est un multiple de 2 (test lors de l'inscription) mais pas de 4
-    //Si c'est le cas il faut donc ajouter 2 joueurs (joueur 1 et joueur 3) au dernier match de chaque tour
+    //Test si le nombre de joueurs n'est pas un multiple de 4
+    //Si c'est le cas, répartition en fonction de ce qui a été choisi dans les options
     if (nbjoueurs % 4 != 0) {
-      joueurs.push({name: "Complément 1", special: true, id: (nbjoueurs + 1)})
-      joueurs[nbjoueurs].equipe = []
-      joueurs.push({name: "Complément 2", special: true, id: (nbjoueurs + 2)})
-      joueurs[nbjoueurs + 1].equipe = []
-      nbJoueursSpe++
-      
-      for (let i = 1; i < nbManches + 1; i++) {
-        matchs[nbMatchsParTour * i - 1].equipe[0][0] = nbjoueurs + 1
-        matchs[nbMatchsParTour * i - 1].equipe[1][0] = nbjoueurs + 2
+      if (this.complement == "1" && nbjoueurs % 2 == 0) {
+        joueurs.push({name: "Complément 1", special: true, id: (nbjoueurs + 1)})
+        joueurs[nbjoueurs].equipe = []
+        joueurs.push({name: "Complément 2", special: true, id: (nbjoueurs + 2)})
+        joueurs[nbjoueurs + 1].equipe = []
+        nbJoueursSpe++
+        
+        for (let i = 1; i < this.nbTours + 1; i++) {
+          matchs[nbMatchsParTour * i - 1].equipe[0][0] = nbjoueurs + 1
+          matchs[nbMatchsParTour * i - 1].equipe[1][0] = nbjoueurs + 2
+        }
+      }
+      else if (this.complement == "3") {
+        let joueursEnTrop = nbjoueurs % 4
+
+        for (let i = 0; i < joueursEnTrop; i++) {
+          if (this.props.listeJoueurs[nbjoueurs - 1 - i].special == true) {
+            joueursSpe.pop()
+            nbJoueursSpe--
+          }
+          else {
+            joueursNonSpe.pop()
+          }
+          joueurs.pop()
+        }
+
+        for (let i = 1; i < this.nbTours + 1; i++) {
+          matchs[nbMatchsParTour * i - 1].equipe[0][2] = nbjoueurs
+          if (joueursEnTrop == 2) {
+            matchs[nbMatchsParTour * i - 1].equipe[1][2] = nbjoueurs - 1
+          }
+          else if (joueursEnTrop == 3) {
+            matchs[nbMatchsParTour * i - 1].equipe[1][2] = nbjoueurs - 1
+            matchs[nbMatchsParTour * i - 2].equipe[0][2] = nbjoueurs - 2
+          }
+        }
+      }
+      else {
+        this.setState({
+          isGenerationSuccess: false,
+          isLoading: false
+        })  
       }
     }
 
     //Assignation des joueurs spéciaux
-    if (speciauxIncompatibles == true) {
+    if (this.speciauxIncompatibles == true) {
       //Test si joueurs spéciaux ne sont pas trop nombreux
       if (nbJoueursSpe <= nbjoueurs / 2) {
         //Joueurs spéciaux seront toujours joueur 1 ou joueur 3
@@ -195,10 +232,10 @@ class GenerationMatchs extends React.Component {
 
     //Test si possible d'appliquer la règle jamaisMemeCoequipier
     //TO DO : réussir à trouver les bons paramètres pour déclencher le message d'erreur sans empecher trop de tournois
-    if (jamaisMemeCoequipier == true) {
+    if (this.jamaisMemeCoequipier == true) {
       let nbCombinaisons = nbjoueurs
       //Si option de ne pas mettre spéciaux ensemble alors moins de combinaisons possibles
-      if (speciauxIncompatibles == true) {
+      if (this.speciauxIncompatibles == true) {
         if (nbJoueursSpe <= nbjoueurs / 2) {
           nbCombinaisons -= nbJoueursSpe
         }
@@ -261,7 +298,7 @@ class GenerationMatchs extends React.Component {
         else if (matchs[idMatch].equipe[0][1] == 0) {
           //Empeche que le joueur 1 joue plusieurs fois dans la même équipe avec le même joueur
           //Ne s'applique qu'à partir de la manche 2
-          if (jamaisMemeCoequipier == true && i > 0) {
+          if (this.jamaisMemeCoequipier == true && i > 0) {
             if (joueurs[random[j] - 1].equipe.includes(matchs[idMatch].equipe[0][0]) == false) {
               matchs[idMatch].equipe[0][1] = random[j];
               j++
@@ -281,7 +318,7 @@ class GenerationMatchs extends React.Component {
         else if (matchs[idMatch].equipe[1][0] == 0 || matchs[idMatch].equipe[1][1] == 0) {
           //Test si le joueur 1 ou 2 n'a pas déjà joué (ensemble et contre) + de la moitié de ses matchs contre le joueur en cours d'affectation
           let affectationPossible = true
-          if (eviterMemeAdversaire == true) {
+          if (this.eviterMemeAdversaire == true) {
             let moitieNbManches = Math.floor(this.nbTours / 2)
             let totPartiesJ1 = 0
             let totPartiesJ2 = 0
@@ -312,7 +349,7 @@ class GenerationMatchs extends React.Component {
             else if (matchs[idMatch].equipe[1][1] == 0) {
               //Empeche que le joueur 4 joue plusieurs fois dans la même équipe avec le même joueur
               //Ne s'applique qu'à partir de la manche 2
-              if (jamaisMemeCoequipier == true && i > 0) {
+              if (this.jamaisMemeCoequipier == true && i > 0) {
                 if (joueurs[random[j] - 1].equipe.includes(matchs[idMatch].equipe[1][0]) == false) {
                   matchs[idMatch].equipe[1][1] = random[j];
                   j++
@@ -367,7 +404,8 @@ class GenerationMatchs extends React.Component {
       speciauxIncompatibles: this.speciauxIncompatibles,
       memesEquipes: this.jamaisMemeCoequipier,
       memesAdversaires: this.eviterMemeAdversaire,
-      typeEquipes: 'doublette'
+      typeEquipes: 'doublette',
+      complement: this.complement
     })
 
     //Ajout dans le store

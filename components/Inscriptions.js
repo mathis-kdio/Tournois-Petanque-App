@@ -20,7 +20,8 @@ class Inscription extends React.Component {
       isChecked: false,
       etatBouton: false,
       typeEquipes: 'doublette',
-      avecEquipes: false
+      avecEquipes: false,
+      complement: "3"
     }
   }
 
@@ -54,6 +55,11 @@ class Inscription extends React.Component {
       }
       if (routeparams.memesAdversaires != undefined) {
         this.memesAdversaires = routeparams.memesAdversaires
+      }
+      if (routeparams.complement != undefined && this.state.complement != routeparams.complement) {
+        this.setState({
+          complement: routeparams.complement
+        })
       }
     }
   }
@@ -125,6 +131,7 @@ class Inscription extends React.Component {
         memesEquipes: this.memesEquipes,
         memesAdversaires: this.memesAdversaires,
         typeEquipes: this.state.typeEquipes,
+        complement: this.state.complement,
         screenStackName: 'InscriptionStack'
       }
     })
@@ -138,6 +145,7 @@ class Inscription extends React.Component {
         speciauxIncompatibles: this.speciauxIncompatibles,
         memesEquipes: this.memesEquipes,
         memesAdversaires: this.memesAdversaires,
+        complement: this.state.complement,
         screenStackName: 'InscriptionStack'
       }
     })
@@ -206,19 +214,25 @@ class Inscription extends React.Component {
         }
       }
       else if (this.state.typeEquipes == "triplette" && this.props.listeJoueurs.length % 6 != 0) {
-        boutonTitle = "Avec des équipes en triplette, le nombre de joueurs doit être un multiple de 6"
+        boutonTitle = "En triplette avec des équipes formées, le nombre de joueurs doit être un multiple de 6"
         boutonDesactive = true
       }
     }
-    else {
-      if (this.state.typeEquipes == "doublette" && (this.props.listeJoueurs.length % 2 != 0 || this.props.listeJoueurs.length == 0)) {
-        boutonTitle = "En doublette, le nombre de joueurs doit être un multiple de 2"
+    else if (this.state.typeEquipes == "doublette" && this.props.listeJoueurs.length % 4 != 0) {
+      if (this.state.complement == "3") {
+        boutonTitle = "Nombre de joueurs pas multiple de 4, l'option sélectionnée formera des triplettes pour compléter"
+      }
+      else if (this.props.listeJoueurs.length % 2 == 0 && this.state.complement == "1") {
+        boutonTitle = "Nombre de joueurs pas multiple de 4, l'option sélectionnée formera un tête-à-tête"
+      }
+      else if (this.state.complement != "3") {
+        boutonTitle = "Nombre de joueurs pas multiple de 4, veuiller choisir l'option pour former des triplettes pour compléter si vous voulez lancer"
         boutonDesactive = true
       }
-      if (this.state.typeEquipes == "triplette" && (this.props.listeJoueurs.length % 6 != 0 || this.props.listeJoueurs.length < 6)) {
-        boutonTitle = "En triplette, le nombre de joueurs doit être un multiple de 6"
-        boutonDesactive = true
-      }
+    }
+    else if (this.state.typeEquipes == "triplette" && (this.props.listeJoueurs.length % 6 != 0 || this.props.listeJoueurs.length < 6)) {
+      boutonTitle = "En triplette, le nombre de joueurs doit être un multiple de 6"
+      boutonDesactive = true
     }
     return (
       <Button disabled={boutonDesactive} color='green' title={boutonTitle} onPress={() => this._commencer()}/>
