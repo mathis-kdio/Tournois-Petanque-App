@@ -118,15 +118,17 @@ class GenerationMatchsAvecEquipes extends React.Component {
     }
 
     //Initialisation des matchs dans un tableau
-    let nbMatchsParTour =  Math.ceil(nbjoueurs / 4)
-    let nbMatchs = this.nbTours * nbMatchsParTour
     let nbEquipes
+    let nbMatchsParTour
     if (this.typeEquipes == "doublette") {
       nbEquipes = this.props.listeJoueurs.length / 2
+      nbMatchsParTour = Math.ceil(nbjoueurs / 4)
     }
     else {
       nbEquipes = this.props.listeJoueurs.length / 3
+      nbMatchsParTour = Math.ceil(nbjoueurs / 6)
     }
+    let nbMatchs = this.nbTours * nbMatchsParTour
 
     idMatch = 0;
     for (let i = 1; i < this.nbTours + 1; i++) {
