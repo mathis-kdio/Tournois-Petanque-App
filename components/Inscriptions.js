@@ -198,7 +198,7 @@ class Inscription extends React.Component {
         boutonDesactive = true
       }
       else if (this.state.typeEquipes == "doublette") {
-        if (this.props.listeJoueurs.length % 4 != 0) {
+        if (this.props.listeJoueurs.length % 4 != 0 || this.props.listeJoueurs.length == 0) {
           boutonTitle = "Avec des équipes en doublette, le nombre de joueurs doit être un multiple de 4"
           boutonDesactive = true
         }
