@@ -132,12 +132,12 @@ class GenerationMatchsTriplette extends React.Component {
     //Le tableau contenant les tous les joueurs permettra de connaitre dans quel équipe chaque joueur a été
     for (let i = 0; i < nbjoueurs; i++) {
       if (this.props.listeJoueurs[i].special === true) {
-        joueursSpe.push(this.props.listeJoueurs[i]);
+        joueursSpe.push({...this.props.listeJoueurs[i]});
       }
       else {
-        joueursNonSpe.push(this.props.listeJoueurs[i]);
+        joueursNonSpe.push({...this.props.listeJoueurs[i]});
       }
-      joueurs.push(this.props.listeJoueurs[i]);
+      joueurs.push({...this.props.listeJoueurs[i]});
       joueurs[i].equipe = [];
     }
     let nbJoueursSpe = joueursSpe.length
@@ -192,7 +192,7 @@ class GenerationMatchsTriplette extends React.Component {
     else {
       joueursNonSpe.splice(0, joueursNonSpe.length)
       for (let i = 0; i < nbjoueurs; i++) {
-        joueursNonSpe.push(this.props.listeJoueurs[i]);
+        joueursNonSpe.push({...this.props.listeJoueurs[i]});
       }
     }
 
