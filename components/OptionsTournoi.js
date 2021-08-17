@@ -138,8 +138,8 @@ class OptionsTournoi extends React.Component {
               checkBoxColor={'white'}
             />
           </View>
-          <View style={styles.checkbox_container}>
-            <Text style={styles.texte}>En doublette, si le nombre de joueur n'est pas multiple de 4 alors les joueurs en trop seront mis en :</Text>
+          <View style={styles.avecEquipes_container}>
+            <Text style={styles.avecEquipes_texte}>En doublette, si le nombre de joueur n'est pas multiple de 4 alors les joueurs en trop seront mis en :</Text>
             <View style={styles.pickerContainer}>
               <Picker
                 selectedValue={this.state.complement}
@@ -189,6 +189,15 @@ const styles = StyleSheet.create({
     paddingRight: 15
   },
   texte: {
+    fontSize: 15,
+    color: 'white'
+  },
+  avecEquipes_container: {
+    flex: 1,
+    flexDirection: 'row'
+  },
+  avecEquipes_texte: {
+    flex: 1,
     fontSize: 15,
     color: 'white'
   },
