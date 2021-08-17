@@ -37,6 +37,7 @@
     "react-native-tab": "^1.0.0",
     "react-native-tab-view": "^2.16.0",
     "react-native-vector-icons": "^8.1.0",
+    "react-native-version-check-expo": "^3.4.2",
     "react-native-web": "~0.13.12",
     "react-redux": "^7.2.4",
     "redux": "^4.1.0",

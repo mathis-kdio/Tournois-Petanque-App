@@ -3,8 +3,19 @@ import { StyleSheet, View, Text, Button, Image } from 'react-native'
 import { expo } from '../app.json'
 import { connect } from 'react-redux'
 import * as Linking from 'expo-linking'
+import VersionCheck from 'react-native-version-check-expo'
 
 class Accueil extends React.Component {
+  
+  componentDidMount() {
+    VersionCheck.needUpdate()
+    .then(async res => {
+      if (res.isNeeded) {
+        Linking.openURL("market://details?id=com.MK.PetanqueGCU")
+      }
+    })
+  }
+
   _showMatchs() {
     this.props.navigation.navigate('InscriptionGeneral', {screen: 'ListeMatchsInscription',});  
   }
