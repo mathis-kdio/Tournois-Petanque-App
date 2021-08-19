@@ -6,6 +6,7 @@ class ChoixTournois extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      teteatete: false,
       doublette: true,
       triplette: false,
       avecNom: true,
@@ -16,7 +17,10 @@ class ChoixTournois extends React.Component {
 
   _inscription() {
     let typeEquipes
-    if (this.state.doublette == true) {
+    if (this.state.teteatete == true) {
+      typeEquipes = 'teteatete'
+    }
+    else if (this.state.doublette == true) {
       typeEquipes = 'doublette'
     }
     else {
@@ -28,17 +32,17 @@ class ChoixTournois extends React.Component {
     let avecEquipes
     if (this.state.avecNom == true) {
       screenName = 'InscriptionGeneral'
-      navigatorScreenName = 'InscriptionStack'
+      navigatorScreenName = 'InscriptionGeneral'
       avecEquipes = false
     }
     else if (this.state.sansNom == true) {
       screenName = 'InscriptionsSansNoms'
-      navigatorScreenName = 'InscriptionsSansNomsStack'
+      navigatorScreenName = 'InscriptionsSansNoms'
       avecEquipes = false
     }
     else {
       screenName = 'InscriptionGeneral'
-      navigatorScreenName = 'InscriptionStack'
+      navigatorScreenName = 'InscriptionGeneral'
       avecEquipes = true
     }
     this.props.navigation.navigate(screenName, {
@@ -48,12 +52,11 @@ class ChoixTournois extends React.Component {
   }
 
   _buttonInscription() {
+    let boutonDesactive = true
     if(this.state.avecNom == true || this.state.sansNom == true || this.state.avecEquipes == true) {
-      return <Button color="#1c3969" title="Valider et passer à l'inscription" onPress={() => this._inscription()}/>
+      boutonDesactive = false
     }
-    else {
-      return <Button color="#1c3969" disabled title="Valider et passer à l'inscription" onPress={() => this._inscription()}/>
-    }
+    return <Button color="#1c3969" disabled={boutonDesactive} title="Valider et passer à l'inscription" onPress={() => this._inscription()}/>
   }
 
   render() {
@@ -68,8 +71,24 @@ class ChoixTournois extends React.Component {
               <CheckBox
                 onClick={()=>{
                   this.setState({
-                    doublette: !this.state.doublette,
-                    triplette: !this.state.triplette
+                    teteatete: true,
+                    doublette: false,
+                    triplette: false
+                  })
+                }}
+                isChecked={this.state.teteatete}
+                leftText={"Tête-à-tête"}
+                leftTextStyle={{color: "white", fontSize: 15}}
+                checkBoxColor={'white'}
+              />
+            </View>
+            <View style={styles.checkbox_container}>
+              <CheckBox
+                onClick={()=>{
+                  this.setState({
+                    teteatete: false,
+                    doublette: true,
+                    triplette: false
                   })
                 }}
                 isChecked={this.state.doublette}
@@ -82,8 +101,9 @@ class ChoixTournois extends React.Component {
               <CheckBox
               onClick={()=>{
                 this.setState({
-                  doublette: !this.state.doublette,
-                  triplette: !this.state.triplette
+                  teteatete: false,
+                  doublette: false,
+                  triplette: true
                 })
               }}
               isChecked={this.state.triplette}

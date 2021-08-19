@@ -53,15 +53,9 @@ class MatchItem extends React.Component {
     }
     if (equipe == 1) {
       styleColor = colorEquipe1
-      if(joueur === undefined) {
-        joueurName = "joueur 1 :"
-      }
     }
     else {
       styleColor = colorEquipe2
-      if(joueur === undefined) {
-        joueurName = "joueur 2 :"
-      }
     }
     return <Text style={{color:styleColor, fontSize: 20}}>{joueurId} {joueurName}</Text>
   }

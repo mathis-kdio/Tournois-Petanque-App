@@ -40,14 +40,6 @@ class MatchDetail extends React.Component {
       joueurId = joueur.id
       joueurName = joueur.name
     }
-    else {
-      if (equipe == 1) {
-        joueurName = "joueur 1"
-      }
-      else {
-        joueurName = "joueur 2"
-      }
-    }
     
     return <Text style={styles.joueurName}>{joueurId} {joueurName}</Text>
   }

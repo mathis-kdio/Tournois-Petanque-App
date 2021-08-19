@@ -9,7 +9,7 @@ class GenerationMatchs extends React.Component {
     this.speciauxIncompatibles = true
     this.jamaisMemeCoequipier = true
     this.eviterMemeAdversaire = true
-    this.equipe = "doublette"
+    this.typeEquipes = "doublette"
     this.complement = "3"
     this.state = {
       isLoading: true,
@@ -88,7 +88,6 @@ class GenerationMatchs extends React.Component {
 
   _generation() {
     let nbjoueurs = this.props.listeJoueurs.length;
-    let equipe = "doublette"
     let matchs = [];
     let idMatch = 0;
     let joueursSpe = [];
@@ -110,6 +109,9 @@ class GenerationMatchs extends React.Component {
       if (routeparams.memesAdversaires != undefined) {
         this.eviterMemeAdversaire = routeparams.memesAdversaires
       }
+      if (routeparams.typeEquipes != undefined) {
+        this.typeEquipes = routeparams.typeEquipes
+      }
       if (routeparams.complement != undefined) {
         this.complement = routeparams.complement
       }
@@ -117,11 +119,16 @@ class GenerationMatchs extends React.Component {
 
     //Initialisation des matchs dans un tableau
     let nbMatchsParTour
-    if (this.complement == "1") {
-      nbMatchsParTour = Math.ceil(nbjoueurs / 4)
+    if (this.typeEquipes == "teteatete") {
+      nbMatchsParTour = nbjoueurs / 2
     }
-    else {
-      nbMatchsParTour = Math.floor(nbjoueurs / 4)
+    else if (this.typeEquipes == "doublette") {
+      if (this.complement == "1") {
+        nbMatchsParTour = Math.ceil(nbjoueurs / 4)
+      }
+      else {
+        nbMatchsParTour = Math.floor(nbjoueurs / 4)
+      }
     }
     let nbMatchs = this.nbTours * nbMatchsParTour
     idMatch = 0;
@@ -145,9 +152,9 @@ class GenerationMatchs extends React.Component {
       joueurs[i].equipe = []
     }
     let nbJoueursSpe = joueursSpe.length
-    //Test si le nombre de joueurs n'est pas un multiple de 4
+    //Test si mode doublette et qu'il faut compléter
     //Si c'est le cas, répartition en fonction de ce qui a été choisi dans les options
-    if (nbjoueurs % 4 != 0) {
+    if (this.typeEquipes == "doublette" && nbjoueurs % 4 != 0) {
       if (this.complement == "1" && nbjoueurs % 2 == 0) {
         joueurs.push({name: "Complément 1", special: true, id: (nbjoueurs + 1)})
         joueurs[nbjoueurs].equipe = []
@@ -295,7 +302,7 @@ class GenerationMatchs extends React.Component {
           breaker = 0
         }
         //Affectation joueur 2
-        else if (matchs[idMatch].equipe[0][1] == 0) {
+        else if (this.typeEquipes != "teteatete" && matchs[idMatch].equipe[0][1] == 0) {
           //Empeche que le joueur 1 joue plusieurs fois dans la même équipe avec le même joueur
           //Ne s'applique qu'à partir de la manche 2
           if (this.jamaisMemeCoequipier == true && i > 0) {
@@ -321,19 +328,23 @@ class GenerationMatchs extends React.Component {
           if (this.eviterMemeAdversaire == true) {
             let moitieNbManches = Math.floor(this.nbTours / 2)
             let totPartiesJ1 = 0
-            let totPartiesJ2 = 0
             let joueur1 = matchs[idMatch].equipe[0][0]
             let joueur2 = matchs[idMatch].equipe[0][1]
+            let totPartiesJ2 = 0
             //Compte le nombre de fois ou joueur 1 ou 2 a été l'adverse de joueur en affectation + ou bien si joueur 3 ou 4 a été l'adverse de joueur en affectation
             const occurrencesAdversaireDansEquipe1 = (arr, joueurAdverse, joueurAffect) => arr.reduce((a, v) => ((v.equipe[0][0] === joueurAdverse || v.equipe[0][1] === joueurAdverse) && (v.equipe[1][0] === joueurAffect || v.equipe[1][1] === joueurAffect) ? a + 1 : a), 0);
             const occurrencesAdversaireDansEquipe2 = (arr, joueurAdverse, joueurAffect) => arr.reduce((a, v) => ((v.equipe[1][0] === joueurAdverse || v.equipe[1][1] === joueurAdverse) && (v.equipe[0][0] === joueurAffect || v.equipe[0][1] === joueurAffect) ? a + 1 : a), 0);
             totPartiesJ1 += occurrencesAdversaireDansEquipe1(matchs, joueur1, random[j])
             totPartiesJ1 += occurrencesAdversaireDansEquipe2(matchs, joueur1, random[j])
-            totPartiesJ2 += occurrencesAdversaireDansEquipe1(matchs, joueur2, random[j])
-            totPartiesJ2 += occurrencesAdversaireDansEquipe2(matchs, joueur2, random[j])
+            if (this.typeEquipes != "teteatete") {
+              totPartiesJ2 += occurrencesAdversaireDansEquipe1(matchs, joueur2, random[j])
+              totPartiesJ2 += occurrencesAdversaireDansEquipe2(matchs, joueur2, random[j])
+            }
             //+1 si joueur en cours d'affectation a déjà joué dans la même équipe
             totPartiesJ1 += joueurs[joueur1 - 1].equipe.includes(random[j]) ? 1 : 0
-            totPartiesJ2 += joueurs[joueur2 - 1].equipe.includes(random[j]) ? 1 : 0
+            if (this.typeEquipes != "teteatete") {
+              totPartiesJ2 += joueurs[joueur2 - 1].equipe.includes(random[j]) ? 1 : 0
+            }
             if (totPartiesJ1 >= moitieNbManches || totPartiesJ2 >= moitieNbManches) {
               affectationPossible = false
             }
@@ -346,7 +357,7 @@ class GenerationMatchs extends React.Component {
               breaker = 0
             }
             //Affectation joueur 4
-            else if (matchs[idMatch].equipe[1][1] == 0) {
+            else if (this.typeEquipes != "teteatete" && matchs[idMatch].equipe[1][1] == 0) {
               //Empeche que le joueur 4 joue plusieurs fois dans la même équipe avec le même joueur
               //Ne s'applique qu'à partir de la manche 2
               if (this.jamaisMemeCoequipier == true && i > 0) {
@@ -387,11 +398,13 @@ class GenerationMatchs extends React.Component {
       }
 
       idMatch = i * nbMatchsParTour;
-      for (let j = 0; j < nbMatchsParTour; j++) {
-        joueurs[matchs[idMatch + j].equipe[0][0] - 1].equipe.push(matchs[idMatch + j].equipe[0][1]);
-        joueurs[matchs[idMatch + j].equipe[0][1] - 1].equipe.push(matchs[idMatch + j].equipe[0][0]);
-        joueurs[matchs[idMatch + j].equipe[1][0] - 1].equipe.push(matchs[idMatch + j].equipe[1][1]);
-        joueurs[matchs[idMatch + j].equipe[1][1] - 1].equipe.push(matchs[idMatch + j].equipe[1][0]);
+      if (this.typeEquipes != "teteatete") {
+        for (let j = 0; j < nbMatchsParTour; j++) {
+          joueurs[matchs[idMatch + j].equipe[0][0] - 1].equipe.push(matchs[idMatch + j].equipe[0][1]);
+          joueurs[matchs[idMatch + j].equipe[1][0] - 1].equipe.push(matchs[idMatch + j].equipe[1][1]);
+          joueurs[matchs[idMatch + j].equipe[0][1] - 1].equipe.push(matchs[idMatch + j].equipe[0][0]);
+          joueurs[matchs[idMatch + j].equipe[1][1] - 1].equipe.push(matchs[idMatch + j].equipe[1][0]);
+        }
       }
       idMatch = nbMatchsParTour * (i + 1);
     }
@@ -404,7 +417,7 @@ class GenerationMatchs extends React.Component {
       speciauxIncompatibles: this.speciauxIncompatibles,
       memesEquipes: this.jamaisMemeCoequipier,
       memesAdversaires: this.eviterMemeAdversaire,
-      typeEquipes: 'doublette',
+      typeEquipes: this.typeEquipes,
       complement: this.complement
     })
 
@@ -478,7 +491,7 @@ class GenerationMatchs extends React.Component {
         speciauxIncompatibles: this.speciauxIncompatibles,
         memesEquipes: this.jamaisMemeCoequipier,
         memesAdversaires: this.eviterMemeAdversaire,
-        equipe: this.equipe
+        typeEquipes: this.typeEquipes
       }
     })
   }

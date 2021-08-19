@@ -78,30 +78,25 @@ class InscriptionsSansNoms extends React.Component {
       this._ajoutJoueur(true)
     }
 
-    if (this.state.typeEquipes == "doublette") {
-      this.props.navigation.navigate({
-        name: 'GenerationMatchs',
-        params: {
-          nbTours: parseInt(this.nbTours),
-          speciauxIncompatibles: this.speciauxIncompatibles,
-          memesEquipes: this.memesEquipes,
-          memesAdversaires: this.memesAdversaires,
-          screenStackName: 'InscriptionsSansNomsStack'
-        }
-      })
+    let screenName
+    if (this.state.typeEquipes == "doublette" || this.state.typeEquipes == "teteatete") {
+      screenName = 'GenerationMatchs'
     }
     else {
-      this.props.navigation.navigate({
-        name: 'GenerationMatchsTriplettes',
-        params: {
-          nbTours: parseInt(this.nbTours),
-          speciauxIncompatibles: this.speciauxIncompatibles,
-          memesEquipes: this.memesEquipes,
-          memesAdversaires: this.memesAdversaires,
-          screenStackName: 'InscriptionsSansNomsStack'
-        }
-      })
+      screenName = 'GenerationMatchsTriplettes'
     }
+
+    this.props.navigation.navigate({
+      name: screenName,
+      params: {
+        nbTours: parseInt(this.nbTours),
+        speciauxIncompatibles: this.speciauxIncompatibles,
+        memesEquipes: this.memesEquipes,
+        memesAdversaires: this.memesAdversaires,
+        typeEquipes: this.state.typeEquipes,
+        screenStackName: 'InscriptionsSansNoms'
+      }
+    })
   }
 
   _options() {
@@ -112,13 +107,24 @@ class InscriptionsSansNoms extends React.Component {
         speciauxIncompatibles: this.speciauxIncompatibles,
         memesEquipes: this.memesEquipes,
         memesAdversaires: this.memesAdversaires,
-        screenStackName: 'InscriptionsSansNomsStack'
+        screenStackName: 'InscriptionsSansNoms'
       }
     })
   }
 
+  _nbJoueurs() {
+    let nbJoueur = 0
+    if (!isNaN(this.state.nbJoueurNormaux)) {
+      nbJoueur = this.state.nbJoueurNormaux
+    }
+    if (!isNaN(this.state.nbJoueurSpeciaux)) {
+      nbJoueur += this.state.nbJoueurSpeciaux
+    }
+    return nbJoueur
+  }
+
   _showNbJoueur() {
-    let nbJoueur = this.state.nbJoueurNormaux + this.state.nbJoueurSpeciaux;
+    let nbJoueur = this._nbJoueurs()
     return (
       <Text>{nbJoueur}</Text>
     )
@@ -127,8 +133,8 @@ class InscriptionsSansNoms extends React.Component {
   _boutonCommencer() {
     let boutonDesactive
     let boutonTitle = ''
-    let nbJoueurs = this.state.nbJoueurNormaux + this.state.nbJoueurSpeciaux
-    if (this.state.typeEquipes == 'doublette') {
+    let nbJoueurs = this._nbJoueurs()
+    if (this.state.typeEquipes == 'doublette' || this.state.typeEquipes == "teteatete") {
       if (nbJoueurs % 2 == 0 && nbJoueurs != 0) {
         boutonTitle = 'Commencer le tournoi'
         boutonDesactive = false

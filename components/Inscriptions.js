@@ -197,6 +197,10 @@ class Inscription extends React.Component {
         boutonTitle = "Des joueurs n'ont pas d'équipe"
         boutonDesactive = true
       }
+      else if (this.state.typeEquipes == "teteatete" && (this.props.listeJoueurs.length % 2 != 0 || this.props.listeJoueurs.length < 2)) {
+        boutonTitle = "En équipes, le nombre d'equipe doit être un multiple de 2"
+        boutonDesactive = true
+      }
       else if (this.state.typeEquipes == "doublette") {
         if (this.props.listeJoueurs.length % 4 != 0 || this.props.listeJoueurs.length == 0) {
           boutonTitle = "Avec des équipes en doublette, le nombre de joueurs doit être un multiple de 4"
@@ -213,10 +217,14 @@ class Inscription extends React.Component {
           }
         }
       }
-      else if (this.state.typeEquipes == "triplette" && this.props.listeJoueurs.length % 6 != 0) {
+      else if (this.state.typeEquipes == "triplette" && (this.props.listeJoueurs.length % 6 != 0 || this.props.listeJoueurs.length == 0)) {
         boutonTitle = "En triplette avec des équipes formées, le nombre de joueurs doit être un multiple de 6"
         boutonDesactive = true
       }
+    }
+    else if (this.state.typeEquipes == "teteatete" && (this.props.listeJoueurs.length % 2 != 0 || this.props.listeJoueurs.length < 2)) {
+      boutonTitle = "En tête-à-tête, le nombre de joueurs doit être un multiple de 2"
+      boutonDesactive = true
     }
     else if (this.state.typeEquipes == "doublette" && this.props.listeJoueurs.length % 4 != 0) {
       if (this.state.complement == "3") {
