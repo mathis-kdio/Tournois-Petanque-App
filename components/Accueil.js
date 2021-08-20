@@ -17,7 +17,7 @@ class Accueil extends React.Component {
   }
 
   _showMatchs() {
-    this.props.navigation.navigate('InscriptionGeneral', {screen: 'ListeMatchsInscription',});  
+    this.props.navigation.navigate('ListeMatchsInscription');  
   }
 
   _showInscription() {

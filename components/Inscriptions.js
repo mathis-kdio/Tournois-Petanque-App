@@ -132,7 +132,7 @@ class Inscription extends React.Component {
         memesAdversaires: this.memesAdversaires,
         typeEquipes: this.state.typeEquipes,
         complement: this.state.complement,
-        screenStackName: 'InscriptionStack'
+        screenStackName: 'InscriptionGeneral'
       }
     })
   }
@@ -146,7 +146,7 @@ class Inscription extends React.Component {
         memesEquipes: this.memesEquipes,
         memesAdversaires: this.memesAdversaires,
         complement: this.state.complement,
-        screenStackName: 'InscriptionStack'
+        screenStackName: 'InscriptionGeneral'
       }
     })
   }

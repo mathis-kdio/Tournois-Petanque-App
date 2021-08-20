@@ -36,8 +36,12 @@ class GenerationMatchsAvecEquipes extends React.Component {
     }, 1000);
   }
 
-  _displayListeMatch () {
-    this.props.navigation.navigate('ListeMatchsInscription');
+  _displayListeMatch() {
+    this.props.navigation.reset({
+      index: 0,
+      routes: [{name: 'ListeMatchsInscription'}],
+      key: null
+    })
   }
 
   _lanceurGeneration() {
