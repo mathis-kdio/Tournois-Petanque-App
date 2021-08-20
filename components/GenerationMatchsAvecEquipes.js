@@ -116,7 +116,7 @@ class GenerationMatchsAvecEquipes extends React.Component {
         eviterMemeAdversaire = routeparams.memesAdversaires
         this.eviterMemeAdversaire = routeparams.memesAdversaires
       }
-      if (routeparams.memesAdversaires != undefined) {
+      if (routeparams.typeEquipes != undefined) {
         this.typeEquipes = routeparams.typeEquipes
       }
     }
@@ -124,12 +124,16 @@ class GenerationMatchsAvecEquipes extends React.Component {
     //Initialisation des matchs dans un tableau
     let nbEquipes
     let nbMatchsParTour
-    if (this.typeEquipes == "doublette") {
-      nbEquipes = this.props.listeJoueurs.length / 2
+    if (this.typeEquipes == "teteatete") {
+      nbEquipes = nbjoueurs
+      nbMatchsParTour = nbjoueurs / 2
+    }
+    else if (this.typeEquipes == "doublette") {
+      nbEquipes = nbjoueurs / 2
       nbMatchsParTour = Math.ceil(nbjoueurs / 4)
     }
     else {
-      nbEquipes = this.props.listeJoueurs.length / 3
+      nbEquipes = nbjoueurs / 3
       nbMatchsParTour = Math.ceil(nbjoueurs / 6)
     }
     let nbMatchs = this.nbTours * nbMatchsParTour
@@ -172,7 +176,9 @@ class GenerationMatchsAvecEquipes extends React.Component {
         //Affectation equipe 1
         if (matchs[idMatch].equipe[0][0] == 0) {
           matchs[idMatch].equipe[0][0] = equipe[randomEquipesIds[j]][0]
-          matchs[idMatch].equipe[0][1] = equipe[randomEquipesIds[j]][1]
+          if (this.typeEquipes == "doublette") {
+            matchs[idMatch].equipe[0][1] = equipe[randomEquipesIds[j]][1]
+          }
           if (this.typeEquipes == "triplette") {
             matchs[idMatch].equipe[0][2] = equipe[randomEquipesIds[j]][2]
           }
@@ -184,7 +190,9 @@ class GenerationMatchsAvecEquipes extends React.Component {
           //Test si les équipes 1 et 2 n'ont pas déjà jouées ensemble
           if (eviterMemeAdversaire == true) {
             matchs[idMatch].equipe[1][0] = equipe[randomEquipesIds[j]][0]
-            matchs[idMatch].equipe[1][1] = equipe[randomEquipesIds[j]][1]
+            if (this.typeEquipes == "doublette") {
+              matchs[idMatch].equipe[1][1] = equipe[randomEquipesIds[j]][1]
+            }
             if (this.typeEquipes == "triplette") {
               matchs[idMatch].equipe[1][2] = equipe[randomEquipesIds[j]][2]
             }

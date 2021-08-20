@@ -183,13 +183,17 @@ class Inscription extends React.Component {
   _boutonCommencer() {
     let boutonDesactive = false
     let boutonTitle = 'Commencer le tournoi'
+    let nbJoueurs = this.props.listeJoueurs.length
 
     let nbEquipes
-    if (this.state.typeEquipes == "doublette") {
-      nbEquipes = Math.ceil(this.props.listeJoueurs.length / 2)
+    if (this.state.typeEquipes == "teteatete") {
+      nbEquipes = nbJoueurs
+    }
+    else if (this.state.typeEquipes == "doublette") {
+      nbEquipes = Math.ceil(nbJoueurs / 2)
     }
     else {
-      nbEquipes = Math.ceil(this.props.listeJoueurs.length / 3)
+      nbEquipes = Math.ceil(nbJoueurs / 3)
     }
 
     if (this.state.avecEquipes == true) {
