@@ -152,7 +152,7 @@ function General() {
 
       <Stack.Screen name="ChoixTournois" component={ChoixTournois} options={{title: 'Choix du mode de tournoi', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
       
-      <Stack.Screen name="InscriptionGeneral" component={Inscription} options={{title: 'Inscription', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
+      <Stack.Screen name="InscriptionsAvecNoms" component={Inscription} options={{title: 'Inscription Avec Noms', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
       <Stack.Screen name="InscriptionsSansNoms" component={InscriptionsSansNoms} options={{title: 'Inscription Sans Noms', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
       
       <Stack.Screen name="OptionsTournoi" component={OptionsTournoi} options={{title: 'Options du tournoi', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />     

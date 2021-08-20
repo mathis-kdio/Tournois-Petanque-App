@@ -28,25 +28,21 @@ class ChoixTournois extends React.Component {
     }
 
     let screenName
-    let navigatorScreenName
     let avecEquipes
     if (this.state.avecNom == true) {
-      screenName = 'InscriptionGeneral'
-      navigatorScreenName = 'InscriptionGeneral'
+      screenName = 'InscriptionsAvecNoms'
       avecEquipes = false
     }
     else if (this.state.sansNom == true) {
       screenName = 'InscriptionsSansNoms'
-      navigatorScreenName = 'InscriptionsSansNoms'
       avecEquipes = false
     }
     else {
-      screenName = 'InscriptionGeneral'
-      navigatorScreenName = 'InscriptionGeneral'
+      screenName = 'InscriptionsAvecNoms'
       avecEquipes = true
     }
-    this.props.navigation.navigate(screenName, {
-      screen: navigatorScreenName, 
+    this.props.navigation.navigate({
+      name: screenName, 
       params: { typeEquipes: typeEquipes, avecEquipes: avecEquipes }
     })
   }
