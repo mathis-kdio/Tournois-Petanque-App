@@ -13,11 +13,13 @@ class Changelog extends React.Component {
             <View style={styles.informations_container}>
               <Text style={styles.titre}>Version 1.5 :</Text>
               <Text style={styles.informations_texte}>
-                - Tournoi en avec équipes formées disponible{"\n"}
-                - Tournois en triplette possible avec les tournois sans noms{"\n"}
-                - Améliorations de la répartition des joueurs pour les tournois en triplette{"\n"}
-                - En doublette, quand le nombre de joueurs est impair, il est possible d'avoir des équipes en triplettes
-                - Corrections de bugs{"\n"}
+                - Tournois en équipes formées disponible.{"\n"}
+                - Tournois en tête-à-tête disponible.{"\n"}
+                - Tournois sans noms en triplette disponible.{"\n"}
+                - Améliorations de la répartition des joueurs pour les tournois en triplette.{"\n"}
+                - En doublette, quand le nombre de joueurs est impair, il est possible de choisir d'avoir des équipes en triplettes ou en tête-à-tête.{"\n"}
+                - Alerte si mise à jour disponible.{"\n"}
+                - Corrections de bugs.{"\n"}
               </Text>
             </View>
             <View style={styles.informations_container}>
