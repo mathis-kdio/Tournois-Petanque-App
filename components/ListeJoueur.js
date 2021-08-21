@@ -53,7 +53,7 @@ class ListeJoueur extends React.Component {
       else {
         return (
           <View>
-            <Icon.Button name="edit" backgroundColor="green" onPress={() => this._renommerJoueur(joueur)}/>
+            <Icon.Button name="check" backgroundColor="green" onPress={() => this._renommerJoueur(joueur)}/>
           </View>
         )
       }
