@@ -92,7 +92,12 @@ class Accueil extends React.Component {
             <Button color="#1c3969" title='Noter et laisser un commentaire' onPress={() => Linking.openURL('market://details?id=com.MK.PetanqueGCU&showAllReviews=true')}/>
           </View>
           <View style={styles.buttonViewCreate}>
-            <Button color="#1c3969" title='Changelog' onPress={() => this.props.navigation.navigate('Changelog')}/>
+            <View style={styles.buttonView}>
+              <Button color="#1c3969" title='Changelog' onPress={() => this.props.navigation.navigate('Changelog')}/>
+            </View>
+            <View style={styles.buttonView}>
+              <Button color="#1c3969" title='Décourvrir le GCU' onPress={() => Linking.openURL('https://www.gcu.asso.fr/')}/>
+            </View> 
           </View>
           <Text style={styles.create_text}>Par Mathis Cadio</Text>
           <Text style={styles.create_text}>Version: {expo.version}</Text>
@@ -144,6 +149,7 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   buttonViewCreate: {
+    flexDirection: 'row',
     marginBottom: 10
   }
 })
