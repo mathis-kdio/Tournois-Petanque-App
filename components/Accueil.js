@@ -1,19 +1,47 @@
 import React from 'react'
-import { StyleSheet, View, Text, Button, Image } from 'react-native'
+import { StyleSheet, View, Text, Button, Image, Modal } from 'react-native'
 import { expo } from '../app.json'
 import { connect } from 'react-redux'
 import * as Linking from 'expo-linking'
 import VersionCheck from 'react-native-version-check-expo'
 
 class Accueil extends React.Component {
-  
+  constructor(props) {
+    super(props)
+    this.state = {
+      modalVisible: false,
+    }
+  }
+
   componentDidMount() {
-    VersionCheck.needUpdate()
-    .then(async res => {
-      if (res.isNeeded) {
-        Linking.openURL("market://details?id=com.MK.PetanqueGCU")
-      }
-    })
+    if (expo.android.versionCode < VersionCheck.getCurrentBuildNumber()) {
+      this.setState({modalVisible: true})
+    }
+  }
+
+  _showUpdateModal() {
+    return (
+      <View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => { this.setState({modalVisible: !this.state.modalVisible}) }}
+        >
+        <View style={modalStyles.centeredView}>
+          <View style={modalStyles.modalView}>
+            <Text style={modalStyles.modalText}>Une mise à jour de l'application est disponible</Text>
+            <View style={styles.buttonView}>
+              <Button color="green" title='Mettre à jour' onPress={() => Linking.openURL("market://details?id=com.MK.PetanqueGCU")}/>
+            </View>
+            <View style={styles.buttonView}>
+              <Button color="red" title='Fermer' onPress={() => this.setState({modalVisible: !this.state.modalVisible}) }/>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    </View>
+    )
   }
 
   _showMatchs() {
@@ -69,6 +97,7 @@ class Accueil extends React.Component {
           <Text style={styles.create_text}>Par Mathis Cadio</Text>
           <Text style={styles.create_text}>Version: {expo.version}</Text>
         </View>
+        {this._showUpdateModal()}
       </View>
     )
   }
@@ -116,6 +145,34 @@ const styles = StyleSheet.create({
   },
   buttonViewCreate: {
     marginBottom: 10
+  }
+})
+
+const modalStyles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 20,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
   }
 })
 
