@@ -230,12 +230,16 @@ class Inscription extends React.Component {
       boutonTitle = "En tête-à-tête, le nombre de joueurs doit être un multiple de 2"
       boutonDesactive = true
     }
-    else if (this.state.typeEquipes == "doublette" && this.props.listeJoueurs.length % 4 != 0) {
-      if (this.state.complement == "3") {
-        boutonTitle = "Nombre de joueurs pas multiple de 4, l'option sélectionnée formera des triplettes pour compléter"
+    else if (this.state.typeEquipes == "doublette" && (this.props.listeJoueurs.length % 4 != 0 || this.props.listeJoueurs.length < 4)) {
+      if (this.props.listeJoueurs.length < 4) {
+        boutonTitle = "Pas assez de joueurs"
+        boutonDesactive = true
       }
       else if (this.props.listeJoueurs.length % 2 == 0 && this.state.complement == "1") {
         boutonTitle = "Nombre de joueurs pas multiple de 4, l'option sélectionnée formera un tête-à-tête"
+      }
+      else if (this.state.complement == "3") {
+        boutonTitle = "Nombre de joueurs pas multiple de 4, l'option sélectionnée formera des triplettes pour compléter"
       }
       else if (this.state.complement != "3") {
         boutonTitle = "Nombre de joueurs pas multiple de 4, veuiller choisir l'option pour former des triplettes pour compléter si vous voulez lancer"
