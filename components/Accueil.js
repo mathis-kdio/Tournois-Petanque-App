@@ -14,9 +14,11 @@ class Accueil extends React.Component {
   }
 
   componentDidMount() {
-    if (expo.android.versionCode < VersionCheck.getCurrentBuildNumber()) {
-      this.setState({modalVisible: true})
-    }
+    VersionCheck.needUpdate().then(async res => {
+      if (res.isNeeded && this.state.modalVisible != true) {
+        this.setState({modalVisible: true})
+      }
+    })
   }
 
   _showUpdateModal() {
@@ -30,7 +32,7 @@ class Accueil extends React.Component {
         >
         <View style={modalStyles.centeredView}>
           <View style={modalStyles.modalView}>
-            <Text style={modalStyles.modalText}>Une mise à jour de l'application est disponible</Text>
+            <Text style={modalStyles.modalText}>Une mise à jour de l'application est disponible. Elle peut ne pas encore apparaitre dans play store.</Text>
             <View style={styles.buttonView}>
               <Button color="green" title='Mettre à jour' onPress={() => Linking.openURL("market://details?id=com.MK.PetanqueGCU")}/>
             </View>
