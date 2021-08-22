@@ -176,7 +176,7 @@ class GenerationMatchsAvecEquipes extends React.Component {
         //Affectation equipe 1
         if (matchs[idMatch].equipe[0][0] == 0) {
           matchs[idMatch].equipe[0][0] = equipe[randomEquipesIds[j]][0]
-          if (this.typeEquipes == "doublette") {
+          if (this.typeEquipes == "doublette" || this.typeEquipes == "triplette") {
             matchs[idMatch].equipe[0][1] = equipe[randomEquipesIds[j]][1]
           }
           if (this.typeEquipes == "triplette") {
@@ -190,7 +190,7 @@ class GenerationMatchsAvecEquipes extends React.Component {
           //Test si les équipes 1 et 2 n'ont pas déjà jouées ensemble
           if (eviterMemeAdversaire == true) {
             matchs[idMatch].equipe[1][0] = equipe[randomEquipesIds[j]][0]
-            if (this.typeEquipes == "doublette") {
+            if (this.typeEquipes == "doublette" || this.typeEquipes == "triplette") {
               matchs[idMatch].equipe[1][1] = equipe[randomEquipesIds[j]][1]
             }
             if (this.typeEquipes == "triplette") {
