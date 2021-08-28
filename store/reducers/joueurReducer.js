@@ -22,7 +22,7 @@ function toggleJoueur(state = initialState, action) {
           name: action.value[0],
           special: action.value[1],
           id: idNewJoueur,
-          equipe: undefined
+          equipe: action.value[2]
         }
 
         nextState = {

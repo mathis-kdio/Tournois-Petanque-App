@@ -390,7 +390,8 @@ class GenerationMatchsTriplette extends React.Component {
       speciauxIncompatibles: this.speciauxIncompatibles,
       memesEquipes: this.jamaisMemeCoequipier,
       memesAdversaires: this.eviterMemeAdversaire,
-      typeEquipes: 'triplette'
+      typeEquipes: 'triplette',
+      listeJoueurs: this.props.listeJoueurs.map(item => Array.isArray(item) ? clone(item) : item)
     })
 
     //Ajout dans ke store

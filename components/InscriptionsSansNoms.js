@@ -58,7 +58,7 @@ class InscriptionsSansNoms extends React.Component {
   } 
 
   _ajoutJoueur(isSpecial) {
-    const action = { type: "AJOUT_JOUEUR", value: ["", isSpecial] }
+    const action = { type: "AJOUT_JOUEUR", value: ["", isSpecial, undefined] }
     this.props.dispatch(action)
   }
 

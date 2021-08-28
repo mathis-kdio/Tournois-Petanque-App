@@ -6,7 +6,8 @@ class ListeResultatItem extends React.Component {
 
   _displayName(joueurId) {
     let joueur = {}
-    joueur = this.props.listeJoueurs.find(item => item.id === joueurId)
+    let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs
+    joueur = listeJoueurs.find(item => item.id === joueurId)
     if(joueur.name === undefined) {
       return (
         <Text style={styles.texte}>SansNom ({joueur.id})</Text>
@@ -121,7 +122,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    listeJoueurs: state.toggleJoueur.listeJoueurs,
     listeMatchs: state.gestionMatchs.listematchs
   }
 }

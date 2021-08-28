@@ -6,8 +6,9 @@ import ListeResultatItem from '../components/ListeResultatItem'
 class ListeResultats extends React.Component {
   
   _calculVictoire () {
-    let victoires = [];
-    for (let i = 1; i < this.props.listeJoueurs.length + 1; i++) {
+    let victoires = []
+    let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs
+    for (let i = 1; i < listeJoueurs.length + 1; i++) {
       let nbVictoire = 0;
       let nbPoints = 0;
       let listeMatchs = this.props.listeMatchs
@@ -119,7 +120,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    listeJoueurs: state.toggleJoueur.listeJoueurs,
     listeMatchs: state.gestionMatchs.listematchs
   }
 }

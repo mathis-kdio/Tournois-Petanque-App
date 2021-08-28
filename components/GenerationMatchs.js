@@ -422,7 +422,8 @@ class GenerationMatchs extends React.Component {
       memesEquipes: this.jamaisMemeCoequipier,
       memesAdversaires: this.eviterMemeAdversaire,
       typeEquipes: this.typeEquipes,
-      complement: this.complement
+      complement: this.complement,
+      listeJoueurs: this.props.listeJoueurs.map(item => Array.isArray(item) ? clone(item) : item)
     })
 
     //Ajout dans le store

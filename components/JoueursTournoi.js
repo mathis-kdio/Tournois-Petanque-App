@@ -18,11 +18,12 @@ class JoueursTournoi extends React.Component {
   }
 
   _displayListeJoueur() {
-    if (this.props.listeJoueurs !== undefined) {
+    let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs
+    if (listeJoueurs !== undefined) {
       return (
         <FlatList
           removeClippedSubviews={false}
-          data={this.props.listeJoueurs}
+          data={listeJoueurs}
           keyExtractor={(item) => item.id.toString() }
           renderItem={({item}) => (
             <ListeJoueur
@@ -37,7 +38,7 @@ class JoueursTournoi extends React.Component {
   }
 
   _showNbJoueur() {
-    let nbJoueur = this.props.listeJoueurs.length;
+    let nbJoueur = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs.length
     return (
     <Text>{nbJoueur}</Text>
     )

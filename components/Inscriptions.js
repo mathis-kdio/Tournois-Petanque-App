@@ -81,8 +81,12 @@ class Inscription extends React.Component {
 
   _ajoutJoueur() {
     //Test si au moins 1 caractère
-    if(this.joueurText != '') {
-      const action = { type: "AJOUT_JOUEUR", value: [this.joueurText, this.state.isChecked] }
+    if (this.joueurText != '') {
+      let equipe = undefined
+      if (this.state.typeEquipes == "teteatete") {
+        equipe = this.props.listeJoueurs.length
+      }
+      const action = { type: "AJOUT_JOUEUR", value: [this.joueurText, this.state.isChecked, equipe] }
       this.props.dispatch(action);
       this.addPlayerTextInput.current.clear();
       this.joueurText = "";

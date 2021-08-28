@@ -238,7 +238,8 @@ class GenerationMatchsAvecEquipes extends React.Component {
       speciauxIncompatibles: this.speciauxIncompatibles,
       memesEquipes: this.jamaisMemeCoequipier,
       memesAdversaires: this.eviterMemeAdversaire,
-      typeEquipes: this.typeEquipes
+      typeEquipes: this.typeEquipes,
+      listeJoueurs: this.props.listeJoueurs.map(item => Array.isArray(item) ? clone(item) : item)
     })
 
     //Ajout dans le store

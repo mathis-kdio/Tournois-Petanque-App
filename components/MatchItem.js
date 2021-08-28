@@ -43,7 +43,7 @@ class MatchItem extends React.Component {
       colorEquipe1 = 'red'
       colorEquipe2 = 'green'
     }
-    let joueur = this.props.listeJoueurs.find(item => item.id === joueurNumber)
+    let joueur = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs.find(item => item.id === joueurNumber)
     let styleColor
     let joueurName
     let joueurId
@@ -147,7 +147,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-      listeJoueurs: state.toggleJoueur.listeJoueurs,
       listeMatchs: state.gestionMatchs.listematchs
     }
 }
