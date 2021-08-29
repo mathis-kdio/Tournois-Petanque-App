@@ -98,7 +98,7 @@ class Accueil extends React.Component {
               <Button color="#1c3969" title='Changelog' onPress={() => this.props.navigation.navigate('Changelog')}/>
             </View>
             <View style={styles.buttonView}>
-              <Button color="#1c3969" title='Décourvrir le GCU' onPress={() => Linking.openURL('https://www.gcu.asso.fr/')}/>
+              <Button color="#1c3969" title='Découvrir le GCU' onPress={() => Linking.openURL('https://www.gcu.asso.fr/')}/>
             </View> 
           </View>
           <Text style={styles.create_text}>Par Mathis Cadio</Text>
