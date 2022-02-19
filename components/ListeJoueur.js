@@ -125,10 +125,7 @@ class ListeJoueur extends React.Component {
         selectedValue = joueur.equipe
       }
       let nbEquipes
-      if (typeEquipes == "teteatete") {
-        nbEquipes = nbJoueurs
-      }
-      else if (typeEquipes == "doublette") {
+      if (typeEquipes == "doublette") {
         nbEquipes = Math.ceil(nbJoueurs / 2)
       }
       else {
@@ -137,11 +134,8 @@ class ListeJoueur extends React.Component {
 
       let pickerItem = []
       for (let i = 1; i <= nbEquipes; i++) {
-        let count =  this.props.listeJoueurs.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
-        if (typeEquipes == "teteatete" && count < 1) {
-          pickerItem.push(this._equipePickerItem(i))
-        }
-        else if (typeEquipes == "doublette" && count < 2) {
+        let count = this.props.listeJoueurs.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
+        if (typeEquipes == "doublette" && count < 2) {
           pickerItem.push(this._equipePickerItem(i))
         }
         else if (typeEquipes == "triplette" && count < 3) {

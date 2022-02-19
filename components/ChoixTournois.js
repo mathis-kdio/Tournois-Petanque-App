@@ -48,11 +48,13 @@ class ChoixTournois extends React.Component {
   }
 
   _buttonInscription() {
-    let boutonDesactive = true
-    if(this.state.avecNom == true || this.state.sansNom == true || this.state.avecEquipes == true) {
-      boutonDesactive = false
+    let boutonDesactive = false
+    let title = "Valider et passer à l'inscription"
+    if(this.state.avecEquipes == true && this.state.teteatete) {
+      boutonDesactive = true
+      title = "Mode de tournois incompatible"
     }
-    return <Button color="#1c3969" disabled={boutonDesactive} title="Valider et passer à l'inscription" onPress={() => this._inscription()}/>
+    return <Button color="#1c3969" disabled={boutonDesactive} title={title} onPress={() => this._inscription()}/>
   }
 
   render() {
@@ -114,7 +116,7 @@ class ChoixTournois extends React.Component {
               <CheckBox
               onClick={()=>{
                 this.setState({
-                  avecNom: !this.state.avecNom,
+                  avecNom: true,
                   sansNom: false,
                   avecEquipes: false
                 })
@@ -130,7 +132,7 @@ class ChoixTournois extends React.Component {
               onClick={()=>{
                 this.setState({
                   avecNom: false,
-                  sansNom: !this.state.sansNom,
+                  sansNom: true,
                   avecEquipes: false
                 })
               }}
@@ -146,7 +148,7 @@ class ChoixTournois extends React.Component {
                 this.setState({
                   avecNom: false,
                   sansNom: false,
-                  avecEquipes: !this.state.avecEquipes,
+                  avecEquipes: true,
                 })
               }}
               isChecked={this.state.avecEquipes}
