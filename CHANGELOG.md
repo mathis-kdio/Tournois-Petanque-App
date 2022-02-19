@@ -1,10 +1,13 @@
 # Change Log
 
-## [Unreleased] - 2022
+## [1.6] - 2022
 
 ### Ajouté
 ### Changement
 - Nom des joueurs enregistrés dans le match et non plus séparement
+- Modes tête-a-tête et en équipe en même temps devient impossible
+- Génération des matchs améliorée pour empêcher que le joueur complémentaire soit plusieurs fois le même
+- Joueurs différents entre les différentes inscriptions
 
 ### Corrigé
 - Correction de fautes
