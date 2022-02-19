@@ -9,6 +9,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 import Accueil from '../components/Accueil'
 import Changelog from '../components/Changelog'
+import ListeTournois from '../components/ListeTournois';
 import ChoixTournois from '../components/ChoixTournois'
 import Inscription from '../components/Inscriptions'
 import InscriptionsSansNoms from '../components/InscriptionsSansNoms'
@@ -149,6 +150,8 @@ function General() {
     <Stack.Navigator initialRouteName='AccueilGeneral'>
       <Stack.Screen name="AccueilGeneral" component={Accueil} options={{title: 'Accueil - Pétanque GCU', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
       <Stack.Screen name="Changelog" component={Changelog} options={{title: 'Changelog - Pétanque GCU', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
+
+      <Stack.Screen name="ListeTournois" component={ListeTournois} options={{title: 'Choix d\'un tournoi', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
 
       <Stack.Screen name="ChoixTournois" component={ChoixTournois} options={{title: 'Choix du mode de tournoi', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
       

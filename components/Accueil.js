@@ -54,6 +54,10 @@ class Accueil extends React.Component {
     this.props.navigation.navigate('ChoixTournois');
   }
 
+  _showListeTournois() {
+    this.props.navigation.navigate('ListeTournois');
+  }
+
   _buttonShowMatchs() {
     if(this.props.listeMatchs && this.props.listeMatchs.length != 0) {
       return <Button color="#1c3969" title='Reprendre le tournoi' onPress={() => this._showMatchs()}/>
@@ -78,7 +82,7 @@ class Accueil extends React.Component {
               <Button color="#1c3969" title='Nouveau tournoi' onPress={() => this._showInscription()}/>
             </View>
             <View style={styles.buttonView}>
-              <Button color="#1c3969" disabled title='Voir les anciens tournois' onPress={() => this._showInscription()}/>
+              <Button color="#1c3969" title='Voir les anciens tournois' onPress={() => this._showListeTournois()}/>
             </View>
           </View>
           <View style={styles.informations_container}>
