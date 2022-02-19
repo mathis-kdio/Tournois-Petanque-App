@@ -26,6 +26,15 @@ function gestionMatchs(state = initialState, action) {
         nextState.listematchs[action.value.idMatch].score2 = action.value.score2;
       }
       return nextState || state
+    case 'INGAME_RENAME_PLAYER':
+      if (action.value != "") {
+        nextState = {
+          ...state,
+          listematchs: [...state.listematchs]
+        }
+        nextState.listematchs[nextState.listematchs.length - 1].listeJoueurs[action.value.playerId].name = action.value.newName;
+      }
+      return nextState || state
   default:
     return state
   }

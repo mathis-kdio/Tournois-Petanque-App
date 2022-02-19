@@ -34,7 +34,7 @@ class ListeJoueur extends React.Component {
     }
   }
 
-  _showRenommerJoueur(joueur) {
+  _showRenommerJoueur(joueur, isInscription) {
     if (this.state.renommerOn == false) {
       return (
         <View>
@@ -53,7 +53,7 @@ class ListeJoueur extends React.Component {
       else {
         return (
           <View>
-            <Icon.Button name="check" backgroundColor="green" onPress={() => this._renommerJoueur(joueur)}/>
+            <Icon.Button name="check" backgroundColor="green" onPress={() => this._renommerJoueur(joueur, isInscription)}/>
           </View>
         )
       }
@@ -67,14 +67,21 @@ class ListeJoueur extends React.Component {
     this.joueurText = joueur.name
   }
 
-  _renommerJoueur(joueur) {
+  _renommerJoueur(joueur, isInscription) {
     if(this.joueurText != "") {
       this.setState({
         renommerOn: false,
         disabledBoutonRenommer: true
       })
-      const actionRenommer = { type: "RENOMMER_JOUEUR", value: [joueur.id - 1, this.joueurText] }
-      this.props.dispatch(actionRenommer)
+      if (isInscription === true) {
+        const actionRenommer = { type: "RENOMMER_JOUEUR", value: [joueur.id - 1, this.joueurText] }
+        this.props.dispatch(actionRenommer)
+      }
+      else {
+        let data = { playerId: joueur.id - 1, newName: this.joueurText };
+        const inGameRenamePlayer = { type: "INGAME_RENAME_PLAYER", value: data }
+        this.props.dispatch(inGameRenamePlayer)
+      }
       this.joueurText = ""
     }
   }
@@ -182,7 +189,7 @@ class ListeJoueur extends React.Component {
         </View>
         {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
         {this._isSpecial(joueur.special)}
-        {this._showRenommerJoueur(joueur)}
+        {this._showRenommerJoueur(joueur, isInscription)}
         {this._showSupprimerJoueur(joueur, supprimerJoueur, isInscription)}
       </View>
     )
