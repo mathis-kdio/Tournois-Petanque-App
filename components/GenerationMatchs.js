@@ -22,8 +22,10 @@ class GenerationMatchs extends React.Component {
 
   _ajoutMatchs = (matchs) => {
     this._supprimerMatchs();
-    const action = { type: "AJOUT_MATCHS", value: matchs }
-    this.props.dispatch(action);
+    const actionAjoutMatchs = { type: "AJOUT_MATCHS", value: matchs }
+    this.props.dispatch(actionAjoutMatchs);
+    const actionAjoutTournoi = { type: "AJOUT_TOURNOI", value: {tournoi: {tournoiId: matchs[matchs.length - 1].tournoiID, matchs}} }
+    this.props.dispatch(actionAjoutTournoi);
   }
 
   _supprimerMatchs () {
@@ -543,7 +545,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
     return {
       listeJoueurs: state.toggleJoueur.listeJoueurs,
-      listeMatchs: state.gestionMatchs.listematchs
+      listeMatchs: state.gestionMatchs.listematchs,
+      listeTournois: state.listeTournois.listeTournois
     }
 }
 

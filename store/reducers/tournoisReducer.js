@@ -3,15 +3,16 @@ const initialState = { listeTournois: [] }
 function listeTournois(state = initialState, action) {
   let nextState
   switch (action.type) {
-    case 'AJOUT_TOURNOIS':
+    case 'AJOUT_TOURNOI':
       if (action.value != "") {
         nextState = {
           ...state,
-          listeTournois: action.value
-        }        
+          listeTournois: [...state.listeTournois]
+        }
+        nextState.listeTournois.push(action.value.tournoi)
       }
       return nextState || state
-    case 'SUPPR_TOURNOIS':
+    case 'SUPPR_TOURNOI':
       const tournoiIndex = state.listeTournois.findIndex(item => item.id === action.value)
       if (tournoiIndex !== -1) {
         nextState = {
