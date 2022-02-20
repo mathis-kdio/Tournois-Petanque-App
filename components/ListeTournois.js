@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, FlatList, Text } from 'react-native'
+import { StyleSheet, View, FlatList, Text, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 
 class ListeTournois extends React.Component {
@@ -25,14 +25,14 @@ class ListeTournois extends React.Component {
         <FlatList
           data={this.props.listeTournois}
           initialNumToRender={this.props.listeTournois.length - 1}
-          keyExtractor={(item) => item.id.toString() }
+          keyExtractor={(item) => item.tournoiId.toString() }
           renderItem={({item}) => (
             <TouchableOpacity
               style={styles.main_container}
-              onPress={() => loadTournoi(item.id, item)}
+              onPress={() => this.loadTournoi(item.tournoiId, item)}
             >
               <View>
-                <Text>Tournoi n°{item.id}</Text>
+                <Text>Tournoi n°{item.tournoiId}</Text>
               </View>
             </TouchableOpacity>
           )}
