@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, FlatList, Text, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, FlatList, Text, Button } from 'react-native'
 import { connect } from 'react-redux'
 
 class ListeTournois extends React.Component {
@@ -21,22 +21,24 @@ class ListeTournois extends React.Component {
   render() {
     return (
       <View style={styles.main_container}>
-        <Text>Liste des Tournois</Text>
-        <FlatList
-          data={this.props.listeTournois}
-          initialNumToRender={this.props.listeTournois.length - 1}
-          keyExtractor={(item) => item.tournoiId.toString() }
-          renderItem={({item}) => (
-            <TouchableOpacity
-              style={styles.main_container}
-              onPress={() => this.loadTournoi(item.tournoiId, item)}
-            >
-              <View>
-                <Text>Tournoi n°{item.tournoiId}</Text>
-              </View>
-            </TouchableOpacity>
-          )}
-        />
+        <View style={styles.body_container}>
+          <View>
+            <Text style={styles.titre}>Types d'équipe et de tournoi</Text>
+          </View>
+          <View>
+            <FlatList
+              data={this.props.listeTournois}
+              initialNumToRender={this.props.listeTournois.length - 1}
+              keyExtractor={(item) => item.tournoiId.toString() }
+              renderItem={({item}) => (
+                <View style={styles.tournoi_container}>
+                  <Text style={styles.tournoi_text}>Tournoi n°{item.tournoiId}</Text>
+                  <Button color="#1c3969" title="Charger ce tournoi" onPress={() => this.loadTournoi(item.tournoiId, item)}/>
+                </View>
+              )}
+            />
+          </View>
+        </View>
       </View>
     )
   }
@@ -46,6 +48,25 @@ const styles = StyleSheet.create({
   main_container: {
     flex: 1,
     backgroundColor: "#0594ae"
+  },
+  body_container: {
+    flex: 1,
+    marginHorizontal: '5%',
+  },
+  titre: {
+    marginBottom: 20,
+    textAlign: 'center',
+    fontSize: 24,
+    color: 'white'
+  },
+  tournoi_container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  tournoi_text: {
+    fontSize: 15,
+    color: 'white'
   }
 })
 
