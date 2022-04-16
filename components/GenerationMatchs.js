@@ -159,7 +159,7 @@ class GenerationMatchs extends React.Component {
     }
     let nbJoueursSpe = joueursSpe.length
     //Test si mode doublette et qu'il faut compléter
-    //Si c'est le cas, répartition en fonction de ce qui a été choisi dans les options
+    //Si c'est le cas, alors on remplie de joueurs invisible pour le complément en mode tête à tête
     if (this.typeEquipes == "doublette" && nbjoueurs % 4 != 0) {
       if (this.complement == "1" && nbjoueurs % 2 == 0) {
         joueurs.push({name: "Complément 1", special: true, id: (nbjoueurs + 1)})
@@ -172,37 +172,6 @@ class GenerationMatchs extends React.Component {
           matchs[nbMatchsParTour * i - 1].equipe[0][0] = nbjoueurs + 1
           matchs[nbMatchsParTour * i - 1].equipe[1][0] = nbjoueurs + 2
         }
-      }
-      else if (this.complement == "3") {
-        let joueursEnTrop = nbjoueurs % 4
-
-        for (let i = 0; i < joueursEnTrop; i++) {
-          if (this.props.listeJoueurs[nbjoueurs - 1 - i].special == true) {
-            joueursSpe.pop()
-            nbJoueursSpe--
-          }
-          else {
-            joueursNonSpe.pop()
-          }
-          joueurs.pop()
-        }
-
-        for (let i = 1; i < this.nbTours + 1; i++) {
-          matchs[nbMatchsParTour * i - 1].equipe[0][2] = nbjoueurs
-          if (joueursEnTrop == 2) {
-            matchs[nbMatchsParTour * i - 1].equipe[1][2] = nbjoueurs - 1
-          }
-          else if (joueursEnTrop == 3) {
-            matchs[nbMatchsParTour * i - 1].equipe[1][2] = nbjoueurs - 1
-            matchs[nbMatchsParTour * i - 2].equipe[0][2] = nbjoueurs - 2
-          }
-        }
-      }
-      else {
-        this.setState({
-          isGenerationSuccess: false,
-          isLoading: false
-        })  
       }
     }
 
@@ -387,7 +356,25 @@ class GenerationMatchs extends React.Component {
             breaker++
           }
         }
-
+        //Affectation joueur(s) complémentaire(s) du tour si tournoi doublette avec complément en triplette
+        else if ((idMatch + 1) % nbMatchsParTour == 0) {
+          if (this.typeEquipes == "doublette" && nbjoueurs % 4 != 0 && this.complement == "3") {
+            let joueursEnTrop = nbjoueurs % 4
+            matchs[idMatch].equipe[0][2] = random[j]
+            if (joueursEnTrop == 2) {
+              matchs[idMatch].equipe[1][2] = random[j + 1]
+            }
+            else if (joueursEnTrop == 3) {
+              matchs[idMatch].equipe[1][2] = random[j + 1]
+              matchs[idMatch - 1].equipe[0][2] = random[j + 2]
+            }
+            j += joueursEnTrop
+            breaker = 0
+          }
+          else {
+            breaker++
+          }
+        }
         idMatch++;
         //Si l'id du Match correspond à un match du prochain tour alors retour au premier match du tour en cours
         if (idMatch >= nbMatchsParTour * (i + 1)) {
