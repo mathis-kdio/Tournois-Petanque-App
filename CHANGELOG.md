@@ -1,17 +1,18 @@
 # Change Log
 
-## [1.6] - 2022
+## [1.6] - 16-04-2022
 
 ### Ajouté
+- Possibilité de charger d'anciens tournois
+
 ### Changement
-- Nom des joueurs enregistrés dans le match et non plus séparement
+- Nom des joueurs enregistrés dans le match et non plus séparément
 - Modes tête-a-tête et en équipe en même temps devient impossible
-- Génération des matchs améliorée pour empêcher que le joueur complémentaire soit plusieurs fois le même
-- Joueurs différents entre les différentes inscriptions
 
 ### Corrigé
 - Correction de fautes
-- Bug équipes en triplette 
+- Bug équipes en triplette
+- Bug génération des matchs dans le cas d'un tournoi en doublette avec complément triplette. Les joueurs complémentaires étaient toujours les mêmes.
 
 ## [1.5.1] - 22-08-2021
 

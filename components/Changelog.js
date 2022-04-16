@@ -11,6 +11,23 @@ class Changelog extends React.Component {
           <View style={styles.body_container}>
             <Text style={styles.titre}>Version actuelle : {expo.version}</Text>
             <View style={styles.informations_container}>
+              <Text style={styles.titre}>Version 1.6 :</Text>
+              <Text style={styles.informations_texte}>
+                - Possibilité de charger d'anciens tournois.{"\n"}
+                - Nom des joueurs enregistrés dans le match et non plus séparément.{"\n"}
+                - Modes tête-a-tête et en équipe en même temps devient impossible.{"\n"}
+                - Correction de fautes.{"\n"}
+                - Bug équipes en triplette.{"\n"}
+                - Bug génération des matchs dans le cas d'un tournoi en doublette avec complément triplette. Les joueurs complémentaires étaient toujours les mêmes.{"\n"}
+              </Text>
+            </View>
+            <View style={styles.informations_container}>
+              <Text style={styles.titre}>Version 1.5.1 :</Text>
+              <Text style={styles.informations_texte}>
+                - Fix plantage de l'application au lancement.{"\n"}
+              </Text>
+            </View>
+            <View style={styles.informations_container}>
               <Text style={styles.titre}>Version 1.5 :</Text>
               <Text style={styles.informations_texte}>
                 - Tournois en équipes formées disponible.{"\n"}
