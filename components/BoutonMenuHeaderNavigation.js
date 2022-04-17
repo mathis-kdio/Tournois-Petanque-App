@@ -23,6 +23,11 @@ class BoutonMenuHeaderNav extends React.Component {
     this.props.navigation.navigate('ListeJoueur')
   };
 
+  showPDFExport = () => {
+    this._menu.hide();
+    this.props.navigation.navigate('PDFExport')
+  };
+
   showMenu = () => {
     this._menu.show();
   };
@@ -38,6 +43,7 @@ class BoutonMenuHeaderNav extends React.Component {
         <Menu ref={this.setMenuRef} button={<Text onPress={this.showMenu}>Menu</Text>}>
           <MenuItem style={styles.menuItem} textStyle={styles.texte_menuItem} onPress={this.showJoueurs}>Liste des joueurs</MenuItem>
           <MenuItem style={styles.menuItem} textStyle={styles.texte_menuItem} onPress={this.showSettings}>Paramètres du tournoi</MenuItem>
+          <MenuItem style={styles.menuItem} textStyle={styles.texte_menuItem} onPress={this.showPDFExport}>Exporter en PDF</MenuItem>
           <MenuDivider />
           <MenuItem style={styles.menuItem} textStyle={styles.texte_menuItem} onPress={this.showAccueil}>Accueil</MenuItem>
         </Menu>
