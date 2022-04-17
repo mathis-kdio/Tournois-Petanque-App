@@ -14,11 +14,11 @@ class Accueil extends React.Component {
   }
 
   componentDidMount() {
-    VersionCheck.needUpdate().then(async res => {
+    /*VersionCheck.needUpdate().then(async res => {
       if (res.isNeeded && this.state.modalVisible != true) {
         this.setState({modalVisible: true})
       }
-    })
+    })*/
   }
 
   _showUpdateModal() {
