@@ -59,8 +59,10 @@ class Accueil extends React.Component {
   }
 
   _buttonShowMatchs() {
-    if(this.props.listeMatchs && this.props.listeMatchs.length != 0) {
-      return <Button color="#1c3969" title='Reprendre le tournoi' onPress={() => this._showMatchs()}/>
+    if(this.props.listeMatchs) {
+      if (this.props.listeMatchs.length != 0) {
+        return <Button color="#1c3969" title='Reprendre le tournoi' onPress={() => this._showMatchs()}/>
+      }
     }
     else {
       return <Button color="#1c3969" disabled title='Pas de tournoi en cours'/>
