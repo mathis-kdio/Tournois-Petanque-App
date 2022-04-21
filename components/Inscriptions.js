@@ -159,6 +159,7 @@ class Inscription extends React.Component {
     if (this.props.listeJoueurs !== undefined) {
       return (
         <FlatList
+          removeClippedSubviews={false}
           persistentScrollbar={true}
           data={this.props.listeJoueurs}
           keyExtractor={(item) => item.id.toString() }
