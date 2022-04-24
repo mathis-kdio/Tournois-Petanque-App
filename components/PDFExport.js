@@ -65,37 +65,72 @@ class PDFExport extends React.Component {
     let nbMatchs = this.props.listeMatchs[this.props.listeMatchs.length - 1].nbMatchs;
     let listeMatchs = this.props.listeMatchs;
     let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs;
-    let matchsParTour = nbMatchs / nbTours;
-    let html = `<!DOCTYPE html><html><head><style>@page{margin: 10px;} table{width: 100%;} table,th,td{border: 1px solid black;border-collapse: collapse;} td{min-width: 50px; word-break:break-all;} .td-score{min-width: 20px;} .text-right{text-align: right;} .text-center{text-align: center;} .no-border-top{border-top: none;} .no-border-bottom{border-bottom: none;}</style></head><body>
+    let nbMatchsParTour = nbMatchs / nbTours;
+    let nbTables = Math.ceil(nbTours / toursParLigne);
+    let nbToursRestants = nbTours;
+    let html = `<!DOCTYPE html><html><head><style>@page{margin: 10px;} table{width: 100%;} table,th,td{border: 1px solid black;border-collapse: collapse;} td{min-width: 50px; word-break:break-all;} .td-score{min-width: 20px;} .text-right{text-align: right;} .text-center{text-align: center;} .no-border-top{border-top: none;} .no-border-bottom{border-bottom: none;} .border-top{border-top: 1px solid;}</style></head><body>
     <h1 class="text-center">Tournoi</h1>`;
-    for (let k = 0; k < nbTours / toursParLigne; k++) {
-      let tourLigneNb = k * toursParLigne;
+    for (let tableIdx = 0; tableIdx < nbTables; tableIdx++) {
+      let minTourTable = tableIdx * toursParLigne;
       html += '<table><tr>';
-      for (let i = 1; i <= toursParLigne; i++) {
-        html += '<th colspan="4">Tour n°' + (tourLigneNb + i) + '</th>';      
+      let nbTourTable = toursParLigne;
+      if (nbToursRestants < toursParLigne) {
+        nbTourTable = nbToursRestants;
+      }
+      nbToursRestants -= toursParLigne; 
+      for (let i = 1; i <= nbTourTable; i++) {
+        html += '<th colspan="4">Tour n°' + (minTourTable + i) + '</th>';      
       }
       html += '</tr>';
-      for (let i = 0; i < matchsParTour; i++) {
-        html += '<tr>';
-        for (let j = 0; j < toursParLigne; j++) {
-          html += '<td class="no-border-bottom">'+ listeJoueurs[listeMatchs[tourLigneNb + i + j * matchsParTour].equipe[0][0] - 1].name +'</td>';
-          html += '<td rowspan="2" class="td-score text-center">';
-          if (affichageScore == true && listeMatchs[tourLigneNb + i + j * matchsParTour].score1) {
-            html += listeMatchs[tourLigneNb + i + j * matchsParTour].score1;
-          }
-          html += '</td><td rowspan="2" class="td-score text-center">';
-          if (affichageScore == true && listeMatchs[tourLigneNb + i + j * matchsParTour].score2) {
-            html += listeMatchs[tourLigneNb + i + j * matchsParTour].score2;
-          }
-          html += '</td>';
-          html += '<td class="text-right no-border-bottom">'+ listeJoueurs[listeMatchs[tourLigneNb + i + j * matchsParTour].equipe[1][0] - 1].name +'</td>';
+
+      for (let i = 0; i < nbMatchsParTour; i++) {
+        let matchNbJoueur = 1;
+        if (listeMatchs[i].equipe[0][2] != 0) {
+          matchNbJoueur = 3;
         }
-        html += '</tr><tr>';
-        for (let j = 0; j < toursParLigne; j++) {
-          html += '<td class="no-border-top">'+ listeJoueurs[listeMatchs[tourLigneNb + i + j * matchsParTour].equipe[0][1] - 1].name +'</td>';
-          html += '<td class="text-right no-border-top">'+ listeJoueurs[listeMatchs[tourLigneNb + i + j * matchsParTour].equipe[1][1] - 1].name +'</td>';
+        else if (listeMatchs[i].equipe[0][1] != 0) {
+          matchNbJoueur = 2;
         }
-        html += '</tr>';
+        for (let jidx = 0; jidx < matchNbJoueur; jidx++) {
+          if (jidx == 0) {
+            html += '<tr class="border-top">';
+          }
+          else {
+            html += '<tr class="">';
+          }
+          for (let j = 0; j < nbTourTable; j++) {
+            let matchId = tableIdx * (toursParLigne * nbMatchsParTour) + j * nbMatchsParTour + i;
+            //Joueur equipe 1
+            html += '<td class="no-border-bottom no-border-top">';
+            if (listeMatchs[matchId].equipe[0][jidx] != 0) {
+              html += listeJoueurs[listeMatchs[matchId].equipe[0][jidx] - 1].name
+            }
+            html += '</td>';
+
+            if (jidx == 0) {//Cases scores
+              //score equipe 1
+              html += '<td rowspan="'+ matchNbJoueur +'" class="td-score text-center">';
+              if (affichageScore == true && listeMatchs[matchId].score1) {
+                html += listeMatchs[matchId].score1;
+              }
+              html += '</td>';
+              //score equipe 2
+              html += '<td rowspan="'+ matchNbJoueur +'" class="td-score text-center">';
+              if (affichageScore == true && listeMatchs[matchId].score2) {
+                html += listeMatchs[matchId].score2;
+              }
+              html += '</td>';
+            }
+
+            //Joueur equipe 2
+            html += '<td class="text-right no-border-bottom no-border-top">';
+            if (listeMatchs[matchId].equipe[1][jidx] != 0) {
+              html += listeJoueurs[listeMatchs[matchId].equipe[1][jidx] - 1].name
+            }
+            html += '</td>';
+          }
+          html += '</tr>';
+        }
       }
       html += '</tr></table><br>';
     }
