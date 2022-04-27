@@ -32,7 +32,7 @@ class ListeTournois extends React.Component {
               keyExtractor={(item) => item.tournoiId.toString() }
               renderItem={({item}) => (
                 <View style={styles.tournoi_container}>
-                  <Text style={styles.tournoi_text}>Tournoi n°{item.tournoiId}</Text>
+                  <Text style={styles.tournoi_text}>Tournoi n°{item.tournoiId + 1}</Text>
                   <Button color="#1c3969" title="Charger ce tournoi" onPress={() => this.loadTournoi(item.tournoiId, item)}/>
                 </View>
               )}
