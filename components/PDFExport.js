@@ -103,7 +103,16 @@ class PDFExport extends React.Component {
             //Joueur equipe 1
             html += '<td class="no-border-bottom no-border-top">';
             if (listeMatchs[matchId].equipe[0][jidx] != 0) {
-              html += listeJoueurs[listeMatchs[matchId].equipe[0][jidx] - 1].name + ' ('+ listeJoueurs[listeMatchs[matchId].equipe[0][jidx] - 1].id  +')';
+              let joueur = listeJoueurs[listeMatchs[matchId].equipe[0][jidx] - 1];
+              if (joueur.name === undefined) {
+                html += 'Sans Nom ('+ joueur.id +')';
+              }
+              else if (joueur.name == "") {
+                html += 'Joueur '+ joueur.id;
+              }
+              else {
+                html += joueur.name +' ('+ joueur.id +')';
+              }
             }
             html += '</td>';
 
@@ -125,7 +134,16 @@ class PDFExport extends React.Component {
             //Joueur equipe 2
             html += '<td class="text-right no-border-bottom no-border-top">';
             if (listeMatchs[matchId].equipe[1][jidx] != 0) {
-              html += listeJoueurs[listeMatchs[matchId].equipe[1][jidx] - 1].name + ' ('+ listeJoueurs[listeMatchs[matchId].equipe[1][jidx] - 1].id +')';
+              let joueur = listeJoueurs[listeMatchs[matchId].equipe[1][jidx] - 1];
+              if (joueur.name === undefined) {
+                html += 'Sans Nom ('+ joueur.id +')';
+              }
+              else if (joueur.name == "") {
+                html += 'Joueur '+ joueur.id;
+              }
+              else {
+                html += joueur.name +' ('+ joueur.id +')';
+              }
             }
             html += '</td>';
           }
@@ -140,7 +158,18 @@ class PDFExport extends React.Component {
       let classement = this.calculClassement();
       for (let i = 0; i < listeJoueurs.length; i++) {
         html += '<tr>';
-        html += '<td>'+ listeJoueurs[i].name + ' ('+ listeJoueurs[i].id +')' +'</td>';
+        html += '<td class="text-center">' + classement[i].position + ' - ';
+        let joueur = listeJoueurs[classement[i].joueurId - 1];
+        if (joueur.name === undefined) {
+          html += 'Sans Nom ('+ joueur.id +')';
+        }
+        else if (joueur.name == "") {
+          html += 'Joueur '+ joueur.id;
+        }
+        else {
+          html += joueur.name +' ('+ joueur.id +')';
+        }
+        html += '</td>'
         html += '<td class="text-center">'+ classement[i].victoires +'</td>';
         html += '<td class="text-center">'+ classement[i].points +'</td>';
         html += '<td class="text-center">'+ classement[i].position +'</td>';
