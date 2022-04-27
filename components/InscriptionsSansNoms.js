@@ -170,11 +170,15 @@ class InscriptionsSansNoms extends React.Component {
             <View style={styles.textinput_ajoutjoueur_container}>
               <TextInput
                 style={styles.textinput}
+                keyboardType={'number-pad'}
                 placeholderTextColor='white'
                 underlineColorAndroid='white'
                 placeholder="Nombre de joueurs normaux"
                 autoFocus={true}
+                blurOnSubmit={false}
+                returnKeyType={'next'}
                 onChangeText={(text) => this._textInputJoueursNormaux(text)}
+                onSubmitEditing={() => this.secondInput.focus()}
               />
             </View>
           </View>
@@ -182,10 +186,11 @@ class InscriptionsSansNoms extends React.Component {
             <View style={styles.textinput_ajoutjoueur_container}>
               <TextInput
                 style={styles.textinput}
+                keyboardType={'number-pad'}
                 placeholderTextColor='white'
                 underlineColorAndroid='white'
                 placeholder="Nombre de joueurs spéciaux"
-                autoFocus={true}
+                ref={ref => {this.secondInput = ref}}
                 onChangeText={(text) => this._textInputJoueursSpeciaux(text)}
               />
             </View>
@@ -242,7 +247,7 @@ const styles = StyleSheet.create({
   texte: {
     fontSize: 15,
     color: 'white',
-    textAlign: "justify"
+    textAlign: "center"
   }
 })
 
