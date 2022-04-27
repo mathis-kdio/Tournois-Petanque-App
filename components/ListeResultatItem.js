@@ -8,16 +8,20 @@ class ListeResultatItem extends React.Component {
     let joueur = {}
     let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs
     joueur = listeJoueurs.find(item => item.id === joueurId)
-    if(joueur.name === undefined) {
-      return (
-        <Text style={styles.texte}>SansNom ({joueur.id})</Text>
-      )
+    let joueurName = "";
+    if (joueur.name === undefined) {
+      joueurName = "Sans Nom";
+    }
+    else if (joueur.name == "") {
+      joueurName = "Joueur " + joueur.id;
     }
     else {
-      return (
-        <Text style={styles.texte}>{joueur.name} ({joueur.id})</Text>
-      )
+      joueurName = joueur.name + ' (' + joueur.id + ')'
     }
+
+    return (
+      <Text style={styles.texte}>{joueurName}</Text>
+    )
   }
 
   _fanny(joueurNumber) {
