@@ -70,7 +70,9 @@ class MatchItem extends React.Component {
       score2 = '?'
     }
     return (
-      <Text style={styles.vs}>{score1} VS {score2}</Text>
+      <View style={styles.vs_container}>
+        <Text style={styles.score}>{score1}</Text><Text style={styles.vs}> VS </Text><Text style={styles.score}>{score2}</Text>
+      </View>
     )
   }
 
@@ -89,9 +91,7 @@ class MatchItem extends React.Component {
               <View style={styles.equipe1}>
                 {this._displayEquipe(1, match)}
               </View>
-              <View style={styles.vs_container}>
-                {this._displayScore(match.id)}
-              </View>
+              {this._displayScore(match.id)}
               <View style={styles.equipe2}>
                 {this._displayEquipe(2, match)}
               </View>
@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   vs_container: {
+    flexDirection: 'row',
     position: 'absolute', 
     top: 0, 
     left: 0, 
@@ -129,7 +130,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   vs: {
-    fontSize: 20,
+    fontSize: 15,
+    color: 'white'
+  },
+  score: {
+    fontSize: 25,
     color: 'white'
   },
   equipe_container: {
