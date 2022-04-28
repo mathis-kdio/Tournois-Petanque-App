@@ -333,7 +333,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
     return {
       listeJoueurs: state.toggleJoueur.listeJoueurs,
-      listeMatchs: state.gestionMatchs.listematchs
+      listeMatchs: state.gestionMatchs.listematchs,
+      listeTournois: state.listeTournois.listeTournois
     }
 }
 
