@@ -101,7 +101,7 @@ class ListeJoueur extends React.Component {
     }
   }
 
-  _joueurName(joueur) {
+  _joueurName(joueur, isInscription) {
     if (this.state.renommerOn == true) {
       return(
         <TextInput
@@ -109,7 +109,7 @@ class ListeJoueur extends React.Component {
           placeholder={joueur.name}
           autoFocus={true}
           onChangeText={(text) => this._joueurTxtInputChanged(text)}
-          onSubmitEditing={() => this._renommerJoueur(joueur)}
+          onSubmitEditing={() => this._renommerJoueur(joueur, isInscription)}
         />
       )
     }
@@ -179,7 +179,7 @@ class ListeJoueur extends React.Component {
     return (
       <View style={styles.main_container}>
         <View style={styles.name_container}>
-          {this._joueurName(joueur)}
+          {this._joueurName(joueur, isInscription)}
         </View>
         {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
         {this._isSpecial(joueur.special)}
