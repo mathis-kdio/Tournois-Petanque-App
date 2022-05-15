@@ -49,18 +49,19 @@ function listesJoueurs(state = initialState, action) {
         }
       }
       return nextState || state
-    case 'SUPPR_ALL_JOUEURS':
-      nextState = {
-        ...state,
-        listesJoueurs: { avecNoms: [], sansNoms: [], avecEquipes: [] }
+    case 'SUPPR_ALL_JOUEURS'://action: 0: type d'inscription
+      if (action.value[0] != "") {
+        const listes = { ...state.listesJoueurs };
+        listes[action.value[0]] = []
+        nextState = {
+          ...state,
+          listesJoueurs: listes
+        }
       }
       return nextState
     case 'RENOMMER_JOUEUR'://action: 0: type d'inscription  1: id du joueur  2: nouveau nom du joueur
       if (action.value[0] != "" || action.value[1] != "" || action.value[2] != "") {
         const listes = { ...state.listesJoueurs };
-        console.log(listes[action.value[0]])
-        console.log(listes[action.value[0]][action.value[1]])
-        console.log(action.value[2])
         listes[action.value[0]][action.value[1]].name = action.value[2];
         nextState = {
           ...state,
