@@ -202,22 +202,22 @@ class Inscription extends React.Component {
     }
 
     if (this.state.avecEquipes == true) {
-      if (this.props.listesJoueurs["avecEquipes"].find(el => el.equipe == undefined) != undefined || this.props.listesJoueurs.find(el => el.equipe > nbEquipes) != undefined) {
+      if (this.props.listesJoueurs.avecEquipes.find(el => el.equipe == undefined) != undefined || this.props.listesJoueurs.avecEquipes.find(el => el.equipe > nbEquipes) != undefined) {
         boutonTitle = "Des joueurs n'ont pas d'équipe"
         boutonDesactive = true
       }
-      else if (this.state.typeEquipes == "teteatete" && (this.props.listesJoueurs["avecEquipes"].length % 2 != 0 || this.props.listesJoueurs.length < 2)) {
+      else if (this.state.typeEquipes == "teteatete" && (this.props.listesJoueurs.avecEquipes.length % 2 != 0 || this.props.listesJoueurs.avecEquipes.length < 2)) {
         boutonTitle = "En équipes, le nombre d'equipe doit être un multiple de 2"
         boutonDesactive = true
       }
       else if (this.state.typeEquipes == "doublette") {
-        if (this.props.listesJoueurs["avecEquipes"].length % 4 != 0 || this.props.listesJoueurs["avecEquipes"].length == 0) {
+        if (this.props.listesJoueurs.avecEquipes.length % 4 != 0 || this.props.listesJoueurs.avecEquipes.length == 0) {
           boutonTitle = "Avec des équipes en doublette, le nombre de joueurs doit être un multiple de 4"
           boutonDesactive = true
         }
         else {
           for (let i = 0; i < nbEquipes; i++) {
-            let count = this.props.listesJoueurs["avecEquipes"].reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
+            let count = this.props.listesJoueurs.avecEquipes.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
             if (count > 2) {
               boutonTitle = "Des équipes ont trop de joueurs"
               boutonDesactive = true
@@ -226,7 +226,7 @@ class Inscription extends React.Component {
           }
         }
       }
-      else if (this.state.typeEquipes == "triplette" && (this.props.listesJoueurs["avecEquipes"].length % 6 != 0 || this.props.listesJoueurs["avecEquipes"].length == 0)) {
+      else if (this.state.typeEquipes == "triplette" && (this.props.listesJoueurs.avecEquipes.length % 6 != 0 || this.props.listesJoueurs.avecEquipes.length == 0)) {
         boutonTitle = "En triplette avec des équipes formées, le nombre de joueurs doit être un multiple de 6"
         boutonDesactive = true
       }
