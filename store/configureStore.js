@@ -13,4 +13,4 @@ const rootPersistConfig = {
   storage: AsyncStorage,
 }
 
-export default createStore(persistCombineReducers(rootPersistConfig, {toggleJoueur, listesJoueurs, gestionMatchs, listeTournois}))
+export default createStore(persistCombineReducers(rootPersistConfig, {listesJoueurs, toggleJoueur, gestionMatchs, listeTournois}))

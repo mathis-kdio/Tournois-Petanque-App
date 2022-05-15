@@ -74,7 +74,7 @@ class ListeJoueur extends React.Component {
         disabledBoutonRenommer: true
       })
       if (isInscription === true) {
-        const actionRenommer = { type: "RENOMMER_JOUEUR", value: [joueur.id - 1, this.joueurText] }
+        const actionRenommer = { type: "RENOMMER_JOUEUR", value: ["avecNoms", joueur.id, this.joueurText] }
         this.props.dispatch(actionRenommer)
       }
       else {
@@ -141,7 +141,7 @@ class ListeJoueur extends React.Component {
 
       let pickerItem = []
       for (let i = 1; i <= nbEquipes; i++) {
-        let count = this.props.listeJoueurs.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
+        let count = this.props.listesJoueurs.avecEquipes.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
         if (typeEquipes == "doublette" && count < 2) {
           pickerItem.push(this._equipePickerItem(i))
         }
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    listeJoueurs: state.toggleJoueur.listeJoueurs
+    listesJoueurs: state.listesJoueurs.listesJoueurs
   }
 }
 

@@ -59,13 +59,13 @@ function toggleJoueur(state = initialState, action) {
       }
       return nextState
     case 'RENOMMER_JOUEUR':
-      if (action.value != "") {
+      /*if (action.value != "") {
         nextState = {
           ...state,
           listeJoueurs: [...state.listeJoueurs]
         }
         nextState.listeJoueurs[action.value[0]].name = action.value[1];
-      }
+      }*/
       return nextState || state
     case 'AJOUT_EQUIPE_JOUEUR':
       if (action.value != "") {
