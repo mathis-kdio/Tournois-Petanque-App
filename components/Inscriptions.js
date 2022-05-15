@@ -21,7 +21,8 @@ class Inscription extends React.Component {
       etatBouton: false,
       typeEquipes: 'doublette',
       avecEquipes: false,
-      complement: "3"
+      complement: "3",
+      typeInscription: "avecNoms"
     }
   }
 
@@ -34,8 +35,13 @@ class Inscription extends React.Component {
         })
       }
       if (routeparams.avecEquipes != undefined) {
+        let typeInscription = "avecNoms"
+        if (routeparams.avecEquipes == true) {
+          typeInscription = "avecEquipes"
+        }
         this.setState({
-          avecEquipes: routeparams.avecEquipes
+          avecEquipes: routeparams.avecEquipes,
+          typeInscription: typeInscription
         })
       }
     }
@@ -84,9 +90,9 @@ class Inscription extends React.Component {
     if (this.joueurText != '') {
       let equipe = undefined
       if (this.state.typeEquipes == "teteatete") {
-        equipe = this.props.listesJoueurs.avecNoms.length
+        equipe = this.props.listesJoueurs[this.state.typeInscription].length
       }
-      const action = { type: "AJOUT_JOUEUR", value: ["avecNoms", this.joueurText, this.state.isChecked, equipe] }
+      const action = { type: "AJOUT_JOUEUR", value: [this.state.typeInscription, this.joueurText, this.state.isChecked, equipe] }
       this.props.dispatch(action);
       this.addPlayerTextInput.current.clear();
       this.joueurText = "";
@@ -109,9 +115,9 @@ class Inscription extends React.Component {
   }
 
   _supprimerJoueur = (idJoueur) => {
-    const actionSuppr = { type: "SUPPR_JOUEUR", value: ["avecNoms", idJoueur] }
+    const actionSuppr = { type: "SUPPR_JOUEUR", value: [this.state.typeInscription, idJoueur] }
     this.props.dispatch(actionSuppr);
-    const actionUpdate = { type: "UPDATE_ALL_JOUEURS_ID", value: ["avecNoms"]}
+    const actionUpdate = { type: "UPDATE_ALL_JOUEURS_ID", value: [this.state.typeInscription]}
     this.props.dispatch(actionUpdate);
   }
 
@@ -156,12 +162,12 @@ class Inscription extends React.Component {
   }
 
   _displayListeJoueur() {
-    if (this.props.listesJoueurs.avecNoms !== undefined) {
+    if (this.props.listesJoueurs[this.state.typeInscription] !== undefined) {
       return (
         <FlatList
           removeClippedSubviews={false}
           persistentScrollbar={true}
-          data={this.props.listesJoueurs.avecNoms}
+          data={this.props.listesJoueurs[this.state.typeInscription]}
           keyExtractor={(item) => item.id.toString() }
           renderItem={({item}) => (
             <ListeJoueur
@@ -170,7 +176,7 @@ class Inscription extends React.Component {
               isInscription={true}
               avecEquipes={this.state.avecEquipes}
               typeEquipes={this.state.typeEquipes}
-              nbJoueurs={this.props.listesJoueurs.avecNoms.length}
+              nbJoueurs={this.props.listesJoueurs[this.state.typeInscription].length}
             />
           )}
         />
@@ -179,7 +185,7 @@ class Inscription extends React.Component {
   }
 
   _showNbJoueur() {
-    let nbJoueur = this.props.listesJoueurs.avecNoms.length;
+    let nbJoueur = this.props.listesJoueurs[this.state.typeInscription].length;
     return (
       <Text>{nbJoueur}</Text>
     )
@@ -188,7 +194,7 @@ class Inscription extends React.Component {
   _boutonCommencer() {
     let boutonDesactive = false
     let boutonTitle = 'Commencer le tournoi'
-    let nbJoueurs = this.props.listesJoueurs.avecNoms.length
+    let nbJoueurs = this.props.listesJoueurs[this.state.typeInscription].length
 
     let nbEquipes
     if (this.state.typeEquipes == "teteatete") {
