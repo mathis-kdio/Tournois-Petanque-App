@@ -121,7 +121,7 @@ class ListeJoueur extends React.Component {
   }
 
   _ajoutEquipe(joueurId, equipeId) {
-    const action = { type: "AJOUT_EQUIPE_JOUEUR", value: [joueurId - 1, equipeId] }
+    const action = { type: "AJOUT_EQUIPE_JOUEUR", value: ["avecEquipes", joueurId, equipeId] }
     this.props.dispatch(action)
   }
 

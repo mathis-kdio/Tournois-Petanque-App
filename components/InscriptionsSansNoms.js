@@ -58,7 +58,7 @@ class InscriptionsSansNoms extends React.Component {
   } 
 
   _ajoutJoueur(isSpecial) {
-    const action = { type: "AJOUT_JOUEUR", value: ["", isSpecial, undefined] }
+    const action = { type: "AJOUT_JOUEUR", value: ["Sans Noms","", isSpecial, undefined] }
     this.props.dispatch(action)
   }
 
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    listeJoueurs: state.toggleJoueur.listeJoueurs
+    listesJoueurs: state.listesJoueurs.listesJoueurs
   }
 }
 

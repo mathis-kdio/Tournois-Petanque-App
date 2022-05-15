@@ -68,13 +68,14 @@ function listesJoueurs(state = initialState, action) {
         }
       }
       return nextState || state
-    case 'AJOUT_EQUIPE_JOUEUR':
+    case 'AJOUT_EQUIPE_JOUEUR'://action: 0: type d'inscription  1: id du joueur  2: équipe
       if (action.value != "") {
+        const listes = { ...state.listesJoueurs };
+        listes[action.value[0]][action.value[1]].equipe = action.value[2];
         nextState = {
           ...state,
-          listesJoueurs: [...state.listesJoueurs]
+          listesJoueurs: listes
         }
-        nextState.listesJoueurs[action.value[0]].equipe = action.value[1];
       }
       return nextState || state
   default:
