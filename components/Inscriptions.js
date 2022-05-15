@@ -84,9 +84,9 @@ class Inscription extends React.Component {
     if (this.joueurText != '') {
       let equipe = undefined
       if (this.state.typeEquipes == "teteatete") {
-        equipe = this.props.listeJoueurs.length
+        equipe = this.props.listesJoueurs.avecNoms.length
       }
-      const action = { type: "AJOUT_JOUEUR", value: [this.joueurText, this.state.isChecked, equipe] }
+      const action = { type: "AJOUT_JOUEUR", value: ["avecNoms", this.joueurText, this.state.isChecked, equipe] }
       this.props.dispatch(action);
       this.addPlayerTextInput.current.clear();
       this.joueurText = "";
@@ -109,9 +109,9 @@ class Inscription extends React.Component {
   }
 
   _supprimerJoueur = (idJoueur) => {
-    const actionSuppr = { type: "SUPPR_JOUEUR", value: idJoueur }
+    const actionSuppr = { type: "SUPPR_JOUEUR", value: ["avecNoms", idJoueur] }
     this.props.dispatch(actionSuppr);
-    const actionUpdate = { type: "UPDATE_ALL_JOUEURS_ID"}
+    const actionUpdate = { type: "UPDATE_ALL_JOUEURS_ID", value: ["avecNoms"]}
     this.props.dispatch(actionUpdate);
   }
 
@@ -156,12 +156,12 @@ class Inscription extends React.Component {
   }
 
   _displayListeJoueur() {
-    if (this.props.listeJoueurs !== undefined) {
+    if (this.props.listesJoueurs.avecNoms !== undefined) {
       return (
         <FlatList
           removeClippedSubviews={false}
           persistentScrollbar={true}
-          data={this.props.listeJoueurs}
+          data={this.props.listesJoueurs.avecNoms}
           keyExtractor={(item) => item.id.toString() }
           renderItem={({item}) => (
             <ListeJoueur
@@ -170,7 +170,7 @@ class Inscription extends React.Component {
               isInscription={true}
               avecEquipes={this.state.avecEquipes}
               typeEquipes={this.state.typeEquipes}
-              nbJoueurs={this.props.listeJoueurs.length}
+              nbJoueurs={this.props.listesJoueurs.avecNoms.length}
             />
           )}
         />
@@ -179,16 +179,16 @@ class Inscription extends React.Component {
   }
 
   _showNbJoueur() {
-    let nbJoueur = this.props.listeJoueurs.length;
+    let nbJoueur = this.props.listesJoueurs.avecNoms.length;
     return (
-    <Text>{nbJoueur}</Text>
+      <Text>{nbJoueur}</Text>
     )
   }
 
   _boutonCommencer() {
     let boutonDesactive = false
     let boutonTitle = 'Commencer le tournoi'
-    let nbJoueurs = this.props.listeJoueurs.length
+    let nbJoueurs = this.props.listesJoueurs.avecNoms.length
 
     let nbEquipes
     if (this.state.typeEquipes == "teteatete") {
@@ -202,22 +202,22 @@ class Inscription extends React.Component {
     }
 
     if (this.state.avecEquipes == true) {
-      if (this.props.listeJoueurs.find(el => el.equipe == undefined) != undefined || this.props.listeJoueurs.find(el => el.equipe > nbEquipes) != undefined) {
+      if (this.props.listesJoueurs["avecEquipes"].find(el => el.equipe == undefined) != undefined || this.props.listesJoueurs.find(el => el.equipe > nbEquipes) != undefined) {
         boutonTitle = "Des joueurs n'ont pas d'équipe"
         boutonDesactive = true
       }
-      else if (this.state.typeEquipes == "teteatete" && (this.props.listeJoueurs.length % 2 != 0 || this.props.listeJoueurs.length < 2)) {
+      else if (this.state.typeEquipes == "teteatete" && (this.props.listesJoueurs["avecEquipes"].length % 2 != 0 || this.props.listesJoueurs.length < 2)) {
         boutonTitle = "En équipes, le nombre d'equipe doit être un multiple de 2"
         boutonDesactive = true
       }
       else if (this.state.typeEquipes == "doublette") {
-        if (this.props.listeJoueurs.length % 4 != 0 || this.props.listeJoueurs.length == 0) {
+        if (this.props.listesJoueurs["avecEquipes"].length % 4 != 0 || this.props.listesJoueurs["avecEquipes"].length == 0) {
           boutonTitle = "Avec des équipes en doublette, le nombre de joueurs doit être un multiple de 4"
           boutonDesactive = true
         }
         else {
           for (let i = 0; i < nbEquipes; i++) {
-            let count = this.props.listeJoueurs.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
+            let count = this.props.listesJoueurs["avecEquipes"].reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
             if (count > 2) {
               boutonTitle = "Des équipes ont trop de joueurs"
               boutonDesactive = true
@@ -226,21 +226,21 @@ class Inscription extends React.Component {
           }
         }
       }
-      else if (this.state.typeEquipes == "triplette" && (this.props.listeJoueurs.length % 6 != 0 || this.props.listeJoueurs.length == 0)) {
+      else if (this.state.typeEquipes == "triplette" && (this.props.listesJoueurs["avecEquipes"].length % 6 != 0 || this.props.listesJoueurs["avecEquipes"].length == 0)) {
         boutonTitle = "En triplette avec des équipes formées, le nombre de joueurs doit être un multiple de 6"
         boutonDesactive = true
       }
     }
-    else if (this.state.typeEquipes == "teteatete" && (this.props.listeJoueurs.length % 2 != 0 || this.props.listeJoueurs.length < 2)) {
+    else if (this.state.typeEquipes == "teteatete" && (this.props.listesJoueurs.avecNoms.length % 2 != 0 || this.props.listesJoueurs.avecNoms.length < 2)) {
       boutonTitle = "En tête-à-tête, le nombre de joueurs doit être un multiple de 2"
       boutonDesactive = true
     }
-    else if (this.state.typeEquipes == "doublette" && (this.props.listeJoueurs.length % 4 != 0 || this.props.listeJoueurs.length < 4)) {
-      if (this.props.listeJoueurs.length < 4) {
+    else if (this.state.typeEquipes == "doublette" && (this.props.listesJoueurs.avecNoms.length % 4 != 0 || this.props.listesJoueurs.avecNoms.length < 4)) {
+      if (this.props.listesJoueurs.avecNoms.length < 4) {
         boutonTitle = "Pas assez de joueurs"
         boutonDesactive = true
       }
-      else if (this.props.listeJoueurs.length % 2 == 0 && this.state.complement == "1") {
+      else if (this.props.listesJoueurs.avecNoms.length % 2 == 0 && this.state.complement == "1") {
         boutonTitle = "Nombre de joueurs pas multiple de 4, l'option sélectionnée formera un tête-à-tête"
       }
       else if (this.state.complement == "3") {
@@ -251,7 +251,7 @@ class Inscription extends React.Component {
         boutonDesactive = true
       }
     }
-    else if (this.state.typeEquipes == "triplette" && (this.props.listeJoueurs.length % 6 != 0 || this.props.listeJoueurs.length < 6)) {
+    else if (this.state.typeEquipes == "triplette" && (this.props.listesJoueurs.avecNoms.length % 6 != 0 || this.props.listesJoueurs.avecNoms.length < 6)) {
       boutonTitle = "En triplette, le nombre de joueurs doit être un multiple de 6"
       boutonDesactive = true
     }
@@ -406,7 +406,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    listeJoueurs: state.toggleJoueur.listeJoueurs
+    listesJoueurs: state.listesJoueurs.listesJoueurs
   }
 }
 

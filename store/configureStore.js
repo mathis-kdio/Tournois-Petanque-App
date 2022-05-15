@@ -2,6 +2,7 @@
 
 import { createStore } from 'redux'
 import toggleJoueur from './reducers/joueurReducer'
+import listesJoueurs from './reducers/listesJoueursReducer'
 import gestionMatchs from './reducers/matchsReducer'
 import listeTournois from './reducers/tournoisReducer'
 import { persistCombineReducers } from 'redux-persist'
@@ -12,4 +13,4 @@ const rootPersistConfig = {
   storage: AsyncStorage,
 }
 
-export default createStore(persistCombineReducers(rootPersistConfig, {toggleJoueur, gestionMatchs, listeTournois}))
+export default createStore(persistCombineReducers(rootPersistConfig, {toggleJoueur, listesJoueurs, gestionMatchs, listeTournois}))
