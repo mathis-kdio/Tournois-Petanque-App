@@ -45,7 +45,7 @@ class GenerationMatchsAvecEquipes extends React.Component {
   }
 
   _lanceurGeneration() {
-    let nbjoueurs = this.props.listeJoueurs.length;
+    let nbjoueurs = this.props.listesJoueurs.avecEquipes.length;
     let nbGenerationsRatee = 0
     let nbEssaisPossibles = Math.pow(nbjoueurs, nbjoueurs)
     let returnType = 0
@@ -90,7 +90,7 @@ class GenerationMatchsAvecEquipes extends React.Component {
   countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
 
   _generation() {
-    let nbjoueurs = this.props.listeJoueurs.length;
+    let nbjoueurs = this.props.listesJoueurs.avecEquipes.length;
     let speciauxIncompatibles = true
     let jamaisMemeCoequipier = true
     let eviterMemeAdversaire = true;
@@ -150,8 +150,8 @@ class GenerationMatchsAvecEquipes extends React.Component {
     for (let i = 1; i <= nbEquipes; i++) {
       equipe.push([])
       for (let j = 0; j < nbjoueurs; j++) {
-        if(this.props.listeJoueurs[j].equipe == i) {
-          equipe[i - 1].push(this.props.listeJoueurs[j].id)
+        if(this.props.listesJoueurs.avecEquipes[j].equipe == i) {
+          equipe[i - 1].push(this.props.listesJoueurs.avecEquipes[j].id)
         }
       }
     }
@@ -239,7 +239,7 @@ class GenerationMatchsAvecEquipes extends React.Component {
       memesEquipes: this.jamaisMemeCoequipier,
       memesAdversaires: this.eviterMemeAdversaire,
       typeEquipes: this.typeEquipes,
-      listeJoueurs: this.props.listeJoueurs.map(item => Array.isArray(item) ? clone(item) : item)
+      listeJoueurs: this.props.listesJoueurs.avecEquipes.map(item => Array.isArray(item) ? clone(item) : item)
     })
 
     //Ajout dans le store
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-      listeJoueurs: state.toggleJoueur.listeJoueurs,
+      listesJoueurs: state.listesJoueurs.listesJoueurs,
       listeMatchs: state.gestionMatchs.listematchs,
       listeTournois: state.listeTournois.listeTournois
     }
