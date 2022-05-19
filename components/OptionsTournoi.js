@@ -213,7 +213,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    listeJoueurs: state.toggleJoueur.listeJoueurs
   }
 }
 
