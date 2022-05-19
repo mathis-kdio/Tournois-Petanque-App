@@ -90,14 +90,6 @@ class GenerationMatchsAvecEquipes extends React.Component {
   countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
 
   _generation() {
-    let nbjoueurs = this.props.listesJoueurs.avecEquipes.length;
-    let speciauxIncompatibles = true
-    let jamaisMemeCoequipier = true
-    let eviterMemeAdversaire = true;
-    let matchs = [];
-    let idMatch = 0;
-    let equipe = []
-
     //Récupération des options que l'utilisateur a modifié ou laissé par défaut
     if (this.props.route.params != undefined) {
       let routeparams = this.props.route.params;
@@ -121,6 +113,14 @@ class GenerationMatchsAvecEquipes extends React.Component {
       }
     }
 
+    let nbjoueurs = this.props.listesJoueurs.avecEquipes.length;
+    let speciauxIncompatibles = true
+    let jamaisMemeCoequipier = true
+    let eviterMemeAdversaire = true;
+    let matchs = [];
+    let idMatch = 0;
+    let equipe = []
+
     //Initialisation des matchs dans un tableau
     let nbEquipes
     let nbMatchsParTour
@@ -141,7 +141,7 @@ class GenerationMatchsAvecEquipes extends React.Component {
     idMatch = 0;
     for (let i = 1; i < this.nbTours + 1; i++) {
       for (let j = 0; j < nbMatchsParTour; j++) {
-        matchs.push({id: idMatch, manche: i, equipe: [[0,0,0],[0,0,0]], score1: undefined, score2: undefined});
+        matchs.push({id: idMatch, manche: i, equipe: [[-1,-1,-1],[-1,-1,-1]], score1: undefined, score2: undefined});
         idMatch++;
       }
     }
@@ -174,7 +174,7 @@ class GenerationMatchsAvecEquipes extends React.Component {
       let randomEquipesIds = shuffle(equipesIds)
       for (let j = 0; j < equipe.length;) {
         //Affectation equipe 1
-        if (matchs[idMatch].equipe[0][0] == 0) {
+        if (matchs[idMatch].equipe[0][0] == -1) {
           matchs[idMatch].equipe[0][0] = equipe[randomEquipesIds[j]][0]
           if (this.typeEquipes == "doublette" || this.typeEquipes == "triplette") {
             matchs[idMatch].equipe[0][1] = equipe[randomEquipesIds[j]][1]
@@ -186,7 +186,7 @@ class GenerationMatchsAvecEquipes extends React.Component {
           breaker = 0
         }
         //Affectation Equipe 2
-        if (matchs[idMatch].equipe[1][0] == 0) {
+        if (matchs[idMatch].equipe[1][0] == -1) {
           //Test si les équipes 1 et 2 n'ont pas déjà jouées ensemble
           if (eviterMemeAdversaire == true) {
             matchs[idMatch].equipe[1][0] = equipe[randomEquipesIds[j]][0]

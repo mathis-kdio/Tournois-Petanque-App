@@ -12,7 +12,7 @@ class PDFExport extends React.Component {
   calculClassement() {
     let victoires = []
     let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs
-    for (let i = 1; i < listeJoueurs.length + 1; i++) {
+    for (let i = 0; i < listeJoueurs.length; i++) {
       let nbVictoire = 0;
       let nbPoints = 0;
       let listeMatchs = this.props.listeMatchs
@@ -36,7 +36,7 @@ class PDFExport extends React.Component {
           }
         }
       }
-      victoires[i-1] = {joueurId: i, victoires: nbVictoire, points: nbPoints, position: undefined};
+      victoires[i] = {joueurId: i, victoires: nbVictoire, points: nbPoints, position: undefined};
     }
     victoires.sort(
       function(a, b) {          
@@ -85,10 +85,10 @@ class PDFExport extends React.Component {
 
       for (let i = 0; i < nbMatchsParTour; i++) {
         let matchNbJoueur = 1;
-        if (listeMatchs[i].equipe[0][2] != 0) {
+        if (listeMatchs[i].equipe[0][2] != -1) {
           matchNbJoueur = 3;
         }
-        else if (listeMatchs[i].equipe[0][1] != 0) {
+        else if (listeMatchs[i].equipe[0][1] != -1) {
           matchNbJoueur = 2;
         }
         for (let jidx = 0; jidx < matchNbJoueur; jidx++) {
@@ -102,8 +102,8 @@ class PDFExport extends React.Component {
             let matchId = tableIdx * (toursParLigne * nbMatchsParTour) + j * nbMatchsParTour + i;
             //Joueur equipe 1
             html += '<td class="no-border-bottom no-border-top">';
-            if (listeMatchs[matchId].equipe[0][jidx] != 0) {
-              let joueur = listeJoueurs[listeMatchs[matchId].equipe[0][jidx] - 1];
+            if (listeMatchs[matchId].equipe[0][jidx] != -1) {
+              let joueur = listeJoueurs[listeMatchs[matchId].equipe[0][jidx]];
               if (joueur.name === undefined) {
                 html += 'Sans Nom ('+ joueur.id +')';
               }
@@ -133,8 +133,8 @@ class PDFExport extends React.Component {
 
             //Joueur equipe 2
             html += '<td class="text-right no-border-bottom no-border-top">';
-            if (listeMatchs[matchId].equipe[1][jidx] != 0) {
-              let joueur = listeJoueurs[listeMatchs[matchId].equipe[1][jidx] - 1];
+            if (listeMatchs[matchId].equipe[1][jidx] != -1) {
+              let joueur = listeJoueurs[listeMatchs[matchId].equipe[1][jidx]];
               if (joueur.name === undefined) {
                 html += 'Sans Nom ('+ joueur.id +')';
               }
@@ -159,7 +159,7 @@ class PDFExport extends React.Component {
       for (let i = 0; i < listeJoueurs.length; i++) {
         html += '<tr>';
         html += '<td class="text-center">' + classement[i].position + ' - ';
-        let joueur = listeJoueurs[classement[i].joueurId - 1];
+        let joueur = listeJoueurs[classement[i].joueurId];
         if (joueur.name === undefined) {
           html += 'Sans Nom ('+ joueur.id +')';
         }

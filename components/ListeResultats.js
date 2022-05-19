@@ -8,7 +8,7 @@ class ListeResultats extends React.Component {
   _calculVictoire () {
     let victoires = []
     let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs
-    for (let i = 1; i < listeJoueurs.length + 1; i++) {
+    for (let i = 0; i < listeJoueurs.length; i++) {
       let nbVictoire = 0;
       let nbPoints = 0;
       let listeMatchs = this.props.listeMatchs
@@ -32,7 +32,7 @@ class ListeResultats extends React.Component {
           }
         }
       }
-      victoires[i-1] = {joueurId: i, victoires: nbVictoire, points: nbPoints, position: undefined};
+      victoires[i] = {joueurId: i, victoires: nbVictoire, points: nbPoints, position: undefined};
     }
     victoires.sort(
       function(a, b) {          

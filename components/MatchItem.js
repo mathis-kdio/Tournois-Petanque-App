@@ -12,7 +12,7 @@ class MatchItem extends React.Component {
 
   _displayEquipe(equipe, match) {
     let nbJoueur = 2
-    if (match.equipe[equipe - 1][2] != 0) {
+    if (match.equipe[equipe - 1][2] != -1) {
       nbJoueur = 3
     }
     let nomsJoueurs = []

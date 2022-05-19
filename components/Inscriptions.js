@@ -142,6 +142,7 @@ class Inscription extends React.Component {
         memesAdversaires: this.memesAdversaires,
         typeEquipes: this.state.typeEquipes,
         complement: this.state.complement,
+        typeInscription: this.state.typeInscription,
         screenStackName: 'InscriptionsAvecNoms'
       }
     })

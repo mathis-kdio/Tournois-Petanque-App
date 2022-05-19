@@ -12,7 +12,8 @@ class InscriptionsSansNoms extends React.Component {
     this.state = {
       nbJoueurNormaux: 0,
       nbJoueurSpeciaux: 0,
-      typeEquipes: 'doublette'
+      typeEquipes: 'doublette',
+      typeInscription: "sansNoms"
     }
   }
 
@@ -58,12 +59,12 @@ class InscriptionsSansNoms extends React.Component {
   } 
 
   _ajoutJoueur(isSpecial) {
-    const action = { type: "AJOUT_JOUEUR", value: ["Sans Noms","", isSpecial, undefined] }
+    const action = { type: "AJOUT_JOUEUR", value: ["sansNoms","", isSpecial, undefined] }
     this.props.dispatch(action)
   }
 
   _supprimerJoueurs() {
-    const suppressionAllJoueurs = { type: "SUPPR_ALL_JOUEURS", value: ["Sans Noms"] }
+    const suppressionAllJoueurs = { type: "SUPPR_ALL_JOUEURS", value: ["sansNoms"] }
     this.props.dispatch(suppressionAllJoueurs);
   }
   
@@ -94,6 +95,7 @@ class InscriptionsSansNoms extends React.Component {
         memesEquipes: this.memesEquipes,
         memesAdversaires: this.memesAdversaires,
         typeEquipes: this.state.typeEquipes,
+        typeInscription: this.state.typeInscription,
         screenStackName: 'InscriptionsSansNoms'
       }
     })
