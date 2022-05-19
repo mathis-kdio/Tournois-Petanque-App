@@ -63,7 +63,7 @@ class InscriptionsSansNoms extends React.Component {
   }
 
   _supprimerJoueurs() {
-    const suppressionAllJoueurs = { type: "SUPPR_ALL_JOUEURS" }
+    const suppressionAllJoueurs = { type: "SUPPR_ALL_JOUEURS", value: ["Sans Noms"] }
     this.props.dispatch(suppressionAllJoueurs);
   }
   
