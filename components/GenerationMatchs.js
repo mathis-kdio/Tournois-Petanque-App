@@ -48,7 +48,7 @@ class GenerationMatchs extends React.Component {
   }
 
   _lanceurGeneration() {
-    let nbjoueurs = this.props.listeJoueurs.length;
+    let nbjoueurs = this.props.listesJoueurs.avecNoms.length;
     let nbGenerationsRatee = 0
     let nbEssaisPossibles = Math.pow(nbjoueurs, nbjoueurs)
     let returnType = 0
@@ -93,7 +93,7 @@ class GenerationMatchs extends React.Component {
   countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
 
   _generation() {
-    let nbjoueurs = this.props.listeJoueurs.length;
+    let nbjoueurs = this.props.listesJoueurs.avecNoms.length;
     let matchs = [];
     let idMatch = 0;
     let joueursSpe = [];
@@ -148,13 +148,13 @@ class GenerationMatchs extends React.Component {
     //Création d'un tableau contenant tous les joueurs, un autre les non spéciaux et un autre les spéciaux
     //Le tableau contenant les tous les joueurs permettra de connaitre dans quel équipe chaque joueur a été
     for (let i = 0; i < nbjoueurs; i++) {
-      if (this.props.listeJoueurs[i].special === true) {
-        joueursSpe.push({...this.props.listeJoueurs[i]})
+      if (this.props.listesJoueurs.avecNoms[i].special === true) {
+        joueursSpe.push({...this.props.listesJoueurs.avecNoms[i]})
       }
       else {
-        joueursNonSpe.push({...this.props.listeJoueurs[i]})
+        joueursNonSpe.push({...this.props.listesJoueurs.avecNoms[i]})
       }
-      joueurs.push({...this.props.listeJoueurs[i]})
+      joueurs.push({...this.props.listesJoueurs.avecNoms[i]})
       joueurs[i].equipe = []
     }
     let nbJoueursSpe = joueursSpe.length
@@ -208,7 +208,7 @@ class GenerationMatchs extends React.Component {
     else {
       joueursNonSpe.splice(0, joueursNonSpe.length)
       for (let i = 0; i < nbjoueurs; i++) {
-        joueursNonSpe.push({...this.props.listeJoueurs[i]});
+        joueursNonSpe.push({...this.props.listesJoueurs.avecNoms[i]});
       }
     }
 
@@ -281,7 +281,7 @@ class GenerationMatchs extends React.Component {
           //Empeche que le joueur 1 joue plusieurs fois dans la même équipe avec le même joueur
           //Ne s'applique qu'à partir de la manche 2
           if (this.jamaisMemeCoequipier == true && i > 0) {
-            if (joueurs[random[j] - 1].equipe.includes(matchs[idMatch].equipe[0][0]) == false) {
+            if (joueurs[random[j]].equipe.includes(matchs[idMatch].equipe[0][0]) == false) {
               matchs[idMatch].equipe[0][1] = random[j];
               j++
               breaker = 0
@@ -316,9 +316,9 @@ class GenerationMatchs extends React.Component {
               totPartiesJ2 += occurrencesAdversaireDansEquipe2(matchs, joueur2, random[j])
             }
             //+1 si joueur en cours d'affectation a déjà joué dans la même équipe
-            totPartiesJ1 += joueurs[joueur1 - 1].equipe.includes(random[j]) ? 1 : 0
+            totPartiesJ1 += joueurs[joueur1].equipe.includes(random[j]) ? 1 : 0
             if (this.typeEquipes != "teteatete") {
-              totPartiesJ2 += joueurs[joueur2 - 1].equipe.includes(random[j]) ? 1 : 0
+              totPartiesJ2 += joueurs[joueur2].equipe.includes(random[j]) ? 1 : 0
             }
             if (totPartiesJ1 >= moitieNbManches || totPartiesJ2 >= moitieNbManches) {
               affectationPossible = false
@@ -336,7 +336,7 @@ class GenerationMatchs extends React.Component {
               //Empeche que le joueur 4 joue plusieurs fois dans la même équipe avec le même joueur
               //Ne s'applique qu'à partir de la manche 2
               if (this.jamaisMemeCoequipier == true && i > 0) {
-                if (joueurs[random[j] - 1].equipe.includes(matchs[idMatch].equipe[1][0]) == false) {
+                if (joueurs[random[j]].equipe.includes(matchs[idMatch].equipe[1][0]) == false) {
                   matchs[idMatch].equipe[1][1] = random[j];
                   j++
                   breaker = 0
@@ -393,10 +393,10 @@ class GenerationMatchs extends React.Component {
       idMatch = i * nbMatchsParTour;
       if (this.typeEquipes != "teteatete") {
         for (let j = 0; j < nbMatchsParTour; j++) {
-          joueurs[matchs[idMatch + j].equipe[0][0] - 1].equipe.push(matchs[idMatch + j].equipe[0][1]);
-          joueurs[matchs[idMatch + j].equipe[1][0] - 1].equipe.push(matchs[idMatch + j].equipe[1][1]);
-          joueurs[matchs[idMatch + j].equipe[0][1] - 1].equipe.push(matchs[idMatch + j].equipe[0][0]);
-          joueurs[matchs[idMatch + j].equipe[1][1] - 1].equipe.push(matchs[idMatch + j].equipe[1][0]);
+          joueurs[matchs[idMatch + j].equipe[0][0]].equipe.push(matchs[idMatch + j].equipe[0][1]);
+          joueurs[matchs[idMatch + j].equipe[1][0]].equipe.push(matchs[idMatch + j].equipe[1][1]);
+          joueurs[matchs[idMatch + j].equipe[0][1]].equipe.push(matchs[idMatch + j].equipe[0][0]);
+          joueurs[matchs[idMatch + j].equipe[1][1]].equipe.push(matchs[idMatch + j].equipe[1][0]);
         }
       }
       idMatch = nbMatchsParTour * (i + 1);
@@ -412,7 +412,7 @@ class GenerationMatchs extends React.Component {
       memesAdversaires: this.eviterMemeAdversaire,
       typeEquipes: this.typeEquipes,
       complement: this.complement,
-      listeJoueurs: this.props.listeJoueurs.map(item => Array.isArray(item) ? clone(item) : item)
+      listeJoueurs: this.props.listesJoueurs.avecNoms.map(item => Array.isArray(item) ? clone(item) : item)
     })
 
     //Ajout dans le store
@@ -531,7 +531,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-      listeJoueurs: state.toggleJoueur.listeJoueurs,
+      listesJoueurs: state.listesJoueurs.listesJoueurs,
       listeMatchs: state.gestionMatchs.listematchs,
       listeTournois: state.listeTournois.listeTournois
     }
