@@ -1,4 +1,4 @@
-const initialState = { listesJoueurs: { avecNoms: [], sansNoms: [], avecEquipes: [] }, historique: [] }
+const initialState = {listesJoueurs: { avecNoms: [], sansNoms: [], avecEquipes: [], historique: [] }}
 
 function listesJoueurs(state = initialState, action) {
   let nextState
@@ -21,6 +21,19 @@ function listesJoueurs(state = initialState, action) {
           equipe: action.value[3]
         }
         listes[action.value[0]].push(newJoueur)
+
+        let joueurIndex = listes.historique.findIndex(joueur => joueur.name == action.value[1])
+        if (joueurIndex != -1) {
+          listes.historique[joueurIndex].nbTournois++
+        }
+        else {
+          let newJoueurHistorique = {
+            id: listes.historique.length,
+            name: action.value[1],
+            nbTournois: 0
+          }
+          listes.historique.push(newJoueurHistorique)
+        }
         nextState = {
           ...state, 
           listesJoueurs: listes

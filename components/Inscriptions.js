@@ -4,6 +4,7 @@ import CheckBox from 'react-native-check-box'
 import { connect } from 'react-redux'
 import { FlatList } from 'react-native-gesture-handler'
 import ListeJoueur from '../components/ListeJoueur'
+import JoueurSuggere from '../components/JoueurSuggere'
 
 class Inscription extends React.Component {
 
@@ -185,6 +186,30 @@ class Inscription extends React.Component {
     }
   }
 
+  _displayListeJoueursSuggeres() {
+    if (this.props.listesJoueurs.historique) {
+      let listeHistoriqueFiltre = this.props.listesJoueurs.historique.filter(item1 => this.props.listesJoueurs[this.state.typeInscription].every(item2 => item2.name !== item1.name));
+      let suggestions = listeHistoriqueFiltre.sort(function (a, b) {return b.nbTournois - a.nbTournois;});
+      suggestions.splice(5, suggestions.length - 5)
+      return (
+        <View>
+          <Text>Suggestions de Joueurs</Text>
+          <FlatList
+            removeClippedSubviews={false}
+            persistentScrollbar={true}
+            data={suggestions}
+            keyExtractor={(item) => item.id.toString() }
+            renderItem={({item}) => (
+              <JoueurSuggere
+                joueur={item}
+              />
+            )}
+          />
+        </View>
+      )
+    }
+  }
+
   _showNbJoueur() {
     let nbJoueur = this.props.listesJoueurs[this.state.typeInscription].length;
     return (
@@ -327,6 +352,9 @@ class Inscription extends React.Component {
         </View>
         <View style={styles.flatList} >
           {this._displayListeJoueur()}
+        </View>
+        <View>
+          {this._displayListeJoueursSuggeres()}
         </View>
         <View style={styles.buttonView}>
           <Button color='#1c3969' title='Options Tournoi' onPress={() => this._options()}/>
