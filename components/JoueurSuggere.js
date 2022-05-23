@@ -1,40 +1,48 @@
 import React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
 import { connect } from 'react-redux'
+import { StyleSheet, View, Text } from 'react-native'
+import CheckBox from 'react-native-check-box'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 class JoueurSuggere extends React.Component {
   constructor(props) {
     super(props)
-  }
-
-  _isSpecial = (joueurSpecial) => {
-    if (joueurSpecial === true) {
-      return (
-        <View style={styles.special_container}>
-          <Text style={styles.special_text}>Enfant</Text>
-        </View>
-      )
+    this.state = {
+      isSpecial: false,
     }
   }
 
-  _showSupprimerJoueur(joueur, supprimerJoueur) {
-    return (
-      <View>
-          <Icon.Button name="times" backgroundColor="red" onPress={() => supprimerJoueur(joueur.id)}/>
-      </View>
-    )
+  _ajouterJoueur(typeInscription, joueurName) {
+    const action = { type: "AJOUT_JOUEUR", value: [typeInscription, joueurName, this.state.isSpecial, undefined] }
+    this.props.dispatch(action);
   }
 
   render() {
-    const { joueur, supprimerJoueur } = this.props;
+    const { joueur, typeInscription } = this.props;
     return (
       <View style={styles.main_container}>
         <View style={styles.name_container}>
           <Text style={styles.name_text}>{joueur.name}</Text>
         </View>
-        {/*this._isSpecial(joueur.special)*/}
-        {/*this._showSupprimerJoueur(joueur, supprimerJoueur, isInscription)*/}
+        <View style={styles.special_container}>
+          <CheckBox
+            onClick={()=>{
+              this.setState({
+                isSpecial: !this.state.isSpecial
+              })
+            }}
+            isChecked={this.state.isSpecial}
+            rightText={"Enfant"}
+            rightTextStyle={{color: "white", fontSize: 15}}
+            checkBoxColor={'white'}
+          />
+        </View>
+        <View style={styles.button_container}>
+          <Icon.Button name="check" backgroundColor="green" onPress={() => this._ajouterJoueur(typeInscription, joueur.name)}/>
+        </View>
+        <View style={styles.button_container}>
+          <Icon.Button name="times" backgroundColor="red"/>
+        </View>
       </View>
     )
   }
@@ -43,15 +51,16 @@ class JoueurSuggere extends React.Component {
 const styles = StyleSheet.create({
   main_container: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 5,
-    paddingBottom: 5,
-    marginHorizontal: 10,
     borderBottomWidth: 1,
-    borderColor: 'white'
+    borderColor: 'white',
+    paddingHorizontal: 10,
+    paddingBottom: 2,
+    marginBottom: 2,
   },
   name_container: {
-    flex: 1,
+    flex: 2,
   },
   name_text: {
     fontWeight: 'bold',
@@ -59,12 +68,10 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   special_container: {
-    marginLeft: 5,
-    marginRight: 5,
+    flex: 1,
   },
-  special_text: {
-    fontSize: 20,
-    color: 'white'
+  button_container: {
+    marginLeft: 5
   }
 })
 

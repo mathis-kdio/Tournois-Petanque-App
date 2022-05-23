@@ -192,8 +192,10 @@ class Inscription extends React.Component {
       let suggestions = listeHistoriqueFiltre.sort(function (a, b) {return b.nbTournois - a.nbTournois;});
       suggestions.splice(5, suggestions.length - 5)
       return (
-        <View>
-          <Text>Suggestions de Joueurs</Text>
+        <View>         
+          <View style={styles.nbjoueur_container}>
+            <Text style={styles.text_nbjoueur}>Suggestions de Joueurs</Text>
+          </View>
           <FlatList
             removeClippedSubviews={false}
             persistentScrollbar={true}
@@ -202,6 +204,7 @@ class Inscription extends React.Component {
             renderItem={({item}) => (
               <JoueurSuggere
                 joueur={item}
+                typeInscription={this.state.typeInscription}
               />
             )}
           />
