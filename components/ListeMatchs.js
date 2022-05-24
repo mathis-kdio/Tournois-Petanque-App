@@ -27,6 +27,7 @@ class ListeMatchs extends React.Component {
       nbMatchs = tournoi[tournoi.length - 1].nbMatchs //On récup nb matchs dans la config
       matchs = tournoi.slice(0, -1) //On retire la config et donc seulement la liste des matchs
     }
+    matchs = matchs.filter(match => match.manche == this.props.extraData)
     return (
       <FlatList
         data={matchs}
