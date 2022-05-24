@@ -40,9 +40,6 @@ class JoueurSuggere extends React.Component {
         <View style={styles.button_container}>
           <Icon.Button name="check" backgroundColor="green" onPress={() => this._ajouterJoueur(typeInscription, joueur.name)}/>
         </View>
-        <View style={styles.button_container}>
-          <Icon.Button name="times" backgroundColor="red"/>
-        </View>
       </View>
     )
   }
