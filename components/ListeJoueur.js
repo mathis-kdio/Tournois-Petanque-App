@@ -34,7 +34,7 @@ class ListeJoueur extends React.Component {
     }
   }
 
-  _showRenommerJoueur(joueur, isInscription) {
+  _showRenommerJoueur(joueur, isInscription, avecEquipes) {
     if (this.state.renommerOn == false) {
       return (
         <View>
@@ -53,7 +53,7 @@ class ListeJoueur extends React.Component {
       else {
         return (
           <View>
-            <Icon.Button name="check" backgroundColor="green" onPress={() => this._renommerJoueur(joueur, isInscription)}/>
+            <Icon.Button name="check" backgroundColor="green" onPress={() => this._renommerJoueur(joueur, isInscription, avecEquipes)}/>
           </View>
         )
       }
@@ -67,14 +67,21 @@ class ListeJoueur extends React.Component {
     this.joueurText = joueur.name
   }
 
-  _renommerJoueur(joueur, isInscription) {
-    if(this.joueurText != "") {
+  _renommerJoueur(joueur, isInscription, avecEquipes) {
+    if (this.joueurText != "") {
       this.setState({
         renommerOn: false,
         disabledBoutonRenommer: true
       })
       if (isInscription === true) {
-        const actionRenommer = { type: "RENOMMER_JOUEUR", value: [joueur.id - 1, this.joueurText] }
+        let typeInscription
+        if (avecEquipes == true) {
+          typeInscription = "avecEquipes"
+        }
+        else {
+          typeInscription = "avecNoms"
+        }
+        const actionRenommer = { type: "RENOMMER_JOUEUR", value: [typeInscription, joueur.id, this.joueurText] }
         this.props.dispatch(actionRenommer)
       }
       else {
@@ -101,7 +108,7 @@ class ListeJoueur extends React.Component {
     }
   }
 
-  _joueurName(joueur, isInscription) {
+  _joueurName(joueur, isInscription, avecEquipes) {
     if (this.state.renommerOn == true) {
       return(
         <TextInput
@@ -109,7 +116,7 @@ class ListeJoueur extends React.Component {
           placeholder={joueur.name}
           autoFocus={true}
           onChangeText={(text) => this._joueurTxtInputChanged(text)}
-          onSubmitEditing={() => this._renommerJoueur(joueur, isInscription)}
+          onSubmitEditing={() => this._renommerJoueur(joueur, isInscription, avecEquipes)}
         />
       )
     }
@@ -121,7 +128,7 @@ class ListeJoueur extends React.Component {
   }
 
   _ajoutEquipe(joueurId, equipeId) {
-    const action = { type: "AJOUT_EQUIPE_JOUEUR", value: [joueurId - 1, equipeId] }
+    const action = { type: "AJOUT_EQUIPE_JOUEUR", value: ["avecEquipes", joueurId, equipeId] }
     this.props.dispatch(action)
   }
 
@@ -141,7 +148,7 @@ class ListeJoueur extends React.Component {
 
       let pickerItem = []
       for (let i = 1; i <= nbEquipes; i++) {
-        let count = this.props.listeJoueurs.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
+        let count = this.props.listesJoueurs.avecEquipes.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
         if (typeEquipes == "doublette" && count < 2) {
           pickerItem.push(this._equipePickerItem(i))
         }
@@ -179,11 +186,11 @@ class ListeJoueur extends React.Component {
     return (
       <View style={styles.main_container}>
         <View style={styles.name_container}>
-          {this._joueurName(joueur, isInscription)}
+          {this._joueurName(joueur, isInscription, avecEquipes)}
         </View>
         {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
         {this._isSpecial(joueur.special)}
-        {this._showRenommerJoueur(joueur, isInscription)}
+        {this._showRenommerJoueur(joueur, isInscription, avecEquipes)}
         {this._showSupprimerJoueur(joueur, supprimerJoueur, isInscription)}
       </View>
     )
@@ -233,7 +240,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    listeJoueurs: state.toggleJoueur.listeJoueurs
+    listesJoueurs: state.listesJoueurs.listesJoueurs
   }
 }
 

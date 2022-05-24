@@ -45,7 +45,7 @@ class GenerationMatchsTriplette extends React.Component {
   }
 
   _lanceurGeneration() {
-    let nbjoueurs = this.props.listeJoueurs.length;
+    let nbjoueurs = this.props.listesJoueurs[this.typeInscription].length;
     let nbGenerationsRatee = 0
     let nbEssaisPossibles = Math.pow(nbjoueurs, nbjoueurs)
     let returnType = 0
@@ -90,17 +90,6 @@ class GenerationMatchsTriplette extends React.Component {
   countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
 
   _generation() {
-    let nbjoueurs = this.props.listeJoueurs.length;
-    let speciauxIncompatibles = true
-    let jamaisMemeCoequipier = true;
-    let eviterMemeAdversaire = true;
-    let equipe = "triplette"
-    let matchs = [];
-    let idMatch = 0;
-    let joueursSpe = [];
-    let joueursNonSpe = [];
-    let joueurs = [];
-
     //Récupération des options que l'utilisateur a modifié ou laissé par défaut
     if (this.props.route.params != undefined) {
       let routeparams = this.props.route.params;
@@ -121,13 +110,24 @@ class GenerationMatchsTriplette extends React.Component {
       }
     }
 
+    let nbjoueurs = this.props.listesJoueurs[this.typeInscription].length;
+    let speciauxIncompatibles = true
+    let jamaisMemeCoequipier = true;
+    let eviterMemeAdversaire = true;
+    let equipe = "triplette"
+    let matchs = [];
+    let idMatch = 0;
+    let joueursSpe = [];
+    let joueursNonSpe = [];
+    let joueurs = [];
+
     //Initialisation des matchs dans un tableau
     let nbMatchsParTour =  Math.ceil(nbjoueurs / 6)
     let nbMatchs = this.nbTours * nbMatchsParTour
     idMatch = 0;
     for (let i = 1; i < this.nbTours + 1; i++) {
       for (let j = 0; j < nbMatchsParTour; j++) {
-        matchs.push({id: idMatch, manche: i, equipe: [[0,0,0],[0,0,0]], score1: undefined, score2: undefined});
+        matchs.push({id: idMatch, manche: i, equipe: [[-1,-1,-1],[-1,-1,-1]], score1: undefined, score2: undefined});
         idMatch++;
       }
     }
@@ -135,13 +135,13 @@ class GenerationMatchsTriplette extends React.Component {
     //Création d'un tableau contenant tous les joueurs, un autre les non spéciaux et un autre les spéciaux
     //Le tableau contenant les tous les joueurs permettra de connaitre dans quel équipe chaque joueur a été
     for (let i = 0; i < nbjoueurs; i++) {
-      if (this.props.listeJoueurs[i].special === true) {
-        joueursSpe.push({...this.props.listeJoueurs[i]});
+      if (this.props.listesJoueurs[this.typeInscription][i].special === true) {
+        joueursSpe.push({...this.props.listesJoueurs[this.typeInscription][i]});
       }
       else {
-        joueursNonSpe.push({...this.props.listeJoueurs[i]});
+        joueursNonSpe.push({...this.props.listesJoueurs[this.typeInscription][i]});
       }
-      joueurs.push({...this.props.listeJoueurs[i]});
+      joueurs.push({...this.props.listesJoueurs[this.typeInscription][i]});
       joueurs[i].equipe = [];
     }
     let nbJoueursSpe = joueursSpe.length
@@ -172,11 +172,11 @@ class GenerationMatchsTriplette extends React.Component {
           let idsMatchsSpe = []
           idsMatchsSpe = this.randomBetweenRange(joueursSpe.length, [i * nbMatchsParTour, i * nbMatchsParTour + nbMatchsParTour])
           for (let j = 0; j < joueursSpe.length;) {
-            if (matchs[idsMatchsSpe[j]].equipe[0][0] == 0) {
+            if (matchs[idsMatchsSpe[j]].equipe[0][0] == -1) {
               matchs[idsMatchsSpe[j]].equipe[0][0] = joueursSpe[j].id;
               j++
             }
-            else if (matchs[idsMatchsSpe[j]].equipe[1][0] == 0) {
+            else if (matchs[idsMatchsSpe[j]].equipe[1][0] == -1) {
               matchs[idsMatchsSpe[j]].equipe[1][0] = joueursSpe[j].id;
               j++
             }
@@ -196,7 +196,7 @@ class GenerationMatchsTriplette extends React.Component {
     else {
       joueursNonSpe.splice(0, joueursNonSpe.length)
       for (let i = 0; i < nbjoueurs; i++) {
-        joueursNonSpe.push({...this.props.listeJoueurs[i]});
+        joueursNonSpe.push({...this.props.listesJoueurs[this.typeInscription][i]});
       }
     }
 
@@ -249,17 +249,17 @@ class GenerationMatchsTriplette extends React.Component {
       let random = shuffle(joueursNonSpeId);
       for (let j = 0; j < joueursNonSpe.length;) {
         //Affectation J1 E1
-        if (matchs[idMatch].equipe[0][0] == 0) {
+        if (matchs[idMatch].equipe[0][0] == -1) {
           matchs[idMatch].equipe[0][0] = random[j];
           j++
           breaker = 0
         }
         //Affectation J2 E1
-        else if (matchs[idMatch].equipe[0][1] == 0) {
+        else if (matchs[idMatch].equipe[0][1] == -1) {
           //Empeche que le J1 E1 joue plusieurs fois dans la même équipe avec le même joueur
           //Ne s'applique qu'à partir de la manche 2
           if (jamaisMemeCoequipier == true && i > 0) {
-            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[0][0]) < this.nbTours / 3) {
+            if (countOccuEquipe(joueurs[random[j]].equipe, matchs[idMatch].equipe[0][0]) < this.nbTours / 3) {
               matchs[idMatch].equipe[0][1] = random[j];
               j++
               breaker = 0
@@ -275,11 +275,11 @@ class GenerationMatchsTriplette extends React.Component {
           }
         }
         //Affectation J3 E1
-        else if (matchs[idMatch].equipe[0][2] == 0) {
+        else if (matchs[idMatch].equipe[0][2] == -1) {
           //Empeche que le J1 E1 ou le J2 E1 joue plusieurs fois dans la même équipe avec le même joueur
           //Ne s'applique qu'à partir de la manche 2
           if (jamaisMemeCoequipier == true && i > 0) {
-            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[0][0]) < this.nbTours / 3 && countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[0][1]) < this.nbTours / 3) {
+            if (countOccuEquipe(joueurs[random[j]].equipe, matchs[idMatch].equipe[0][0]) < this.nbTours / 3 && countOccuEquipe(joueurs[random[j]].equipe, matchs[idMatch].equipe[0][1]) < this.nbTours / 3) {
               matchs[idMatch].equipe[0][2] = random[j];
               j++
               breaker = 0
@@ -295,17 +295,17 @@ class GenerationMatchsTriplette extends React.Component {
           }
         }
         //Affectation J1 E2
-        if (matchs[idMatch].equipe[1][0] == 0) {
+        if (matchs[idMatch].equipe[1][0] == -1) {
           matchs[idMatch].equipe[1][0] = random[j];
           j++
           breaker = 0
         }
         //Affectation J2 E2
-        else if (matchs[idMatch].equipe[1][1] == 0) {
+        else if (matchs[idMatch].equipe[1][1] == -1) {
           //Empeche que le J1 E2 joue plusieurs fois dans la même équipe avec le même joueur
           //Ne s'applique qu'à partir de la manche 2
           if (jamaisMemeCoequipier == true && i > 0) {
-            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[1][0]) < this.nbTours / 3) {
+            if (countOccuEquipe(joueurs[random[j]].equipe, matchs[idMatch].equipe[1][0]) < this.nbTours / 3) {
               matchs[idMatch].equipe[1][1] = random[j];
               j++
               breaker = 0
@@ -321,11 +321,11 @@ class GenerationMatchsTriplette extends React.Component {
           }
         }
         //Affectation J3 E2
-        else if (matchs[idMatch].equipe[1][2] == 0) {
+        else if (matchs[idMatch].equipe[1][2] == -1) {
           //Empeche que le J1 E2 ou J2 E2 joue plusieurs fois dans la même équipe avec le même joueur
           //Ne s'applique qu'à partir de la manche 2
           if (jamaisMemeCoequipier == true && i > 0) {
-            if (countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[1][0]) < this.nbTours / 3 && countOccuEquipe(joueurs[random[j] - 1].equipe, matchs[idMatch].equipe[1][1]) < this.nbTours / 3) {
+            if (countOccuEquipe(joueurs[random[j]].equipe, matchs[idMatch].equipe[1][0]) < this.nbTours / 3 && countOccuEquipe(joueurs[random[j]].equipe, matchs[idMatch].equipe[1][1]) < this.nbTours / 3) {
               matchs[idMatch].equipe[1][2] = random[j];
               j++
               breaker = 0
@@ -361,23 +361,23 @@ class GenerationMatchsTriplette extends React.Component {
 
       idMatch = i * nbMatchsParTour;
       for (let j = 0; j < nbMatchsParTour; j++) {
-        joueurs[matchs[idMatch + j].equipe[0][0] - 1].equipe.push(matchs[idMatch + j].equipe[0][1])
-        joueurs[matchs[idMatch + j].equipe[0][0] - 1].equipe.push(matchs[idMatch + j].equipe[0][2])
+        joueurs[matchs[idMatch + j].equipe[0][0]].equipe.push(matchs[idMatch + j].equipe[0][1])
+        joueurs[matchs[idMatch + j].equipe[0][0]].equipe.push(matchs[idMatch + j].equipe[0][2])
 
-        joueurs[matchs[idMatch + j].equipe[0][1] - 1].equipe.push(matchs[idMatch + j].equipe[0][0])
-        joueurs[matchs[idMatch + j].equipe[0][1] - 1].equipe.push(matchs[idMatch + j].equipe[0][2])
+        joueurs[matchs[idMatch + j].equipe[0][1]].equipe.push(matchs[idMatch + j].equipe[0][0])
+        joueurs[matchs[idMatch + j].equipe[0][1]].equipe.push(matchs[idMatch + j].equipe[0][2])
 
-        joueurs[matchs[idMatch + j].equipe[0][2] - 1].equipe.push(matchs[idMatch + j].equipe[0][0])
-        joueurs[matchs[idMatch + j].equipe[0][2] - 1].equipe.push(matchs[idMatch + j].equipe[0][1])
+        joueurs[matchs[idMatch + j].equipe[0][2]].equipe.push(matchs[idMatch + j].equipe[0][0])
+        joueurs[matchs[idMatch + j].equipe[0][2]].equipe.push(matchs[idMatch + j].equipe[0][1])
 
-        joueurs[matchs[idMatch + j].equipe[1][0] - 1].equipe.push(matchs[idMatch + j].equipe[1][1])
-        joueurs[matchs[idMatch + j].equipe[1][0] - 1].equipe.push(matchs[idMatch + j].equipe[1][2])
+        joueurs[matchs[idMatch + j].equipe[1][0]].equipe.push(matchs[idMatch + j].equipe[1][1])
+        joueurs[matchs[idMatch + j].equipe[1][0]].equipe.push(matchs[idMatch + j].equipe[1][2])
 
-        joueurs[matchs[idMatch + j].equipe[1][1] - 1].equipe.push(matchs[idMatch + j].equipe[1][0])
-        joueurs[matchs[idMatch + j].equipe[1][1] - 1].equipe.push(matchs[idMatch + j].equipe[1][2])
+        joueurs[matchs[idMatch + j].equipe[1][1]].equipe.push(matchs[idMatch + j].equipe[1][0])
+        joueurs[matchs[idMatch + j].equipe[1][1]].equipe.push(matchs[idMatch + j].equipe[1][2])
 
-        joueurs[matchs[idMatch + j].equipe[1][2] - 1].equipe.push(matchs[idMatch + j].equipe[1][0])
-        joueurs[matchs[idMatch + j].equipe[1][2] - 1].equipe.push(matchs[idMatch + j].equipe[1][1])
+        joueurs[matchs[idMatch + j].equipe[1][2]].equipe.push(matchs[idMatch + j].equipe[1][0])
+        joueurs[matchs[idMatch + j].equipe[1][2]].equipe.push(matchs[idMatch + j].equipe[1][1])
       }
       idMatch = nbMatchsParTour * (i + 1);
     }
@@ -391,10 +391,10 @@ class GenerationMatchsTriplette extends React.Component {
       memesEquipes: this.jamaisMemeCoequipier,
       memesAdversaires: this.eviterMemeAdversaire,
       typeEquipes: 'triplette',
-      listeJoueurs: this.props.listeJoueurs.map(item => Array.isArray(item) ? clone(item) : item)
+      listeJoueurs: this.props.listesJoueurs[this.typeInscription].map(item => Array.isArray(item) ? clone(item) : item)
     })
-
-    //Ajout dans ke store
+    
+    //Ajout dans le store
     this._ajoutMatchs(matchs);
 
     //Désactivation de l'affichage du _displayLoading 
@@ -510,7 +510,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-      listeJoueurs: state.toggleJoueur.listeJoueurs,
+      listesJoueurs: state.listesJoueurs.listesJoueurs,
       listeMatchs: state.gestionMatchs.listematchs,
       listeTournois: state.listeTournois.listeTournois
     }
