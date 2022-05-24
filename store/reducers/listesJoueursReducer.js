@@ -6,6 +6,8 @@ function listesJoueurs(state = initialState, action) {
     case 'AJOUT_JOUEUR'://action: 0: type d'inscription  1: nom du joueur  2: special ou non  3: numéro d'équipe (option)
       if (action.value[0] != "" || action.value[1] != "" || action.value[2] != "") {
         const listes = { ...state.listesJoueurs };
+        
+        //Joueur
         let idNewJoueur = listes[action.value[0]].length;
         for (let i = 0; i < listes[action.value[0]].length; i++) {
           if (listes[action.value[0]][i].id !== i) {
@@ -13,7 +15,6 @@ function listesJoueurs(state = initialState, action) {
             break;
           }
         }
-
         let newJoueur = {
           id: idNewJoueur,
           name: action.value[1],
@@ -22,18 +23,23 @@ function listesJoueurs(state = initialState, action) {
         }
         listes[action.value[0]].push(newJoueur)
 
-        let joueurIndex = listes.historique.findIndex(joueur => joueur.name == action.value[1])
-        if (joueurIndex != -1) {
-          listes.historique[joueurIndex].nbTournois++
-        }
-        else {
-          let newJoueurHistorique = {
-            id: listes.historique.length,
-            name: action.value[1],
-            nbTournois: 0
+        //Historique
+        if (action.value[0] != "sansNoms") {
+          let joueurIndex = listes.historique.findIndex(joueur => joueur.name == action.value[1])
+          if (joueurIndex != -1) {
+            listes.historique[joueurIndex].nbTournois++
           }
-          listes.historique.push(newJoueurHistorique)
+          else {
+            let newJoueurHistorique = {
+              id: listes.historique.length,
+              name: action.value[1],
+              nbTournois: 0
+            }
+            listes.historique.push(newJoueurHistorique)
+          }
         }
+
+        //Ajout
         nextState = {
           ...state, 
           listesJoueurs: listes
