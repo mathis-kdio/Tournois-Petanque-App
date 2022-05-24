@@ -181,6 +181,9 @@ class Inscription extends React.Component {
               nbJoueurs={this.props.listesJoueurs[this.state.typeInscription].length}
             />
           )}
+          ListFooterComponent={
+            this._displayListeJoueursSuggeres()
+          }
         />
       )
     }
@@ -189,27 +192,29 @@ class Inscription extends React.Component {
   _displayListeJoueursSuggeres() {
     if (this.props.listesJoueurs.historique) {
       let listeHistoriqueFiltre = this.props.listesJoueurs.historique.filter(item1 => this.props.listesJoueurs[this.state.typeInscription].every(item2 => item2.name !== item1.name));
-      let suggestions = listeHistoriqueFiltre.sort(function (a, b) {return b.nbTournois - a.nbTournois;});
-      suggestions.splice(5, suggestions.length - 5)
-      return (
-        <View>         
-          <View style={styles.nbjoueur_container}>
-            <Text style={styles.text_nbjoueur}>Suggestions de Joueurs</Text>
+      if (listeHistoriqueFiltre.length > 0) {
+        let suggestions = listeHistoriqueFiltre.sort(function (a, b) {return b.nbTournois - a.nbTournois;});
+        suggestions.splice(5, suggestions.length - 5)
+        return (
+          <View>
+            <View style={styles.text_container}>
+              <Text style={styles.text_nbjoueur}>Suggestions de Joueurs</Text>
+            </View>
+            <FlatList
+              removeClippedSubviews={false}
+              persistentScrollbar={true}
+              data={suggestions}
+              keyExtractor={(item) => item.id.toString() }
+              renderItem={({item}) => (
+                <JoueurSuggere
+                  joueur={item}
+                  typeInscription={this.state.typeInscription}
+                />
+              )}
+            />
           </View>
-          <FlatList
-            removeClippedSubviews={false}
-            persistentScrollbar={true}
-            data={suggestions}
-            keyExtractor={(item) => item.id.toString() }
-            renderItem={({item}) => (
-              <JoueurSuggere
-                joueur={item}
-                typeInscription={this.state.typeInscription}
-              />
-            )}
-          />
-        </View>
-      )
+        )
+      }
     }
   }
 
@@ -305,8 +310,8 @@ class Inscription extends React.Component {
 
   render() {
     return (
-      <View style={styles.main_container} >
-        <View style={styles.nbjoueur_container}>
+      <View style={styles.main_container}>
+        <View style={styles.text_container}>
           <Text style={styles.text_nbjoueur}>Il y a : {this._showNbJoueur()} inscrit.e.s</Text>
         </View>
         <View style={styles.ajoutjoueur_container}>
@@ -339,7 +344,7 @@ class Inscription extends React.Component {
             {this._ajoutJoueurBouton()}
           </View>
         </View>
-        <View style={styles.entete}>
+        <View style={styles.entete_container}>
           <View style={styles.prenom_container}>
             <Text style={styles.texte_entete}>N° Prénom</Text>
           </View>
@@ -353,17 +358,16 @@ class Inscription extends React.Component {
             <Text style={styles.texte_entete}>Supprimer</Text>
           </View>
         </View>
-        <View style={styles.flatList} >
+        <View style={styles.flatList_container}>
           {this._displayListeJoueur()}
         </View>
         <View>
-          {this._displayListeJoueursSuggeres()}
-        </View>
-        <View style={styles.buttonView}>
-          <Button color='#1c3969' title='Options Tournoi' onPress={() => this._options()}/>
-        </View>
-        <View style={styles.buttonView}>
-          {this._boutonCommencer()}
+          <View style={styles.buttonView}>
+            <Button color='#1c3969' title='Options Tournoi' onPress={() => this._options()}/>
+          </View>
+          <View style={styles.buttonView}>
+            {this._boutonCommencer()}
+          </View>
         </View>
       </View>
     )
@@ -374,6 +378,14 @@ const styles = StyleSheet.create({
   main_container: {
     flex: 1,
     backgroundColor: "#0594ae"
+  },
+  text_container: {
+    alignItems: 'center',
+    marginTop: 5
+  },
+  text_nbjoueur: {
+    fontSize: 20,
+    color: 'white'
   },
   ajoutjoueur_container: {
     flexDirection: 'row',
@@ -386,6 +398,11 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 5
   },
+  textinput: {
+    height: 50,
+    paddingLeft: 5,
+    color: 'white'
+  },
   checkbox_ajoutjoueur_container: {
     flex: 1
   },
@@ -393,28 +410,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 5
   },
-  textinput: {
-    height: 50,
-    paddingLeft: 5,
-    color: 'white'
-  },
-  buttonView: {
-    marginBottom: 20,
-    paddingLeft: 15,
-    paddingRight: 15
-  },
-  flatList: {
-    flex: 1
-  },
-  nbjoueur_container: {
-    alignItems: 'center',
-    marginTop: 5
-  },
-  text_nbjoueur: {
-    fontSize: 20,
-    color: 'white'
-  },
-  entete: {
+  entete_container: {
     flexDirection: 'row',
     alignItems: 'baseline',
     borderBottomWidth: 2,
@@ -439,6 +435,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 15,
     color: 'white'
+  },
+  flatList_container: {
+    flex: 1
+  },
+  buttonView: {
+    marginBottom: 20,
+    paddingLeft: 15,
+    paddingRight: 15
   },
 })
 
