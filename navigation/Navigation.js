@@ -75,7 +75,7 @@ function texteTitleTopTab({ listeMatchs, numero }) {
 
 function ManchesTopTabNavigator() {
   return (
-    <TopTab.Navigator initialRouteName='Screen1Manche' options={{scrollEnabled: true, style: {backgroundColor: '#ffda00'}, indicatorStyle: {backgroundColor: "#1c3969"}}}>
+    <TopTab.Navigator initialRouteName='Screen1Manche' screenOptions={{tabBarScrollEnabled: true, tabBarStyle: {backgroundColor: '#ffda00'}, tabBarIndicatorStyle: {backgroundColor: "#1c3969"}}}>
       {topTabScreens()}
     </TopTab.Navigator>
   );
@@ -117,7 +117,7 @@ function ResultatsStack() {
 
 function MatchsResultatsBottomNavigator() {
   return (
-    <BottomTab.Navigator initialRouteName="ListeMatchsBottom" options={{style: {backgroundColor: '#ffda00'}, activeTintColor: '#1c3969', labelStyle: {fontSize: 15}}}>
+    <BottomTab.Navigator initialRouteName="ListeMatchsBottom" screenOptions={{headerShown: false, tabBarStyle: {backgroundColor: '#ffda00'}, tabBarActiveTintColor: '#1c3969', tabBarLabelStyle: {fontSize: 15}}}>
       <BottomTab.Screen
         name="ListeResultatsBottom"
         component={ResultatsStack}
