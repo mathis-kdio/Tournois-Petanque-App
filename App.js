@@ -1,5 +1,6 @@
 // App.js
 
+import 'expo-dev-client'
 import React from 'react'
 import Navigation from './navigation/Navigation'
 import { Provider } from 'react-redux';
