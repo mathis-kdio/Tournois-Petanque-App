@@ -3,47 +3,10 @@ import { StyleSheet, View, Text, Button, Image, Modal } from 'react-native'
 import { expo } from '../app.json'
 import { connect } from 'react-redux'
 import * as Linking from 'expo-linking'
-import VersionCheck from 'react-native-version-check-expo'
 
 class Accueil extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      modalVisible: false,
-    }
-  }
-
-  componentDidMount() {
-    /*VersionCheck.needUpdate().then(async res => {
-      if (res.isNeeded && this.state.modalVisible != true) {
-        this.setState({modalVisible: true})
-      }
-    })*/
-  }
-
-  _showUpdateModal() {
-    return (
-      <View>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={this.state.modalVisible}
-          onRequestClose={() => { this.setState({modalVisible: !this.state.modalVisible}) }}
-        >
-        <View style={modalStyles.centeredView}>
-          <View style={modalStyles.modalView}>
-            <Text style={modalStyles.modalText}>Une mise à jour de l'application est disponible. Elle peut ne pas encore apparaitre dans play store.</Text>
-            <View style={styles.buttonView}>
-              <Button color="green" title='Mettre à jour' onPress={() => Linking.openURL("market://details?id=com.MK.PetanqueGCU")}/>
-            </View>
-            <View style={styles.buttonView}>
-              <Button color="red" title='Fermer' onPress={() => this.setState({modalVisible: !this.state.modalVisible}) }/>
-            </View>
-          </View>
-        </View>
-      </Modal>
-    </View>
-    )
   }
 
   _showMatchs() {
@@ -110,7 +73,6 @@ class Accueil extends React.Component {
           <Text style={styles.create_text}>Par Mathis Cadio</Text>
           <Text style={styles.create_text}>Version: {expo.version}</Text>
         </View>
-        {this._showUpdateModal()}
       </View>
     )
   }
