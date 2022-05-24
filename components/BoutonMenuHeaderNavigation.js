@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Text } from 'react-native'
-import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu'
+import {Menu, MenuItem, MenuDivider } from 'react-native-material-menu'
 
 class BoutonMenuHeaderNav extends React.Component {
   _menu = null;
@@ -40,7 +40,7 @@ class BoutonMenuHeaderNav extends React.Component {
   render() {
     return (
       <View style={styles.main_container}>
-        <Menu ref={this.setMenuRef} button={<Text onPress={this.showMenu}>Menu</Text>}>
+        <Menu ref={this.setMenuRef} anchor={<Text onPress={this.showMenu}>Menu</Text>}>
           <MenuItem style={styles.menuItem} textStyle={styles.texte_menuItem} onPress={this.showJoueurs}>Liste des joueurs</MenuItem>
           <MenuItem style={styles.menuItem} textStyle={styles.texte_menuItem} onPress={this.showSettings}>Paramètres du tournoi</MenuItem>
           <MenuItem style={styles.menuItem} textStyle={styles.texte_menuItem} onPress={this.showPDFExport}>Exporter en PDF</MenuItem>
