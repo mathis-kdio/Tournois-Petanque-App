@@ -1,5 +1,29 @@
 # Change Log
 
+## [1.7] - 25-05-2022
+
+### Ajouté
+- Export des tournois en PDF
+- Suggestions de noms de joueurs lors de l'inscription
+
+### Changement
+- Joueurs différents entre les différentes inscriptions
+- Ajouter "joueur" devant numéro dans le classement dans le cas de match sans nom
+- Mise à jour d'Expo 44 => 45
+- Mise à jour des modules
+
+### Corrigé
+- Affichages des anciens tournois
+- Focus sur mauvais champ pour inscription sans noms
+- Renommage à l'inscription
+
+## [1.6.1] - 17-04-2022
+
+### Ajouté
+### Changement
+### Corrigé
+- Correction plantage au lancement.
+
 ## [1.6] - 16-04-2022
 
 ### Ajouté

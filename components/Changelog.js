@@ -11,6 +11,26 @@ class Changelog extends React.Component {
           <View style={styles.body_container}>
             <Text style={styles.titre}>Version actuelle : {expo.version}</Text>
             <View style={styles.informations_container}>
+              <Text style={styles.titre}>Version 1.7 :</Text>
+              <Text style={styles.informations_texte}>
+                - Ajout de l'export des tournois en PDF{"\n"}
+                - Ajout de la suggestion de noms de joueurs lors de l'inscription{"\n"}
+                - Correction de l'affichages des anciens tournois{"\n"}
+                - Correction du focus sur le champ champ pour inscription sans noms{"\n"}
+                - Correction du renommage à l'inscription{"\n"}
+                - Modification des listes des joueurs entre les différentes inscriptions{"\n"}
+                - Modification de l'affichage du classement dans le cas de match sans nom{"\n"}
+                - Mise à jour d'Expo{"\n"}
+                - Mise à jour des modules{"\n"}
+              </Text>
+            </View>
+            <View style={styles.informations_container}>
+              <Text style={styles.titre}>Version 1.6.1 :</Text>
+              <Text style={styles.informations_texte}>
+                - Fix plantage de l'application au lancement.{"\n"}
+              </Text>
+            </View>
+            <View style={styles.informations_container}>
               <Text style={styles.titre}>Version 1.6 :</Text>
               <Text style={styles.informations_texte}>
                 - Possibilité de charger d'anciens tournois.{"\n"}
