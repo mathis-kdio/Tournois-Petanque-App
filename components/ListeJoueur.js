@@ -85,7 +85,7 @@ class ListeJoueur extends React.Component {
         this.props.dispatch(actionRenommer)
       }
       else {
-        let data = { playerId: joueur.id - 1, newName: this.joueurText };
+        let data = { playerId: joueur.id, newName: this.joueurText };
         const inGameRenamePlayer = { type: "INGAME_RENAME_PLAYER", value: data }
         this.props.dispatch(inGameRenamePlayer)
       }
