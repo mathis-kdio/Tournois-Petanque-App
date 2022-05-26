@@ -57,7 +57,7 @@ class MatchItem extends React.Component {
     else {
       styleColor = colorEquipe2
     }
-    return <Text style={{color:styleColor, fontSize: 20}}>{joueurId} {joueurName}</Text>
+    return <Text style={{color:styleColor, fontSize: 20}}>{joueurId+1} {joueurName}</Text>
   }
 
   _displayScore = (matchID) => {

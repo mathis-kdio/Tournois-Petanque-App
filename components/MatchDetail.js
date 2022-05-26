@@ -42,7 +42,7 @@ class MatchDetail extends React.Component {
       joueurName = joueur.name
     }
     
-    return <Text style={styles.joueurName}>{joueurId} {joueurName}</Text>
+    return <Text style={styles.joueurName}>{joueurId+1} {joueurName}</Text>
   }
 
   _displayEquipe(equipe, match) {
