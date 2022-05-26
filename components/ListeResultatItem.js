@@ -10,13 +10,13 @@ class ListeResultatItem extends React.Component {
     joueur = listeJoueurs.find(item => item.id === joueurId)
     let joueurName = "";
     if (joueur.name === undefined) {
-      joueurName = "Sans Nom" + ' (' + joueur.id + ')';
+      joueurName = "Sans Nom" + ' (' + (joueur.id+1) + ')';
     }
     else if (joueur.name == "") {
-      joueurName = "Joueur " + joueur.id;
+      joueurName = "Joueur " + (joueur.id+1);
     }
     else {
-      joueurName = joueur.name + ' (' + joueur.id + ')';
+      joueurName = joueur.name + ' (' + (joueur.id+1) + ')';
     }
 
     return (

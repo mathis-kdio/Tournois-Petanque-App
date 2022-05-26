@@ -105,13 +105,13 @@ class PDFExport extends React.Component {
             if (listeMatchs[matchId].equipe[0][jidx] != -1) {
               let joueur = listeJoueurs[listeMatchs[matchId].equipe[0][jidx]];
               if (joueur.name === undefined) {
-                html += 'Sans Nom ('+ joueur.id +')';
+                html += 'Sans Nom ('+ (joueur.id+1) +')';
               }
               else if (joueur.name == "") {
-                html += 'Joueur '+ joueur.id;
+                html += 'Joueur '+ (joueur.id+1);
               }
               else {
-                html += joueur.name +' ('+ joueur.id +')';
+                html += joueur.name +' ('+ (joueur.id+1) +')';
               }
             }
             html += '</td>';
@@ -136,13 +136,13 @@ class PDFExport extends React.Component {
             if (listeMatchs[matchId].equipe[1][jidx] != -1) {
               let joueur = listeJoueurs[listeMatchs[matchId].equipe[1][jidx]];
               if (joueur.name === undefined) {
-                html += 'Sans Nom ('+ joueur.id +')';
+                html += 'Sans Nom ('+ (joueur.id+1) +')';
               }
               else if (joueur.name == "") {
-                html += 'Joueur '+ joueur.id;
+                html += 'Joueur '+ (joueur.id+1);
               }
               else {
-                html += joueur.name +' ('+ joueur.id +')';
+                html += joueur.name +' ('+ (joueur.id+1) +')';
               }
             }
             html += '</td>';
@@ -161,13 +161,13 @@ class PDFExport extends React.Component {
         html += '<td class="text-center">' + classement[i].position + ' - ';
         let joueur = listeJoueurs[classement[i].joueurId];
         if (joueur.name === undefined) {
-          html += 'Sans Nom ('+ joueur.id +')';
+          html += 'Sans Nom ('+ (joueur.id+1) +')';
         }
         else if (joueur.name == "") {
-          html += 'Joueur '+ joueur.id;
+          html += 'Joueur '+ (joueur.id+1);
         }
         else {
-          html += joueur.name +' ('+ joueur.id +')';
+          html += joueur.name +' ('+ (joueur.id+1) +')';
         }
         html += '</td>'
         html += '<td class="text-center">'+ classement[i].victoires +'</td>';
