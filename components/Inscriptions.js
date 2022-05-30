@@ -122,6 +122,11 @@ class Inscription extends React.Component {
     this.props.dispatch(actionUpdate);
   }
 
+  _supprimerAllJoueurs() {
+    const actionSupprAll = { type: "SUPPR_ALL_JOUEURS", value: [this.state.typeInscription] }
+    this.props.dispatch(actionSupprAll);
+  }
+
   _commencer() {
     let screenName
     if (this.state.avecEquipes == true) {
@@ -182,7 +187,10 @@ class Inscription extends React.Component {
             />
           )}
           ListFooterComponent={
-            this._displayListeJoueursSuggeres()
+            <View>
+              {this._boutonSupprAllJoueurs()}
+              {this._displayListeJoueursSuggeres()}
+            </View>
           }
         />
       )
@@ -223,6 +231,16 @@ class Inscription extends React.Component {
     return (
       <Text>{nbJoueur}</Text>
     )
+  }
+
+  _boutonSupprAllJoueurs() {
+    if (this.props.listesJoueurs[this.state.typeInscription].length > 0) {
+      return (
+        <View style={styles.buttonView}>
+          <Button style={styles.text_nbjoueur} color='red' title='Supprimer tous les joueurs' onPress={() => this._supprimerAllJoueurs()}/>
+        </View>
+      )
+    }
   }
 
   _boutonCommencer() {
@@ -440,7 +458,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   buttonView: {
-    marginBottom: 20,
+    marginTop: 10,
+    marginBottom: 10,
     paddingLeft: 15,
     paddingRight: 15
   },
