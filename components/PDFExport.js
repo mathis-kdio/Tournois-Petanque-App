@@ -3,6 +3,9 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import { connect } from 'react-redux'
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
+import * as FileSystem from 'expo-file-system';
+const { StorageAccessFramework } = FileSystem;
+import * as Linking from 'expo-linking'
 
 class PDFExport extends React.Component {
   constructor(props) {
@@ -178,8 +181,9 @@ class PDFExport extends React.Component {
       html += '</tr></table>';
     }
     html += '</body></html>';
-    const { uri } = await Print.printToFileAsync({ html });
-    Sharing.shareAsync(uri);
+    const { uri } = await Print.printToFileAsync({ html: html});
+    const contentUri = await FileSystem.getContentUriAsync(uri)
+    await Linking.openURL(newFileURI)
   }
 
   render() {
