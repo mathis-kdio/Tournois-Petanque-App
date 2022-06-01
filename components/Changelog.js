@@ -15,6 +15,7 @@ class Changelog extends React.Component {
               <Text style={styles.informations_texte}>
                 - Ajout de l'export des tournois en PDF{"\n"}
                 - Ajout de la suggestion de noms de joueurs lors de l'inscription{"\n"}
+                - Ajout d'un bouton pour supprimer tous les joueurs lors de l'inscription{"\n"}
                 - Correction de l'affichages des anciens tournois{"\n"}
                 - Correction du focus sur le champ champ pour inscription sans noms{"\n"}
                 - Correction du renommage à l'inscription{"\n"}

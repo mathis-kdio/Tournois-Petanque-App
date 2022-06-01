@@ -5,6 +5,7 @@
 ### Ajouté
 - Export des tournois en PDF
 - Suggestions de noms de joueurs lors de l'inscription
+- Bouton pour supprimer tous les joueurs lors de l'inscription{"\n"}
 
 ### Changement
 - Joueurs différents entre les différentes inscriptions
