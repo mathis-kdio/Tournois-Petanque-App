@@ -24,7 +24,7 @@
     },
     "android": {
       "package": "com.MK.PetanqueGCU",
-      "versionCode": 31,
+      "versionCode": 32,
       "permissions": []
     },
     "web": {
