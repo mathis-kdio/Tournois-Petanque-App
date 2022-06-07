@@ -11,7 +11,13 @@ class Changelog extends React.Component {
           <View style={styles.body_container}>
             <Text style={styles.titre}>Version actuelle : {expo.version}</Text>
             <View style={styles.informations_container}>
-              <Text style={styles.titre}>Version 1.7 :</Text>
+              <Text style={styles.titre}>Version 1.7.1 :</Text>
+              <Text style={styles.informations_texte}>
+                - Correction de la génération des tournois avec un nombre impair de joueurs.{"\n"}
+              </Text>
+            </View>
+            <View style={styles.informations_container}>
+              <Text style={styles.titre}>Version 1.7.0 :</Text>
               <Text style={styles.informations_texte}>
                 - Ajout de l'export des tournois en PDF{"\n"}
                 - Ajout de la suggestion de noms de joueurs lors de l'inscription{"\n"}
