@@ -361,8 +361,8 @@ class GenerationMatchs extends React.Component {
           }
         }
         //Affectation joueur(s) complémentaire(s) du tour si tournoi doublette avec complément en triplette
-        else if ((idMatch + 1) % nbMatchsParTour == -1) {
-          if (this.typeEquipes == "doublette" && nbjoueurs % 4 != 0 && this.complement == "3") {
+        else if ((idMatch + 1) % nbMatchsParTour == 0) {
+          if (this.typeEquipes == "doublette" && nbjoueurs % 4 != 0 && this.complement == "3" && matchs[idMatch].equipe[0][2] == -1) {
             let joueursEnTrop = nbjoueurs % 4
             matchs[idMatch].equipe[0][2] = random[j]
             if (joueursEnTrop == 2) {
