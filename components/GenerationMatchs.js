@@ -166,15 +166,15 @@ class GenerationMatchs extends React.Component {
     //Si c'est le cas, alors on remplie de joueurs invisible pour le complément en mode tête à tête
     if (this.typeEquipes == "doublette" && nbjoueurs % 4 != 0) {
       if (this.complement == "1" && nbjoueurs % 2 == 0) {
-        joueurs.push({name: "Complément 1", special: true, id: (nbjoueurs + 1)})
+        joueurs.push({name: "Complément 1", special: true, id: (nbjoueurs)})
         joueurs[nbjoueurs].equipe = []
-        joueurs.push({name: "Complément 2", special: true, id: (nbjoueurs + 2)})
+        joueurs.push({name: "Complément 2", special: true, id: (nbjoueurs + 1)})
         joueurs[nbjoueurs + 1].equipe = []
-        nbJoueursSpe++
+        nbJoueursSpe+=2
         
         for (let i = 1; i < this.nbTours + 1; i++) {
-          matchs[nbMatchsParTour * i - 1].equipe[0][0] = nbjoueurs + 1
-          matchs[nbMatchsParTour * i - 1].equipe[1][0] = nbjoueurs + 2
+          matchs[nbMatchsParTour * i - 1].equipe[0][0] = nbjoueurs
+          matchs[nbMatchsParTour * i - 1].equipe[1][0] = nbjoueurs + 1
         }
       }
     }
@@ -188,12 +188,12 @@ class GenerationMatchs extends React.Component {
           let idsMatchsSpe = []
           idsMatchsSpe = this.randomBetweenRange(joueursSpe.length, [i * nbMatchsParTour, i * nbMatchsParTour + nbMatchsParTour])
           for (let j = 0; j < joueursSpe.length;) {
-            if (matchs[idsMatchsSpe[j]].equipe[0][0] == -1) {
-              matchs[idsMatchsSpe[j]].equipe[0][0] = joueursSpe[j].id;
+            if (matchs[idsMatchsSpe[j]].equipe[0][1] == -1) {
+              matchs[idsMatchsSpe[j]].equipe[0][1] = joueursSpe[j].id;
               j++
             }
-            else if (matchs[idsMatchsSpe[j]].equipe[1][0] == -1) {
-              matchs[idsMatchsSpe[j]].equipe[1][0] = joueursSpe[j].id;
+            else if (matchs[idsMatchsSpe[j]].equipe[1][1] == -1) {
+              matchs[idsMatchsSpe[j]].equipe[1][1] = joueursSpe[j].id;
               j++
             }
           }
