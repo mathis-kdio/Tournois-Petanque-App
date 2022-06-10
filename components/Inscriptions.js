@@ -302,7 +302,13 @@ class Inscription extends React.Component {
         boutonTitle = "Nombre de joueurs pas multiple de 4, l'option sélectionnée formera un tête-à-tête"
       }
       else if (this.state.complement == "3") {
-        boutonTitle = "Nombre de joueurs pas multiple de 4, l'option sélectionnée formera des triplettes pour compléter"
+        if (this.props.listesJoueurs.avecNoms.length == 7) {
+          boutonTitle = "Mode 3vs2 + 1vs1 n'est pas encore disponible"
+          boutonDesactive = true
+        }
+        else {
+          boutonTitle = "Nombre de joueurs pas multiple de 4, l'option sélectionnée formera des triplettes pour compléter"
+        }
       }
       else if (this.state.complement != "3") {
         boutonTitle = "Nombre de joueurs pas multiple de 4, veuiller choisir l'option pour former des triplettes pour compléter si vous voulez lancer"
