@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Button, Text } from 'react-native'
 import CheckBox from 'react-native-check-box'
 
-class ChoixTournois extends React.Component {
+class ChoixModeTournoi extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -198,4 +198,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default ChoixTournois
+export default ChoixModeTournoi

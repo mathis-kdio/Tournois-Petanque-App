@@ -10,7 +10,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import Accueil from '../components/Accueil'
 import Changelog from '../components/Changelog'
 import ListeTournois from '../components/ListeTournois';
-import ChoixTournois from '../components/ChoixTournois'
+import ChoixTypeTournoi from '../components/ChoixTypeTournoi';
+import ChoixModeTournoi from '../components/ChoixModeTournoi'
 import Inscription from '../components/Inscriptions'
 import InscriptionsSansNoms from '../components/InscriptionsSansNoms'
 import OptionsTournoi from '../components/OptionsTournoi'
@@ -154,7 +155,8 @@ function General() {
 
       <Stack.Screen name="ListeTournois" component={ListeTournois} options={{title: 'Choix d\'un tournoi', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
 
-      <Stack.Screen name="ChoixTournois" component={ChoixTournois} options={{title: 'Choix du mode de tournoi', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
+      <Stack.Screen name="ChoixTypeTournoi" component={ChoixTypeTournoi} options={{title: 'Choix du type de tournoi', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
+      <Stack.Screen name="ChoixModeTournoi" component={ChoixModeTournoi} options={{title: 'Choix du mode de tournoi', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
       
       <Stack.Screen name="InscriptionsAvecNoms" component={Inscription} options={{title: 'Inscription Avec Noms', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
       <Stack.Screen name="InscriptionsSansNoms" component={InscriptionsSansNoms} options={{title: 'Inscription Sans Noms', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
