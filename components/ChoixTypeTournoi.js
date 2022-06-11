@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { StyleSheet, View, Button, Text } from 'react-native'
 
 class ChoixTypeTournoi extends React.Component {
@@ -8,6 +9,11 @@ class ChoixTypeTournoi extends React.Component {
     }
   }
 
+  navigate(typeTournoi) {
+    const updateOptionTypeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['type', typeTournoi]}
+    this.props.dispatch(updateOptionTypeTournoi);
+    return this.props.navigation.navigate({name: 'ChoixModeTournoi'});
+  }
 
   render() {
     return (
@@ -15,15 +21,15 @@ class ChoixTypeTournoi extends React.Component {
         <View style={styles.body_container}>
           <View style={styles.button_container}>
             <Text style={styles.texte}>Choisissez vos équipes ou laisser la génération aléatoire. En tête-à-tête, doublettes ou triplettes :</Text>
-            <Button title='Mode Mélé-Démélé' onPress={() => this.props.navigation.navigate({name: 'ChoixModeTournoi'})} color="#1c3969"/>
+            <Button title='Type Mélé-Démélé' onPress={() => this.navigate('mele-demele')} color="#1c3969"/>
           </View>
           <View style={styles.button_container}>
             <Text style={styles.texte}>Tous les joueurs se rencontrent à un moment dans le tournoi :</Text>
-            <Button title='Mode Championnat (en test)' onPress={() => this.props.navigation.navigate({name: 'ChoixModeTournoi'})} color="#1c3969"/>
+            <Button title='Type Championnat (en test)' onPress={() => this.navigate('championnat')} color="#1c3969"/>
           </View>
           <View style={styles.button_container}>
             <Text style={styles.texte}>PROCHAINEMENT</Text>
-            <Button color="#1c3969" disabled={true} title='Mode Coupe (prochainement)' onPress={() => this.props.navigation.navigate({name: 'ChoixModeTournoi'})} />
+            <Button disabled={true} title='Type Coupe (prochainement)' onPress={() => this.navigate('coupe')} color="#1c3969"/>
           </View>
         </View>
       </View>
@@ -54,4 +60,10 @@ const styles = StyleSheet.create({
   },
 })
 
-export default ChoixTypeTournoi
+const mapStateToProps = (state) => {
+  return {
+    optionsTournoi: state.optionsTournoi.options
+  }
+}
+
+export default connect(mapStateToProps)(ChoixTypeTournoi)
