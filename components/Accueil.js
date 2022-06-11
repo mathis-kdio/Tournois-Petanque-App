@@ -64,7 +64,7 @@ class Accueil extends React.Component {
               <Button color="#1c3969" title='Noter et Commenter' onPress={() => Linking.openURL('market://details?id=com.MK.PetanqueGCU&showAllReviews=true')}/>
             </View>
             <View style={styles.buttonView}>
-              <Button color="#1c3969" title='Envoyer un mail' onPress={() => Linking.openURL('mailto:tournoispetanqueapp@gmail.com')}/>
+              <Button color="#1c3969" title='Envoyer un mail' onPress={() => Linking.canOpenURL('mailto: tournoispetanqueapp@gmail.com').then(supported => {if (supported) {Linking.openURL('mailto: tournoispetanqueapp@gmail.com')}})}/>
             </View>
           </View>
           <View style={styles.buttonViewCreate}>
