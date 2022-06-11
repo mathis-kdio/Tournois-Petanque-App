@@ -60,7 +60,12 @@ class Accueil extends React.Component {
         </View>
         <View style={styles.create_container}>
           <View style={styles.buttonViewCreate}>
-            <Button color="#1c3969" title='Noter et laisser un commentaire' onPress={() => Linking.openURL('market://details?id=com.MK.PetanqueGCU&showAllReviews=true')}/>
+            <View style={styles.buttonView}>
+              <Button color="#1c3969" title='Noter et Commenter' onPress={() => Linking.openURL('market://details?id=com.MK.PetanqueGCU&showAllReviews=true')}/>
+            </View>
+            <View style={styles.buttonView}>
+              <Button color="#1c3969" title='Envoyer un mail' onPress={() => Linking.openURL('mailto:tournoispetanqueapp@gmail.com')}/>
+            </View>
           </View>
           <View style={styles.buttonViewCreate}>
             <View style={styles.buttonView}>
@@ -96,7 +101,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   buttonView: {
-    marginBottom: 20,
+    marginBottom: 10,
     paddingLeft: 15,
     paddingRight: 15
   },
