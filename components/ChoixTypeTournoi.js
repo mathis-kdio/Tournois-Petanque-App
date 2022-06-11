@@ -9,7 +9,7 @@ class ChoixTypeTournoi extends React.Component {
     }
   }
 
-  navigate(typeTournoi) {
+  _navigate(typeTournoi) {
     const updateOptionTypeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['type', typeTournoi]}
     this.props.dispatch(updateOptionTypeTournoi);
     return this.props.navigation.navigate({name: 'ChoixModeTournoi'});
@@ -21,15 +21,15 @@ class ChoixTypeTournoi extends React.Component {
         <View style={styles.body_container}>
           <View style={styles.button_container}>
             <Text style={styles.texte}>Choisissez vos équipes ou laisser la génération aléatoire. En tête-à-tête, doublettes ou triplettes :</Text>
-            <Button title='Type Mélé-Démélé' onPress={() => this.navigate('mele-demele')} color="#1c3969"/>
+            <Button title='Type Mélé-Démélé' onPress={() => this._navigate('mele-demele')} color="#1c3969"/>
           </View>
           <View style={styles.button_container}>
             <Text style={styles.texte}>Tous les joueurs se rencontrent à un moment dans le tournoi :</Text>
-            <Button title='Type Championnat (en test)' onPress={() => this.navigate('championnat')} color="#1c3969"/>
+            <Button title='Type Championnat (en test)' onPress={() => this._navigate('championnat')} color="#1c3969"/>
           </View>
           <View style={styles.button_container}>
             <Text style={styles.texte}>PROCHAINEMENT</Text>
-            <Button disabled={true} title='Type Coupe (prochainement)' onPress={() => this.navigate('coupe')} color="#1c3969"/>
+            <Button disabled={true} title='Type Coupe (prochainement)' onPress={() => this._navigate('coupe')} color="#1c3969"/>
           </View>
         </View>
       </View>
