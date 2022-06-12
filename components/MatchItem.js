@@ -11,10 +11,14 @@ class MatchItem extends React.Component {
   }
 
   _displayEquipe(equipe, match) {
-    let nbJoueur = 2
-    if (match.equipe[equipe - 1][2] != -1) {
+    let nbJoueur = 1
+    if (this.props.listeMatchs[this.props.listeMatchs.length - 1].typeEquipes == "doublette") {
+      nbJoueur = 2
+    }
+    else if (this.props.listeMatchs[this.props.listeMatchs.length - 1].typeEquipes == "triplette") {
       nbJoueur = 3
     }
+
     let nomsJoueurs = []
     if (equipe == 1) {
       for (let i = 0; i < nbJoueur; i++) {
