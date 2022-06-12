@@ -134,53 +134,47 @@ class ListeJoueur extends React.Component {
 
   _equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs) {
     if (avecEquipes == true) {
-      if (this.props.optionsTournoi.typeEquipe == "teteatete") {
-        return (
-          <View style={styles.equipe_container}>
-            <Text style={styles.name_text}>{joueur.equipe}</Text>
-          </View>
-        )
+      let selectedValue = 0;
+      if (joueur.equipe) {
+        selectedValue = joueur.equipe;
       }
-      else {
-        let selectedValue = 0
-        if (joueur.equipe) {
-          selectedValue = joueur.equipe
-        }
-        let nbEquipes
-        if (typeEquipes == "doublette") {
-          nbEquipes = Math.ceil(nbJoueurs / 2)
-        }
-        else {
-          nbEquipes = Math.ceil(nbJoueurs / 3)
-        }
+      let nbEquipes = nbJoueurs;
+      if (typeEquipes == "doublette") {
+        nbEquipes = Math.ceil(nbJoueurs / 2);
+      }
+      else if (typeEquipes == "triplette"){
+        nbEquipes = Math.ceil(nbJoueurs / 3);
+      }
 
-        let pickerItem = []
-        for (let i = 1; i <= nbEquipes; i++) {
-          let count = this.props.listesJoueurs.avecEquipes.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
-          if (typeEquipes == "doublette" && count < 2) {
-            pickerItem.push(this._equipePickerItem(i))
-          }
-          else if (typeEquipes == "triplette" && count < 3) {
-            pickerItem.push(this._equipePickerItem(i))
-          }
-          else if (joueur.equipe == i) {
-            pickerItem.push(this._equipePickerItem(i))
-          }
+      let pickerItem = [];
+      for (let i = 1; i <= nbEquipes; i++) {
+        let count = this.props.listesJoueurs.avecEquipes.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0);
+        if (typeEquipes == "teteatete" && count < 1) {
+          pickerItem.push(this._equipePickerItem(i));
         }
-        return (
-          <View style={styles.picker_container}>
-            <Picker
-              selectedValue={selectedValue}
-              onValueChange={(itemValue, itemIndex) => this._ajoutEquipe(joueur.id, itemValue)}
-              style={styles.picker}
-              dropdownIconColor="white"
-            >
-              <Picker.Item label="Choisir" value={undefined} key="0"/>
-              {pickerItem}
-            </Picker>
-          </View>
-        )
+        if (typeEquipes == "doublette" && count < 2) {
+          pickerItem.push(this._equipePickerItem(i));
+        }
+        else if (typeEquipes == "triplette" && count < 3) {
+          pickerItem.push(this._equipePickerItem(i));
+        }
+        else if (joueur.equipe == i) {
+          pickerItem.push(this._equipePickerItem(i));
+        }
       }
+      return (
+        <View style={styles.picker_container}>
+          <Picker
+            selectedValue={selectedValue}
+            onValueChange={(itemValue, itemIndex) => this._ajoutEquipe(joueur.id, itemValue)}
+            style={styles.picker}
+            dropdownIconColor="white"
+          >
+            <Picker.Item label="Choisir" value={undefined} key="0"/>
+            {pickerItem}
+          </Picker>
+        </View>
+      )
     }
   }
 
@@ -236,10 +230,6 @@ const styles = StyleSheet.create({
     height: 50,
     paddingLeft: 5,
     color: 'white'
-  },
-  equipe_container: {
-    flex: 1,
-    alignItems: 'center',
   },
   picker_container: {
     flex: 1,

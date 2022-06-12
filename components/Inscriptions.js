@@ -148,7 +148,7 @@ class Inscription extends React.Component {
       }
     }
     else {
-      console.log('error');
+
     }
 
     this.props.navigation.navigate({
@@ -276,9 +276,21 @@ class Inscription extends React.Component {
         boutonTitle = "Des joueurs n'ont pas d'équipe"
         boutonDesactive = true
       }
-      else if (this.state.typeEquipes == "teteatete" && (this.props.listesJoueurs.avecEquipes.length % 2 != 0 || this.props.listesJoueurs.avecEquipes.length < 2)) {
-        boutonTitle = "En équipes, le nombre d'equipe doit être un multiple de 2"
-        boutonDesactive = true
+      else if (this.state.typeEquipes == "teteatete") {
+        if (this.props.listesJoueurs.avecEquipes.length % 2 != 0 || this.props.listesJoueurs.avecEquipes.length < 2) {
+          boutonTitle = "Le nombre d'equipe doit être un multiple de 2"
+          boutonDesactive = true
+        }
+        else {
+          for (let i = 0; i < nbEquipes; i++) {
+            let count = this.props.listesJoueurs.avecEquipes.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
+            if (count > 1) {
+              boutonTitle = "Des équipes ont trop de joueurs"
+              boutonDesactive = true
+              break
+            }
+          }
+        }
       }
       else if (this.state.typeEquipes == "doublette") {
         if (this.props.listesJoueurs.avecEquipes.length % 4 != 0 || this.props.listesJoueurs.avecEquipes.length == 0) {
