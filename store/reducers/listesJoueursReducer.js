@@ -98,6 +98,18 @@ function listesJoueurs(state = initialState, action) {
         }
       }
       return nextState || state
+    case 'UPDATE_ALL_JOUEURS_EQUIPE'://action: 0: type d'inscription
+      if (action.value[0] != "") {
+        const listes = { ...state.listesJoueurs };
+        listes[action.value[0]].forEach(joueur => {
+          joueur.equipe = joueur.id + 1;
+        });
+        nextState = {
+          ...state,
+          listesJoueurs: listes
+        }
+      }
+      return nextState || state;
   default:
     return state
   }

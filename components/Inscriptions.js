@@ -116,10 +116,14 @@ class Inscription extends React.Component {
   }
 
   _supprimerJoueur = (idJoueur) => {
-    const actionSuppr = { type: "SUPPR_JOUEUR", value: [this.state.typeInscription, idJoueur] }
+    const actionSuppr = {type: "SUPPR_JOUEUR", value: [this.state.typeInscription, idJoueur]};
     this.props.dispatch(actionSuppr);
-    const actionUpdate = { type: "UPDATE_ALL_JOUEURS_ID", value: [this.state.typeInscription]}
+    const actionUpdate = {type: "UPDATE_ALL_JOUEURS_ID", value: [this.state.typeInscription]};
     this.props.dispatch(actionUpdate);
+    if (this.props.optionsTournoi.typeEquipe == "teteatete") {
+      const actionUpdateEquipe = {type: "UPDATE_ALL_JOUEURS_EQUIPE", value: [this.state.typeInscription]};
+      this.props.dispatch(actionUpdateEquipe);
+    }
   }
 
   _supprimerAllJoueurs() {
