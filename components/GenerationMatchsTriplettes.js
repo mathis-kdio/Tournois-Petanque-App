@@ -9,7 +9,8 @@ class GenerationMatchsTriplette extends React.Component {
     this.speciauxIncompatibles = true
     this.jamaisMemeCoequipier = true
     this.eviterMemeAdversaire = true
-    this.equipe = "triplette"
+    this.typeEquipes = "triplette"
+    this.typeInscription = "avecNoms"
     this.state = {
       isLoading: true,
       isValid: true,
@@ -390,7 +391,7 @@ class GenerationMatchsTriplette extends React.Component {
       speciauxIncompatibles: this.speciauxIncompatibles,
       memesEquipes: this.jamaisMemeCoequipier,
       memesAdversaires: this.eviterMemeAdversaire,
-      typeEquipes: 'triplette',
+      typeEquipes: this.typeEquipes,
       listeJoueurs: this.props.listesJoueurs[this.typeInscription].map(item => Array.isArray(item) ? clone(item) : item)
     })
     
@@ -464,7 +465,7 @@ class GenerationMatchsTriplette extends React.Component {
         speciauxIncompatibles: this.speciauxIncompatibles,
         memesEquipes: this.jamaisMemeCoequipier,
         memesAdversaires: this.eviterMemeAdversaire,
-        equipe: this.equipe
+        equipe: this.typeEquipes
       }
     })
   }
