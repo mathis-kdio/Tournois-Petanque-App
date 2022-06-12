@@ -8,19 +8,39 @@ class ListeTournois extends React.Component {
     super(props)
   }
 
-  _chargerTournoi(tournoiId, tournoi) {
+  _chargerTournoi(tournoi) {
     this.props.navigation.navigate({
       name: 'ListeMatchsInscription', 
       params: {
-        tournoiId: tournoiId, 
+        tournoiId: tournoi.tournoiId, 
         tournoi: tournoi,
       }
-    })
+    });
   }
 
   _supprimerTournoi(tournoiId) {
-    const actionSupprimerTournoi = { type: "SUPPR_TOURNOI", value: {tournoiId: tournoiId}};
+    const actionSupprimerTournoi = {type: "SUPPR_TOURNOI", value: {tournoiId: tournoiId}};
     this.props.dispatch(actionSupprimerTournoi);
+  }
+
+  _listeTournoisItem(tournoi) {
+    let boutonDesactive = false;
+    if (tournoi.tournoiId == this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID) {
+      boutonDesactive = true;
+    }
+    return (
+      <View style={styles.tournoi_container}>
+        <View style={styles.text_container}>
+          <Text style={styles.tournoi_text}>Tournoi n°{tournoi.tournoiId + 1}</Text>
+        </View>
+        <View style={styles.buttonView}>
+          <Button disabled={boutonDesactive} color="#1c3969" title="Charger" onPress={() => this._chargerTournoi(tournoi)}/>
+        </View>
+        <View style={styles.buttonView}>
+          <Button disabled={boutonDesactive} color="red" title="Supprimer" onPress={() => this._supprimerTournoi(tournoi.tournoiId)}/>
+        </View>
+      </View>
+    )
   }
 
   render() {
@@ -35,19 +55,7 @@ class ListeTournois extends React.Component {
               data={this.props.listeTournois}
               initialNumToRender={20}
               keyExtractor={(item) => item.tournoiId.toString() }
-              renderItem={({item}) => (
-                <View style={styles.tournoi_container}>
-                  <View style={styles.text_container}>
-                    <Text style={styles.tournoi_text}>Tournoi n°{item.tournoiId + 1}</Text>
-                  </View>
-                  <View style={styles.buttonView}>
-                    <Button color="#1c3969" title="Charger" onPress={() => this._chargerTournoi(item.tournoiId, item)}/>
-                  </View>
-                  <View style={styles.buttonView}>
-                    <Button color="red" title="Supprimer" onPress={() => this._supprimerTournoi(item.tournoiId)}/>
-                  </View>
-                </View>
-              )}
+              renderItem={({item}) => (this._listeTournoisItem(item))}
             />
           </View>
         </View>
@@ -95,6 +103,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
+    listeMatchs: state.gestionMatchs.listematchs,
     listeTournois: state.listeTournois.listeTournois
   }
 }
