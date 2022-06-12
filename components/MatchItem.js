@@ -37,31 +37,30 @@ class MatchItem extends React.Component {
   _displayName = (joueurNumber, equipe, matchID) => {
     let colorEquipe1 = 'white'
     let colorEquipe2 = 'white'
-    let score1 = this.props.listeMatchs[matchID].score1;
-    let score2 = this.props.listeMatchs[matchID].score2;
-    if (score1 == 13) {
+    if (this.props.listeMatchs[matchID].score1 == 13) {
       colorEquipe1 = 'green'
       colorEquipe2 = 'red'
     }
-    else if (score2 == 13) {
+    else if (this.props.listeMatchs[matchID].score2 == 13) {
       colorEquipe1 = 'red'
       colorEquipe2 = 'green'
     }
-    let joueur = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs.find(item => item.id === joueurNumber)
+
     let styleColor
-    let joueurName
-    let joueurId
-    if (joueur) {
-      joueurId = joueur.id
-      joueurName = joueur.name
-    }
     if (equipe == 1) {
       styleColor = colorEquipe1
     }
     else {
       styleColor = colorEquipe2
     }
-    return <Text style={{color:styleColor, fontSize: 20}}>{joueurId+1} {joueurName}</Text>
+
+    let joueur = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs.find(item => item.id === joueurNumber)
+    if (joueur) {
+      return <Text style={{color:styleColor, fontSize: 20}}>{joueur.id+1} {joueur.name}</Text>
+    }
+    else {
+      return <Text style={{color:styleColor, fontSize: 20}}>{"Complément :"}</Text>
+    }
   }
 
   _displayScore = (matchID) => {
