@@ -90,8 +90,8 @@ class Inscription extends React.Component {
     //Test si au moins 1 caractère
     if (this.joueurText != '') {
       let equipe = undefined
-      if (this.state.typeEquipes == "teteatete") {
-        equipe = this.props.listesJoueurs[this.state.typeInscription].length
+      if (this.state.typeEquipes == "teteatete" || this.props.optionsTournoi.typeEquipe == "teteatete") {
+        equipe = this.props.listesJoueurs[this.state.typeInscription].length + 1
       }
       const action = { type: "AJOUT_JOUEUR", value: [this.state.typeInscription, this.joueurText, this.state.isChecked, equipe] }
       this.props.dispatch(action);
@@ -473,7 +473,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    listesJoueurs: state.listesJoueurs.listesJoueurs
+    listesJoueurs: state.listesJoueurs.listesJoueurs,
+    optionsTournoi: state.optionsTournoi.options
   }
 }
 
