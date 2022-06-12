@@ -5,11 +5,11 @@ import { connect } from 'react-redux'
 class GenerationChampionnat extends React.Component {
   constructor(props) {
     super(props)
-    this.nbTours = 5
-    this.speciauxIncompatibles = true
-    this.jamaisMemeCoequipier = true
-    this.eviterMemeAdversaire = true
-    this.typeEquipes = "doublette"
+    this.nbTours = 5;
+    this.speciauxIncompatibles = true;
+    this.jamaisMemeCoequipier = true;
+    this.eviterMemeAdversaire = true;
+    this.typeEquipes = "doublette";
     this.state = {
       isLoading: true,
       isValid: true,
@@ -21,13 +21,13 @@ class GenerationChampionnat extends React.Component {
 
   _ajoutMatchs = (matchs) => {
     this._supprimerMatchs();
-    const action = { type: "AJOUT_MATCHS", value: matchs }
-    this.props.dispatch(action);
+    const action = { type: "AJOUT_MATCHS", value: matchs };
+    this.props.dispatch(action);;
   }
 
   _supprimerMatchs () {
-    const action = { type: "SUPPR_MATCHS" }
-    this.props.dispatch(action)
+    const action = { type: "SUPPR_MATCHS" };
+    this.props.dispatch(action);
   }
 
   componentDidMount() {
@@ -45,98 +45,52 @@ class GenerationChampionnat extends React.Component {
   }
 
   _lanceurGeneration() {
-    let nbjoueurs = this.props.listesJoueurs.avecEquipes.length;
-    let nbGenerationsRatee = 0
-    let nbEssaisPossibles = Math.pow(nbjoueurs, nbjoueurs)
-    let returnType = 0
-    // 3 types de retour possible: 
-    // 0 si trop de personnes spéciaux ou règle pas memeEquipes impossible; 
-    // 1 si breaker activé
-    // 2 si génération réussie
-    //Tant que la génération échoue à cause du breaker alors on relancer
-    while (nbGenerationsRatee < nbEssaisPossibles) {
-      returnType = this._generation()
-      if (returnType == 0 || returnType == 2) {
-        break
-      }
-      else {
-        nbGenerationsRatee++
-      }
-    }
-    //Si la génération échoue trop de fois à cause du breaker alors affichage d'un message pour indiquer de changer les options
-    if (nbGenerationsRatee == nbEssaisPossibles) {
-      this.setState({
-        isGenerationSuccess: false,
-        isLoading: false
-      })
-    }
+    this._generation();
   }
-
-  randomBetween(a, b) {
-    return (parseInt((Math.random() * (b - a)) + a))
-  }
-  randomBetweenRange (num, range) {
-    const res = [];
-    for (let i = 0; i < num; ) {
-        const random = this.randomBetween(range[0], range[1])
-        if (this.countOccurrences(res, random) < 2) {
-          res.push(random)
-          i++
-        }
-    }
-    return res
-  }
-
-  countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
-
   _generation() {
     //Récupération des options que l'utilisateur a modifié ou laissé par défaut
     if (this.props.route.params != undefined) {
       let routeparams = this.props.route.params;
-      if (routeparams.nbTours != undefined) {
-        this.nbTours = routeparams.nbTours
-      }
       if (routeparams.speciauxIncompatibles != undefined) {
-        speciauxIncompatibles = routeparams.speciauxIncompatibles
-        this.speciauxIncompatibles = routeparams.speciauxIncompatibles
+        speciauxIncompatibles = routeparams.speciauxIncompatibles;
+        this.speciauxIncompatibles = routeparams.speciauxIncompatibles;
       }
       if (routeparams.memesEquipes != undefined) {
-        jamaisMemeCoequipier = routeparams.memesEquipes
-        this.jamaisMemeCoequipier = routeparams.memesEquipes
+        jamaisMemeCoequipier = routeparams.memesEquipes;
+        this.jamaisMemeCoequipier = routeparams.memesEquipes;
       }
       if (routeparams.memesAdversaires != undefined) {
-        eviterMemeAdversaire = routeparams.memesAdversaires
-        this.eviterMemeAdversaire = routeparams.memesAdversaires
-      }
-      if (routeparams.typeEquipes != undefined) {
-        this.typeEquipes = routeparams.typeEquipes
+        eviterMemeAdversaire = routeparams.memesAdversaires;
+        this.eviterMemeAdversaire = routeparams.memesAdversaires;
       }
     }
 
+    this.typeEquipes = this.props.optionsTournoi.typeEquipe;
     let nbjoueurs = this.props.listesJoueurs.avecEquipes.length;
-    let eviterMemeAdversaire = true;
     let speciauxIncompatibles = true
     let jamaisMemeCoequipier = true
+    let eviterMemeAdversaire = true;
     let matchs = [];
     let idMatch = 0;
-    let equipe = []
+    let equipe = [];
 
     //Initialisation des matchs dans un tableau
     let nbEquipes
     let nbMatchsParTour
     if (this.typeEquipes == "teteatete") {
-      nbEquipes = nbjoueurs
-      nbMatchsParTour = nbjoueurs / 2
+      nbEquipes = nbjoueurs;
+      nbMatchsParTour = nbjoueurs / 2;
     }
     else if (this.typeEquipes == "doublette") {
-      nbEquipes = nbjoueurs / 2
-      nbMatchsParTour = Math.ceil(nbjoueurs / 4)
+      nbEquipes = nbjoueurs / 2;
+      nbMatchsParTour = Math.ceil(nbjoueurs / 4);
     }
     else {
-      nbEquipes = nbjoueurs / 3
-      nbMatchsParTour = Math.ceil(nbjoueurs / 6)
+      nbEquipes = nbjoueurs / 3;
+      nbMatchsParTour = Math.ceil(nbjoueurs / 6);
     }
-    let nbMatchs = this.nbTours * nbMatchsParTour
+    this.nbTours = nbEquipes - 1;
+    let nbMatchs = this.nbTours * nbMatchsParTour;
 
     idMatch = 0;
     for (let i = 1; i < this.nbTours + 1; i++) {
@@ -148,71 +102,44 @@ class GenerationChampionnat extends React.Component {
 
     //Création d'un tableau dans lequel les joueurs sont regroupés par équipes
     for (let i = 1; i <= nbEquipes; i++) {
-      equipe.push([])
+      equipe.push([]);
       for (let j = 0; j < nbjoueurs; j++) {
-        if(this.props.listesJoueurs.avecEquipes[j].equipe == i) {
-          equipe[i - 1].push(this.props.listesJoueurs.avecEquipes[j].id)
+        if (this.props.listesJoueurs.avecEquipes[j].equipe == i) {
+          equipe[i - 1].push(this.props.listesJoueurs.avecEquipes[j].id);
         }
       }
     }
 
-    //On place les ids des équipes dans un tableau qui sera mélanger à chaque nouveaux tour
+    //On place les ids des équipes dans un tableau qui sera décalé à chaque nouveaux tour
     let equipesIds = [];
     for (let i = 0; i < nbEquipes; i++) {
       equipesIds.push(i);
     }
-    function shuffle(o) {
-      for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-      return o;
-    }
 
     //FONCTIONNEMENT
     idMatch = 0;
-    let breaker = 0 //permet de détecter quand boucle infinie
     for (let i = 0; i < this.nbTours; i++) {
-      breaker = 0
-      let randomEquipesIds = shuffle(equipesIds)
-      for (let j = 0; j < equipe.length;) {
-        //Affectation equipe 1
-        if (matchs[idMatch].equipe[0][0] == -1) {
-          matchs[idMatch].equipe[0][0] = equipe[randomEquipesIds[j]][0]
-          if (this.typeEquipes == "doublette" || this.typeEquipes == "triplette") {
-            matchs[idMatch].equipe[0][1] = equipe[randomEquipesIds[j]][1]
-          }
-          if (this.typeEquipes == "triplette") {
-            matchs[idMatch].equipe[0][2] = equipe[randomEquipesIds[j]][2]
-          }
-          j++
-          breaker = 0
+      for (let j = 0; j < equipe.length / 2; j++) {
+        //Affectation Equipe 1
+        matchs[idMatch].equipe[0][0] = equipe[equipesIds[j]][0];
+        if (this.typeEquipes == "doublette" || this.typeEquipes == "triplette") {
+          matchs[idMatch].equipe[0][1] = equipe[equipesIds[j]][1];
         }
-        //Affectation Equipe 2
-        if (matchs[idMatch].equipe[1][0] == -1) {
-          //Test si les équipes 1 et 2 n'ont pas déjà jouées ensemble
-          if (eviterMemeAdversaire == true) {
-            matchs[idMatch].equipe[1][0] = equipe[randomEquipesIds[j]][0]
-            if (this.typeEquipes == "doublette" || this.typeEquipes == "triplette") {
-              matchs[idMatch].equipe[1][1] = equipe[randomEquipesIds[j]][1]
-            }
-            if (this.typeEquipes == "triplette") {
-              matchs[idMatch].equipe[1][2] = equipe[randomEquipesIds[j]][2]
-            }
-            j++
-            breaker = 0
-          }
-        }
-        else {
-          breaker++
+        if (this.typeEquipes == "triplette") {
+          matchs[idMatch].equipe[0][2] = equipe[equipesIds[j]][2];
         }
 
+        //Affectation Equipe 2
+        matchs[idMatch].equipe[1][0] = equipe[equipesIds[nbEquipes - 1 - j]][0];
+        if (this.typeEquipes == "doublette" || this.typeEquipes == "triplette") {
+          matchs[idMatch].equipe[1][1] = equipe[equipesIds[nbEquipes - 1 - j]][1];
+        }
+        if (this.typeEquipes == "triplette") {
+          matchs[idMatch].equipe[1][2] = equipe[equipesIds[nbEquipes - 1 - j]][2];
+        }
         idMatch++;
-        //Si l'id du Match correspond à un match du prochain tour alors retour au premier match du tour en cours
-        if (idMatch >= nbMatchsParTour * (i + 1)) {
-          idMatch = i * nbMatchsParTour;
-        }
-        if (breaker > nbMatchs) {
-          return 1
-        }
       }
+      equipesIds.splice(1, 0, equipesIds.pop());
       idMatch = nbMatchsParTour * (i + 1);
     }
 
@@ -226,7 +153,7 @@ class GenerationChampionnat extends React.Component {
       memesAdversaires: this.eviterMemeAdversaire,
       typeEquipes: this.typeEquipes,
       listeJoueurs: this.props.listesJoueurs.avecEquipes.map(item => Array.isArray(item) ? clone(item) : item)
-    })
+    });
 
     //Ajout dans le store
     this._ajoutMatchs(matchs);
@@ -240,8 +167,7 @@ class GenerationChampionnat extends React.Component {
     //Affichage des matchs
     this._displayListeMatch(matchs);
 
-    //Si génération valide alors return 2
-    return 2
+    return;
   }
 
   _displayLoading() {
@@ -250,17 +176,6 @@ class GenerationChampionnat extends React.Component {
         <View style={styles.loading_container}>
           <ActivityIndicator size='large' color="#ffda00"/>
           <Text style={styles.texte}>Génération des parties, veuillez patienter</Text>
-        </View>
-      )
-    }
-  }
-
-  _displayErrorGenerationFail() {
-    if (this.state.isGenerationSuccess === false && this.state.isLoading === false) {
-      return (
-        <View style={styles.error_container}>
-          <Text style={styles.texte}>La générations n'a pas réussie, certaines options rendent la génération trop compliqué.</Text>
-          <Button title='Changer des options' onPress={() => this._retourInscription()}/>
         </View>
       )
     }
@@ -276,14 +191,13 @@ class GenerationChampionnat extends React.Component {
         memesAdversaires: this.eviterMemeAdversaire,
         typeEquipes: this.state.typeEquipes
       }
-    })
+    });
   }
 
   render() {
     return (
       <View style={styles.main_container}>
         {this._displayLoading()}
-        {this._displayErrorGenerationFail()}
       </View>
     )
   }
@@ -304,12 +218,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  error_container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: '5%'
-  },
   texte: {
     fontSize: 15,
     color: 'white'
@@ -320,7 +228,8 @@ const mapStateToProps = (state) => {
     return {
       listesJoueurs: state.listesJoueurs.listesJoueurs,
       listeMatchs: state.gestionMatchs.listematchs,
-      listeTournois: state.listeTournois.listeTournois
+      listeTournois: state.listeTournois.listeTournois,
+      optionsTournoi: state.optionsTournoi.options
     }
 }
 
