@@ -9,6 +9,8 @@ class ListeTournois extends React.Component {
   }
 
   _chargerTournoi(tournoi) {
+    const actionUpdateListeMatchs = {type: "AJOUT_MATCHS", value: tournoi.tournoi};
+    this.props.dispatch(actionUpdateListeMatchs);
     this.props.navigation.navigate({
       name: 'ListeMatchsInscription', 
       params: {

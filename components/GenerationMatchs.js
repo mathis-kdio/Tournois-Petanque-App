@@ -25,7 +25,7 @@ class GenerationMatchs extends React.Component {
     this._supprimerMatchs();
     const actionAjoutMatchs = { type: "AJOUT_MATCHS", value: matchs }
     this.props.dispatch(actionAjoutMatchs);
-    const actionAjoutTournoi = { type: "AJOUT_TOURNOI", value: {tournoi: {tournoiId: matchs[matchs.length - 1].tournoiID, matchs}} }
+    const actionAjoutTournoi = { type: "AJOUT_TOURNOI", value: {tournoi: matchs} }
     this.props.dispatch(actionAjoutTournoi);
   }
 
@@ -408,7 +408,7 @@ class GenerationMatchs extends React.Component {
 
     //Ajout des options du match à la fin du tableau contenant les matchs
     matchs.push({
-      tournoiID: this.props.listeTournois.length,
+      tournoiID: undefined,
       nbTours: this.nbTours,
       nbMatchs: nbMatchs,
       speciauxIncompatibles: this.speciauxIncompatibles,
