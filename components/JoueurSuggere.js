@@ -13,7 +13,11 @@ class JoueurSuggere extends React.Component {
   }
 
   _ajouterJoueur(typeInscription, joueurName) {
-    const action = { type: "AJOUT_JOUEUR", value: [typeInscription, joueurName, this.state.isSpecial, undefined] }
+    let equipe = undefined;
+    if (this.props.optionsTournoi.typeEquipe == "teteatete") {
+      equipe = this.props.listesJoueurs.avecEquipes.length + 1;
+    }
+    const action = { type: "AJOUT_JOUEUR", value: [typeInscription, joueurName, this.state.isSpecial, equipe] };
     this.props.dispatch(action);
   }
 
@@ -74,7 +78,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-
+    listesJoueurs: state.listesJoueurs.listesJoueurs,
+    optionsTournoi: state.optionsTournoi.options
   }
 }
 

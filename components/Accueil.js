@@ -14,7 +14,7 @@ class Accueil extends React.Component {
   }
 
   _showInscription() {
-    this.props.navigation.navigate('ChoixTournois');
+    this.props.navigation.navigate('ChoixTypeTournoi');
   }
 
   _showListeTournois() {
