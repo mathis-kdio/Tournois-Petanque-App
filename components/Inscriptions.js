@@ -336,7 +336,7 @@ class Inscription extends React.Component {
     )
   }
 
-  _boutonOption() {
+  _boutonOptions() {
     if (this.props.optionsTournoi.type != 'championnat') {
       return (
         <Button color='#1c3969' title='Options Tournoi' onPress={() => this._options()}/>
@@ -407,6 +407,7 @@ class Inscription extends React.Component {
         </View>
         <View>
           <View style={styles.buttonView}>
+            {this._boutonOptions()}
           </View>
           <View style={styles.buttonView}>
             {this._boutonCommencer()}
