@@ -132,15 +132,23 @@ class Inscription extends React.Component {
   }
 
   _commencer() {
-    let screenName
-    if (this.state.avecEquipes == true) {
-      screenName = 'GenerationMatchsAvecEquipes'
+    let screenName;
+    if (this.props.optionsTournoi.type == "championnat") {
+      screenName = 'GenerationChampionnat';
     }
-    else if (this.state.typeEquipes == "triplette") {
-      screenName = 'GenerationMatchsTriplettes'
+    else if (this.props.optionsTournoi.type == "mele-demele") {
+      if (this.state.avecEquipes == true) {
+        screenName = 'GenerationMatchsAvecEquipes';
+      }
+      else if (this.state.typeEquipes == "triplette") {
+        screenName = 'GenerationMatchsTriplettes';
+      }
+      else {
+        screenName = 'GenerationMatchs';
+      }
     }
     else {
-      screenName = 'GenerationMatchs'
+      console.log('error');
     }
 
     this.props.navigation.navigate({
