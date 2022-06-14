@@ -8,19 +8,21 @@ function listeTournois(state = initialState, action) {
         action.value.tournoi[action.value.tournoi.length - 1].tournoiID = state.tournoiIncr;
         nextState = {
           ...state,
-          listeTournois: state.listeTournois.concat({tournoi: action.value.tournoi, tournoiId: state.tournoiIncr}),
+          listeTournois: state.listeTournois.concat([{tournoi: action.value.tournoi, tournoiId: state.tournoiIncr}]),
           tournoiIncr: state.tournoiIncr + 1
         };
       }
       return nextState || state
     case 'UPDATE_TOURNOI':
       if (action.value.tournoiId != undefined && action.value.tournoi != undefined) {
-        const listeTournois = {...state.listeTournois};
-        listeTournois[action.value.tournoiId] = action.value.tournoi;
-        nextState = {
-          ...state,
-          listeTournois: listeTournois
-        };
+        if (state.listeTournois.length != 0) {
+          let tournoiId = state.listeTournois.findIndex(e => e.tournoiId == action.value.tournoiId);
+          state.listeTournois[tournoiId].tournoi = action.value.tournoi;
+          nextState = {
+            ...state,
+            listeTournois: state.listeTournois
+          };
+        }
       }
       return nextState || state
     case 'SUPPR_TOURNOI':

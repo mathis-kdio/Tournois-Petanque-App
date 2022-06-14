@@ -71,16 +71,20 @@ class MatchDetail extends React.Component {
   _envoyerResultat() {
     if (this.state.score1 && this.state.score2) {
       let info = {idMatch: this.state.match, score1: this.state.score1, score2: this.state.score2};
-      const action = { type: "AJOUT_SCORE", value: info};
-      this.props.dispatch(action);
+      const actionAjoutScore = { type: "AJOUT_SCORE", value: info};
+      this.props.dispatch(actionAjoutScore);
+      const actionUpdateTournoi = { type: "UPDATE_TOURNOI", value: {tournoi: this.props.listeMatchs, tournoiId: this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID}};
+      this.props.dispatch(actionUpdateTournoi);
       this.props.navigation.navigate('ListeMatchsStack');
     }
   }
 
   _supprimerResultat() {
     let info = {idMatch: this.state.match, score1: undefined, score2: undefined};
-    const action = { type: "AJOUT_SCORE", value: info};
-    this.props.dispatch(action);
+    const actionAjoutScore = { type: "AJOUT_SCORE", value: info};
+    this.props.dispatch(actionAjoutScore);
+    const actionUpdateTournoi = { type: "UPDATE_TOURNOI", value: {tournoi: this.props.listeMatchs, tournoiId: this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID}};
+    this.props.dispatch(actionUpdateTournoi);
     this.props.navigation.navigate('ListeMatchsStack');
   }
 
@@ -209,7 +213,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    listeMatchs: state.gestionMatchs.listematchs
+    listeMatchs: state.gestionMatchs.listematchs,
+    listeTournois: state.listeTournois.listeTournois
   }
 }
 
