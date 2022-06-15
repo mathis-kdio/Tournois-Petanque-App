@@ -22,7 +22,9 @@ class GenerationChampionnat extends React.Component {
   _ajoutMatchs = (matchs) => {
     this._supprimerMatchs();
     const action = { type: "AJOUT_MATCHS", value: matchs };
-    this.props.dispatch(action);;
+    this.props.dispatch(action);
+    const actionAjoutTournoi = { type: "AJOUT_TOURNOI", value: {tournoi: matchs} }
+    this.props.dispatch(actionAjoutTournoi);
   }
 
   _supprimerMatchs () {
