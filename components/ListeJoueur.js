@@ -86,8 +86,10 @@ class ListeJoueur extends React.Component {
       }
       else {
         let data = { playerId: joueur.id, newName: this.joueurText };
-        const inGameRenamePlayer = { type: "INGAME_RENAME_PLAYER", value: data }
-        this.props.dispatch(inGameRenamePlayer)
+        const inGameRenamePlayer = { type: "INGAME_RENAME_PLAYER", value: data };
+        this.props.dispatch(inGameRenamePlayer);
+        const actionUpdateTournoi = { type: "UPDATE_TOURNOI", value: {tournoi: this.props.listeMatchs, tournoiId: this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID}};
+        this.props.dispatch(actionUpdateTournoi);
       }
       this.joueurText = ""
     }
@@ -244,6 +246,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     listesJoueurs: state.listesJoueurs.listesJoueurs,
+    listeMatchs: state.gestionMatchs.listematchs,
     optionsTournoi: state.optionsTournoi.options
   }
 }
