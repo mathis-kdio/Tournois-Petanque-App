@@ -9,15 +9,18 @@ class ParametresTournoi extends React.Component {
   }
 
   _supprimerTournoi() {
-    const suppressionAllJoueurs = { type: "SUPPR_ALL_JOUEURS" }
-    this.props.dispatch(suppressionAllJoueurs);
     const suppressionAllMatchs = { type: "SUPPR_MATCHS"}
     this.props.dispatch(suppressionAllMatchs);
+    const supprDansListeTournois = { type: "SUPPR_TOURNOI", value: {tournoiId: this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID}};
+    this.props.dispatch(supprDansListeTournois);
     this.props.navigation.navigate('AccueilGeneral')
   }
 
   render() {
-    let parametresTournoi = this.props.listeMatchs[this.props.listeMatchs.length - 1]
+    let parametresTournoi = {nbTours: 0, speciauxIncompatibles: false, memesEquipes: false, memesAdversaires: false};
+    if (this.props.listeMatchs) {
+      parametresTournoi = this.props.listeMatchs[this.props.listeMatchs.length - 1];
+    }
     return (
       <View style={styles.main_container} >
         <View style={styles.body_container}>

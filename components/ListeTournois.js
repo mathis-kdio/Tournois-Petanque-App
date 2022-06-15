@@ -27,7 +27,7 @@ class ListeTournois extends React.Component {
 
   _listeTournoisItem(tournoi) {
     let boutonDesactive = false;
-    if (tournoi.tournoiId == this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID) {
+    if (this.props.listeMatchs && tournoi.tournoiId == this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID) {
       boutonDesactive = true;
     }
     return (

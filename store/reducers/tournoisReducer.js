@@ -27,11 +27,11 @@ function listeTournois(state = initialState, action) {
       return nextState || state
     case 'SUPPR_TOURNOI':
       if (action.value.tournoiId != undefined) {
-        const tournoiIndex = state.listeTournois.findIndex(item => item.tournoiId === action.value.tournoiId)
-        if (tournoiIndex !== -1) {
+        let tournoiId = state.listeTournois.findIndex(item => item.tournoiId === action.value.tournoiId)
+        if (tournoiId !== -1) {
           nextState = {
             ...state,
-            listeTournois: state.listeTournois.filter((item, index) => index !== tournoiIndex)
+            listeTournois: state.listeTournois.filter((item, index) => index !== tournoiId)
           }
         }
       }
