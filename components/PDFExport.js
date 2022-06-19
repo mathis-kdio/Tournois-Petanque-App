@@ -161,7 +161,7 @@ class PDFExport extends React.Component {
       let classement = this.calculClassement();
       for (let i = 0; i < listeJoueurs.length; i++) {
         html += '<tr>';
-        html += '<td class="text-center">' + classement[i].position + ' - ';
+        html += '<td>' + classement[i].position + ' - ';
         let joueur = listeJoueurs[classement[i].joueurId];
         if (joueur.name === undefined) {
           html += 'Sans Nom ('+ (joueur.id+1) +')';
