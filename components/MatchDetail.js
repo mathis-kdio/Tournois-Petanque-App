@@ -38,34 +38,14 @@ class MatchDetail extends React.Component {
     if (joueur) {
       return <Text style={styles.joueurName}>{joueur.id+1} {joueur.name}</Text>
     }
-    else {
-      return <Text style={styles.joueurName}>{"Complément :"}</Text>
-    }
-    
   }
 
   _displayEquipe(equipe, match) {
-    let nbJoueur = 1
-    if (this.props.listeMatchs[this.props.listeMatchs.length - 1].typeEquipes == "doublette") {
-      nbJoueur = 2
-    }
-    else if (this.props.listeMatchs[this.props.listeMatchs.length - 1].typeEquipes == "triplette") {
-      nbJoueur = 3
-    }
-
     let nomsJoueurs = []
-    if (equipe == 1) {
-      for (let i = 0; i < nbJoueur; i++) {
-        nomsJoueurs.push(this._displayName(match.equipe[0][i], 1))
-      }
-      return nomsJoueurs
+    for (let i = 0; i < 3; i++) {
+      nomsJoueurs.push(this._displayName(match.equipe[equipe - 1][i], equipe))
     }
-    else {
-      for (let i = 0; i < nbJoueur; i++) {
-        nomsJoueurs.push(this._displayName(match.equipe[1][i], 2))
-      }
-      return nomsJoueurs
-    }
+    return nomsJoueurs
   }
 
   _envoyerResultat() {

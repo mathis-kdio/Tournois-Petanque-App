@@ -11,27 +11,11 @@ class MatchItem extends React.Component {
   }
 
   _displayEquipe(equipe, match) {
-    let nbJoueur = 1
-    if (this.props.listeMatchs[this.props.listeMatchs.length - 1].typeEquipes == "doublette") {
-      nbJoueur = 2
-    }
-    else if (this.props.listeMatchs[this.props.listeMatchs.length - 1].typeEquipes == "triplette") {
-      nbJoueur = 3
-    }
-
     let nomsJoueurs = []
-    if (equipe == 1) {
-      for (let i = 0; i < nbJoueur; i++) {
-        nomsJoueurs.push(this._displayName(match.equipe[0][i], 1, match.id))
-      }
-      return nomsJoueurs
+    for (let i = 0; i < 3; i++) {
+      nomsJoueurs.push(this._displayName(match.equipe[equipe - 1][i], equipe, match.id))
     }
-    else {
-      for (let i = 0; i < nbJoueur; i++) {
-        nomsJoueurs.push(this._displayName(match.equipe[1][i], 2, match.id))
-      }
-      return nomsJoueurs
-    }
+    return nomsJoueurs
   }
 
   _displayName = (joueurNumber, equipe, matchID) => {
@@ -57,9 +41,6 @@ class MatchItem extends React.Component {
     let joueur = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs.find(item => item.id === joueurNumber)
     if (joueur) {
       return <Text style={{color:styleColor, fontSize: 20}}>{joueur.id+1} {joueur.name}</Text>
-    }
-    else {
-      return <Text style={{color:styleColor, fontSize: 20}}>{"Complément :"}</Text>
     }
   }
 
