@@ -40,7 +40,7 @@ class MatchItem extends React.Component {
 
     let joueur = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs.find(item => item.id === joueurNumber)
     if (joueur) {
-      return <Text style={{color:styleColor, fontSize: 20}}>{joueur.id+1} {joueur.name}</Text>
+      return <Text key={joueur.id} style={{color:styleColor, fontSize: 20}}>{joueur.id+1} {joueur.name}</Text>
     }
   }
 
