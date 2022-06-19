@@ -27,12 +27,9 @@ function listeTournois(state = initialState, action) {
       return nextState || state
     case 'SUPPR_TOURNOI':
       if (action.value.tournoiId != undefined) {
-        let tournoiId = state.listeTournois.findIndex(item => item.tournoiId === action.value.tournoiId)
-        if (tournoiId !== -1) {
-          nextState = {
-            ...state,
-            listeTournois: state.listeTournois.filter((item, index) => index !== tournoiId)
-          }
+        nextState = {
+          ...state,
+          listeTournois: state.listeTournois.filter((item, index) => item.tournoiId !== action.value.tournoiId)
         }
       }
       return nextState || state
