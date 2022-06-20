@@ -1,5 +1,21 @@
 # Change Log
 
+## [1.8.0] - 20-06-2022
+
+### Ajouté
+- Mode championnat !
+- Rapport automatique en cas de plantage.
+- Bouton de mail sur l'accueil.
+
+### Changement
+- Bouton pour commencer un tournoi avec 7 joueurs désactivé, car mode non pris en charge.
+
+### Corrigé
+- Chargement et sauvegarde des anciens tournois.
+- Suppression d'un tournoi.
+- Génération des triplettes.
+- Affichage tête-à-tête.
+
 ## [1.7.1] - 08-05-2022
 
 ### Ajouté
@@ -12,7 +28,7 @@
 ### Ajouté
 - Export des tournois en PDF
 - Suggestions de noms de joueurs lors de l'inscription
-- Bouton pour supprimer tous les joueurs lors de l'inscription{"\n"}
+- Bouton pour supprimer tous les joueurs lors de l'inscription
 
 ### Changement
 - Joueurs différents entre les différentes inscriptions

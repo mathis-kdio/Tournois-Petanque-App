@@ -25,7 +25,7 @@ class ChoixTypeTournoi extends React.Component {
           </View>
           <View style={styles.button_container}>
             <Text style={styles.texte}>Tous les joueurs se rencontrent à un moment dans le tournoi :</Text>
-            <Button title='Type Championnat (en test)' onPress={() => this._navigate('championnat')} color="#1c3969"/>
+            <Button title='Type Championnat' onPress={() => this._navigate('championnat')} color="#1c3969"/>
           </View>
           <View style={styles.button_container}>
             <Text style={styles.texte}>PROCHAINEMENT</Text>

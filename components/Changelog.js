@@ -11,6 +11,19 @@ class Changelog extends React.Component {
           <View style={styles.body_container}>
             <Text style={styles.titre}>Version actuelle : {expo.version}</Text>
             <View style={styles.informations_container}>
+              <Text style={styles.titre}>Version 1.8.0 :</Text>
+              <Text style={styles.informations_texte}>
+                - Ajout du mode championnat !{"\n"}
+                - Ajout d'un rapport automatique en cas de plantage.{"\n"}
+                - Ajout d'un bouton de mail sur l'accueil.{"\n"}
+                - Bouton pour commencer un tournoi avec 7 joueurs désactivé, car mode non pris en charge.{"\n"}
+                - Fix chargement et sauvegarde des anciens tournois.{"\n"}
+                - Fix suppression d'un tournoi.{"\n"}
+                - Fix génération des triplettes.{"\n"}
+                - Fix affichage tête-à-tête.{"\n"}
+              </Text>
+            </View>
+            <View style={styles.informations_container}>
               <Text style={styles.titre}>Version 1.7.1 :</Text>
               <Text style={styles.informations_texte}>
                 - Correction de la génération des tournois avec un nombre impair de joueurs.{"\n"}
