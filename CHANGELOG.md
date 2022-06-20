@@ -16,14 +16,14 @@
 - Génération des triplettes.
 - Affichage tête-à-tête.
 
-## [1.7.1] - 08-05-2022
+## [1.7.1] - 08-06-2022
 
 ### Ajouté
 ### Changement
 ### Corrigé
 - Génération des tournois avec un nombre impair de joueurs.
 
-## [1.7.0] - 25-05-2022
+## [1.7.0] - 03-06-2022
 
 ### Ajouté
 - Export des tournois en PDF
