@@ -9,10 +9,10 @@ class ParametresTournoi extends React.Component {
   }
 
   _supprimerTournoi() {
-    const suppressionAllMatchs = { type: "SUPPR_MATCHS"}
-    this.props.dispatch(suppressionAllMatchs);
     const supprDansListeTournois = { type: "SUPPR_TOURNOI", value: {tournoiId: this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID}};
     this.props.dispatch(supprDansListeTournois);
+    const suppressionAllMatchs = { type: "SUPPR_MATCHS"}
+    this.props.dispatch(suppressionAllMatchs);
     this.props.navigation.navigate('AccueilGeneral')
   }
 
