@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, FlatList, Text, Button } from 'react-native'
+import { StyleSheet, View, FlatList, Text, Button, Alert } from 'react-native'
 import { connect } from 'react-redux'
 
 class ListeTournois extends React.Component {
@@ -25,6 +25,17 @@ class ListeTournois extends React.Component {
     this.props.dispatch(actionSupprimerTournoi);
   }
 
+  _modalSupprimerTournoi(tournoi) {
+    Alert.alert(
+      "Suppression d'un tournoi",
+      "Êtes-vous sûr de vouloir supprimer le tournoi n°" + (tournoi.tournoiId + 1) + " ?",
+      [
+        { text: "Annuler", onPress: () => undefined, style: "cancel" },
+        { text: "OK", onPress: () => this._supprimerTournoi(tournoi.tournoiId) },
+      ],
+      { cancelable: true }
+    );
+  }
   _listeTournoisItem(tournoi) {
     let boutonDesactive = false;
     if (this.props.listeMatchs && tournoi.tournoiId == this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID) {
@@ -39,7 +50,7 @@ class ListeTournois extends React.Component {
           <Button disabled={boutonDesactive} color="#1c3969" title="Charger" onPress={() => this._chargerTournoi(tournoi)}/>
         </View>
         <View style={styles.buttonView}>
-          <Button disabled={boutonDesactive} color="red" title="Supprimer" onPress={() => this._supprimerTournoi(tournoi.tournoiId)}/>
+          <Button disabled={boutonDesactive} color="red" title="Supprimer" onPress={() => this._modalSupprimerTournoi(tournoi)}/>
         </View>
       </View>
     )
