@@ -1,4 +1,4 @@
-{
+export default {
   "expo": {
     "name": "Pétanque GCU",
     "slug": "PetanqueGCU",
@@ -43,7 +43,7 @@
           "config": {
             "organization": "tournois-petanque-app",
             "project": "tournois-petanque-gcu",
-            "authToken": "5aebd2d628fc4c1ea5a188260fbe00c6f70b80cb9fe141e09f60366d1a9176ed"
+            "authToken": process.env.SENTRY_KEY
           }
         }
       ]

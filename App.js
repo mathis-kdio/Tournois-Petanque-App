@@ -10,7 +10,7 @@ import { PersistGate } from 'redux-persist/es/integration/react'
 import * as Sentry from 'sentry-expo';
 
 Sentry.init({
-  dsn: 'https://f34f53c074ee46c197a67daad0fe05d9@o1284678.ingest.sentry.io/6495554',
+  dsn: 'https://ca59ddcb4fb74f3bb4f82a10a1378747@o1284678.ingest.sentry.io/6495554',
   enableInExpoDevelopment: false,
   debug: false, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
 });
