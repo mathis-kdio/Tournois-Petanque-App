@@ -1,5 +1,15 @@
 # Change Log
 
+## [1.8.1] - 22-06-2022
+
+### Ajouté
+- Alerte de confirmation lors de la suppression d'un tournoi.
+
+### Changement
+
+### Corrigé
+- Suppression du tournoi en cours
+
 ## [1.8.0] - 20-06-2022
 
 ### Ajouté

@@ -11,6 +11,13 @@ class Changelog extends React.Component {
           <View style={styles.body_container}>
             <Text style={styles.titre}>Version actuelle : {expo.version}</Text>
             <View style={styles.informations_container}>
+              <Text style={styles.titre}>Version 1.8.1 :</Text>
+              <Text style={styles.informations_texte}>
+                - Alerte de confirmation lors de la suppression d'un tournoi.
+                - Suppression du tournoi en cours
+              </Text>
+            </View>
+            <View style={styles.informations_container}>
               <Text style={styles.titre}>Version 1.8.0 :</Text>
               <Text style={styles.informations_texte}>
                 - Ajout du mode championnat !{"\n"}
