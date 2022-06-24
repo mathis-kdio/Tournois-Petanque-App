@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Image, Text } from 'react-native';
 import { connect, useSelector } from 'react-redux';
 
-import { useNavigation, NavigationContainer } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -176,10 +176,8 @@ function General() {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Root">
-        <Stack.Screen name="Root" component={General} options={{headerShown: false}} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Stack.Navigator initialRouteName="Root">
+      <Stack.Screen name="Root" component={General} options={{headerShown: false}} />
+    </Stack.Navigator>
   );
 }
