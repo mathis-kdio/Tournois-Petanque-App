@@ -21,7 +21,7 @@ class ChoixTypeTournoi extends React.Component {
         <View style={styles.body_container}>
           <View style={styles.button_container}>
             <Text style={styles.texte}>Choisissez vos équipes ou laisser la génération aléatoire. En tête-à-tête, doublettes ou triplettes :</Text>
-            <Button title='Type Mélé-Démélé' onPress={() => this._navigate('mele-demele')} color="#1c3969"/>
+            <Button title='Type Mêlée-Démêlée' onPress={() => this._navigate('mele-demele')} color="#1c3969"/>
           </View>
           <View style={styles.button_container}>
             <Text style={styles.texte}>Tous les joueurs se rencontrent à un moment dans le tournoi :</Text>

@@ -52,7 +52,7 @@ class Accueil extends React.Component {
           </View>
           <View style={styles.informations_container}>
             <Text style={styles.informations_texte}>Possibilités :</Text>
-            <Text style={styles.informations_texte}>Mêlée-démélée</Text>
+            <Text style={styles.informations_texte}>Mêlée-démêlée</Text>
             <Text style={styles.informations_texte}>Tête à Tête / Doublettes / triplettes</Text>
             <Text style={styles.informations_texte}>Avec ou sans noms</Text>
             <Text style={styles.informations_texte}>Avec ou sans équipes</Text>

@@ -76,7 +76,7 @@ class ChoixModeTournoi extends React.Component {
 
   _titre() {
     if (this.props.optionsTournoi.type == "mele-demele") {
-      return <Text style={styles.titre}>Choix du types d'équipe et mode du tournoi mélé-démélé :</Text>
+      return <Text style={styles.titre}>Choix du types d'équipe et mode du tournoi mêlée-démêlée :</Text>
     }
     else if (this.props.optionsTournoi.type == "championnat") {
       return <Text style={styles.titre}>Choix du mode du championnat :</Text>
@@ -149,7 +149,7 @@ class ChoixModeTournoi extends React.Component {
             })
           }}
           isChecked={this.state.avecNom}
-          leftText={"Tournoi mêlée-dêmélée avec nom"}
+          leftText={"Tournoi mêlée-démêlée avec nom"}
           leftTextStyle={{color: "white", fontSize: 15}}
           checkBoxColor={'white'}
           />
@@ -164,7 +164,7 @@ class ChoixModeTournoi extends React.Component {
               })
             }}
             isChecked={this.state.sansNom}
-            leftText={"Tournoi mêlée-dêmélée sans nom"}
+            leftText={"Tournoi mêlée-dêmêlée sans nom"}
             leftTextStyle={{color: "white", fontSize: 15}}
             checkBoxColor={'white'}
             />
