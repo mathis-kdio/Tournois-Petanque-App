@@ -20,7 +20,7 @@ class GenerationMatchsAvecEquipes extends React.Component {
   }
 
   _ajoutMatchs = (matchs) => {
-    this._supprimerMatchs();
+    //this._supprimerMatchs();
     const action = { type: "AJOUT_MATCHS", value: matchs }
     this.props.dispatch(action);
     const actionAjoutTournoi = { type: "AJOUT_TOURNOI", value: {tournoi: matchs} }
@@ -241,7 +241,7 @@ class GenerationMatchsAvecEquipes extends React.Component {
       memesEquipes: this.jamaisMemeCoequipier,
       memesAdversaires: this.eviterMemeAdversaire,
       typeEquipes: this.typeEquipes,
-      listeJoueurs: this.props.listesJoueurs.avecEquipes.map(item => Array.isArray(item) ? clone(item) : item)
+      listeJoueurs: this.props.listesJoueurs.avecEquipes.slice()
     })
 
     //Ajout dans le store

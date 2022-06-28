@@ -21,7 +21,7 @@ class GenerationMatchsTriplette extends React.Component {
   }
 
   _ajoutMatchs = (matchs) => {
-    this._supprimerMatchs();
+    //this._supprimerMatchs();
     const action = { type: "AJOUT_MATCHS", value: matchs }
     this.props.dispatch(action);
     const actionAjoutTournoi = { type: "AJOUT_TOURNOI", value: {tournoi: matchs} }
@@ -394,7 +394,7 @@ class GenerationMatchsTriplette extends React.Component {
       memesEquipes: this.jamaisMemeCoequipier,
       memesAdversaires: this.eviterMemeAdversaire,
       typeEquipes: this.typeEquipes,
-      listeJoueurs: this.props.listesJoueurs[this.typeInscription].map(item => Array.isArray(item) ? clone(item) : item)
+      listeJoueurs: this.props.listesJoueurs[this.typeInscription].slice()
     })
     
     //Ajout dans le store
