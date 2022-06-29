@@ -40,7 +40,7 @@ class BoutonMenuHeaderNav extends React.Component {
   _showAccueil = () => {
     this._hideMenu();
     this.props.navigation.reset({
-      index: 1,
+      index: 0,
       routes: [{
         name: 'AccueilGeneral'
       }],

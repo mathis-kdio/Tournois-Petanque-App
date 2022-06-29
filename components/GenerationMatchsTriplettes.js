@@ -43,7 +43,6 @@ class GenerationMatchsTriplette extends React.Component {
     this.props.navigation.reset({
       index: 0,
       routes: [{name: 'ListeMatchsInscription'}],
-      key: null
     })
   }
 

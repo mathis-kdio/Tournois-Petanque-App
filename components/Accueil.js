@@ -11,7 +11,12 @@ class Accueil extends React.Component {
   }
 
   _showMatchs() {
-    this.props.navigation.navigate('ListeMatchsInscription');  
+    this.props.navigation.reset({
+      index: 0,
+      routes: [{
+        name: 'ListeMatchsInscription'
+      }],
+    });
   }
 
   _showInscription() {

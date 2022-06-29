@@ -20,7 +20,6 @@ class ListeTournois extends React.Component {
           tournoi: tournoi
         }
       }],
-      key: null
     });
   }
 
