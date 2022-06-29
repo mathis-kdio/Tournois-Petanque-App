@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Button, Image, Modal } from 'react-native'
 import { expo } from '../app.json'
 import { connect } from 'react-redux'
 import * as Linking from 'expo-linking'
+import * as NavigationBar from 'expo-navigation-bar';
 
 class Accueil extends React.Component {
   constructor(props) {
@@ -33,6 +34,7 @@ class Accueil extends React.Component {
   }
 
   render() {
+    NavigationBar.setBackgroundColorAsync("#0594ae");
     return (
       <View style={styles.main_container}>
         <View style={styles.logo_container}>
