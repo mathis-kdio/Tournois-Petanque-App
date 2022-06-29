@@ -11,12 +11,16 @@ class ListeTournois extends React.Component {
   _chargerTournoi(tournoi) {
     const actionUpdateListeMatchs = {type: "AJOUT_MATCHS", value: tournoi.tournoi};
     this.props.dispatch(actionUpdateListeMatchs);
-    this.props.navigation.navigate({
-      name: 'ListeMatchsInscription', 
-      params: {
-        tournoiId: tournoi.tournoiId, 
-        tournoi: tournoi,
-      }
+    this.props.navigation.reset({
+      index: 0,
+      routes: [{
+        name: 'ListeMatchsInscription', 
+        params: {
+          tournoiId: tournoi.tournoiId, 
+          tournoi: tournoi
+        }
+      }],
+      key: null
     });
   }
 
@@ -36,6 +40,7 @@ class ListeTournois extends React.Component {
       { cancelable: true }
     );
   }
+
   _listeTournoisItem(tournoi) {
     let boutonDesactive = false;
     if (this.props.listeMatchs && tournoi.tournoiId == this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID) {

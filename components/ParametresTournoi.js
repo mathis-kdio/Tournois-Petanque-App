@@ -13,7 +13,12 @@ class ParametresTournoi extends React.Component {
     this.props.dispatch(supprDansListeTournois);
     const suppressionAllMatchs = { type: "SUPPR_MATCHS"}
     this.props.dispatch(suppressionAllMatchs);
-    this.props.navigation.navigate('AccueilGeneral')
+    this.props.navigation.reset({
+      index: 0,
+      routes: [{
+        name: 'AccueilGeneral'
+      }]
+    });
   }
 
   _modalSupprimerTournoi() {
