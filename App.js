@@ -8,6 +8,7 @@ import Store from './store/configureStore'
 import { persistStore } from 'redux-persist'
 import { PersistGate } from 'redux-persist/es/integration/react'
 import { NavigationContainer } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
 import * as Sentry from 'sentry-expo';
 
 const routingInstrumentation = new Sentry.Native.ReactNavigationInstrumentation();
@@ -33,6 +34,7 @@ class App extends React.Component {
         <PersistGate persistor={persistor}>
           <NavigationContainer ref={this.navigation} onReady={() => {routingInstrumentation.registerNavigationContainer(this.navigation);}}>
             <Navigation />
+            <StatusBar style="light" backgroundColor="#ffda00"/>
           </NavigationContainer>
         </PersistGate>
       </Provider>
