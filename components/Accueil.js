@@ -4,10 +4,48 @@ import { expo } from '../app.json'
 import { connect } from 'react-redux'
 import * as Linking from 'expo-linking'
 import * as NavigationBar from 'expo-navigation-bar';
+import * as VersionCheck from 'react-native-version-check-expo';
 
 class Accueil extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {
+      modalVisible: false,
+    }
+  }
+
+  componentDidMount() {
+    //VersionCheck.getCountry().then(country => console.log(country))
+    /*VersionCheck.needUpdate().then(async res => {
+      if (res.isNeeded && this.state.modalVisible != true) {
+        this.setState({modalVisible: true})
+      }
+    })*/
+  }
+
+  _showUpdateModal() {
+    return (
+      <View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => { this.setState({modalVisible: !this.state.modalVisible}) }}
+        >
+        <View style={modalStyles.centeredView}>
+          <View style={modalStyles.modalView}>
+            <Text style={modalStyles.modalText}>Une mise à jour de l'application est disponible. Elle peut ne pas encore apparaitre dans play store.</Text>
+            <View style={styles.buttonView}>
+              <Button color="green" title='Mettre à jour' onPress={() => Linking.canOpenURL('market://details?id=com.MK.PetanqueGCU').then(supported => {if (supported) {Linking.openURL('market://details?id=com.MK.PetanqueGCU')}} ) }/>
+            </View>
+            <View style={styles.buttonView}>
+              <Button color="red" title='Fermer' onPress={() => this.setState({modalVisible: !this.state.modalVisible}) }/>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    </View>
+    )
   }
 
   _showMatchs() {
@@ -39,6 +77,8 @@ class Accueil extends React.Component {
   }
 
   render() {
+    console.log(VersionCheck.getPackageName());        // com.reactnative.app
+
     NavigationBar.setBackgroundColorAsync("#0594ae");
     return (
       <View style={styles.main_container}>
