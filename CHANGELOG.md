@@ -1,5 +1,17 @@
 # Change Log
 
+## [1.8.2] - 01-07-2022
+
+### Ajouté
+
+### Changement
+- Status et Navigation bar de couleur
+- Thème light par défaut
+
+### Corrigé
+- Problèmes de navigation
+- Fautes de textes
+
 ## [1.8.1] - 22-06-2022
 
 ### Ajouté
