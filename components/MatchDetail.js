@@ -35,49 +35,36 @@ class MatchDetail extends React.Component {
   _displayName = (joueurNumber) => {
     let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs
     let joueur = listeJoueurs.find(item => item.id === joueurNumber)
-    let joueurName
-    let joueurId
     if (joueur) {
-      joueurId = joueur.id
-      joueurName = joueur.name
+      return <Text key={joueur.id} style={styles.joueurName}>{joueur.id+1} {joueur.name}</Text>
     }
-    
-    return <Text style={styles.joueurName}>{joueurId+1} {joueurName}</Text>
   }
 
   _displayEquipe(equipe, match) {
-    let nbJoueur = 2
-    if (match.equipe[equipe - 1][2] != -1) {
-      nbJoueur = 3
-    }
     let nomsJoueurs = []
-    if (equipe == 1) {
-      for (let i = 0; i < nbJoueur; i++) {
-        nomsJoueurs.push(this._displayName(match.equipe[0][i], 1))
-      }
-      return nomsJoueurs
+    for (let i = 0; i < 3; i++) {
+      nomsJoueurs.push(this._displayName(match.equipe[equipe - 1][i], equipe))
     }
-    else {
-      for (let i = 0; i < nbJoueur; i++) {
-        nomsJoueurs.push(this._displayName(match.equipe[1][i], 2))
-      }
-      return nomsJoueurs
-    }
+    return nomsJoueurs
   }
 
   _envoyerResultat() {
     if (this.state.score1 && this.state.score2) {
       let info = {idMatch: this.state.match, score1: this.state.score1, score2: this.state.score2};
-      const action = { type: "AJOUT_SCORE", value: info};
-      this.props.dispatch(action);
+      const actionAjoutScore = { type: "AJOUT_SCORE", value: info};
+      this.props.dispatch(actionAjoutScore);
+      const actionUpdateTournoi = { type: "UPDATE_TOURNOI", value: {tournoi: this.props.listeMatchs, tournoiId: this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID}};
+      this.props.dispatch(actionUpdateTournoi);
       this.props.navigation.navigate('ListeMatchsStack');
     }
   }
 
   _supprimerResultat() {
     let info = {idMatch: this.state.match, score1: undefined, score2: undefined};
-    const action = { type: "AJOUT_SCORE", value: info};
-    this.props.dispatch(action);
+    const actionAjoutScore = { type: "AJOUT_SCORE", value: info};
+    this.props.dispatch(actionAjoutScore);
+    const actionUpdateTournoi = { type: "UPDATE_TOURNOI", value: {tournoi: this.props.listeMatchs, tournoiId: this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID}};
+    this.props.dispatch(actionUpdateTournoi);
     this.props.navigation.navigate('ListeMatchsStack');
   }
 
@@ -206,7 +193,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    listeMatchs: state.gestionMatchs.listematchs
+    listeMatchs: state.gestionMatchs.listematchs,
+    listeTournois: state.listeTournois.listeTournois
   }
 }
 

@@ -90,8 +90,8 @@ class Inscription extends React.Component {
     //Test si au moins 1 caractère
     if (this.joueurText != '') {
       let equipe = undefined
-      if (this.state.typeEquipes == "teteatete") {
-        equipe = this.props.listesJoueurs[this.state.typeInscription].length
+      if (this.state.typeEquipes == "teteatete" || this.props.optionsTournoi.typeEquipe == "teteatete") {
+        equipe = this.props.listesJoueurs[this.state.typeInscription].length + 1
       }
       const action = { type: "AJOUT_JOUEUR", value: [this.state.typeInscription, this.joueurText, this.state.isChecked, equipe] }
       this.props.dispatch(action);
@@ -116,10 +116,14 @@ class Inscription extends React.Component {
   }
 
   _supprimerJoueur = (idJoueur) => {
-    const actionSuppr = { type: "SUPPR_JOUEUR", value: [this.state.typeInscription, idJoueur] }
+    const actionSuppr = {type: "SUPPR_JOUEUR", value: [this.state.typeInscription, idJoueur]};
     this.props.dispatch(actionSuppr);
-    const actionUpdate = { type: "UPDATE_ALL_JOUEURS_ID", value: [this.state.typeInscription]}
+    const actionUpdate = {type: "UPDATE_ALL_JOUEURS_ID", value: [this.state.typeInscription]};
     this.props.dispatch(actionUpdate);
+    if (this.props.optionsTournoi.typeEquipe == "teteatete") {
+      const actionUpdateEquipe = {type: "UPDATE_ALL_JOUEURS_EQUIPE", value: [this.state.typeInscription]};
+      this.props.dispatch(actionUpdateEquipe);
+    }
   }
 
   _supprimerAllJoueurs() {
@@ -128,15 +132,23 @@ class Inscription extends React.Component {
   }
 
   _commencer() {
-    let screenName
-    if (this.state.avecEquipes == true) {
-      screenName = 'GenerationMatchsAvecEquipes'
+    let screenName;
+    if (this.props.optionsTournoi.type == "championnat") {
+      screenName = 'GenerationChampionnat';
     }
-    else if (this.state.typeEquipes == "triplette") {
-      screenName = 'GenerationMatchsTriplettes'
+    else if (this.props.optionsTournoi.type == "mele-demele") {
+      if (this.state.avecEquipes == true) {
+        screenName = 'GenerationMatchsAvecEquipes';
+      }
+      else if (this.state.typeEquipes == "triplette") {
+        screenName = 'GenerationMatchsTriplettes';
+      }
+      else {
+        screenName = 'GenerationMatchs';
+      }
     }
     else {
-      screenName = 'GenerationMatchs'
+
     }
 
     this.props.navigation.navigate({
@@ -264,9 +276,21 @@ class Inscription extends React.Component {
         boutonTitle = "Des joueurs n'ont pas d'équipe"
         boutonDesactive = true
       }
-      else if (this.state.typeEquipes == "teteatete" && (this.props.listesJoueurs.avecEquipes.length % 2 != 0 || this.props.listesJoueurs.avecEquipes.length < 2)) {
-        boutonTitle = "En équipes, le nombre d'equipe doit être un multiple de 2"
-        boutonDesactive = true
+      else if (this.state.typeEquipes == "teteatete") {
+        if (this.props.listesJoueurs.avecEquipes.length % 2 != 0 || this.props.listesJoueurs.avecEquipes.length < 2) {
+          boutonTitle = "Le nombre d'equipe doit être un multiple de 2"
+          boutonDesactive = true
+        }
+        else {
+          for (let i = 0; i < nbEquipes; i++) {
+            let count = this.props.listesJoueurs.avecEquipes.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
+            if (count > 1) {
+              boutonTitle = "Des équipes ont trop de joueurs"
+              boutonDesactive = true
+              break
+            }
+          }
+        }
       }
       else if (this.state.typeEquipes == "doublette") {
         if (this.props.listesJoueurs.avecEquipes.length % 4 != 0 || this.props.listesJoueurs.avecEquipes.length == 0) {
@@ -302,7 +326,13 @@ class Inscription extends React.Component {
         boutonTitle = "Nombre de joueurs pas multiple de 4, l'option sélectionnée formera un tête-à-tête"
       }
       else if (this.state.complement == "3") {
-        boutonTitle = "Nombre de joueurs pas multiple de 4, l'option sélectionnée formera des triplettes pour compléter"
+        if (this.props.listesJoueurs.avecNoms.length == 7) {
+          boutonTitle = "Mode 3vs2 + 1vs1 n'est pas encore disponible"
+          boutonDesactive = true
+        }
+        else {
+          boutonTitle = "Nombre de joueurs pas multiple de 4, l'option sélectionnée formera des triplettes pour compléter"
+        }
       }
       else if (this.state.complement != "3") {
         boutonTitle = "Nombre de joueurs pas multiple de 4, veuiller choisir l'option pour former des triplettes pour compléter si vous voulez lancer"
@@ -316,6 +346,14 @@ class Inscription extends React.Component {
     return (
       <Button disabled={boutonDesactive} color='green' title={boutonTitle} onPress={() => this._commencer()}/>
     )
+  }
+
+  _boutonOptions() {
+    if (this.props.optionsTournoi.type != 'championnat') {
+      return (
+        <Button color='#1c3969' title='Options Tournoi' onPress={() => this._options()}/>
+      )
+    }
   }
 
   _showEquipeEntete() {
@@ -381,7 +419,7 @@ class Inscription extends React.Component {
         </View>
         <View>
           <View style={styles.buttonView}>
-            <Button color='#1c3969' title='Options Tournoi' onPress={() => this._options()}/>
+            {this._boutonOptions()}
           </View>
           <View style={styles.buttonView}>
             {this._boutonCommencer()}
@@ -467,7 +505,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    listesJoueurs: state.listesJoueurs.listesJoueurs
+    listesJoueurs: state.listesJoueurs.listesJoueurs,
+    optionsTournoi: state.optionsTournoi.options
   }
 }
 

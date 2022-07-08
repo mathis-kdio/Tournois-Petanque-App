@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Image, Text } from 'react-native';
 import { connect, useSelector } from 'react-redux';
 
-import { useNavigation, NavigationContainer } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -10,10 +10,12 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import Accueil from '../components/Accueil'
 import Changelog from '../components/Changelog'
 import ListeTournois from '../components/ListeTournois';
-import ChoixTournois from '../components/ChoixTournois'
+import ChoixTypeTournoi from '../components/ChoixTypeTournoi';
+import ChoixModeTournoi from '../components/ChoixModeTournoi'
 import Inscription from '../components/Inscriptions'
 import InscriptionsSansNoms from '../components/InscriptionsSansNoms'
 import OptionsTournoi from '../components/OptionsTournoi'
+import GenerationChampionnat from '../components/GenerationChampionnat'
 import GenerationMatchs from '../components/GenerationMatchs'
 import GenerationMatchsTriplettes from '../components/GenerationMatchsTriplettes'
 import GenerationMatchsAvecEquipes from '../components/GenerationMatchsAvecEquipes'
@@ -84,14 +86,14 @@ function ManchesTopTabNavigator() {
 function MatchsStack() {
   const navigation = useNavigation();
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}}>
       <Stack.Screen
         name="ListeMatchsStack"
         component={ManchesTopTabNavigator}
         options={{
           title: 'Liste des parties',
           headerTitleAlign: 'center',
-          headerLeft: () => (null),
+          headerLeft: false,
           headerRight: () => (
             <BoutonMenuHeaderNav navigation={navigation}/>
           ),
@@ -99,10 +101,10 @@ function MatchsStack() {
           headerTitleStyle: {color: '#1c3969'}
         }}
       />
-      <Stack.Screen name="MatchDetailStack" component={MatchDetail} options={{title: 'Détail de la partie', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
-      <Stack.Screen name="ListeJoueur" component={JoueursTournoi} options={{title: 'Liste des joueurs inscrits', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
-      <Stack.Screen name="ParametresTournoi" component={ParametresTournoi} options={{title: 'Paramètres du tournoi', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
-      <Stack.Screen name="PDFExport" component={PDFExport} options={{title: 'Exporter en PDF', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
+      <Stack.Screen name="MatchDetailStack" component={MatchDetail} options={{title: 'Détail de la partie'}} />
+      <Stack.Screen name="ListeJoueur" component={JoueursTournoi} options={{title: 'Liste des joueurs inscrits'}} />
+      <Stack.Screen name="ParametresTournoi" component={ParametresTournoi} options={{title: 'Paramètres du tournoi'}} />
+      <Stack.Screen name="PDFExport" component={PDFExport} options={{title: 'Exporter en PDF'}} />
     </Stack.Navigator>
   );
 }
@@ -110,7 +112,7 @@ function MatchsStack() {
 function ResultatsStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="ListeResultatsStack" component={ListeResultats} options={{title: 'Résultats & Classement', headerTitleAlign: 'center', headerLeft: null, headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
+      <Stack.Screen name="ListeResultatsStack" component={ListeResultats} options={{title: 'Résultats & Classement', headerTitleAlign: 'center', headerLeft: false, headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
     </Stack.Navigator>
   );
 }
@@ -148,22 +150,24 @@ function MatchsResultatsBottomNavigator() {
 
 function General() {
   return (
-    <Stack.Navigator initialRouteName='AccueilGeneral'>
-      <Stack.Screen name="AccueilGeneral" component={Accueil} options={{title: 'Accueil - Pétanque GCU', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
-      <Stack.Screen name="Changelog" component={Changelog} options={{title: 'Changelog - Pétanque GCU', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
+    <Stack.Navigator initialRouteName='AccueilGeneral' screenOptions={{headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}}>
+      <Stack.Screen name="AccueilGeneral" component={Accueil} options={{title: 'Accueil - Pétanque GCU'}} />
+      <Stack.Screen name="Changelog" component={Changelog} options={{title: 'Changelog - Pétanque GCU'}} />
 
-      <Stack.Screen name="ListeTournois" component={ListeTournois} options={{title: 'Choix d\'un tournoi', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
+      <Stack.Screen name="ListeTournois" component={ListeTournois} options={{title: 'Choix d\'un tournoi'}} />
 
-      <Stack.Screen name="ChoixTournois" component={ChoixTournois} options={{title: 'Choix du mode de tournoi', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
+      <Stack.Screen name="ChoixTypeTournoi" component={ChoixTypeTournoi} options={{title: 'Choix du type de tournoi'}} />
+      <Stack.Screen name="ChoixModeTournoi" component={ChoixModeTournoi} options={{title: 'Choix du mode de tournoi'}} />
       
-      <Stack.Screen name="InscriptionsAvecNoms" component={Inscription} options={{title: 'Inscription Avec Noms', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
-      <Stack.Screen name="InscriptionsSansNoms" component={InscriptionsSansNoms} options={{title: 'Inscription Sans Noms', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
+      <Stack.Screen name="InscriptionsAvecNoms" component={Inscription} options={{title: 'Inscription Avec Noms'}} />
+      <Stack.Screen name="InscriptionsSansNoms" component={InscriptionsSansNoms} options={{title: 'Inscription Sans Noms'}} />
       
-      <Stack.Screen name="OptionsTournoi" component={OptionsTournoi} options={{title: 'Options du tournoi', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />     
+      <Stack.Screen name="OptionsTournoi" component={OptionsTournoi} options={{title: 'Options du tournoi'}} />     
       
-      <Stack.Screen name="GenerationMatchs" component={GenerationMatchs} options={{title: 'Générations des parties en cours', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
-      <Stack.Screen name="GenerationMatchsTriplettes" component={GenerationMatchsTriplettes} options={{title: 'Générations des parties en cours', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
-      <Stack.Screen name="GenerationMatchsAvecEquipes" component={GenerationMatchsAvecEquipes} options={{title: 'Générations des parties en cours', headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
+      <Stack.Screen name="GenerationChampionnat" component={GenerationChampionnat} options={{title: 'Générations des parties en cours', headerTitleAlign: 'center', headerLeft: false, headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
+      <Stack.Screen name="GenerationMatchs" component={GenerationMatchs} options={{title: 'Générations des parties en cours', headerTitleAlign: 'center', headerLeft: false, headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
+      <Stack.Screen name="GenerationMatchsTriplettes" component={GenerationMatchsTriplettes} options={{title: 'Générations des parties en cours', headerTitleAlign: 'center', headerLeft: false, headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
+      <Stack.Screen name="GenerationMatchsAvecEquipes" component={GenerationMatchsAvecEquipes} options={{title: 'Générations des parties en cours', headerTitleAlign: 'center', headerLeft: false, headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
     
       <Stack.Screen name="ListeMatchsInscription" component={MatchsResultatsBottomNavigator} options={{headerShown: false}} />   
     </Stack.Navigator>
@@ -172,10 +176,8 @@ function General() {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Root">
-        <Stack.Screen name="Root" component={General} options={{headerShown: false}} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Stack.Navigator initialRouteName="Root">
+      <Stack.Screen name="Root" component={General} options={{headerShown: false}} />
+    </Stack.Navigator>
   );
 }

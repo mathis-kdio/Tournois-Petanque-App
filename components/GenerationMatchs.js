@@ -22,10 +22,10 @@ class GenerationMatchs extends React.Component {
   }
 
   _ajoutMatchs = (matchs) => {
-    this._supprimerMatchs();
+    //this._supprimerMatchs();
     const actionAjoutMatchs = { type: "AJOUT_MATCHS", value: matchs }
     this.props.dispatch(actionAjoutMatchs);
-    const actionAjoutTournoi = { type: "AJOUT_TOURNOI", value: {tournoi: {tournoiId: matchs[matchs.length - 1].tournoiID, matchs}} }
+    const actionAjoutTournoi = { type: "AJOUT_TOURNOI", value: {tournoi: matchs} }
     this.props.dispatch(actionAjoutTournoi);
   }
 
@@ -44,7 +44,6 @@ class GenerationMatchs extends React.Component {
     this.props.navigation.reset({
       index: 0,
       routes: [{name: 'ListeMatchsInscription'}],
-      key: null
     })
   }
 
@@ -166,15 +165,15 @@ class GenerationMatchs extends React.Component {
     //Si c'est le cas, alors on remplie de joueurs invisible pour le complément en mode tête à tête
     if (this.typeEquipes == "doublette" && nbjoueurs % 4 != 0) {
       if (this.complement == "1" && nbjoueurs % 2 == 0) {
-        joueurs.push({name: "Complément 1", special: true, id: (nbjoueurs + 1)})
+        joueurs.push({name: "Complément 1", special: true, id: (nbjoueurs)})
         joueurs[nbjoueurs].equipe = []
-        joueurs.push({name: "Complément 2", special: true, id: (nbjoueurs + 2)})
+        joueurs.push({name: "Complément 2", special: true, id: (nbjoueurs + 1)})
         joueurs[nbjoueurs + 1].equipe = []
-        nbJoueursSpe++
+        nbJoueursSpe+=2
         
         for (let i = 1; i < this.nbTours + 1; i++) {
-          matchs[nbMatchsParTour * i - 1].equipe[0][0] = nbjoueurs + 1
-          matchs[nbMatchsParTour * i - 1].equipe[1][0] = nbjoueurs + 2
+          matchs[nbMatchsParTour * i - 1].equipe[0][0] = nbjoueurs
+          matchs[nbMatchsParTour * i - 1].equipe[1][0] = nbjoueurs + 1
         }
       }
     }
@@ -188,12 +187,12 @@ class GenerationMatchs extends React.Component {
           let idsMatchsSpe = []
           idsMatchsSpe = this.randomBetweenRange(joueursSpe.length, [i * nbMatchsParTour, i * nbMatchsParTour + nbMatchsParTour])
           for (let j = 0; j < joueursSpe.length;) {
-            if (matchs[idsMatchsSpe[j]].equipe[0][0] == -1) {
-              matchs[idsMatchsSpe[j]].equipe[0][0] = joueursSpe[j].id;
+            if (matchs[idsMatchsSpe[j]].equipe[0][1] == -1) {
+              matchs[idsMatchsSpe[j]].equipe[0][1] = joueursSpe[j].id;
               j++
             }
-            else if (matchs[idsMatchsSpe[j]].equipe[1][0] == -1) {
-              matchs[idsMatchsSpe[j]].equipe[1][0] = joueursSpe[j].id;
+            else if (matchs[idsMatchsSpe[j]].equipe[1][1] == -1) {
+              matchs[idsMatchsSpe[j]].equipe[1][1] = joueursSpe[j].id;
               j++
             }
           }
@@ -361,8 +360,8 @@ class GenerationMatchs extends React.Component {
           }
         }
         //Affectation joueur(s) complémentaire(s) du tour si tournoi doublette avec complément en triplette
-        else if ((idMatch + 1) % nbMatchsParTour == -1) {
-          if (this.typeEquipes == "doublette" && nbjoueurs % 4 != 0 && this.complement == "3") {
+        else if ((idMatch + 1) % nbMatchsParTour == 0) {
+          if (this.typeEquipes == "doublette" && nbjoueurs % 4 != 0 && this.complement == "3" && matchs[idMatch].equipe[0][2] == -1) {
             let joueursEnTrop = nbjoueurs % 4
             matchs[idMatch].equipe[0][2] = random[j]
             if (joueursEnTrop == 2) {
@@ -397,10 +396,18 @@ class GenerationMatchs extends React.Component {
       idMatch = i * nbMatchsParTour;
       if (this.typeEquipes != "teteatete") {
         for (let j = 0; j < nbMatchsParTour; j++) {
-          joueurs[matchs[idMatch + j].equipe[0][0]].equipe.push(matchs[idMatch + j].equipe[0][1]);
-          joueurs[matchs[idMatch + j].equipe[1][0]].equipe.push(matchs[idMatch + j].equipe[1][1]);
-          joueurs[matchs[idMatch + j].equipe[0][1]].equipe.push(matchs[idMatch + j].equipe[0][0]);
-          joueurs[matchs[idMatch + j].equipe[1][1]].equipe.push(matchs[idMatch + j].equipe[1][0]);
+          if (matchs[idMatch + j].equipe[0][0] != -1 && matchs[idMatch + j].equipe[0][1] != -1) {
+            joueurs[matchs[idMatch + j].equipe[0][0]].equipe.push(matchs[idMatch + j].equipe[0][1]);
+          }
+          if (matchs[idMatch + j].equipe[1][0] != -1 && matchs[idMatch + j].equipe[1][1] != -1) {
+            joueurs[matchs[idMatch + j].equipe[1][0]].equipe.push(matchs[idMatch + j].equipe[1][1]);
+          }
+          if (matchs[idMatch + j].equipe[0][1] != -1 && matchs[idMatch + j].equipe[0][0] != -1) {
+            joueurs[matchs[idMatch + j].equipe[0][1]].equipe.push(matchs[idMatch + j].equipe[0][0]);
+          }
+          if (matchs[idMatch + j].equipe[1][1] != -1 && matchs[idMatch + j].equipe[1][0] != -1) {
+            joueurs[matchs[idMatch + j].equipe[1][1]].equipe.push(matchs[idMatch + j].equipe[1][0]);
+          }
         }
       }
       idMatch = nbMatchsParTour * (i + 1);
@@ -408,7 +415,7 @@ class GenerationMatchs extends React.Component {
 
     //Ajout des options du match à la fin du tableau contenant les matchs
     matchs.push({
-      tournoiID: this.props.listeTournois.length,
+      tournoiID: undefined,
       nbTours: this.nbTours,
       nbMatchs: nbMatchs,
       speciauxIncompatibles: this.speciauxIncompatibles,
@@ -416,7 +423,7 @@ class GenerationMatchs extends React.Component {
       memesAdversaires: this.eviterMemeAdversaire,
       typeEquipes: this.typeEquipes,
       complement: this.complement,
-      listeJoueurs: this.props.listesJoueurs[this.typeInscription].map(item => Array.isArray(item) ? clone(item) : item)
+      listeJoueurs: this.props.listesJoueurs[this.typeInscription].slice()
     })
 
     //Ajout dans le store

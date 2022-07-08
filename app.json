@@ -1,13 +1,21 @@
-{
+{  
   "expo": {
     "name": "Pétanque GCU",
     "slug": "PetanqueGCU",
-    "version": "1.7-beta-3",
+    "version": "1.8.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
+      "backgroundColor": "#0594ae"
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#0594ae",
+      "translucent": false
+    },
+    "androidNavigationBar": {
       "backgroundColor": "#0594ae"
     },
     "updates": {
@@ -19,12 +27,12 @@
     ],
     "ios": {
       "bundleIdentifier": "com.MK.PetanqueGCU",
-      "buildNumber": "1.7.beta.3",
+      "buildNumber": "1.8.2",
       "supportsTablet": true
     },
     "android": {
       "package": "com.MK.PetanqueGCU",
-      "versionCode": 30,
+      "versionCode": 40,
       "permissions": ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"]
     },
     "web": {
@@ -32,6 +40,21 @@
     },
     "runtimeVersion": {
       "policy": "sdkVersion"
+    },
+    "plugins": [
+      "sentry-expo"
+    ],
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "tournois-petanque-app",
+            "project": "tournois-petanque-gcu",
+            "authToken": null
+          }
+        }
+      ]
     }
   }
 }

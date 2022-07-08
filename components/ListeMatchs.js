@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, View, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import MatchItem from '../components/MatchItem'
+import * as NavigationBar from 'expo-navigation-bar';
 
 class ListeMatchs extends React.Component {
 
@@ -45,6 +46,7 @@ class ListeMatchs extends React.Component {
   }
 
   render() {
+    NavigationBar.setBackgroundColorAsync("#ffda00");
     return (
       <View style={styles.main_container} >
         {this._displayListeMatch()}

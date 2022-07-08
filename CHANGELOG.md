@@ -1,10 +1,56 @@
 # Change Log
 
-## [1.7] - 25-05-2022
+## [1.8.2] - 01-07-2022
+
+### Ajouté
+
+### Changement
+- Status et Navigation bar de couleur
+- Thème light par défaut
+
+### Corrigé
+- Problèmes de navigation
+- Fautes de textes
+
+## [1.8.1] - 22-06-2022
+
+### Ajouté
+- Alerte de confirmation lors de la suppression d'un tournoi.
+
+### Changement
+
+### Corrigé
+- Suppression du tournoi en cours
+
+## [1.8.0] - 20-06-2022
+
+### Ajouté
+- Mode championnat !
+- Rapport automatique en cas de plantage.
+- Bouton de mail sur l'accueil.
+
+### Changement
+- Bouton pour commencer un tournoi avec 7 joueurs désactivé, car mode non pris en charge.
+
+### Corrigé
+- Chargement et sauvegarde des anciens tournois.
+- Suppression d'un tournoi.
+- Génération des triplettes.
+- Affichage tête-à-tête.
+
+## [1.7.1] - 08-06-2022
+
+### Ajouté
+### Changement
+### Corrigé
+- Génération des tournois avec un nombre impair de joueurs.
+
+## [1.7.0] - 03-06-2022
 
 ### Ajouté
 - Export des tournois en PDF
 - Suggestions de noms de joueurs lors de l'inscription
+- Bouton pour supprimer tous les joueurs lors de l'inscription
 
 ### Changement
 - Joueurs différents entre les différentes inscriptions

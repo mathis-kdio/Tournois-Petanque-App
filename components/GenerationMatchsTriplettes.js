@@ -9,7 +9,8 @@ class GenerationMatchsTriplette extends React.Component {
     this.speciauxIncompatibles = true
     this.jamaisMemeCoequipier = true
     this.eviterMemeAdversaire = true
-    this.equipe = "triplette"
+    this.typeEquipes = "triplette"
+    this.typeInscription = "avecNoms"
     this.state = {
       isLoading: true,
       isValid: true,
@@ -20,9 +21,11 @@ class GenerationMatchsTriplette extends React.Component {
   }
 
   _ajoutMatchs = (matchs) => {
-    this._supprimerMatchs();
+    //this._supprimerMatchs();
     const action = { type: "AJOUT_MATCHS", value: matchs }
     this.props.dispatch(action);
+    const actionAjoutTournoi = { type: "AJOUT_TOURNOI", value: {tournoi: matchs} }
+    this.props.dispatch(actionAjoutTournoi);
   }
 
   _supprimerMatchs () {
@@ -40,7 +43,6 @@ class GenerationMatchsTriplette extends React.Component {
     this.props.navigation.reset({
       index: 0,
       routes: [{name: 'ListeMatchsInscription'}],
-      key: null
     })
   }
 
@@ -390,8 +392,8 @@ class GenerationMatchsTriplette extends React.Component {
       speciauxIncompatibles: this.speciauxIncompatibles,
       memesEquipes: this.jamaisMemeCoequipier,
       memesAdversaires: this.eviterMemeAdversaire,
-      typeEquipes: 'triplette',
-      listeJoueurs: this.props.listesJoueurs[this.typeInscription].map(item => Array.isArray(item) ? clone(item) : item)
+      typeEquipes: this.typeEquipes,
+      listeJoueurs: this.props.listesJoueurs[this.typeInscription].slice()
     })
     
     //Ajout dans le store
@@ -464,7 +466,7 @@ class GenerationMatchsTriplette extends React.Component {
         speciauxIncompatibles: this.speciauxIncompatibles,
         memesEquipes: this.jamaisMemeCoequipier,
         memesAdversaires: this.eviterMemeAdversaire,
-        equipe: this.equipe
+        equipe: this.typeEquipes
       }
     })
   }

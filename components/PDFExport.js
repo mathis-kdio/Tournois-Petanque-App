@@ -18,6 +18,7 @@ class PDFExport extends React.Component {
     for (let i = 0; i < listeJoueurs.length; i++) {
       let nbVictoire = 0;
       let nbPoints = 0;
+      let nbMatchs = 0;
       let listeMatchs = this.props.listeMatchs
       for (let j = 0; j < listeMatchs[listeMatchs.length - 1].nbMatchs; j++) {
         if (listeMatchs[j].equipe[0].includes(i) && listeMatchs[j].score1) {
@@ -28,7 +29,8 @@ class PDFExport extends React.Component {
           else {
             nbPoints -= 13 - listeMatchs[j].score1;
           }
-         }
+          nbMatchs++;
+        }
         if (listeMatchs[j].equipe[1].includes(i) && listeMatchs[j].score2) {
           if (listeMatchs[j].score2 == 13) {
             nbVictoire++;
@@ -37,9 +39,10 @@ class PDFExport extends React.Component {
           else {
             nbPoints -= 13 - listeMatchs[j].score2;
           }
+          nbMatchs++;
         }
       }
-      victoires[i] = {joueurId: i, victoires: nbVictoire, points: nbPoints, position: undefined};
+      victoires[i] = {joueurId: i, victoires: nbVictoire, points: nbPoints, nbMatchs: nbMatchs, position: undefined};
     }
     victoires.sort(
       function(a, b) {          
@@ -161,7 +164,7 @@ class PDFExport extends React.Component {
       let classement = this.calculClassement();
       for (let i = 0; i < listeJoueurs.length; i++) {
         html += '<tr>';
-        html += '<td class="text-center">' + classement[i].position + ' - ';
+        html += '<td>' + classement[i].position + ' - ';
         let joueur = listeJoueurs[classement[i].joueurId];
         if (joueur.name === undefined) {
           html += 'Sans Nom ('+ (joueur.id+1) +')';
@@ -174,8 +177,8 @@ class PDFExport extends React.Component {
         }
         html += '</td>'
         html += '<td class="text-center">'+ classement[i].victoires +'</td>';
+        html += '<td class="text-center">'+ classement[i].nbMatchs +'</td>';
         html += '<td class="text-center">'+ classement[i].points +'</td>';
-        html += '<td class="text-center">'+ classement[i].position +'</td>';
         html += '</tr>';
       }
       html += '</tr></table>';

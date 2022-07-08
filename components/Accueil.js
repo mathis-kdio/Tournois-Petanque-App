@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Button, Image, Modal } from 'react-native'
 import { expo } from '../app.json'
 import { connect } from 'react-redux'
 import * as Linking from 'expo-linking'
+import * as NavigationBar from 'expo-navigation-bar';
 
 class Accueil extends React.Component {
   constructor(props) {
@@ -10,11 +11,16 @@ class Accueil extends React.Component {
   }
 
   _showMatchs() {
-    this.props.navigation.navigate('ListeMatchsInscription');  
+    this.props.navigation.reset({
+      index: 0,
+      routes: [{
+        name: 'ListeMatchsInscription'
+      }],
+    });
   }
 
   _showInscription() {
-    this.props.navigation.navigate('ChoixTournois');
+    this.props.navigation.navigate('ChoixTypeTournoi');
   }
 
   _showListeTournois() {
@@ -33,6 +39,7 @@ class Accueil extends React.Component {
   }
 
   render() {
+    NavigationBar.setBackgroundColorAsync("#0594ae");
     return (
       <View style={styles.main_container}>
         <View style={styles.logo_container}>
@@ -52,7 +59,7 @@ class Accueil extends React.Component {
           </View>
           <View style={styles.informations_container}>
             <Text style={styles.informations_texte}>Possibilités :</Text>
-            <Text style={styles.informations_texte}>Mêlée-démélée</Text>
+            <Text style={styles.informations_texte}>Mêlée-démêlée</Text>
             <Text style={styles.informations_texte}>Tête à Tête / Doublettes / triplettes</Text>
             <Text style={styles.informations_texte}>Avec ou sans noms</Text>
             <Text style={styles.informations_texte}>Avec ou sans équipes</Text>
@@ -60,7 +67,12 @@ class Accueil extends React.Component {
         </View>
         <View style={styles.create_container}>
           <View style={styles.buttonViewCreate}>
-            <Button color="#1c3969" title='Noter et laisser un commentaire' onPress={() => Linking.openURL('market://details?id=com.MK.PetanqueGCU&showAllReviews=true')}/>
+            <View style={styles.buttonView}>
+              <Button color="#1c3969" title='Noter et Commenter' onPress={() => Linking.canOpenURL('market://details?id=com.MK.PetanqueGCU&showAllReviews=true').then(supported => {if (supported) {Linking.openURL('market://details?id=com.MK.PetanqueGCU&showAllReviews=true')}})}/>
+            </View>
+            <View style={styles.buttonView}>
+              <Button color="#1c3969" title='Envoyer un mail' onPress={() => Linking.canOpenURL('mailto: tournoispetanqueapp@gmail.com').then(supported => {if (supported) {Linking.openURL('mailto: tournoispetanqueapp@gmail.com')}})}/>
+            </View>
           </View>
           <View style={styles.buttonViewCreate}>
             <View style={styles.buttonView}>
@@ -96,7 +108,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   buttonView: {
-    marginBottom: 20,
+    marginBottom: 10,
     paddingLeft: 15,
     paddingRight: 15
   },

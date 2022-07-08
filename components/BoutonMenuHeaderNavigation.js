@@ -1,51 +1,65 @@
-import React from 'react'
+import React from 'react';
 import { StyleSheet, View, Text } from 'react-native'
 import {Menu, MenuItem, MenuDivider } from 'react-native-material-menu'
 
 class BoutonMenuHeaderNav extends React.Component {
-  _menu = null;
+  constructor(props) {
+    super(props);
+    this.state = {
+      visible: false
+    };
+  }
 
-  setMenuRef = ref => {
-    this._menu = ref;
-  };
+  _hideMenu() {
+    this.setState({
+      visible: false,
+    })
+  }
 
-  hideMenu = () => {
-    this._menu.hide();
-  };
+  _showMenu() {
+    this.setState({
+      visible: true,
+    })
+  }
 
-  showSettings = () => {
-    this._menu.hide();
+  _showSettings() {
+    this._hideMenu();
     this.props.navigation.navigate('ParametresTournoi')
   };
 
-  showJoueurs = () => {
-    this._menu.hide();
+  _showJoueurs() {
+    this._hideMenu();
     this.props.navigation.navigate('ListeJoueur')
   };
 
-  showPDFExport = () => {
-    this._menu.hide();
+  _showPDFExport() {
+    this._hideMenu();
     this.props.navigation.navigate('PDFExport')
   };
 
-  showMenu = () => {
-    this._menu.show();
-  };
-
-  showAccueil = () => {
-    this._menu.hide();
-    this.props.navigation.navigate('AccueilGeneral')
+  _showAccueil = () => {
+    this._hideMenu();
+    this.props.navigation.reset({
+      index: 0,
+      routes: [{
+        name: 'AccueilGeneral'
+      }],
+    });
   };
 
   render() {
     return (
       <View style={styles.main_container}>
-        <Menu ref={this.setMenuRef} anchor={<Text onPress={this.showMenu}>Menu</Text>}>
-          <MenuItem style={styles.menuItem} textStyle={styles.texte_menuItem} onPress={this.showJoueurs}>Liste des joueurs</MenuItem>
-          <MenuItem style={styles.menuItem} textStyle={styles.texte_menuItem} onPress={this.showSettings}>Paramètres du tournoi</MenuItem>
-          <MenuItem style={styles.menuItem} textStyle={styles.texte_menuItem} onPress={this.showPDFExport}>Exporter en PDF</MenuItem>
+        <Menu
+          visible={this.state.visible}
+          anchor={<Text onPress={() => this._showMenu()}>Menu</Text>}
+          onRequestClose={() => this._hideMenu()}
+        >
+          <MenuItem style={styles.menuItem} textStyle={styles.texte_menuItem} onPress={() => this._showJoueurs()}>Liste des joueurs</MenuItem>
+          <MenuItem style={styles.menuItem} textStyle={styles.texte_menuItem} onPress={() => this._showSettings()}>Paramètres du tournoi</MenuItem>
+          <MenuItem style={styles.menuItem} textStyle={styles.texte_menuItem} onPress={() => this._showPDFExport()}>Exporter en PDF</MenuItem>
           <MenuDivider />
-          <MenuItem style={styles.menuItem} textStyle={styles.texte_menuItem} onPress={this.showAccueil}>Accueil</MenuItem>
+          <MenuItem style={styles.menuItem} textStyle={styles.texte_menuItem} onPress={() => this._showAccueil()}>Accueil</MenuItem>
         </Menu>
       </View>
     );
