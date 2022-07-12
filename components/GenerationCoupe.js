@@ -90,12 +90,12 @@ class GenerationCoupe extends React.Component {
       nbEquipes = nbjoueurs / 3;
       nbMatchsParTour = Math.ceil(nbjoueurs / 6);
     }
-    this.nbTours = nbEquipes - 1;
+    this.nbTours = Math.log2(nbEquipes);
     let nbMatchs = this.nbTours * nbMatchsParTour;
 
     idMatch = 0;
     for (let i = 1; i < this.nbTours + 1; i++) {
-      for (let j = 0; j < nbMatchsParTour; j++) {
+      for (let j = 0; j < nbMatchsParTour / i; j++) {
         matchs.push({id: idMatch, manche: i, equipe: [[-1,-1,-1],[-1,-1,-1]], score1: undefined, score2: undefined});
         idMatch++;
       }
@@ -119,30 +119,27 @@ class GenerationCoupe extends React.Component {
 
     //FONCTIONNEMENT
     idMatch = 0;
-    for (let i = 0; i < this.nbTours; i++) {
-      for (let j = 0; j < equipe.length / 2; j++) {
-        //Affectation Equipe 1
-        matchs[idMatch].equipe[0][0] = equipe[equipesIds[j]][0];
-        if (this.typeEquipes == "doublette" || this.typeEquipes == "triplette") {
-          matchs[idMatch].equipe[0][1] = equipe[equipesIds[j]][1];
-        }
-        if (this.typeEquipes == "triplette") {
-          matchs[idMatch].equipe[0][2] = equipe[equipesIds[j]][2];
-        }
-
-        //Affectation Equipe 2
-        matchs[idMatch].equipe[1][0] = equipe[equipesIds[nbEquipes - 1 - j]][0];
-        if (this.typeEquipes == "doublette" || this.typeEquipes == "triplette") {
-          matchs[idMatch].equipe[1][1] = equipe[equipesIds[nbEquipes - 1 - j]][1];
-        }
-        if (this.typeEquipes == "triplette") {
-          matchs[idMatch].equipe[1][2] = equipe[equipesIds[nbEquipes - 1 - j]][2];
-        }
-        idMatch++;
+    for (let j = 0; j < equipe.length / 2; j++) {
+      //Affectation Equipe 1
+      matchs[idMatch].equipe[0][0] = equipe[equipesIds[j]][0];
+      if (this.typeEquipes == "doublette" || this.typeEquipes == "triplette") {
+        matchs[idMatch].equipe[0][1] = equipe[equipesIds[j]][1];
       }
-      equipesIds.splice(1, 0, equipesIds.pop());
-      idMatch = nbMatchsParTour * (i + 1);
+      if (this.typeEquipes == "triplette") {
+        matchs[idMatch].equipe[0][2] = equipe[equipesIds[j]][2];
+      }
+
+      //Affectation Equipe 2
+      matchs[idMatch].equipe[1][0] = equipe[equipesIds[nbEquipes - 1 - j]][0];
+      if (this.typeEquipes == "doublette" || this.typeEquipes == "triplette") {
+        matchs[idMatch].equipe[1][1] = equipe[equipesIds[nbEquipes - 1 - j]][1];
+      }
+      if (this.typeEquipes == "triplette") {
+        matchs[idMatch].equipe[1][2] = equipe[equipesIds[nbEquipes - 1 - j]][2];
+      }
+      idMatch++;
     }
+    equipesIds.splice(1, 0, equipesIds.pop());
 
     //Ajout des options du match à la fin du tableau contenant les matchs
     matchs.push({
