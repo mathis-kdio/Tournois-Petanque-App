@@ -136,6 +136,9 @@ class Inscription extends React.Component {
     if (this.props.optionsTournoi.type == "championnat") {
       screenName = 'GenerationChampionnat';
     }
+    if (this.props.optionsTournoi.type == "coupe") {
+      screenName = 'GenerationCoupe';
+    }
     else if (this.props.optionsTournoi.type == "mele-demele") {
       if (this.state.avecEquipes == true) {
         screenName = 'GenerationMatchsAvecEquipes';
@@ -349,7 +352,7 @@ class Inscription extends React.Component {
   }
 
   _boutonOptions() {
-    if (this.props.optionsTournoi.type != 'championnat') {
+    if (this.props.optionsTournoi.type != 'championnat' && this.props.optionsTournoi.type != 'coupe') {
       return (
         <Button color='#1c3969' title='Options Tournoi' onPress={() => this._options()}/>
       )
