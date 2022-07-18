@@ -11,6 +11,13 @@ class Changelog extends React.Component {
           <View style={styles.body_container}>
             <Text style={styles.titre}>Version actuelle : {expo.version}</Text>
             <View style={styles.informations_container}>
+              <Text style={styles.titre}>Version 1.8.3 :</Text>
+              <Text style={styles.informations_texte}>
+                - Ajout de boutons de chargement lors de l'export en PDF{"\n"}
+                - Amélioration de la génération des parties sans équipes{"\n"}
+              </Text>
+            </View>
+            <View style={styles.informations_container}>
               <Text style={styles.titre}>Version 1.8.2 :</Text>
               <Text style={styles.informations_texte}>
                 - Status et Navigation bar de couleur{"\n"}
