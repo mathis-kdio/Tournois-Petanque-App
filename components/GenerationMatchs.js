@@ -151,7 +151,7 @@ class GenerationMatchs extends React.Component {
     //Création d'un tableau contenant tous les joueurs, un autre les non spéciaux et un autre les spéciaux
     //Le tableau contenant les tous les joueurs permettra de connaitre dans quel équipe chaque joueur a été
     for (let i = 0; i < nbjoueurs; i++) {
-      if (this.props.listesJoueurs[this.typeInscription][i].special === true) {
+      if (this.props.listesJoueurs[this.typeInscription][i].special === true && this.speciauxIncompatibles == true && this.typeEquipes == "doublette") {
         joueursSpe.push({...this.props.listesJoueurs[this.typeInscription][i]})
       }
       else {
@@ -179,7 +179,7 @@ class GenerationMatchs extends React.Component {
     }
 
     //Assignation des joueurs spéciaux
-    if (this.speciauxIncompatibles == true) {
+    if (this.speciauxIncompatibles == true && this.typeEquipes == "doublette") {
       //Test si joueurs spéciaux ne sont pas trop nombreux
       if (nbJoueursSpe <= nbjoueurs / 2) {
         //Joueurs spéciaux seront toujours joueur 1 ou joueur 3
