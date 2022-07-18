@@ -275,9 +275,21 @@ class GenerationMatchs extends React.Component {
       for (let j = 0; j < joueursNonSpe.length;) {
         //Affectation joueur 1
         if (matchs[idMatch].equipe[0][0] == -1) {
-          matchs[idMatch].equipe[0][0] = random[j];
-          j++
-          breaker = 0
+          if (this.jamaisMemeCoequipier == true && i > 0) {
+            if (joueurs[random[j]].equipe.includes(matchs[idMatch].equipe[0][1]) == false) {
+              matchs[idMatch].equipe[0][0] = random[j];
+              j++
+              breaker = 0
+            }
+            else {
+              breaker++
+            }
+          }
+          else {
+            matchs[idMatch].equipe[0][0] = random[j];
+            j++
+            breaker = 0
+          }
         }
         //Affectation joueur 2
         else if (this.typeEquipes != "teteatete" && matchs[idMatch].equipe[0][1] == -1) {
@@ -330,9 +342,21 @@ class GenerationMatchs extends React.Component {
           if (affectationPossible == true) {
             //Affectation joueur 3
             if (matchs[idMatch].equipe[1][0] == -1) {
-              matchs[idMatch].equipe[1][0] = random[j];
-              j++
-              breaker = 0
+              if (this.jamaisMemeCoequipier == true && i > 0) {
+                if (joueurs[random[j]].equipe.includes(matchs[idMatch].equipe[1][1]) == false) {
+                  matchs[idMatch].equipe[1][0] = random[j];
+                  j++
+                  breaker = 0
+                }
+                else {
+                  breaker++
+                }
+              }
+              else {
+                matchs[idMatch].equipe[1][0] = random[j];
+                j++
+                breaker = 0
+              }
             }
             //Affectation joueur 4
             else if (this.typeEquipes != "teteatete" && matchs[idMatch].equipe[1][1] == -1) {
