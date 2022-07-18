@@ -81,7 +81,7 @@ class GenerationMatchsTriplette extends React.Component {
     const res = [];
     for (let i = 0; i < num; ) {
         const random = this.randomBetween(range[0], range[1])
-        if (this.countOccurrences(res, random) < 2) {
+        if (this.countOccurrences(res, random) < 1) {
           res.push(random)
           i++
         }
@@ -171,16 +171,16 @@ class GenerationMatchsTriplette extends React.Component {
       if (nbJoueursSpe <= nbjoueurs / 3) {
         //Joueurs spéciaux seront toujours J1 E1 ou J1 E2
         for (let i = 0; i < this.nbTours; i++) {
-          let idsMatchsSpe = []
-          idsMatchsSpe = this.randomBetweenRange(joueursSpe.length, [i * nbMatchsParTour, i * nbMatchsParTour + nbMatchsParTour])
-          for (let j = 0; j < joueursSpe.length;) {
-            if (matchs[idsMatchsSpe[j]].equipe[0][0] == -1) {
-              matchs[idsMatchsSpe[j]].equipe[0][0] = joueursSpe[j].id;
-              j++
+          let idMatch = i * nbMatchsParTour;
+          let idsJoueursSpe = [];
+          idsJoueursSpe = this.randomBetweenRange(joueursSpe.length, [-1, joueursSpe.length]);
+          for (let j = 0; j < joueursSpe.length; j++) {
+            if (matchs[idMatch].equipe[0][0] == -1) {
+              matchs[idMatch].equipe[0][0] = joueursSpe[idsJoueursSpe[j]].id;
             }
-            else if (matchs[idsMatchsSpe[j]].equipe[1][0] == -1) {
-              matchs[idsMatchsSpe[j]].equipe[1][0] = joueursSpe[j].id;
-              j++
+            else if (matchs[idMatch].equipe[1][0] == -1) {
+              matchs[idMatch].equipe[1][0] = joueursSpe[idsJoueursSpe[j]].id;
+              idMatch++;
             }
           }
         }
