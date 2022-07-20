@@ -17,7 +17,7 @@ Sentry.init({
   dsn: 'https://ca59ddcb4fb74f3bb4f82a10a1378747@o1284678.ingest.sentry.io/6495554',
   enableInExpoDevelopment: false,
   debug: false, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
-  tracesSampleRate: 1,
+  tracesSampleRate: 0.3,
   integrations: [
     new Sentry.Native.ReactNativeTracing({
       routingInstrumentation,

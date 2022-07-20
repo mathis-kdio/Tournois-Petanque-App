@@ -82,7 +82,7 @@ class GenerationMatchs extends React.Component {
     const res = [];
     for (let i = 0; i < num; ) {
         const random = this.randomBetween(range[0], range[1])
-        if (this.countOccurrences(res, random) < 2) {
+        if (this.countOccurrences(res, random) < 1) {
           res.push(random)
           i++
         }
@@ -151,7 +151,7 @@ class GenerationMatchs extends React.Component {
     //Création d'un tableau contenant tous les joueurs, un autre les non spéciaux et un autre les spéciaux
     //Le tableau contenant les tous les joueurs permettra de connaitre dans quel équipe chaque joueur a été
     for (let i = 0; i < nbjoueurs; i++) {
-      if (this.props.listesJoueurs[this.typeInscription][i].special === true) {
+      if (this.props.listesJoueurs[this.typeInscription][i].special === true && this.speciauxIncompatibles == true && this.typeEquipes == "doublette") {
         joueursSpe.push({...this.props.listesJoueurs[this.typeInscription][i]})
       }
       else {
@@ -179,21 +179,21 @@ class GenerationMatchs extends React.Component {
     }
 
     //Assignation des joueurs spéciaux
-    if (this.speciauxIncompatibles == true) {
+    if (this.speciauxIncompatibles == true && this.typeEquipes == "doublette") {
       //Test si joueurs spéciaux ne sont pas trop nombreux
       if (nbJoueursSpe <= nbjoueurs / 2) {
         //Joueurs spéciaux seront toujours joueur 1 ou joueur 3
         for (let i = 0; i < this.nbTours; i++) {
-          let idsMatchsSpe = []
-          idsMatchsSpe = this.randomBetweenRange(joueursSpe.length, [i * nbMatchsParTour, i * nbMatchsParTour + nbMatchsParTour])
-          for (let j = 0; j < joueursSpe.length;) {
-            if (matchs[idsMatchsSpe[j]].equipe[0][1] == -1) {
-              matchs[idsMatchsSpe[j]].equipe[0][1] = joueursSpe[j].id;
-              j++
+          let idMatch = i * nbMatchsParTour;
+          let idsJoueursSpe = [];
+          idsJoueursSpe = this.randomBetweenRange(joueursSpe.length, [-1, joueursSpe.length]);
+          for (let j = 0; j < joueursSpe.length; j++) {
+            if (matchs[idMatch].equipe[0][1] == -1) {
+              matchs[idMatch].equipe[0][1] = joueursSpe[idsJoueursSpe[j]].id;
             }
-            else if (matchs[idsMatchsSpe[j]].equipe[1][1] == -1) {
-              matchs[idsMatchsSpe[j]].equipe[1][1] = joueursSpe[j].id;
-              j++
+            else if (matchs[idMatch].equipe[1][1] == -1) {
+              matchs[idMatch].equipe[1][1] = joueursSpe[idsJoueursSpe[j]].id;
+              idMatch++;
             }
           }
         }
@@ -275,9 +275,21 @@ class GenerationMatchs extends React.Component {
       for (let j = 0; j < joueursNonSpe.length;) {
         //Affectation joueur 1
         if (matchs[idMatch].equipe[0][0] == -1) {
-          matchs[idMatch].equipe[0][0] = random[j];
-          j++
-          breaker = 0
+          if (this.jamaisMemeCoequipier == true && i > 0) {
+            if (joueurs[random[j]].equipe.includes(matchs[idMatch].equipe[0][1]) == false) {
+              matchs[idMatch].equipe[0][0] = random[j];
+              j++
+              breaker = 0
+            }
+            else {
+              breaker++
+            }
+          }
+          else {
+            matchs[idMatch].equipe[0][0] = random[j];
+            j++
+            breaker = 0
+          }
         }
         //Affectation joueur 2
         else if (this.typeEquipes != "teteatete" && matchs[idMatch].equipe[0][1] == -1) {
@@ -330,9 +342,21 @@ class GenerationMatchs extends React.Component {
           if (affectationPossible == true) {
             //Affectation joueur 3
             if (matchs[idMatch].equipe[1][0] == -1) {
-              matchs[idMatch].equipe[1][0] = random[j];
-              j++
-              breaker = 0
+              if (this.jamaisMemeCoequipier == true && i > 0) {
+                if (joueurs[random[j]].equipe.includes(matchs[idMatch].equipe[1][1]) == false) {
+                  matchs[idMatch].equipe[1][0] = random[j];
+                  j++
+                  breaker = 0
+                }
+                else {
+                  breaker++
+                }
+              }
+              else {
+                matchs[idMatch].equipe[1][0] = random[j];
+                j++
+                breaker = 0
+              }
             }
             //Affectation joueur 4
             else if (this.typeEquipes != "teteatete" && matchs[idMatch].equipe[1][1] == -1) {
