@@ -74,7 +74,7 @@ function texteTitleTopTab({ listeMatchs, numero }) {
     }
   }
   let TabTitle = 'Tour '+numero;
-  if (listeMatchs[listeMatchs.length - 1].typeTournoi == 'Coupe') {
+  if (listeMatchs[listeMatchs.length - 1].typeTournoi == 'coupe') {
     TabTitle = listeMatchs.find(el => el.manche == numero).mancheName;
   }
   return <Text style={{color:titleColor, fontSize: 20}}>{TabTitle}</Text>
