@@ -72,36 +72,34 @@ class GenerationCoupe extends React.Component {
     let jamaisMemeCoequipier = true
     let eviterMemeAdversaire = true;
     let matchs = [];
-    let idMatch = 0;
     let equipe = [];
 
     //Initialisation des matchs dans un tableau
     let nbEquipes
-    let nbMatchsParTour
+    let nbMatchsPremierTour
     if (this.typeEquipes == "teteatete") {
       nbEquipes = nbjoueurs;
-      nbMatchsParTour = nbjoueurs / 2;
+      nbMatchsPremierTour = nbjoueurs / 2;
     }
     else if (this.typeEquipes == "doublette") {
       nbEquipes = nbjoueurs / 2;
-      nbMatchsParTour = Math.ceil(nbjoueurs / 4);
+      nbMatchsPremierTour = Math.ceil(nbjoueurs / 4);
     }
     else {
       nbEquipes = nbjoueurs / 3;
-      nbMatchsParTour = Math.ceil(nbjoueurs / 6);
+      nbMatchsPremierTour = Math.ceil(nbjoueurs / 6);
     }
     this.nbTours = Math.log2(nbEquipes);
-    let nbMatchs = this.nbTours * nbMatchsParTour;
-
-    idMatch = 0;
-    for (let i = 1; i < this.nbTours + 1; i++) {
-      for (let j = 0; j < nbMatchsParTour / i; j++) {
-        matchs.push({id: idMatch, manche: i, mancheName: "1/"+nbMatchsParTour.toString(), equipe: [[-1,-1,-1],[-1,-1,-1]], score1: undefined, score2: undefined});
+    let nbMatchs = 0;
+    let idMatch = 0;
+    for (let i = 1, nbMatchsParTour = nbMatchsPremierTour; i < this.nbTours + 1; i++, nbMatchsParTour/=2) {
+      for (let j = 0; j < nbMatchsParTour; j++) {
+        matchs.push({id: idMatch, manche: i, mancheName: "1/" + nbMatchsParTour, equipe: [[-1,-1,-1],[-1,-1,-1]], score1: undefined, score2: undefined});
         idMatch++;
       }
     }
+    nbMatchs = idMatch;
     matchs[matchs.length - 1].mancheName = "Finale";
-    console.log(matchs)
     //Création d'un tableau dans lequel les joueurs sont regroupés par équipes
     for (let i = 1; i <= nbEquipes; i++) {
       equipe.push([]);
