@@ -73,7 +73,11 @@ function texteTitleTopTab({ listeMatchs, numero }) {
       titleColor = 'red'
     }
   }
-  return <Text style={{color:titleColor, fontSize: 20}}>Tour {numero}</Text>
+  let TabTitle = 'Tour '+numero;
+  if (listeMatchs[listeMatchs.length - 1].typeTournoi == 'Coupe') {
+    TabTitle = listeMatchs.find(el => el.manche == numero).mancheName;
+  }
+  return <Text style={{color:titleColor, fontSize: 20}}>{TabTitle}</Text>
 }
 
 function ManchesTopTabNavigator() {
@@ -150,6 +154,11 @@ function MatchsResultatsBottomNavigator() {
 }
 
 function General() {
+  const listeMatchs = useSelector(state => state.gestionMatchs.listematchs);
+  let typeTournoi = 'melee-demelee'
+  if (listeMatchs[listeMatchs.length - 1].typeTournoi) {
+    typeTournoi = listeMatchs[listeMatchs.length - 1].typeTournoi;
+  }
   return (
     <Stack.Navigator initialRouteName='AccueilGeneral' screenOptions={{headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}}>
       <Stack.Screen name="AccueilGeneral" component={Accueil} options={{title: 'Accueil - Pétanque GCU'}} />
@@ -171,7 +180,10 @@ function General() {
       <Stack.Screen name="GenerationMatchsTriplettes" component={GenerationMatchsTriplettes} options={{title: 'Générations des parties en cours', headerTitleAlign: 'center', headerLeft: false, headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
       <Stack.Screen name="GenerationMatchsAvecEquipes" component={GenerationMatchsAvecEquipes} options={{title: 'Générations des parties en cours', headerTitleAlign: 'center', headerLeft: false, headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
     
-      <Stack.Screen name="ListeMatchsInscription" component={MatchsResultatsBottomNavigator} options={{headerShown: false}} />   
+      <Stack.Screen name="ListeMatchsInscription"
+        component={typeTournoi != 'Coupe' ? MatchsResultatsBottomNavigator : MatchsStack} 
+        options={{headerShown: false}}
+      />   
     </Stack.Navigator>
   );
 }

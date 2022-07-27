@@ -96,11 +96,12 @@ class GenerationCoupe extends React.Component {
     idMatch = 0;
     for (let i = 1; i < this.nbTours + 1; i++) {
       for (let j = 0; j < nbMatchsParTour / i; j++) {
-        matchs.push({id: idMatch, manche: i, equipe: [[-1,-1,-1],[-1,-1,-1]], score1: undefined, score2: undefined});
+        matchs.push({id: idMatch, manche: i, mancheName: "1/"+nbMatchsParTour.toString(), equipe: [[-1,-1,-1],[-1,-1,-1]], score1: undefined, score2: undefined});
         idMatch++;
       }
     }
-
+    matchs[matchs.length - 1].mancheName = "Finale";
+    console.log(matchs)
     //Création d'un tableau dans lequel les joueurs sont regroupés par équipes
     for (let i = 1; i <= nbEquipes; i++) {
       equipe.push([]);
@@ -150,6 +151,7 @@ class GenerationCoupe extends React.Component {
       memesEquipes: this.jamaisMemeCoequipier,
       memesAdversaires: this.eviterMemeAdversaire,
       typeEquipes: this.typeEquipes,
+      typeTournoi: 'coupe',
       listeJoueurs: this.props.listesJoueurs.avecEquipes.slice()
     });
 
@@ -187,7 +189,8 @@ class GenerationCoupe extends React.Component {
         speciauxIncompatibles: this.speciauxIncompatibles,
         memesEquipes: this.jamaisMemeCoequipier,
         memesAdversaires: this.eviterMemeAdversaire,
-        typeEquipes: this.state.typeEquipes
+        typeEquipes: this.state.typeEquipes,
+        typeTournoi: 'coupe'
       }
     });
   }
