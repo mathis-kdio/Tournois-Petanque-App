@@ -15,7 +15,7 @@ function gestionMatchs(state = initialState, action) {
         nextState = {
           ...state, listematchs : initialState.listematchs
         }
-      return nextState
+      return nextState || state
     case 'AJOUT_SCORE':
       if (action.value != "") {
         nextState = {

@@ -38,7 +38,7 @@ function listeTournois(state = initialState, action) {
         ...state,
         listeTournois: initialState.listeTournois
       }
-      return nextState
+      return nextState || state
   default:
     return state
   }
