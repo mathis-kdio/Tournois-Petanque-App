@@ -52,6 +52,10 @@ class ChoixModeTournoi extends React.Component {
       screenName = 'InscriptionsAvecNoms'
       avecEquipes = true
     }
+    else if (this.props.optionsTournoi.type == "coupe") {
+      screenName = 'InscriptionsAvecNoms'
+      avecEquipes = true
+    }
     
     const updateOptionEquipesTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['typeEquipe', typeEquipes]}
     this.props.dispatch(updateOptionEquipesTournoi);
@@ -80,6 +84,9 @@ class ChoixModeTournoi extends React.Component {
     }
     else if (this.props.optionsTournoi.type == "championnat") {
       return <Text style={styles.titre}>Choix du mode du championnat :</Text>
+    }
+    else if (this.props.optionsTournoi.type == "coupe") {
+      return <Text style={styles.titre}>Choix du mode de la coupe :</Text>
     }
   }
 
