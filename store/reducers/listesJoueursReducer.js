@@ -57,7 +57,7 @@ function listesJoueurs(state = initialState, action) {
           listesJoueurs: listes
         }
       }
-      return nextState
+      return nextState || state;
     case 'SUPPR_JOUEUR'://action: 0: type d'inscription  1: id du joueur
       if (action.value[0] != "" || action.value[1] != "") {
         const listes = { ...state.listesJoueurs };
@@ -77,7 +77,7 @@ function listesJoueurs(state = initialState, action) {
           listesJoueurs: listes
         }
       }
-      return nextState
+      return nextState || state
     case 'RENOMMER_JOUEUR'://action: 0: type d'inscription  1: id du joueur  2: nouveau nom du joueur
       if (action.value[0] != "" || action.value[1] != "" || action.value[2] != "") {
         const listes = { ...state.listesJoueurs };

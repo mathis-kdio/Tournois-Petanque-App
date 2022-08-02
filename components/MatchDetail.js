@@ -48,16 +48,51 @@ class MatchDetail extends React.Component {
     return nomsJoueurs
   }
 
-  _envoyerResultat() {
+  _envoyerResultat(match) {
     if (this.state.score1 && this.state.score2) {
       let info = {idMatch: this.state.match, score1: this.state.score1, score2: this.state.score2};
       const actionAjoutScore = { type: "AJOUT_SCORE", value: info};
       this.props.dispatch(actionAjoutScore);
+      if (this.props.listeMatchs[this.props.listeMatchs.length - 1].typeTournoi == 'coupe') {
+        let gagnant = match.equipe[0];
+        if (match.score2 > match.score1) {
+          gagnant = match.equipe[1];
+        }
+        let matchId = null;
+        let nbMatchs = this.props.listeMatchs[this.props.listeMatchs.length - 1].nbMatchs;
+
+        let div = 2;
+        for (let i = 2; i <= match.manche; i++) {
+          div = div * 2;
+        }
+        let nbMatchsManche = Math.floor((nbMatchs + 1) / div);
+
+        if (match.manche == 1) {
+          if (match.id % 2 != 0) {
+            matchId = match.id + (nbMatchsManche - ((match.id + 1) / 2));
+          }
+          else {
+            matchId = match.id + (nbMatchsManche - (match.id / 2));
+          }
+        }
+        else {
+          let nbMatchsAvantManche = (nbMatchs + 1) / 2;
+          for (let i = 1; i < match.manche - 1; i++) {
+            nbMatchsAvantManche += nbMatchsAvantManche / 2;
+          }
+          matchId = match.id + (nbMatchsManche - (Math.ceil((match.id % nbMatchsAvantManche) / 2)));
+        }
+
+        let equipeId = match.id % 2;
+        const actionAjoutAdversaire = { type: "COUPE_AJOUT_ADVERSAIRE", value: {gagnant: gagnant, matchId: matchId, equipeId: equipeId}};
+        this.props.dispatch(actionAjoutAdversaire);
+      }
       const actionUpdateTournoi = { type: "UPDATE_TOURNOI", value: {tournoi: this.props.listeMatchs, tournoiId: this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID}};
       this.props.dispatch(actionUpdateTournoi);
       this.props.navigation.navigate('ListeMatchsStack');
     }
   }
+
 
   _supprimerResultat() {
     let info = {idMatch: this.state.match, score1: undefined, score2: undefined};
@@ -68,13 +103,13 @@ class MatchDetail extends React.Component {
     this.props.navigation.navigate('ListeMatchsStack');
   }
 
-  _boutonValider() {
+  _boutonValider(match) {
     let boutonActive = true
     if (this.state.score1 && this.state.score2) {
       boutonActive = false
     }
     return (
-      <Button disabled={boutonActive} color="green" title='Valider le score' onPress={() => this._envoyerResultat()}/>
+      <Button disabled={boutonActive} color="green" title='Valider le score' onPress={() => this._envoyerResultat(match)}/>
     )
   }
 
@@ -119,14 +154,14 @@ class MatchDetail extends React.Component {
               ref={ref => {this.secondInput = ref}}
               placeholder="score équipe 2"
               onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 2)}
-              onSubmitEditing={() => this._envoyerResultat()}
+              onSubmitEditing={() => this._envoyerResultat(match)}
             />
           </View>
           <View style={styles.buttonView}>
             <Button color="red" title='Supprimer le score' onPress={() => this._supprimerResultat()}/>
           </View>
           <View style={styles.buttonView}>
-            {this._boutonValider()}
+            {this._boutonValider(match)}
           </View>
         </View>
       </View>
