@@ -156,7 +156,7 @@ function MatchsResultatsBottomNavigator() {
 function General() {
   const listeMatchs = useSelector(state => state.gestionMatchs.listematchs);
   let typeTournoi = 'melee-demelee'
-  if (listeMatchs[listeMatchs.length - 1].typeTournoi) {
+  if (listeMatchs && listeMatchs.length > 0 && listeMatchs[listeMatchs.length - 1].typeTournoi) {
     typeTournoi = listeMatchs[listeMatchs.length - 1].typeTournoi;
   }
   return (
