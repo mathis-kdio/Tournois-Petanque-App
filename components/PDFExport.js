@@ -1,12 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Pressable, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux'
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 
 class PDFExport extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
+    this.state = {
+      btnIsLoading: [false, false, false],
+    }
   }
 
   calculClassement() {
@@ -62,7 +65,7 @@ class PDFExport extends React.Component {
     return victoires
   }
 
-  generatePDF = async (affichageScore, affichageClassement) => {
+  generatePDF = async (affichageScore, affichageClassement, buttonId) => {
     let toursParLigne = 3
     let nbTours = this.props.listeMatchs[this.props.listeMatchs.length - 1].nbTours;
     let nbMatchs = this.props.listeMatchs[this.props.listeMatchs.length - 1].nbMatchs;
@@ -182,7 +185,36 @@ class PDFExport extends React.Component {
     }
     html += '</body></html>';
     const { uri } = await Print.printToFileAsync({ html });
-    Sharing.shareAsync(uri);
+    if (await Sharing.isAvailableAsync()) {
+      Sharing.shareAsync(uri).then(this._toggleLoading(buttonId));
+    }
+    else {
+      this._toggleLoading(buttonId)
+    }
+  }
+
+  _toggleLoading(buttonId) {
+    let newBtnIsLoading = this.state.btnIsLoading
+    newBtnIsLoading[buttonId] = !this.state.btnIsLoading[buttonId]
+    this.setState({
+      btnIsLoading: newBtnIsLoading
+    })
+  };
+
+  _onPressExportBtn(buttonId, affichageScore, affichageClassement) {
+    this._toggleLoading(buttonId)
+    this.generatePDF(affichageScore, affichageClassement, buttonId)
+  };
+
+  _exportButton(buttonId, buttonText, affichageScore, affichageClassement) {
+    return (
+      <Pressable disabled={this.state.btnIsLoading[buttonId]} onPress={() => this._onPressExportBtn(buttonId, affichageScore, affichageClassement)}>
+        <View style={{...styles.button, opacity: this.state.btnIsLoading[buttonId] ? 0.7 : 1}}>
+          {this.state.btnIsLoading[buttonId] && <ActivityIndicator size="small" color="white" />}
+          <Text style={styles.buttonText}>{buttonText}</Text>
+        </View>
+      </Pressable>
+    )
   }
 
   render() {
@@ -190,13 +222,13 @@ class PDFExport extends React.Component {
       <View style={styles.main_container}>
         <View style={styles.body_container}>
           <View style={styles.buttonView}>
-            <Button color="#1c3969" title="Exporter en PDF (sans scores)" onPress={() => this.generatePDF(false, false)}/>
+            {this._exportButton(0, "Exporter en PDF (sans scores)", false, false)}
           </View>
           <View style={styles.buttonView}>
-            <Button color="#1c3969" title="Exporter en PDF (avec scores)" onPress={() => this.generatePDF(true, false)}/>
+            {this._exportButton(1, "Exporter en PDF (avec scores)", true, false)}
           </View>
           <View style={styles.buttonView}>
-            <Button color="#1c3969" title="Exporter en PDF (avec scores + classement)" onPress={() => this.generatePDF(true, true)}/>
+            {this._exportButton(2, "Exporter en PDF (avec scores + classement)", true, true)}
           </View>
         </View>
       </View>
@@ -218,6 +250,25 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingLeft: 15,
     paddingRight: 15
+  },
+  button: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 7,
+    paddingHorizontal: 7,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: '#1c3969',
+  },
+  buttonText: {
+    fontSize: 15,
+    lineHeight: 21,
+    fontWeight: '600',
+    letterSpacing: 0.25,
+    color: 'white'
   },
 });
 

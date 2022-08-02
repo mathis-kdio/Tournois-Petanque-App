@@ -1,5 +1,15 @@
 # Change Log
 
+## [1.8.3] - 19-07-2022
+
+### Ajouté
+- Bouton de chargement lors de l'export en PDF
+
+### Changement
+- Amélioration de la génération des parties sans équipes
+
+### Corrigé
+
 ## [1.8.2] - 01-07-2022
 
 ### Ajouté
