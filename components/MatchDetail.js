@@ -55,7 +55,7 @@ class MatchDetail extends React.Component {
       this.props.dispatch(actionAjoutScore);
       if (this.props.listeMatchs[this.props.listeMatchs.length - 1].typeTournoi == 'coupe') {
         let gagnant = match.equipe[0];
-        if (match.score2 > match.score1) {
+        if (parseInt(match.score2) > parseInt(match.score1)) {
           gagnant = match.equipe[1];
         }
         let matchId = null;
