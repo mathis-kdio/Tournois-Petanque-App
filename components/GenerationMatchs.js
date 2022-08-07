@@ -76,7 +76,7 @@ class GenerationMatchs extends React.Component {
   }
 
   randomBetween(a, b) {
-    return (parseInt((Math.random() * (b - a)) + a))
+    return (Math.abs(parseInt((Math.random() * (b - a)) + a)))
   }
   randomBetweenRange (num, range) {
     const res = [];
@@ -153,9 +153,11 @@ class GenerationMatchs extends React.Component {
     for (let i = 0; i < nbjoueurs; i++) {
       if (this.props.listesJoueurs[this.typeInscription][i].special === true && this.speciauxIncompatibles == true && this.typeEquipes == "doublette") {
         joueursSpe.push({...this.props.listesJoueurs[this.typeInscription][i]})
+        joueursSpe[joueursSpe.length - 1].equipe = []
       }
       else {
         joueursNonSpe.push({...this.props.listesJoueurs[this.typeInscription][i]})
+        joueursNonSpe[joueursNonSpe.length - 1].equipe = []
       }
       joueurs.push({...this.props.listesJoueurs[this.typeInscription][i]})
       joueurs[i].equipe = []
@@ -180,8 +182,8 @@ class GenerationMatchs extends React.Component {
 
     //Assignation des joueurs spéciaux
     if (this.speciauxIncompatibles == true && this.typeEquipes == "doublette") {
-      //Test si joueurs spéciaux ne sont pas trop nombreux
-      if (nbJoueursSpe <= nbjoueurs / 2) {
+      //Test si joueurs spéciaux ne sont pas trop nombreux strict inférieur en cas de compléments
+      if ((nbjoueurs % 4 == 0 && nbJoueursSpe <= nbjoueurs / 2) || (nbjoueurs % 4 != 0 && nbJoueursSpe < nbjoueurs / 2)) {
         //Joueurs spéciaux seront toujours joueur 1 ou joueur 3
         for (let i = 0; i < this.nbTours; i++) {
           let idMatch = i * nbMatchsParTour;
