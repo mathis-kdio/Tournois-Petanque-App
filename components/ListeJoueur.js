@@ -27,8 +27,8 @@ class ListeJoueur extends React.Component {
   _showSupprimerJoueur(joueur, supprimerJoueur, isInscription) {
     if (isInscription === true) {
       return (
-        <View>
-            <Icon.Button name="times" backgroundColor="red" onPress={() => supprimerJoueur(joueur.id)}/>
+        <View style={{marginLeft: 5}}>
+            <Icon.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => supprimerJoueur(joueur.id)}/>
         </View>
       )
     }
@@ -38,7 +38,7 @@ class ListeJoueur extends React.Component {
     if (this.state.renommerOn == false) {
       return (
         <View>
-            <Icon.Button name="edit" backgroundColor="green" onPress={() => this._renommerJoueurInput(joueur)}/>
+            <Icon.Button name="edit" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renommerJoueurInput(joueur)}/>
         </View>
       )
     }
@@ -46,14 +46,14 @@ class ListeJoueur extends React.Component {
       if (this.state.disabledBoutonRenommer == true) {
         return (
           <View>
-            <Icon.Button name="edit" backgroundColor="gray"/>
+            <Icon.Button name="edit" backgroundColor="gray" iconStyle={{paddingHorizontal: 2, marginRight: 0}}/>
           </View>
         )
       }
       else {
         return (
           <View>
-            <Icon.Button name="check" backgroundColor="green" onPress={() => this._renommerJoueur(joueur, isInscription, avecEquipes)}/>
+            <Icon.Button name="check" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renommerJoueur(joueur, isInscription, avecEquipes)}/>
           </View>
         )
       }
