@@ -63,6 +63,7 @@ const TitleTopTabContainer = connect((state, numero) => ({ listeMatchs: state.ge
 
 function texteTitleTopTab({ listeMatchs, numero }) {
   let titleColor = '#1c3969'
+  let TabTitle = 'Tour '+numero;
   if (listeMatchs) {
     let testTourFiltre = listeMatchs.filter(el => el.manche === numero)
     //Test si tous les matchs d'un tour sont finis si oui alors vert
@@ -72,10 +73,10 @@ function texteTitleTopTab({ listeMatchs, numero }) {
     else if (testTourFiltre.every(e => e.score1 == undefined && e.score2 == undefined) == true) {
       titleColor = 'red'
     }
-  }
-  let TabTitle = 'Tour '+numero;
-  if (listeMatchs[listeMatchs.length - 1].typeTournoi == 'coupe') {
-    TabTitle = listeMatchs.find(el => el.manche == numero).mancheName;
+
+    if (listeMatchs[listeMatchs.length - 1].typeTournoi == 'coupe') {
+      TabTitle = listeMatchs.find(el => el.manche == numero).mancheName;
+    }
   }
   return <Text style={{color:titleColor, fontSize: 20}}>{TabTitle}</Text>
 }
@@ -124,7 +125,7 @@ function ResultatsStack() {
 
 function MatchsResultatsBottomNavigator() {
   return (
-    <BottomTab.Navigator initialRouteName="ListeMatchsBottom" screenOptions={{headerShown: false, tabBarStyle: {backgroundColor: '#ffda00'}, tabBarActiveTintColor: '#1c3969', tabBarLabelStyle: {fontSize: 15}}}>
+    <BottomTab.Navigator initialRouteName="ListeMatchsBottom" backBehavior='none' screenOptions={{headerShown: false, tabBarStyle: {backgroundColor: '#ffda00'}, tabBarActiveTintColor: '#1c3969', tabBarLabelStyle: {fontSize: 15}}}>
       <BottomTab.Screen
         name="ListeResultatsBottom"
         component={ResultatsStack}
@@ -156,7 +157,7 @@ function MatchsResultatsBottomNavigator() {
 function General() {
   const listeMatchs = useSelector(state => state.gestionMatchs.listematchs);
   let typeTournoi = 'melee-demelee'
-  if (listeMatchs[listeMatchs.length - 1].typeTournoi) {
+  if (listeMatchs && listeMatchs.length > 0 && listeMatchs[listeMatchs.length - 1].typeTournoi) {
     typeTournoi = listeMatchs[listeMatchs.length - 1].typeTournoi;
   }
   return (
