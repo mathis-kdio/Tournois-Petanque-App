@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Text, Button } from 'react-native'
 import { connect } from 'react-redux'
 import { FlatList } from 'react-native-gesture-handler'
-import ListeJoueur from './ListeJoueur'
+import ListeJoueur from '../../components/ListeJoueur'
 
 class JoueursTournoi extends React.Component {
 
