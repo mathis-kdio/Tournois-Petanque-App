@@ -28,8 +28,8 @@ import ParametresTournoi from '../screens/Matchs/ParametresTournoi'
 import PDFExport from '../components/PDFExport'
 
 import BoutonMenuHeaderNav from '../components/BoutonMenuHeaderNavigation'
-import ListesJoueurs from '../src/screens/ListesJoueurs';
-import CreateListeJoueurs from '../src/screens/CreateListeJoueurs';
+import ListesJoueurs from '../screens/ListesJoueurs/ListesJoueurs';
+import CreateListeJoueurs from '../screens/ListesJoueurs/CreateListeJoueurs';
 
 const styles = StyleSheet.create({
   icon: {
