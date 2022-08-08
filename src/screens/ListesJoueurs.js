@@ -8,9 +8,13 @@ class ListesJoueurs extends React.Component {
     super(props)
   }
 
+  _addList() {
+    this.props.navigation.navigate('CreateListeJoueurs');
+  }
+
   _modifierListe(tournoi) {
-    const actionUpdateListeMatchs = {type: "AJOUT_MATCHS", value: tournoi.tournoi};
-    this.props.dispatch(actionUpdateListeMatchs);
+    //const actionUpdateListeMatchs = {type: "AJOUT_MATCHS", value: tournoi.tournoi};
+    //this.props.dispatch(actionUpdateListeMatchs);
     this.props.navigation.reset({
       index: 0,
       routes: [{
@@ -76,7 +80,7 @@ class ListesJoueurs extends React.Component {
             />
           </View>
           <View style={styles.createBtnView}>
-            <Button color="green" title="Créer une liste" onPress={() => this._createListe()}/>
+            <Button color="green" title="Créer une liste" onPress={() => this._addList()}/>
           </View>
         </View>
       </View>
@@ -127,7 +131,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    listesJoueurs: state.listeTournois.listeTournois
+    listesJoueurs: state.listesJoueurs.listesJoueurs
   }
 }
 

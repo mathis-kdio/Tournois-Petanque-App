@@ -28,7 +28,8 @@ import ParametresTournoi from '../components/ParametresTournoi'
 import PDFExport from '../components/PDFExport'
 
 import BoutonMenuHeaderNav from '../components/BoutonMenuHeaderNavigation'
-import ListesJoueurs from '../components/ListesJoueurs';
+import ListesJoueurs from '../src/screens/ListesJoueurs';
+import CreateListeJoueurs from '../src/screens/CreateListeJoueurs';
 
 const styles = StyleSheet.create({
   icon: {
@@ -169,6 +170,7 @@ function General() {
       <Stack.Screen name="ListeTournois" component={ListeTournois} options={{title: 'Choix d\'un tournoi'}} />
 
       <Stack.Screen name="ListesJoueurs" component={ListesJoueurs} options={{title: 'Listes de Joueurs'}} />
+      <Stack.Screen name="CreateListeJoueurs" component={CreateListeJoueurs} options={{title: 'Création d\'une liste de Joueurs'}} />
 
       <Stack.Screen name="ChoixTypeTournoi" component={ChoixTypeTournoi} options={{title: 'Choix du type de tournoi'}} />
       <Stack.Screen name="ChoixModeTournoi" component={ChoixModeTournoi} options={{title: 'Choix du mode de tournoi'}} />
