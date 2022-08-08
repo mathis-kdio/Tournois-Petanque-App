@@ -20,10 +20,10 @@ import GenerationCoupe from '../components/GenerationCoupe';
 import GenerationMatchs from '../components/GenerationMatchs'
 import GenerationMatchsTriplettes from '../components/GenerationMatchsTriplettes'
 import GenerationMatchsAvecEquipes from '../components/GenerationMatchsAvecEquipes'
-import ListeResultats from '../components/ListeResultats'
-import ListeMatchs from '../components/ListeMatchs'
+import ListeResultats from '../screens/Resultats/ListeResultats'
+import ListeMatchs from '../screens/Matchs/ListeMatchs'
 import MatchDetail from '../screens/Matchs/MatchDetail'
-import JoueursTournoi from '../components/JoueursTournoi'
+import JoueursTournoi from '../screens/Matchs/JoueursTournoi'
 import ParametresTournoi from '../screens/Matchs/ParametresTournoi'
 import PDFExport from '../components/PDFExport'
 

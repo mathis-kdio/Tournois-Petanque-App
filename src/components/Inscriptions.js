@@ -3,8 +3,8 @@ import { StyleSheet, View, TextInput, Text, Button } from 'react-native'
 import CheckBox from 'react-native-check-box'
 import { connect } from 'react-redux'
 import { FlatList } from 'react-native-gesture-handler'
-import ListeJoueur from '../../components/ListeJoueur'
-import JoueurSuggere from '../../components/JoueurSuggere'
+import ListeJoueur from '../components/ListeJoueur'
+import JoueurSuggere from '../components/JoueurSuggere'
 
 class Inscription extends React.Component {
 
