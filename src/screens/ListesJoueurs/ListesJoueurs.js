@@ -9,22 +9,15 @@ class ListesJoueurs extends React.Component {
   }
 
   _addList() {
-    this.props.navigation.navigate('CreateListeJoueurs');
+    this.props.navigation.navigate({
+      name: 'CreateListeJoueurs',
+      params: { }
+    })
   }
 
   _modifierListe(tournoi) {
     //const actionUpdateListeMatchs = {type: "AJOUT_MATCHS", value: tournoi.tournoi};
     //this.props.dispatch(actionUpdateListeMatchs);
-    this.props.navigation.reset({
-      index: 0,
-      routes: [{
-        name: 'ListeMatchsInscription', 
-        params: {
-          tournoiId: tournoi.tournoiId, 
-          tournoi: tournoi
-        }
-      }],
-    });
   }
 
   _supprimerliste(tournoiId) {
