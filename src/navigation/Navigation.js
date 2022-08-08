@@ -10,11 +10,11 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import Accueil from '../screens/Accueil'
 import Changelog from '../screens/Changelog'
 import ListeTournois from '../screens/ListeTournois/ListeTournois';
-import ChoixTypeTournoi from '../components/ChoixTypeTournoi';
-import ChoixModeTournoi from '../components/ChoixModeTournoi'
-import InscriptionsAvecNoms from '../screens/Inscription/InscriptionsAvecNoms'
-import InscriptionsSansNoms from '../screens/Inscription/InscriptionsSansNoms'
-import OptionsTournoi from '../components/OptionsTournoi'
+import ChoixTypeTournoi from '../screens/Inscriptions/ChoixTypeTournoi';
+import ChoixModeTournoi from '../screens/Inscriptions/ChoixModeTournoi'
+import InscriptionsAvecNoms from '../screens/Inscriptions/InscriptionsAvecNoms'
+import InscriptionsSansNoms from '../screens/Inscriptions/InscriptionsSansNoms'
+import OptionsTournoi from '../screens/Inscriptions/OptionsTournoi'
 import GenerationChampionnat from '../components/GenerationChampionnat'
 import GenerationCoupe from '../components/GenerationCoupe';
 import GenerationMatchs from '../components/GenerationMatchs'
@@ -22,9 +22,9 @@ import GenerationMatchsTriplettes from '../components/GenerationMatchsTriplettes
 import GenerationMatchsAvecEquipes from '../components/GenerationMatchsAvecEquipes'
 import ListeResultats from '../components/ListeResultats'
 import ListeMatchs from '../components/ListeMatchs'
-import MatchDetail from '../components/MatchDetail'
+import MatchDetail from '../screens/Matchs/MatchDetail'
 import JoueursTournoi from '../components/JoueursTournoi'
-import ParametresTournoi from '../components/ParametresTournoi'
+import ParametresTournoi from '../screens/Matchs/ParametresTournoi'
 import PDFExport from '../components/PDFExport'
 
 import BoutonMenuHeaderNav from '../components/BoutonMenuHeaderNavigation'
