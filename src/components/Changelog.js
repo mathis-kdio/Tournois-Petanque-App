@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Text, Button, SafeAreaView, ScrollView } from 'react-native'
-import { expo } from '../app.json'
+import { expo } from '../../app.json'
 import * as Linking from 'expo-linking'
 
 class Changelog extends React.Component {

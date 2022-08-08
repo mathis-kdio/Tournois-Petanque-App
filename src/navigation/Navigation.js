@@ -132,7 +132,7 @@ function MatchsResultatsBottomNavigator() {
         options={{
           tabBarIcon: () => {
           return <Image
-            source={require('../images/ic_trophy.png')}
+            source={require('../assets/images/ic_trophy.png')}
             style={styles.icon}/>
           },
           title: 'Résultats & Classement',
@@ -144,7 +144,7 @@ function MatchsResultatsBottomNavigator() {
         options={{
           tabBarIcon: () => {
           return <Image
-            source={require('../images/ic_menu.png')}
+            source={require('../assets/images/ic_menu.png')}
             style={styles.icon}/>
           },
           title: 'Parties & Détails'
