@@ -7,13 +7,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-import Accueil from '../components/Accueil'
-import Changelog from '../components/Changelog'
-import ListeTournois from '../components/ListeTournois';
+import Accueil from '../screens/Accueil'
+import Changelog from '../screens/Changelog'
+import ListeTournois from '../screens/ListeTournois/ListeTournois';
 import ChoixTypeTournoi from '../components/ChoixTypeTournoi';
 import ChoixModeTournoi from '../components/ChoixModeTournoi'
-import Inscription from '../components/Inscriptions'
-import InscriptionsSansNoms from '../components/InscriptionsSansNoms'
+import InscriptionsAvecNoms from '../screens/Inscription/InscriptionsAvecNoms'
+import InscriptionsSansNoms from '../screens/Inscription/InscriptionsSansNoms'
 import OptionsTournoi from '../components/OptionsTournoi'
 import GenerationChampionnat from '../components/GenerationChampionnat'
 import GenerationCoupe from '../components/GenerationCoupe';
@@ -170,7 +170,7 @@ function General() {
       <Stack.Screen name="ChoixTypeTournoi" component={ChoixTypeTournoi} options={{title: 'Choix du type de tournoi'}} />
       <Stack.Screen name="ChoixModeTournoi" component={ChoixModeTournoi} options={{title: 'Choix du mode de tournoi'}} />
       
-      <Stack.Screen name="InscriptionsAvecNoms" component={Inscription} options={{title: 'Inscription Avec Noms'}} />
+      <Stack.Screen name="InscriptionsAvecNoms" component={InscriptionsAvecNoms} options={{title: 'Inscription Avec Noms'}} />
       <Stack.Screen name="InscriptionsSansNoms" component={InscriptionsSansNoms} options={{title: 'Inscription Sans Noms'}} />
       
       <Stack.Screen name="OptionsTournoi" component={OptionsTournoi} options={{title: 'Options du tournoi'}} />     
