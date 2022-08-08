@@ -7,24 +7,24 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-import Accueil from '../components/Accueil'
-import Changelog from '../components/Changelog'
-import ListeTournois from '../components/ListeTournois';
-import ChoixTypeTournoi from '../components/ChoixTypeTournoi';
-import ChoixModeTournoi from '../components/ChoixModeTournoi'
-import Inscription from '../components/Inscriptions'
-import InscriptionsSansNoms from '../components/InscriptionsSansNoms'
-import OptionsTournoi from '../components/OptionsTournoi'
+import Accueil from '../screens/Accueil'
+import Changelog from '../screens/Changelog'
+import ListeTournois from '../screens/ListeTournois/ListeTournois';
+import ChoixTypeTournoi from '../screens/Inscriptions/ChoixTypeTournoi';
+import ChoixModeTournoi from '../screens/Inscriptions/ChoixModeTournoi'
+import InscriptionsAvecNoms from '../screens/Inscriptions/InscriptionsAvecNoms'
+import InscriptionsSansNoms from '../screens/Inscriptions/InscriptionsSansNoms'
+import OptionsTournoi from '../screens/Inscriptions/OptionsTournoi'
 import GenerationChampionnat from '../components/GenerationChampionnat'
 import GenerationCoupe from '../components/GenerationCoupe';
 import GenerationMatchs from '../components/GenerationMatchs'
 import GenerationMatchsTriplettes from '../components/GenerationMatchsTriplettes'
 import GenerationMatchsAvecEquipes from '../components/GenerationMatchsAvecEquipes'
-import ListeResultats from '../components/ListeResultats'
-import ListeMatchs from '../components/ListeMatchs'
-import MatchDetail from '../components/MatchDetail'
-import JoueursTournoi from '../components/JoueursTournoi'
-import ParametresTournoi from '../components/ParametresTournoi'
+import ListeResultats from '../screens/Resultats/ListeResultats'
+import ListeMatchs from '../screens/Matchs/ListeMatchs'
+import MatchDetail from '../screens/Matchs/MatchDetail'
+import JoueursTournoi from '../screens/Matchs/JoueursTournoi'
+import ParametresTournoi from '../screens/Matchs/ParametresTournoi'
 import PDFExport from '../components/PDFExport'
 
 import BoutonMenuHeaderNav from '../components/BoutonMenuHeaderNavigation'
@@ -134,7 +134,7 @@ function MatchsResultatsBottomNavigator() {
         options={{
           tabBarIcon: () => {
           return <Image
-            source={require('../images/ic_trophy.png')}
+            source={require('../assets/images/ic_trophy.png')}
             style={styles.icon}/>
           },
           title: 'Résultats & Classement',
@@ -146,7 +146,7 @@ function MatchsResultatsBottomNavigator() {
         options={{
           tabBarIcon: () => {
           return <Image
-            source={require('../images/ic_menu.png')}
+            source={require('../assets/images/ic_menu.png')}
             style={styles.icon}/>
           },
           title: 'Parties & Détails'
@@ -175,7 +175,7 @@ function General() {
       <Stack.Screen name="ChoixTypeTournoi" component={ChoixTypeTournoi} options={{title: 'Choix du type de tournoi'}} />
       <Stack.Screen name="ChoixModeTournoi" component={ChoixModeTournoi} options={{title: 'Choix du mode de tournoi'}} />
       
-      <Stack.Screen name="InscriptionsAvecNoms" component={Inscription} options={{title: 'Inscription Avec Noms'}} />
+      <Stack.Screen name="InscriptionsAvecNoms" component={InscriptionsAvecNoms} options={{title: 'Inscription Avec Noms'}} />
       <Stack.Screen name="InscriptionsSansNoms" component={InscriptionsSansNoms} options={{title: 'Inscription Sans Noms'}} />
       
       <Stack.Screen name="OptionsTournoi" component={OptionsTournoi} options={{title: 'Options du tournoi'}} />     

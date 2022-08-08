@@ -41,7 +41,7 @@ class ListeResultatItem extends React.Component {
     if (fanny == true) {
       return (
         <View style={styles.fanny_container}>
-          <Image source={require('../images/fanny.png')} style={styles.icon}/>
+          <Image source={require('../assets/images/fanny.png')} style={styles.icon}/>
           <Text style={styles.texte}>X{nbFanny}</Text>
         </View>
       )

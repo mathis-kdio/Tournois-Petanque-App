@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Text, Button, Image, Modal } from 'react-native'
-import { expo } from '../app.json'
+import { expo } from '../../app.json'
 import { connect } from 'react-redux'
 import * as Linking from 'expo-linking'
 import * as NavigationBar from 'expo-navigation-bar';
