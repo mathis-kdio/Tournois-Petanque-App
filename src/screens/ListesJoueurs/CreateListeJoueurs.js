@@ -16,17 +16,19 @@ class CreateListeJoueur extends React.Component {
   render() {
     return (
       <View style={styles.main_container}>
-        <View style={styles.body_container}>
-          <View>
+          <View style={styles.text_container}>
             <Text style={styles.titre}>Liste n° : </Text>
           </View>
-          <View style={styles.flatList_container}>
-            <Inscriptions/>
+          <Inscriptions
+            typeEquipes={'teteatete'}
+            typeInscription={'avecNoms'}
+            avecEquipes={false}
+          />
+          <View>
+            <View style={styles.buttonView}>
+              <Button color="green" title="Valider la liste" onPress={() => this._createList()}/>
+            </View>
           </View>
-          <View style={styles.createBtnView}>
-            <Button color="green" title="Valider la liste" onPress={() => this._createList()}/>
-          </View>
-        </View>
       </View>
     )
   }
@@ -37,40 +39,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#0594ae"
   },
-  body_container: {
-    flex: 1
-  },
   titre: {
-    marginBottom: 20,
-    textAlign: 'center',
-    fontSize: 24,
+    fontSize: 20,
     color: 'white'
-  },
-  flatList_container: {
-    flex: 1,
-    margin: 10
-  },
-  tournoi_container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 10,
   },
   text_container: {
-    flex: 1,
-  },
-  tournoi_text: {
-    fontSize: 15,
-    color: 'white'
+    alignItems: 'center',
+    marginTop: 5
   },
   buttonView: {
-    flex: 1,
-    alignItems: 'flex-end'
+    marginTop: 10,
+    marginBottom: 10,
+    paddingLeft: 15,
+    paddingRight: 15
   },
-  createBtnView: {
-    flex: 1,
-    alignItems: 'center'
-  }
 })
 
 const mapStateToProps = (state) => {
