@@ -17,30 +17,18 @@ class Inscription extends React.Component {
       isChecked: false,
       etatBouton: false,
       typeEquipes: 'doublette',
+      typeInscription: "avecNoms",
       avecEquipes: false,
-      typeInscription: "avecNoms"
     }
   }
 
   componentDidMount() {
-    if (this.props.route.params != undefined) {
-      let routeparams = this.props.route.params
-      if (routeparams.typeEquipes != undefined) {
-        this.setState({
-          typeEquipes: routeparams.typeEquipes
-        })
-      }
-      if (routeparams.avecEquipes != undefined) {
-        let typeInscription = "avecNoms"
-        if (routeparams.avecEquipes == true) {
-          typeInscription = "avecEquipes"
-        }
-        this.setState({
-          avecEquipes: routeparams.avecEquipes,
-          typeInscription: typeInscription
-        })
-      }
-    }
+    let { typeEquipes, typeInscription, avecEquipes } = this.props;
+    this.setState({
+      typeEquipes: typeEquipes,
+      typeInscription: typeInscription,
+      avecEquipes: avecEquipes
+    })
   }
 
   _ajoutJoueurTextInputChanged = (text) => {
@@ -180,6 +168,8 @@ class Inscription extends React.Component {
   }
 
   render() {
+
+
     return (
       <View style={styles.main_container}>
         <View style={styles.ajoutjoueur_container}>
