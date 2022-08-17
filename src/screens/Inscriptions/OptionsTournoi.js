@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, TextInput, Text, Button } from 'react-native'
-import CheckBox from 'react-native-check-box'
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { connect } from 'react-redux'
 import { Picker } from '@react-native-picker/picker'
 
@@ -100,42 +100,45 @@ class OptionsTournoi extends React.Component {
             />
           </View>
           <View style={styles.checkbox_container}>
-            <CheckBox
-              onClick={()=>{
+            <BouncyCheckbox
+              onPress={()=>{
                 this.setState({
                   speciauxIncompatibles: !this.state.speciauxIncompatibles
                 })
               }}
+              disableBuiltInState="true"
               isChecked={this.state.speciauxIncompatibles}
-              leftText={"Ne jamais faire jouer 2 enfants dans la même équipe"}
-              leftTextStyle={{color: "white", fontSize: 15}}
-              checkBoxColor={'white'}
+              text="Ne jamais faire jouer 2 enfants dans la même équipe"
+              textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
+              fillColor="white"
             />
           </View>
           <View style={styles.checkbox_container}>
-            <CheckBox
-              onClick={()=>{
+            <BouncyCheckbox
+              onPress={()=>{
                 this.setState({
                   memesEquipes: !this.state.memesEquipes
                 })
               }}
+              disableBuiltInState="true"
               isChecked={this.state.memesEquipes}
-              leftText={"Ne jamais former les mêmes équipes"}
-              leftTextStyle={{color: "white", fontSize: 15}}
-              checkBoxColor={'white'}
+              text="Ne jamais former les mêmes équipes"
+              textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
+              fillColor="white"
             />
           </View>
           <View style={styles.checkbox_container}>
-            <CheckBox
-              onClick={()=>{
+            <BouncyCheckbox
+              onPress={()=>{
                 this.setState({
                   memesAdversaires: !this.state.memesAdversaires
                 })
               }}
+              disableBuiltInState="true"
               isChecked={this.state.memesAdversaires}
-              leftText={"Empecher 2 joueurs de jouer + de la moitié des matchs contre et ensemble"}
-              leftTextStyle={{color: "white", fontSize: 15}}
-              checkBoxColor={'white'}
+              text="Empecher 2 joueurs de jouer + de la moitié des matchs contre et ensemble"
+              textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
+              fillColor="white"
             />
           </View>
           <View style={styles.avecEquipes_container}>
