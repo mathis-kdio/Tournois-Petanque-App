@@ -62,9 +62,6 @@ class ChoixModeTournoi extends React.Component {
     const updateOptionModeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['mode', modeTournoi]}
     this.props.dispatch(updateOptionModeTournoi);
 
-    console.log(typeEquipes)
-    console.log(avecEquipes)
-    console.log(screenName)
     this.props.navigation.navigate({
       name: screenName, 
       params: { typeEquipes: typeEquipes, avecEquipes: avecEquipes }
