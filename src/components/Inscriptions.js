@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, TextInput, Text, Button } from 'react-native'
-import CheckBox from 'react-native-check-box'
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { connect } from 'react-redux'
 import { FlatList } from 'react-native-gesture-handler'
 import ListeJoueur from '../components/ListeJoueur'
@@ -196,16 +196,17 @@ class Inscription extends React.Component {
             />
           </View>
           <View style={styles.checkbox_ajoutjoueur_container}>
-            <CheckBox
-              onClick={()=>{
+            <BouncyCheckbox
+              onPress={()=>{
                 this.setState({
                   isChecked:!this.state.isChecked
                 })
               }}
+              disableBuiltInState="true"
               isChecked={this.state.isChecked}
-              rightText={"Enfant"}
-              rightTextStyle={{color: "white", fontSize: 15}}
-              checkBoxColor={'white'}
+              text="Enfant"
+              textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
+              fillColor="white"
             />
           </View>
           <View style={styles.button_ajoutjoueur_container}>
