@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, View, Text } from 'react-native'
-import CheckBox from 'react-native-check-box'
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 class JoueurSuggere extends React.Component {
@@ -29,16 +29,17 @@ class JoueurSuggere extends React.Component {
           <Text style={styles.name_text}>{joueur.name}</Text>
         </View>
         <View style={styles.special_container}>
-          <CheckBox
-            onClick={()=>{
+          <BouncyCheckbox
+            onPress={()=>{
               this.setState({
                 isSpecial: !this.state.isSpecial
               })
             }}
+            disableBuiltInState="true"
             isChecked={this.state.isSpecial}
-            rightText={"Enfant"}
-            rightTextStyle={{color: "white", fontSize: 15}}
-            checkBoxColor={'white'}
+            text="Enfant"
+            textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
+            fillColor="white"
           />
         </View>
         <View style={styles.button_container}>
