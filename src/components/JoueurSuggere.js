@@ -12,17 +12,17 @@ class JoueurSuggere extends React.Component {
     }
   }
 
-  _ajouterJoueur(typeInscription, joueurName) {
+  _ajouterJoueur(joueurName) {
     let equipe = undefined;
     if (this.props.optionsTournoi.typeEquipe == "teteatete") {
       equipe = this.props.listesJoueurs.avecEquipes.length + 1;
     }
-    const action = { type: "AJOUT_JOUEUR", value: [typeInscription, joueurName, this.state.isSpecial, equipe] };
+    const action = { type: "AJOUT_JOUEUR", value: [this.props.optionsTournoi.mode, joueurName, this.state.isSpecial, equipe] };
     this.props.dispatch(action);
   }
 
   render() {
-    const { joueur, typeInscription } = this.props;
+    const { joueur } = this.props;
     return (
       <View style={styles.main_container}>
         <View style={styles.name_container}>
@@ -43,7 +43,7 @@ class JoueurSuggere extends React.Component {
           />
         </View>
         <View style={styles.button_container}>
-          <Icon.Button name="check" backgroundColor="green" onPress={() => this._ajouterJoueur(typeInscription, joueur.name)}/>
+          <Icon.Button name="check" backgroundColor="green" onPress={() => this._ajouterJoueur(joueur.name)}/>
         </View>
       </View>
     )
