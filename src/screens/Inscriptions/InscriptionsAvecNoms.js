@@ -12,31 +12,7 @@ class InscriptionsAvecNoms extends React.Component {
     this.memesEquipes = true
     this.memesAdversaires = true
     this.state = {
-      complement: "3",
-      typeEquipes: 'doublette',
-      typeInscription: "avecNoms",
-      avecEquipes: false
-    }
-  }
-
-  componentDidMount() {
-    if (this.props.route.params != undefined) {
-      let routeparams = this.props.route.params
-      if (routeparams.typeEquipes != undefined) {
-        this.setState({
-          typeEquipes: routeparams.typeEquipes
-        })
-      }
-      if (routeparams.avecEquipes != undefined) {
-        let typeInscription = "avecNoms"
-        if (routeparams.avecEquipes == true) {
-          typeInscription = "avecEquipes"
-        }
-        this.setState({
-          avecEquipes: routeparams.avecEquipes,
-          typeInscription: typeInscription
-        })
-      }
+      complement: "3"
     }
   }
 
@@ -72,10 +48,10 @@ class InscriptionsAvecNoms extends React.Component {
       screenName = 'GenerationCoupe';
     }
     else if (this.props.optionsTournoi.type == "mele-demele") {
-      if (this.state.avecEquipes == true) {
+      if (this.props.optionsTournoi.mode == 'avecEquipes') {
         screenName = 'GenerationMatchsAvecEquipes';
       }
-      else if (this.state.typeEquipes == "triplette") {
+      else if (this.props.optionsTournoi.typeEquipes == "triplette") {
         screenName = 'GenerationMatchsTriplettes';
       }
       else {
@@ -93,9 +69,9 @@ class InscriptionsAvecNoms extends React.Component {
         speciauxIncompatibles: this.speciauxIncompatibles,
         memesEquipes: this.memesEquipes,
         memesAdversaires: this.memesAdversaires,
-        typeEquipes: this.state.typeEquipes,
         complement: this.state.complement,
-        typeInscription: this.state.typeInscription,
+        typeEquipes: this.props.optionsTournoi.typeEquipes,
+        typeInscription: this.props.optionsTournoi.mode,
         screenStackName: 'InscriptionsAvecNoms'
       }
     })
@@ -116,7 +92,7 @@ class InscriptionsAvecNoms extends React.Component {
   }
 
   _showNbJoueur() {
-    let nbJoueur = this.props.listesJoueurs[this.state.typeInscription].length;
+    let nbJoueur = this.props.listesJoueurs[this.props.optionsTournoi.mode].length;
     return (
       <Text>{nbJoueur}</Text>
     )
@@ -125,13 +101,13 @@ class InscriptionsAvecNoms extends React.Component {
   _boutonCommencer() {
     let boutonDesactive = false
     let boutonTitle = 'Commencer le tournoi'
-    let nbJoueurs = this.props.listesJoueurs[this.state.typeInscription].length
+    let nbJoueurs = this.props.listesJoueurs[this.props.optionsTournoi.mode].length
 
     let nbEquipes
-    if (this.state.typeEquipes == "teteatete") {
+    if (this.props.optionsTournoi.typeEquipes == "teteatete") {
       nbEquipes = nbJoueurs
     }
-    else if (this.state.typeEquipes == "doublette") {
+    else if (this.props.optionsTournoi.typeEquipes == "doublette") {
       nbEquipes = Math.ceil(nbJoueurs / 2)
     }
     else {
@@ -142,12 +118,12 @@ class InscriptionsAvecNoms extends React.Component {
       boutonTitle = "En coupe, le nombre d'équipes doit être de 4, 8, 16, ..."
       boutonDesactive = true
     }
-    else if (this.state.avecEquipes == true) {
+    else if (this.props.optionsTournoi.mode == 'avecEquipes') {
       if (this.props.listesJoueurs.avecEquipes.find(el => el.equipe == undefined) != undefined || this.props.listesJoueurs.avecEquipes.find(el => el.equipe > nbEquipes) != undefined) {
         boutonTitle = "Des joueurs n'ont pas d'équipe"
         boutonDesactive = true
       }
-      else if (this.state.typeEquipes == "teteatete") {
+      else if (this.props.optionsTournoi.typeEquipes == "teteatete") {
         if (this.props.listesJoueurs.avecEquipes.length % 2 != 0 || this.props.listesJoueurs.avecEquipes.length < 2) {
           boutonTitle = "Le nombre d'equipe doit être un multiple de 2"
           boutonDesactive = true
@@ -163,7 +139,7 @@ class InscriptionsAvecNoms extends React.Component {
           }
         }
       }
-      else if (this.state.typeEquipes == "doublette") {
+      else if (this.props.optionsTournoi.typeEquipes == "doublette") {
         if (this.props.listesJoueurs.avecEquipes.length % 4 != 0 || this.props.listesJoueurs.avecEquipes.length == 0) {
           boutonTitle = "Avec des équipes en doublette, le nombre de joueurs doit être un multiple de 4"
           boutonDesactive = true
@@ -179,16 +155,16 @@ class InscriptionsAvecNoms extends React.Component {
           }
         }
       }
-      else if (this.state.typeEquipes == "triplette" && (this.props.listesJoueurs.avecEquipes.length % 6 != 0 || this.props.listesJoueurs.avecEquipes.length == 0)) {
+      else if (this.props.optionsTournoi.typeEquipes == "triplette" && (this.props.listesJoueurs.avecEquipes.length % 6 != 0 || this.props.listesJoueurs.avecEquipes.length == 0)) {
         boutonTitle = "En triplette avec des équipes formées, le nombre de joueurs doit être un multiple de 6"
         boutonDesactive = true
       }
     }
-    else if (this.state.typeEquipes == "teteatete" && (this.props.listesJoueurs.avecNoms.length % 2 != 0 || this.props.listesJoueurs.avecNoms.length < 2)) {
+    else if (this.props.optionsTournoi.typeEquipes == "teteatete" && (this.props.listesJoueurs.avecNoms.length % 2 != 0 || this.props.listesJoueurs.avecNoms.length < 2)) {
       boutonTitle = "En tête-à-tête, le nombre de joueurs doit être un multiple de 2"
       boutonDesactive = true
     }
-    else if (this.state.typeEquipes == "doublette" && (this.props.listesJoueurs.avecNoms.length % 4 != 0 || this.props.listesJoueurs.avecNoms.length < 4)) {
+    else if (this.props.optionsTournoi.typeEquipes == "doublette" && (this.props.listesJoueurs.avecNoms.length % 4 != 0 || this.props.listesJoueurs.avecNoms.length < 4)) {
       if (this.props.listesJoueurs.avecNoms.length < 4) {
         boutonTitle = "Pas assez de joueurs"
         boutonDesactive = true
@@ -210,7 +186,7 @@ class InscriptionsAvecNoms extends React.Component {
         boutonDesactive = true
       }
     }
-    else if (this.state.typeEquipes == "triplette" && (this.props.listesJoueurs.avecNoms.length % 6 != 0 || this.props.listesJoueurs.avecNoms.length < 6)) {
+    else if (this.props.optionsTournoi.typeEquipes == "triplette" && (this.props.listesJoueurs.avecNoms.length % 6 != 0 || this.props.listesJoueurs.avecNoms.length < 6)) {
       boutonTitle = "En triplette, le nombre de joueurs doit être un multiple de 6"
       boutonDesactive = true
     }

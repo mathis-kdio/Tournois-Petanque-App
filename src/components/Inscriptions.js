@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, TextInput, Text, Button } from 'react-native'
-import CheckBox from 'react-native-check-box'
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { connect } from 'react-redux'
 import { FlatList } from 'react-native-gesture-handler'
 import ListeJoueur from '../components/ListeJoueur'
@@ -16,19 +16,7 @@ class Inscription extends React.Component {
       joueur: undefined,
       isChecked: false,
       etatBouton: false,
-      typeEquipes: 'doublette',
-      typeInscription: "avecNoms",
-      avecEquipes: false,
     }
-  }
-
-  componentDidMount() {
-    let { typeEquipes, typeInscription, avecEquipes } = this.props;
-    this.setState({
-      typeEquipes: typeEquipes,
-      typeInscription: typeInscription,
-      avecEquipes: avecEquipes
-    })
   }
 
   _ajoutJoueurTextInputChanged = (text) => {
@@ -50,10 +38,10 @@ class Inscription extends React.Component {
     //Test si au moins 1 caractère
     if (this.joueurText != '') {
       let equipe = undefined
-      if (this.state.typeEquipes == "teteatete" || this.props.optionsTournoi.typeEquipe == "teteatete") {
-        equipe = this.props.listesJoueurs[this.state.typeInscription].length + 1
+      if (this.props.optionsTournoi.typeEquipes == "teteatete") {
+        equipe = this.props.listesJoueurs[this.props.optionsTournoi.mode].length + 1
       }
-      const action = { type: "AJOUT_JOUEUR", value: [this.state.typeInscription, this.joueurText, this.state.isChecked, equipe] }
+      const action = { type: "AJOUT_JOUEUR", value: [this.props.optionsTournoi.mode, this.joueurText, this.state.isChecked, equipe] }
       this.props.dispatch(action);
       this.addPlayerTextInput.current.clear();
       this.joueurText = "";
@@ -76,37 +64,41 @@ class Inscription extends React.Component {
   }
 
   _supprimerJoueur = (idJoueur) => {
-    const actionSuppr = {type: "SUPPR_JOUEUR", value: [this.state.typeInscription, idJoueur]};
+    const actionSuppr = {type: "SUPPR_JOUEUR", value: [this.props.optionsTournoi.mode, idJoueur]};
     this.props.dispatch(actionSuppr);
-    const actionUpdate = {type: "UPDATE_ALL_JOUEURS_ID", value: [this.state.typeInscription]};
+    const actionUpdate = {type: "UPDATE_ALL_JOUEURS_ID", value: [this.props.optionsTournoi.mode]};
     this.props.dispatch(actionUpdate);
     if (this.props.optionsTournoi.typeEquipe == "teteatete") {
-      const actionUpdateEquipe = {type: "UPDATE_ALL_JOUEURS_EQUIPE", value: [this.state.typeInscription]};
+      const actionUpdateEquipe = {type: "UPDATE_ALL_JOUEURS_EQUIPE", value: [this.props.optionsTournoi.mode]};
       this.props.dispatch(actionUpdateEquipe);
     }
   }
 
   _supprimerAllJoueurs() {
-    const actionSupprAll = { type: "SUPPR_ALL_JOUEURS", value: [this.state.typeInscription] }
+    const actionSupprAll = { type: "SUPPR_ALL_JOUEURS", value: [this.props.optionsTournoi.mode] }
     this.props.dispatch(actionSupprAll);
   }
 
   _displayListeJoueur() {
-    if (this.props.listesJoueurs[this.state.typeInscription] !== undefined) {
+    if (this.props.listesJoueurs[this.props.optionsTournoi.mode] !== undefined) {
+      let avecEquipes = false;
+      if (this.props.optionsTournoi.mode == 'avecEquipes') {
+        avecEquipes = true;
+      }
       return (
         <FlatList
           removeClippedSubviews={false}
           persistentScrollbar={true}
-          data={this.props.listesJoueurs[this.state.typeInscription]}
+          data={this.props.listesJoueurs[this.props.optionsTournoi.mode]}
           keyExtractor={(item) => item.id.toString() }
           renderItem={({item}) => (
             <ListeJoueur
               joueur={item}
               supprimerJoueur={this._supprimerJoueur}
               isInscription={true}
-              avecEquipes={this.state.avecEquipes}
-              typeEquipes={this.state.typeEquipes}
-              nbJoueurs={this.props.listesJoueurs[this.state.typeInscription].length}
+              avecEquipes={avecEquipes}
+              typeEquipes={this.props.optionsTournoi.typeEquipes}
+              nbJoueurs={this.props.listesJoueurs[this.props.optionsTournoi.mode].length}
             />
           )}
           ListFooterComponent={
@@ -122,7 +114,7 @@ class Inscription extends React.Component {
 
   _displayListeJoueursSuggeres() {
     if (this.props.listesJoueurs.historique) {
-      let listeHistoriqueFiltre = this.props.listesJoueurs.historique.filter(item1 => this.props.listesJoueurs[this.state.typeInscription].every(item2 => item2.name !== item1.name));
+      let listeHistoriqueFiltre = this.props.listesJoueurs.historique.filter(item1 => this.props.listesJoueurs[this.props.optionsTournoi.mode].every(item2 => item2.name !== item1.name));
       if (listeHistoriqueFiltre.length > 0) {
         let suggestions = listeHistoriqueFiltre.sort(function (a, b) {return b.nbTournois - a.nbTournois;});
         suggestions.splice(5, suggestions.length - 5)
@@ -139,7 +131,6 @@ class Inscription extends React.Component {
               renderItem={({item}) => (
                 <JoueurSuggere
                   joueur={item}
-                  typeInscription={this.state.typeInscription}
                 />
               )}
             />
@@ -150,7 +141,7 @@ class Inscription extends React.Component {
   }
 
   _boutonSupprAllJoueurs() {
-    if (this.props.listesJoueurs[this.state.typeInscription].length > 0) {
+    if (this.props.listesJoueurs[this.props.optionsTournoi.mode].length > 0) {
       return (
         <View style={styles.buttonView}>
           <Button style={styles.text_nbjoueur} color='red' title='Supprimer tous les joueurs' onPress={() => this._supprimerAllJoueurs()}/>
@@ -160,7 +151,7 @@ class Inscription extends React.Component {
   }
 
   _showEquipeEntete() {
-    if (this.state.avecEquipes == true) {
+    if (this.props.optionsTournoi.mode == 'avecEquipes') {
       return (
         <Text style={styles.texte_entete}>Equipe</Text>
       )
@@ -186,16 +177,17 @@ class Inscription extends React.Component {
             />
           </View>
           <View style={styles.checkbox_ajoutjoueur_container}>
-            <CheckBox
-              onClick={()=>{
+            <BouncyCheckbox
+              onPress={()=>{
                 this.setState({
                   isChecked:!this.state.isChecked
                 })
               }}
+              disableBuiltInState="true"
               isChecked={this.state.isChecked}
-              rightText={"Enfant"}
-              rightTextStyle={{color: "white", fontSize: 15}}
-              checkBoxColor={'white'}
+              text="Enfant"
+              textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
+              fillColor="white"
             />
           </View>
           <View style={styles.button_ajoutjoueur_container}>

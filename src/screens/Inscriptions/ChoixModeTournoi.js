@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, View, Button, Text } from 'react-native'
-import CheckBox from 'react-native-check-box'
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 class ChoixModeTournoi extends React.Component {
   constructor(props) {
@@ -10,8 +10,8 @@ class ChoixModeTournoi extends React.Component {
       teteatete: false,
       doublette: true,
       triplette: false,
-      avecNom: true,
-      sansNom: false,
+      avecNoms: true,
+      sansNoms: false,
       avecEquipes: false,
     }
   }
@@ -32,29 +32,26 @@ class ChoixModeTournoi extends React.Component {
     let avecEquipes
     let modeTournoi
     if (this.props.optionsTournoi.type == "mele-demele") {
-      if (this.state.avecNom == true) {
+      if (this.state.avecNoms == true) {
         screenName = 'InscriptionsAvecNoms'
-        avecEquipes = false
-        modeTournoi = 'avecNom'
+        modeTournoi = 'avecNoms'
       }
-      else if (this.state.sansNom == true) {
+      else if (this.state.sansNoms == true) {
         screenName = 'InscriptionsSansNoms'
-        avecEquipes = false
-        modeTournoi = 'sansNom'
+        modeTournoi = 'sansNoms'
       }
       else {
         screenName = 'InscriptionsAvecNoms'
-        avecEquipes = true
-        modeTournoi = 'avecNom'
+        modeTournoi = 'avecEquipes'
       }
     }
     else if (this.props.optionsTournoi.type == "championnat") {
       screenName = 'InscriptionsAvecNoms'
-      avecEquipes = true
+      modeTournoi = 'avecEquipes'
     }
     else if (this.props.optionsTournoi.type == "coupe") {
       screenName = 'InscriptionsAvecNoms'
-      avecEquipes = true
+      modeTournoi = 'avecEquipes'
     }
     
     const updateOptionEquipesTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['typeEquipe', typeEquipes]}
@@ -62,10 +59,7 @@ class ChoixModeTournoi extends React.Component {
     const updateOptionModeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['mode', modeTournoi]}
     this.props.dispatch(updateOptionModeTournoi);
 
-    this.props.navigation.navigate({
-      name: screenName, 
-      params: { typeEquipes: typeEquipes, avecEquipes: avecEquipes }
-    })
+    this.props.navigation.navigate(screenName);
   }
 
   _buttonInscription() {
@@ -94,48 +88,51 @@ class ChoixModeTournoi extends React.Component {
     return (
       <View>
         <View style={styles.checkbox_container}>
-      <CheckBox
-        onClick={()=>{
-          this.setState({
-            teteatete: true,
-            doublette: false,
-            triplette: false
-          })
-        }}
-        isChecked={this.state.teteatete}
-        leftText={"Tête-à-tête"}
-        leftTextStyle={{color: "white", fontSize: 15}}
-        checkBoxColor={'white'}
-      />
+          <BouncyCheckbox 
+            onPress={()=>{
+              this.setState({
+                teteatete: true,
+                doublette: false,
+                triplette: false
+              })
+            }}
+            disableBuiltInState="true"
+            isChecked={this.state.teteatete}
+            text="Tête-à-tête"
+            textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
+            fillColor="white"
+          />
         </View>
         <View style={styles.checkbox_container}>
-          <CheckBox
-            onClick={()=>{
+          <BouncyCheckbox 
+            onPress={()=>{
               this.setState({
                 teteatete: false,
                 doublette: true,
                 triplette: false
               })
             }}
+            disableBuiltInState="true"
             isChecked={this.state.doublette}
-            leftText={"Doublettes"}
-            leftTextStyle={{color: "white", fontSize: 15}}
-            checkBoxColor={'white'}
+            text="Doublettes"
+            textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
+            fillColor="white"
           />
         </View>
         <View style={styles.checkbox_container}>
-          <CheckBox
-          onClick={()=>{
-            this.setState({
-              teteatete: false,
-              doublette: false,
-              triplette: true
-            })
-          }}
-          isChecked={this.state.triplette}
-          leftText={"Triplettes"}
-          leftTextStyle={{color: "white", fontSize: 15}}
-          checkBoxColor={'white'}
+          <BouncyCheckbox 
+            onPress={()=>{
+              this.setState({
+                teteatete: false,
+                doublette: false,
+                triplette: true
+              })
+            }}
+            disableBuiltInState="true"
+            isChecked={this.state.triplette}
+            text="Triplettes"
+            textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
+            fillColor="white"
           />
         </View>
       </View>
@@ -147,48 +144,51 @@ class ChoixModeTournoi extends React.Component {
       return (
         <View>
           <View style={styles.checkbox_container}>
-          <CheckBox
-          onClick={()=>{
-            this.setState({
-              avecNom: true,
-              sansNom: false,
-              avecEquipes: false
-            })
-          }}
-          isChecked={this.state.avecNom}
-          leftText={"Tournoi mêlée-démêlée avec nom"}
-          leftTextStyle={{color: "white", fontSize: 15}}
-          checkBoxColor={'white'}
-          />
-          </View>
-          <View style={styles.checkbox_container}>
-            <CheckBox
-            onClick={()=>{
-              this.setState({
-                avecNom: false,
-                sansNom: true,
-                avecEquipes: false
-              })
-            }}
-            isChecked={this.state.sansNom}
-            leftText={"Tournoi mêlée-dêmêlée sans nom"}
-            leftTextStyle={{color: "white", fontSize: 15}}
-            checkBoxColor={'white'}
+            <BouncyCheckbox 
+              onPress={()=>{
+                this.setState({
+                  avecNoms: true,
+                  sansNoms: false,
+                  avecEquipes: false
+                })
+              }}
+              disableBuiltInState="true"
+              isChecked={this.state.avecNoms}
+              text="Tournoi mêlée-démêlée avec nom"
+              textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
+              fillColor="white"
             />
           </View>
           <View style={styles.checkbox_container}>
-            <CheckBox
-            onClick={()=>{
-              this.setState({
-                avecNom: false,
-                sansNom: false,
-                avecEquipes: true,
-              })
-            }}
-            isChecked={this.state.avecEquipes}
-            leftText={"Tournoi mêlée avec équipes constituées"}
-            leftTextStyle={{color: "white", fontSize: 15}}
-            checkBoxColor={'white'}
+            <BouncyCheckbox 
+              onPress={()=>{
+                this.setState({
+                  avecNoms: false,
+                  sansNoms: true,
+                  avecEquipes: false
+                })
+              }}
+              disableBuiltInState="true"
+              isChecked={this.state.sansNoms}
+              text="Tournoi mêlée-dêmêlée sans nom"
+              textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
+              fillColor="white"
+            />
+          </View>
+          <View style={styles.checkbox_container}>
+            <BouncyCheckbox 
+              onPress={()=>{
+                this.setState({
+                  avecNoms: false,
+                  sansNoms: false,
+                  avecEquipes: true,
+                })
+              }}
+              disableBuiltInState="true"
+              isChecked={this.state.avecEquipes}
+              text="Tournoi mêlée avec équipes constituées"
+              textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
+              fillColor="white"
             />
           </View>
         </View>
