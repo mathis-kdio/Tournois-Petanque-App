@@ -12,7 +12,7 @@ class InscriptionsAvecNoms extends React.Component {
     this.memesEquipes = true
     this.memesAdversaires = true
     this.state = {
-      complement: "3"
+      complement: "3",
     }
   }
 
@@ -209,11 +209,7 @@ class InscriptionsAvecNoms extends React.Component {
         <View style={styles.text_container}>
           <Text style={styles.text_nbjoueur}>Il y a : {this._showNbJoueur()} inscrit.e.s</Text>
         </View>
-        <Inscriptions
-          typeEquipes={this.state.typeEquipes}
-          typeInscription={this.state.typeInscription}
-          avecEquipes={this.state.avecEquipes}
-        />
+        <Inscriptions/>
         <View>
           <View style={styles.buttonView}>
             {this._boutonOptions()}

@@ -159,8 +159,6 @@ class Inscription extends React.Component {
   }
 
   render() {
-
-
     return (
       <View style={styles.main_container}>
         <View style={styles.ajoutjoueur_container}>
