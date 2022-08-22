@@ -144,7 +144,7 @@ class Changelog extends React.Component {
             </View>
           </View>
           <View style={styles.create_container}>
-            <Button color="#1c3969" title='Code OpenSource' onPress={() => Linking.openURL('https://github.com/mathis-kdio/Petanque-GCU')}/>
+            <Button color="#1c3969" title='Code OpenSource' onPress={() => Linking.canOpenURL('https://github.com/mathis-kdio/Petanque-GCU').then(supported => {if (supported) {Linking.openURL('https://github.com/mathis-kdio/Petanque-GCU')}})}/>
             <Text style={styles.create_text}>Par Mathis Cadio</Text>
           </View>
         </ScrollView>
