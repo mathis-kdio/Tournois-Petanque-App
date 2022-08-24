@@ -66,7 +66,7 @@ class GenerationChampionnat extends React.Component {
       }
     }
 
-    this.typeEquipes = this.props.optionsTournoi.typeEquipe;
+    this.typeEquipes = this.props.optionsTournoi.typeEquipes;
     let nbjoueurs = this.props.listesJoueurs.avecEquipes.length;
     let speciauxIncompatibles = true
     let jamaisMemeCoequipier = true

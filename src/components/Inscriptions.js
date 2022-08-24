@@ -68,7 +68,7 @@ class Inscription extends React.Component {
     this.props.dispatch(actionSuppr);
     const actionUpdate = {type: "UPDATE_ALL_JOUEURS_ID", value: [this.props.optionsTournoi.mode]};
     this.props.dispatch(actionUpdate);
-    if (this.props.optionsTournoi.typeEquipe == "teteatete") {
+    if (this.props.optionsTournoi.typeEquipes == "teteatete") {
       const actionUpdateEquipe = {type: "UPDATE_ALL_JOUEURS_EQUIPE", value: [this.props.optionsTournoi.mode]};
       this.props.dispatch(actionUpdateEquipe);
     }

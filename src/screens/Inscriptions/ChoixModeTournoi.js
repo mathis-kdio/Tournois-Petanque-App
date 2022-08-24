@@ -54,7 +54,7 @@ class ChoixModeTournoi extends React.Component {
       modeTournoi = 'avecEquipes'
     }
     
-    const updateOptionEquipesTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['typeEquipe', typeEquipes]}
+    const updateOptionEquipesTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['typeEquipes', typeEquipes]}
     this.props.dispatch(updateOptionEquipesTournoi);
     const updateOptionModeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['mode', modeTournoi]}
     this.props.dispatch(updateOptionModeTournoi);
@@ -84,7 +84,7 @@ class ChoixModeTournoi extends React.Component {
     }
   }
 
-  _typeEquipe() {
+  _typeEquipes() {
     return (
       <View>
         <View style={styles.checkbox_container}>
@@ -204,7 +204,7 @@ class ChoixModeTournoi extends React.Component {
             {this._titre()}
           </View>
           <View style={styles.type_equipe}>
-            {this._typeEquipe()}
+            {this._typeEquipes()}
           </View>
           <View style={styles.type_tournoi}>
             {this._typeTournoi()}
