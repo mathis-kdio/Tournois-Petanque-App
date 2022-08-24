@@ -10,14 +10,21 @@ class CreateListeJoueur extends React.Component {
   }
 
   _createList() {
+    //const updateOptionTypeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['type', 'mele-demele']}
+    //this.props.dispatch(updateOptionTypeTournoi);
+
     this.props.navigation.navigate('ListesJoueurs');
   }
 
   render() {
+    let listId = 1;
+    if (this.props.listesJoueurs.sauvegarde) {
+      listId = this.props.listesJoueurs.sauvegarde.length + 1;
+    }
     return (
       <View style={styles.main_container}>
           <View style={styles.text_container}>
-            <Text style={styles.titre}>Liste n° : </Text>
+            <Text style={styles.titre}>Liste n°{listId} :</Text>
           </View>
           <Inscriptions/>
           <View>
@@ -53,7 +60,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    listesJoueurs: state.listeTournois.listeTournois
+    listesJoueurs: state.listesJoueurs.listesJoueurs
   }
 }
 

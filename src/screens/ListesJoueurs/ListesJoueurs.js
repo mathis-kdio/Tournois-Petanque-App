@@ -9,6 +9,14 @@ class ListesJoueurs extends React.Component {
   }
 
   _addList() {
+    //Sera utilisé par le component inscription 
+    const updateOptionTypeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['type', 'mele-demele']}
+    this.props.dispatch(updateOptionTypeTournoi);
+    const updateOptionEquipesTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['typeEquipes', 'teteatete']}
+    this.props.dispatch(updateOptionEquipesTournoi);
+    const updateOptionModeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['mode', 'sauvegarde']}
+    this.props.dispatch(updateOptionModeTournoi);
+
     this.props.navigation.navigate({
       name: 'CreateListeJoueurs',
       params: { }
@@ -58,11 +66,15 @@ class ListesJoueurs extends React.Component {
   }
 
   render() {
+    let nbLists = 0;
+    if (this.props.listesJoueurs.sauvegarde) {
+      nbLists = this.props.listesJoueurs.sauvegarde.length;
+    }
     return (
       <View style={styles.main_container}>
         <View style={styles.body_container}>
           <View>
-            <Text style={styles.titre}>Vous avez X listes</Text>
+            <Text style={styles.titre}>Vous avez {nbLists} listes</Text>
           </View>
           <View style={styles.flatList_container}>
             <FlatList

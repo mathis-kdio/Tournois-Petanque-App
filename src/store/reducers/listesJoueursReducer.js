@@ -1,4 +1,4 @@
-const initialState = {listesJoueurs: { avecNoms: [], sansNoms: [], avecEquipes: [], historique: [], sauvegarde: [] }}
+const initialState = {listesJoueurs: { avecNoms: [], sansNoms: [], avecEquipes: [], historique: [], sauvegarde: [] }, listesSauvegarde: { avecNoms: [], sansNoms: [], avecEquipes: [] }}
 
 function listesJoueurs(state = initialState, action) {
   let nextState
