@@ -1,4 +1,4 @@
-const initialState = { options: {type: null, typeEquipe: null, mode: null } }
+const initialState = { options: {type: null, typeEquipes: null, mode: null } }
 
 function optionsTournoi(state = initialState, action) {
   let nextState

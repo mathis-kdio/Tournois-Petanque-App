@@ -14,7 +14,7 @@ class JoueurSuggere extends React.Component {
 
   _ajouterJoueur(joueurName) {
     let equipe = undefined;
-    if (this.props.optionsTournoi.typeEquipe == "teteatete") {
+    if (this.props.optionsTournoi.typeEquipes == "teteatete") {
       equipe = this.props.listesJoueurs.avecEquipes.length + 1;
     }
     const action = { type: "AJOUT_JOUEUR", value: [this.props.optionsTournoi.mode, joueurName, this.state.isSpecial, equipe] };
