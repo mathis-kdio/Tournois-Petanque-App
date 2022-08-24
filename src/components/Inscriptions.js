@@ -37,8 +37,8 @@ class Inscription extends React.Component {
   _ajoutJoueur() {
     //Test si au moins 1 caractère
     if (this.joueurText != '') {
-      let equipe = undefined
-      if (this.props.optionsTournoi.typeEquipes == "teteatete") {
+      let equipe = 1
+      if (this.props.optionsTournoi.typeEquipes == "teteatete" && this.props.listesJoueurs[this.props.optionsTournoi.mode]) {
         equipe = this.props.listesJoueurs[this.props.optionsTournoi.mode].length + 1
       }
       const action = { type: "AJOUT_JOUEUR", value: [this.props.optionsTournoi.mode, this.joueurText, this.state.isChecked, equipe] }

@@ -6,7 +6,10 @@ function listesJoueurs(state = initialState, action) {
     case 'AJOUT_JOUEUR'://action: 0: type d'inscription  1: nom du joueur  2: special ou non  3: numéro d'équipe (option)
       if (action.value[0] != "" || action.value[1] != "" || action.value[2] != "") {
         const listes = { ...state.listesJoueurs };
-        
+        if (listes[action.value[0]] == undefined) {
+          listes[action.value[0]] = Array();
+        }
+
         //Joueur
         let idNewJoueur = listes[action.value[0]].length;
         for (let i = 0; i < listes[action.value[0]].length; i++) {
