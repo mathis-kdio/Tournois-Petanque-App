@@ -2,7 +2,6 @@ import React from 'react'
 import { StyleSheet, View, Button, Text, Alert } from 'react-native'
 import { connect } from 'react-redux'
 
-
 class ParametresTournoi extends React.Component {
   _showMatchs() {
     this.props.navigation.navigate('ListeMatchsStack');   

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, View, Text } from 'react-native'
-import CheckBox from 'react-native-check-box'
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 class JoueurSuggere extends React.Component {
@@ -12,37 +12,38 @@ class JoueurSuggere extends React.Component {
     }
   }
 
-  _ajouterJoueur(typeInscription, joueurName) {
+  _ajouterJoueur(joueurName) {
     let equipe = undefined;
-    if (this.props.optionsTournoi.typeEquipe == "teteatete") {
+    if (this.props.optionsTournoi.typeEquipes == "teteatete") {
       equipe = this.props.listesJoueurs.avecEquipes.length + 1;
     }
-    const action = { type: "AJOUT_JOUEUR", value: [typeInscription, joueurName, this.state.isSpecial, equipe] };
+    const action = { type: "AJOUT_JOUEUR", value: [this.props.optionsTournoi.mode, joueurName, this.state.isSpecial, equipe] };
     this.props.dispatch(action);
   }
 
   render() {
-    const { joueur, typeInscription } = this.props;
+    const { joueur } = this.props;
     return (
       <View style={styles.main_container}>
         <View style={styles.name_container}>
           <Text style={styles.name_text}>{joueur.name}</Text>
         </View>
         <View style={styles.special_container}>
-          <CheckBox
-            onClick={()=>{
+          <BouncyCheckbox
+            onPress={()=>{
               this.setState({
                 isSpecial: !this.state.isSpecial
               })
             }}
+            disableBuiltInState="true"
             isChecked={this.state.isSpecial}
-            rightText={"Enfant"}
-            rightTextStyle={{color: "white", fontSize: 15}}
-            checkBoxColor={'white'}
+            text="Enfant"
+            textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
+            fillColor="white"
           />
         </View>
         <View style={styles.button_container}>
-          <Icon.Button name="check" backgroundColor="green" onPress={() => this._ajouterJoueur(typeInscription, joueur.name)}/>
+          <Icon.Button name="check" backgroundColor="green" onPress={() => this._ajouterJoueur(joueur.name)}/>
         </View>
       </View>
     )

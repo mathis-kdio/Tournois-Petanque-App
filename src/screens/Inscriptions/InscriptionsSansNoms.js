@@ -12,19 +12,6 @@ class InscriptionsSansNoms extends React.Component {
     this.state = {
       nbJoueurNormaux: 0,
       nbJoueurSpeciaux: 0,
-      typeEquipes: 'doublette',
-      typeInscription: "sansNoms"
-    }
-  }
-
-  componentDidMount() {
-    if (this.props.route.params != undefined) {
-      let routeparams = this.props.route.params
-      if (routeparams.typeEquipes != undefined) {
-        this.setState({
-          typeEquipes: routeparams.typeEquipes
-        })
-      }
     }
   }
 
@@ -80,7 +67,7 @@ class InscriptionsSansNoms extends React.Component {
     }
 
     let screenName
-    if (this.state.typeEquipes == "doublette" || this.state.typeEquipes == "teteatete") {
+    if (this.props.optionsTournoi.typeEquipes == "doublette" || this.props.optionsTournoi.typeEquipes == "teteatete") {
       screenName = 'GenerationMatchs'
     }
     else {
@@ -94,8 +81,8 @@ class InscriptionsSansNoms extends React.Component {
         speciauxIncompatibles: this.speciauxIncompatibles,
         memesEquipes: this.memesEquipes,
         memesAdversaires: this.memesAdversaires,
-        typeEquipes: this.state.typeEquipes,
-        typeInscription: this.state.typeInscription,
+        typeEquipes: this.props.optionsTournoi.typeEquipes,
+        typeInscription: this.props.optionsTournoi.mode,
         screenStackName: 'InscriptionsSansNoms'
       }
     })
@@ -136,7 +123,7 @@ class InscriptionsSansNoms extends React.Component {
     let boutonDesactive
     let boutonTitle = ''
     let nbJoueurs = this._nbJoueurs()
-    if (this.state.typeEquipes == 'doublette' || this.state.typeEquipes == "teteatete") {
+    if (this.props.optionsTournoi.typeEquipes == 'doublette' || this.props.optionsTournoi.typeEquipes == "teteatete") {
       if (nbJoueurs % 2 == 0 && nbJoueurs != 0) {
         boutonTitle = 'Commencer le tournoi'
         boutonDesactive = false
@@ -255,7 +242,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    listesJoueurs: state.listesJoueurs.listesJoueurs
+    listesJoueurs: state.listesJoueurs.listesJoueurs,
+    optionsTournoi: state.optionsTournoi.options
   }
 }
 
