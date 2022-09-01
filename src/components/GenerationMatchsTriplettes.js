@@ -139,9 +139,11 @@ class GenerationMatchsTriplette extends React.Component {
     for (let i = 0; i < nbjoueurs; i++) {
       if (this.props.listesJoueurs[this.typeInscription][i].special === true) {
         joueursSpe.push({...this.props.listesJoueurs[this.typeInscription][i]});
+        joueursSpe[joueursSpe.length - 1].equipe = []
       }
       else {
         joueursNonSpe.push({...this.props.listesJoueurs[this.typeInscription][i]});
+        joueursNonSpe[joueursNonSpe.length - 1].equipe = []
       }
       joueurs.push({...this.props.listesJoueurs[this.typeInscription][i]});
       joueurs[i].equipe = [];
