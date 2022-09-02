@@ -1,5 +1,16 @@
 # Change Log
 
+## [1.9.0] - 03-09-2022
+
+### Ajouté
+- Mode coupe
+
+### Changement
+- Amélioration de la page d'accueil
+
+### Corrigé
+- Générations de certains tournois
+
 ## [1.8.3] - 19-07-2022
 
 ### Ajouté
