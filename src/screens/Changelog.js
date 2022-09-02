@@ -11,6 +11,14 @@ class Changelog extends React.Component {
           <View style={styles.body_container}>
             <Text style={styles.titre}>Version actuelle : {expo.version}</Text>
             <View style={styles.informations_container}>
+              <Text style={styles.titre}>Version 1.9.0 :</Text>
+              <Text style={styles.informations_texte}>
+                - Ajout du mode coupe{"\n"}
+                - Nouvelle page d'accueil{"\n"}
+                - Correction de bugs{"\n"}
+              </Text>
+            </View>
+            <View style={styles.informations_container}>
               <Text style={styles.titre}>Version 1.8.3 :</Text>
               <Text style={styles.informations_texte}>
                 - Ajout de boutons de chargement lors de l'export en PDF{"\n"}
@@ -23,7 +31,7 @@ class Changelog extends React.Component {
                 - Status et Navigation bar de couleur{"\n"}
                 - Thème light par défaut{"\n"}
                 - Correction de problèmes de navigation{"\n"}
-                - Correction de fFautes de textes{"\n"}
+                - Correction de fautes de textes{"\n"}
               </Text>
             </View>
             <View style={styles.informations_container}>
@@ -125,13 +133,13 @@ class Changelog extends React.Component {
             <View style={styles.informations_container}>
               <Text style={styles.titre}>Version 1.2 :</Text>
               <Text style={styles.informations_texte}>
-                - Meilleur mélange des joueurs spéciaux
+                - Meilleur mélange des joueurs spéciaux{"\n"}
               </Text>
             </View>
             <View style={styles.informations_container}>
               <Text style={styles.titre}>Version 1.1 :</Text>
               <Text style={styles.informations_texte}>
-                - Affichage du numéro du joueur en plus de son nom s'il en a un
+                - Affichage du numéro du joueur en plus de son nom s'il en a un{"\n"}
               </Text>
             </View>
             <View style={styles.informations_container}>

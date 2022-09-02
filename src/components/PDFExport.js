@@ -207,9 +207,18 @@ class PDFExport extends React.Component {
   };
 
   _exportButton(buttonId, buttonText, affichageScore, affichageClassement) {
+    let pressableDisabled = false;
+    let opacityStyle = 1;
+    if (this.props.listeMatchs[this.props.listeMatchs.length - 1].typeTournoi == "coupe" || this.state.btnIsLoading[buttonId]) {
+      pressableDisabled = true;
+      opacityStyle = 0.7;
+    }
     return (
-      <Pressable disabled={this.state.btnIsLoading[buttonId]} onPress={() => this._onPressExportBtn(buttonId, affichageScore, affichageClassement)}>
-        <View style={{...styles.button, opacity: this.state.btnIsLoading[buttonId] ? 0.7 : 1}}>
+      <Pressable 
+        disabled={pressableDisabled}
+        onPress={() => this._onPressExportBtn(buttonId, affichageScore, affichageClassement)}
+      >
+        <View style={{...styles.button, opacity: opacityStyle}}>
           {this.state.btnIsLoading[buttonId] && <ActivityIndicator size="small" color="white" />}
           <Text style={styles.buttonText}>{buttonText}</Text>
         </View>
@@ -218,9 +227,16 @@ class PDFExport extends React.Component {
   }
 
   render() {
+    let warningText = "";
+    if (this.props.listeMatchs[this.props.listeMatchs.length - 1].typeTournoi == "coupe") {
+      warningText = "Export désactivé en mode coupe !";
+    }
     return (
       <View style={styles.main_container}>
         <View style={styles.body_container}>
+          <View style={styles.buttonView}>
+            <Text style={styles.warning_text}>{warningText}</Text>
+          </View>
           <View style={styles.buttonView}>
             {this._exportButton(0, "Exporter en PDF (sans scores)", false, false)}
           </View>
@@ -245,6 +261,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  warning_text: {
+    fontSize: 20,
+    textAlign: "justify",
+    color: 'white'
   },
   buttonView: {
     marginBottom: 20,

@@ -53,13 +53,14 @@ class MatchDetail extends React.Component {
       let info = {idMatch: this.state.match, score1: this.state.score1, score2: this.state.score2};
       const actionAjoutScore = { type: "AJOUT_SCORE", value: info};
       this.props.dispatch(actionAjoutScore);
-      if (this.props.listeMatchs[this.props.listeMatchs.length - 1].typeTournoi == 'coupe') {
+      //Si tournoi type coupe et pas le dernier match, alors on ajoute les gagnants au match suivant
+      let nbMatchs = this.props.listeMatchs[this.props.listeMatchs.length - 1].nbMatchs;
+      if (this.props.listeMatchs[this.props.listeMatchs.length - 1].typeTournoi == 'coupe' && match.id + 1 < nbMatchs) {
         let gagnant = match.equipe[0];
         if (parseInt(match.score2) > parseInt(match.score1)) {
           gagnant = match.equipe[1];
         }
         let matchId = null;
-        let nbMatchs = this.props.listeMatchs[this.props.listeMatchs.length - 1].nbMatchs;
 
         let div = 2;
         for (let i = 2; i <= match.manche; i++) {

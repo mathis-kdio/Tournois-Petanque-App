@@ -76,7 +76,7 @@ class GenerationMatchs extends React.Component {
   }
 
   randomBetween(a, b) {
-    return (parseInt((Math.random() * (b - a)) + a))
+    return (Math.abs(parseInt((Math.random() * (b - a)) + a)))
   }
   randomBetweenRange (num, range) {
     const res = [];
@@ -153,9 +153,11 @@ class GenerationMatchs extends React.Component {
     for (let i = 0; i < nbjoueurs; i++) {
       if (this.props.listesJoueurs[this.typeInscription][i].special === true && this.speciauxIncompatibles == true && this.typeEquipes == "doublette") {
         joueursSpe.push({...this.props.listesJoueurs[this.typeInscription][i]})
+        joueursSpe[joueursSpe.length - 1].equipe = []
       }
       else {
         joueursNonSpe.push({...this.props.listesJoueurs[this.typeInscription][i]})
+        joueursNonSpe[joueursNonSpe.length - 1].equipe = []
       }
       joueurs.push({...this.props.listesJoueurs[this.typeInscription][i]})
       joueurs[i].equipe = []
@@ -180,8 +182,8 @@ class GenerationMatchs extends React.Component {
 
     //Assignation des joueurs spéciaux
     if (this.speciauxIncompatibles == true && this.typeEquipes == "doublette") {
-      //Test si joueurs spéciaux ne sont pas trop nombreux
-      if (nbJoueursSpe <= nbjoueurs / 2) {
+      //Test si joueurs spéciaux ne sont pas trop nombreux strict inférieur en cas de compléments
+      if ((nbjoueurs % 4 == 0 && nbJoueursSpe <= nbjoueurs / 2) || (nbjoueurs % 4 != 0 && nbJoueursSpe < nbjoueurs / 2)) {
         //Joueurs spéciaux seront toujours joueur 1 ou joueur 3
         for (let i = 0; i < this.nbTours; i++) {
           let idMatch = i * nbMatchsParTour;
@@ -316,25 +318,28 @@ class GenerationMatchs extends React.Component {
           //Test si le joueur 1 ou 2 n'a pas déjà joué (ensemble et contre) + de la moitié de ses matchs contre le joueur en cours d'affectation
           let affectationPossible = true
           if (this.eviterMemeAdversaire == true) {
-            let moitieNbManches = Math.floor(this.nbTours / 2)
-            let totPartiesJ1 = 0
             let joueur1 = matchs[idMatch].equipe[0][0]
-            let joueur2 = matchs[idMatch].equipe[0][1]
+            let joueur2 = undefined
+            if (this.typeEquipes != "teteatete" && matchs[idMatch].equipe[0][1] != -1) {
+              joueur2 = matchs[idMatch].equipe[0][1]
+            }
+            let totPartiesJ1 = 0
             let totPartiesJ2 = 0
             //Compte le nombre de fois ou joueur 1 ou 2 a été l'adverse de joueur en affectation + ou bien si joueur 3 ou 4 a été l'adverse de joueur en affectation
             const occurrencesAdversaireDansEquipe1 = (arr, joueurAdverse, joueurAffect) => arr.reduce((a, v) => ((v.equipe[0][0] === joueurAdverse || v.equipe[0][1] === joueurAdverse) && (v.equipe[1][0] === joueurAffect || v.equipe[1][1] === joueurAffect) ? a + 1 : a), 0);
             const occurrencesAdversaireDansEquipe2 = (arr, joueurAdverse, joueurAffect) => arr.reduce((a, v) => ((v.equipe[1][0] === joueurAdverse || v.equipe[1][1] === joueurAdverse) && (v.equipe[0][0] === joueurAffect || v.equipe[0][1] === joueurAffect) ? a + 1 : a), 0);
             totPartiesJ1 += occurrencesAdversaireDansEquipe1(matchs, joueur1, random[j])
             totPartiesJ1 += occurrencesAdversaireDansEquipe2(matchs, joueur1, random[j])
-            if (this.typeEquipes != "teteatete") {
+            if (joueur2) {
               totPartiesJ2 += occurrencesAdversaireDansEquipe1(matchs, joueur2, random[j])
               totPartiesJ2 += occurrencesAdversaireDansEquipe2(matchs, joueur2, random[j])
             }
             //+1 si joueur en cours d'affectation a déjà joué dans la même équipe
             totPartiesJ1 += joueurs[joueur1].equipe.includes(random[j]) ? 1 : 0
-            if (this.typeEquipes != "teteatete") {
+            if (joueur2) {
               totPartiesJ2 += joueurs[joueur2].equipe.includes(random[j]) ? 1 : 0
             }
+            let moitieNbManches = Math.floor(this.nbTours / 2)
             if (totPartiesJ1 >= moitieNbManches || totPartiesJ2 >= moitieNbManches) {
               affectationPossible = false
             }
