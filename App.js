@@ -23,6 +23,7 @@ Sentry.init({
       routingInstrumentation,
     }),
   ],
+  attachStacktrace: true,
 });
 
 class App extends React.Component {
