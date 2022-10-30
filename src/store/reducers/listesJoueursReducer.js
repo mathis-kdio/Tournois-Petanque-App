@@ -113,6 +113,35 @@ function listesJoueurs(state = initialState, action) {
         }
       }
       return nextState || state;
+    case 'ADD_SAVED_LIST'://typeInscription: avecNoms/sansNoms/AvecEquipes
+      if (action.value.typeInscription != "") {
+        const savedLists = { ...state.listesSauvegarde };
+        let listId = 0;
+        if (state.listesSauvegarde[action.value.typeInscription]) {
+          listId = state.listesSauvegarde[action.value.typeInscription].length;
+        }
+        savedLists[action.value.typeInscription].push(action.value.savedList);
+        savedLists[action.value.typeInscription][savedLists[action.value.typeInscription].length - 1].push({listId: listId});
+        nextState = {
+          ...state,
+          listesSauvegarde: savedLists
+        }
+      }
+      return nextState || state;
+    case 'REMOVE_SAVED_LIST'://typeInscription: avecNoms/sansNoms/AvecEquipes     listId: id
+      if (action.value.listId != undefined) {
+        nextState = {
+          ...state,
+          listesSauvegarde: state.listesSauvegarde[action.value.typeInscription].filter((item, index) => item.listId !== action.value.listId)
+        }
+      }
+      return nextState || state;
+    case 'REMOVE_ALL_SAVED_LIST':
+      nextState = {
+        ...state,
+        listesSauvegarde: initialState.listesSauvegarde
+      }
+      return nextState || state
   default:
     return state
   }

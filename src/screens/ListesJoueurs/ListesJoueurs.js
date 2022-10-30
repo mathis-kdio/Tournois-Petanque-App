@@ -9,6 +9,8 @@ class ListesJoueurs extends React.Component {
   }
 
   _addList() {
+    const actionRemoveList = {type: "SUPPR_ALL_JOUEURS", value: ['sauvegarde']};
+    this.props.dispatch(actionRemoveList);
     //Sera utilisé par le component inscription 
     const updateOptionTypeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['type', 'mele-demele']}
     this.props.dispatch(updateOptionTypeTournoi);
@@ -23,43 +25,39 @@ class ListesJoueurs extends React.Component {
     })
   }
 
-  _modifierListe(tournoi) {
+  modifyList(savedList) {
     //const actionUpdateListeMatchs = {type: "AJOUT_MATCHS", value: tournoi.tournoi};
     //this.props.dispatch(actionUpdateListeMatchs);
   }
 
-  _supprimerliste(tournoiId) {
-    //const actionSupprimerTournoi = {type: "SUPPR_TOURNOI", value: {tournoiId: tournoiId}};
-    //this.props.dispatch(actionSupprimerTournoi);
+  _removeList(savedListId) {
+    const actionRemoveList = {type: "REMOVE_SAVED_LIST", value: {listId: savedListId}};
+    this.props.dispatch(actionRemoveList);
   }
 
-  _modalSupprimerTournoi(tournoi) {
+  _modalRemoveSavedList(savedList) {
     Alert.alert(
       "Suppression d'une liste",
-      "Êtes-vous sûr de vouloir supprimer la liste n°" + (tournoi.tournoiId + 1) + " ?",
+      "Êtes-vous sûr de vouloir supprimer la liste n°" + (savedList[savedList.length -1].listId + 1) + " ?",
       [
         { text: "Annuler", onPress: () => undefined, style: "cancel" },
-        { text: "Oui", onPress: () => this._supprimerTournoi(tournoi.tournoiId) },
+        { text: "Oui", onPress: () => this._removeList(savedList[savedList.length -1].listId) },
       ],
       { cancelable: true }
     );
   }
 
-  _listeTournoisItem(tournoi) {
-    let boutonDesactive = false;
-    if (this.props.listeMatchs && tournoi.tournoiId == this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID) {
-      boutonDesactive = true;
-    }
+  _listeJoueursItem(savedList) {
     return (
-      <View style={styles.tournoi_container}>
+      <View style={styles.saved_list_container}>
         <View style={styles.text_container}>
-          <Text style={styles.tournoi_text}>Tournoi n°{tournoi.tournoiId + 1}</Text>
+          <Text style={styles.title_text}>Liste n°{savedList[savedList.length -1].listId + 1}</Text>
         </View>
         <View style={styles.buttonView}>
-          <Button disabled={boutonDesactive} color="#1c3969" title="Modifier" onPress={() => this._modifierListe(tournoi)}/>
+          <Button color="#1c3969" title="Modifier" onPress={() => this.modifyList(savedList)}/>
         </View>
         <View style={styles.buttonView}>
-          <Button disabled={boutonDesactive} color="red" title="Supprimer" onPress={() => this._modalSupprimerTournoi(tournoi)}/>
+          <Button color="red" title="Supprimer" onPress={() => this._modalRemoveSavedList(savedList)}/>
         </View>
       </View>
     )
@@ -67,25 +65,27 @@ class ListesJoueurs extends React.Component {
 
   render() {
     let nbLists = 0;
-    if (this.props.listesJoueurs.sauvegarde) {
-      nbLists = this.props.listesJoueurs.sauvegarde.length;
+    if (this.props.savedLists) {
+      nbLists += this.props.savedLists.avecEquipes.length;
+      nbLists += this.props.savedLists.avecNoms.length;
+      nbLists += this.props.savedLists.sansNoms.length;
     }
     return (
       <View style={styles.main_container}>
         <View style={styles.body_container}>
           <View>
-            <Text style={styles.titre}>Vous avez {nbLists} listes</Text>
-          </View>
-          <View style={styles.flatList_container}>
-            <FlatList
-              data={this.props.listeTournois}
-              initialNumToRender={20}
-              keyExtractor={(item) => item.tournoiId.toString() }
-              renderItem={({item}) => (this._listeTournoisItem(item))}
-            />
+            <Text style={styles.title}>Vous avez {nbLists} listes</Text>
           </View>
           <View style={styles.createBtnView}>
             <Button color="green" title="Créer une liste" onPress={() => this._addList()}/>
+          </View>
+          <View style={styles.flatList_container}>
+            <FlatList
+              data={this.props.savedLists.avecNoms}
+              initialNumToRender={20}
+              keyExtractor={(item) => item[item.length - 1].listId.toString() }
+              renderItem={({item}) => (this._listeJoueursItem(item))}
+            />
           </View>
         </View>
       </View>
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   body_container: {
     flex: 1
   },
-  titre: {
+  title: {
     marginBottom: 20,
     textAlign: 'center',
     fontSize: 24,
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 10
   },
-  tournoi_container: {
+  saved_list_container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   text_container: {
     flex: 1,
   },
-  tournoi_text: {
+  title_text: {
     fontSize: 15,
     color: 'white'
   },
@@ -129,13 +129,13 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end'
   },
   createBtnView: {
-    flex: 1,
     alignItems: 'center'
   }
 })
 
 const mapStateToProps = (state) => {
   return {
+    savedLists: state.listesJoueurs.listesSauvegarde,
     listesJoueurs: state.listesJoueurs.listesJoueurs
   }
 }

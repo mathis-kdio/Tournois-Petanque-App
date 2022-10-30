@@ -10,8 +10,8 @@ class CreateListeJoueur extends React.Component {
   }
 
   _createList() {
-    //const updateOptionTypeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['type', 'mele-demele']}
-    //this.props.dispatch(updateOptionTypeTournoi);
+    const addSavedList = { type: "ADD_SAVED_LIST", value: {typeInscription: 'avecNoms', savedList: this.props.listesJoueurs.sauvegarde}};
+    this.props.dispatch(addSavedList);
 
     this.props.navigation.navigate('ListesJoueurs');
   }
