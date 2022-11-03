@@ -130,9 +130,11 @@ function listesJoueurs(state = initialState, action) {
       return nextState || state;
     case 'REMOVE_SAVED_LIST'://typeInscription: avecNoms/sansNoms/AvecEquipes     listId: id
       if (action.value.listId != undefined) {
+        const savedLists = { ...state.listesSauvegarde };
+        savedLists[action.value.typeInscription] = savedLists[action.value.typeInscription].filter((item, index) => item[item.length - 1].listId !== action.value.listId)
         nextState = {
           ...state,
-          listesSauvegarde: state.listesSauvegarde[action.value.typeInscription].filter((item, index) => item.listId !== action.value.listId)
+          listesSauvegarde: savedLists
         }
       }
       return nextState || state;
