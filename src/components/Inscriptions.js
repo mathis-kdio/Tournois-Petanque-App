@@ -74,9 +74,14 @@ class Inscription extends React.Component {
     }
   }
 
-  _supprimerAllJoueurs() {
-    const actionSupprAll = { type: "SUPPR_ALL_JOUEURS", value: [this.props.optionsTournoi.mode] }
-    this.props.dispatch(actionSupprAll);
+  _removeAllPlayers() {
+    const actionRemoveAll = { type: "SUPPR_ALL_JOUEURS", value: [this.props.optionsTournoi.mode] }
+    this.props.dispatch(actionRemoveAll);
+  }
+
+  _loadSavedList() {
+    //const actionLoadList = { type: "LOAD_SAVED_LIST", value: [this.props.optionsTournoi.mode] }
+    //this.props.dispatch(actionLoadList);
   }
 
   _displayListeJoueur() {
@@ -103,7 +108,8 @@ class Inscription extends React.Component {
           )}
           ListFooterComponent={
             <View>
-              {this._boutonSupprAllJoueurs()}
+              {this._buttonRemoveAllPlayers()}
+              {this._buttonLoadSavedList()}
               {this._displayListeJoueursSuggeres()}
             </View>
           }
@@ -140,14 +146,22 @@ class Inscription extends React.Component {
     }
   }
 
-  _boutonSupprAllJoueurs() {
+  _buttonRemoveAllPlayers() {
     if (this.props.listesJoueurs[this.props.optionsTournoi.mode].length > 0) {
       return (
         <View style={styles.buttonView}>
-          <Button style={styles.text_nbjoueur} color='red' title='Supprimer tous les joueurs' onPress={() => this._supprimerAllJoueurs()}/>
+          <Button style={styles.text_nbjoueur} color='red' title='Supprimer tous les joueurs' onPress={() => this._removeAllPlayers()}/>
         </View>
       )
     }
+  }
+
+  _buttonLoadSavedList() {
+    return (
+      <View style={styles.buttonView}>
+        <Button style={styles.text_nbjoueur} color='green' title='Charger une liste de joueurs' onPress={() => this._loadSavedList()}/>
+      </View>
+    )
   }
 
   _showEquipeEntete() {
