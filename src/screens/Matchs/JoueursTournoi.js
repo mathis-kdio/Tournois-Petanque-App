@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Text, Button } from 'react-native'
 import { connect } from 'react-redux'
 import { FlatList } from 'react-native-gesture-handler'
-import ListeJoueur from '../../components/ListeJoueur'
+import ListeJoueurItem from '../../components/ListeJoueurItem'
 
 class JoueursTournoi extends React.Component {
 
@@ -26,7 +26,7 @@ class JoueursTournoi extends React.Component {
           data={listeJoueurs}
           keyExtractor={(item) => item.id.toString() }
           renderItem={({item}) => (
-            <ListeJoueur
+            <ListeJoueurItem
               joueur={item}
               supprimerJoueur={undefined}
               isInscription={false}

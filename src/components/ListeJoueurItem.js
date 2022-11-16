@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Picker } from '@react-native-picker/picker'
 
-class ListeJoueur extends React.Component {
+class ListeJoueurItem extends React.Component {
   constructor(props) {
     super(props)
     this.joueurText = ""
@@ -251,4 +251,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(ListeJoueur)
+export default connect(mapStateToProps)(ListeJoueurItem)

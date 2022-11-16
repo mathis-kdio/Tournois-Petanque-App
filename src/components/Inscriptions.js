@@ -3,7 +3,7 @@ import { StyleSheet, View, TextInput, Text, Button } from 'react-native'
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { connect } from 'react-redux'
 import { FlatList } from 'react-native-gesture-handler'
-import ListeJoueur from '../components/ListeJoueur'
+import ListeJoueurItem from '../components/ListeJoueur'
 import JoueurSuggere from '../components/JoueurSuggere'
 
 class Inscription extends React.Component {
@@ -97,7 +97,7 @@ class Inscription extends React.Component {
           data={this.props.listesJoueurs[this.props.optionsTournoi.mode]}
           keyExtractor={(item) => item.id.toString() }
           renderItem={({item}) => (
-            <ListeJoueur
+            <ListeJoueurItem
               joueur={item}
               supprimerJoueur={this._supprimerJoueur}
               isInscription={true}
