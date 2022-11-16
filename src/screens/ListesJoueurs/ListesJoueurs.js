@@ -1,6 +1,7 @@
 import React from 'react'
-import { StyleSheet, View, FlatList, Text, Button, Alert } from 'react-native'
+import { StyleSheet, View, Text, Button } from 'react-native'
 import { connect } from 'react-redux'
+import ListeJoueur from '../../components/ListeJoueur';
 
 class ListesJoueurs extends React.Component {
 
@@ -25,44 +26,6 @@ class ListesJoueurs extends React.Component {
     })
   }
 
-  modifyList(savedList) {
-    //const actionUpdateListeMatchs = {type: "AJOUT_MATCHS", value: tournoi.tournoi};
-    //this.props.dispatch(actionUpdateListeMatchs);
-  }
-
-  _removeList(listId) {
-    const actionRemoveList = {type: "REMOVE_SAVED_LIST", value: {typeInscription: 'avecNoms', listId: listId}};
-    this.props.dispatch(actionRemoveList);
-  }
-
-  _modalRemoveList(list) {
-    Alert.alert(
-      "Suppression d'une liste",
-      "Êtes-vous sûr de vouloir supprimer la liste n°" + (list[list.length -1].listId + 1) + " ?",
-      [
-        { text: "Annuler", onPress: () => undefined, style: "cancel" },
-        { text: "Oui", onPress: () => this._removeList(list[list.length -1].listId) },
-      ],
-      { cancelable: true }
-    );
-  }
-
-  _listeJoueursItem(list) {
-    return (
-      <View style={styles.saved_list_container}>
-        <View style={styles.text_container}>
-          <Text style={styles.title_text}>Liste n°{list[list.length -1].listId + 1}</Text>
-        </View>
-        <View style={styles.buttonView}>
-          <Button color="#1c3969" title="Modifier" onPress={() => this.modifyList(list)}/>
-        </View>
-        <View style={styles.buttonView}>
-          <Button color="red" title="Supprimer" onPress={() => this._modalRemoveList(list)}/>
-        </View>
-      </View>
-    )
-  }
-
   render() {
     let nbLists = 0;
     if (this.props.savedLists) {
@@ -80,11 +43,8 @@ class ListesJoueurs extends React.Component {
             <Button color="green" title="Créer une liste" onPress={() => this._addList()}/>
           </View>
           <View style={styles.flatList_container}>
-            <FlatList
-              data={this.props.savedLists.avecNoms}
-              initialNumToRender={20}
-              keyExtractor={(item) => item[item.length - 1].listId.toString() }
-              renderItem={({item}) => (this._listeJoueursItem(item))}
+            <ListeJoueur
+              savedLists={this.props.savedLists}
             />
           </View>
         </View>
@@ -136,7 +96,6 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     savedLists: state.listesJoueurs.listesSauvegarde,
-    listesJoueurs: state.listesJoueurs.listesJoueurs
   }
 }
 
