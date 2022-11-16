@@ -71,23 +71,6 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 10
   },
-  saved_list_container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  text_container: {
-    flex: 1,
-  },
-  title_text: {
-    fontSize: 15,
-    color: 'white'
-  },
-  buttonView: {
-    flex: 1,
-    alignItems: 'flex-end'
-  },
   createBtnView: {
     alignItems: 'center'
   }

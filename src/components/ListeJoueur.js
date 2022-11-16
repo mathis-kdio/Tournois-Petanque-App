@@ -30,13 +30,11 @@ class ListeJoueur extends React.Component {
   }
 
   _buttons() {
-    if(this.props.route.params && this.props.route.params.loadListScreen) {
+    if(this.props.route && this.props.route.params && this.props.route.params.loadListScreen) {
       return (
-        <View>
-          <View style={styles.buttonView}>
-            <Button color="#1c3969" title="Charger" onPress={() => this._loadList(list)}/>
-          </View>
-        </View>  
+        <View style={styles.buttonView}>
+          <Button color="#1c3969" title="Charger" onPress={() => this._loadList(list)}/>
+        </View>
       )
     }
     else {
@@ -65,7 +63,7 @@ class ListeJoueur extends React.Component {
         <View style={styles.text_container}>
           <Text style={styles.title_text}>Liste n°{list[list.length -1].listId + 1}</Text>
         </View>
-        {_buttons()}
+        {this._buttons()}
       </View>
     )
   }
@@ -84,43 +82,28 @@ class ListeJoueur extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  main_container: {
+  title: {
+    marginBottom: 20,
+    textAlign: 'center',
+    fontSize: 24,
+    color: 'white'
+  },
+  saved_list_container: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 5,
-    paddingBottom: 5,
-    marginHorizontal: 10,
-    borderBottomWidth: 1,
-    borderColor: 'white'
+    marginBottom: 10,
   },
-  name_container: {
+  text_container: {
     flex: 1,
   },
-  name_text: {
-    fontWeight: 'bold',
-    fontSize: 20,
+  title_text: {
+    fontSize: 15,
     color: 'white'
   },
-  special_container: {
-    marginLeft: 5,
-    marginRight: 5,
-  },
-  special_text: {
-    fontSize: 20,
-    color: 'white'
-  },
-  text_input: {
-    height: 50,
-    paddingLeft: 5,
-    color: 'white'
-  },
-  picker_container: {
+  buttonView: {
     flex: 1,
-    alignItems: 'flex-end',
-  },
-  picker: {
-    color: 'white',
-    width: 115
+    alignItems: 'flex-end'
   }
 })
 
