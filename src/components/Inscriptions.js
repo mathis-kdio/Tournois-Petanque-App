@@ -80,8 +80,12 @@ class Inscription extends React.Component {
   }
 
   _loadSavedList() {
-    //const actionLoadList = { type: "LOAD_SAVED_LIST", value: [this.props.optionsTournoi.mode] }
-    //this.props.dispatch(actionLoadList);
+    this.props.navigation.navigate({
+      name: 'ListesJoueurs',
+      params: {
+        loadListScreen: true
+      }
+    })
   }
 
   _displayListeJoueur() {

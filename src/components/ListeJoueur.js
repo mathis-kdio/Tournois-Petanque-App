@@ -29,18 +29,43 @@ class ListeJoueur extends React.Component {
     this.props.dispatch(actionRemoveList);
   }
 
+  _buttons() {
+    if(this.props.route.params && this.props.route.params.loadListScreen) {
+      return (
+        <View>
+          <View style={styles.buttonView}>
+            <Button color="#1c3969" title="Charger" onPress={() => this._loadList(list)}/>
+          </View>
+        </View>  
+      )
+    }
+    else {
+      return(
+        <View>
+          <View style={styles.buttonView}>
+            <Button color="#1c3969" title="Modifier" onPress={() => this.modifyList(list)}/>
+          </View>
+          <View style={styles.buttonView}>
+            <Button color="red" title="Supprimer" onPress={() => this._modalRemoveList(list)}/>
+          </View>
+        </View>
+      )
+    }
+  }
+
+  _loadList(list) {
+    const actionLoadList = { type: "LOAD_SAVED_LIST", value: [this.props.optionsTournoi.mode, list.id] }
+    this.props.dispatch(actionLoadList);
+    this.props.navigation.navigate("Inscription")
+  }
+
   _listeJoueursItem(list) {
     return (
       <View style={styles.saved_list_container}>
         <View style={styles.text_container}>
           <Text style={styles.title_text}>Liste n°{list[list.length -1].listId + 1}</Text>
         </View>
-        <View style={styles.buttonView}>
-          <Button color="#1c3969" title="Modifier" onPress={() => this.modifyList(list)}/>
-        </View>
-        <View style={styles.buttonView}>
-          <Button color="red" title="Supprimer" onPress={() => this._modalRemoveList(list)}/>
-        </View>
+        {_buttons()}
       </View>
     )
   }
