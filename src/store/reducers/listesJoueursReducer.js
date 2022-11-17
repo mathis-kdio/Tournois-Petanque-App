@@ -132,7 +132,13 @@ function listesJoueurs(state = initialState, action) {
       if (action.value.listId != undefined) {
         const savedList = { ...state.listesSauvegarde };
         const listsOfPlayers = { ...state.listesJoueurs };
-        listsOfPlayers[action.value.typeInscription].push(...savedList[action.value.typeInscription][action.value.listId].slice(0, -1));
+        //Add to list
+        const copySeletedSavedList = JSON.parse(JSON.stringify(savedList[action.value.typeInscription][action.value.listId].slice(0, -1)))
+        listsOfPlayers[action.value.typeInscription].push(...copySeletedSavedList);
+        //Update Ids
+        for (let i = 0; i < listsOfPlayers[action.value.typeInscription].length; i++) {
+          listsOfPlayers[action.value.typeInscription][i].id = i
+        }
         nextState = {
           ...state,
           listesJoueurs: listsOfPlayers

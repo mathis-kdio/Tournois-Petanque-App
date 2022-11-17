@@ -54,8 +54,6 @@ class ListeJoueur extends React.Component {
   _loadList(listId) {
     const actionLoadList = { type: "LOAD_SAVED_LIST", value: {typeInscription: 'avecNoms', listId: listId} }
     this.props.dispatch(actionLoadList);
-    const actionUpdateAllPlayersId = {type: "UPDATE_ALL_JOUEURS_ID", value: ['avecNoms']};
-    this.props.dispatch(actionUpdateAllPlayersId);
     this.props.navigation.goBack();
   }
 
