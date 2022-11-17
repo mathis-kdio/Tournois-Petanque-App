@@ -26,7 +26,10 @@ class CreateListeJoueur extends React.Component {
           <View style={styles.text_container}>
             <Text style={styles.titre}>Liste n°{listId} :</Text>
           </View>
-          <Inscriptions/>
+          <Inscriptions
+            navigation={this.props.navigation}
+            loadListScreen={true}
+          />
           <View>
             <View style={styles.buttonView}>
               <Button color="green" title="Valider la liste" onPress={() => this._createList()}/>

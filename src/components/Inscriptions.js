@@ -161,11 +161,13 @@ class Inscription extends React.Component {
   }
 
   _buttonLoadSavedList() {
-    return (
-      <View style={styles.buttonView}>
-        <Button style={styles.text_nbjoueur} color='green' title='Charger une liste de joueurs' onPress={() => this._loadSavedList()}/>
-      </View>
-    )
+    if (!this.props.loadListScreen) {
+      return (
+        <View style={styles.buttonView}>
+          <Button style={styles.text_nbjoueur} color='green' title='Charger une liste de joueurs' onPress={() => this._loadSavedList()}/>
+        </View>
+      )
+    }
   }
 
   _showEquipeEntete() {

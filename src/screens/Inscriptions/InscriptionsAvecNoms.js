@@ -209,7 +209,10 @@ class InscriptionsAvecNoms extends React.Component {
         <View style={styles.text_container}>
           <Text style={styles.text_nbjoueur}>Il y a : {this._showNbJoueur()} inscrit.e.s</Text>
         </View>
-          <Inscriptions navigation={this.props.navigation}/>
+          <Inscriptions 
+            navigation={this.props.navigation}
+            loadListScreen={false}
+          />
         <View>
           <View style={styles.buttonView}>
             {this._boutonOptions()}
