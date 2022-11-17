@@ -128,6 +128,17 @@ function listesJoueurs(state = initialState, action) {
         }
       }
       return nextState || state;
+    case 'LOAD_SAVED_LIST'://typeInscription: avecNoms/sansNoms/AvecEquipes     listId: id
+      if (action.value.listId != undefined) {
+        const savedList = { ...state.listesSauvegarde };
+        const listsOfPlayers = { ...state.listesJoueurs };
+        listsOfPlayers[action.value.typeInscription].push(...savedList[action.value.typeInscription][action.value.listId].slice(0, -1));
+        nextState = {
+          ...state,
+          listesJoueurs: listsOfPlayers
+        }
+      }
+    return nextState || state;
     case 'REMOVE_SAVED_LIST'://typeInscription: avecNoms/sansNoms/AvecEquipes     listId: id
       if (action.value.listId != undefined) {
         const savedLists = { ...state.listesSauvegarde };
