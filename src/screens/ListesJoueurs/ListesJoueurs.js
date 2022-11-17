@@ -45,6 +45,8 @@ class ListesJoueurs extends React.Component {
           <View style={styles.flatList_container}>
             <ListeJoueur
               savedLists={this.props.savedLists}
+              navigation={this.props.navigation}
+              route={this.props.route}
             />
           </View>
         </View>

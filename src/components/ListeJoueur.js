@@ -29,11 +29,11 @@ class ListeJoueur extends React.Component {
     this.props.dispatch(actionRemoveList);
   }
 
-  _buttons() {
+  _buttons(list) {
     if(this.props.route && this.props.route.params && this.props.route.params.loadListScreen) {
       return (
         <View style={styles.buttonView}>
-          <Button color="#1c3969" title="Charger" onPress={() => this._loadList(list)}/>
+          <Button color="#1c3969" title="Charger" onPress={() => this._loadList(list[list.length - 1].listId)}/>
         </View>
       )
     }
@@ -51,10 +51,10 @@ class ListeJoueur extends React.Component {
     }
   }
 
-  _loadList(list) {
-    const actionLoadList = { type: "LOAD_SAVED_LIST", value: [this.props.optionsTournoi.mode, list.id] }
+  _loadList(listId) {
+    const actionLoadList = { type: "LOAD_SAVED_LIST", value: {typeInscription: 'avecNoms', listId: listId} }
     this.props.dispatch(actionLoadList);
-    this.props.navigation.navigate("Inscription")
+    this.props.navigation.goBack();
   }
 
   _listeJoueursItem(list) {
@@ -63,7 +63,7 @@ class ListeJoueur extends React.Component {
         <View style={styles.text_container}>
           <Text style={styles.title_text}>Liste n°{list[list.length -1].listId + 1}</Text>
         </View>
-        {this._buttons()}
+        {this._buttons(list)}
       </View>
     )
   }
