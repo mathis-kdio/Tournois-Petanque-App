@@ -63,12 +63,8 @@ class Accueil extends React.Component {
     });
   }
 
-  _showInscription() {
-    this.props.navigation.navigate('ChoixTypeTournoi');
-  }
-
-  _showListeTournois() {
-    this.props.navigation.navigate('ListeTournois');
+  _navigate(name) {
+    this.props.navigation.navigate(name);
   }
 
   _buttonShowMatchs() {
@@ -94,10 +90,13 @@ class Accueil extends React.Component {
               {this._buttonShowMatchs()}
             </View>
             <View style={styles.buttonView}>
-              <Button color="#1c3969" title='Nouveau tournoi' onPress={() => this._showInscription()}/>
+              <Button color="#1c3969" title='Nouveau tournoi' onPress={() => this._navigate('ChoixTypeTournoi')}/>
             </View>
             <View style={styles.buttonView}>
-              <Button color="#1c3969" title='Voir les anciens tournois' onPress={() => this._showListeTournois()}/>
+              <Button color="#1c3969" title='Mes anciens tournois' onPress={() => this._navigate('ListeTournois')}/>
+            </View>
+            <View style={styles.buttonView}>
+              <Button color="#1c3969" title='Mes listes de joueurs' onPress={() => this._navigate('ListesJoueurs')}/>
             </View>
           </View>
           <View style={styles.informations_container}>
