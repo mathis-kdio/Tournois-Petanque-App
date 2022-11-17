@@ -33,7 +33,8 @@
     "android": {
       "package": "com.MK.PetanqueGCU",
       "versionCode": 49,
-      "permissions": []
+      "permissions": [],
+      "blockedPermissions": ["android.permission.REQUEST_INSTALL_PACKAGES"]
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
