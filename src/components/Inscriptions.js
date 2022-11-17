@@ -3,7 +3,7 @@ import { StyleSheet, View, TextInput, Text, Button } from 'react-native'
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { connect } from 'react-redux'
 import { FlatList } from 'react-native-gesture-handler'
-import ListeJoueur from '../components/ListeJoueur'
+import ListeJoueurItem from '../components/ListeJoueurItem'
 import JoueurSuggere from '../components/JoueurSuggere'
 
 class Inscription extends React.Component {
@@ -37,8 +37,8 @@ class Inscription extends React.Component {
   _ajoutJoueur() {
     //Test si au moins 1 caractère
     if (this.joueurText != '') {
-      let equipe = undefined
-      if (this.props.optionsTournoi.typeEquipes == "teteatete") {
+      let equipe = 1
+      if (this.props.optionsTournoi.typeEquipes == "teteatete" && this.props.listesJoueurs[this.props.optionsTournoi.mode]) {
         equipe = this.props.listesJoueurs[this.props.optionsTournoi.mode].length + 1
       }
       const action = { type: "AJOUT_JOUEUR", value: [this.props.optionsTournoi.mode, this.joueurText, this.state.isChecked, equipe] }
@@ -74,9 +74,18 @@ class Inscription extends React.Component {
     }
   }
 
-  _supprimerAllJoueurs() {
-    const actionSupprAll = { type: "SUPPR_ALL_JOUEURS", value: [this.props.optionsTournoi.mode] }
-    this.props.dispatch(actionSupprAll);
+  _removeAllPlayers() {
+    const actionRemoveAll = { type: "SUPPR_ALL_JOUEURS", value: [this.props.optionsTournoi.mode] }
+    this.props.dispatch(actionRemoveAll);
+  }
+
+  _loadSavedList() {
+    this.props.navigation.navigate({
+      name: 'ListesJoueurs',
+      params: {
+        loadListScreen: true
+      }
+    })
   }
 
   _displayListeJoueur() {
@@ -92,7 +101,7 @@ class Inscription extends React.Component {
           data={this.props.listesJoueurs[this.props.optionsTournoi.mode]}
           keyExtractor={(item) => item.id.toString() }
           renderItem={({item}) => (
-            <ListeJoueur
+            <ListeJoueurItem
               joueur={item}
               supprimerJoueur={this._supprimerJoueur}
               isInscription={true}
@@ -103,7 +112,8 @@ class Inscription extends React.Component {
           )}
           ListFooterComponent={
             <View>
-              {this._boutonSupprAllJoueurs()}
+              {this._buttonRemoveAllPlayers()}
+              {this._buttonLoadSavedList()}
               {this._displayListeJoueursSuggeres()}
             </View>
           }
@@ -140,14 +150,22 @@ class Inscription extends React.Component {
     }
   }
 
-  _boutonSupprAllJoueurs() {
+  _buttonRemoveAllPlayers() {
     if (this.props.listesJoueurs[this.props.optionsTournoi.mode].length > 0) {
       return (
         <View style={styles.buttonView}>
-          <Button style={styles.text_nbjoueur} color='red' title='Supprimer tous les joueurs' onPress={() => this._supprimerAllJoueurs()}/>
+          <Button style={styles.text_nbjoueur} color='red' title='Supprimer tous les joueurs' onPress={() => this._removeAllPlayers()}/>
         </View>
       )
     }
+  }
+
+  _buttonLoadSavedList() {
+    return (
+      <View style={styles.buttonView}>
+        <Button style={styles.text_nbjoueur} color='green' title='Charger une liste de joueurs' onPress={() => this._loadSavedList()}/>
+      </View>
+    )
   }
 
   _showEquipeEntete() {

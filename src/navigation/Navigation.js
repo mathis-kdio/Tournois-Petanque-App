@@ -28,6 +28,8 @@ import ParametresTournoi from '../screens/Matchs/ParametresTournoi'
 import PDFExport from '../components/PDFExport'
 
 import BoutonMenuHeaderNav from '../components/BoutonMenuHeaderNavigation'
+import ListesJoueurs from '../screens/ListesJoueurs/ListesJoueurs';
+import CreateListeJoueurs from '../screens/ListesJoueurs/CreateListeJoueurs';
 
 const styles = StyleSheet.create({
   icon: {
@@ -166,6 +168,9 @@ function General() {
       <Stack.Screen name="Changelog" component={Changelog} options={{title: 'Changelog - Pétanque GCU'}} />
 
       <Stack.Screen name="ListeTournois" component={ListeTournois} options={{title: 'Choix d\'un tournoi'}} />
+
+      <Stack.Screen name="ListesJoueurs" component={ListesJoueurs} options={{title: 'Listes de Joueurs'}} />
+      <Stack.Screen name="CreateListeJoueurs" component={CreateListeJoueurs} options={{title: 'Création d\'une liste de Joueurs'}} />
 
       <Stack.Screen name="ChoixTypeTournoi" component={ChoixTypeTournoi} options={{title: 'Choix du type de tournoi'}} />
       <Stack.Screen name="ChoixModeTournoi" component={ChoixModeTournoi} options={{title: 'Choix du mode de tournoi'}} />

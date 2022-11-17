@@ -1,253 +1,115 @@
 import React from 'react'
-import { StyleSheet, View, Text, TextInput } from 'react-native'
+import { StyleSheet, View, Text, Button, FlatList, Alert } from 'react-native'
 import { connect } from 'react-redux'
-import Icon from 'react-native-vector-icons/FontAwesome'
-import { Picker } from '@react-native-picker/picker'
 
 class ListeJoueur extends React.Component {
   constructor(props) {
     super(props)
-    this.joueurText = ""
-    this.state = {
-      renommerOn: false,
-      disabledBoutonRenommer: true,
-    }
   }
 
-  _isSpecial = (joueurSpecial) => {
-    if (joueurSpecial === true) {
+  modifyList(savedList) {
+    //const actionUpdateListeMatchs = {type: "AJOUT_MATCHS", value: tournoi.tournoi};
+    //this.props.dispatch(actionUpdateListeMatchs);
+  }
+
+  _modalRemoveList(list) {
+    Alert.alert(
+      "Suppression d'une liste",
+      "Êtes-vous sûr de vouloir supprimer la liste n°" + (list[list.length -1].listId + 1) + " ?",
+      [
+        { text: "Annuler", onPress: () => undefined, style: "cancel" },
+        { text: "Oui", onPress: () => this._removeList(list[list.length -1].listId) },
+      ],
+      { cancelable: true }
+    );
+  }
+
+  _removeList(listId) {
+    const actionRemoveList = {type: "REMOVE_SAVED_LIST", value: {typeInscription: 'avecNoms', listId: listId}};
+    this.props.dispatch(actionRemoveList);
+  }
+
+  _buttons(list) {
+    if(this.props.route && this.props.route.params && this.props.route.params.loadListScreen) {
       return (
-        <View style={styles.special_container}>
-          <Text style={styles.special_text}>Enfant</Text>
+        <View style={styles.buttonView}>
+          <Button color="#1c3969" title="Charger" onPress={() => this._loadList(list[list.length - 1].listId)}/>
         </View>
       )
     }
-  }
-
-  _showSupprimerJoueur(joueur, supprimerJoueur, isInscription) {
-    if (isInscription === true) {
-      return (
-        <View style={{marginLeft: 5}}>
-            <Icon.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => supprimerJoueur(joueur.id)}/>
-        </View>
-      )
-    }
-  }
-
-  _showRenommerJoueur(joueur, isInscription, avecEquipes) {
-    if (this.state.renommerOn == false) {
-      return (
+    else {
+      return(
         <View>
-            <Icon.Button name="edit" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renommerJoueurInput(joueur)}/>
-        </View>
-      )
-    }
-    else {
-      if (this.state.disabledBoutonRenommer == true) {
-        return (
-          <View>
-            <Icon.Button name="edit" backgroundColor="gray" iconStyle={{paddingHorizontal: 2, marginRight: 0}}/>
+          <View style={styles.buttonView}>
+            <Button color="#1c3969" title="Modifier" onPress={() => this.modifyList(list)}/>
           </View>
-        )
-      }
-      else {
-        return (
-          <View>
-            <Icon.Button name="check" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renommerJoueur(joueur, isInscription, avecEquipes)}/>
+          <View style={styles.buttonView}>
+            <Button color="red" title="Supprimer" onPress={() => this._modalRemoveList(list)}/>
           </View>
-        )
-      }
-    }
-  }
-
-  _renommerJoueurInput(joueur) {
-    this.setState({
-      renommerOn: true
-    })
-    this.joueurText = joueur.name
-  }
-
-  _renommerJoueur(joueur, isInscription, avecEquipes) {
-    if (this.joueurText != "") {
-      this.setState({
-        renommerOn: false,
-        disabledBoutonRenommer: true
-      })
-      if (isInscription === true) {
-        let typeInscription
-        if (avecEquipes == true) {
-          typeInscription = "avecEquipes"
-        }
-        else {
-          typeInscription = "avecNoms"
-        }
-        const actionRenommer = { type: "RENOMMER_JOUEUR", value: [typeInscription, joueur.id, this.joueurText] }
-        this.props.dispatch(actionRenommer)
-      }
-      else {
-        let data = { playerId: joueur.id, newName: this.joueurText };
-        const inGameRenamePlayer = { type: "INGAME_RENAME_PLAYER", value: data };
-        this.props.dispatch(inGameRenamePlayer);
-        const actionUpdateTournoi = { type: "UPDATE_TOURNOI", value: {tournoi: this.props.listeMatchs, tournoiId: this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID}};
-        this.props.dispatch(actionUpdateTournoi);
-      }
-      this.joueurText = ""
-    }
-  }
-
-  _joueurTxtInputChanged = (text) => {
-    this.joueurText = text
-    //Le bouton valider est désactivé si aucune lettre
-    if (this.joueurText == '') {
-      this.setState({
-        disabledBoutonRenommer: true
-      })
-    }
-    else {
-      this.setState({
-        disabledBoutonRenommer: false
-      })
-    }
-  }
-
-  _joueurName(joueur, isInscription, avecEquipes) {
-    if (this.state.renommerOn == true) {
-      return(
-        <TextInput
-          style={styles.text_input}
-          placeholder={joueur.name}
-          autoFocus={true}
-          onChangeText={(text) => this._joueurTxtInputChanged(text)}
-          onSubmitEditing={() => this._renommerJoueur(joueur, isInscription, avecEquipes)}
-        />
-      )
-    }
-    else {
-      return(
-        <Text style={styles.name_text}>{(joueur.id+1)} {joueur.name}</Text>
-      )
-    }
-  }
-
-  _ajoutEquipe(joueurId, equipeId) {
-    const action = { type: "AJOUT_EQUIPE_JOUEUR", value: ["avecEquipes", joueurId, equipeId] }
-    this.props.dispatch(action)
-  }
-
-  _equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs) {
-    if (avecEquipes == true) {
-      let selectedValue = 0;
-      if (joueur.equipe) {
-        selectedValue = joueur.equipe;
-      }
-      let nbEquipes = nbJoueurs;
-      if (typeEquipes == "doublette") {
-        nbEquipes = Math.ceil(nbJoueurs / 2);
-      }
-      else if (typeEquipes == "triplette"){
-        nbEquipes = Math.ceil(nbJoueurs / 3);
-      }
-
-      let pickerItem = [];
-      for (let i = 1; i <= nbEquipes; i++) {
-        let count = this.props.listesJoueurs.avecEquipes.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0);
-        if (typeEquipes == "teteatete" && count < 1) {
-          pickerItem.push(this._equipePickerItem(i));
-        }
-        if (typeEquipes == "doublette" && count < 2) {
-          pickerItem.push(this._equipePickerItem(i));
-        }
-        else if (typeEquipes == "triplette" && count < 3) {
-          pickerItem.push(this._equipePickerItem(i));
-        }
-        else if (joueur.equipe == i) {
-          pickerItem.push(this._equipePickerItem(i));
-        }
-      }
-      return (
-        <View style={styles.picker_container}>
-          <Picker
-            selectedValue={selectedValue}
-            onValueChange={(itemValue, itemIndex) => this._ajoutEquipe(joueur.id, itemValue)}
-            style={styles.picker}
-            dropdownIconColor="white"
-          >
-            <Picker.Item label="Choisir" value={undefined} key="0"/>
-            {pickerItem}
-          </Picker>
         </View>
       )
     }
   }
 
-  _equipePickerItem(equipe) {
+  _loadList(listId) {
+    const actionLoadList = { type: "LOAD_SAVED_LIST", value: {typeInscription: 'avecNoms', listId: listId} }
+    this.props.dispatch(actionLoadList);
+    this.props.navigation.goBack();
+  }
+
+  _listeJoueursItem(list) {
     return (
-      <Picker.Item label={equipe.toString()} value={equipe} key={equipe}/>
+      <View style={styles.saved_list_container}>
+        <View style={styles.text_container}>
+          <Text style={styles.title_text}>Liste n°{list[list.length -1].listId + 1}</Text>
+        </View>
+        {this._buttons(list)}
+      </View>
     )
   }
 
   render() {
-    const { joueur, supprimerJoueur, isInscription, avecEquipes, typeEquipes, nbJoueurs } = this.props;
+    const { savedLists } = this.props;
     return (
-      <View style={styles.main_container}>
-        <View style={styles.name_container}>
-          {this._joueurName(joueur, isInscription, avecEquipes)}
-        </View>
-        {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
-        {this._isSpecial(joueur.special)}
-        {this._showRenommerJoueur(joueur, isInscription, avecEquipes)}
-        {this._showSupprimerJoueur(joueur, supprimerJoueur, isInscription)}
-      </View>
+      <FlatList
+        data={savedLists.avecNoms}
+        initialNumToRender={20}
+        keyExtractor={(item) => item[item.length - 1].listId.toString() }
+        renderItem={({item}) => (this._listeJoueursItem(item))}
+      />
     )
   }
 }
 
 const styles = StyleSheet.create({
-  main_container: {
+  title: {
+    marginBottom: 20,
+    textAlign: 'center',
+    fontSize: 24,
+    color: 'white'
+  },
+  saved_list_container: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 5,
-    paddingBottom: 5,
-    marginHorizontal: 10,
-    borderBottomWidth: 1,
-    borderColor: 'white'
+    marginBottom: 10,
   },
-  name_container: {
+  text_container: {
     flex: 1,
   },
-  name_text: {
-    fontWeight: 'bold',
-    fontSize: 20,
+  title_text: {
+    fontSize: 15,
     color: 'white'
   },
-  special_container: {
-    marginLeft: 5,
-    marginRight: 5,
-  },
-  special_text: {
-    fontSize: 20,
-    color: 'white'
-  },
-  text_input: {
-    height: 50,
-    paddingLeft: 5,
-    color: 'white'
-  },
-  picker_container: {
+  buttonView: {
     flex: 1,
-    alignItems: 'flex-end',
-  },
-  picker: {
-    color: 'white',
-    width: 115
+    alignItems: 'flex-end'
   }
 })
 
 const mapStateToProps = (state) => {
   return {
-    listesJoueurs: state.listesJoueurs.listesJoueurs,
     listeMatchs: state.gestionMatchs.listematchs,
-    optionsTournoi: state.optionsTournoi.options
   }
 }
 
