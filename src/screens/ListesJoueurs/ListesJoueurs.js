@@ -26,6 +26,14 @@ class ListesJoueurs extends React.Component {
     })
   }
 
+  _addListButton() {
+    if (this.props.route.params == undefined || this.props.route.params.loadListScreen != true) {
+      return(
+        <Button color="green" title="Créer une liste" onPress={() => this._addList()}/>
+      )
+    }
+  }
+
   render() {
     let nbLists = 0;
     if (this.props.savedLists) {
@@ -40,7 +48,7 @@ class ListesJoueurs extends React.Component {
             <Text style={styles.title}>Vous avez {nbLists} listes</Text>
           </View>
           <View style={styles.createBtnView}>
-            <Button color="green" title="Créer une liste" onPress={() => this._addList()}/>
+            {this._addListButton()}
           </View>
           <View style={styles.flatList_container}>
             <ListeJoueur
