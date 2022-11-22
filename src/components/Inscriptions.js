@@ -12,14 +12,40 @@ class Inscription extends React.Component {
     super(props)
     this.joueurText = "",
     this.addPlayerTextInput = React.createRef()
+    this.nbSuggestions = 5
     this.state = {
       joueur: undefined,
       isChecked: false,
       etatBouton: false,
+      suggestions: []
     }
   }
 
-  _ajoutJoueurTextInputChanged = (text) => {
+  componentDidMount() {
+    let suggestions = this._getSuggestions();
+    this.setState({
+      suggestions: suggestions
+    })
+  }
+
+  componentDidUpdate() {
+    let newSuggestions = this._getSuggestions();
+    if (newSuggestions.length != this.state.suggestions.length) {
+      this.setState({
+        suggestions: newSuggestions
+      })
+    }
+  }
+
+  _getSuggestions() {
+    let listeHistoriqueFiltre = this.props.listesJoueurs.historique.filter(item1 => this.props.listesJoueurs[this.props.optionsTournoi.mode].every(item2 => item2.name !== item1.name));
+    if (listeHistoriqueFiltre.length > 0) {
+      return listeHistoriqueFiltre.sort(function (a, b) {return b.nbTournois - a.nbTournois;});
+    }
+    return [];
+  }
+
+  _ajoutJoueurTextInputChanged(text) {
     this.joueurText = text
     //Possible d'utiliser le bouton sauf si pas de lettre
     if (this.joueurText != '') {
@@ -63,17 +89,6 @@ class Inscription extends React.Component {
     }
   }
 
-  _supprimerJoueur = (idJoueur) => {
-    const actionSuppr = {type: "SUPPR_JOUEUR", value: [this.props.optionsTournoi.mode, idJoueur]};
-    this.props.dispatch(actionSuppr);
-    const actionUpdate = {type: "UPDATE_ALL_JOUEURS_ID", value: [this.props.optionsTournoi.mode]};
-    this.props.dispatch(actionUpdate);
-    if (this.props.optionsTournoi.typeEquipes == "teteatete") {
-      const actionUpdateEquipe = {type: "UPDATE_ALL_JOUEURS_EQUIPE", value: [this.props.optionsTournoi.mode]};
-      this.props.dispatch(actionUpdateEquipe);
-    }
-  }
-
   _removeAllPlayers() {
     const actionRemoveAll = { type: "SUPPR_ALL_JOUEURS", value: [this.props.optionsTournoi.mode] }
     this.props.dispatch(actionRemoveAll);
@@ -103,7 +118,6 @@ class Inscription extends React.Component {
           renderItem={({item}) => (
             <ListeJoueurItem
               joueur={item}
-              supprimerJoueur={this._supprimerJoueur}
               isInscription={true}
               avecEquipes={avecEquipes}
               typeEquipes={this.props.optionsTournoi.typeEquipes}
@@ -123,31 +137,42 @@ class Inscription extends React.Component {
   }
 
   _displayListeJoueursSuggeres() {
-    if (this.props.listesJoueurs.historique) {
-      let listeHistoriqueFiltre = this.props.listesJoueurs.historique.filter(item1 => this.props.listesJoueurs[this.props.optionsTournoi.mode].every(item2 => item2.name !== item1.name));
-      if (listeHistoriqueFiltre.length > 0) {
-        let suggestions = listeHistoriqueFiltre.sort(function (a, b) {return b.nbTournois - a.nbTournois;});
-        suggestions.splice(5, suggestions.length - 5)
-        return (
-          <View>
-            <View style={styles.text_container}>
-              <Text style={styles.text_nbjoueur}>Suggestions de Joueurs</Text>
-            </View>
-            <FlatList
-              removeClippedSubviews={false}
-              persistentScrollbar={true}
-              data={suggestions}
-              keyExtractor={(item) => item.id.toString() }
-              renderItem={({item}) => (
-                <JoueurSuggere
-                  joueur={item}
-                />
-              )}
-            />
+    if (this.state.suggestions.length > 0) {
+      let partialSuggested = this.state.suggestions.slice(0, this.nbSuggestions);
+      return (
+        <View>
+          <View style={styles.text_container}>
+            <Text style={styles.text_nbjoueur}>Suggestions de Joueurs</Text>
           </View>
-        )
-      }
+          <FlatList
+            removeClippedSubviews={false}
+            persistentScrollbar={true}
+            data={partialSuggested}
+            keyExtractor={(item) => item.id.toString() }
+            renderItem={({item}) => (
+              <JoueurSuggere
+                joueur={item}
+              />
+            )}
+          />
+          <View style={styles.buttonView}>
+            {this._buttonMoreSuggestedPlayers()}
+          </View>
+        </View>
+      )
     }
+  }
+
+  _buttonMoreSuggestedPlayers() {
+    if (this.nbSuggestions < this.state.suggestions.length) {
+      return (
+        <Button style={styles.text_nbjoueur} color='green' title='Afficher + de joueurs suggérés' onPress={() => this._showMoreSuggestedPlayers()}/>
+      )
+    }
+  }
+
+  _showMoreSuggestedPlayers() {
+    this.nbSuggestions += 5;
   }
 
   _buttonRemoveAllPlayers() {

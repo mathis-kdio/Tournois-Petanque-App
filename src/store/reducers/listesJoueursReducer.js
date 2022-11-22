@@ -49,22 +49,14 @@ function listesJoueurs(state = initialState, action) {
         }
       }
       return nextState || state
-    case 'UPDATE_ALL_JOUEURS_ID'://action: 0: type d'inscription
-      if (action.value[0] != "") {
-        const listes = { ...state.listesJoueurs };
-        for (let i = 0; i < listes[action.value[0]].length; i++) {
-          listes[action.value[0]][i].id = i
-        }
-        nextState = {
-          ...state,
-          listesJoueurs: listes
-        }
-      }
-      return nextState || state;
     case 'SUPPR_JOUEUR'://action: 0: type d'inscription  1: id du joueur
       if (action.value[0] != "" || action.value[1] != "") {
         const listes = { ...state.listesJoueurs };
         listes[action.value[0]] = listes[action.value[0]].filter((item, index) => item.id !== action.value[1])
+        //Update Ids
+        for (let i = 0; i < listes[action.value[0]].length; i++) {
+          listes[action.value[0]][i].id = i
+        }
         nextState = {
           ...state,
           listesJoueurs: listes
