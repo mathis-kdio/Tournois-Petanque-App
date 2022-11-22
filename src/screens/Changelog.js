@@ -2,8 +2,34 @@ import React from 'react'
 import { StyleSheet, View, Text, Button, SafeAreaView, ScrollView } from 'react-native'
 import { expo } from '../../app.json'
 import * as Linking from 'expo-linking'
+import { connect } from 'react-redux'
 
 class Changelog extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+
+  _clearData() {
+    const actionRemoveAllPlayersAvecNoms = { type: "SUPPR_ALL_JOUEURS", value: ["avecNoms"] }
+    this.props.dispatch(actionRemoveAllPlayersAvecNoms);
+    const actionRemoveAllPlayersSansNoms = { type: "SUPPR_ALL_JOUEURS", value: ["sansNoms"] }
+    this.props.dispatch(actionRemoveAllPlayersSansNoms);
+    const actionRemoveAllPlayersAvecEquipes = { type: "SUPPR_ALL_JOUEURS", value: ["avecEquipes"] }
+    this.props.dispatch(actionRemoveAllPlayersAvecEquipes);
+    const actionRemoveAllPlayersHistorique = { type: "SUPPR_ALL_JOUEURS", value: ["historique"] }
+    this.props.dispatch(actionRemoveAllPlayersHistorique);
+    const actionRemoveAllPlayersSauvegarde = { type: "SUPPR_ALL_JOUEURS", value: ["sauvegarde"] }
+    this.props.dispatch(actionRemoveAllPlayersSauvegarde);
+    const actionRemoveAllSavedList = { type: "REMOVE_ALL_SAVED_LIST"}
+    this.props.dispatch(actionRemoveAllSavedList);
+    const actionRemoveAllTournaments = { type: "SUPPR_ALL_TOURNOIS"}
+    this.props.dispatch(actionRemoveAllTournaments);
+    const actionRemoveAllMatchs = { type: "REMOVE_ALL_MATCHS"}
+    this.props.dispatch(actionRemoveAllMatchs);
+    const actionRemoveAllOptions = { type: "SUPPR_ALL_OPTIONS"}
+    this.props.dispatch(actionRemoveAllOptions);
+  }
+
   render() {
     return (
       <SafeAreaView style={styles.main_container}>
@@ -152,6 +178,9 @@ class Changelog extends React.Component {
             </View>
           </View>
           <View style={styles.create_container}>
+            <Button color="red" title='Supprimer toutes les données' onPress={() => this._clearData()}/>
+          </View>
+          <View style={styles.create_container}>
             <Button color="#1c3969" title='Code OpenSource' onPress={() => Linking.canOpenURL('https://github.com/mathis-kdio/Petanque-GCU').then(supported => {if (supported) {Linking.openURL('https://github.com/mathis-kdio/Petanque-GCU')}})}/>
             <Text style={styles.create_text}>Par Mathis Cadio</Text>
           </View>
@@ -194,4 +223,14 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Changelog
+const mapStateToProps = (state) => {
+  return {
+    listesJoueurs: state.listesJoueurs.listesJoueurs,
+    savedLists: state.listesJoueurs.listesSauvegarde,
+    listeMatchs: state.gestionMatchs.listematchs,
+    listeTournois: state.listeTournois.listeTournois,
+    optionsTournoi: state.optionsTournoi.options,
+  }
+}
+
+export default connect(mapStateToProps)(Changelog)

@@ -13,6 +13,12 @@ function optionsTournoi(state = initialState, action) {
         }
       }
       return nextState || state
+    case 'REMOVE_ALL_OPTIONS':
+      nextState = {
+        ...state,
+        options: initialState.options
+      }
+      return nextState || state
   default:
     return state
   }

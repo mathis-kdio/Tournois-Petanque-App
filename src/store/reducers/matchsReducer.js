@@ -45,6 +45,12 @@ function gestionMatchs(state = initialState, action) {
         }
       }
       return nextState || state    
+    case 'REMOVE_ALL_MATCHS':
+      nextState = {
+        ...state,
+        listematchs: initialState.listematchs
+      }
+      return nextState || state
   default:
     return state
   }
