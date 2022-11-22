@@ -24,24 +24,23 @@ class ListeJoueurItem extends React.Component {
     }
   }
 
-  _showSupprimerJoueur(joueur, isInscription, updateSuggestions) {
+  _showSupprimerJoueur(joueur, isInscription) {
     if (isInscription === true) {
       return (
         <View style={{marginLeft: 5}}>
-            <Icon.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._supprimerJoueur(joueur.id, updateSuggestions)}/>
+            <Icon.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._supprimerJoueur(joueur.id)}/>
         </View>
       )
     }
   }
 
-  _supprimerJoueur(idJoueur, updateSuggestions) {
+  _supprimerJoueur(idJoueur) {
     const actionSuppr = {type: "SUPPR_JOUEUR", value: [this.props.optionsTournoi.mode, idJoueur]};
     this.props.dispatch(actionSuppr);
     if (this.props.optionsTournoi.typeEquipes == "teteatete") {
       const actionUpdateEquipe = {type: "UPDATE_ALL_JOUEURS_EQUIPE", value: [this.props.optionsTournoi.mode]};
       this.props.dispatch(actionUpdateEquipe);
     }
-    updateSuggestions();
   }
 
   _showRenommerJoueur(joueur, isInscription, avecEquipes) {
@@ -197,7 +196,7 @@ class ListeJoueurItem extends React.Component {
   }
 
   render() {
-    const { joueur, isInscription, avecEquipes, typeEquipes, nbJoueurs, updateSuggestions } = this.props;
+    const { joueur, isInscription, avecEquipes, typeEquipes, nbJoueurs } = this.props;
     return (
       <View style={styles.main_container}>
         <View style={styles.name_container}>
@@ -206,7 +205,7 @@ class ListeJoueurItem extends React.Component {
         {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
         {this._isSpecial(joueur.special)}
         {this._showRenommerJoueur(joueur, isInscription, avecEquipes)}
-        {this._showSupprimerJoueur(joueur, isInscription, updateSuggestions)}
+        {this._showSupprimerJoueur(joueur, isInscription)}
       </View>
     )
   }

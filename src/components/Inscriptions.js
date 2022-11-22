@@ -22,17 +22,27 @@ class Inscription extends React.Component {
   }
 
   componentDidMount() {
-    this._updateSuggestions();
+    let suggestions = this._getSuggestions();
+    this.setState({
+      suggestions: suggestions
+    })
   }
 
-  _updateSuggestions() {
-    let listeHistoriqueFiltre = this.props.listesJoueurs.historique.filter(item1 => this.props.listesJoueurs[this.props.optionsTournoi.mode].every(item2 => item2.name !== item1.name));
-    if (listeHistoriqueFiltre.length > 0) {
-      let suggestions = listeHistoriqueFiltre.sort(function (a, b) {return b.nbTournois - a.nbTournois;});
+  componentDidUpdate() {
+    let newSuggestions = this._getSuggestions();
+    if (newSuggestions.length != this.state.suggestions.length) {
       this.setState({
-        suggestions: suggestions
+        suggestions: newSuggestions
       })
     }
+  }
+
+  _getSuggestions() {
+    let listeHistoriqueFiltre = this.props.listesJoueurs.historique.filter(item1 => this.props.listesJoueurs[this.props.optionsTournoi.mode].every(item2 => item2.name !== item1.name));
+    if (listeHistoriqueFiltre.length > 0) {
+      return listeHistoriqueFiltre.sort(function (a, b) {return b.nbTournois - a.nbTournois;});
+    }
+    return undefined;
   }
 
   _ajoutJoueurTextInputChanged(text) {
@@ -82,7 +92,6 @@ class Inscription extends React.Component {
   _removeAllPlayers() {
     const actionRemoveAll = { type: "SUPPR_ALL_JOUEURS", value: [this.props.optionsTournoi.mode] }
     this.props.dispatch(actionRemoveAll);
-    this._updateSuggestions();
   }
 
   _loadSavedList() {
@@ -92,7 +101,6 @@ class Inscription extends React.Component {
         loadListScreen: true
       }
     })
-    this._updateSuggestions();
   }
 
   _displayListeJoueur() {
@@ -114,7 +122,6 @@ class Inscription extends React.Component {
               avecEquipes={avecEquipes}
               typeEquipes={this.props.optionsTournoi.typeEquipes}
               nbJoueurs={this.props.listesJoueurs[this.props.optionsTournoi.mode].length}
-              updateSuggestions={() => this._updateSuggestions()}
             />
           )}
           ListFooterComponent={
@@ -145,7 +152,6 @@ class Inscription extends React.Component {
             renderItem={({item}) => (
               <JoueurSuggere
                 joueur={item}
-                updateSuggestions={() => this._updateSuggestions()}
               />
             )}
           />
@@ -167,7 +173,6 @@ class Inscription extends React.Component {
 
   _showMoreSuggestedPlayers() {
     this.nbSuggestions += 5;
-    this._updateSuggestions(); 
   }
 
   _buttonRemoveAllPlayers() {
