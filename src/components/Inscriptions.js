@@ -166,7 +166,7 @@ class Inscription extends React.Component {
   _buttonMoreSuggestedPlayers() {
     if (this.nbSuggestions < this.state.suggestions.length) {
       return (
-        <Button style={styles.text_nbjoueur} color='green' title='Afficher + de noms' onPress={() => this._showMoreSuggestedPlayers()}/>
+        <Button style={styles.text_nbjoueur} color='green' title='Afficher + de joueurs suggérés' onPress={() => this._showMoreSuggestedPlayers()}/>
       )
     }
   }
