@@ -65,6 +65,10 @@ function listesJoueurs(state = initialState, action) {
       if (action.value[0] != "" || action.value[1] != "") {
         const listes = { ...state.listesJoueurs };
         listes[action.value[0]] = listes[action.value[0]].filter((item, index) => item.id !== action.value[1])
+        //Update Ids
+        for (let i = 0; i < listes[action.value[0]].length; i++) {
+          listes[action.value[0]][i].id = i
+        }
         nextState = {
           ...state,
           listesJoueurs: listes

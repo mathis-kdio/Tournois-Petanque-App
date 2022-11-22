@@ -79,18 +79,6 @@ class Inscription extends React.Component {
     }
   }
 
-  _supprimerJoueur(idJoueur) {
-    const actionSuppr = {type: "SUPPR_JOUEUR", value: [this.props.optionsTournoi.mode, idJoueur]};
-    this.props.dispatch(actionSuppr);
-    const actionUpdate = {type: "UPDATE_ALL_JOUEURS_ID", value: [this.props.optionsTournoi.mode]};
-    this.props.dispatch(actionUpdate);
-    if (this.props.optionsTournoi.typeEquipes == "teteatete") {
-      const actionUpdateEquipe = {type: "UPDATE_ALL_JOUEURS_EQUIPE", value: [this.props.optionsTournoi.mode]};
-      this.props.dispatch(actionUpdateEquipe);
-    }
-    this._updateSuggestions();
-  }
-
   _removeAllPlayers() {
     const actionRemoveAll = { type: "SUPPR_ALL_JOUEURS", value: [this.props.optionsTournoi.mode] }
     this.props.dispatch(actionRemoveAll);
@@ -122,11 +110,11 @@ class Inscription extends React.Component {
           renderItem={({item}) => (
             <ListeJoueurItem
               joueur={item}
-              supprimerJoueur={this._supprimerJoueur}
               isInscription={true}
               avecEquipes={avecEquipes}
               typeEquipes={this.props.optionsTournoi.typeEquipes}
               nbJoueurs={this.props.listesJoueurs[this.props.optionsTournoi.mode].length}
+              updateSuggestions={() => this._updateSuggestions()}
             />
           )}
           ListFooterComponent={
