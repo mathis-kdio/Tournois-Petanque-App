@@ -42,7 +42,7 @@ class Inscription extends React.Component {
     if (listeHistoriqueFiltre.length > 0) {
       return listeHistoriqueFiltre.sort(function (a, b) {return b.nbTournois - a.nbTournois;});
     }
-    return undefined;
+    return [];
   }
 
   _ajoutJoueurTextInputChanged(text) {
