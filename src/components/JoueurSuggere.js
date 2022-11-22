@@ -12,12 +12,17 @@ class JoueurSuggere extends React.Component {
     }
   }
 
-  _ajouterJoueur(joueurName) {
+  _removePlayer(playerId) {
+    const actionSuppr = {type: "SUPPR_JOUEUR", value: ["historique", playerId]};
+    this.props.dispatch(actionSuppr);
+  }
+
+  _addPlayer(playerName) {
     let equipe = undefined;
     if (this.props.optionsTournoi.typeEquipes == "teteatete") {
       equipe = this.props.listesJoueurs.avecEquipes.length + 1;
     }
-    const action = { type: "AJOUT_JOUEUR", value: [this.props.optionsTournoi.mode, joueurName, this.state.isSpecial, equipe] };
+    const action = { type: "AJOUT_JOUEUR", value: [this.props.optionsTournoi.mode, playerName, this.state.isSpecial, equipe] };
     this.props.dispatch(action);
   }
 
@@ -43,7 +48,10 @@ class JoueurSuggere extends React.Component {
           />
         </View>
         <View style={styles.button_container}>
-          <Icon.Button name="check" backgroundColor="green" onPress={() => this._ajouterJoueur(joueur.name)}/>
+          <Icon.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._removePlayer(joueur.id)}/>
+        </View>
+        <View style={styles.button_container}>
+          <Icon.Button name="plus" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._addPlayer(joueur.name)}/>
         </View>
       </View>
     )
