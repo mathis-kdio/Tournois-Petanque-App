@@ -12,12 +12,12 @@ class Inscription extends React.Component {
     super(props)
     this.joueurText = "",
     this.addPlayerTextInput = React.createRef()
-    this.nbSuggestions = 5
     this.state = {
       joueur: undefined,
       isChecked: false,
       etatBouton: false,
-      suggestions: []
+      suggestions: [],
+      nbSuggestions: 5
     }
   }
 
@@ -138,7 +138,7 @@ class Inscription extends React.Component {
 
   _displayListeJoueursSuggeres() {
     if (this.state.suggestions.length > 0) {
-      let partialSuggested = this.state.suggestions.slice(0, this.nbSuggestions);
+      let partialSuggested = this.state.suggestions.slice(0, this.state.nbSuggestions);
       return (
         <View>
           <View style={styles.text_container}>
@@ -164,7 +164,7 @@ class Inscription extends React.Component {
   }
 
   _buttonMoreSuggestedPlayers() {
-    if (this.nbSuggestions < this.state.suggestions.length) {
+    if (this.state.nbSuggestions < this.state.suggestions.length) {
       return (
         <Button style={styles.text_nbjoueur} color='green' title='Afficher + de joueurs suggérés' onPress={() => this._showMoreSuggestedPlayers()}/>
       )
@@ -172,7 +172,7 @@ class Inscription extends React.Component {
   }
 
   _showMoreSuggestedPlayers() {
-    this.nbSuggestions += 5;
+    this.setState(prevState => ({ nbSuggestions: prevState.nbSuggestions + 5 }))
   }
 
   _buttonRemoveAllPlayers() {
