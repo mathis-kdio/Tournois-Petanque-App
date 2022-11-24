@@ -91,7 +91,7 @@ class ListeTournois extends React.Component {
           <Button disabled={boutonDesactive} color="#1c3969" title="Charger" onPress={() => this._chargerTournoi(tournoi)}/>
         </View>
         <View style={styles.buttonView}>
-          <Icon.Button disabled={boutonDesactive} name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._modalSupprimerTournoi(tournoi)}/>
+          <Icon.Button disabled={boutonDesactive} name="times" backgroundColor={boutonDesactive ? "#c0c0c0" : "red"} iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._modalSupprimerTournoi(tournoi)}/>
         </View>
       </View>
     )
