@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    savedLists: state.listesJoueurs.listesSauvegarde,
+    savedLists: state.listesJoueurs.listesSauvegarde
   }
 }
 
