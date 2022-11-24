@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, TextInput, Text, Button } from 'react-native'
+import { StyleSheet, View, TextInput, Text, Button, Alert } from 'react-native'
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { connect } from 'react-redux'
 import { FlatList } from 'react-native-gesture-handler'
@@ -87,6 +87,18 @@ class Inscription extends React.Component {
     else {
       return <Button disabled title='Ajouter' onPress={() => this._ajoutJoueur()}/>
     }
+  }
+
+  _modalRemoveAllPlayers() {
+    Alert.alert(
+      "Supprimer tous les joueurs",
+      "Êtes-vous sûr de vouloir supprimer tous les joueurs déjà inscrits ?",
+      [
+        { text: "Annuler", onPress: () => undefined, style: "cancel" },
+        { text: "Oui", onPress: () => this._removeAllPlayers() },
+      ],
+      { cancelable: true }
+    );
   }
 
   _removeAllPlayers() {
@@ -179,7 +191,7 @@ class Inscription extends React.Component {
     if (this.props.listesJoueurs[this.props.optionsTournoi.mode].length > 0) {
       return (
         <View style={styles.buttonView}>
-          <Button style={styles.text_nbjoueur} color='red' title='Supprimer tous les joueurs' onPress={() => this._removeAllPlayers()}/>
+          <Button style={styles.text_nbjoueur} color='red' title='Supprimer tous les joueurs' onPress={() => this._modalRemoveAllPlayers()}/>
         </View>
       )
     }
