@@ -10,7 +10,7 @@ class Changelog extends React.Component {
     super(props)
   }
 
-  _modalClearData(list) {
+  _modalClearData() {
     Alert.alert(
       "Suppression des données",
       "Êtes-vous sûr de vouloir supprimer toutes les données (listes joueurs, anciens tournois, etc) ?",
