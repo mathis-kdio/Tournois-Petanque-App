@@ -148,9 +148,13 @@ function listesJoueurs(state = initialState, action) {
       }
       return nextState || state;
     case 'REMOVE_ALL_SAVED_LIST':
+      const listes = { ...state.listesSauvegarde };
+      listes["avecNoms"] = [];
+      listes["sansNoms"] = [];
+      listes["avecEquipes"] = [];
       nextState = {
         ...state,
-        listesSauvegarde: initialState.listesSauvegarde
+        listesSauvegarde: listes
       }
       return nextState || state
   default:
