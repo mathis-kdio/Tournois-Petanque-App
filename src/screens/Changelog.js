@@ -32,8 +32,7 @@ class Changelog extends React.Component {
   }
 
   _changelogItem(item) {
-    console.log(item)
-    return(
+    return (
       <View style={styles.informations_container}>
         <Text style={styles.titre}>Version {item.version} :</Text>
         <Text style={styles.informations_texte}>
@@ -42,7 +41,6 @@ class Changelog extends React.Component {
       </View>
     )
   }
-
 
   render() {
     return (
@@ -83,10 +81,11 @@ const styles = StyleSheet.create({
   },
   informations_container: {
     alignItems: 'center',
-    paddingHorizontal: '10%',
+    paddingHorizontal: '5%',
     marginBottom: 5
   },
   informations_texte: {
+    alignSelf: 'flex-start',
     fontSize: 18,
     color: 'white'
   },
