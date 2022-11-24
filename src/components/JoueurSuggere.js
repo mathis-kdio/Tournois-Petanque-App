@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, Alert } from 'react-native'
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -10,6 +10,18 @@ class JoueurSuggere extends React.Component {
     this.state = {
       isSpecial: false,
     }
+  }
+
+  _modalRemovePlayer(playerId) {
+    Alert.alert(
+      "Supprimer le joueur des suggestions",
+      "Êtes-vous sûr de vouloir supprimer définitivement ce joueur des suggestions ?",
+      [
+        { text: "Annuler", onPress: () => undefined, style: "cancel" },
+        { text: "Oui", onPress: () => this._removePlayer(playerId) },
+      ],
+      { cancelable: true }
+    );
   }
 
   _removePlayer(playerId) {
@@ -48,7 +60,7 @@ class JoueurSuggere extends React.Component {
           />
         </View>
         <View style={styles.button_container}>
-          <Icon.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._removePlayer(joueur.id)}/>
+          <Icon.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._modalRemovePlayer(joueur.id)}/>
         </View>
         <View style={styles.button_container}>
           <Icon.Button name="plus" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._addPlayer(joueur.name)}/>

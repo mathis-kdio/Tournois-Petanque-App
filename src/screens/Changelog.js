@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Text, Button, FlatList } from 'react-native'
+import { StyleSheet, View, Text, Button, FlatList, Alert } from 'react-native'
 import { expo } from '../../app.json'
 import * as Linking from 'expo-linking'
 import { connect } from 'react-redux'
@@ -8,6 +8,18 @@ import ChangelogData from '../assets/ChangelogData.json'
 class Changelog extends React.Component {
   constructor(props) {
     super(props)
+  }
+
+  _modalClearData() {
+    Alert.alert(
+      "Suppression des données",
+      "Êtes-vous sûr de vouloir supprimer toutes les données (listes joueurs, anciens tournois, etc) ?",
+      [
+        { text: "Annuler", onPress: () => undefined, style: "cancel" },
+        { text: "Oui", onPress: () => this._clearData() },
+      ],
+      { cancelable: true }
+    );
   }
 
   _clearData() {
@@ -53,7 +65,7 @@ class Changelog extends React.Component {
               renderItem={({item}) => this._changelogItem(item)}
           />
           <View style={styles.create_container}>
-            <Button color="red" title='Supprimer toutes les données' onPress={() => this._clearData()}/>
+            <Button color="red" title='Supprimer toutes les données' onPress={() => this._modalClearData()}/>
           </View>
           <View style={styles.create_container}>
             <Button color="#1c3969" title='Code OpenSource' onPress={() => Linking.canOpenURL('https://github.com/mathis-kdio/Petanque-GCU').then(supported => {if (supported) {Linking.openURL('https://github.com/mathis-kdio/Petanque-GCU')}})}/>
@@ -91,7 +103,7 @@ const styles = StyleSheet.create({
   },
   create_container: {
     alignItems: 'center',
-    paddingBottom: 10
+    paddingVertical: 10
   },
   create_text: {
     fontSize: 15,
