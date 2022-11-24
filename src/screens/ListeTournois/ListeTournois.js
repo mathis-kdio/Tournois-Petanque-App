@@ -85,10 +85,13 @@ class ListeTournois extends React.Component {
           <Text style={styles.tournoi_text}>Tournoi n°{tournoi.tournoiId}</Text>
         </View>
         <View style={styles.buttonView}>
+          <Icon.Button name="info-circle" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this.setState({ modalTournoiInfos: true, infosTournoi: tournoi })}/>
+        </View>
+        <View style={styles.buttonView}>
           <Button disabled={boutonDesactive} color="#1c3969" title="Charger" onPress={() => this._chargerTournoi(tournoi)}/>
         </View>
         <View style={styles.buttonView}>
-          <Button disabled={boutonDesactive} color="red" title="Supprimer" onPress={() => this._modalSupprimerTournoi(tournoi)}/>
+          <Icon.Button disabled={boutonDesactive} name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._modalSupprimerTournoi(tournoi)}/>
         </View>
       </View>
     )
