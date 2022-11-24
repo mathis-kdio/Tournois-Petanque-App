@@ -36,7 +36,8 @@ function listeTournois(state = initialState, action) {
     case 'SUPPR_ALL_TOURNOIS':
       nextState = {
         ...state,
-        listeTournois: initialState.listeTournois
+        listeTournois: initialState.listeTournois,
+        tournoiIncr: initialState.tournoiIncr
       }
       return nextState || state
   default:
