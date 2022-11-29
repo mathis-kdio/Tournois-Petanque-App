@@ -45,6 +45,10 @@ class ListeTournois extends React.Component {
     );
   }
 
+  _editName() {
+    
+  }
+
   _modalTournoiInfos() {
     let tournoi = this.state.infosTournoi;
     if (tournoi.tournoi) {
@@ -81,8 +85,11 @@ class ListeTournois extends React.Component {
     }
     return (
       <View style={styles.tournoi_container}>
-        <View style={styles.text_container}>
+        <View style={styles.tournoi_name_container}>
           <Text style={styles.tournoi_text}>Tournoi n°{tournoi.tournoiId}</Text>
+          <View style={styles.buttonView}>
+            <Icon.Button name="edit" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._editName(tournoi)}/>
+          </View>
         </View>
         <View style={styles.buttonView}>
           <Icon.Button name="info-circle" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this.setState({ modalTournoiInfos: true, infosTournoi: tournoi })}/>
@@ -143,8 +150,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-  text_container: {
+  tournoi_name_container: {
     flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   tournoi_text: {
     fontSize: 15,
