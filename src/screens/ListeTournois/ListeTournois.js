@@ -59,8 +59,8 @@ class ListeTournois extends React.Component {
         >
           <View style={modalStyles.centeredView}>
             <View style={modalStyles.modalView}>
-              <Text style={modalStyles.modalText}>Informations concernant l'état du tournoi :</Text>
-              <View style={styles.buttonViewCreate}>
+              <Text style={modalStyles.modalText}>Informations concernant le tournoi :</Text>
+              <View>
                 <Text style={modalStyles.modalText}>Id du tournoi: {tournoi.tournoiId}</Text>
                 <Text style={modalStyles.modalText}>Nombre de joueurs: {tournoi.tournoi.length}</Text>
               </View>
@@ -180,7 +180,7 @@ const modalStyles = StyleSheet.create({
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
+    textAlign: "left"
   }
 })
 
