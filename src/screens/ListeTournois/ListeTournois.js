@@ -53,7 +53,7 @@ class ListeTournois extends React.Component {
       <View style={styles.main_container}>
         <View style={styles.body_container}>
           <View>
-            <Text style={styles.titre}>Types d'équipe et de tournoi</Text>
+            <Text style={styles.titre}>Vous avez {this.props.listeTournois.length} tournois</Text>
           </View>
           <View style={styles.flatList_container}>
             <FlatList

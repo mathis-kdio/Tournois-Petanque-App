@@ -46,28 +46,22 @@ class ListeTournoiItem extends React.Component {
   }
   
   _showRenameTournoi(tournoi) {
-    if (this.state.renommerOn == false) {
-      return (
-        <View>
-          <Icon.Button name="edit" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renameTournoiInput(tournoi)}/>
-        </View>
-      )
-    }
-    else {
-      if (this.state.disabledBoutonRenommer == true) {
+    if (this.state.renommerOn) {
+      if (this.state.disabledBoutonRenommer) {
         return (
-          <View>
-            <Icon.Button name="edit" backgroundColor="gray" iconStyle={{paddingHorizontal: 2, marginRight: 0}}/>
-          </View>
+          <Icon.Button name="check" backgroundColor="gray" iconStyle={{paddingHorizontal: 2, marginRight: 0}}/>
         )
       }
       else {
         return (
-          <View>
-            <Icon.Button name="check" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renameTournoi()}/>
-          </View>
+          <Icon.Button name="check" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renameTournoi(tournoi)}/>
         )
       }
+    }
+    else {
+      return (
+        <Icon.Button name="edit" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renameTournoiInput(tournoi)}/>
+      )
     }
   }
 
@@ -78,13 +72,13 @@ class ListeTournoiItem extends React.Component {
     this.tournoiNameText = tournoi.name
   }
 
-  _renameTournoi() {
+  _renameTournoi(tournoi) {
     if (this.tournoiNameText != "") {
       this.setState({
         renommerOn: false,
         disabledBoutonRenommer: true
       })
-      const actionRenameTournoi = { type: "RENOMMER_TOURNOI", value: {tournoi: tournoi, newName: tournoiNameText} }
+      const actionRenameTournoi = { type: "RENOMMER_TOURNOI", value: {tournoiId: tournoi.tournoiId, newName: this.tournoiNameText} }
       this.props.dispatch(actionRenameTournoi)
       this.tournoiNameText = ""
     }
@@ -98,21 +92,21 @@ class ListeTournoiItem extends React.Component {
   }
 
   _tournoiName(tournoi) {
-    if (this.state.renommerOn == true) {
-      let placeholder = tournoi.name != undefined ? tournoi.name : "Tournoi n°"+tournoi.tournoiId;
+    let tournoiName = 'Tournoi ' + (tournoi.name ? tournoi.name : 'n°' + tournoi.tournoiId);
+    if (this.state.renommerOn) {
       return (
         <TextInput
           style={styles.text_input}
-          placeholder={placeholder}
+          placeholder={tournoiName}
           autoFocus={true}
           onChangeText={(text) => this._tournoiTextInputChanged(text)}
-          onSubmitEditing={() => this._renameTournoi()}
+          onSubmitEditing={() => this._renameTournoi(tournoi)}
         />
       )
     }
     else {
       return (
-        <Text style={styles.tournoi_text}>Tournoi n°{tournoi.tournoiId}</Text>
+        <Text style={styles.tournoi_text}>{tournoiName}</Text>
       )
     }
   }
@@ -126,10 +120,10 @@ class ListeTournoiItem extends React.Component {
     return (
       <View style={styles.tournoi_container}>
         <View style={styles.tournoi_name_container}>
-          {this._tournoiName(tournoi)}
-          <View style={styles.buttonView}>
-            {this._showRenameTournoi(tournoi)}
+          <View style={{flex: 1}}>
+            {this._tournoiName(tournoi)}
           </View>
+          {this._showRenameTournoi(tournoi)}
         </View>
         <View style={styles.buttonView}>
           <Icon.Button name="info-circle" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => _showModalTournoiInfos(tournoi)}/>
