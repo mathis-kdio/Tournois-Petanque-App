@@ -40,6 +40,17 @@ function listeTournois(state = initialState, action) {
         tournoiIncr: initialState.tournoiIncr
       }
       return nextState || state
+    case 'RENOMMER_TOURNOI':
+      if (action.value.tournoiId != "" && action.value.newName != "") {
+        const liste = [ ...state.listeTournois ];
+        let tournoiId = state.listeTournois.findIndex(e => e.tournoiId == action.value.tournoiId);
+        liste[tournoiId].name = action.value.newName;
+        nextState = {
+          ...state,
+          listeTournois: liste
+        }
+      }
+      return nextState || state
   default:
     return state
   }

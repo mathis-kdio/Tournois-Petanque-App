@@ -1,10 +1,9 @@
 import React from 'react'
-import { StyleSheet, View, FlatList, Text, Button, Alert, Modal } from 'react-native'
+import { StyleSheet, View, FlatList, Text, Button, Modal } from 'react-native'
 import { connect } from 'react-redux'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import ListeTournoiItem from '../../components/ListeTournoiItem'
 
 class ListeTournois extends React.Component {
-
   constructor(props) {
     super(props)
     this.state = {
@@ -13,36 +12,11 @@ class ListeTournois extends React.Component {
     }
   }
 
-  _chargerTournoi(tournoi) {
-    const actionUpdateListeMatchs = {type: "AJOUT_MATCHS", value: tournoi.tournoi};
-    this.props.dispatch(actionUpdateListeMatchs);
-    this.props.navigation.reset({
-      index: 0,
-      routes: [{
-        name: 'ListeMatchsInscription', 
-        params: {
-          tournoiId: tournoi.tournoiId, 
-          tournoi: tournoi
-        }
-      }],
-    });
-  }
-
-  _supprimerTournoi(tournoiId) {
-    const actionSupprimerTournoi = {type: "SUPPR_TOURNOI", value: {tournoiId: tournoiId}};
-    this.props.dispatch(actionSupprimerTournoi);
-  }
-
-  _modalSupprimerTournoi(tournoi) {
-    Alert.alert(
-      "Suppression d'un tournoi",
-      "Êtes-vous sûr de vouloir supprimer le tournoi n°" + (tournoi.tournoiId) + " ?",
-      [
-        { text: "Annuler", onPress: () => undefined, style: "cancel" },
-        { text: "OK", onPress: () => this._supprimerTournoi(tournoi.tournoiId) },
-      ],
-      { cancelable: true }
-    );
+  _showModalTournoiInfos(tournoi) {
+    this.setState({
+      modalTournoiInfos: true,
+      infosTournoi: tournoi
+    })
   }
 
   _modalTournoiInfos() {
@@ -50,12 +24,12 @@ class ListeTournois extends React.Component {
     if (tournoi.tournoi) {
       return (
         <Modal
-        animationType="slide"
-        transparent={true}
-        visible={this.state.modalTournoiInfos}
-        onRequestClose={() => {
-          this.setState({ modalTournoiInfos: false })
-        }}
+          animationType="slide"
+          transparent={true}
+          visible={this.state.modalTournoiInfos}
+          onRequestClose={() => {
+            this.setState({ modalTournoiInfos: false })
+          }}
         >
           <View style={modalStyles.centeredView}>
             <View style={modalStyles.modalView}>
@@ -74,42 +48,24 @@ class ListeTournois extends React.Component {
     }
   }
 
-  _listeTournoisItem(tournoi) {
-    let boutonDesactive = false;
-    if (this.props.listeMatchs && tournoi.tournoiId == this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID) {
-      boutonDesactive = true;
-    }
-    return (
-      <View style={styles.tournoi_container}>
-        <View style={styles.text_container}>
-          <Text style={styles.tournoi_text}>Tournoi n°{tournoi.tournoiId}</Text>
-        </View>
-        <View style={styles.buttonView}>
-          <Icon.Button name="info-circle" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this.setState({ modalTournoiInfos: true, infosTournoi: tournoi })}/>
-        </View>
-        <View style={styles.buttonView}>
-          <Button disabled={boutonDesactive} color="#1c3969" title="Charger" onPress={() => this._chargerTournoi(tournoi)}/>
-        </View>
-        <View style={styles.buttonView}>
-          <Icon.Button disabled={boutonDesactive} name="times" backgroundColor={boutonDesactive ? "#c0c0c0" : "red"} iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._modalSupprimerTournoi(tournoi)}/>
-        </View>
-      </View>
-    )
-  }
-
   render() {
     return (
       <View style={styles.main_container}>
         <View style={styles.body_container}>
           <View>
-            <Text style={styles.titre}>Types d'équipe et de tournoi</Text>
+            <Text style={styles.titre}>Vous avez {this.props.listeTournois.length} tournois</Text>
           </View>
           <View style={styles.flatList_container}>
             <FlatList
               data={this.props.listeTournois}
               initialNumToRender={20}
               keyExtractor={(item) => item.tournoiId.toString() }
-              renderItem={({item}) => (this._listeTournoisItem(item))}
+              renderItem={({item}) => (
+                <ListeTournoiItem
+                  tournoi={item}
+                  _showModalTournoiInfos={(tournoi) => this._showModalTournoiInfos(tournoi)}
+                />
+              )}
             />
           </View>
         </View>
@@ -143,8 +99,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-  text_container: {
+  tournoi_name_container: {
     flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   tournoi_text: {
     fontSize: 15,
