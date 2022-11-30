@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 class ListeTournoiItem extends React.Component {
   constructor(props) {
     super(props)
-    this.joueurText = ""
+    this.tournoiNameText = ""
     this.state = {
       renommerOn: false,
       disabledBoutonRenommer: true
@@ -45,7 +45,7 @@ class ListeTournoiItem extends React.Component {
     );
   }
   
-  _showRenommerJoueur(tournoi) {
+  _showRenameTournoi(tournoi) {
     if (this.state.renommerOn == false) {
       return (
         <View>
@@ -75,34 +75,26 @@ class ListeTournoiItem extends React.Component {
     this.setState({
       renommerOn: true
     })
-    this.joueurText = tournoi.name
+    this.tournoiNameText = tournoi.name
   }
 
   _renameTournoi() {
-    if (this.joueurText != "") {
+    if (this.tournoiNameText != "") {
       this.setState({
         renommerOn: false,
         disabledBoutonRenommer: true
       })
-      //const actionRenommer = { type: "RENOMMER_JOUEUR", value: [typeInscription, joueur.id, this.joueurText] }
-      //this.props.dispatch(actionRenommer)
-      this.joueurText = ""
+      const actionRenameTournoi = { type: "RENOMMER_TOURNOI", value: {tournoi: tournoi, newName: tournoiNameText} }
+      this.props.dispatch(actionRenameTournoi)
+      this.tournoiNameText = ""
     }
   }
 
-  _joueurTxtInputChanged = (text) => {
-    this.joueurText = text
-    //Le bouton valider est désactivé si aucune lettre
-    if (this.joueurText == '') {
-      this.setState({
-        disabledBoutonRenommer: true
-      })
-    }
-    else {
-      this.setState({
-        disabledBoutonRenommer: false
-      })
-    }
+  _tournoiTextInputChanged(text) {
+    this.tournoiNameText = text
+    this.setState({
+      disabledBoutonRenommer: this.tournoiNameText == '' ? true : false
+    })
   }
 
   _tournoiName(tournoi) {
@@ -113,7 +105,7 @@ class ListeTournoiItem extends React.Component {
           style={styles.text_input}
           placeholder={placeholder}
           autoFocus={true}
-          onChangeText={(text) => this._joueurTxtInputChanged(text)}
+          onChangeText={(text) => this._tournoiTextInputChanged(text)}
           onSubmitEditing={() => this._renameTournoi()}
         />
       )
@@ -136,7 +128,7 @@ class ListeTournoiItem extends React.Component {
         <View style={styles.tournoi_name_container}>
           {this._tournoiName(tournoi)}
           <View style={styles.buttonView}>
-            {this._showRenommerJoueur(tournoi)}
+            {this._showRenameTournoi(tournoi)}
           </View>
         </View>
         <View style={styles.buttonView}>
@@ -151,7 +143,6 @@ class ListeTournoiItem extends React.Component {
       </View>
     )
   }
-
 }
 
 const styles = StyleSheet.create({
