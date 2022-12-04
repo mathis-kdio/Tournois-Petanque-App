@@ -17,14 +17,14 @@ class CreateListeJoueur extends React.Component {
   }
 
   render() {
-    let listId = 1;
+    let nbJoueurs = 0;
     if (this.props.listesJoueurs.sauvegarde) {
-      listId = this.props.listesJoueurs.sauvegarde.length + 1;
+      nbJoueurs = this.props.listesJoueurs.sauvegarde.length;
     }
     return (
       <View style={styles.main_container}>
           <View style={styles.text_container}>
-            <Text style={styles.titre}>Liste n°{listId} :</Text>
+            <Text style={styles.titre}>Il y a {nbJoueurs} joueurs:</Text>
           </View>
           <Inscriptions
             navigation={this.props.navigation}
