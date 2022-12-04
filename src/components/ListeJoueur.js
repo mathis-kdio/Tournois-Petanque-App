@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, Text, Button, FlatList, Alert } from 'react-native'
 import { connect } from 'react-redux'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 class ListeJoueur extends React.Component {
   constructor(props) {
@@ -39,12 +40,12 @@ class ListeJoueur extends React.Component {
     }
     else {
       return(
-        <View>
+        <View style={styles.buttonContainer}>
           <View style={styles.buttonView}>
             <Button color="#1c3969" title="Modifier" onPress={() => this.modifyList(list)}/>
           </View>
           <View style={styles.buttonView}>
-            <Button color="red" title="Supprimer" onPress={() => this._modalRemoveList(list)}/>
+            <Icon.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._modalRemoveList(list)}/>
           </View>
         </View>
       )
@@ -60,9 +61,7 @@ class ListeJoueur extends React.Component {
   _listeJoueursItem(list) {
     return (
       <View style={styles.saved_list_container}>
-        <View style={styles.text_container}>
-          <Text style={styles.title_text}>Liste n°{list[list.length -1].listId + 1}</Text>
-        </View>
+        <Text style={styles.title_text}>Liste n°{list[list.length -1].listId + 1}</Text>
         {this._buttons(list)}
       </View>
     )
@@ -89,8 +88,8 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   saved_list_container: {
+    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 10,
   },
@@ -101,9 +100,14 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: 'white'
   },
-  buttonView: {
+  buttonContainer: {
     flex: 1,
-    alignItems: 'flex-end'
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end'
+  },
+  buttonView: {
+    marginHorizontal: 5
   }
 })
 
