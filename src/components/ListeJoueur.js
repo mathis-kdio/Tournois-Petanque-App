@@ -15,7 +15,10 @@ class ListeJoueur extends React.Component {
     this.props.dispatch(actionLoadList);
     this.props.navigation.navigate({
       name: 'CreateListeJoueurs',
-      params: { type: "edit" }
+      params: {
+        type: "edit",
+        listId: list[list.length - 1].listId
+      }
     })
   }
 

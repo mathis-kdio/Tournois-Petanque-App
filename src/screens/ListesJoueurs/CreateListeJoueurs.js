@@ -8,14 +8,14 @@ class CreateListeJoueur extends React.Component {
     super(props)
   }
 
-  _dispatch(type) {
+  _dispatch(type, listId) {
     if (type == "create") {
       const addSavedList = { type: "ADD_SAVED_LIST", value: {typeInscription: 'avecNoms', savedList: this.props.listesJoueurs.sauvegarde}};
       this.props.dispatch(addSavedList);
     }
-    else if (type == "edit") {
-      //const editSavedList = { type: "EDIT_SAVED_LIST", value: {typeInscription: 'avecNoms', savedList: this.props.listesJoueurs.sauvegarde}};
-      //this.props.dispatch(editSavedList);
+    else if (type == "edit" && listId != undefined) {
+      const updateSavedList = { type: "UPDATE_SAVED_LIST", value: {typeInscription: 'avecNoms', listId: listId, savedList: this.props.listesJoueurs.sauvegarde}};
+      this.props.dispatch(updateSavedList);
     }
 
     this.props.navigation.navigate('ListesJoueurs');
@@ -37,7 +37,7 @@ class CreateListeJoueur extends React.Component {
           disabled={nbPlayers == 0}
           color="green"
           title={title}
-          onPress={() => this._dispatch(params.type)}
+          onPress={() => this._dispatch(params.type, params.listId)}
         />
       )
     }
