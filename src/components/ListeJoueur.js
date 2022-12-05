@@ -8,9 +8,15 @@ class ListeJoueur extends React.Component {
     super(props)
   }
 
-  modifyList(savedList) {
-    //const actionUpdateListeMatchs = {type: "AJOUT_MATCHS", value: tournoi.tournoi};
-    //this.props.dispatch(actionUpdateListeMatchs);
+  _modifyList(list) {
+    const actionRemoveList = {type: "SUPPR_ALL_JOUEURS", value: ['sauvegarde']};
+    this.props.dispatch(actionRemoveList);
+    const actionLoadList = {type: "LOAD_SAVED_LIST", value: {typeInscriptionSrc: 'avecNoms', typeInscriptionDst: 'sauvegarde', listId: list[list.length-1].listId}};
+    this.props.dispatch(actionLoadList);
+    this.props.navigation.navigate({
+      name: 'CreateListeJoueurs',
+      params: { }
+    })
   }
 
   _modalRemoveList(list) {
@@ -42,7 +48,7 @@ class ListeJoueur extends React.Component {
       return(
         <View style={styles.buttonContainer}>
           <View style={styles.buttonView}>
-            <Button color="#1c3969" title="Modifier" onPress={() => this.modifyList(list)}/>
+            <Button color="#1c3969" title="Modifier" onPress={() => this._modifyList(list)}/>
           </View>
           <View style={styles.buttonView}>
             <Icon.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._modalRemoveList(list)}/>
@@ -53,7 +59,7 @@ class ListeJoueur extends React.Component {
   }
 
   _loadList(listId) {
-    const actionLoadList = { type: "LOAD_SAVED_LIST", value: {typeInscription: 'avecNoms', listId: listId} }
+    const actionLoadList = { type: "LOAD_SAVED_LIST", value: {typeInscriptionSrc: 'avecNoms', typeInscriptionDst: 'avecNoms', listId: listId} }
     this.props.dispatch(actionLoadList);
     this.props.navigation.goBack();
   }
