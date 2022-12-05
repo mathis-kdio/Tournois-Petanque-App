@@ -1,5 +1,19 @@
 [
   {
+    "id":"17",
+    "version": "1.10.0",
+    "infos": [
+      "- Ajout de création de listes de joueurs pouvant être chargées pendant l'inscription afin de gagner du temps.\n",
+      "- Ajout de l'affichage de + de suggestions de joueurs.\n",
+      "- Ajout de la suppression de joueurs suggérés.\n",
+      "- Ajout de l'affichage d'informations des anciens tournois.\n",
+      "- Ajout du renommage des tournois.\n",
+      "- Ajustements de l'interface.\n",
+      "- Amélioration de la stabilité",
+      "- Correction de bugs.\n"
+    ]
+  },
+  {
     "id":"16",
     "version": "1.9.0",
     "infos": [

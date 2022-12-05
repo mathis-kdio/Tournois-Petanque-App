@@ -1,5 +1,20 @@
 # Change Log
 
+## [1.10.0] - 05-12-2022
+
+### Ajouté
+- Ajout de création de listes de joueurs pouvant être chargées pendant l'inscription afin de gagner du temps
+- Ajout de l'affichage de + de suggestions de joueurs
+- Ajout de la suppression de joueurs suggérés
+- Ajout de l'affichage d'informations des anciens tournois
+- Ajout du renommage des tournois
+
+### Changement
+- Ajustements de l'interface
+- Amélioration de la stabilité
+
+### Corrigé
+- Correction de bugs
 ## [1.9.0] - 03-09-2022
 
 ### Ajouté
