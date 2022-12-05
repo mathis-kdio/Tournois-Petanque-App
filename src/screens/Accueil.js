@@ -6,7 +6,7 @@ import * as Linking from 'expo-linking'
 import * as NavigationBar from 'expo-navigation-bar';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import * as VersionCheck from 'react-native-version-check-expo';
+import VersionCheck from 'expo-react-native-version-checker';
 
 class Accueil extends React.Component {
   constructor(props) {
@@ -19,7 +19,7 @@ class Accueil extends React.Component {
 
   componentDidMount() {
     NavigationBar.setBackgroundColorAsync("#0594ae");
-    console.log(VersionCheck.getPackageName());
+    //console.log(VersionCheck.getPackageName());
     /*VersionCheck.needUpdate().then(async res => {
       if (res.isNeeded && this.state.modalVisible != true) {
         this.setState({modalVisible: true})
@@ -112,7 +112,6 @@ class Accueil extends React.Component {
   }
 
   render() {
-    console.log(VersionCheck.getPackageName());
     return (
       <View style={styles.main_container}>
         <View style={styles.logo_container}>
