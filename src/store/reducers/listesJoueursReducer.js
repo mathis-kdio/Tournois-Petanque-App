@@ -105,8 +105,8 @@ function listesJoueurs(state = initialState, action) {
         }
       }
       return nextState || state;
-    case 'ADD_SAVED_LIST'://typeInscription: avecNoms/sansNoms/AvecEquipes
-      if (action.value.typeInscription != "") {
+    case 'ADD_SAVED_LIST'://typeInscription: avecNoms/sansNoms/AvecEquipes  savedList: list
+      if (action.value.typeInscription != "" && action.value.savedList != "") {
         const savedLists = { ...state.listesSauvegarde };
         let listId = 0;
         if (state.listesSauvegarde[action.value.typeInscription]) {
@@ -120,16 +120,27 @@ function listesJoueurs(state = initialState, action) {
         }
       }
       return nextState || state;
-    case 'LOAD_SAVED_LIST'://typeInscription: avecNoms/sansNoms/AvecEquipes     listId: id
-      if (action.value.listId != undefined) {
+    case 'UPDATE_SAVED_LIST'://typeInscription: avecNoms/sansNoms/AvecEquipes  listId: id   savedList: list
+      if (action.value.typeInscription != "" && action.value.listId != undefined && action.value.savedList != "") {
+        const savedLists = { ...state.listesSauvegarde };
+        action.value.savedList.push({listId: action.value.listId})
+        savedLists[action.value.typeInscription][action.value.listId] = action.value.savedList;
+        nextState = {
+          ...state,
+          listesSauvegarde: savedLists
+        }
+      }
+      return nextState || state;      
+    case 'LOAD_SAVED_LIST'://typeInscriptionSrc: avecNoms/sansNoms/AvecEquipes/sauvegarde    //typeInscriptionDst: avecNoms/sansNoms/AvecEquipes/sauvegarde     listId: id
+      if (action.value.typeInscriptionSrc != undefined && action.value.typeInscriptionDst != undefined && action.value.listId != undefined) {
         const savedList = { ...state.listesSauvegarde };
         const listsOfPlayers = { ...state.listesJoueurs };
         //Add to list
-        const copySeletedSavedList = JSON.parse(JSON.stringify(savedList[action.value.typeInscription][action.value.listId].slice(0, -1)))
-        listsOfPlayers[action.value.typeInscription].push(...copySeletedSavedList);
+        const copySeletedSavedList = JSON.parse(JSON.stringify(savedList[action.value.typeInscriptionSrc][action.value.listId].slice(0, -1)))
+        listsOfPlayers[action.value.typeInscriptionDst].push(...copySeletedSavedList);
         //Update Ids
-        for (let i = 0; i < listsOfPlayers[action.value.typeInscription].length; i++) {
-          listsOfPlayers[action.value.typeInscription][i].id = i
+        for (let i = 0; i < listsOfPlayers[action.value.typeInscriptionDst].length; i++) {
+          listsOfPlayers[action.value.typeInscriptionDst][i].id = i
         }
         nextState = {
           ...state,

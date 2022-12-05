@@ -22,7 +22,7 @@ class ListesJoueurs extends React.Component {
 
     this.props.navigation.navigate({
       name: 'CreateListeJoueurs',
-      params: { }
+      params: { type: "create" }
     })
   }
 
