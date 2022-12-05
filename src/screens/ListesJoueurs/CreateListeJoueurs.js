@@ -4,16 +4,43 @@ import { connect } from 'react-redux'
 import Inscriptions from '../../components/Inscriptions';
 
 class CreateListeJoueur extends React.Component {
-
   constructor(props) {
     super(props)
   }
 
-  _createList() {
-    const addSavedList = { type: "ADD_SAVED_LIST", value: {typeInscription: 'avecNoms', savedList: this.props.listesJoueurs.sauvegarde}};
-    this.props.dispatch(addSavedList);
+  _dispatch(type) {
+    if (type == "create") {
+      const addSavedList = { type: "ADD_SAVED_LIST", value: {typeInscription: 'avecNoms', savedList: this.props.listesJoueurs.sauvegarde}};
+      this.props.dispatch(addSavedList);
+    }
+    else if (type == "edit") {
+      //const editSavedList = { type: "EDIT_SAVED_LIST", value: {typeInscription: 'avecNoms', savedList: this.props.listesJoueurs.sauvegarde}};
+      //this.props.dispatch(editSavedList);
+    }
 
     this.props.navigation.navigate('ListesJoueurs');
+  }
+
+  _submitButton() {
+    let params = this.props.route.params;
+    if (params) {
+      let nbPlayers = this.props.listesJoueurs.sauvegarde.length;
+      let title = "error";
+      if (params.type == "create") {
+        title = "Créer cette liste";
+      }
+      else if (params.type == "edit") {
+        title = "Valider la modification";
+      }
+      return (
+        <Button
+          disabled={nbPlayers == 0}
+          color="green"
+          title={title}
+          onPress={() => this._dispatch(params.type)}
+        />
+      )
+    }
   }
 
   render() {
@@ -32,7 +59,7 @@ class CreateListeJoueur extends React.Component {
           />
           <View>
             <View style={styles.buttonView}>
-              <Button color="green" title="Valider la liste" onPress={() => this._createList()}/>
+              {this._submitButton()}
             </View>
           </View>
       </View>
