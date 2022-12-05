@@ -35,7 +35,9 @@ class ListeTournois extends React.Component {
             <View style={modalStyles.modalView}>
               <Text style={modalStyles.modalText}>Informations concernant le tournoi :</Text>
               <View>
-                <Text style={modalStyles.modalText}>Id du tournoi: {tournoi.tournoiId}</Text>
+                <Text style={modalStyles.modalText}>Id: {tournoi.tournoiId}</Text>
+                <Text style={modalStyles.modalText}>Nom: {tournoi.name}</Text>
+                <Text style={modalStyles.modalText}>Date de création: {tournoi.creationDate}</Text>
                 <Text style={modalStyles.modalText}>Nombre de joueurs: {tournoi.tournoi.length}</Text>
               </View>
               <View style={styles.buttonView}>
