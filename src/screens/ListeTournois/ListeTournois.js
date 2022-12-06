@@ -1,3 +1,5 @@
+import moment from 'moment/moment'
+import 'moment/locale/fr'
 import React from 'react'
 import { StyleSheet, View, FlatList, Text, Button, Modal } from 'react-native'
 import { connect } from 'react-redux'
@@ -22,6 +24,16 @@ class ListeTournois extends React.Component {
   _modalTournoiInfos() {
     let tournoi = this.state.infosTournoi;
     if (tournoi.tournoi) {
+      let creationDate = 'date inconnue';
+      let updateDate = 'date inconnue';
+      moment.locale('fr');
+      let dateFormat = 'd MMMM YYYY à HH:mm:ss';
+      if (tournoi.creationDate) {
+        creationDate = moment(tournoi.creationDate).format(dateFormat);
+      }
+      if (tournoi.updateDate) {
+        updateDate = moment(tournoi.updateDate).format(dateFormat);
+      }
       return (
         <Modal
           animationType="slide"
@@ -37,7 +49,8 @@ class ListeTournois extends React.Component {
               <View>
                 <Text style={modalStyles.modalText}>Id: {tournoi.tournoiId}</Text>
                 <Text style={modalStyles.modalText}>Nom: {tournoi.name}</Text>
-                <Text style={modalStyles.modalText}>Date de création: {tournoi.creationDate}</Text>
+                <Text style={modalStyles.modalText}>Création: {creationDate}</Text>
+                <Text style={modalStyles.modalText}>Dernière modification: {updateDate}</Text>
                 <Text style={modalStyles.modalText}>Nombre de joueurs: {tournoi.tournoi.length}</Text>
               </View>
               <View style={styles.buttonView}>
