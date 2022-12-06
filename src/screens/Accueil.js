@@ -19,12 +19,11 @@ class Accueil extends React.Component {
 
   componentDidMount() {
     NavigationBar.setBackgroundColorAsync("#0594ae");
-    //console.log(VersionCheck.getPackageName());
-    /*VersionCheck.needUpdate().then(async res => {
+    VersionCheck('FR').needUpdate().then(async res => {
       if (res.isNeeded && this.state.modalVisible != true) {
         this.setState({modalVisible: true})
       }
-    })*/
+    })
   }
 
   componentDidUpdate() {
@@ -42,7 +41,7 @@ class Accueil extends React.Component {
         >
         <View style={modalStyles.centeredView}>
           <View style={modalStyles.modalView}>
-            <Text style={modalStyles.modalText}>Une mise à jour de l'application est disponible. Elle peut ne pas encore apparaitre dans play store.</Text>
+            <Text style={modalStyles.modalText}>Une mise à jour de l'application est disponible. (Elle peut ne pas encore apparaitre dans play store.)</Text>
             <View style={styles.buttonView}>
               <Button color="green" title='Mettre à jour' onPress={() => Linking.canOpenURL('market://details?id=com.MK.PetanqueGCU').then(supported => {if (supported) {Linking.openURL('market://details?id=com.MK.PetanqueGCU')}} ) }/>
             </View>
@@ -162,6 +161,7 @@ class Accueil extends React.Component {
           <Text style={styles.create_text}>Version: {expo.version}</Text>
         </View>
         {this._showDonsModal()}
+        {this._showUpdateModal()}
       </View>
     )
   }
