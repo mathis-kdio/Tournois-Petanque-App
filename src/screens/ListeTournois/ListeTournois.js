@@ -65,6 +65,7 @@ class ListeTournois extends React.Component {
               renderItem={({item}) => (
                 <ListeTournoiItem
                   tournoi={item}
+                  navigation={this.props.navigation}
                   _showModalTournoiInfos={(tournoi) => this._showModalTournoiInfos(tournoi)}
                 />
               )}
