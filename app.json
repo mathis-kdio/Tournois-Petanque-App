@@ -28,13 +28,15 @@
     "ios": {
       "bundleIdentifier": "com.MK.PetanqueGCU",
       "buildNumber": "1.10.1",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "userInterfaceStyle": "light"
     },
     "android": {
       "package": "com.MK.PetanqueGCU",
       "versionCode": 55,
       "permissions": [],
-      "blockedPermissions": ["android.permission.REQUEST_INSTALL_PACKAGES"]
+      "blockedPermissions": ["android.permission.REQUEST_INSTALL_PACKAGES"],
+      "userInterfaceStyle": "light"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
@@ -43,7 +45,11 @@
       "policy": "sdkVersion"
     },
     "plugins": [
-      "sentry-expo"
+      "sentry-expo",
+      [
+        "./src/plugins/withDisableForcedDarkModeAndroid.js",
+        {}
+      ]
     ],
     "hooks": {
       "postPublish": [
