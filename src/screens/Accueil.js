@@ -153,6 +153,9 @@ class Accueil extends React.Component {
             <View style={styles.buttonView}>
               <MaterialCommunityIcon.Button name="wrench" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}} onPress={() => this.props.navigation.navigate('Changelog')}/>
             </View>
+            <View style={styles.buttonView}>
+              <MaterialCommunityIcon.Button name="facebook" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}} onPress={() => Linking.canOpenURL('https://www.facebook.com/groups/tournoisptanqueapp').then(supported => {if (supported) {Linking.openURL('https://www.facebook.com/groups/tournoisptanqueapp')}})}/>
+            </View>
           </View>
         </View> 
         <View style={styles.footer_container}>
