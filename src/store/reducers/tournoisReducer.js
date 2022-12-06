@@ -8,7 +8,7 @@ function listeTournois(state = initialState, action) {
         action.value.tournoi[action.value.tournoi.length - 1].tournoiID = state.tournoiIncr;
         nextState = {
           ...state,
-          listeTournois: state.listeTournois.concat([{tournoi: action.value.tournoi, tournoiId: state.tournoiIncr}]),
+          listeTournois: state.listeTournois.concat([{tournoi: action.value.tournoi, tournoiId: state.tournoiIncr, creationDate: new Date(), updateDate: new Date()}]),
           tournoiIncr: state.tournoiIncr + 1
         };
       }
@@ -18,6 +18,7 @@ function listeTournois(state = initialState, action) {
         if (state.listeTournois.length != 0) {
           let tournoiId = state.listeTournois.findIndex(e => e.tournoiId == action.value.tournoiId);
           state.listeTournois[tournoiId].tournoi = action.value.tournoi;
+          state.listeTournois[tournoiId].updateDate = new Date();
           nextState = {
             ...state,
             listeTournois: state.listeTournois
