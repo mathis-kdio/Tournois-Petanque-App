@@ -1,5 +1,13 @@
 [
   {
+    "id":"18",
+    "version": "1.10.1",
+    "infos": [
+      "- Avertissement lorsqu'une nouvelle mise à jour est disponible.\n",
+      "- Correction d'un bug qui empêchait de charger un tournoi.\n"
+    ]
+  },
+  {
     "id":"17",
     "version": "1.10.0",
     "infos": [
@@ -9,7 +17,7 @@
       "- Ajout de l'affichage d'informations des anciens tournois.\n",
       "- Ajout du renommage des tournois.\n",
       "- Ajustements de l'interface.\n",
-      "- Amélioration de la stabilité",
+      "- Amélioration de la stabilité.\n",
       "- Correction de bugs.\n"
     ]
   },

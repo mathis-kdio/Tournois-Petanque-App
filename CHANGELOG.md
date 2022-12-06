@@ -1,5 +1,13 @@
 # Change Log
 
+## [1.10.1] - 06-12-2022
+
+### Ajouté
+- Avertissement lorsqu'une nouvelle mise à jour est disponible
+
+### Corrigé
+- Correction d'un bug qui empêchait de charger un tournoi
+
 ## [1.10.0] - 05-12-2022
 
 ### Ajouté
@@ -15,6 +23,7 @@
 
 ### Corrigé
 - Correction de bugs
+
 ## [1.9.0] - 03-09-2022
 
 ### Ajouté
