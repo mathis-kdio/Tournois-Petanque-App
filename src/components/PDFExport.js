@@ -71,7 +71,14 @@ class PDFExport extends React.Component {
     let nbMatchs = this.props.listeMatchs[this.props.listeMatchs.length - 1].nbMatchs;
     let listeMatchs = this.props.listeMatchs;
     let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs;
-    let nbMatchsParTour = nbMatchs / nbTours;
+    let nbMatchsParTour = 0;
+    let typeTournoi = this.props.listeMatchs[this.props.listeMatchs.length - 1].typeTournoi;
+    if (typeTournoi == "coupe") {
+      nbMatchsParTour = (nbMatchs + 1) / 2;
+    }
+    else {
+      nbMatchsParTour = nbMatchs / nbTours;
+    }
     let nbTables = Math.ceil(nbTours / toursParLigne);
     let nbToursRestants = nbTours;
     let html = `<!DOCTYPE html><html><head><style>@page{margin: 10px;} table{width: 100%;} table,th,td{border: 1px solid black;border-collapse: collapse;} td{min-width: 50px; word-break:break-all;} .td-score{min-width: 20px;} .text-right{text-align: right;} .text-center{text-align: center;} .no-border-top{border-top: none;} .no-border-bottom{border-bottom: none;} .border-top{border-top: 1px solid;}</style></head><body>
@@ -105,9 +112,19 @@ class PDFExport extends React.Component {
             html += '<tr class="">';
           }
           for (let j = 0; j < nbTourTable; j++) {
+            console.log("test")
             let matchId = tableIdx * (toursParLigne * nbMatchsParTour) + j * nbMatchsParTour + i;
+            console.log("tableIdx "+tableIdx)
+            console.log("toursParLigne "+toursParLigne)
+            console.log("nbMatchsParTour "+nbMatchsParTour)
+            console.log("j "+j)
+            console.log("i "+i)
+            console.log("matchId "+matchId)
+            console.log("end test4")
             //Joueur equipe 1
             html += '<td class="no-border-bottom no-border-top">';
+            console.log(listeMatchs[matchId])
+            console.log(listeMatchs[matchId].equipe)
             if (listeMatchs[matchId].equipe[0][jidx] != -1) {
               let joueur = listeJoueurs[listeMatchs[matchId].equipe[0][jidx]];
               if (joueur.name === undefined) {
@@ -139,6 +156,7 @@ class PDFExport extends React.Component {
 
             //Joueur equipe 2
             html += '<td class="text-right no-border-bottom no-border-top">';
+            console.log(listeMatchs[matchId].equipe)
             if (listeMatchs[matchId].equipe[1][jidx] != -1) {
               let joueur = listeJoueurs[listeMatchs[matchId].equipe[1][jidx]];
               if (joueur.name === undefined) {
@@ -152,6 +170,12 @@ class PDFExport extends React.Component {
               }
             }
             html += '</td>';
+            if (typeTournoi == "coupe") {
+              nbMatchsParTour /= 2;
+            }
+          }
+          if (typeTournoi == "coupe") {
+            nbMatchsParTour = (nbMatchs + 1) / 2;
           }
           html += '</tr>';
         }
