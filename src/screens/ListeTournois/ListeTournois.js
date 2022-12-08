@@ -4,6 +4,7 @@ import React from 'react'
 import { StyleSheet, View, FlatList, Text, Button, Modal } from 'react-native'
 import { connect } from 'react-redux'
 import ListeTournoiItem from '../../components/ListeTournoiItem'
+import * as NavigationBar from 'expo-navigation-bar';
 
 class ListeTournois extends React.Component {
   constructor(props) {
@@ -64,6 +65,8 @@ class ListeTournois extends React.Component {
   }
 
   render() {
+    NavigationBar.setBackgroundColorAsync("#ffda00");
+
     return (
       <View style={styles.main_container}>
         <View style={styles.body_container}>
