@@ -211,7 +211,7 @@ class PDFExport extends React.Component {
       <Pressable 
         onPress={() => this._onPressExportBtn(buttonId, affichageScore, affichageClassement)}
       >
-        <View>
+        <View style={styles.button}>
           {this.state.btnIsLoading[buttonId] && <ActivityIndicator size="small" color="white" />}
           <Text style={styles.buttonText}>{buttonText}</Text>
         </View>
