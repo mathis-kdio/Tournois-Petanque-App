@@ -39,6 +39,52 @@ class ListeJoueur extends React.Component {
     this.props.dispatch(actionRemoveList);
   }
 
+  _showRenameTournoi(tournoi) {
+    if (this.state.renommerOn) {
+      if (this.state.disabledBoutonRenommer) {
+        return (
+          <Icon.Button name="check" backgroundColor="gray" iconStyle={{paddingHorizontal: 2, marginRight: 0}}/>
+        )
+      }
+      else {
+        return (
+          <Icon.Button name="check" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renameTournoi(tournoi)}/>
+        )
+      }
+    }
+    else {
+      return (
+        <Icon.Button name="edit" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renameTournoiInput(tournoi)}/>
+      )
+    }
+  }
+
+  _renameTournoiInput(tournoi) {
+    this.setState({
+      renommerOn: true
+    })
+    this.tournoiNameText = tournoi.name
+  }
+
+  _renameTournoi(tournoi) {
+    if (this.tournoiNameText != "") {
+      this.setState({
+        renommerOn: false,
+        disabledBoutonRenommer: true
+      })
+      const actionRenameTournoi = { type: "RENOMMER_TOURNOI", value: {tournoiId: tournoi.tournoiId, newName: this.tournoiNameText} }
+      this.props.dispatch(actionRenameTournoi)
+      this.tournoiNameText = ""
+    }
+  }
+
+  _tournoiTextInputChanged(text) {
+    this.tournoiNameText = text
+    this.setState({
+      disabledBoutonRenommer: this.tournoiNameText == '' ? true : false
+    })
+  }
+
   _buttons(list) {
     if(this.props.route && this.props.route.params && this.props.route.params.loadListScreen) {
       return (
