@@ -148,6 +148,17 @@ function listesJoueurs(state = initialState, action) {
         }
       }
     return nextState || state;
+    case 'RENAME_SAVED_LIST'://typeInscription: avecNoms/sansNoms/AvecEquipes  listId: id   savedList: list
+      if (action.value.tournoiId != "" && action.value.newName != "") {
+        const savedLists = [ ...state.listesSauvegarde ];
+        let listId = state.listesSauvegarde.findIndex(e => e.listId == action.value.tournoiId);
+        //savedLists[action.value.typeInscription][action.value.listId].name = action.value.newName;
+        nextState = {
+          ...state,
+          //listesSauvegarde: savedLists
+        }
+      }
+      return nextState || state 
     case 'REMOVE_SAVED_LIST'://typeInscription: avecNoms/sansNoms/AvecEquipes     listId: id
       if (action.value.listId != undefined) {
         const savedLists = { ...state.listesSauvegarde };

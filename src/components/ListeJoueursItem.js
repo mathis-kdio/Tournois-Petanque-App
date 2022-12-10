@@ -1,17 +1,22 @@
 import React from 'react'
-import { StyleSheet, View, Text, Button, FlatList, Alert } from 'react-native'
+import { StyleSheet, View, Text, TextInput, Button, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-class ListeJoueur extends React.Component {
+class ListeJoueursItem extends React.Component {
   constructor(props) {
     super(props)
+    this.listNameText = ""
+    this.state = {
+      renommerOn: false,
+      disabledBoutonRenommer: true
+    }
   }
 
   _modifyList(list) {
     const actionRemoveList = {type: "SUPPR_ALL_JOUEURS", value: ['sauvegarde']};
     this.props.dispatch(actionRemoveList);
-    const actionLoadList = {type: "LOAD_SAVED_LIST", value: {typeInscriptionSrc: 'avecNoms', typeInscriptionDst: 'sauvegarde', listId: list[list.length-1].listId}};
+    const actionLoadList = {type: "LOAD_SAVED_LIST", value: {typeInscriptionSrc: 'avecNoms', typeInscriptionDst: 'sauvegarde', listId: list[list.length - 1].listId}};
     this.props.dispatch(actionLoadList);
     this.props.navigation.navigate({
       name: 'CreateListeJoueurs',
@@ -25,10 +30,10 @@ class ListeJoueur extends React.Component {
   _modalRemoveList(list) {
     Alert.alert(
       "Suppression d'une liste",
-      "Êtes-vous sûr de vouloir supprimer la liste n°" + (list[list.length -1].listId + 1) + " ?",
+      "Êtes-vous sûr de vouloir supprimer la liste n°" + (list[list.length - 1].listId + 1) + " ?",
       [
         { text: "Annuler", onPress: () => undefined, style: "cancel" },
-        { text: "Oui", onPress: () => this._removeList(list[list.length -1].listId) },
+        { text: "Oui", onPress: () => this._removeList(list[list.length - 1].listId) },
       ],
       { cancelable: true }
     );
@@ -39,7 +44,7 @@ class ListeJoueur extends React.Component {
     this.props.dispatch(actionRemoveList);
   }
 
-  _showRenameTournoi(tournoi) {
+  _showRenameList(list) {
     if (this.state.renommerOn) {
       if (this.state.disabledBoutonRenommer) {
         return (
@@ -48,40 +53,40 @@ class ListeJoueur extends React.Component {
       }
       else {
         return (
-          <Icon.Button name="check" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renameTournoi(tournoi)}/>
+          <Icon.Button name="check" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renameList(list)}/>
         )
       }
     }
     else {
       return (
-        <Icon.Button name="edit" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renameTournoiInput(tournoi)}/>
+        <Icon.Button name="edit" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renameListInput(list)}/>
       )
     }
   }
 
-  _renameTournoiInput(tournoi) {
+  _renameListInput(list) {
     this.setState({
       renommerOn: true
     })
-    this.tournoiNameText = tournoi.name
+    this.listNameText = list.name
   }
 
-  _renameTournoi(tournoi) {
-    if (this.tournoiNameText != "") {
+  _renameList(list) {
+    if (this.listNameText != "") {
       this.setState({
         renommerOn: false,
         disabledBoutonRenommer: true
       })
-      const actionRenameTournoi = { type: "RENOMMER_TOURNOI", value: {tournoiId: tournoi.tournoiId, newName: this.tournoiNameText} }
-      this.props.dispatch(actionRenameTournoi)
-      this.tournoiNameText = ""
+      const actionRenameList = { type: "RENAME_SAVED_LIST", value: {listId: list[list.length - 1].listId, newName: this.listNameText} }
+      this.props.dispatch(actionRenameList)
+      this.listNameText = ""
     }
   }
 
-  _tournoiTextInputChanged(text) {
-    this.tournoiNameText = text
+  _listTextInputChanged(text) {
+    this.listNameText = text
     this.setState({
-      disabledBoutonRenommer: this.tournoiNameText == '' ? true : false
+      disabledBoutonRenommer: this.listNameText == '' ? true : false
     })
   }
 
@@ -113,24 +118,39 @@ class ListeJoueur extends React.Component {
     this.props.navigation.goBack();
   }
 
-  _listeJoueursItem(list) {
-    return (
-      <View style={styles.saved_list_container}>
-        <Text style={styles.title_text}>Liste n°{list[list.length -1].listId + 1}</Text>
-        {this._buttons(list)}
-      </View>
-    )
+  _listName(list) {
+    let listName = 'List ' + (list.name ? list.name : 'n°' + list[list.length - 1].listId);
+    if (this.state.renommerOn) {
+      return (
+        <TextInput
+          style={styles.text_input}
+          placeholder={listName}
+          autoFocus={true}
+          onChangeText={(text) => this._listTextInputChanged(text)}
+          onSubmitEditing={() => this._renameList(list)}
+        />
+      )
+    }
+    else {
+      return (
+        <Text style={styles.list_text}>{listName}</Text>
+      )
+    }
   }
 
   render() {
-    const { savedLists } = this.props;
+    const {list} = this.props;
+    console.log(list)
     return (
-      <FlatList
-        data={savedLists.avecNoms}
-        initialNumToRender={20}
-        keyExtractor={(item) => item[item.length - 1].listId.toString() }
-        renderItem={({item}) => (this._listeJoueursItem(item))}
-      />
+      <View style={styles.saved_list_container}>
+        <View style={styles.saved_list_name_container}>
+          <View style={{flex: 1}}>
+            {this._listName(list)}
+          </View>
+          {this._showRenameList(list)}
+        </View>
+        {this._buttons(list)}
+      </View>
     )
   }
 }
@@ -148,13 +168,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-  text_container: {
-    flex: 1,
-  },
-  title_text: {
-    fontSize: 15,
-    color: 'white'
-  },
   buttonContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -163,6 +176,15 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     marginHorizontal: 5
+  },
+  saved_list_name_container: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  list_text: {
+    fontSize: 15,
+    color: 'white'
   }
 })
 
@@ -172,4 +194,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(ListeJoueur)
+export default connect(mapStateToProps)(ListeJoueursItem)
