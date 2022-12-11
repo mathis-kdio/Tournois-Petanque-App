@@ -148,6 +148,18 @@ function listesJoueurs(state = initialState, action) {
         }
       }
     return nextState || state;
+    case 'RENAME_SAVED_LIST'://typeInscription: avecNoms/sansNoms/AvecEquipes  listId: id   newName: name
+      if (action.value.typeInscription != undefined && action.value.listId != undefined && action.value.newName != "") {
+        const savedLists = { ...state.listesSauvegarde };
+        let typeSavedLists = savedLists[action.value.typeInscription]
+        let listIndex = typeSavedLists.findIndex(e => e[e.length -1 ].listId == action.value.listId);
+        typeSavedLists[listIndex][typeSavedLists[listIndex].length - 1].name = action.value.newName;
+        nextState = {
+          ...state,
+          listesSauvegarde: savedLists
+        }
+      }
+      return nextState || state 
     case 'REMOVE_SAVED_LIST'://typeInscription: avecNoms/sansNoms/AvecEquipes     listId: id
       if (action.value.listId != undefined) {
         const savedLists = { ...state.listesSauvegarde };

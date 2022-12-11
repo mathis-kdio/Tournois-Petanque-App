@@ -1,7 +1,7 @@
 import React from 'react'
-import { StyleSheet, View, Text, Button } from 'react-native'
+import { StyleSheet, View, Text, Button, FlatList } from 'react-native'
 import { connect } from 'react-redux'
-import ListeJoueur from '../../components/ListeJoueur';
+import ListeJoueursItem from '../../components/ListeJoueursItem';
 
 class ListesJoueurs extends React.Component {
 
@@ -51,10 +51,17 @@ class ListesJoueurs extends React.Component {
             {this._addListButton()}
           </View>
           <View style={styles.flatList_container}>
-            <ListeJoueur
-              savedLists={this.props.savedLists}
-              navigation={this.props.navigation}
-              route={this.props.route}
+          <FlatList
+              data={this.props.savedLists.avecNoms}
+              initialNumToRender={20}
+              keyExtractor={(item) => item[item.length - 1].listId.toString() }
+              renderItem={({item}) => (
+                <ListeJoueursItem
+                  list={item}
+                  navigation={this.props.navigation}
+                  route={this.props.route}
+                />
+              )}
             />
           </View>
         </View>
