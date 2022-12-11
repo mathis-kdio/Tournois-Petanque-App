@@ -125,7 +125,9 @@ function listesJoueurs(state = initialState, action) {
       if (action.value.typeInscription != "" && action.value.listId != undefined && action.value.savedList != "") {
         const savedLists = { ...state.listesSauvegarde };
         action.value.savedList.push({listId: action.value.listId})
-        savedLists[action.value.typeInscription][action.value.listId] = action.value.savedList;
+        let typeSavedLists = savedLists[action.value.typeInscription]
+        let listIndex = typeSavedLists.findIndex(e => e[e.length - 1].listId == action.value.listId);
+        typeSavedLists[listIndex] = action.value.savedList;
         nextState = {
           ...state,
           listesSauvegarde: savedLists
@@ -134,10 +136,12 @@ function listesJoueurs(state = initialState, action) {
       return nextState || state;      
     case 'LOAD_SAVED_LIST'://typeInscriptionSrc: avecNoms/sansNoms/AvecEquipes/sauvegarde    //typeInscriptionDst: avecNoms/sansNoms/AvecEquipes/sauvegarde     listId: id
       if (action.value.typeInscriptionSrc != undefined && action.value.typeInscriptionDst != undefined && action.value.listId != undefined) {
-        const savedList = { ...state.listesSauvegarde };
+        const savedLists = { ...state.listesSauvegarde };
         const listsOfPlayers = { ...state.listesJoueurs };
         //Add to list
-        const copySeletedSavedList = JSON.parse(JSON.stringify(savedList[action.value.typeInscriptionSrc][action.value.listId].slice(0, -1)))
+        let typeSavedLists = savedLists[action.value.typeInscriptionSrc]
+        let listIndex = typeSavedLists.findIndex(e => e[e.length - 1].listId == action.value.listId);
+        const copySeletedSavedList = JSON.parse(JSON.stringify(typeSavedLists[listIndex].slice(0, -1)))
         listsOfPlayers[action.value.typeInscriptionDst].push(...copySeletedSavedList);
         //Update Ids
         for (let i = 0; i < listsOfPlayers[action.value.typeInscriptionDst].length; i++) {
@@ -153,7 +157,7 @@ function listesJoueurs(state = initialState, action) {
       if (action.value.typeInscription != undefined && action.value.listId != undefined && action.value.newName != "") {
         const savedLists = { ...state.listesSauvegarde };
         let typeSavedLists = savedLists[action.value.typeInscription]
-        let listIndex = typeSavedLists.findIndex(e => e[e.length -1 ].listId == action.value.listId);
+        let listIndex = typeSavedLists.findIndex(e => e[e.length - 1].listId == action.value.listId);
         typeSavedLists[listIndex][typeSavedLists[listIndex].length - 1].name = action.value.newName;
         nextState = {
           ...state,
