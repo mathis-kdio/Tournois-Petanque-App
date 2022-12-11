@@ -109,8 +109,9 @@ function listesJoueurs(state = initialState, action) {
       if (action.value.typeInscription != "" && action.value.savedList != "") {
         const savedLists = { ...state.listesSauvegarde };
         let listId = 0;
-        if (state.listesSauvegarde[action.value.typeInscription]) {
-          listId = state.listesSauvegarde[action.value.typeInscription].length;
+        if (savedLists[action.value.typeInscription].length != 0) {
+          let lastlist = savedLists[action.value.typeInscription][savedLists[action.value.typeInscription].length - 1];
+          listId = lastlist[lastlist.length - 1].listId + 1;
         }
         savedLists[action.value.typeInscription].push(action.value.savedList);
         savedLists[action.value.typeInscription][savedLists[action.value.typeInscription].length - 1].push({listId: listId});
