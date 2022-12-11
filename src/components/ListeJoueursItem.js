@@ -119,7 +119,7 @@ class ListeJoueursItem extends React.Component {
   }
 
   _listName(list) {
-    let listName = 'List ' + (list.name ? list.name : 'n°' + list[list.length - 1].listId);
+    let listName = 'List ' + (list[list.length - 1].name ? list[list.length - 1].name : 'n°' + list[list.length - 1].listId);
     if (this.state.renommerOn) {
       return (
         <TextInput
@@ -140,7 +140,6 @@ class ListeJoueursItem extends React.Component {
 
   render() {
     const {list} = this.props;
-    console.log(list)
     return (
       <View style={styles.saved_list_container}>
         <View style={styles.saved_list_name_container}>
