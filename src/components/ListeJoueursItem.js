@@ -77,7 +77,7 @@ class ListeJoueursItem extends React.Component {
         renommerOn: false,
         disabledBoutonRenommer: true
       })
-      const actionRenameList = { type: "RENAME_SAVED_LIST", value: {listId: list[list.length - 1].listId, newName: this.listNameText} }
+      const actionRenameList = { type: "RENAME_SAVED_LIST", value: {typeInscription: 'avecNoms', listId: list[list.length - 1].listId, newName: this.listNameText} }
       this.props.dispatch(actionRenameList)
       this.listNameText = ""
     }
