@@ -24,6 +24,7 @@ class ListeTournois extends React.Component {
   _modalTournoiInfos() {
     let tournoi = this.state.infosTournoi;
     if (tournoi.tournoi) {
+      let tournoiOptions = tournoi.tournoi[tournoi.tournoi.length - 1];
       let creationDate = 'date inconnue';
       let updateDate = 'date inconnue';
       moment.locale('fr');
@@ -51,7 +52,7 @@ class ListeTournois extends React.Component {
                 <Text style={modalStyles.modalText}>Nom: {tournoi.name}</Text>
                 <Text style={modalStyles.modalText}>Création: {creationDate}</Text>
                 <Text style={modalStyles.modalText}>Dernière modification: {updateDate}</Text>
-                <Text style={modalStyles.modalText}>Nombre de joueurs: {tournoi.tournoi.length}</Text>
+                <Text style={modalStyles.modalText}>Nombre de joueurs: {tournoiOptions.listeJoueurs.length}</Text>
               </View>
               <View style={styles.buttonView}>
                 <Button color="red" title='Fermer' onPress={() => this.setState({modalTournoiInfos: false}) }/>
@@ -153,7 +154,7 @@ const modalStyles = StyleSheet.create({
     elevation: 5
   },
   modalText: {
-    marginBottom: 15,
+    marginBottom: 5,
     textAlign: "left"
   }
 })
