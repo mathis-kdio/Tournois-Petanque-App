@@ -53,6 +53,13 @@ class ListeTournois extends React.Component {
                 <Text style={modalStyles.modalText}>Création: {creationDate}</Text>
                 <Text style={modalStyles.modalText}>Dernière modification: {updateDate}</Text>
                 <Text style={modalStyles.modalText}>Nombre de joueurs: {tournoiOptions.listeJoueurs.length}</Text>
+                <Text style={modalStyles.modalText}>Type d'équipes: {tournoiOptions.typeEquipes}</Text>
+                <Text style={modalStyles.modalText}>Nombre de tours: {tournoiOptions.nbTours}</Text>
+                <Text style={modalStyles.modalText}>Nombre de matchs: {tournoiOptions.nbMatchs}</Text>
+                <Text style={modalStyles.modalText}>Si complément: {tournoiOptions.complement}</Text>
+                <Text style={modalStyles.modalText}>Empêcher les mêmes équipes: {tournoiOptions.memesEquipes ? "Oui" : "Non"}</Text>
+                <Text style={modalStyles.modalText}>Empêcher les mêmes adversaires: {tournoiOptions.memesAdversaires ? "Oui" : "Non"}</Text>
+                <Text style={modalStyles.modalText}>Les joueurs spéciaux sont incompatibles: {tournoiOptions.speciauxIncompatibles ? "Oui" : "Non"}</Text>
               </View>
               <View style={styles.buttonView}>
                 <Button color="red" title='Fermer' onPress={() => this.setState({modalTournoiInfos: false}) }/>
