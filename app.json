@@ -1,8 +1,8 @@
-{  
+{
   "expo": {
-    "name": "Petanque GCU",
+    "name": "Tournois de Pétanque GCU",
     "slug": "PetanqueGCU",
-    "version": "1.10.2-beta-1",
+    "version": "1.10.22",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "light",
@@ -26,8 +26,8 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.MK.PetanqueGCU",
-      "buildNumber": "1.10.2.beta.1",
+      "bundleIdentifier": "TournoisPetanqueApp",
+      "buildNumber": "1.10.25",
       "supportsTablet": true,
       "userInterfaceStyle": "light"
     },
@@ -35,7 +35,9 @@
       "package": "com.MK.PetanqueGCU",
       "versionCode": 56,
       "permissions": [],
-      "blockedPermissions": ["android.permission.REQUEST_INSTALL_PACKAGES"],
+      "blockedPermissions": [
+        "android.permission.REQUEST_INSTALL_PACKAGES"
+      ],
       "userInterfaceStyle": "light"
     },
     "web": {
@@ -64,7 +66,7 @@
       ]
     },
     "extra": {
-      "eas": { 
+      "eas": {
         "projectId": "a9524187-3720-46fc-8d6e-6e9e7211bda7"
       }
     }
