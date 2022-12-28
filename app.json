@@ -27,7 +27,7 @@
     ],
     "ios": {
       "bundleIdentifier": "TournoisPetanqueApp",
-      "buildNumber": "1.10.25",
+      "buildNumber": "1.10.26",
       "supportsTablet": true,
       "userInterfaceStyle": "light"
     },
