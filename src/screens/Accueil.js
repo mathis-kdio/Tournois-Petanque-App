@@ -141,9 +141,11 @@ class Accueil extends React.Component {
         </View>
         <View style={styles.create_container}>
           <View style={styles.buttonViewCreate}>
-            <View style={styles.buttonView}>
-              <FontAwesomeIcon.Button name="euro" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}} onPress={() => this.setState({ modalDonsVisible: true })}/>
-            </View>
+            {Platform.OS !== 'ios' && <>
+              <View style={styles.buttonView}>
+                <FontAwesomeIcon.Button name="euro" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}} onPress={() => this.setState({ modalDonsVisible: true })}/>
+              </View>
+            </>}
             <View style={styles.buttonView}>
               <MaterialCommunityIcon.Button name="star" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}}  onPress={() => Linking.canOpenURL('market://details?id=com.MK.PetanqueGCU&showAllReviews=true').then(supported => {if (supported) {Linking.openURL('market://details?id=com.MK.PetanqueGCU&showAllReviews=true')}})}/>
             </View>
