@@ -1,12 +1,11 @@
-// App.js
-
-import 'expo-dev-client'
-import React from 'react'
-import Navigation from './src/navigation/Navigation'
+import 'expo-dev-client';
+import React from 'react';
+import Navigation from './src/navigation/Navigation';
 import { Provider } from 'react-redux';
-import Store from './src/store/configureStore'
-import { persistStore } from 'redux-persist'
-import { PersistGate } from 'redux-persist/es/integration/react'
+import Store from './src/store/configureStore';
+import { persistStore } from 'redux-persist';
+import { PersistGate } from 'redux-persist/es/integration/react';
+import { NativeBaseProvider } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import * as Sentry from 'sentry-expo';
@@ -29,14 +28,16 @@ Sentry.init({
 class App extends React.Component {
   navigation = React.createRef();
   render() {
-    let persistor = persistStore(Store)
+    let persistor = persistStore(Store);
     return (
       <Provider store={Store}>
         <PersistGate persistor={persistor}>
-          <NavigationContainer ref={this.navigation} onReady={() => {routingInstrumentation.registerNavigationContainer(this.navigation);}}>
-            <Navigation />
-            <StatusBar style="light" backgroundColor="#ffda00"/>
-          </NavigationContainer>
+          <NativeBaseProvider>
+            <NavigationContainer ref={this.navigation} onReady={() => {routingInstrumentation.registerNavigationContainer(this.navigation);}}>
+              <Navigation/>
+              <StatusBar style="light" backgroundColor="#ffda00"/>
+            </NavigationContainer>
+          </NativeBaseProvider>
         </PersistGate>
       </Provider>
     )
