@@ -18,6 +18,8 @@ class ListeJoueursItem extends React.Component {
     this.props.dispatch(actionRemoveList);
     const actionLoadList = {type: "LOAD_SAVED_LIST", value: {typeInscriptionSrc: 'avecNoms', typeInscriptionDst: 'sauvegarde', listId: list[list.length - 1].listId}};
     this.props.dispatch(actionLoadList);
+    const updateOptionModeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['mode', 'sauvegarde']}
+    this.props.dispatch(updateOptionModeTournoi);
     this.props.navigation.navigate({
       name: 'CreateListeJoueurs',
       params: {
