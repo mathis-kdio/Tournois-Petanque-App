@@ -42,19 +42,20 @@
     "react-native": "0.70.5",
     "react-native-bouncy-checkbox": "^3.0.6",
     "react-native-gesture-handler": "~2.8.0",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-material-menu": "^2.0.0",
     "react-native-pager-view": "6.0.1",
     "react-native-reanimated": "~2.12.0",
     "react-native-safe-area-context": "4.4.1",
     "react-native-screens": "~3.18.0",
+    "react-native-svg": "13.4.0",
     "react-native-tab-view": "^3.3.0",
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.7",
     "react-redux": "^8.0.5",
     "redux": "^4.2.0",
     "redux-persist": "^6.0.0",
-    "sentry-expo": "~6.0.0",
-    "react-native-svg": "13.4.0"
+    "sentry-expo": "~6.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
