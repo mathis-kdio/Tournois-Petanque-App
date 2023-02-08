@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Text, TextInput, Button } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux'
 
 class MatchDetail extends React.Component {
@@ -117,55 +118,57 @@ class MatchDetail extends React.Component {
   render() {
     let match = this.props.route.params.match
     return (
-      <View style={styles.main_container}>
-        <View style={styles.body_container}>
-          <View style={styles.content_container} >
-            <View>
-              <Text style={styles.title}>Partie n°{(this.state.match + 1)}</Text>
-            </View>
-            <View style={styles.equipe_container}>
-              <View style={styles.equipe1}>
-                {this._displayEquipe(1, match)}
+      <KeyboardAwareScrollView contentContainerStyle={{flex: 1}}>
+        <View style={styles.main_container}>
+          <View style={styles.body_container}>
+            <View style={styles.content_container} >
+              <View>
+                <Text style={styles.title}>Partie n°{(this.state.match + 1)}</Text>
               </View>
-              <Text style={styles.vs}>VS</Text>
-              <View style={styles.equipe2}>
-                {this._displayEquipe(2, match)}
+              <View style={styles.equipe_container}>
+                <View style={styles.equipe1}>
+                  {this._displayEquipe(1, match)}
+                </View>
+                <Text style={styles.vs}>VS</Text>
+                <View style={styles.equipe2}>
+                  {this._displayEquipe(2, match)}
+                </View>
               </View>
             </View>
-          </View>
-          <View style={styles.resultat_container} >
-            <TextInput
-              style={styles.textinput}
-              placeholderTextColor='white'
-              underlineColorAndroid='white'
-              keyboardType={'decimal-pad'}
-              maxLength={2}
-              autoFocus = {true}
-              returnKeyType= {'next'}
-              placeholder="score équipe 1"
-              onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 1)}
-              onSubmitEditing={() => this.secondInput.focus()}
-            />
-            <TextInput
-              style={styles.textinput}
-              placeholderTextColor='white'
-              underlineColorAndroid='white'
-              keyboardType={'decimal-pad'}
-              maxLength={2}
-              ref={ref => {this.secondInput = ref}}
-              placeholder="score équipe 2"
-              onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 2)}
-              onSubmitEditing={() => this._envoyerResultat(match)}
-            />
-          </View>
-          <View style={styles.buttonView}>
-            <Button color="red" title='Supprimer le score' onPress={() => this._supprimerResultat()}/>
-          </View>
-          <View style={styles.buttonView}>
-            {this._boutonValider(match)}
+            <View style={styles.resultat_container} >
+              <TextInput
+                style={styles.textinput}
+                placeholderTextColor='white'
+                underlineColorAndroid='white'
+                keyboardType={'decimal-pad'}
+                maxLength={2}
+                autoFocus = {true}
+                returnKeyType= {'next'}
+                placeholder="score équipe 1"
+                onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 1)}
+                onSubmitEditing={() => this.secondInput.focus()}
+              />
+              <TextInput
+                style={styles.textinput}
+                placeholderTextColor='white'
+                underlineColorAndroid='white'
+                keyboardType={'decimal-pad'}
+                maxLength={2}
+                ref={ref => {this.secondInput = ref}}
+                placeholder="score équipe 2"
+                onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 2)}
+                onSubmitEditing={() => this._envoyerResultat(match)}
+              />
+            </View>
+            <View style={styles.buttonView}>
+              <Button color="red" title='Supprimer le score' onPress={() => this._supprimerResultat()}/>
+            </View>
+            <View style={styles.buttonView}>
+              {this._boutonValider(match)}
+            </View>
           </View>
         </View>
-      </View>
+      </KeyboardAwareScrollView>
     )
   }
 }
