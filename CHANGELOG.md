@@ -3,6 +3,21 @@
 ## [1.10.1] - 06-12-2022
 
 ### Ajouté
+- Application disponible sur iOS !
+- Création d'une page Facebook communautaire et ajout d'un bouton sur la page d'accueil.
+- Ajout de la date de création et de modification d'un tournoi.
+- Possibilité de renommer une liste de joueurs.
+
+### Changement
+- Amélioration de l'affichage des informations de tournoi.
+
+### Corrigé
+- Correction de bugs liés aux listes de joueurs.
+- Correction de l'affichage du mode clair de l'application.
+
+## [1.10.1] - 06-12-2022
+
+### Ajouté
 - Avertissement lorsqu'une nouvelle mise à jour est disponible
 
 ### Corrigé
