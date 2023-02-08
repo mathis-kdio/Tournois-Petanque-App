@@ -113,7 +113,7 @@ class ListeJoueursItem extends React.Component {
   }
 
   _loadList(listId) {
-    const actionLoadList = { type: "LOAD_SAVED_LIST", value: {typeInscriptionSrc: 'avecNoms', typeInscriptionDst: 'avecNoms', listId: listId} }
+    const actionLoadList = { type: "LOAD_SAVED_LIST", value: {typeInscriptionSrc: 'avecNoms', typeInscriptionDst: this.props.optionsTournoi.mode, listId: listId} }
     this.props.dispatch(actionLoadList);
     this.props.navigation.goBack();
   }
@@ -190,6 +190,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     listeMatchs: state.gestionMatchs.listematchs,
+    optionsTournoi: state.optionsTournoi.options
   }
 }
 
