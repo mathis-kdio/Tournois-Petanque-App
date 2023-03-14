@@ -1,6 +1,6 @@
 # Change Log
 
-## [1.10.1] - 06-12-2022
+## [1.11.0] - 09-02-2023
 
 ### Ajouté
 - Application disponible sur iOS !
