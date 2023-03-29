@@ -2,15 +2,25 @@ import React from 'react'
 import { StyleSheet, View, Text, Button, Image, Modal } from 'react-native'
 import { expo } from '../../app.json'
 import { connect } from 'react-redux'
-import * as Linking from 'expo-linking'
 import * as NavigationBar from 'expo-navigation-bar';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import VersionCheck from 'expo-react-native-version-checker';
+import { _openPlateformLink, _openURL } from '../utils/link'
 
 class Accueil extends React.Component {
   constructor(props) {
     super(props)
+    this.googleMarket =         "market://details?id=com.MK.PetanqueGCU'";
+    this.appleMarket =          "itms-apps://apps.apple.com/app/petanque-gcu/id1661710973";
+    this.googleMarketReviews =  "market://details?id=com.MK.PetanqueGCU&showAllReviews=true";
+    this.appleMarketReviews =   "itms-apps://apps.apple.com/app/petanque-gcu/id1661710973?mt=8&action=write-review"
+    this.mail =                 "mailto: tournoispetanqueapp@gmail.com";
+    this.gcuWebsite =           "https://www.gcu.asso.fr/";
+    this.githubSponsor =        "https://github.com/sponsors/mathis-kdio";
+    this.patreon =              "https://patreon.com/tournoipetanque";
+    this.buymeacoffee =         "https://www.buymeacoffee.com/tournoipetanque";
+    this.facebook =             "https://www.facebook.com/groups/tournoisptanqueapp";
     this.state = {
       modalDonsVisible: false,
       modalVisible: false
@@ -43,7 +53,7 @@ class Accueil extends React.Component {
           <View style={modalStyles.modalView}>
             <Text style={modalStyles.modalText}>Une mise à jour de l'application est disponible. (Elle peut ne pas encore apparaitre dans play store.)</Text>
             <View style={styles.buttonView}>
-              <Button color="green" title='Mettre à jour' onPress={() => Linking.canOpenURL('market://details?id=com.MK.PetanqueGCU').then(supported => {if (supported) {Linking.openURL('market://details?id=com.MK.PetanqueGCU')}} ) }/>
+              <Button color="green" title='Mettre à jour' onPress={() => _openPlateformLink(this.googleMarket, this.appleMarket) }/>
             </View>
             <View style={styles.buttonView}>
               <Button color="red" title='Fermer' onPress={() => this.setState({modalVisible: !this.state.modalVisible}) }/>
@@ -69,13 +79,13 @@ class Accueil extends React.Component {
           <View style={modalStyles.modalView}>
             <Text style={modalStyles.modalText}>Il est possible de soutenir le développement de l'application de différentes façons :</Text>
             <View style={styles.buttonViewCreate}>
-              <MaterialCommunityIcon.Button name="github" backgroundColor="#1c3969" onPress={() => Linking.canOpenURL('https://github.com/sponsors/mathis-kdio').then(supported => {if (supported) {Linking.openURL('https://github.com/sponsors/mathis-kdio')}})}>GitHub Sponsor</MaterialCommunityIcon.Button>
+              <MaterialCommunityIcon.Button name="github" backgroundColor="#1c3969" onPress={() => _openURL(this.githubSponsor)}>GitHub Sponsor</MaterialCommunityIcon.Button>
             </View>
             <View style={styles.buttonViewCreate}>
-              <MaterialCommunityIcon.Button name="patreon" backgroundColor="#1c3969" onPress={() => Linking.canOpenURL('https://www.gcu.asso.fr/').then(supported => {if (supported) {Linking.openURL('https://patreon.com/tournoipetanque')}})}>Patreon</MaterialCommunityIcon.Button>
+              <MaterialCommunityIcon.Button name="patreon" backgroundColor="#1c3969" onPress={() => _openURL(this.patreon)}>Patreon</MaterialCommunityIcon.Button>
             </View>
             <View style={styles.buttonViewCreate}>
-              <MaterialCommunityIcon.Button name="coffee" backgroundColor="#1c3969" onPress={() => Linking.canOpenURL('https://www.buymeacoffee.com/tournoipetanque').then(supported => {if (supported) {Linking.openURL('https://www.buymeacoffee.com/tournoipetanque')}})}>BuyMeACoffee</MaterialCommunityIcon.Button>
+              <MaterialCommunityIcon.Button name="coffee" backgroundColor="#1c3969" onPress={() => _openURL(this.buymeacoffee)}>BuyMeACoffee</MaterialCommunityIcon.Button>
             </View>
             <View style={styles.buttonView}>
               <Button color="red" title='Fermer' onPress={() => this.setState({modalDonsVisible: false}) }/>
@@ -147,21 +157,21 @@ class Accueil extends React.Component {
               </View>
             </>}
             <View style={styles.buttonView}>
-              <MaterialCommunityIcon.Button name="star" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}}  onPress={() => Linking.canOpenURL('market://details?id=com.MK.PetanqueGCU&showAllReviews=true').then(supported => {if (supported) {Linking.openURL('market://details?id=com.MK.PetanqueGCU&showAllReviews=true')}})}/>
+              <MaterialCommunityIcon.Button name="star" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}}  onPress={() => _openPlateformLink(this.googleMarketReviews, this.appleMarketReviews) }/>
             </View>
             <View style={styles.buttonView}>
-              <FontAwesomeIcon.Button name="envelope-o" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}} onPress={() => Linking.canOpenURL('mailto: tournoispetanqueapp@gmail.com').then(supported => {if (supported) {Linking.openURL('mailto: tournoispetanqueapp@gmail.com')}})}/>
+              <FontAwesomeIcon.Button name="envelope-o" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}} onPress={() => _openURL(this.mail)}/>
             </View>
             <View style={styles.buttonView}>
               <MaterialCommunityIcon.Button name="wrench" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}} onPress={() => this.props.navigation.navigate('Changelog')}/>
             </View>
             <View style={styles.buttonView}>
-              <MaterialCommunityIcon.Button name="facebook" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}} onPress={() => Linking.canOpenURL('https://www.facebook.com/groups/tournoisptanqueapp').then(supported => {if (supported) {Linking.openURL('https://www.facebook.com/groups/tournoisptanqueapp')}})}/>
+              <MaterialCommunityIcon.Button name="facebook" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}} onPress={() => _openURL(this.facebook)}/>
             </View>
           </View>
         </View> 
         <View style={styles.footer_container}>
-          <Button color="#1c3969" title='Découvrir le GCU' onPress={() => Linking.canOpenURL('https://www.gcu.asso.fr/').then(supported => {if (supported) {Linking.openURL('https://www.gcu.asso.fr/')}})}/>
+          <Button color="#1c3969" title='Découvrir le GCU' onPress={() => _openURL(this.gcuWebsite)}/>
           <Text style={styles.create_text}>Par Mathis Cadio</Text>
           <Text style={styles.create_text}>Version: {expo.version}</Text>
         </View>
