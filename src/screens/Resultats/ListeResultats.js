@@ -2,60 +2,9 @@ import React from 'react'
 import { StyleSheet, View, FlatList, Text } from 'react-native'
 import { connect } from 'react-redux'
 import ListeResultatItem from '../../components/ListeResultatItem'
+import { rankingCalc } from '../../utils/ranking'
 
 class ListeResultats extends React.Component {
-  
-  _calculVictoire () {
-    let victoires = []
-    if (this.props.listeMatchs) {
-      let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs
-      for (let i = 0; i < listeJoueurs.length; i++) {
-        let nbVictoire = 0;
-        let nbPoints = 0;
-        let listeMatchs = this.props.listeMatchs
-        for (let j = 0; j < listeMatchs[listeMatchs.length - 1].nbMatchs; j++) {
-          if (listeMatchs[j].equipe[0].includes(i) && listeMatchs[j].score1) {
-            if (listeMatchs[j].score1 == 13) {
-              nbVictoire++;
-              nbPoints += 13 - listeMatchs[j].score2;
-            }
-            else {
-              nbPoints -= 13 - listeMatchs[j].score1;
-            }
-          }
-          if (listeMatchs[j].equipe[1].includes(i) && listeMatchs[j].score2) {
-            if (listeMatchs[j].score2 == 13) {
-              nbVictoire++;
-              nbPoints += 13 - listeMatchs[j].score1;
-            }
-            else {
-              nbPoints -= 13 - listeMatchs[j].score2;
-            }
-          }
-        }
-        victoires[i] = {joueurId: i, victoires: nbVictoire, points: nbPoints, position: undefined};
-      }
-      victoires.sort(
-        function(a, b) {          
-          if (a.victoires === b.victoires) {
-            return b.points - a.points;
-          }
-          return b.victoires - a.victoires;
-        }
-      );
-      let position = 1;
-      for (let i = 0; i < victoires.length; i++) {
-        if(i > 0 && victoires[i-1].victoires === victoires[i].victoires && victoires[i-1].points === victoires[i].points) {
-          victoires[i].position = victoires[i-1].position;
-        }
-        else {
-          victoires[i].position = position;
-        }
-        position++;
-      }
-    }
-    return victoires
-  }
 
   render() {
     return (
@@ -75,7 +24,7 @@ class ListeResultats extends React.Component {
           </View>
         </View>
         <FlatList
-          data={this._calculVictoire()}
+          data={rankingCalc(this.props.listeMatchs)}
           keyExtractor={(item) => item.joueurId.toString()}
           renderItem={({item}) => (
             <ListeResultatItem

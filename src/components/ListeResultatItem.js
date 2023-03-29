@@ -48,21 +48,6 @@ class ListeResultatItem extends React.Component {
     }
   }
 
-  _partieJoue(joueurNumber) {
-    let partieJoue = 0
-    let listeMatchs = this.props.listeMatchs
-    for (let i = 0; i < listeMatchs[listeMatchs.length - 1].nbMatchs; i++) {
-      if (listeMatchs[i].equipe.some(row => row.includes(joueurNumber))) {
-        if (listeMatchs[i].score1 && listeMatchs[i].score2) {
-          partieJoue++
-        }
-      }
-    }
-    return (
-      <Text style={styles.texte}>{partieJoue}</Text>
-    )
-  }
-
   render() {
     let { joueur } = this.props;
     return (
@@ -75,11 +60,11 @@ class ListeResultatItem extends React.Component {
           <Text style={styles.texte}>{joueur.victoires}</Text>
         </View>
         <View style={styles.mj_container}>
-          {this._partieJoue(joueur.joueurId)}
+          <Text style={styles.texte}>{joueur.nbMatchs}</Text>
         </View>
         <View style={styles.points_container}>
           {this._fanny(joueur.joueurId)}
-          <Text style={styles.texte}>{joueur.points}</Text>
+          <Text style={styles.texte}> {joueur.points}</Text>
         </View>
       </View>
     )
