@@ -3,6 +3,7 @@ import { StyleSheet, View, TextInput, Text, Button } from 'react-native'
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { connect } from 'react-redux'
 import { Picker } from '@react-native-picker/picker'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 class OptionsTournoi extends React.Component {
 
@@ -84,82 +85,84 @@ class OptionsTournoi extends React.Component {
 
   render() {
     return (
-      <View style={styles.main_container} >
-        <View style={styles.body_container} >
-          <View style={styles.input_nbtours_container}>
-            <Text style={styles.texte}>Nombre de tours: </Text>
-            <TextInput
-              style={styles.textinput}
-              placeholderTextColor='white'
-              underlineColorAndroid='white'
-              placeholder="Nombre de tours"
-              keyboardType="numeric"
-              defaultValue= {this.state.nbTours}
-              onChangeText={(text) => this._optionsNombreToursTextInputChanged(text)}
-              ref={this.addPlayerTextInput}
-            />
-          </View>
-          <View style={styles.checkbox_container}>
-            <BouncyCheckbox
-              onPress={()=>{
-                this.setState({
-                  speciauxIncompatibles: !this.state.speciauxIncompatibles
-                })
-              }}
-              disableBuiltInState="true"
-              isChecked={this.state.speciauxIncompatibles}
-              text="Ne jamais faire jouer 2 enfants dans la même équipe"
-              textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
-              fillColor="white"
-            />
-          </View>
-          <View style={styles.checkbox_container}>
-            <BouncyCheckbox
-              onPress={()=>{
-                this.setState({
-                  memesEquipes: !this.state.memesEquipes
-                })
-              }}
-              disableBuiltInState="true"
-              isChecked={this.state.memesEquipes}
-              text="Ne jamais former les mêmes équipes"
-              textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
-              fillColor="white"
-            />
-          </View>
-          <View style={styles.checkbox_container}>
-            <BouncyCheckbox
-              onPress={()=>{
-                this.setState({
-                  memesAdversaires: !this.state.memesAdversaires
-                })
-              }}
-              disableBuiltInState="true"
-              isChecked={this.state.memesAdversaires}
-              text="Empecher 2 joueurs de jouer + de la moitié des matchs contre et ensemble"
-              textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
-              fillColor="white"
-            />
-          </View>
-          <View style={styles.avecEquipes_container}>
-            <Text style={styles.avecEquipes_texte}>En doublette, si le nombre de joueur n'est pas multiple de 4 alors les joueurs en trop seront mis en :</Text>
-            <View style={styles.pickerContainer}>
-              <Picker
-                selectedValue={this.state.complement}
-                onValueChange={(itemValue, itemIndex) => this.setState({complement: itemValue})}
-                style={styles.picker}
-                dropdownIconColor="white"
-              >
-                <Picker.Item label="Triplette" value="3"/>
-                <Picker.Item label="Tête-à-Tête" value="1"/>
-              </Picker>
+      <KeyboardAwareScrollView contentContainerStyle={{flex: 1}}>
+        <View style={styles.main_container} >
+          <View style={styles.body_container} >
+            <View style={styles.input_nbtours_container}>
+              <Text style={styles.texte}>Nombre de tours: </Text>
+              <TextInput
+                style={styles.textinput}
+                placeholderTextColor='white'
+                underlineColorAndroid='white'
+                placeholder="Nombre de tours"
+                keyboardType="numeric"
+                defaultValue= {this.state.nbTours}
+                onChangeText={(text) => this._optionsNombreToursTextInputChanged(text)}
+                ref={this.addPlayerTextInput}
+              />
+            </View>
+            <View style={styles.checkbox_container}>
+              <BouncyCheckbox
+                onPress={()=>{
+                  this.setState({
+                    speciauxIncompatibles: !this.state.speciauxIncompatibles
+                  })
+                }}
+                disableBuiltInState="true"
+                isChecked={this.state.speciauxIncompatibles}
+                text="Ne jamais faire jouer 2 enfants dans la même équipe"
+                textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
+                fillColor="white"
+              />
+            </View>
+            <View style={styles.checkbox_container}>
+              <BouncyCheckbox
+                onPress={()=>{
+                  this.setState({
+                    memesEquipes: !this.state.memesEquipes
+                  })
+                }}
+                disableBuiltInState="true"
+                isChecked={this.state.memesEquipes}
+                text="Ne jamais former les mêmes équipes"
+                textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
+                fillColor="white"
+              />
+            </View>
+            <View style={styles.checkbox_container}>
+              <BouncyCheckbox
+                onPress={()=>{
+                  this.setState({
+                    memesAdversaires: !this.state.memesAdversaires
+                  })
+                }}
+                disableBuiltInState="true"
+                isChecked={this.state.memesAdversaires}
+                text="Empecher 2 joueurs de jouer + de la moitié des matchs contre et ensemble"
+                textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
+                fillColor="white"
+              />
+            </View>
+            <View style={styles.avecEquipes_container}>
+              <Text style={styles.avecEquipes_texte}>En doublette, si le nombre de joueur n'est pas multiple de 4 alors les joueurs en trop seront mis en :</Text>
+              <View style={styles.pickerContainer}>
+                <Picker
+                  selectedValue={this.state.complement}
+                  onValueChange={(itemValue, itemIndex) => this.setState({complement: itemValue})}
+                  style={styles.picker}
+                  dropdownIconColor="white"
+                >
+                  <Picker.Item label="Triplette" value="3"/>
+                  <Picker.Item label="Tête-à-Tête" value="1"/>
+                </Picker>
+              </View>
             </View>
           </View>
+          <View style={styles.buttonView}>
+            {this._boutonValider()}
+          </View>
         </View>
-        <View style={styles.buttonView}>
-          {this._boutonValider()}
-        </View>
-      </View>
+      </KeyboardAwareScrollView>
     )
   }
 }
