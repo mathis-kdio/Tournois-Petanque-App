@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 import Accueil from '../screens/Accueil'
 import Changelog from '../screens/Changelog'
@@ -30,13 +31,6 @@ import PDFExport from '../components/PDFExport'
 import BoutonMenuHeaderNav from '../components/BoutonMenuHeaderNavigation'
 import ListesJoueurs from '../screens/ListesJoueurs/ListesJoueurs';
 import CreateListeJoueurs from '../screens/ListesJoueurs/CreateListeJoueurs';
-
-const styles = StyleSheet.create({
-  icon: {
-    width: 30,
-    height: 30
-  }
-})
 
 const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -132,23 +126,15 @@ function MatchsResultatsBottomNavigator() {
         name="ListeResultatsBottom"
         component={ResultatsStack}
         options={{
-          tabBarIcon: () => {
-          return <Image
-            source={require('../assets/images/ic_trophy.png')}
-            style={styles.icon}/>
-          },
-          title: 'Résultats & Classement',
+          tabBarIcon: () => {return <FontAwesome5 name="trophy" size={28}/>},
+          title: 'Résultats & Classement'
         }} 
       />
       <BottomTab.Screen 
         name="ListeMatchsBottom" 
         component={MatchsStack}
         options={{
-          tabBarIcon: () => {
-          return <Image
-            source={require('../assets/images/ic_menu.png')}
-            style={styles.icon}/>
-          },
+          tabBarIcon: () => {return <FontAwesome5 name="bars" size={28}/>},
           title: 'Parties & Détails'
         }}
       />
