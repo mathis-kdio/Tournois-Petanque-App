@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, FlatList } from 'react-native'
 import { connect } from 'react-redux'
-import MatchItem from '../../components/MatchItem'
+import MatchItem from '@components/MatchItem'
 import * as NavigationBar from 'expo-navigation-bar';
 
 class ListeMatchs extends React.Component {

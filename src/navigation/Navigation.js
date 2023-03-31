@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image, Text } from 'react-native';
+import { Text } from 'react-native';
 import { connect, useSelector } from 'react-redux';
 
 import { useNavigation } from '@react-navigation/native';
@@ -8,29 +8,29 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { FontAwesome5 } from '@expo/vector-icons';
 
-import Accueil from '../screens/Accueil'
-import Changelog from '../screens/Changelog'
-import ListeTournois from '../screens/ListeTournois/ListeTournois';
-import ChoixTypeTournoi from '../screens/Inscriptions/ChoixTypeTournoi';
-import ChoixModeTournoi from '../screens/Inscriptions/ChoixModeTournoi'
-import InscriptionsAvecNoms from '../screens/Inscriptions/InscriptionsAvecNoms'
-import InscriptionsSansNoms from '../screens/Inscriptions/InscriptionsSansNoms'
-import OptionsTournoi from '../screens/Inscriptions/OptionsTournoi'
-import GenerationChampionnat from '../components/GenerationChampionnat'
-import GenerationCoupe from '../components/GenerationCoupe';
-import GenerationMatchs from '../components/GenerationMatchs'
-import GenerationMatchsTriplettes from '../components/GenerationMatchsTriplettes'
-import GenerationMatchsAvecEquipes from '../components/GenerationMatchsAvecEquipes'
-import ListeResultats from '../screens/Resultats/ListeResultats'
-import ListeMatchs from '../screens/Matchs/ListeMatchs'
-import MatchDetail from '../screens/Matchs/MatchDetail'
-import JoueursTournoi from '../screens/Matchs/JoueursTournoi'
-import ParametresTournoi from '../screens/Matchs/ParametresTournoi'
-import PDFExport from '../components/PDFExport'
+import Accueil from '@screens/Accueil'
+import Changelog from '@screens/Changelog'
+import ListeTournois from '@screens/ListeTournois/ListeTournois';
+import ChoixTypeTournoi from '@screens/Inscriptions/ChoixTypeTournoi';
+import ChoixModeTournoi from '@screens/Inscriptions/ChoixModeTournoi'
+import InscriptionsAvecNoms from '@screens/Inscriptions/InscriptionsAvecNoms'
+import InscriptionsSansNoms from '@screens/Inscriptions/InscriptionsSansNoms'
+import OptionsTournoi from '@screens/Inscriptions/OptionsTournoi'
+import GenerationChampionnat from '@components/GenerationChampionnat'
+import GenerationCoupe from '@components/GenerationCoupe';
+import GenerationMatchs from '@components/GenerationMatchs'
+import GenerationMatchsTriplettes from '@components/GenerationMatchsTriplettes'
+import GenerationMatchsAvecEquipes from '@components/GenerationMatchsAvecEquipes'
+import ListeResultats from '@screens/Resultats/ListeResultats'
+import ListeMatchs from '@screens/Matchs/ListeMatchs'
+import MatchDetail from '@screens/Matchs/MatchDetail'
+import JoueursTournoi from '@screens/Matchs/JoueursTournoi'
+import ParametresTournoi from '@screens/Matchs/ParametresTournoi'
+import PDFExport from '@components/PDFExport'
 
-import BoutonMenuHeaderNav from '../components/BoutonMenuHeaderNavigation'
-import ListesJoueurs from '../screens/ListesJoueurs/ListesJoueurs';
-import CreateListeJoueurs from '../screens/ListesJoueurs/CreateListeJoueurs';
+import BoutonMenuHeaderNav from '@components/BoutonMenuHeaderNavigation'
+import ListesJoueurs from '@screens/ListesJoueurs/ListesJoueurs';
+import CreateListeJoueurs from '@screens/ListesJoueurs/CreateListeJoueurs';
 
 const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();

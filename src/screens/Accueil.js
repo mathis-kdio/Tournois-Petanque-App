@@ -6,7 +6,7 @@ import * as NavigationBar from 'expo-navigation-bar';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import VersionCheck from 'expo-react-native-version-checker';
-import { _openPlateformLink, _openURL } from '../utils/link'
+import { _openPlateformLink, _openURL } from '@utils/link'
 
 class Accueil extends React.Component {
   constructor(props) {
@@ -124,7 +124,7 @@ class Accueil extends React.Component {
     return (
       <View style={styles.main_container}>
         <View style={styles.logo_container}>
-          <Image style={styles.logo} source={require('../assets/icon.png')}/>
+          <Image style={styles.logo} source={require('@assets/icon.png')}/>
         </View>
         <View style={styles.body_container}>
           <View style={styles.menu_container}>

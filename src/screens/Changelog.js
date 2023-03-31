@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Button, FlatList, Alert } from 'react-native'
 import { expo } from '../../app.json'
 import * as Linking from 'expo-linking'
 import { connect } from 'react-redux'
-import ChangelogData from '../assets/ChangelogData.json'
+import ChangelogData from '@assets/ChangelogData.json'
 
 class Changelog extends React.Component {
   constructor(props) {

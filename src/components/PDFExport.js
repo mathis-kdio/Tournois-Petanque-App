@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Pressable, ActivityIndicator } from 'react-nati
 import { connect } from 'react-redux'
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
-import { rankingCalc } from '../utils/ranking';
+import { rankingCalc } from '@utils/ranking';
 
 class PDFExport extends React.Component {
   constructor(props) {

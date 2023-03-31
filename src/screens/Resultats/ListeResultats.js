@@ -1,8 +1,8 @@
 import React from 'react'
 import { StyleSheet, View, FlatList, Text } from 'react-native'
 import { connect } from 'react-redux'
-import ListeResultatItem from '../../components/ListeResultatItem'
-import { rankingCalc } from '../../utils/ranking'
+import ListeResultatItem from '@components/ListeResultatItem'
+import { rankingCalc } from '@utils/ranking'
 
 class ListeResultats extends React.Component {
 

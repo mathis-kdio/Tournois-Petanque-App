@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, Text, Button, FlatList } from 'react-native'
 import { connect } from 'react-redux'
-import ListeJoueursItem from '../../components/ListeJoueursItem';
+import ListeJoueursItem from '@components/ListeJoueursItem';
 
 class ListesJoueurs extends React.Component {
 
