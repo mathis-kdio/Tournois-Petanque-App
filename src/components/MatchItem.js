@@ -2,6 +2,8 @@ import React from 'react'
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 
+const NB_PT_VICTORY = 13;
+
 class MatchItem extends React.Component {
 
   constructor(props) {
@@ -21,11 +23,11 @@ class MatchItem extends React.Component {
   _displayName = (joueurNumber, equipe, matchID) => {
     let colorEquipe1 = 'white'
     let colorEquipe2 = 'white'
-    if (this.props.listeMatchs[matchID].score1 == 13) {
+    if (this.props.listeMatchs[matchID].score1 == NB_PT_VICTORY) {
       colorEquipe1 = 'green'
       colorEquipe2 = 'red'
     }
-    else if (this.props.listeMatchs[matchID].score2 == 13) {
+    else if (this.props.listeMatchs[matchID].score2 == NB_PT_VICTORY) {
       colorEquipe1 = 'red'
       colorEquipe2 = 'green'
     }
