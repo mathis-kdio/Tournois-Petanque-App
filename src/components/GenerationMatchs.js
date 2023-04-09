@@ -119,19 +119,18 @@ class GenerationMatchs extends React.Component {
     let erreurMemesEquipes = undefined;
     let erreurSpeciaux = undefined;
     let echecGeneration = undefined;
-    console.log(this.props.optionsTournoi.type)
     if (this.props.optionsTournoi.type == "mele-demele") {
-      /*if (this.typeEquipes == "teteatete") {
-        //(matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration) = generationTeteATete(listeJoueurs, this.nbTours, this.typeEquipes, this.complement, this.speciauxIncompatibles, this.jamaisMemeCoequipier, this.eviterMemeAdversaire);
-      }*/
-      if (this.typeEquipes == "doublette" || "teteatete") {
+      if (this.typeInscription == 'avecEquipes') {
+        ({matchs, nbMatchs, echecGeneration} = generationAvecEquipes(this.props.listesJoueurs.avecEquipes, this.nbTours, this.typeEquipes));
+      }
+      else if (this.typeEquipes == "teteatete") {
+        ({matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration} = generationDoublettes(this.props.listesJoueurs[this.typeInscription], this.nbTours, this.typeEquipes, this.complement, this.speciauxIncompatibles, this.jamaisMemeCoequipier, this.eviterMemeAdversaire));
+      }
+      else if (this.typeEquipes == "doublette") {
         ({matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration} = generationDoublettes(this.props.listesJoueurs[this.typeInscription], this.nbTours, this.typeEquipes, this.complement, this.speciauxIncompatibles, this.jamaisMemeCoequipier, this.eviterMemeAdversaire));
       }
       else if (this.typeEquipes == "triplette") {
         ({matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration} = generationTriplettes(this.props.listesJoueurs[this.typeInscription], this.nbTours));
-      }
-      else if (this.typeEquipes == "avecEquipes") {
-        ({matchs, nbMatchs, echecGeneration} = generationAvecEquipes(this.props.listesJoueurs.avecEquipes, this.nbTours, this.typeEquipes));
       }
       else {
         echecGeneration = true;
