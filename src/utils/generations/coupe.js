@@ -36,8 +36,8 @@ export const generationCoupe = (optionsTournoi, listeJoueurs) => {
   for (let i = 1; i <= nbEquipes; i++) {
     equipe.push([]);
     for (let j = 0; j < nbjoueurs; j++) {
-      if (props.listeJoueurs[j].equipe == i) {
-        equipe[i - 1].push(props.listeJoueurs[j].id);
+      if (listeJoueurs[j].equipe == i) {
+        equipe[i - 1].push(listeJoueurs[j].id);
       }
     }
   }

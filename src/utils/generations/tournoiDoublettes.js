@@ -5,8 +5,8 @@ randomBetween = (a, b) => {
 randomBetweenRange = (num, range) => {
   const res = [];
   for (let i = 0; i < num; ) {
-      const random = this.randomBetween(range[0], range[1])
-      if (this.countOccurrences(res, random) < 1) {
+      const random = randomBetween(range[0], range[1])
+      if (countOccurrences(res, random) < 1) {
         res.push(random);
         i++;
       }
@@ -86,7 +86,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
       for (let i = 0; i < nbTours; i++) {
         let idMatch = i * nbMatchsParTour;
         let idsJoueursSpe = [];
-        idsJoueursSpe = this.randomBetweenRange(joueursSpe.length, [-1, joueursSpe.length]);
+        idsJoueursSpe = randomBetweenRange(joueursSpe.length, [-1, joueursSpe.length]);
         for (let j = 0; j < joueursSpe.length; j++) {
           if (matchs[idMatch].equipe[0][1] == -1) {
             matchs[idMatch].equipe[0][1] = joueursSpe[idsJoueursSpe[j]].id;
