@@ -168,6 +168,7 @@ class GenerationMatchs extends React.Component {
       memesAdversaires: this.eviterMemeAdversaire,
       typeEquipes: this.typeEquipes,
       complement: this.complement,
+      typeTournoi: this.props.optionsTournoi.type,
       listeJoueurs: this.props.listesJoueurs[this.typeInscription].slice()
     });
 
