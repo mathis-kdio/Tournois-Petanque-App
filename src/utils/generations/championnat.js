@@ -1,5 +1,5 @@
 
-export const generationChampionnat = (optionsTournoi, listesJoueurs, ) => {
+export const generationChampionnat = (optionsTournoi, listesJoueurs) => {
     let typeEquipes = optionsTournoi.typeEquipes;
     let nbjoueurs = listesJoueurs.avecEquipes.length;
     let matchs = [];
