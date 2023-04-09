@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, ActivityIndicator, Text, Button } from 'react-native'
 import { connect } from 'react-redux'
+import { generationAvecEquipes } from 'utils/generations/tournoiAvecEquipes'
 
 class GenerationMatchsAvecEquipes extends React.Component {
   constructor(props) {
@@ -74,23 +75,6 @@ class GenerationMatchsAvecEquipes extends React.Component {
     }
   }
 
-  randomBetween(a, b) {
-    return (parseInt((Math.random() * (b - a)) + a))
-  }
-  randomBetweenRange (num, range) {
-    const res = [];
-    for (let i = 0; i < num; ) {
-        const random = this.randomBetween(range[0], range[1])
-        if (this.countOccurrences(res, random) < 2) {
-          res.push(random)
-          i++
-        }
-    }
-    return res
-  }
-
-  countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
-
   _generation() {
     //Récupération des options que l'utilisateur a modifié ou laissé par défaut
     if (this.props.route.params != undefined) {
@@ -102,15 +86,12 @@ class GenerationMatchsAvecEquipes extends React.Component {
         this.nbPtVictoire = routeparams.nbPtVictoire
       }
       if (routeparams.speciauxIncompatibles != undefined) {
-        speciauxIncompatibles = routeparams.speciauxIncompatibles
         this.speciauxIncompatibles = routeparams.speciauxIncompatibles
       }
       if (routeparams.memesEquipes != undefined) {
-        jamaisMemeCoequipier = routeparams.memesEquipes
         this.jamaisMemeCoequipier = routeparams.memesEquipes
       }
       if (routeparams.memesAdversaires != undefined) {
-        eviterMemeAdversaire = routeparams.memesAdversaires
         this.eviterMemeAdversaire = routeparams.memesAdversaires
       }
       if (routeparams.typeEquipes != undefined) {
@@ -118,121 +99,9 @@ class GenerationMatchsAvecEquipes extends React.Component {
       }
     }
 
-    let nbjoueurs = this.props.listesJoueurs.avecEquipes.length;
-    let speciauxIncompatibles = true
-    let jamaisMemeCoequipier = true
-    let eviterMemeAdversaire = true;
-    let matchs = [];
-    let idMatch = 0;
-    let equipe = []
-
-    //Initialisation des matchs dans un tableau
-    let nbEquipes
-    let nbMatchsParTour
-    if (this.typeEquipes == "teteatete") {
-      nbEquipes = nbjoueurs
-      nbMatchsParTour = nbjoueurs / 2
-    }
-    else if (this.typeEquipes == "doublette") {
-      nbEquipes = nbjoueurs / 2
-      nbMatchsParTour = Math.ceil(nbjoueurs / 4)
-    }
-    else {
-      nbEquipes = nbjoueurs / 3
-      nbMatchsParTour = Math.ceil(nbjoueurs / 6)
-    }
-    let nbMatchs = this.nbTours * nbMatchsParTour
-
-    idMatch = 0;
-    for (let i = 1; i < this.nbTours + 1; i++) {
-      for (let j = 0; j < nbMatchsParTour; j++) {
-        matchs.push({id: idMatch, manche: i, equipe: [[-1,-1,-1],[-1,-1,-1]], score1: undefined, score2: undefined});
-        idMatch++;
-      }
-    }
-
-    //Création d'un tableau dans lequel les joueurs sont regroupés par équipes
-    for (let i = 1; i <= nbEquipes; i++) {
-      equipe.push([])
-      for (let j = 0; j < nbjoueurs; j++) {
-        if(this.props.listesJoueurs.avecEquipes[j].equipe == i) {
-          equipe[i - 1].push(this.props.listesJoueurs.avecEquipes[j].id)
-        }
-      }
-    }
-
-    //On place les ids des équipes dans un tableau qui sera mélanger à chaque nouveaux tour
-    let equipesIds = [];
-    for (let i = 0; i < nbEquipes; i++) {
-      equipesIds.push(i);
-    }
-    function shuffle(o) {
-      for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-      return o;
-    }
-
-    //FONCTIONNEMENT
-    idMatch = 0;
-    let breaker = 0 //permet de détecter quand boucle infinie
-    for (let i = 0; i < this.nbTours; i++) {
-      breaker = 0
-      let randomEquipesIds = shuffle(equipesIds)
-      for (let j = 0; j < equipe.length;) {
-        //Affectation equipe 1
-        if (matchs[idMatch].equipe[0][0] == -1) {
-          matchs[idMatch].equipe[0][0] = equipe[randomEquipesIds[j]][0]
-          if (this.typeEquipes == "doublette" || this.typeEquipes == "triplette") {
-            matchs[idMatch].equipe[0][1] = equipe[randomEquipesIds[j]][1]
-          }
-          if (this.typeEquipes == "triplette") {
-            matchs[idMatch].equipe[0][2] = equipe[randomEquipesIds[j]][2]
-          }
-          j++
-          breaker = 0
-        }
-        //Affectation Equipe 2
-        if (matchs[idMatch].equipe[1][0] == -1) {
-          //Test si les équipes 1 et 2 n'ont pas déjà jouées ensemble
-          if (eviterMemeAdversaire == true) {
-            matchs[idMatch].equipe[1][0] = equipe[randomEquipesIds[j]][0]
-            if (this.typeEquipes == "doublette" || this.typeEquipes == "triplette") {
-              matchs[idMatch].equipe[1][1] = equipe[randomEquipesIds[j]][1]
-            }
-            if (this.typeEquipes == "triplette") {
-              matchs[idMatch].equipe[1][2] = equipe[randomEquipesIds[j]][2]
-            }
-            j++
-            breaker = 0
-          }
-        }
-        else {
-          breaker++
-        }
-
-        idMatch++;
-        //Si l'id du Match correspond à un match du prochain tour alors retour au premier match du tour en cours
-        if (idMatch >= nbMatchsParTour * (i + 1)) {
-          idMatch = i * nbMatchsParTour;
-        }
-
-        //En cas de trop nombreuses tentatives, arret de la génération
-        //L'utilisateur est invité à changer les paramètres ou à relancer la génération
-        //TODO condition de break à affiner
-        //nbMatchs devrait être assez car le + opti devrait être : nbMatchs / this.nbTours
-        if (breaker > nbMatchs) {
-          return 1
-        }
-      }
-
-      //Permettra de retenir contre quelles équipes une équipe a joué
-      /*idMatch = i * nbMatchsParTour;
-      for (let j = 0; j < nbMatchsParTour; j++) {
-        joueurs[matchs[idMatch + j].equipe[0][0] - 1].equipe.push(matchs[idMatch + j].equipe[0][1]);
-        joueurs[matchs[idMatch + j].equipe[0][1] - 1].equipe.push(matchs[idMatch + j].equipe[0][0]);
-        joueurs[matchs[idMatch + j].equipe[1][0] - 1].equipe.push(matchs[idMatch + j].equipe[1][1]);
-        joueurs[matchs[idMatch + j].equipe[1][1] - 1].equipe.push(matchs[idMatch + j].equipe[1][0]);
-      }*/
-      idMatch = nbMatchsParTour * (i + 1);
+    const {matchs, nbMatchs, echecGeneration} = generationAvecEquipes(this.props.listesJoueurs, this.nbTours, this.typeEquipes);
+    if (echecGeneration) {
+      return 1;
     }
 
     //Ajout des options du match à la fin du tableau contenant les matchs
@@ -261,7 +130,7 @@ class GenerationMatchsAvecEquipes extends React.Component {
     this._displayListeMatch(matchs);
 
     //Si génération valide alors return 2
-    return 2
+    return 2;
   }
 
   _displayLoading() {
@@ -310,7 +179,6 @@ class GenerationMatchsAvecEquipes extends React.Component {
   }
 }
 
-
 const styles = StyleSheet.create({
   main_container: {
     flex: 1,
@@ -338,11 +206,11 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
-    return {
-      listesJoueurs: state.listesJoueurs.listesJoueurs,
-      listeMatchs: state.gestionMatchs.listematchs,
-      listeTournois: state.listeTournois.listeTournois
-    }
+  return {
+    listesJoueurs: state.listesJoueurs.listesJoueurs,
+    listeMatchs: state.gestionMatchs.listematchs,
+    listeTournois: state.listeTournois.listeTournois
+  }
 }
 
 export default connect(mapStateToProps)(GenerationMatchsAvecEquipes)
