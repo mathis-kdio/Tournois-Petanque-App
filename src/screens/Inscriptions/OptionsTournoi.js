@@ -10,12 +10,14 @@ class OptionsTournoi extends React.Component {
   constructor(props) {
     super(props)
     this.nbTours = "5"
+    this.nbPtVictoire = 13;
     this.state = {
       speciauxIncompatibles: true,
       memesEquipes: true,
       memesAdversaires: true,
       complement: "3",
-      nbTours: "5"
+      nbTours: "5",
+      nbPtVictoire: 13
     }
   }
 
@@ -27,6 +29,12 @@ class OptionsTournoi extends React.Component {
           nbTours: routeparams.nbTours,
         })
         this.nbTours = routeparams.nbTours
+      }
+      if (routeparams.nbPtVictoire != undefined) {
+        this.setState({
+          nbPtVictoire: routeparams.nbPtVictoire,
+        })
+        this.nbPtVictoire = routeparams.nbPtVictoire
       }
       if (routeparams.speciauxIncompatibles != undefined) {
         this.setState({
@@ -58,11 +66,19 @@ class OptionsTournoi extends React.Component {
     })
   }
 
+  _NbPtVictoireTxtInputChanged(text) {
+    this.nbPtVictoire = text.toString()
+    this.setState({
+      nbPtVictoire: this.nbPtVictoire
+    })
+  }
+
   _retourInscription() {
     this.props.navigation.navigate({
       name: this.props.route.params.screenStackName,
       params: {
         nbTours: this.nbTours,
+        nbPtVictoire: this.nbPtVictoire,
         speciauxIncompatibles: this.state.speciauxIncompatibles,
         memesEquipes: this.state.memesEquipes,
         memesAdversaires: this.state.memesAdversaires,
@@ -89,16 +105,27 @@ class OptionsTournoi extends React.Component {
         <View style={styles.main_container} >
           <View style={styles.body_container} >
             <View style={styles.input_nbtours_container}>
-              <Text style={styles.texte}>Nombre de tours: </Text>
+              <Text style={styles.texte}>Nombre de tours : </Text>
               <TextInput
                 style={styles.textinput}
                 placeholderTextColor='white'
                 underlineColorAndroid='white'
                 placeholder="Nombre de tours"
                 keyboardType="numeric"
-                defaultValue= {this.state.nbTours}
+                defaultValue={this.state.nbTours}
                 onChangeText={(text) => this._optionsNombreToursTextInputChanged(text)}
-                ref={this.addPlayerTextInput}
+              />
+            </View>
+            <View style={styles.input_nbtours_container}>
+              <Text style={styles.texte}>Nombre de points pour la victoire : </Text>
+              <TextInput
+                style={styles.textinput}
+                placeholderTextColor='white'
+                underlineColorAndroid='white'
+                placeholder="Nombre de points pour une victoire"
+                keyboardType="numeric"
+                defaultValue={this.state.nbPtVictoire.toString()}
+                onChangeText={(text) => this._NbPtVictoireTxtInputChanged(text)}
               />
             </View>
             <View style={styles.checkbox_container}>
@@ -185,6 +212,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   textinput: {
+    flex: 1,
     height: 50,
     paddingLeft: 5,
     color: 'white'

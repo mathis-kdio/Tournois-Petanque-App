@@ -6,6 +6,7 @@ class InscriptionsSansNoms extends React.Component {
   constructor(props) {
     super(props)
     this.nbTours = "5"
+    this.nbPtVictoire = 13;
     this.speciauxIncompatibles = true
     this.memesEquipes = true
     this.memesAdversaires = true
@@ -20,6 +21,9 @@ class InscriptionsSansNoms extends React.Component {
       let routeparams = this.props.route.params;
       if (routeparams.nbTours != undefined) {
         this.nbTours = routeparams.nbTours
+      }
+      if (routeparams.nbPtVictoire != undefined) {
+        this.nbPtVictoire = routeparams.nbPtVictoire
       }
       if (routeparams.speciauxIncompatibles != undefined) {
         this.speciauxIncompatibles = routeparams.speciauxIncompatibles
@@ -78,6 +82,7 @@ class InscriptionsSansNoms extends React.Component {
       name: screenName,
       params: {
         nbTours: parseInt(this.nbTours),
+        nbPtVictoire: this.nbPtVictoire,
         speciauxIncompatibles: this.speciauxIncompatibles,
         memesEquipes: this.memesEquipes,
         memesAdversaires: this.memesAdversaires,
@@ -93,6 +98,7 @@ class InscriptionsSansNoms extends React.Component {
       name: 'OptionsTournoi',
       params: {
         nbTours: this.nbTours,
+        nbPtVictoire: this.nbPtVictoire,
         speciauxIncompatibles: this.speciauxIncompatibles,
         memesEquipes: this.memesEquipes,
         memesAdversaires: this.memesAdversaires,

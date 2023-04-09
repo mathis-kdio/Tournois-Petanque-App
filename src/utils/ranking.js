@@ -1,33 +1,33 @@
-const NB_PT_VICTORY = 13;
-
 export const rankingCalc = (listeMatchs) => {
-  let victoires = []
   if (!listeMatchs)
     return;
 
-  let listeJoueurs = listeMatchs[listeMatchs.length - 1].listeJoueurs
+  let victoires = []
+  let optionsTournoi = listeMatchs[listeMatchs.length - 1];
+  let nbPtVictoire = optionsTournoi.nbPtVictoire ? optionsTournoi.nbPtVictoire : 13;
+  let listeJoueurs = optionsTournoi.listeJoueurs;
   for (let i = 0; i < listeJoueurs.length; i++) {
     let nbVictoire = 0;
     let nbPoints = 0;
     let nbMatchs = 0;
-    for (let j = 0; j < listeMatchs[listeMatchs.length - 1].nbMatchs; j++) {
+    for (let j = 0; j < optionsTournoi.nbMatchs; j++) {
       if (listeMatchs[j].equipe[0].includes(i) && listeMatchs[j].score1) {
-        if (listeMatchs[j].score1 >= NB_PT_VICTORY) {
+        if (listeMatchs[j].score1 >= nbPtVictoire) {
           nbVictoire++;
-          nbPoints += NB_PT_VICTORY - listeMatchs[j].score2;
+          nbPoints += nbPtVictoire - listeMatchs[j].score2;
         }
         else {
-          nbPoints -= NB_PT_VICTORY - listeMatchs[j].score1;
+          nbPoints -= nbPtVictoire - listeMatchs[j].score1;
         }
         nbMatchs++;
       }
       if (listeMatchs[j].equipe[1].includes(i) && listeMatchs[j].score2) {
-        if (listeMatchs[j].score2 >= NB_PT_VICTORY) {
+        if (listeMatchs[j].score2 >= nbPtVictoire) {
           nbVictoire++;
-          nbPoints += NB_PT_VICTORY - listeMatchs[j].score1;
+          nbPoints += nbPtVictoire - listeMatchs[j].score1;
         }
         else {
-          nbPoints -= NB_PT_VICTORY - listeMatchs[j].score2;
+          nbPoints -= nbPtVictoire - listeMatchs[j].score2;
         }
         nbMatchs++;
       }
