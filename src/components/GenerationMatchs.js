@@ -1,19 +1,24 @@
 import React from 'react'
 import { StyleSheet, View, ActivityIndicator, Text, Button } from 'react-native'
 import { connect } from 'react-redux'
+import { generationChampionnat } from 'utils/generations/championnat'
+import { generationCoupe } from 'utils/generations/coupe'
+import { generationAvecEquipes } from 'utils/generations/tournoiAvecEquipes'
 import { generationDoublettes } from 'utils/generations/tournoiDoublettes'
+import { generationTeteATete } from 'utils/generations/tournoiTeteATete'
+import { generationTriplettes } from 'utils/generations/tournoiTriplettes'
 
 class GenerationMatchs extends React.Component {
   constructor(props) {
     super(props)
-    this.nbTours = 5
+    this.nbTours = 5;
     this.nbPtVictoire = 13;
-    this.speciauxIncompatibles = true
-    this.jamaisMemeCoequipier = true
-    this.eviterMemeAdversaire = true
-    this.typeEquipes = "doublette"
-    this.typeInscription = "avecNoms"
-    this.complement = "3"
+    this.speciauxIncompatibles = true;
+    this.jamaisMemeCoequipier = true;
+    this.eviterMemeAdversaire = true;
+    this.typeEquipes = "doublette";
+    this.typeInscription = "avecNoms";
+    this.complement = "3";
     this.state = {
       isLoading: true,
       isValid: true,
@@ -25,15 +30,15 @@ class GenerationMatchs extends React.Component {
 
   _ajoutMatchs = (matchs) => {
     //this._supprimerMatchs();
-    const actionAjoutMatchs = { type: "AJOUT_MATCHS", value: matchs }
+    const actionAjoutMatchs = { type: "AJOUT_MATCHS", value: matchs };
     this.props.dispatch(actionAjoutMatchs);
-    const actionAjoutTournoi = { type: "AJOUT_TOURNOI", value: {tournoi: matchs} }
+    const actionAjoutTournoi = { type: "AJOUT_TOURNOI", value: {tournoi: matchs} };
     this.props.dispatch(actionAjoutTournoi);
   }
 
   _supprimerMatchs () {
-    const action = { type: "SUPPR_MATCHS" }
-    this.props.dispatch(action)
+    const action = { type: "SUPPR_MATCHS" };
+    this.props.dispatch(action);
   }
 
   componentDidMount() {
@@ -46,15 +51,15 @@ class GenerationMatchs extends React.Component {
     this.props.navigation.reset({
       index: 0,
       routes: [{name: 'ListeMatchsInscription'}],
-    })
+    });
   }
 
   _lanceurGeneration() {
     let listeJoueurs = this.props.listesJoueurs[this.typeInscription];
     let nbjoueurs = listeJoueurs.length;
-    let nbGenerationsRatee = 0
-    let nbEssaisPossibles = Math.pow(nbjoueurs, nbjoueurs)
-    let returnType = 0
+    let nbGenerationsRatee = 0;
+    let nbEssaisPossibles = Math.pow(nbjoueurs, nbjoueurs);
+    let returnType = 0;
     // 3 types de retour possible: 
     // 0 si trop de personnes spéciaux ou règle pas memeEquipes impossible; 
     // 1 si breaker activé
@@ -63,10 +68,10 @@ class GenerationMatchs extends React.Component {
     while (nbGenerationsRatee < nbEssaisPossibles) {
       returnType = this._generation()
       if (returnType == 0 || returnType == 2) {
-        break
+        break;
       }
       else {
-        nbGenerationsRatee++
+        nbGenerationsRatee++;
       }
     }
     //Si la génération échoue trop de fois à cause du breaker alors affichage d'un message pour indiquer de changer les options
@@ -74,7 +79,7 @@ class GenerationMatchs extends React.Component {
       this.setState({
         isGenerationSuccess: false,
         isLoading: false
-      })
+      });
     }
   }
 
@@ -83,34 +88,60 @@ class GenerationMatchs extends React.Component {
     if (this.props.route.params != undefined) {
       let routeparams = this.props.route.params;
       if (routeparams.nbTours != undefined) {
-        this.nbTours = routeparams.nbTours
+        this.nbTours = routeparams.nbTours;
       }
       if (routeparams.nbPtVictoire != undefined) {
-        this.nbPtVictoire = routeparams.nbPtVictoire
+        this.nbPtVictoire = routeparams.nbPtVictoire;
       }
       if (routeparams.speciauxIncompatibles != undefined) {
-        this.speciauxIncompatibles = routeparams.speciauxIncompatibles
+        this.speciauxIncompatibles = routeparams.speciauxIncompatibles;
       }
       if (routeparams.memesEquipes != undefined) {
-        this.jamaisMemeCoequipier = routeparams.memesEquipes
+        this.jamaisMemeCoequipier = routeparams.memesEquipes;
       }
       if (routeparams.memesAdversaires != undefined) {
-        this.eviterMemeAdversaire = routeparams.memesAdversaires
+        this.eviterMemeAdversaire = routeparams.memesAdversaires;
       }
       if (routeparams.typeEquipes != undefined) {
-        this.typeEquipes = routeparams.typeEquipes
+        this.typeEquipes = routeparams.typeEquipes;
       }
       if (routeparams.typeInscription != undefined) {
-        this.typeInscription = routeparams.typeInscription
+        this.typeInscription = routeparams.typeInscription;
       }
       if (routeparams.complement != undefined) {
-        this.complement = routeparams.complement
+        this.complement = routeparams.complement;
       }
     }
 
-    let listeJoueurs = this.props.listesJoueurs[this.typeInscription];
-
-    const {matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration} = generationDoublettes(listeJoueurs, this.nbTours, this.typeEquipes, this.complement, this.speciauxIncompatibles, this.jamaisMemeCoequipier, this.eviterMemeAdversaire);
+    let matchs = undefined;
+    let nbMatchs = undefined;
+    let nbTours = this.nbTours;
+    let erreurMemesEquipes = undefined;
+    let erreurSpeciaux = undefined;
+    let echecGeneration = undefined;
+    console.log(this.typeInscription)
+    switch (this.typeInscription) {
+      /*case "teteatete":
+        (matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration) = generationTeteATete(listeJoueurs, this.nbTours, this.typeEquipes, this.complement, this.speciauxIncompatibles, this.jamaisMemeCoequipier, this.eviterMemeAdversaire);
+        break;*/
+      case "doublette" || "teteatete":
+        (matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration) = generationDoublettes(this.props.listesJoueurs[this.typeInscription], this.nbTours, this.typeEquipes, this.complement, this.speciauxIncompatibles, this.jamaisMemeCoequipier, this.eviterMemeAdversaire);
+        break;
+      case "triplette":
+        (matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration) = generationTriplettes(this.props.listesJoueurs[this.typeInscription], this.nbTours);
+        break;
+      case "avecEquipes":
+        (matchs, nbMatchs, echecGeneration) = generationAvecEquipes(this.props.listesJoueurs.avecEquipes, this.nbTours, this.typeEquipes);
+        break;
+      case "coupe":
+        (matchs, nbTours, nbMatchs) = generationCoupe(this.props.optionsTournoi, this.props.listesJoueurs.avecEquipes);
+        break;
+      case "championnat":
+        (matchs, nbTours, nbMatchs) = generationChampionnat(this.props.optionsTournoi, this.props.listesJoueurs.avecEquipes);
+        break;
+      default:
+        break;
+    }
     if (erreurMemesEquipes || erreurSpeciaux) {
       this.setState({
         erreurMemesEquipes: erreurMemesEquipes,
@@ -126,7 +157,7 @@ class GenerationMatchs extends React.Component {
     //Ajout des options du match à la fin du tableau contenant les matchs
     matchs.push({
       tournoiID: undefined,
-      nbTours: this.nbTours,
+      nbTours: nbTours,
       nbMatchs: nbMatchs,
       nbPtVictoire: this.nbPtVictoire,
       speciauxIncompatibles: this.speciauxIncompatibles,
@@ -210,7 +241,7 @@ class GenerationMatchs extends React.Component {
         memesAdversaires: this.eviterMemeAdversaire,
         typeEquipes: this.typeEquipes
       }
-    })
+    });
   }
 
   render() {
@@ -255,7 +286,8 @@ const mapStateToProps = (state) => {
   return {
     listesJoueurs: state.listesJoueurs.listesJoueurs,
     listeMatchs: state.gestionMatchs.listematchs,
-    listeTournois: state.listeTournois.listeTournois
+    listeTournois: state.listeTournois.listeTournois,
+    optionsTournoi: state.optionsTournoi.options
   }
 }
 
