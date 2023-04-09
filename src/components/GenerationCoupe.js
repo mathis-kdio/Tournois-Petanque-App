@@ -6,6 +6,7 @@ class GenerationCoupe extends React.Component {
   constructor(props) {
     super(props)
     this.nbTours = 5;
+    this.nbPtVictoire = 13;
     this.speciauxIncompatibles = true;
     this.jamaisMemeCoequipier = true;
     this.eviterMemeAdversaire = true;
@@ -145,6 +146,7 @@ class GenerationCoupe extends React.Component {
       tournoiID: this.props.listeTournois.length,
       nbTours: this.nbTours,
       nbMatchs: nbMatchs,
+      nbPtVictoire: this.nbPtVictoire,
       speciauxIncompatibles: this.speciauxIncompatibles,
       memesEquipes: this.jamaisMemeCoequipier,
       memesAdversaires: this.eviterMemeAdversaire,
@@ -184,6 +186,7 @@ class GenerationCoupe extends React.Component {
       name: this.props.route.params.screenStackName,
       params: {
         nbTours: this.nbTours.toString(),
+        nbPtVictoire: this.nbPtVictoire,
         speciauxIncompatibles: this.speciauxIncompatibles,
         memesEquipes: this.jamaisMemeCoequipier,
         memesAdversaires: this.eviterMemeAdversaire,

@@ -6,6 +6,7 @@ class GenerationMatchsTriplette extends React.Component {
   constructor(props) {
     super(props)
     this.nbTours = 5
+    this.nbPtVictoire = 13
     this.speciauxIncompatibles = true
     this.jamaisMemeCoequipier = true
     this.eviterMemeAdversaire = true
@@ -97,6 +98,9 @@ class GenerationMatchsTriplette extends React.Component {
       let routeparams = this.props.route.params;
       if (routeparams.nbTours != undefined) {
         this.nbTours = routeparams.nbTours
+      }
+      if (routeparams.nbPtVictoire != undefined) {
+        this.nbPtVictoire = routeparams.nbPtVictoire
       }
       if (routeparams.speciauxIncompatibles != undefined) {
         speciauxIncompatibles = routeparams.speciauxIncompatibles
@@ -391,6 +395,7 @@ class GenerationMatchsTriplette extends React.Component {
       tournoiID: this.props.listeTournois.length,
       nbTours: this.nbTours,
       nbMatchs: nbMatchs,
+      nbPtVictoire: this.nbPtVictoire,
       speciauxIncompatibles: this.speciauxIncompatibles,
       memesEquipes: this.jamaisMemeCoequipier,
       memesAdversaires: this.eviterMemeAdversaire,
@@ -465,6 +470,7 @@ class GenerationMatchsTriplette extends React.Component {
       name: this.props.route.params.screenStackName,
       params: {
         nbTours: this.nbTours.toString(),
+        nbPtVictoire: this.nbPtVictoire,
         speciauxIncompatibles: this.speciauxIncompatibles,
         memesEquipes: this.jamaisMemeCoequipier,
         memesAdversaires: this.eviterMemeAdversaire,

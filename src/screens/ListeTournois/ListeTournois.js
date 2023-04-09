@@ -35,6 +35,7 @@ class ListeTournois extends React.Component {
       if (tournoi.updateDate) {
         updateDate = moment(tournoi.updateDate).format(dateFormat);
       }
+      let nbPtVictoire = tournoiOptions.nbPtVictoire ? tournoiOptions.nbPtVictoire : 13;
       return (
         <Modal
           animationType="slide"
@@ -56,6 +57,7 @@ class ListeTournois extends React.Component {
                 <Text style={modalStyles.modalText}>Type d'équipes: {tournoiOptions.typeEquipes}</Text>
                 <Text style={modalStyles.modalText}>Nombre de tours: {tournoiOptions.nbTours}</Text>
                 <Text style={modalStyles.modalText}>Nombre de matchs: {tournoiOptions.nbMatchs}</Text>
+                <Text style={modalStyles.modalText}>Nombre de points pour la victoire: {nbPtVictoire}</Text>
                 <Text style={modalStyles.modalText}>Si complément: {tournoiOptions.complement}</Text>
                 <Text style={modalStyles.modalText}>Empêcher les mêmes équipes: {tournoiOptions.memesEquipes ? "Oui" : "Non"}</Text>
                 <Text style={modalStyles.modalText}>Empêcher les mêmes adversaires: {tournoiOptions.memesAdversaires ? "Oui" : "Non"}</Text>

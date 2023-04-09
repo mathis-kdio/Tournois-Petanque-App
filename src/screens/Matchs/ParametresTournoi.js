@@ -37,16 +37,18 @@ class ParametresTournoi extends React.Component {
   }
 
   render() {
-    let parametresTournoi = {nbTours: 0, speciauxIncompatibles: false, memesEquipes: false, memesAdversaires: false};
+    let parametresTournoi = {nbTours: 0, nbPtVictoire: 13, speciauxIncompatibles: false, memesEquipes: false, memesAdversaires: false};
     if (this.props.listeMatchs) {
       parametresTournoi = this.props.listeMatchs[this.props.listeMatchs.length - 1];
+      parametresTournoi.nbPtVictoire = parametresTournoi.nbPtVictoire ? parametresTournoi.nbPtVictoire : 13;
     }
     return (
       <View style={styles.main_container} >
         <View style={styles.body_container}>
           <View style={styles.options_container}>
             <Text style={styles.titre}>Les options du tournois :</Text>
-            <Text style={styles.texte}>- Nombre de tours: {parametresTournoi.nbTours}</Text>
+            <Text style={styles.texte}>- Nombre de tours: {parametresTournoi.nbTours.toString()}</Text>
+            <Text style={styles.texte}>- Nombre de points pour la victoire: {parametresTournoi.nbPtVictoire.toString()}</Text>
             <Text style={styles.texte}>- Ne jamais faire jouer 2 joueurs spéciaux dans la même équipe : {parametresTournoi.speciauxIncompatibles.toString() ? "Activé" : "Désactivé"}</Text>
             <Text style={styles.texte}>- Ne jamais former les mêmes équipes : {parametresTournoi.memesEquipes.toString() ? "Activé" : "Désactivé"}</Text>
             <Text style={styles.texte}>- Empecher 2 joueurs de jouer + de la moitié des matchs contre et ensemble : {parametresTournoi.memesAdversaires.toString() ? "Activé" : "Désactivé"}</Text>

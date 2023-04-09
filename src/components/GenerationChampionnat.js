@@ -6,6 +6,7 @@ class GenerationChampionnat extends React.Component {
   constructor(props) {
     super(props)
     this.nbTours = 5;
+    this.nbPtVictoire = 13;
     this.speciauxIncompatibles = true;
     this.jamaisMemeCoequipier = true;
     this.eviterMemeAdversaire = true;
@@ -52,6 +53,10 @@ class GenerationChampionnat extends React.Component {
     //Récupération des options que l'utilisateur a modifié ou laissé par défaut
     if (this.props.route.params != undefined) {
       let routeparams = this.props.route.params;
+      if (routeparams.nbPtVictoire != undefined) {
+        nbPtVictoire = routeparams.nbPtVictoire;
+        this.nbPtVictoire = routeparams.nbPtVictoire;
+      }
       if (routeparams.speciauxIncompatibles != undefined) {
         speciauxIncompatibles = routeparams.speciauxIncompatibles;
         this.speciauxIncompatibles = routeparams.speciauxIncompatibles;
@@ -148,6 +153,7 @@ class GenerationChampionnat extends React.Component {
     matchs.push({
       tournoiID: this.props.listeTournois.length,
       nbTours: this.nbTours,
+      nbPtVictoire: this.nbPtVictoire,
       nbMatchs: nbMatchs,
       speciauxIncompatibles: this.speciauxIncompatibles,
       memesEquipes: this.jamaisMemeCoequipier,
@@ -187,6 +193,7 @@ class GenerationChampionnat extends React.Component {
       name: this.props.route.params.screenStackName,
       params: {
         nbTours: this.nbTours.toString(),
+        nbPtVictoire: this.nbPtVictoire,
         speciauxIncompatibles: this.speciauxIncompatibles,
         memesEquipes: this.jamaisMemeCoequipier,
         memesAdversaires: this.eviterMemeAdversaire,

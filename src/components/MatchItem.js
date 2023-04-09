@@ -10,22 +10,22 @@ class MatchItem extends React.Component {
     }
   }
 
-  _displayEquipe(equipe, match) {
+  _displayEquipe(equipe, match, nbPtVictoire) {
     let nomsJoueurs = []
     for (let i = 0; i < 3; i++) {
-      nomsJoueurs.push(this._displayName(match.equipe[equipe - 1][i], equipe, match.id))
+      nomsJoueurs.push(this._displayName(match.equipe[equipe - 1][i], equipe, match.id, nbPtVictoire))
     }
     return nomsJoueurs
   }
 
-  _displayName = (joueurNumber, equipe, matchID) => {
+  _displayName = (joueurNumber, equipe, matchID, nbPtVictoire) => {
     let colorEquipe1 = 'white'
     let colorEquipe2 = 'white'
-    if (this.props.listeMatchs[matchID].score1 == 13) {
+    if (this.props.listeMatchs[matchID].score1 == nbPtVictoire) {
       colorEquipe1 = 'green'
       colorEquipe2 = 'red'
     }
-    else if (this.props.listeMatchs[matchID].score2 == 13) {
+    else if (this.props.listeMatchs[matchID].score2 == nbPtVictoire) {
       colorEquipe1 = 'red'
       colorEquipe2 = 'green'
     }
@@ -61,7 +61,7 @@ class MatchItem extends React.Component {
   }
 
   render() {
-    let { match, displayDetailForMatch, manche } = this.props;
+    let { match, displayDetailForMatch, manche, nbPtVictoire } = this.props;
     if (match.manche == manche) {
       return (
         <TouchableOpacity
@@ -73,11 +73,11 @@ class MatchItem extends React.Component {
             </View>
             <View style={styles.equipe_container}>
               <View style={styles.equipe1}>
-                {this._displayEquipe(1, match)}
+                {this._displayEquipe(1, match, nbPtVictoire)}
               </View>
               {this._displayScore(match.id)}
               <View style={styles.equipe2}>
-                {this._displayEquipe(2, match)}
+                {this._displayEquipe(2, match, nbPtVictoire)}
               </View>
             </View>
           </View>
