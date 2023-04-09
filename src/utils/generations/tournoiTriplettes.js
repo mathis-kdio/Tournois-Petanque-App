@@ -16,8 +16,8 @@ randomBetweenRange = (num, range) => {
 
 countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
 
-export const generationTriplettes = (listesJoueurs, nbTours, typeInscription) => {
-  let nbjoueurs = listesJoueurs[typeInscription].length;
+export const generationTriplettes = (listeJoueurs, nbTours) => {
+  let nbjoueurs = listeJoueurs.length;
   let speciauxIncompatibles = true
   let jamaisMemeCoequipier = true;
   let eviterMemeAdversaire = true;
@@ -42,15 +42,15 @@ export const generationTriplettes = (listesJoueurs, nbTours, typeInscription) =>
   //Création d'un tableau contenant tous les joueurs, un autre les non spéciaux et un autre les spéciaux
   //Le tableau contenant les tous les joueurs permettra de connaitre dans quel équipe chaque joueur a été
   for (let i = 0; i < nbjoueurs; i++) {
-    if (listesJoueurs[typeInscription][i].special === true) {
-      joueursSpe.push({...listesJoueurs[typeInscription][i]});
+    if (listeJoueurs[i].special === true) {
+      joueursSpe.push({...listeJoueurs[i]});
       joueursSpe[joueursSpe.length - 1].equipe = []
     }
     else {
-      joueursNonSpe.push({...listesJoueurs[typeInscription][i]});
+      joueursNonSpe.push({...listeJoueurs[i]});
       joueursNonSpe[joueursNonSpe.length - 1].equipe = []
     }
-    joueurs.push({...listesJoueurs[typeInscription][i]});
+    joueurs.push({...listeJoueurs[i]});
     joueurs[i].equipe = [];
   }
   let nbJoueursSpe = joueursSpe.length
@@ -101,7 +101,7 @@ export const generationTriplettes = (listesJoueurs, nbTours, typeInscription) =>
   else {
     joueursNonSpe.splice(0, joueursNonSpe.length)
     for (let i = 0; i < nbjoueurs; i++) {
-      joueursNonSpe.push({...listesJoueurs[typeInscription][i]});
+      joueursNonSpe.push({...listeJoueurs[i]});
     }
   }
 

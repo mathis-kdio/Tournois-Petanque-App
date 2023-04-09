@@ -1,7 +1,7 @@
 
-export const generationCoupe = (optionsTournoi, listesJoueurs) => {
+export const generationCoupe = (optionsTournoi, listeJoueurs) => {
   let typeEquipes = optionsTournoi.typeEquipes;
-  let nbjoueurs = listesJoueurs.avecEquipes.length;
+  let nbjoueurs = listeJoueurs.length;
   let nbTours = 0;
   let matchs = [];
   let equipe = [];
@@ -36,8 +36,8 @@ export const generationCoupe = (optionsTournoi, listesJoueurs) => {
   for (let i = 1; i <= nbEquipes; i++) {
     equipe.push([]);
     for (let j = 0; j < nbjoueurs; j++) {
-      if (props.listesJoueurs.avecEquipes[j].equipe == i) {
-        equipe[i - 1].push(props.listesJoueurs.avecEquipes[j].id);
+      if (props.listeJoueurs[j].equipe == i) {
+        equipe[i - 1].push(props.listeJoueurs[j].id);
       }
     }
   }

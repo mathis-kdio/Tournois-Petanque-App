@@ -1,6 +1,6 @@
 
-export const generationAvecEquipes = (listesJoueurs, nbTours, typeEquipes) => {
-  let nbjoueurs = listesJoueurs.avecEquipes.length;
+export const generationAvecEquipes = (listeJoueurs, nbTours, typeEquipes) => {
+  let nbjoueurs = listeJoueurs.length;
   let speciauxIncompatibles = true
   let jamaisMemeCoequipier = true
   let eviterMemeAdversaire = true;
@@ -37,8 +37,8 @@ export const generationAvecEquipes = (listesJoueurs, nbTours, typeEquipes) => {
   for (let i = 1; i <= nbEquipes; i++) {
     equipe.push([])
     for (let j = 0; j < nbjoueurs; j++) {
-      if(listesJoueurs.avecEquipes[j].equipe == i) {
-        equipe[i - 1].push(listesJoueurs.avecEquipes[j].id)
+      if(listeJoueurs[j].equipe == i) {
+        equipe[i - 1].push(listeJoueurs[j].id)
       }
     }
   }
