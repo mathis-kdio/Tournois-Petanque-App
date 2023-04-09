@@ -70,16 +70,8 @@ class InscriptionsSansNoms extends React.Component {
       this._ajoutJoueur(true)
     }
 
-    let screenName
-    if (this.props.optionsTournoi.typeEquipes == "doublette" || this.props.optionsTournoi.typeEquipes == "teteatete") {
-      screenName = 'GenerationMatchs'
-    }
-    else {
-      screenName = 'GenerationMatchsTriplettes'
-    }
-
     this.props.navigation.navigate({
-      name: screenName,
+      name: 'GenerationMatchs',
       params: {
         nbTours: parseInt(this.nbTours),
         nbPtVictoire: this.nbPtVictoire,
