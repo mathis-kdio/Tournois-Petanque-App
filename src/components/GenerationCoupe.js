@@ -66,7 +66,7 @@ class GenerationCoupe extends React.Component {
 
     //Ajout des options du match à la fin du tableau contenant les matchs
     matchs.push({
-      tournoiID: this.props.listeTournois.length,
+      tournoiID: undefined,
       nbTours: nbTours,
       nbMatchs: nbMatchs,
       nbPtVictoire: this.nbPtVictoire,

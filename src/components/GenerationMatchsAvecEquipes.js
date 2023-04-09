@@ -106,7 +106,7 @@ class GenerationMatchsAvecEquipes extends React.Component {
 
     //Ajout des options du match à la fin du tableau contenant les matchs
     matchs.push({
-      tournoiID: this.props.listeTournois.length,
+      tournoiID: undefined,
       nbTours: this.nbTours,
       nbPtVictoire: this.nbPtVictoire,
       nbMatchs: nbMatchs,
