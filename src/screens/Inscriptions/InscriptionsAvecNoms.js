@@ -44,30 +44,8 @@ class InscriptionsAvecNoms extends React.Component {
   }
 
   _commencer() {
-    let screenName;
-    if (this.props.optionsTournoi.type == "championnat") {
-      screenName = 'GenerationChampionnat';
-    }
-    if (this.props.optionsTournoi.type == "coupe") {
-      screenName = 'GenerationCoupe';
-    }
-    else if (this.props.optionsTournoi.type == "mele-demele") {
-      if (this.props.optionsTournoi.mode == 'avecEquipes') {
-        screenName = 'GenerationMatchsAvecEquipes';
-      }
-      else if (this.props.optionsTournoi.typeEquipes == "triplette") {
-        screenName = 'GenerationMatchsTriplettes';
-      }
-      else {
-        screenName = 'GenerationMatchs';
-      }
-    }
-    else {
-
-    }
-
     this.props.navigation.navigate({
-      name: screenName,
+      name: "GenerationMatchs",
       params: {
         nbTours: parseInt(this.nbTours),
         nbPtVictoire: this.nbPtVictoire,

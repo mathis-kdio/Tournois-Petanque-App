@@ -58,7 +58,7 @@ class GenerationMatchs extends React.Component {
     let listeJoueurs = this.props.listesJoueurs[this.typeInscription];
     let nbjoueurs = listeJoueurs.length;
     let nbGenerationsRatee = 0;
-    let nbEssaisPossibles = Math.pow(nbjoueurs, nbjoueurs);
+    let nbEssaisPossibles = nbjoueurs * nbjoueurs;
     let returnType = 0;
     // 3 types de retour possible: 
     // 0 si trop de personnes spéciaux ou règle pas memeEquipes impossible; 
@@ -113,34 +113,38 @@ class GenerationMatchs extends React.Component {
       }
     }
 
-    let matchs = undefined;
+    let matchs = [];
     let nbMatchs = undefined;
     let nbTours = this.nbTours;
     let erreurMemesEquipes = undefined;
     let erreurSpeciaux = undefined;
     let echecGeneration = undefined;
-    console.log(this.typeInscription)
-    switch (this.typeInscription) {
-      /*case "teteatete":
-        (matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration) = generationTeteATete(listeJoueurs, this.nbTours, this.typeEquipes, this.complement, this.speciauxIncompatibles, this.jamaisMemeCoequipier, this.eviterMemeAdversaire);
-        break;*/
-      case "doublette" || "teteatete":
-        (matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration) = generationDoublettes(this.props.listesJoueurs[this.typeInscription], this.nbTours, this.typeEquipes, this.complement, this.speciauxIncompatibles, this.jamaisMemeCoequipier, this.eviterMemeAdversaire);
-        break;
-      case "triplette":
-        (matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration) = generationTriplettes(this.props.listesJoueurs[this.typeInscription], this.nbTours);
-        break;
-      case "avecEquipes":
-        (matchs, nbMatchs, echecGeneration) = generationAvecEquipes(this.props.listesJoueurs.avecEquipes, this.nbTours, this.typeEquipes);
-        break;
-      case "coupe":
-        (matchs, nbTours, nbMatchs) = generationCoupe(this.props.optionsTournoi, this.props.listesJoueurs.avecEquipes);
-        break;
-      case "championnat":
-        (matchs, nbTours, nbMatchs) = generationChampionnat(this.props.optionsTournoi, this.props.listesJoueurs.avecEquipes);
-        break;
-      default:
-        break;
+    console.log(this.props.optionsTournoi.type)
+    if (this.props.optionsTournoi.type == "mele-demele") {
+      /*if (this.typeEquipes == "teteatete") {
+        //(matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration) = generationTeteATete(listeJoueurs, this.nbTours, this.typeEquipes, this.complement, this.speciauxIncompatibles, this.jamaisMemeCoequipier, this.eviterMemeAdversaire);
+      }*/
+      if (this.typeEquipes == "doublette" || "teteatete") {
+        ({matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration} = generationDoublettes(this.props.listesJoueurs[this.typeInscription], this.nbTours, this.typeEquipes, this.complement, this.speciauxIncompatibles, this.jamaisMemeCoequipier, this.eviterMemeAdversaire));
+      }
+      else if (this.typeEquipes == "triplette") {
+        ({matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration} = generationTriplettes(this.props.listesJoueurs[this.typeInscription], this.nbTours));
+      }
+      else if (this.typeEquipes == "avecEquipes") {
+        ({matchs, nbMatchs, echecGeneration} = generationAvecEquipes(this.props.listesJoueurs.avecEquipes, this.nbTours, this.typeEquipes));
+      }
+      else {
+        echecGeneration = true;
+      }
+    }
+    else if (this.props.optionsTournoi.type == "coupe") {
+      ({matchs, nbTours, nbMatchs} = generationCoupe(this.props.optionsTournoi, this.props.listesJoueurs.avecEquipes));
+    }
+    else if (this.props.optionsTournoi.type == "championnat") {
+      ({matchs, nbTours, nbMatchs} = generationChampionnat(this.props.optionsTournoi, this.props.listesJoueurs.avecEquipes));
+    }
+    else {
+      echecGeneration = true;
     }
     if (erreurMemesEquipes || erreurSpeciaux) {
       this.setState({
@@ -165,7 +169,7 @@ class GenerationMatchs extends React.Component {
       memesAdversaires: this.eviterMemeAdversaire,
       typeEquipes: this.typeEquipes,
       complement: this.complement,
-      listeJoueurs: listeJoueurs.slice()
+      listeJoueurs: this.props.listesJoueurs[this.typeInscription].slice()
     });
 
     //Ajout dans le store
