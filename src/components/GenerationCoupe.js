@@ -48,6 +48,9 @@ class GenerationCoupe extends React.Component {
     //Récupération des options que l'utilisateur a modifié ou laissé par défaut
     if (this.props.route.params != undefined) {
       let routeparams = this.props.route.params;
+      if (routeparams.nbPtVictoire != undefined) {
+        this.nbPtVictoire = routeparams.nbPtVictoire;
+      }
       if (routeparams.speciauxIncompatibles != undefined) {
         this.speciauxIncompatibles = routeparams.speciauxIncompatibles;
       }
