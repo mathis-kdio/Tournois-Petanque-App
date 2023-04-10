@@ -1,8 +1,9 @@
 
-randomBetween = (a, b) => {
+const randomBetween = (a, b) => {
   return (Math.abs(parseInt((Math.random() * (b - a)) + a)))
 }
-randomBetweenRange = (num, range) => {
+
+const randomBetweenRange = (num, range) => {
   const res = [];
   for (let i = 0; i < num; ) {
       const random = randomBetween(range[0], range[1])
@@ -14,7 +15,7 @@ randomBetweenRange = (num, range) => {
   return res
 }
 
-countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
 
 export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complement, speciauxIncompatibles, jamaisMemeCoequipier, eviterMemeAdversaire) => {
   let nbjoueurs = listeJoueurs.length;
