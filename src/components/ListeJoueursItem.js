@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, Text, TextInput, Button, Alert } from 'react-native'
 import { connect } from 'react-redux'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import { FontAwesome5 } from '@expo/vector-icons';
 
 class ListeJoueursItem extends React.Component {
   constructor(props) {
@@ -50,18 +50,18 @@ class ListeJoueursItem extends React.Component {
     if (this.state.renommerOn) {
       if (this.state.disabledBoutonRenommer) {
         return (
-          <Icon.Button name="check" backgroundColor="gray" iconStyle={{paddingHorizontal: 2, marginRight: 0}}/>
+          <FontAwesome5.Button name="check" backgroundColor="gray" iconStyle={{paddingHorizontal: 2, marginRight: 0}}/>
         )
       }
       else {
         return (
-          <Icon.Button name="check" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renameList(list)}/>
+          <FontAwesome5.Button name="check" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renameList(list)}/>
         )
       }
     }
     else {
       return (
-        <Icon.Button name="edit" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renameListInput(list)}/>
+        <FontAwesome5.Button name="edit" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renameListInput(list)}/>
       )
     }
   }
@@ -107,7 +107,7 @@ class ListeJoueursItem extends React.Component {
             <Button color="#1c3969" title="Modifier" onPress={() => this._modifyList(list)}/>
           </View>
           <View style={styles.buttonView}>
-            <Icon.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._modalRemoveList(list)}/>
+            <FontAwesome5.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._modalRemoveList(list)}/>
           </View>
         </View>
       )

@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, Text, TextInput, Button, Alert } from 'react-native'
 import { connect } from 'react-redux'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import { FontAwesome5 } from '@expo/vector-icons';
 
 class ListeTournoiItem extends React.Component {
   constructor(props) {
@@ -49,18 +49,18 @@ class ListeTournoiItem extends React.Component {
     if (this.state.renommerOn) {
       if (this.state.disabledBoutonRenommer) {
         return (
-          <Icon.Button name="check" backgroundColor="gray" iconStyle={{paddingHorizontal: 2, marginRight: 0}}/>
+          <FontAwesome5.Button name="check" backgroundColor="gray" iconStyle={{paddingHorizontal: 2, marginRight: 0}}/>
         )
       }
       else {
         return (
-          <Icon.Button name="check" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renameTournoi(tournoi)}/>
+          <FontAwesome5.Button name="check" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renameTournoi(tournoi)}/>
         )
       }
     }
     else {
       return (
-        <Icon.Button name="edit" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renameTournoiInput(tournoi)}/>
+        <FontAwesome5.Button name="edit" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renameTournoiInput(tournoi)}/>
       )
     }
   }
@@ -126,13 +126,13 @@ class ListeTournoiItem extends React.Component {
           {this._showRenameTournoi(tournoi)}
         </View>
         <View style={styles.buttonView}>
-          <Icon.Button name="info-circle" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => _showModalTournoiInfos(tournoi)}/>
+          <FontAwesome5.Button name="info-circle" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => _showModalTournoiInfos(tournoi)}/>
         </View>
         <View style={styles.buttonView}>
           <Button disabled={boutonDesactive} color="#1c3969" title="Charger" onPress={() => this._chargerTournoi(tournoi)}/>
         </View>
         <View style={styles.buttonView}>
-          <Icon.Button disabled={boutonDesactive} name="times" backgroundColor={boutonDesactive ? "#c0c0c0" : "red"} iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._modalSupprimerTournoi(tournoi)}/>
+          <FontAwesome5.Button disabled={boutonDesactive} name="times" backgroundColor={boutonDesactive ? "#c0c0c0" : "red"} iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._modalSupprimerTournoi(tournoi)}/>
         </View>
       </View>
     )
