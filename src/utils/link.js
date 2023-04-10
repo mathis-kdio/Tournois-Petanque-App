@@ -1,7 +1,7 @@
 import * as Linking from 'expo-linking'
 
 export const _openPlateformLink = (androidLink, iosLink) => {
-  Platform.OS === 'android' ? this._openURL(androidLink) : this._openURL(iosLink);
+  Platform.OS === 'android' ? _openURL(androidLink) : _openURL(iosLink);
 }
 
 export const _openURL = (url) => {
