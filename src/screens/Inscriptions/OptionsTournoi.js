@@ -9,14 +9,14 @@ class OptionsTournoi extends React.Component {
 
   constructor(props) {
     super(props)
-    this.nbTours = "5"
-    this.nbPtVictoire = 13;
+    this.nbToursTxt = "5";
+    this.nbPtVictoireTxt = "13";
     this.state = {
       speciauxIncompatibles: true,
       memesEquipes: true,
       memesAdversaires: true,
       complement: "3",
-      nbTours: "5",
+      nbTours: 5,
       nbPtVictoire: 13
     }
   }
@@ -25,74 +25,74 @@ class OptionsTournoi extends React.Component {
     if (this.props.route.params != undefined) {
       let routeparams = this.props.route.params;
       if (routeparams.nbTours != undefined) {
+        this.nbToursTxt = routeparams.nbTours.toString();
         this.setState({
-          nbTours: routeparams.nbTours,
-        })
-        this.nbTours = routeparams.nbTours
+          nbTours: parseInt(routeparams.nbTours)
+        });
       }
       if (routeparams.nbPtVictoire != undefined) {
+        this.nbPtVictoireTxt = routeparams.nbPtVictoire.toString();
         this.setState({
-          nbPtVictoire: routeparams.nbPtVictoire,
-        })
-        this.nbPtVictoire = routeparams.nbPtVictoire
+          nbPtVictoire: parseInt(routeparams.nbPtVictoire)
+        });
       }
       if (routeparams.speciauxIncompatibles != undefined) {
         this.setState({
-          speciauxIncompatibles: routeparams.speciauxIncompatibles,
-        })
+          speciauxIncompatibles: routeparams.speciauxIncompatibles
+        });
       }
       if (routeparams.memesEquipes != undefined) {
         this.setState({
-          memesEquipes: routeparams.memesEquipes,
-        })
+          memesEquipes: routeparams.memesEquipes
+        });
       }
       if (routeparams.memesAdversaires != undefined) {
         this.setState({
-          memesAdversaires: routeparams.memesAdversaires,
-        })
+          memesAdversaires: routeparams.memesAdversaires
+        });
       }
       if (routeparams.complement != undefined) {
         this.setState({
           complement: routeparams.complement
-        })
+        });
       }
     }
   }
 
-  _optionsNombreToursTextInputChanged(text) {
-    this.nbTours = text.toString()
+  _nbToursTxtInputChanged(text) {
+    this.nbToursTxt = text;
     this.setState({
-      nbTours: this.nbTours
-    })
+      nbTours: this.nbToursTxt ? parseInt(this.nbToursTxt) : undefined
+    });
   }
 
-  _NbPtVictoireTxtInputChanged(text) {
-    this.nbPtVictoire = text.toString()
+  _nbPtVictoireTxtInputChanged(text) {
+    this.nbPtVictoireTxt = text;
     this.setState({
-      nbPtVictoire: this.nbPtVictoire
-    })
+      nbPtVictoire: this.nbPtVictoireTxt ? parseInt(this.nbPtVictoireTxt) : undefined
+    });
   }
 
   _retourInscription() {
     this.props.navigation.navigate({
       name: this.props.route.params.screenStackName,
       params: {
-        nbTours: this.nbTours,
-        nbPtVictoire: this.nbPtVictoire,
+        nbTours: this.state.nbTours.toString(),
+        nbPtVictoire: this.state.nbPtVictoire,
         speciauxIncompatibles: this.state.speciauxIncompatibles,
         memesEquipes: this.state.memesEquipes,
         memesAdversaires: this.state.memesAdversaires,
         complement: this.state.complement
       }
-    })
+    });
   }
 
   _boutonValider() {
-    let boutonActive = true
-    let boutonTitle = "Vous devez indiquer un nombre de tours"
-    if (this.state.nbTours != "" && this.state.nbTours != "0") {
-      boutonTitle = 'Valider les options'
-      boutonActive = false
+    let boutonActive = true;
+    let boutonTitle = "Un des champs n'est pas valide";
+    if (this.state.nbTours > 0 && this.state.nbTours % 1 == 0 && this.state.nbPtVictoire > 0 && this.state.nbPtVictoire % 1 == 0) {
+      boutonTitle = 'Valider les options';
+      boutonActive = false;
     }
     return (
       <Button disabled={boutonActive} color='green' title={boutonTitle} onPress={() => this._retourInscription()}/>
@@ -110,10 +110,10 @@ class OptionsTournoi extends React.Component {
                 style={styles.textinput}
                 placeholderTextColor='white'
                 underlineColorAndroid='white'
-                placeholder="Nombre de tours"
+                placeholder="Veuillez indiquer un nombre"
                 keyboardType="numeric"
-                defaultValue={this.state.nbTours}
-                onChangeText={(text) => this._optionsNombreToursTextInputChanged(text)}
+                defaultValue={this.nbToursTxt}
+                onChangeText={(text) => this._nbToursTxtInputChanged(text)}
               />
             </View>
             <View style={styles.input_nbtours_container}>
@@ -122,10 +122,10 @@ class OptionsTournoi extends React.Component {
                 style={styles.textinput}
                 placeholderTextColor='white'
                 underlineColorAndroid='white'
-                placeholder="Nombre de points pour une victoire"
+                placeholder="Veuillez indiquer un nombre"
                 keyboardType="numeric"
-                defaultValue={this.state.nbPtVictoire.toString()}
-                onChangeText={(text) => this._NbPtVictoireTxtInputChanged(text)}
+                defaultValue={this.nbPtVictoireTxt}
+                onChangeText={(text) => this._nbPtVictoireTxtInputChanged(text)}
               />
             </View>
             <View style={styles.checkbox_container}>
