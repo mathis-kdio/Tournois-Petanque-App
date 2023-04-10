@@ -1,13 +1,14 @@
 import React from 'react'
 import { StyleSheet, View, Text, Button, FlatList, Alert } from 'react-native'
 import { expo } from '../../app.json'
-import * as Linking from 'expo-linking'
 import { connect } from 'react-redux'
 import ChangelogData from '@assets/ChangelogData.json'
+import { _openURL } from 'utils/link'
 
 class Changelog extends React.Component {
   constructor(props) {
     super(props)
+    this.githubRepository = "https://github.com/sponsors/mathis-kdio";
   }
 
   _modalClearData() {
@@ -68,7 +69,7 @@ class Changelog extends React.Component {
             <Button color="red" title='Supprimer toutes les données' onPress={() => this._modalClearData()}/>
           </View>
           <View style={styles.create_container}>
-            <Button color="#1c3969" title='Code OpenSource' onPress={() => Linking.canOpenURL('https://github.com/mathis-kdio/Petanque-GCU').then(supported => {if (supported) {Linking.openURL('https://github.com/mathis-kdio/Petanque-GCU')}})}/>
+            <Button color="#1c3969" title='Code OpenSource' onPress={() => _openURL(this.githubRepository)}/>
             <Text style={styles.create_text}>Par Mathis Cadio</Text>
           </View>
         </View>
