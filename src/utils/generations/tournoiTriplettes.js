@@ -1,20 +1,4 @@
-const randomBetween = (a, b) => {
-  return (parseInt((Math.random() * (b - a)) + a))
-}
-
-const randomBetweenRange = (num, range) => {
-  const res = [];
-  for (let i = 0; i < num; ) {
-      const random = randomBetween(range[0], range[1])
-      if (countOccurrences(res, random) < 1) {
-        res.push(random)
-        i++
-      }
-  }
-  return res
-}
-
-const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+import { uniqueValueArrayRandOrder } from "./generation";
 
 export const generationTriplettes = (listeJoueurs, nbTours) => {
   let nbjoueurs = listeJoueurs.length;
@@ -80,7 +64,7 @@ export const generationTriplettes = (listeJoueurs, nbTours) => {
       for (let i = 0; i < nbTours; i++) {
         let idMatch = i * nbMatchsParTour;
         let idsJoueursSpe = [];
-        idsJoueursSpe = randomBetweenRange(joueursSpe.length, [-1, joueursSpe.length]);
+        idsJoueursSpe = uniqueValueArrayRandOrder(joueursSpe.length);
         for (let j = 0; j < joueursSpe.length; j++) {
           if (matchs[idMatch].equipe[0][0] == -1) {
             matchs[idMatch].equipe[0][0] = joueursSpe[idsJoueursSpe[j]].id;
