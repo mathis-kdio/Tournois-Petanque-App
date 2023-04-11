@@ -146,7 +146,7 @@ function General() {
   }
   return (
     <Stack.Navigator initialRouteName='AccueilGeneral' screenOptions={{headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}}>
-      <Stack.Screen name="AccueilGeneral" component={Accueil} options={{title: 'Accueil - Pétanque GCU'}} />
+      <Stack.Screen name="AccueilGeneral" component={Accueil} options={{headerShown: false}} />
       <Stack.Screen name="Changelog" component={Changelog} options={{title: 'Changelog - Pétanque GCU'}} />
 
       <Stack.Screen name="ListeTournois" component={ListeTournois} options={{title: 'Choix d\'un tournoi'}} />

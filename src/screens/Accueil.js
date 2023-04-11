@@ -1,11 +1,14 @@
 import React from 'react'
-import { StyleSheet, View, Text, Button, Image, Modal } from 'react-native'
+import { StyleSheet, View, Button, Image, Modal } from 'react-native'
 import { expo } from '../../app.json'
 import { connect } from 'react-redux'
 import * as NavigationBar from 'expo-navigation-bar';
 import { FontAwesome5 } from '@expo/vector-icons';
 import VersionCheck from 'react-native-version-check-expo';
 import { _openPlateformLink, _openURL } from '@utils/link'
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Box, HStack, VStack, Text, Pressable, Spacer } from 'native-base';
+import { StatusBar } from 'expo-status-bar';
 
 class Accueil extends React.Component {
   constructor(props) {
@@ -111,72 +114,93 @@ class Accueil extends React.Component {
   _buttonShowMatchs() {
     if(this.props.listeMatchs) {
       if (this.props.listeMatchs.length != 0) {
-        return <Button color="#1c3969" title='Reprendre le tournoi' onPress={() => this._showMatchs()}/>
+        return (
+          <Pressable bg="#1c3969" flex={1} space="1" alignItems={"center"} rounded="3xl" py={"5"} onPress={() => this._showMatchs()}>
+            <FontAwesome5 name="play" color="white" size={24}/>
+            <Text color={"white"}>Reprendre le tournoi</Text>
+          </Pressable>
+        ) 
       }
     }
     else {
-      return <Button color="#1c3969" disabled title='Pas de tournoi en cours'/>
+      <Box bg="gray.500" flex={1} space="1" alignItems={"center"} rounded="3xl" py={"5"}>
+        <FontAwesome5 name="play" color="white" size={24}/>
+        <Text color={"white"}>Pas de tournoi en cours</Text>
+      </Box>
     }
   }
 
   render() {
     return (
-      <View style={styles.main_container}>
-        <View style={styles.logo_container}>
-          <Image style={styles.logo} source={require('@assets/icon.png')}/>
-        </View>
-        <View style={styles.body_container}>
-          <View style={styles.menu_container}>
-            <View style={styles.buttonView}>
+      <SafeAreaView style={{flex: 1}}>
+        <StatusBar backgroundColor="#0594ae"/>
+        <VStack flex="1" px="10" bgColor={"#0594ae"}>
+          <VStack alignItems={"center"}>
+            <Image style={styles.logo} source={require('@assets/icon.png')}/>
+          </VStack>
+          <VStack space={"3"}>
+            <HStack>
               {this._buttonShowMatchs()}
-            </View>
-            <View style={styles.buttonView}>
-              <Button color="#1c3969" title='Nouveau tournoi' onPress={() => this._navigate('ChoixTypeTournoi')}/>
-            </View>
-            <View style={styles.buttonView}>
-              <Button color="#1c3969" title='Mes anciens tournois' onPress={() => this._navigate('ListeTournois')}/>
-            </View>
-            <View style={styles.buttonView}>
-              <Button color="#1c3969" title='Mes listes de joueurs' onPress={() => this._navigate('ListesJoueurs')}/>
-            </View>
-          </View>
-          <View style={styles.informations_container}>
-            <Text style={styles.informations_texte}>Fonctionnalités :</Text>
-            <Text style={styles.informations_texte}>Mêlée-démêlée - Coupe - Championnat</Text>
-            <Text style={styles.informations_texte}>Tête à Tête - Doublettes - Triplettes</Text>
-            <Text style={styles.informations_texte}>Avec ou Sans Equipes</Text>
-            <Text style={styles.informations_texte}>Avec ou Sans Noms</Text>
-          </View>
-        </View>
-        <View style={styles.create_container}>
-          <View style={styles.buttonViewCreate}>
-            {Platform.OS !== 'ios' && <>
-              <View style={styles.buttonView}>
-                <FontAwesome5.Button name="euro-sign" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}} onPress={() => this.setState({ modalDonsVisible: true })}/>
-              </View>
-            </>}
-            <View style={styles.buttonView}>
-              <FontAwesome5.Button name="star" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}}  onPress={() => _openPlateformLink(this.googleMarketReviews, this.appleMarketReviews) }/>
-            </View>
-            <View style={styles.buttonView}>
-              <FontAwesome5.Button name="envelope" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}} onPress={() => _openURL(this.mail)}/>
-            </View>
-            <View style={styles.buttonView}>
-              <FontAwesome5.Button name="wrench" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}} onPress={() => this.props.navigation.navigate('Changelog')}/>
-            </View>
-            <View style={styles.buttonView}>
-              <FontAwesome5.Button name="facebook" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}} onPress={() => _openURL(this.facebook)}/>
-            </View>
-          </View>
-        </View> 
-        <View style={styles.footer_container}>
-          <Button color="#1c3969" title='Découvrir le GCU' onPress={() => _openURL(this.gcuWebsite)}/>
-          <Text style={styles.create_text}>Par Mathis Cadio</Text>
-          <Text style={styles.create_text}>Version: {expo.version}</Text>
-        </View>
-        {this._showDonsModal()}
-        {this._showUpdateModal()}
-      </View>
+            </HStack>
+            <HStack>
+              <Pressable bg="#1c3969" flex={1} space="1" alignItems={"center"} rounded="3xl" py={"5"} onPress={() => this._navigate('ChoixTypeTournoi')}>
+                <FontAwesome5 name="plus" color="white" size={24}/>
+                <Text color={"white"}>Nouveau Tournoi</Text>
+              </Pressable>
+            </HStack>
+            <HStack space={"3"}>
+              <Pressable bg="#1c3969" flex={1} space="1" alignItems={"center"} rounded="3xl" py={"5"} onPress={() => this._navigate('ListeTournois')}>
+                <FontAwesome5 name="list" color="white" size={24}/>
+                <Text color={"white"}>Mes anciens tournois</Text>
+              </Pressable>
+              <Pressable bg="#1c3969" flex={1} space="1" alignItems={"center"} rounded="3xl" py={"5"} onPress={() => this._navigate('ListesJoueurs')}>
+                <FontAwesome5 name="users" color="white" size={24}/>
+                <Text color={"white"}>Mes listes de joueurs</Text>
+              </Pressable>
+            </HStack> 
+          </VStack>
+          <Spacer/>
+          <VStack space={3}>
+            <HStack>
+              <Spacer/>
+              <Pressable  alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => _openURL(this.facebook)}>
+                <FontAwesome5 name="facebook" color="white" size={20}/>
+                <Text color={"white"}>Rejoindre la page</Text>
+              </Pressable>
+              <Spacer/>
+            </HStack>
+            <Spacer/>
+            <HStack space={3}>
+              {Platform.OS !== 'ios' && <>
+                <Pressable flex={1} alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => this.setState({ modalDonsVisible: true })}>
+                  <FontAwesome5 name="euro-sign" color="white" size={20}/>
+                </Pressable>
+              </>}
+              <Pressable flex={1} alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => _openPlateformLink(this.googleMarketReviews, this.appleMarketReviews)}>
+                <FontAwesome5 name="star" color="white" size={20}/>
+              </Pressable>
+              <Pressable flex={1} alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => _openURL(this.mail)}>
+                <FontAwesome5 name="envelope" color="white" size={20}/>
+              </Pressable>
+              <Pressable flex={1} alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => this.props.navigation.navigate('Changelog')}>
+                <FontAwesome5 name="wrench" color="white" size={20}/>
+              </Pressable>
+            </HStack>
+          </VStack>
+          <Spacer/>
+          <VStack alignItems={"center"}>
+            <HStack>
+              <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p="3" onPress={() => _openURL(this.gcuWebsite)}>
+                <Text color={"white"} fontSize={16}>Découvrir le GCU</Text>
+              </Pressable>
+            </HStack>
+            <Text style={styles.create_text}>Développé par Mathis Cadio</Text>
+            <Text style={styles.create_text}>Version: {expo.version}</Text>
+          </VStack>
+          {this._showDonsModal()}
+          {this._showUpdateModal()}
+        </VStack>
+      </SafeAreaView>
     )
   }
 }
