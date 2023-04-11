@@ -4,7 +4,7 @@ import { expo } from '../../app.json'
 import { connect } from 'react-redux'
 import * as NavigationBar from 'expo-navigation-bar';
 import { FontAwesome5 } from '@expo/vector-icons';
-import VersionCheck from 'expo-react-native-version-checker';
+import VersionCheck from 'react-native-version-check-expo';
 import { _openPlateformLink, _openURL } from '@utils/link'
 
 class Accueil extends React.Component {
@@ -28,7 +28,7 @@ class Accueil extends React.Component {
 
   componentDidMount() {
     NavigationBar.setBackgroundColorAsync("#0594ae");
-    VersionCheck('FR').needUpdate().then(async res => {
+    VersionCheck.needUpdate().then(async res => {
       if (res.isNeeded && this.state.modalVisible != true) {
         this.setState({modalVisible: true})
       }
