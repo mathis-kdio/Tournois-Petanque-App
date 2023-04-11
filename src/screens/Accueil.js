@@ -3,9 +3,8 @@ import { StyleSheet, View, Text, Button, Image, Modal } from 'react-native'
 import { expo } from '../../app.json'
 import { connect } from 'react-redux'
 import * as NavigationBar from 'expo-navigation-bar';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import VersionCheck from 'expo-react-native-version-checker';
+import { FontAwesome5 } from '@expo/vector-icons';
+import VersionCheck from 'react-native-version-check-expo';
 import { _openPlateformLink, _openURL } from '@utils/link'
 
 class Accueil extends React.Component {
@@ -29,7 +28,7 @@ class Accueil extends React.Component {
 
   componentDidMount() {
     NavigationBar.setBackgroundColorAsync("#0594ae");
-    VersionCheck('FR').needUpdate().then(async res => {
+    VersionCheck.needUpdate().then(async res => {
       if (res.isNeeded && this.state.modalVisible != true) {
         this.setState({modalVisible: true})
       }
@@ -79,13 +78,13 @@ class Accueil extends React.Component {
           <View style={modalStyles.modalView}>
             <Text style={modalStyles.modalText}>Il est possible de soutenir le développement de l'application de différentes façons :</Text>
             <View style={styles.buttonViewCreate}>
-              <MaterialCommunityIcon.Button name="github" backgroundColor="#1c3969" onPress={() => _openURL(this.githubSponsor)}>GitHub Sponsor</MaterialCommunityIcon.Button>
+              <FontAwesome5.Button name="github" backgroundColor="#1c3969" onPress={() => _openURL(this.githubSponsor)}>GitHub Sponsor</FontAwesome5.Button>
             </View>
             <View style={styles.buttonViewCreate}>
-              <MaterialCommunityIcon.Button name="patreon" backgroundColor="#1c3969" onPress={() => _openURL(this.patreon)}>Patreon</MaterialCommunityIcon.Button>
+              <FontAwesome5.Button name="patreon" backgroundColor="#1c3969" onPress={() => _openURL(this.patreon)}>Patreon</FontAwesome5.Button>
             </View>
             <View style={styles.buttonViewCreate}>
-              <MaterialCommunityIcon.Button name="coffee" backgroundColor="#1c3969" onPress={() => _openURL(this.buymeacoffee)}>BuyMeACoffee</MaterialCommunityIcon.Button>
+              <FontAwesome5.Button name="coffee" backgroundColor="#1c3969" onPress={() => _openURL(this.buymeacoffee)}>BuyMeACoffee</FontAwesome5.Button>
             </View>
             <View style={styles.buttonView}>
               <Button color="red" title='Fermer' onPress={() => this.setState({modalDonsVisible: false}) }/>
@@ -153,20 +152,20 @@ class Accueil extends React.Component {
           <View style={styles.buttonViewCreate}>
             {Platform.OS !== 'ios' && <>
               <View style={styles.buttonView}>
-                <FontAwesomeIcon.Button name="euro" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}} onPress={() => this.setState({ modalDonsVisible: true })}/>
+                <FontAwesome5.Button name="euro-sign" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}} onPress={() => this.setState({ modalDonsVisible: true })}/>
               </View>
             </>}
             <View style={styles.buttonView}>
-              <MaterialCommunityIcon.Button name="star" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}}  onPress={() => _openPlateformLink(this.googleMarketReviews, this.appleMarketReviews) }/>
+              <FontAwesome5.Button name="star" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}}  onPress={() => _openPlateformLink(this.googleMarketReviews, this.appleMarketReviews) }/>
             </View>
             <View style={styles.buttonView}>
-              <FontAwesomeIcon.Button name="envelope-o" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}} onPress={() => _openURL(this.mail)}/>
+              <FontAwesome5.Button name="envelope" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}} onPress={() => _openURL(this.mail)}/>
             </View>
             <View style={styles.buttonView}>
-              <MaterialCommunityIcon.Button name="wrench" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}} onPress={() => this.props.navigation.navigate('Changelog')}/>
+              <FontAwesome5.Button name="wrench" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}} onPress={() => this.props.navigation.navigate('Changelog')}/>
             </View>
             <View style={styles.buttonView}>
-              <MaterialCommunityIcon.Button name="facebook" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}} onPress={() => _openURL(this.facebook)}/>
+              <FontAwesome5.Button name="facebook" backgroundColor="#1c3969" iconStyle={{paddingHorizontal: 5, marginRight: 0}} onPress={() => _openURL(this.facebook)}/>
             </View>
           </View>
         </View> 

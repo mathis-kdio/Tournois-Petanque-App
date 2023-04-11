@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, View, Text, Alert } from 'react-native'
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import Icon from 'react-native-vector-icons/FontAwesome'
+import { FontAwesome5 } from '@expo/vector-icons';
 
 class JoueurSuggere extends React.Component {
   constructor(props) {
@@ -60,10 +60,10 @@ class JoueurSuggere extends React.Component {
           />
         </View>
         <View style={styles.button_container}>
-          <Icon.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._modalRemovePlayer(joueur.id)}/>
+          <FontAwesome5.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._modalRemovePlayer(joueur.id)}/>
         </View>
         <View style={styles.button_container}>
-          <Icon.Button name="plus" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._addPlayer(joueur.name)}/>
+          <FontAwesome5.Button name="plus" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._addPlayer(joueur.name)}/>
         </View>
       </View>
     )

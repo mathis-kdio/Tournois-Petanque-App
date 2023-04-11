@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, Text, TextInput } from 'react-native'
 import { connect } from 'react-redux'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import { FontAwesome5 } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker'
 
 class ListeJoueurItem extends React.Component {
@@ -28,7 +28,7 @@ class ListeJoueurItem extends React.Component {
     if (isInscription === true) {
       return (
         <View style={{marginLeft: 5}}>
-            <Icon.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._supprimerJoueur(joueur.id)}/>
+          <FontAwesome5.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._supprimerJoueur(joueur.id)}/>
         </View>
       )
     }
@@ -47,7 +47,7 @@ class ListeJoueurItem extends React.Component {
     if (this.state.renommerOn == false) {
       return (
         <View>
-            <Icon.Button name="edit" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renommerJoueurInput(joueur)}/>
+          <FontAwesome5.Button name="edit" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renommerJoueurInput(joueur)}/>
         </View>
       )
     }
@@ -55,14 +55,14 @@ class ListeJoueurItem extends React.Component {
       if (this.state.disabledBoutonRenommer == true) {
         return (
           <View>
-            <Icon.Button name="edit" backgroundColor="gray" iconStyle={{paddingHorizontal: 2, marginRight: 0}}/>
+            <FontAwesome5.Button name="edit" backgroundColor="gray" iconStyle={{paddingHorizontal: 2, marginRight: 0}}/>
           </View>
         )
       }
       else {
         return (
           <View>
-            <Icon.Button name="check" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renommerJoueur(joueur, isInscription, avecEquipes)}/>
+            <FontAwesome5.Button name="check" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renommerJoueur(joueur, isInscription, avecEquipes)}/>
           </View>
         )
       }
