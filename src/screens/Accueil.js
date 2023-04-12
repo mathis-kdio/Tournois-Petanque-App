@@ -1,13 +1,12 @@
-import React from 'react'
-import { StyleSheet, View, Button, Image, Modal } from 'react-native'
-import { expo } from '../../app.json'
-import { connect } from 'react-redux'
+import React from 'react';
+import { expo } from '../../app.json';
+import { connect } from 'react-redux';
 import * as NavigationBar from 'expo-navigation-bar';
 import { FontAwesome5 } from '@expo/vector-icons';
 import VersionCheck from 'react-native-version-check-expo';
-import { _openPlateformLink, _openURL } from '@utils/link'
+import { _openPlateformLink, _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Box, HStack, VStack, Text, Pressable, Spacer } from 'native-base';
+import { Box, HStack, VStack, Text, Pressable, Spacer, Modal, Image } from 'native-base';
 import { StatusBar } from 'expo-status-bar';
 
 class Accueil extends React.Component {
@@ -33,7 +32,7 @@ class Accueil extends React.Component {
     NavigationBar.setBackgroundColorAsync("#0594ae");
     VersionCheck.needUpdate().then(async res => {
       if (res.isNeeded && this.state.modalVisible != true) {
-        this.setState({modalVisible: true})
+        this.setState({modalVisible: true});
       }
     })
   }
@@ -44,56 +43,60 @@ class Accueil extends React.Component {
 
   _showUpdateModal() {
     return (
-      <View>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={this.state.modalVisible}
-          onRequestClose={() => { this.setState({modalVisible: !this.state.modalVisible}) }}
-        >
-        <View style={modalStyles.centeredView}>
-          <View style={modalStyles.modalView}>
-            <Text style={modalStyles.modalText}>Une mise à jour de l'application est disponible. (Elle peut ne pas encore apparaitre dans play store.)</Text>
-            <View style={styles.buttonView}>
-              <Button color="green" title='Mettre à jour' onPress={() => _openPlateformLink(this.googleMarket, this.appleMarket) }/>
-            </View>
-            <View style={styles.buttonView}>
-              <Button color="red" title='Fermer' onPress={() => this.setState({modalVisible: !this.state.modalVisible}) }/>
-            </View>
-          </View>
-        </View>
+      <Modal
+        isOpen={this.state.modalVisible}
+        onClose={() => this.setState({ modalVisible: false })}
+      >
+        <Modal.Content>
+          <Modal.CloseButton/>
+          <Modal.Header>Mise à jour</Modal.Header>
+          <Modal.Body>
+            <Text textAlign={"center"}>Une nouvelle version de l'application est disponible !</Text>
+            <Text textAlign={"center"}>Si elle n'apparait pas encore, réessayer plus tard</Text>
+            <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p={3} onPress={() => _openPlateformLink(this.googleMarket, this.appleMarket)}>
+              <HStack>
+                <FontAwesome5 name="download" color="white" size={20}/>
+                <Text color={"white"}> Mettre à jour</Text>
+              </HStack>
+            </Pressable>
+          </Modal.Body>
+        </Modal.Content>
       </Modal>
-    </View>
     )
   }
 
   _showDonsModal() {
     return (
       <Modal
-      animationType="slide"
-      transparent={true}
-      visible={this.state.modalDonsVisible}
-      onRequestClose={() => {
-        this.setState({ modalDonsVisible: false })
-      }}
+        isOpen={this.state.modalDonsVisible}
+        onClose={() => this.setState({ modalDonsVisible: false })}
       >
-        <View style={modalStyles.centeredView}>
-          <View style={modalStyles.modalView}>
-            <Text style={modalStyles.modalText}>Il est possible de soutenir le développement de l'application de différentes façons :</Text>
-            <View style={styles.buttonViewCreate}>
-              <FontAwesome5.Button name="github" backgroundColor="#1c3969" onPress={() => _openURL(this.githubSponsor)}>GitHub Sponsor</FontAwesome5.Button>
-            </View>
-            <View style={styles.buttonViewCreate}>
-              <FontAwesome5.Button name="patreon" backgroundColor="#1c3969" onPress={() => _openURL(this.patreon)}>Patreon</FontAwesome5.Button>
-            </View>
-            <View style={styles.buttonViewCreate}>
-              <FontAwesome5.Button name="coffee" backgroundColor="#1c3969" onPress={() => _openURL(this.buymeacoffee)}>BuyMeACoffee</FontAwesome5.Button>
-            </View>
-            <View style={styles.buttonView}>
-              <Button color="red" title='Fermer' onPress={() => this.setState({modalDonsVisible: false}) }/>
-            </View>
-          </View>
-        </View>
+        <Modal.Content>
+          <Modal.CloseButton/>
+          <Modal.Header>Pour Soutenir</Modal.Header>
+          <Modal.Body>
+            <VStack space={3}>
+              <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p={3} onPress={() => _openURL(this.githubSponsor)}>
+                <HStack>
+                  <FontAwesome5 name="github" color="white" size={20}/>
+                  <Text color={"white"}> GitHub Sponsor</Text>
+                </HStack>
+              </Pressable>
+              <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p={3} onPress={() => _openURL(this.patreon)}>
+                <HStack>
+                  <FontAwesome5 name="patreon" color="white" size={20}/>
+                  <Text color={"white"}> Patreon</Text>
+                </HStack>
+              </Pressable>
+              <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p={3} onPress={() => _openURL(this.buymeacoffee)}>
+                <HStack>
+                  <FontAwesome5 name="coffee" color="white" size={20}/>
+                  <Text color={"white"}> BuyMeACoffee</Text>
+                </HStack>
+              </Pressable>
+            </VStack>
+          </Modal.Body>
+        </Modal.Content>
       </Modal>
     )
   }
@@ -103,7 +106,7 @@ class Accueil extends React.Component {
       index: 0,
       routes: [{
         name: 'ListeMatchsInscription'
-      }],
+      }]
     });
   }
 
@@ -112,7 +115,7 @@ class Accueil extends React.Component {
   }
 
   _buttonShowMatchs() {
-    if(this.props.listeMatchs) {
+    if (this.props.listeMatchs) {
       if (this.props.listeMatchs.length != 0) {
         return (
           <Pressable bg="#1c3969" flex={1} space="1" alignItems={"center"} rounded="3xl" py={"5"} onPress={() => this._showMatchs()}>
@@ -136,8 +139,9 @@ class Accueil extends React.Component {
         <StatusBar backgroundColor="#0594ae"/>
         <VStack flex="1" px="10" bgColor={"#0594ae"}>
           <VStack alignItems={"center"}>
-            <Image style={styles.logo} source={require('@assets/icon.png')}/>
+            <Image size={"xl"} alt="Logo de l'application" source={require('@assets/icon.png')}/>
           </VStack>
+          <Spacer/>
           <VStack space={"3"}>
             <HStack>
               {this._buttonShowMatchs()}
@@ -149,11 +153,11 @@ class Accueil extends React.Component {
               </Pressable>
             </HStack>
             <HStack space={"3"}>
-              <Pressable bg="#1c3969" flex={1} space="1" alignItems={"center"} rounded="3xl" py={"5"} onPress={() => this._navigate('ListeTournois')}>
+              <Pressable bg="#1c3969" flex={1} space="1" alignItems={"center"} justifyContent={"center"} py={5} rounded="3xl" onPress={() => this._navigate('ListeTournois')}>
                 <FontAwesome5 name="list" color="white" size={24}/>
                 <Text color={"white"}>Mes anciens tournois</Text>
               </Pressable>
-              <Pressable bg="#1c3969" flex={1} space="1" alignItems={"center"} rounded="3xl" py={"5"} onPress={() => this._navigate('ListesJoueurs')}>
+              <Pressable bg="#1c3969" flex={1} space="1" alignItems={"center"} justifyContent={"center"} py={5} rounded="3xl" onPress={() => this._navigate('ListesJoueurs')}>
                 <FontAwesome5 name="users" color="white" size={24}/>
                 <Text color={"white"}>Mes listes de joueurs</Text>
               </Pressable>
@@ -163,13 +167,12 @@ class Accueil extends React.Component {
           <VStack space={3}>
             <HStack>
               <Spacer/>
-              <Pressable  alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => _openURL(this.facebook)}>
+              <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p={3} onPress={() => _openURL(this.facebook)}>
                 <FontAwesome5 name="facebook" color="white" size={20}/>
                 <Text color={"white"}>Rejoindre la page</Text>
               </Pressable>
               <Spacer/>
             </HStack>
-            <Spacer/>
             <HStack space={3}>
               {Platform.OS !== 'ios' && <>
                 <Pressable flex={1} alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => this.setState({ modalDonsVisible: true })}>
@@ -186,16 +189,15 @@ class Accueil extends React.Component {
                 <FontAwesome5 name="wrench" color="white" size={20}/>
               </Pressable>
             </HStack>
-          </VStack>
-          <Spacer/>
-          <VStack alignItems={"center"}>
-            <HStack>
+            <HStack justifyContent={"center"}>
               <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p="3" onPress={() => _openURL(this.gcuWebsite)}>
                 <Text color={"white"} fontSize={16}>Découvrir le GCU</Text>
               </Pressable>
             </HStack>
-            <Text style={styles.create_text}>Développé par Mathis Cadio</Text>
-            <Text style={styles.create_text}>Version: {expo.version}</Text>
+            <VStack>
+              <Text textAlign={"center"} color={"white"} fontSize={"md"}>Développé par Mathis Cadio</Text>
+              <Text textAlign={"center"} color={"white"} fontSize={"md"}>Version: {expo.version}</Text>
+            </VStack>
           </VStack>
           {this._showDonsModal()}
           {this._showUpdateModal()}
@@ -204,82 +206,6 @@ class Accueil extends React.Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  main_container: {
-    flex: 1,
-    backgroundColor: "#0594ae"
-  },
-  logo_container: {
-    alignItems: 'center',
-  },
-  logo: {
-    width: 200,
-    height: 200
-  },
-  body_container : {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  buttonView: {
-    marginBottom: 10,
-    paddingLeft: 15,
-    paddingRight: 15
-  },
-  informations_container: {
-    alignItems: 'center',
-    paddingLeft: '1%',
-    paddingRight: '1%'
-  },
-  informations_texte: {
-    fontSize: 20,
-    textAlign: "justify",
-    color: 'white'
-  },
-  create_container: {
-    alignItems: 'center',
-  },
-  create_text: {
-    fontSize: 15,
-    color: 'white'
-  },
-  buttonViewCreate: {
-    flexDirection: 'row',
-    marginBottom: 10
-  },
-  footer_container: {
-    alignItems: 'center',
-  },
-})
-
-const modalStyles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 20,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center"
-  }
-})
 
 const mapStateToProps = (state) => {
   return {
