@@ -86,8 +86,11 @@ class ListeJoueurItem extends React.Component {
         disabledBoutonRenommer: true
       })
       if (isInscription === true) {
-        let typeInscription
-        if (avecEquipes == true) {
+        let typeInscription = "";
+        if (this.props.optionsTournoi.mode == "sauvegarde") {
+          typeInscription = "sauvegarde"
+        }
+        else if (avecEquipes == true) {
           typeInscription = "avecEquipes"
         }
         else {
