@@ -34,7 +34,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
-        "backgroundColor": "#C30065"
+        "backgroundColor": "#FFFFFF"
       },
       "package": "com.MK.PetanqueGCU",
       "versionCode": 58,
