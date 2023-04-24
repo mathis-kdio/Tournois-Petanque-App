@@ -35,6 +35,9 @@ class ListeJoueurItem extends React.Component {
   }
 
   _supprimerJoueur(idJoueur) {
+    this.setState({
+      renommerOn: false
+    })
     const actionSuppr = {type: "SUPPR_JOUEUR", value: [this.props.optionsTournoi.mode, idJoueur]};
     this.props.dispatch(actionSuppr);
     if (this.props.optionsTournoi.typeEquipes == "teteatete") {
