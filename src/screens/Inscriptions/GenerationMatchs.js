@@ -55,6 +55,34 @@ class GenerationMatchs extends React.Component {
   }
 
   _lanceurGeneration() {
+    //Récupération des options que l'utilisateur a modifié ou laissé par défaut
+    if (this.props.route.params != undefined) {
+      let routeparams = this.props.route.params;
+      if (routeparams.nbTours != undefined) {
+        this.nbTours = routeparams.nbTours;
+      }
+      if (routeparams.nbPtVictoire != undefined) {
+        this.nbPtVictoire = routeparams.nbPtVictoire;
+      }
+      if (routeparams.speciauxIncompatibles != undefined) {
+        this.speciauxIncompatibles = routeparams.speciauxIncompatibles;
+      }
+      if (routeparams.memesEquipes != undefined) {
+        this.jamaisMemeCoequipier = routeparams.memesEquipes;
+      }
+      if (routeparams.memesAdversaires != undefined) {
+        this.eviterMemeAdversaire = routeparams.memesAdversaires;
+      }
+      if (routeparams.typeEquipes != undefined) {
+        this.typeEquipes = routeparams.typeEquipes;
+      }
+      if (routeparams.typeInscription != undefined) {
+        this.typeInscription = routeparams.typeInscription;
+      }
+      if (routeparams.complement != undefined) {
+        this.complement = routeparams.complement;
+      }
+    }
     let listeJoueurs = this.props.listesJoueurs[this.typeInscription];
     let nbjoueurs = listeJoueurs.length;
     let nbGenerationsRatee = 0;
@@ -84,35 +112,6 @@ class GenerationMatchs extends React.Component {
   }
 
   _generation() {
-    //Récupération des options que l'utilisateur a modifié ou laissé par défaut
-    if (this.props.route.params != undefined) {
-      let routeparams = this.props.route.params;
-      if (routeparams.nbTours != undefined) {
-        this.nbTours = routeparams.nbTours;
-      }
-      if (routeparams.nbPtVictoire != undefined) {
-        this.nbPtVictoire = routeparams.nbPtVictoire;
-      }
-      if (routeparams.speciauxIncompatibles != undefined) {
-        this.speciauxIncompatibles = routeparams.speciauxIncompatibles;
-      }
-      if (routeparams.memesEquipes != undefined) {
-        this.jamaisMemeCoequipier = routeparams.memesEquipes;
-      }
-      if (routeparams.memesAdversaires != undefined) {
-        this.eviterMemeAdversaire = routeparams.memesAdversaires;
-      }
-      if (routeparams.typeEquipes != undefined) {
-        this.typeEquipes = routeparams.typeEquipes;
-      }
-      if (routeparams.typeInscription != undefined) {
-        this.typeInscription = routeparams.typeInscription;
-      }
-      if (routeparams.complement != undefined) {
-        this.complement = routeparams.complement;
-      }
-    }
-
     let matchs = [];
     let nbMatchs = undefined;
     let nbTours = this.nbTours;
