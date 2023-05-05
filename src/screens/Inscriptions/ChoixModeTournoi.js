@@ -59,12 +59,17 @@ class ChoixModeTournoi extends React.Component {
     const updateOptionModeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['mode', modeTournoi]}
     this.props.dispatch(updateOptionModeTournoi);
 
-    this.props.navigation.navigate({
-      name: 'OptionsTournoi',
-      params: {
-        screenStackName: screenName
-      }
-    })
+    if (this.props.optionsTournoi.type != 'championnat' && this.props.optionsTournoi.type != 'coupe') {
+      this.props.navigation.navigate({
+        name: 'OptionsTournoi',
+        params: {
+          screenStackName: screenName
+        }
+      })
+    }
+    else {
+      this.props.navigation.navigate(screenName);
+    }
   }
 
   _buttonInscription() {
