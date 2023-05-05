@@ -5,35 +5,9 @@ import { connect } from 'react-redux'
 class InscriptionsSansNoms extends React.Component {
   constructor(props) {
     super(props)
-    this.nbTours = "5"
-    this.nbPtVictoire = 13;
-    this.speciauxIncompatibles = true
-    this.memesEquipes = true
-    this.memesAdversaires = true
     this.state = {
       nbJoueurNormaux: 0,
       nbJoueurSpeciaux: 0,
-    }
-  }
-
-  componentDidUpdate() {
-    if (this.props.route.params != undefined) {
-      let routeparams = this.props.route.params;
-      if (routeparams.nbTours != undefined) {
-        this.nbTours = routeparams.nbTours
-      }
-      if (routeparams.nbPtVictoire != undefined) {
-        this.nbPtVictoire = routeparams.nbPtVictoire
-      }
-      if (routeparams.speciauxIncompatibles != undefined) {
-        this.speciauxIncompatibles = routeparams.speciauxIncompatibles
-      }
-      if (routeparams.memesEquipes != undefined) {
-        this.memesEquipes = routeparams.memesEquipes
-      }
-      if (routeparams.memesAdversaires != undefined) {
-        this.memesAdversaires = routeparams.memesAdversaires
-      }
     }
   }
 
@@ -73,27 +47,6 @@ class InscriptionsSansNoms extends React.Component {
     this.props.navigation.navigate({
       name: 'GenerationMatchs',
       params: {
-        nbTours: parseInt(this.nbTours),
-        nbPtVictoire: this.nbPtVictoire,
-        speciauxIncompatibles: this.speciauxIncompatibles,
-        memesEquipes: this.memesEquipes,
-        memesAdversaires: this.memesAdversaires,
-        typeEquipes: this.props.optionsTournoi.typeEquipes,
-        typeInscription: this.props.optionsTournoi.mode,
-        screenStackName: 'InscriptionsSansNoms'
-      }
-    })
-  }
-
-  _options() {
-    this.props.navigation.navigate({
-      name: 'OptionsTournoi',
-      params: {
-        nbTours: this.nbTours,
-        nbPtVictoire: this.nbPtVictoire,
-        speciauxIncompatibles: this.speciauxIncompatibles,
-        memesEquipes: this.memesEquipes,
-        memesAdversaires: this.memesAdversaires,
         screenStackName: 'InscriptionsSansNoms'
       }
     })
@@ -184,9 +137,6 @@ class InscriptionsSansNoms extends React.Component {
           </View>
           <View>
             <Text style={styles.texte}>Les joueurs spéciaux sont des joueurs qui ne peuvent pas jouer dans la même équipe</Text>
-          </View>
-          <View style={styles.buttonView}>
-            <Button color='#1c3969' title='Options Tournoi' onPress={() => this._options()}/>
           </View>
           <View style={styles.buttonView}>
             {this._boutonCommencer()}

@@ -7,39 +7,7 @@ class InscriptionsAvecNoms extends React.Component {
 
   constructor(props) {
     super(props)
-    this.nbTours = "5"
-    this.nbPtVictoire = 13;
-    this.speciauxIncompatibles = true
-    this.memesEquipes = true
-    this.memesAdversaires = true
     this.state = {
-      complement: "3",
-    }
-  }
-
-  componentDidUpdate() {
-    if (this.props.route.params != undefined) {
-      let routeparams = this.props.route.params;
-      if (routeparams.nbTours != undefined) {
-        this.nbTours = routeparams.nbTours
-      }
-      if (routeparams.nbPtVictoire != undefined) {
-        this.nbPtVictoire = routeparams.nbPtVictoire
-      }
-      if (routeparams.speciauxIncompatibles != undefined) {
-        this.speciauxIncompatibles = routeparams.speciauxIncompatibles
-      }
-      if (routeparams.memesEquipes != undefined) {
-        this.memesEquipes = routeparams.memesEquipes
-      }
-      if (routeparams.memesAdversaires != undefined) {
-        this.memesAdversaires = routeparams.memesAdversaires
-      }
-      if (routeparams.complement != undefined && this.state.complement != routeparams.complement) {
-        this.setState({
-          complement: routeparams.complement
-        })
-      }
     }
   }
 
@@ -47,29 +15,6 @@ class InscriptionsAvecNoms extends React.Component {
     this.props.navigation.navigate({
       name: "GenerationMatchs",
       params: {
-        nbTours: parseInt(this.nbTours),
-        nbPtVictoire: this.nbPtVictoire,
-        speciauxIncompatibles: this.speciauxIncompatibles,
-        memesEquipes: this.memesEquipes,
-        memesAdversaires: this.memesAdversaires,
-        complement: this.state.complement,
-        typeEquipes: this.props.optionsTournoi.typeEquipes,
-        typeInscription: this.props.optionsTournoi.mode,
-        screenStackName: 'InscriptionsAvecNoms'
-      }
-    })
-  }
-
-  _options() {
-    this.props.navigation.navigate({
-      name: 'OptionsTournoi',
-      params: {
-        nbTours: this.nbTours,
-        nbPtVictoire: this.nbPtVictoire,
-        speciauxIncompatibles: this.speciauxIncompatibles,
-        memesEquipes: this.memesEquipes,
-        memesAdversaires: this.memesAdversaires,
-        complement: this.state.complement,
         screenStackName: 'InscriptionsAvecNoms'
       }
     })
@@ -84,7 +29,7 @@ class InscriptionsAvecNoms extends React.Component {
 
   _boutonCommencer() {
     let boutonDesactive = false
-    let boutonTitle = 'Commencer le tournoi'
+    let boutonTitle = 'Valider et commencer'
     let nbJoueurs = this.props.listesJoueurs[this.props.optionsTournoi.mode].length
 
     let nbEquipes
@@ -153,10 +98,10 @@ class InscriptionsAvecNoms extends React.Component {
         boutonTitle = "Pas assez de joueurs"
         boutonDesactive = true
       }
-      else if (this.props.listesJoueurs.avecNoms.length % 2 == 0 && this.state.complement == "1") {
+      else if (this.props.listesJoueurs.avecNoms.length % 2 == 0 && this.props.optionsTournoi.complement == "1") {
         boutonTitle = "Nombre de joueurs pas multiple de 4, l'option sélectionnée formera un tête-à-tête"
       }
-      else if (this.state.complement == "3") {
+      else if (this.props.optionsTournoi.complement == "3") {
         if (this.props.listesJoueurs.avecNoms.length == 7) {
           boutonTitle = "Mode 3vs2 + 1vs1 n'est pas encore disponible"
           boutonDesactive = true
@@ -165,7 +110,7 @@ class InscriptionsAvecNoms extends React.Component {
           boutonTitle = "Nombre de joueurs pas multiple de 4, l'option sélectionnée formera des triplettes pour compléter"
         }
       }
-      else if (this.state.complement != "3") {
+      else if (this.props.optionsTournoi.complement != "3") {
         boutonTitle = "Nombre de joueurs pas multiple de 4, veuiller choisir l'option pour former des triplettes pour compléter si vous voulez lancer"
         boutonDesactive = true
       }
@@ -179,14 +124,6 @@ class InscriptionsAvecNoms extends React.Component {
     )
   }
 
-  _boutonOptions() {
-    if (this.props.optionsTournoi.type != 'championnat' && this.props.optionsTournoi.type != 'coupe') {
-      return (
-        <Button color='#1c3969' title='Options Tournoi' onPress={() => this._options()}/>
-      )
-    }
-  }
-
   render() {
     return (
       <View style={styles.main_container}>
@@ -198,9 +135,6 @@ class InscriptionsAvecNoms extends React.Component {
             loadListScreen={false}
           />
         <View>
-          <View style={styles.buttonView}>
-            {this._boutonOptions()}
-          </View>
           <View style={styles.buttonView}>
             {this._boutonCommencer()}
           </View>
