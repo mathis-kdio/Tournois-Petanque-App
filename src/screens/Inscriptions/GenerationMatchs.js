@@ -19,6 +19,7 @@ class GenerationMatchs extends React.Component {
     this.typeEquipes = "doublette";
     this.typeInscription = "avecNoms";
     this.complement = "3";
+    this.typeTournoi = "mele-demele"
     this.state = {
       isLoading: true,
       isValid: true,
@@ -56,33 +57,16 @@ class GenerationMatchs extends React.Component {
 
   _lanceurGeneration() {
     //Récupération des options que l'utilisateur a modifié ou laissé par défaut
-    if (this.props.route.params != undefined) {
-      let routeparams = this.props.route.params;
-      if (routeparams.nbTours != undefined) {
-        this.nbTours = routeparams.nbTours;
-      }
-      if (routeparams.nbPtVictoire != undefined) {
-        this.nbPtVictoire = routeparams.nbPtVictoire;
-      }
-      if (routeparams.speciauxIncompatibles != undefined) {
-        this.speciauxIncompatibles = routeparams.speciauxIncompatibles;
-      }
-      if (routeparams.memesEquipes != undefined) {
-        this.jamaisMemeCoequipier = routeparams.memesEquipes;
-      }
-      if (routeparams.memesAdversaires != undefined) {
-        this.eviterMemeAdversaire = routeparams.memesAdversaires;
-      }
-      if (routeparams.typeEquipes != undefined) {
-        this.typeEquipes = routeparams.typeEquipes;
-      }
-      if (routeparams.typeInscription != undefined) {
-        this.typeInscription = routeparams.typeInscription;
-      }
-      if (routeparams.complement != undefined) {
-        this.complement = routeparams.complement;
-      }
-    }
+    this.nbTours = this.props.optionsTournoi.nbTours;
+    this.nbPtVictoire = this.props.optionsTournoi.nbPtVictoire;
+    this.speciauxIncompatibles = this.props.optionsTournoi.speciauxIncompatibles;
+    this.jamaisMemeCoequipier = this.props.optionsTournoi.memesEquipes;
+    this.eviterMemeAdversaire = this.props.optionsTournoi.memesAdversaires;
+    this.typeEquipes = this.props.optionsTournoi.typeEquipes;
+    this.typeInscription = this.props.optionsTournoi.mode;
+    this.complement = this.props.optionsTournoi.complement;
+    this.typeTournoi = this.props.optionsTournoi.type;
+
     let listeJoueurs = this.props.listesJoueurs[this.typeInscription];
     let nbjoueurs = listeJoueurs.length;
     let nbGenerationsRatee = 0;
@@ -118,7 +102,7 @@ class GenerationMatchs extends React.Component {
     let erreurMemesEquipes = undefined;
     let erreurSpeciaux = undefined;
     let echecGeneration = undefined;
-    if (this.props.optionsTournoi.type == "mele-demele") {
+    if (this.typeTournoi == "mele-demele") {
       if (this.typeInscription == 'avecEquipes') {
         ({matchs, nbMatchs, echecGeneration} = generationAvecEquipes(this.props.listesJoueurs.avecEquipes, this.nbTours, this.typeEquipes));
       }
@@ -135,10 +119,10 @@ class GenerationMatchs extends React.Component {
         echecGeneration = true;
       }
     }
-    else if (this.props.optionsTournoi.type == "coupe") {
+    else if (this.typeTournoi == "coupe") {
       ({matchs, nbTours, nbMatchs} = generationCoupe(this.props.optionsTournoi, this.props.listesJoueurs.avecEquipes));
     }
-    else if (this.props.optionsTournoi.type == "championnat") {
+    else if (this.typeTournoi == "championnat") {
       ({matchs, nbTours, nbMatchs} = generationChampionnat(this.props.optionsTournoi, this.props.listesJoueurs.avecEquipes));
     }
     else {
@@ -167,7 +151,7 @@ class GenerationMatchs extends React.Component {
       memesAdversaires: this.eviterMemeAdversaire,
       typeEquipes: this.typeEquipes,
       complement: this.complement,
-      typeTournoi: this.props.optionsTournoi.type,
+      typeTournoi: this.typeTournoi,
       listeJoueurs: this.props.listesJoueurs[this.typeInscription].slice()
     });
 
@@ -203,7 +187,7 @@ class GenerationMatchs extends React.Component {
       return (
         <View style={styles.error_container}>
           <Text style={styles.texte}>La générations n'a pas réussie, certaines options rendent la génération trop compliqué.</Text>
-          <Button title='Changer des options' onPress={() => this._retourInscription()}/>
+          <Button title="Retourner à l'inscription" onPress={() => this._retourInscription()}/>
         </View>
       )
     }
@@ -226,7 +210,7 @@ class GenerationMatchs extends React.Component {
       return (
         <View style={styles.error_container}>
           <Text style={styles.texte}>La générations ne peux pas fonctionner avec les options.</Text>
-          <Text style={styles.texte}>Il y semble trop compliqué de ne jamais faire jouer des équipes identiques</Text>
+          <Text style={styles.texte}>Il semble trop compliqué de ne jamais faire jouer des équipes identiques</Text>
           <Button title="Désactiver l'option ou rajouter des joueurs ou diminuer le nombre de tours" onPress={() => this._retourInscription()}/>
         </View>
       )
@@ -234,17 +218,7 @@ class GenerationMatchs extends React.Component {
   }
 
   _retourInscription() {
-    this.props.navigation.navigate({
-      name: this.props.route.params.screenStackName,
-      params: {
-        nbTours: this.nbTours.toString(),
-        nbPtVictoire: this.nbPtVictoire,
-        speciauxIncompatibles: this.speciauxIncompatibles,
-        memesEquipes: this.jamaisMemeCoequipier,
-        memesAdversaires: this.eviterMemeAdversaire,
-        typeEquipes: this.typeEquipes
-      }
-    });
+    this.props.navigation.navigate(this.props.route.params.screenStackName);
   }
 
   render() {

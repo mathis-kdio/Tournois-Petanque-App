@@ -21,44 +21,6 @@ class OptionsTournoi extends React.Component {
     }
   }
 
-  componentDidMount() {
-    if (this.props.route.params != undefined) {
-      let routeparams = this.props.route.params;
-      if (routeparams.nbTours != undefined) {
-        this.nbToursTxt = routeparams.nbTours.toString();
-        this.setState({
-          nbTours: parseInt(routeparams.nbTours)
-        });
-      }
-      if (routeparams.nbPtVictoire != undefined) {
-        this.nbPtVictoireTxt = routeparams.nbPtVictoire.toString();
-        this.setState({
-          nbPtVictoire: parseInt(routeparams.nbPtVictoire)
-        });
-      }
-      if (routeparams.speciauxIncompatibles != undefined) {
-        this.setState({
-          speciauxIncompatibles: routeparams.speciauxIncompatibles
-        });
-      }
-      if (routeparams.memesEquipes != undefined) {
-        this.setState({
-          memesEquipes: routeparams.memesEquipes
-        });
-      }
-      if (routeparams.memesAdversaires != undefined) {
-        this.setState({
-          memesAdversaires: routeparams.memesAdversaires
-        });
-      }
-      if (routeparams.complement != undefined) {
-        this.setState({
-          complement: routeparams.complement
-        });
-      }
-    }
-  }
-
   _nbToursTxtInputChanged(text) {
     this.nbToursTxt = text;
     this.setState({
@@ -73,29 +35,32 @@ class OptionsTournoi extends React.Component {
     });
   }
 
-  _retourInscription() {
-    this.props.navigation.navigate({
-      name: this.props.route.params.screenStackName,
-      params: {
-        nbTours: this.state.nbTours.toString(),
-        nbPtVictoire: this.state.nbPtVictoire,
-        speciauxIncompatibles: this.state.speciauxIncompatibles,
-        memesEquipes: this.state.memesEquipes,
-        memesAdversaires: this.state.memesAdversaires,
-        complement: this.state.complement
-      }
-    });
+  _inscription() {
+    const updateOptionNbTours = { type: "UPDATE_OPTION_TOURNOI", value: ['nbTours', this.state.nbTours]}
+    this.props.dispatch(updateOptionNbTours);
+    const updateOptionNbPtVictoire = { type: "UPDATE_OPTION_TOURNOI", value: ['nbPtVictoire', this.state.nbPtVictoire]}
+    this.props.dispatch(updateOptionNbPtVictoire);
+    const updateOptionSpeciauxIncompatibles = { type: "UPDATE_OPTION_TOURNOI", value: ['speciauxIncompatibles', this.state.speciauxIncompatibles]}
+    this.props.dispatch(updateOptionSpeciauxIncompatibles);
+    const updateOptionMemesEquipes = { type: "UPDATE_OPTION_TOURNOI", value: ['memesEquipes', this.state.memesEquipes]}
+    this.props.dispatch(updateOptionMemesEquipes);
+    const updateOptionMemesAdversaires = { type: "UPDATE_OPTION_TOURNOI", value: ['memesAdversaires', this.state.memesAdversaires]}
+    this.props.dispatch(updateOptionMemesAdversaires);
+    const updateOptionComplement = { type: "UPDATE_OPTION_TOURNOI", value: ['complement', this.state.complement]}
+    this.props.dispatch(updateOptionComplement);
+
+    this.props.navigation.navigate(this.props.route.params.screenStackName);
   }
 
   _boutonValider() {
     let boutonActive = true;
     let boutonTitle = "Un des champs n'est pas valide";
     if (this.state.nbTours > 0 && this.state.nbTours % 1 == 0 && this.state.nbPtVictoire > 0 && this.state.nbPtVictoire % 1 == 0) {
-      boutonTitle = 'Valider les options';
+      boutonTitle = 'Valider les options et passer aux inscriptions';
       boutonActive = false;
     }
     return (
-      <Button disabled={boutonActive} color='green' title={boutonTitle} onPress={() => this._retourInscription()}/>
+      <Button disabled={boutonActive} color='green' title={boutonTitle} onPress={() => this._inscription()}/>
     )
   }
 
