@@ -1,10 +1,10 @@
 import React from 'react'
 import { StyleSheet, View, TextInput, Text, Button, Alert } from 'react-native'
-import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { connect } from 'react-redux'
 import { FlatList } from 'react-native-gesture-handler'
 import ListeJoueurItem from '@components/ListeJoueurItem'
 import JoueurSuggere from '@components/JoueurSuggere'
+import { Box, CheckIcon, ChevronDownIcon, HStack, Select } from 'native-base';
 
 class Inscription extends React.Component {
 
@@ -77,15 +77,6 @@ class Inscription extends React.Component {
       })
       //Ne fonctionne pas avec: "this.addPlayerTextInput.current.focus()" quand validation avec clavier donc "hack" ci-dessous
       setTimeout(() => this.addPlayerTextInput.current.focus(), 0)
-    }
-  }
-
-  _ajoutJoueurBouton() {
-    if (this.state.etatBouton == true) {
-      return <Button color='green' title='Ajouter' onPress={() => this._ajoutJoueur()}/>
-    }
-    else {
-      return <Button disabled title='Ajouter' onPress={() => this._ajoutJoueur()}/>
     }
   }
 
@@ -218,37 +209,48 @@ class Inscription extends React.Component {
   render() {
     return (
       <View style={styles.main_container}>
-        <View style={styles.ajoutjoueur_container}>
-          <View style={styles.textinput_ajoutjoueur_container}>
+        <HStack alignItems="center" mx="1" space="1">
+          <Box flex="1">
             <TextInput
               style={styles.textinput}
-              placeholderTextColor='white'
-              underlineColorAndroid='white'
+              placeholderTextColor="white"
+              underlineColorAndroid="white"
               placeholder="Nom du joueur"
               autoFocus={true}
               onChangeText={(text) => this._ajoutJoueurTextInputChanged(text)}
               onSubmitEditing={() => this._ajoutJoueur()}
               ref={this.addPlayerTextInput}
             />
-          </View>
-          <View style={styles.checkbox_ajoutjoueur_container}>
-            <BouncyCheckbox
-              onPress={()=>{
-                this.setState({
-                  isChecked:!this.state.isChecked
-                })
-              }}
-              disableBuiltInState="true"
-              isChecked={this.state.isChecked}
-              text="Enfant"
-              textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
-              fillColor="white"
+          </Box>
+          <Box flex="1">
+            <Select
+              //selectedValue={"inconnu"}
+              accessibilityLabel="Choisir un poste"
+              placeholder="Choisir un poste"
+              placeholderTextColor="white"
+              color="white"
+              variant="rounded"
+              dropdownIcon={<ChevronDownIcon color="white" mr="2" size="6"/>}
+              _selectedItem={{
+                bg: "#0594ae",
+                endIcon: <CheckIcon size="5"/>}}
+              /*onValueChange={itemValue => setService(itemValue)}*/>
+              <Select.Item label="Inconnu" value="inconnu"/>
+              <Select.Item label="Enfant" value="enfant"/>
+              <Select.Item label="Tireur" value="tireur"/>
+              <Select.Item label="Pointeur" value="pointeur"/>
+              <Select.Item label="Milieu" value="milieu"/>
+            </Select>
+          </Box>
+          <Box>
+            <Button
+              disabled={!this.state.etatBouton}
+              color="green"
+              title="Ajouter"
+              onPress={() => this._ajoutJoueur()}
             />
-          </View>
-          <View style={styles.button_ajoutjoueur_container}>
-            {this._ajoutJoueurBouton()}
-          </View>
-        </View>
+          </Box>
+        </HStack>
         <View style={styles.entete_container}>
           <View style={styles.prenom_container}>
             <Text style={styles.texte_entete}>N° Prénom</Text>
@@ -284,28 +286,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'white'
   },
-  ajoutjoueur_container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 10
-  },
-  textinput_ajoutjoueur_container: {
-    flex: 1,
-    marginLeft: 5
-  },
   textinput: {
     height: 50,
     paddingLeft: 5,
     color: 'white'
-  },
-  checkbox_ajoutjoueur_container: {
-    flex: 1
-  },
-  button_ajoutjoueur_container: {
-    flex: 1,
-    marginRight: 5
   },
   entete_container: {
     flexDirection: 'row',
