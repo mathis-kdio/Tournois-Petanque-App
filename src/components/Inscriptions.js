@@ -14,7 +14,7 @@ class Inscription extends React.Component {
     this.addPlayerTextInput = React.createRef()
     this.state = {
       joueur: undefined,
-      isChecked: false,
+      joueurType: undefined,
       etatBouton: false,
       suggestions: [],
       nbSuggestions: 5
@@ -67,12 +67,12 @@ class Inscription extends React.Component {
       if (this.props.optionsTournoi.typeEquipes == "teteatete" && this.props.listesJoueurs[this.props.optionsTournoi.mode]) {
         equipe = this.props.listesJoueurs[this.props.optionsTournoi.mode].length + 1
       }
-      const action = { type: "AJOUT_JOUEUR", value: [this.props.optionsTournoi.mode, this.joueurText, this.state.isChecked, equipe] }
+      const action = { type: "AJOUT_JOUEUR", value: [this.props.optionsTournoi.mode, this.joueurText, this.state.joueurType, equipe] }
       this.props.dispatch(action);
       this.addPlayerTextInput.current.clear();
       this.joueurText = "";
       this.setState({
-        isChecked: false,
+        joueurType: undefined,
         etatBouton: false
       })
       //Ne fonctionne pas avec: "this.addPlayerTextInput.current.focus()" quand validation avec clavier donc "hack" ci-dessous
@@ -224,7 +224,6 @@ class Inscription extends React.Component {
           </Box>
           <Box flex="1">
             <Select
-              //selectedValue={"inconnu"}
               accessibilityLabel="Choisir un poste"
               placeholder="Choisir un poste"
               placeholderTextColor="white"
@@ -233,9 +232,9 @@ class Inscription extends React.Component {
               dropdownIcon={<ChevronDownIcon color="white" mr="2" size="6"/>}
               _selectedItem={{
                 bg: "#0594ae",
-                endIcon: <CheckIcon size="5"/>}}
-              /*onValueChange={itemValue => setService(itemValue)}*/>
-              <Select.Item label="Inconnu" value="inconnu"/>
+                endIcon: <CheckIcon size="5"/>
+              }}
+              onValueChange={itemValue => this.setState({joueurType: itemValue})}>
               <Select.Item label="Enfant" value="enfant"/>
               <Select.Item label="Tireur" value="tireur"/>
               <Select.Item label="Pointeur" value="pointeur"/>

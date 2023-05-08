@@ -3,8 +3,8 @@ const initialState = {listesJoueurs: { avecNoms: [], sansNoms: [], avecEquipes: 
 function listesJoueurs(state = initialState, action) {
   let nextState
   switch (action.type) {
-    case 'AJOUT_JOUEUR'://action: 0: type d'inscription  1: nom du joueur  2: special ou non  3: numéro d'équipe (option)
-      if (action.value[0] != "" || action.value[1] != "" || action.value[2] != "") {
+    case 'AJOUT_JOUEUR'://action: 0: type d'inscription  1: nom du joueur  2: type ou undefined  3: numéro d'équipe (option)
+      if (action.value[0] != "" || action.value[1] != "") {
         const listes = { ...state.listesJoueurs };
         if (listes[action.value[0]] == undefined) {
           listes[action.value[0]] = Array();
@@ -21,7 +21,7 @@ function listesJoueurs(state = initialState, action) {
         let newJoueur = {
           id: idNewJoueur,
           name: action.value[1],
-          special: action.value[2],
+          type: action.value[2],
           equipe: action.value[3]
         }
         listes[action.value[0]].push(newJoueur)
