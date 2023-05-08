@@ -10,9 +10,10 @@ class JoueurType extends React.Component {
   }
 
   render() {
-    const { _setJoueurType } = this.props;
+    const { joueurType, _setJoueurType } = this.props;
     return (
       <Select
+        selectedValue={joueurType ? joueurType : ""}
         accessibilityLabel="Choisir un poste"
         placeholder="Choisir un poste"
         placeholderTextColor="white"

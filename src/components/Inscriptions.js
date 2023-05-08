@@ -231,6 +231,7 @@ class Inscription extends React.Component {
           </Box>
           <Box flex="1">
             <JoueurType
+              joueurType={this.state.joueurType}
               _setJoueurType={(type) => this._setJoueurType(type)}
             />
           </Box>

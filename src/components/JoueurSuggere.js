@@ -53,6 +53,7 @@ class JoueurSuggere extends React.Component {
         </View>
         <View style={styles.type_container}>
           <JoueurType
+            joueurType={this.state.joueurType}
             _setJoueurType={(type) => this._setJoueurType(type)}
           />
         </View>
