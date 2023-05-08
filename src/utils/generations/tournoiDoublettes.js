@@ -30,10 +30,10 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
     }      
   }
 
-  //Création d'un tableau contenant tous les joueurs, un autre les non spéciaux et un autre les spéciaux
+  //Création d'un tableau contenant tous les joueurs, un autre les non enfants et un autre les enfants
   //Le tableau contenant les tous les joueurs permettra de connaitre dans quel équipe chaque joueur a été
   for (let i = 0; i < nbjoueurs; i++) {
-    if (listeJoueurs[i].special === true && speciauxIncompatibles == true && typeEquipes == "doublette") {
+    if (listeJoueurs[i].type === "enfant" && speciauxIncompatibles == true && typeEquipes == "doublette") {
       joueursSpe.push({...listeJoueurs[i]});
       joueursSpe[joueursSpe.length - 1].equipe = [];
     }
@@ -49,9 +49,9 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
   //Si c'est le cas, alors on remplie de joueurs invisible pour le complément en mode tête à tête
   if (typeEquipes == "doublette" && nbjoueurs % 4 != 0) {
     if (complement == "1" && nbjoueurs % 2 == 0) {
-      joueurs.push({name: "Complément 1", special: true, id: (nbjoueurs)});
+      joueurs.push({name: "Complément 1", type: "enfant", id: (nbjoueurs)});
       joueurs[nbjoueurs].equipe = [];
-      joueurs.push({name: "Complément 2", special: true, id: (nbjoueurs + 1)});
+      joueurs.push({name: "Complément 2", type: "enfant", id: (nbjoueurs + 1)});
       joueurs[nbjoueurs + 1].equipe = [];
       nbJoueursSpe += 2;
       
@@ -62,11 +62,11 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
     }
   }
 
-  //Assignation des joueurs spéciaux
+  //Assignation des joueurs enfants
   if (speciauxIncompatibles == true && typeEquipes == "doublette") {
-    //Test si joueurs spéciaux ne sont pas trop nombreux strict inférieur en cas de compléments
+    //Test si joueurs enfants ne sont pas trop nombreux strict inférieur en cas de compléments
     if ((nbjoueurs % 4 == 0 && nbJoueursSpe <= nbjoueurs / 2) || (nbjoueurs % 4 != 0 && nbJoueursSpe < nbjoueurs / 2)) {
-      //Joueurs spéciaux seront toujours joueur 1 ou joueur 3
+      //Joueurs enfants seront toujours joueur 1 ou joueur 3
       for (let i = 0; i < nbTours; i++) {
         let idMatch = i * nbMatchsParTour;
         let idsJoueursSpe = [];
@@ -87,7 +87,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
       return {erreurSpeciaux: true};
     }
   }
-  //Sinon la règle est désactivée et donc les joueurs spéciaux et les non spéciaux sont regroupés
+  //Sinon la règle est désactivée et donc les joueurs enfants et les non enfants sont regroupés
   else {
     joueursNonSpe.splice(0, joueursNonSpe.length)
     for (let i = 0; i < nbjoueurs; i++) {
@@ -99,7 +99,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
   //TO DO : réussir à trouver les bons paramètres pour déclencher le message d'erreur sans empecher trop de tournois
   if (jamaisMemeCoequipier == true) {
     let nbCombinaisons = nbjoueurs;
-    //Si option de ne pas mettre spéciaux ensemble alors moins de combinaisons possibles
+    //Si option de ne pas mettre enfants ensemble alors moins de combinaisons possibles
     if (speciauxIncompatibles == true) {
       if (nbJoueursSpe <= nbjoueurs / 2) {
         nbCombinaisons -= nbJoueursSpe;
@@ -116,7 +116,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
   //eviterMemeAdversaire = false;
 
 
-  //On ordonne aléatoirement les ids des joueurs non spéciaux à chaque début de manche
+  //On ordonne aléatoirement les ids des joueurs non enfants à chaque début de manche
   let joueursNonSpeId = [];
   for (let i = 0; i < joueursNonSpe.length; i++) {
     joueursNonSpeId.push(joueursNonSpe[i].id);
@@ -127,8 +127,8 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
   };
 
   //FONCTIONNEMENT
-  //S'il y a eu des joueurs spéciaux avant alors ils ont déjà été affectés
-  //On complète avec tous les joueurs non spéciaux
+  //S'il y a eu des joueurs enfants avant alors ils ont déjà été affectés
+  //On complète avec tous les joueurs non enfants
   //Pour conpléter remplissage des matchs tour par tour
   //A chaque tour les joueurs libres sont pris un par un dans une liste les triant aléatoirement à chaque début de tour
   //Ils sont ensuite ajouté si possible (selon les options) dans le 1er match du tour en tant que joueur 1

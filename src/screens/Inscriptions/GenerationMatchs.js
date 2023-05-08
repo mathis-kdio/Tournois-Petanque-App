@@ -73,7 +73,7 @@ class GenerationMatchs extends React.Component {
     let nbEssaisPossibles = nbjoueurs * nbjoueurs;
     let returnType = 0;
     // 3 types de retour possible: 
-    // 0 si trop de personnes spéciaux ou règle pas memeEquipes impossible; 
+    // 0 si trop de personnes de type enfants ou règle pas memeEquipes impossible; 
     // 1 si breaker activé
     // 2 si génération réussie
     //Tant que la génération échoue à cause du breaker alors on relancer
