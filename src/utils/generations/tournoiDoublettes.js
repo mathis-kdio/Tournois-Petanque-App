@@ -4,7 +4,10 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
   let nbjoueurs = listeJoueurs.length;
   let matchs = [];
   let idMatch = 0;
-  let joueursSpe = [];
+  let joueursEnfants = [];
+  let joueursTireurs = [];
+  let joueursPointeurs = [];
+  let joueursNonType = [];
   let joueursNonSpe = [];
   let joueurs = [];
 
@@ -30,12 +33,37 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
     }      
   }
 
-  //Création d'un tableau contenant tous les joueurs, un autre les non enfants et un autre les enfants
-  //Le tableau contenant les tous les joueurs permettra de connaitre dans quel équipe chaque joueur a été
+  /*Création de tableaux contenant :
+    - Les enfants
+    - Les tireurs
+    - Les pointeurs
+    - Les joueurs hors tireurs, pointeurs et enfants
+    - Les tous les joueurs sauf les enfants
+    - Tous les joueurs
+    Le tableau contenant les tous les joueurs permettra de connaitre dans quel équipe chaque joueur a été
+  */
   for (let i = 0; i < nbjoueurs; i++) {
-    if (listeJoueurs[i].type === "enfant" && speciauxIncompatibles == true && typeEquipes == "doublette") {
-      joueursSpe.push({...listeJoueurs[i]});
-      joueursSpe[joueursSpe.length - 1].equipe = [];
+    if (speciauxIncompatibles == true && typeEquipes == "doublette") {
+      if (listeJoueurs[i].type === "enfant") {
+        joueursEnfants.push({...listeJoueurs[i]});
+        joueursEnfants[joueursEnfants.length - 1].equipe = [];
+      }
+      else {
+        if (listeJoueurs[i].type === "tireur") {
+          joueursTireurs.push({...listeJoueurs[i]});
+          joueursTireurs[joueursTireurs.length - 1].equipe = [];
+        }
+        else if (listeJoueurs[i].type === "pointeur") {
+          joueursPointeurs.push({...listeJoueurs[i]});
+          joueursPointeurs[joueursPointeurs.length - 1].equipe = [];
+        }
+        else {
+          joueursNonType.push({...listeJoueurs[i]});
+          joueursNonType[joueursNonType.length - 1].equipe = [];
+        }
+        joueursNonSpe.push({...listeJoueurs[i]});
+        joueursNonSpe[joueursNonSpe.length - 1].equipe = [];
+      }
     }
     else {
       joueursNonSpe.push({...listeJoueurs[i]});
@@ -44,7 +72,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
     joueurs.push({...listeJoueurs[i]});
     joueurs[i].equipe = [];
   }
-  let nbJoueursSpe = joueursSpe.length;
+  let nbJoueursSpe = joueursEnfants.length;
   //Test si mode doublette et qu'il faut compléter
   //Si c'est le cas, alors on remplie de joueurs invisible pour le complément en mode tête à tête
   if (typeEquipes == "doublette" && nbjoueurs % 4 != 0) {
@@ -53,7 +81,6 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
       joueurs[nbjoueurs].equipe = [];
       joueurs.push({name: "Complément 2", type: "enfant", id: (nbjoueurs + 1)});
       joueurs[nbjoueurs + 1].equipe = [];
-      nbJoueursSpe += 2;
       
       for (let i = 1; i < nbTours + 1; i++) {
         matchs[nbMatchsParTour * i - 1].equipe[0][0] = nbjoueurs;
@@ -62,29 +89,50 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
     }
   }
 
-  //Assignation des joueurs enfants
+  //Test si trop de joueurs de type pointeurs ou tireurs ou enfants
   if (speciauxIncompatibles == true && typeEquipes == "doublette") {
-    //Test si joueurs enfants ne sont pas trop nombreux strict inférieur en cas de compléments
-    if ((nbjoueurs % 4 == 0 && nbJoueursSpe <= nbjoueurs / 2) || (nbjoueurs % 4 != 0 && nbJoueursSpe < nbjoueurs / 2)) {
-      //Joueurs enfants seront toujours joueur 1 ou joueur 3
-      for (let i = 0; i < nbTours; i++) {
-        let idMatch = i * nbMatchsParTour;
-        let idsJoueursSpe = [];
-        idsJoueursSpe = uniqueValueArrayRandOrder(joueursSpe.length);
-        for (let j = 0; j < joueursSpe.length; j++) {
-          if (matchs[idMatch].equipe[0][1] == -1) {
-            matchs[idMatch].equipe[0][1] = joueursSpe[idsJoueursSpe[j]].id;
-          }
-          else if (matchs[idMatch].equipe[1][1] == -1) {
-            matchs[idMatch].equipe[1][1] = joueursSpe[idsJoueursSpe[j]].id;
-            idMatch++;
-          }
-        }
+    if (nbjoueurs % 4 == 0) { //Cas de non complément
+      if (joueursEnfants.length > nbjoueurs / 2
+        || joueursTireurs.length > nbjoueurs / 2
+        || joueursPointeurs.length > nbjoueurs / 2
+      ) {
+        return {erreurSpeciaux: true};
       }
     }
-    //Si trop nombreux alors message et retour à l'inscription
-    else {
-      return {erreurSpeciaux: true};
+    else { //Cas de complément
+      if (complement == "1" //Complément tête-à-tête
+          && ( joueursEnfants.length > (nbjoueurs / 2) + 1
+            || joueursTireurs.length > (nbjoueurs / 2) + 1
+            || joueursPointeurs.length > (nbjoueurs / 2) + 1
+          )
+        || (complement == "3" //Complément triplette
+          && ( joueursEnfants.length > Math.ceil(nbjoueurs / 2) - 1
+            || joueursTireurs.length > Math.ceil(nbjoueurs / 2) - 1
+            || joueursPointeurs.length > Math.ceil(nbjoueurs / 2) - 1
+          )
+        )
+      ) {
+        return {erreurSpeciaux: true};
+      }
+    }
+  }
+
+  //Assignation des joueurs enfants
+  if (speciauxIncompatibles == true && typeEquipes == "doublette") {
+    //Joueurs enfants seront toujours joueur 2 ou joueur 4
+    for (let i = 0; i < nbTours; i++) {
+      let idMatch = i * nbMatchsParTour;
+      let idsJoueursSpe = [];
+      idsJoueursSpe = uniqueValueArrayRandOrder(joueursEnfants.length);
+      for (let j = 0; j < joueursEnfants.length; j++) {
+        if (matchs[idMatch].equipe[0][1] == -1) {
+          matchs[idMatch].equipe[0][1] = joueursEnfants[idsJoueursSpe[j]].id;
+        }
+        else if (matchs[idMatch].equipe[1][1] == -1) {
+          matchs[idMatch].equipe[1][1] = joueursEnfants[idsJoueursSpe[j]].id;
+          idMatch++;
+        }
+      }
     }
   }
   //Sinon la règle est désactivée et donc les joueurs enfants et les non enfants sont regroupés
@@ -117,10 +165,34 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
 
 
   //On ordonne aléatoirement les ids des joueurs non enfants à chaque début de manche
-  let joueursNonSpeId = [];
-  for (let i = 0; i < joueursNonSpe.length; i++) {
-    joueursNonSpeId.push(joueursNonSpe[i].id);
-  }
+  //Les listes pointeur ou tireur en 1ère et 2ème position
+  function _randomJoueursIds() {
+    let arrayIds = [];
+    let joueursPointeursId = [];
+    let joueursTireursId = [];
+    let joueursNonTypeId = [];
+    for (let i = 0; i < joueursPointeurs.length; i++) {
+      joueursPointeursId.push(joueursPointeurs[i].id);
+    }
+    for (let i = 0; i < joueursTireurs.length; i++) {
+      joueursTireursId.push(joueursTireurs[i].id);
+    }
+    for (let i = 0; i < joueursNonType.length; i++) {
+      joueursNonTypeId.push(joueursNonType[i].id);
+    }
+
+    if (joueursPointeurs.length > joueursTireurs.length) {
+      arrayIds.push(...shuffle(joueursPointeursId));
+      arrayIds.push(...shuffle(joueursTireursId));
+    }
+    else {
+      arrayIds.push(...shuffle(joueursTireursId));
+      arrayIds.push(...shuffle(joueursPointeursId));
+    }
+    arrayIds.push(...shuffle(joueursNonTypeId));
+    return arrayIds;
+  };
+
   function shuffle(o) {
     for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
     return o;
@@ -130,7 +202,8 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
   //S'il y a eu des joueurs enfants avant alors ils ont déjà été affectés
   //On complète avec tous les joueurs non enfants
   //Pour conpléter remplissage des matchs tour par tour
-  //A chaque tour les joueurs libres sont pris un par un dans une liste les triant aléatoirement à chaque début de tour
+  //A chaque tour les joueurs libres sont pris un par un dans une liste
+  //Cette liste est semi-aléatoire car les listes mélangées pointeurs et tireurs se suivront au début (selon la liste la + nombreuse des 2) puis les autres
   //Ils sont ensuite ajouté si possible (selon les options) dans le 1er match du tour en tant que joueur 1
   //Si joueur 1 déjà pris alors joueur 2 et si déjà pris alors joueur 3 etc
   //Si impossible d'être ajouté dans le match alors tentative dans le match suivant du même tour
@@ -147,7 +220,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
   let breaker = 0; //permet de détecter quand boucle infinie
   for (let i = 0; i < nbTours; i++) {
     breaker = 0;
-    let random = shuffle(joueursNonSpeId);
+    let random = _randomJoueursIds();
     for (let j = 0; j < joueursNonSpe.length;) {
       //Affectation joueur 1
       if (matchs[idMatch].equipe[0][0] == -1) {
