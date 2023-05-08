@@ -1,14 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, View, Text, Alert } from 'react-native'
-import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { FontAwesome5 } from '@expo/vector-icons';
+import JoueurType from '@components/JoueurType'
 
 class JoueurSuggere extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isSpecial: false,
+      joueurType: undefined,
     }
   }
 
@@ -34,8 +34,14 @@ class JoueurSuggere extends React.Component {
     if (this.props.optionsTournoi.typeEquipes == "teteatete") {
       equipe = this.props.listesJoueurs.avecEquipes.length + 1;
     }
-    const action = { type: "AJOUT_JOUEUR", value: [this.props.optionsTournoi.mode, playerName, this.state.isSpecial, equipe] };
+    const action = { type: "AJOUT_JOUEUR", value: [this.props.optionsTournoi.mode, playerName, this.state.joueurType, equipe] };
     this.props.dispatch(action);
+  }
+
+  _setJoueurType(type) {
+    this.setState({
+      joueurType: type
+    })
   }
 
   render() {
@@ -45,18 +51,9 @@ class JoueurSuggere extends React.Component {
         <View style={styles.name_container}>
           <Text style={styles.name_text}>{joueur.name}</Text>
         </View>
-        <View style={styles.special_container}>
-          <BouncyCheckbox
-            onPress={()=>{
-              this.setState({
-                isSpecial: !this.state.isSpecial
-              })
-            }}
-            disableBuiltInState="true"
-            isChecked={this.state.isSpecial}
-            text="Enfant"
-            textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
-            fillColor="white"
+        <View style={styles.type_container}>
+          <JoueurType
+            _setJoueurType={(type) => this._setJoueurType(type)}
           />
         </View>
         <View style={styles.button_container}>
@@ -89,8 +86,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'white'
   },
-  special_container: {
-    flex: 1,
+  type_container: {
+    flex: 2,
   },
   button_container: {
     marginLeft: 5
