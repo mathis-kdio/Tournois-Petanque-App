@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import { FlatList } from 'react-native-gesture-handler'
 import ListeJoueurItem from '@components/ListeJoueurItem'
 import JoueurSuggere from '@components/JoueurSuggere'
-import { Box, CheckIcon, ChevronDownIcon, HStack, Select } from 'native-base';
+import JoueurType from '@components/JoueurType'
+import { Box, HStack } from 'native-base';
 
 class Inscription extends React.Component {
 
@@ -206,6 +207,12 @@ class Inscription extends React.Component {
     }
   }
 
+  _setJoueurType(type) {
+    this.setState({
+      joueurType: type
+    })
+  }
+
   render() {
     return (
       <View style={styles.main_container}>
@@ -223,23 +230,9 @@ class Inscription extends React.Component {
             />
           </Box>
           <Box flex="1">
-            <Select
-              accessibilityLabel="Choisir un poste"
-              placeholder="Choisir un poste"
-              placeholderTextColor="white"
-              color="white"
-              variant="rounded"
-              dropdownIcon={<ChevronDownIcon color="white" mr="2" size="6"/>}
-              _selectedItem={{
-                bg: "#0594ae",
-                endIcon: <CheckIcon size="5"/>
-              }}
-              onValueChange={itemValue => this.setState({joueurType: itemValue})}>
-              <Select.Item label="Enfant" value="enfant"/>
-              <Select.Item label="Tireur" value="tireur"/>
-              <Select.Item label="Pointeur" value="pointeur"/>
-              <Select.Item label="Milieu" value="milieu"/>
-            </Select>
+            <JoueurType
+              _setJoueurType={(type) => this._setJoueurType(type)}
+            />
           </Box>
           <Box>
             <Button
