@@ -14,11 +14,11 @@ class ListeJoueurItem extends React.Component {
     }
   }
 
-  _isSpecial = (joueurSpecial) => {
-    if (joueurSpecial === true) {
+  _joueurType = (type) => {
+    if (type) {
       return (
-        <View style={styles.special_container}>
-          <Text style={styles.special_text}>Enfant</Text>
+        <View style={styles.type_container}>
+          <Text style={styles.type_text}>{type}</Text>
         </View>
       )
     }
@@ -209,7 +209,7 @@ class ListeJoueurItem extends React.Component {
           {this._joueurName(joueur, isInscription, avecEquipes)}
         </View>
         {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
-        {this._isSpecial(joueur.special)}
+        {this._joueurType(joueur.type)}
         {this._showRenommerJoueur(joueur, isInscription, avecEquipes)}
         {this._showSupprimerJoueur(joueur, isInscription)}
       </View>
@@ -235,11 +235,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'white'
   },
-  special_container: {
+  type_container: {
     marginLeft: 5,
     marginRight: 5,
   },
-  special_text: {
+  type_text: {
     fontSize: 20,
     color: 'white'
   },
