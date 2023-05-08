@@ -1,5 +1,26 @@
 import { uniqueValueArrayRandOrder } from "./generation";
 
+const testRegleMemeCoequipiersValide = (nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs) => {
+  let nbCombinaisons = nbjoueurs;
+  nbCombinaisons -= nbJoueursSpe;
+  if (nbCombinaisons - joueursTireurs > moitieNbJoueurs) {
+    nbCombinaisons -= joueursTireurs;
+    if (nbCombinaisons - joueursPointeurs > moitieNbJoueurs) {
+      nbCombinaisons -= joueursPointeurs;
+    }
+    else {
+      nbCombinaisons = moitieNbJoueurs;
+    }
+  }
+  else {
+    nbCombinaisons = moitieNbJoueurs;
+  }
+  if (nbCombinaisons < nbTours) {
+    return false;
+  }
+  return true;
+}
+
 export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complement, speciauxIncompatibles, jamaisMemeCoequipier, eviterMemeAdversaire) => {
   let nbjoueurs = listeJoueurs.length;
   let matchs = [];
@@ -89,31 +110,52 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
     }
   }
 
-  //Test si trop de joueurs de type pointeurs ou tireurs ou enfants
+  //Test des règles speciauxIncompatibles et jamaisMemeCoequipier
   if (speciauxIncompatibles == true && typeEquipes == "doublette") {
     if (nbjoueurs % 4 == 0) { //Cas de non complément
-      if (joueursEnfants.length > nbjoueurs / 2
-        || joueursTireurs.length > nbjoueurs / 2
-        || joueursPointeurs.length > nbjoueurs / 2
-      ) {
+      let moitieNbJoueurs = nbjoueurs / 2;
+      //Test si trop de joueurs de type pointeurs ou tireurs ou enfants
+      if (joueursEnfants.length > moitieNbJoueurs || joueursTireurs.length > moitieNbJoueurs || joueursPointeurs.length > moitieNbJoueurs) {
         return {erreurSpeciaux: true};
+      }
+      //Test si possible d'appliquer la règle jamaisMemeCoequipier
+      let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs);
+      if (!regleValide) {
+        return {erreurMemesEquipes: true};
       }
     }
     else { //Cas de complément
-      if (complement == "1" //Complément tête-à-tête
-          && ( joueursEnfants.length > (nbjoueurs / 2) + 1
-            || joueursTireurs.length > (nbjoueurs / 2) + 1
-            || joueursPointeurs.length > (nbjoueurs / 2) + 1
-          )
-        || (complement == "3" //Complément triplette
-          && ( joueursEnfants.length > Math.ceil(nbjoueurs / 2) - 1
-            || joueursTireurs.length > Math.ceil(nbjoueurs / 2) - 1
-            || joueursPointeurs.length > Math.ceil(nbjoueurs / 2) - 1
-          )
-        )
-      ) {
-        return {erreurSpeciaux: true};
+      if (complement == "1") { //Complément tête-à-tête
+        let moitieNbJoueurs = (nbjoueurs / 2) + 1;
+        //Test si trop de joueurs de type pointeurs ou tireurs ou enfants
+        if (joueursEnfants.length > moitieNbJoueurs || joueursTireurs.length > moitieNbJoueurs || joueursPointeurs.length > moitieNbJoueurs) {
+          return {erreurSpeciaux: true};
+        }
+        //Test si possible d'appliquer la règle jamaisMemeCoequipier
+        let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs);
+        if (!regleValide) {
+          return {erreurMemesEquipes: true};
+        }
       }
+      if (complement == "3") { //Complément triplette
+        let moitieNbJoueurs = (nbjoueurs / 2) - 1;
+        //Test si trop de joueurs de type pointeurs ou tireurs ou enfants
+        if (joueursEnfants.length > moitieNbJoueurs || joueursTireurs.length > moitieNbJoueurs || joueursPointeurs.length > moitieNbJoueurs) {
+          return {erreurSpeciaux: true};
+        }
+        //Test si possible d'appliquer la règle jamaisMemeCoequipier
+        let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs);
+        if (!regleValide) {
+          return {erreurMemesEquipes: true};
+        }
+      }
+    }
+  }
+  else if (speciauxIncompatibles == false && typeEquipes == "doublette") {
+    //Test si possible d'appliquer la règle jamaisMemeCoequipier
+    let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, 0, 0, 0, nbjoueurs);
+    if (!regleValide) {
+      return {erreurMemesEquipes: true};
     }
   }
 
@@ -135,27 +177,11 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
       }
     }
   }
-  //Sinon la règle est désactivée et donc les joueurs enfants et les non enfants sont regroupés
+  //Sinon si la règle est désactivée alors les joueurs enfants et les non enfants sont regroupés
   else {
     joueursNonSpe.splice(0, joueursNonSpe.length)
     for (let i = 0; i < nbjoueurs; i++) {
       joueursNonSpe.push({...listeJoueurs[i]});
-    }
-  }
-
-  //Test si possible d'appliquer la règle jamaisMemeCoequipier
-  //TO DO : réussir à trouver les bons paramètres pour déclencher le message d'erreur sans empecher trop de tournois
-  if (jamaisMemeCoequipier == true) {
-    let nbCombinaisons = nbjoueurs;
-    //Si option de ne pas mettre enfants ensemble alors moins de combinaisons possibles
-    if (speciauxIncompatibles == true) {
-      if (nbJoueursSpe <= nbjoueurs / 2) {
-        nbCombinaisons -= nbJoueursSpe;
-      }
-    }
-    //Si + de matchs que de combinaisons alors on désactive la règle de ne jamais faire jouer avec la même personne
-    if (nbCombinaisons < nbTours) { //TODO message au-dessus
-      return {erreurMemesEquipes: true};
     }
   }
 
