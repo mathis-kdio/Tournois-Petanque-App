@@ -272,7 +272,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
           }
           let totPartiesJ1 = 0;
           let totPartiesJ2 = 0;
-          //Compte le nombre de fois ou joueur 1 ou 2 a été l'adverse de joueur en affectation + ou bien si joueur 3 ou 4 a été l'adverse de joueur en affectation
+          //Compte le nombre de fois où joueur 1 ou 2 a été l'adverse de joueur en affectation + ou bien si joueur 3 ou 4 a été l'adverse de joueur en affectation
           const occurrencesAdversaireDansEquipe1 = (arr, joueurAdverse, joueurAffect) => arr.reduce((a, v) => ((v.equipe[0][0] === joueurAdverse || v.equipe[0][1] === joueurAdverse) && (v.equipe[1][0] === joueurAffect || v.equipe[1][1] === joueurAffect) ? a + 1 : a), 0);
           const occurrencesAdversaireDansEquipe2 = (arr, joueurAdverse, joueurAffect) => arr.reduce((a, v) => ((v.equipe[1][0] === joueurAdverse || v.equipe[1][1] === joueurAdverse) && (v.equipe[0][0] === joueurAffect || v.equipe[0][1] === joueurAffect) ? a + 1 : a), 0);
           totPartiesJ1 += occurrencesAdversaireDansEquipe1(matchs, joueur1, random[j]);
@@ -286,8 +286,8 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
           if (joueur2) {
             totPartiesJ2 += joueurs[joueur2].equipe.includes(random[j]) ? 1 : 0;
           }
-          let moitieNbManches = nbTours == 1 ? 1 : Math.floor(nbTours / 2);
-          if (totPartiesJ1 >= moitieNbManches || totPartiesJ2 >= moitieNbManches) {
+          let moitieNbManches = nbTours == 1 ? 1 : Math.floor(nbTours / 2); 
+          if (totPartiesJ1 > moitieNbManches || totPartiesJ2 > moitieNbManches) {
             affectationPossible = false;
           }
         }
