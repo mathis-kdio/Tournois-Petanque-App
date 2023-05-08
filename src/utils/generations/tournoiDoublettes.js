@@ -286,7 +286,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
           if (joueur2) {
             totPartiesJ2 += joueurs[joueur2].equipe.includes(random[j]) ? 1 : 0;
           }
-          let moitieNbManches = Math.floor(nbTours / 2);
+          let moitieNbManches = nbTours == 1 ? 1 : Math.floor(nbTours / 2);
           if (totPartiesJ1 >= moitieNbManches || totPartiesJ2 >= moitieNbManches) {
             affectationPossible = false;
           }
