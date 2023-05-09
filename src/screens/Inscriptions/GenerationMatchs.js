@@ -73,7 +73,7 @@ class GenerationMatchs extends React.Component {
     let nbEssaisPossibles = nbjoueurs * nbjoueurs;
     let returnType = 0;
     // 3 types de retour possible: 
-    // 0 si trop de personnes spéciaux ou règle pas memeEquipes impossible; 
+    // 0 si trop de personnes de type enfants ou règle pas memeEquipes impossible; 
     // 1 si breaker activé
     // 2 si génération réussie
     //Tant que la génération échoue à cause du breaker alors on relancer
@@ -198,7 +198,7 @@ class GenerationMatchs extends React.Component {
       return (
         <View style={styles.error_container}>
           <Text style={styles.texte}>La générations ne peux pas fonctionner avec les options.</Text>
-          <Text style={styles.texte}>Il y a trop d'enfants pour appliquer l'option de les faire jouer séparement</Text>
+          <Text style={styles.texte}>Il y a trop d'enfants ou de tireurs ou de pointeurs pour appliquer l'option de les faire jouer séparement</Text>
           <Button title="Désactiver l'option ou enlever des enfants" onPress={() => this._retourInscription()}/>
         </View>
       )

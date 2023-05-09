@@ -7,7 +7,7 @@ class InscriptionsSansNoms extends React.Component {
     super(props)
     this.state = {
       nbJoueurNormaux: 0,
-      nbJoueurSpeciaux: 0,
+      nbJoueurEnfants: 0,
     }
   }
 
@@ -17,14 +17,14 @@ class InscriptionsSansNoms extends React.Component {
     })
   }
 
-  _textInputJoueursSpeciaux(text) {
+  _textInputJoueursEnfants(text) {
     this.setState({
-      nbJoueurSpeciaux: parseInt(text)
+      nbJoueurEnfants: parseInt(text)
     })
   } 
 
-  _ajoutJoueur(isSpecial) {
-    const action = { type: "AJOUT_JOUEUR", value: ["sansNoms","", isSpecial, undefined] }
+  _ajoutJoueur(type) {
+    const action = { type: "AJOUT_JOUEUR", value: ["sansNoms","", type, undefined] }
     this.props.dispatch(action)
   }
 
@@ -37,11 +37,11 @@ class InscriptionsSansNoms extends React.Component {
     this._supprimerJoueurs()
 
     for (let i = 0; i < this.state.nbJoueurNormaux; i++) {
-      this._ajoutJoueur(false)
+      this._ajoutJoueur(undefined)
     }
 
-    for (let i = 0; i < this.state.nbJoueurSpeciaux; i++) {
-      this._ajoutJoueur(true)
+    for (let i = 0; i < this.state.nbJoueurEnfants; i++) {
+      this._ajoutJoueur("enfant")
     }
 
     this.props.navigation.navigate({
@@ -57,8 +57,8 @@ class InscriptionsSansNoms extends React.Component {
     if (!isNaN(this.state.nbJoueurNormaux)) {
       nbJoueur = this.state.nbJoueurNormaux
     }
-    if (!isNaN(this.state.nbJoueurSpeciaux)) {
-      nbJoueur += this.state.nbJoueurSpeciaux
+    if (!isNaN(this.state.nbJoueurEnfants)) {
+      nbJoueur += this.state.nbJoueurEnfants
     }
     return nbJoueur
   }
@@ -129,14 +129,14 @@ class InscriptionsSansNoms extends React.Component {
                 keyboardType={'number-pad'}
                 placeholderTextColor='white'
                 underlineColorAndroid='white'
-                placeholder="Nombre de joueurs spéciaux"
+                placeholder="Nombre de joueurs enfants"
                 ref={ref => {this.secondInput = ref}}
-                onChangeText={(text) => this._textInputJoueursSpeciaux(text)}
+                onChangeText={(text) => this._textInputJoueursEnfants(text)}
               />
             </View>
           </View>
           <View>
-            <Text style={styles.texte}>Les joueurs spéciaux sont des joueurs qui ne peuvent pas jouer dans la même équipe</Text>
+            <Text style={styles.texte}>Les joueurs enfants sont des joueurs qui ne peuvent pas jouer dans la même équipe</Text>
           </View>
           <View style={styles.buttonView}>
             {this._boutonCommencer()}

@@ -23,10 +23,10 @@ export const generationTriplettes = (listeJoueurs, nbTours) => {
     }
   }
 
-  //Création d'un tableau contenant tous les joueurs, un autre les non spéciaux et un autre les spéciaux
+  //Création d'un tableau contenant tous les joueurs, un autre les non enfants et un autre les enfants
   //Le tableau contenant les tous les joueurs permettra de connaitre dans quel équipe chaque joueur a été
   for (let i = 0; i < nbjoueurs; i++) {
-    if (listeJoueurs[i].special === true) {
+    if (listeJoueurs[i].type === "enfant") {
       joueursSpe.push({...listeJoueurs[i]});
       joueursSpe[joueursSpe.length - 1].equipe = []
     }
@@ -43,9 +43,9 @@ export const generationTriplettes = (listeJoueurs, nbTours) => {
   //Test si le nombre de joueurs est un multiple de 2 (test lors de l'inscription) mais pas de 4
   //Si c'est le cas il faut donc ajouter 2 joueurs (joueur 1 et joueur 3) au dernier match de chaque tour
   if (nbjoueurs % 4 != 0) {
-    joueurs.push({name: "Complément 1", special: true, id: (nbjoueurs + 1)})
+    joueurs.push({name: "Complément 1", type: "enfant", id: (nbjoueurs + 1)})
     joueurs[nbjoueurs].equipe = []
-    joueurs.push({name: "Complément 2", special: true, id: (nbjoueurs + 2)})
+    joueurs.push({name: "Complément 2", type: "enfant", id: (nbjoueurs + 2)})
     joueurs[nbjoueurs + 1].equipe = []
     nbJoueursSpe++
     
@@ -56,11 +56,11 @@ export const generationTriplettes = (listeJoueurs, nbTours) => {
   }
   */
 
-  //Assignation des joueurs spéciaux
+  //Assignation des joueurs enfants
   if (speciauxIncompatibles == true) {
-    //Test si joueurs spéciaux ne sont pas + que 1/3 des joueurs
+    //Test si joueurs enfants ne sont pas + que 1/3 des joueurs
     if (nbJoueursSpe <= nbjoueurs / 3) {
-      //Joueurs spéciaux seront toujours J1 E1 ou J1 E2
+      //Joueurs enfants seront toujours J1 E1 ou J1 E2
       for (let i = 0; i < nbTours; i++) {
         let idMatch = i * nbMatchsParTour;
         let idsJoueursSpe = [];
@@ -81,7 +81,7 @@ export const generationTriplettes = (listeJoueurs, nbTours) => {
       return {erreurSpeciaux: true}
     }
   }
-  //Si la règle n'est pas activée alors les joueurs spéciaux et les non spéciaux sont regroupés
+  //Si la règle n'est pas activée alors les joueurs enfants et les non enfants sont regroupés
   else {
     joueursNonSpe.splice(0, joueursNonSpe.length)
     for (let i = 0; i < nbjoueurs; i++) {
@@ -93,7 +93,7 @@ export const generationTriplettes = (listeJoueurs, nbTours) => {
   //TO DO : réussir à trouver les bons paramètres pour déclencher le message d'erreur sans empecher trop de tournois
   if (jamaisMemeCoequipier == true) {
     let nbCombinaisons = nbjoueurs
-    //Si option de ne pas mettre spéciaux ensemble alors moins de combinaisons possibles
+    //Si option de ne pas mettre enfants ensemble alors moins de combinaisons possibles
     if (speciauxIncompatibles == true) {
       if (nbJoueursSpe <= nbjoueurs / 3) {
         nbCombinaisons -= nbJoueursSpe
@@ -105,7 +105,7 @@ export const generationTriplettes = (listeJoueurs, nbTours) => {
     }
   }
 
-  //On ordonne aléatoirement les ids des joueurs non spéciaux à chaque début de manche
+  //On ordonne aléatoirement les ids des joueurs non enfants à chaque début de manche
   let joueursNonSpeId = [];
   for (let i = 0; i < joueursNonSpe.length; i++) {
     joueursNonSpeId.push(joueursNonSpe[i].id);
@@ -116,8 +116,8 @@ export const generationTriplettes = (listeJoueurs, nbTours) => {
   };
 
   //FONCTIONNEMENT
-  //S'il y a eu des joueurs spéciaux avant alors ils ont déjà été affectés
-  //On complète avec tous les joueurs non spéciaux
+  //S'il y a eu des joueurs enfants avant alors ils ont déjà été affectés
+  //On complète avec tous les joueurs non enfants
   //Pour conpléter remplissage des matchs tour par tour
   //A chaque tour les joueurs libres sont pris un par un dans une liste les triant aléatoirement à chaque début de tour
   //Ils sont ensuite ajouté si possible (selon les options) dans le 1er match du tour en tant que joueur 1

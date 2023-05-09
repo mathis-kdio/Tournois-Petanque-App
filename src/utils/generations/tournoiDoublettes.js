@@ -1,10 +1,34 @@
 import { uniqueValueArrayRandOrder } from "./generation";
 
+const testRegleMemeCoequipiersValide = (nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs) => {
+  let nbCombinaisons = nbjoueurs;
+  nbCombinaisons -= nbJoueursSpe;
+  if (nbCombinaisons - joueursTireurs > moitieNbJoueurs) {
+    nbCombinaisons -= joueursTireurs;
+    if (nbCombinaisons - joueursPointeurs > moitieNbJoueurs) {
+      nbCombinaisons -= joueursPointeurs;
+    }
+    else {
+      nbCombinaisons = moitieNbJoueurs;
+    }
+  }
+  else {
+    nbCombinaisons = moitieNbJoueurs;
+  }
+  if (nbCombinaisons < nbTours) {
+    return false;
+  }
+  return true;
+}
+
 export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complement, speciauxIncompatibles, jamaisMemeCoequipier, eviterMemeAdversaire) => {
   let nbjoueurs = listeJoueurs.length;
   let matchs = [];
   let idMatch = 0;
-  let joueursSpe = [];
+  let joueursEnfants = [];
+  let joueursTireurs = [];
+  let joueursPointeurs = [];
+  let joueursNonType = [];
   let joueursNonSpe = [];
   let joueurs = [];
 
@@ -30,12 +54,37 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
     }      
   }
 
-  //Création d'un tableau contenant tous les joueurs, un autre les non spéciaux et un autre les spéciaux
-  //Le tableau contenant les tous les joueurs permettra de connaitre dans quel équipe chaque joueur a été
+  /*Création de tableaux contenant :
+    - Les enfants
+    - Les tireurs
+    - Les pointeurs
+    - Les joueurs hors tireurs, pointeurs et enfants
+    - Les tous les joueurs sauf les enfants
+    - Tous les joueurs
+    Le tableau contenant les tous les joueurs permettra de connaitre dans quel équipe chaque joueur a été
+  */
   for (let i = 0; i < nbjoueurs; i++) {
-    if (listeJoueurs[i].special === true && speciauxIncompatibles == true && typeEquipes == "doublette") {
-      joueursSpe.push({...listeJoueurs[i]});
-      joueursSpe[joueursSpe.length - 1].equipe = [];
+    if (speciauxIncompatibles == true && typeEquipes == "doublette") {
+      if (listeJoueurs[i].type === "enfant") {
+        joueursEnfants.push({...listeJoueurs[i]});
+        joueursEnfants[joueursEnfants.length - 1].equipe = [];
+      }
+      else {
+        if (listeJoueurs[i].type === "tireur") {
+          joueursTireurs.push({...listeJoueurs[i]});
+          joueursTireurs[joueursTireurs.length - 1].equipe = [];
+        }
+        else if (listeJoueurs[i].type === "pointeur") {
+          joueursPointeurs.push({...listeJoueurs[i]});
+          joueursPointeurs[joueursPointeurs.length - 1].equipe = [];
+        }
+        else {
+          joueursNonType.push({...listeJoueurs[i]});
+          joueursNonType[joueursNonType.length - 1].equipe = [];
+        }
+        joueursNonSpe.push({...listeJoueurs[i]});
+        joueursNonSpe[joueursNonSpe.length - 1].equipe = [];
+      }
     }
     else {
       joueursNonSpe.push({...listeJoueurs[i]});
@@ -44,16 +93,15 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
     joueurs.push({...listeJoueurs[i]});
     joueurs[i].equipe = [];
   }
-  let nbJoueursSpe = joueursSpe.length;
+  let nbJoueursSpe = joueursEnfants.length;
   //Test si mode doublette et qu'il faut compléter
   //Si c'est le cas, alors on remplie de joueurs invisible pour le complément en mode tête à tête
   if (typeEquipes == "doublette" && nbjoueurs % 4 != 0) {
     if (complement == "1" && nbjoueurs % 2 == 0) {
-      joueurs.push({name: "Complément 1", special: true, id: (nbjoueurs)});
+      joueurs.push({name: "Complément 1", type: "enfant", id: (nbjoueurs)});
       joueurs[nbjoueurs].equipe = [];
-      joueurs.push({name: "Complément 2", special: true, id: (nbjoueurs + 1)});
+      joueurs.push({name: "Complément 2", type: "enfant", id: (nbjoueurs + 1)});
       joueurs[nbjoueurs + 1].equipe = [];
-      nbJoueursSpe += 2;
       
       for (let i = 1; i < nbTours + 1; i++) {
         matchs[nbMatchsParTour * i - 1].equipe[0][0] = nbjoueurs;
@@ -62,52 +110,78 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
     }
   }
 
-  //Assignation des joueurs spéciaux
+  //Test des règles speciauxIncompatibles et jamaisMemeCoequipier
   if (speciauxIncompatibles == true && typeEquipes == "doublette") {
-    //Test si joueurs spéciaux ne sont pas trop nombreux strict inférieur en cas de compléments
-    if ((nbjoueurs % 4 == 0 && nbJoueursSpe <= nbjoueurs / 2) || (nbjoueurs % 4 != 0 && nbJoueursSpe < nbjoueurs / 2)) {
-      //Joueurs spéciaux seront toujours joueur 1 ou joueur 3
-      for (let i = 0; i < nbTours; i++) {
-        let idMatch = i * nbMatchsParTour;
-        let idsJoueursSpe = [];
-        idsJoueursSpe = uniqueValueArrayRandOrder(joueursSpe.length);
-        for (let j = 0; j < joueursSpe.length; j++) {
-          if (matchs[idMatch].equipe[0][1] == -1) {
-            matchs[idMatch].equipe[0][1] = joueursSpe[idsJoueursSpe[j]].id;
-          }
-          else if (matchs[idMatch].equipe[1][1] == -1) {
-            matchs[idMatch].equipe[1][1] = joueursSpe[idsJoueursSpe[j]].id;
-            idMatch++;
-          }
+    if (nbjoueurs % 4 == 0) { //Cas de non complément
+      let moitieNbJoueurs = nbjoueurs / 2;
+      //Test si trop de joueurs de type pointeurs ou tireurs ou enfants
+      if (joueursEnfants.length > moitieNbJoueurs || joueursTireurs.length > moitieNbJoueurs || joueursPointeurs.length > moitieNbJoueurs) {
+        return {erreurSpeciaux: true};
+      }
+      //Test si possible d'appliquer la règle jamaisMemeCoequipier
+      let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs);
+      if (!regleValide) {
+        return {erreurMemesEquipes: true};
+      }
+    }
+    else { //Cas de complément
+      if (complement == "1") { //Complément tête-à-tête
+        let moitieNbJoueurs = (nbjoueurs / 2) + 1;
+        //Test si trop de joueurs de type pointeurs ou tireurs ou enfants
+        if (joueursEnfants.length > moitieNbJoueurs || joueursTireurs.length > moitieNbJoueurs || joueursPointeurs.length > moitieNbJoueurs) {
+          return {erreurSpeciaux: true};
+        }
+        //Test si possible d'appliquer la règle jamaisMemeCoequipier
+        let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs);
+        if (!regleValide) {
+          return {erreurMemesEquipes: true};
+        }
+      }
+      if (complement == "3") { //Complément triplette
+        let moitieNbJoueurs = (nbjoueurs / 2) - 1;
+        //Test si trop de joueurs de type pointeurs ou tireurs ou enfants
+        if (joueursEnfants.length > moitieNbJoueurs || joueursTireurs.length > moitieNbJoueurs || joueursPointeurs.length > moitieNbJoueurs) {
+          return {erreurSpeciaux: true};
+        }
+        //Test si possible d'appliquer la règle jamaisMemeCoequipier
+        let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs);
+        if (!regleValide) {
+          return {erreurMemesEquipes: true};
         }
       }
     }
-    //Si trop nombreux alors message et retour à l'inscription
-    else {
-      return {erreurSpeciaux: true};
+  }
+  else if (speciauxIncompatibles == false && typeEquipes == "doublette") {
+    //Test si possible d'appliquer la règle jamaisMemeCoequipier
+    let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, 0, 0, 0, nbjoueurs);
+    if (!regleValide) {
+      return {erreurMemesEquipes: true};
     }
   }
-  //Sinon la règle est désactivée et donc les joueurs spéciaux et les non spéciaux sont regroupés
+
+  //Assignation des joueurs enfants
+  if (speciauxIncompatibles == true && typeEquipes == "doublette") {
+    //Joueurs enfants seront toujours joueur 2 ou joueur 4
+    for (let i = 0; i < nbTours; i++) {
+      let idMatch = i * nbMatchsParTour;
+      let idsJoueursSpe = [];
+      idsJoueursSpe = uniqueValueArrayRandOrder(joueursEnfants.length);
+      for (let j = 0; j < joueursEnfants.length; j++) {
+        if (matchs[idMatch].equipe[0][1] == -1) {
+          matchs[idMatch].equipe[0][1] = joueursEnfants[idsJoueursSpe[j]].id;
+        }
+        else if (matchs[idMatch].equipe[1][1] == -1) {
+          matchs[idMatch].equipe[1][1] = joueursEnfants[idsJoueursSpe[j]].id;
+          idMatch++;
+        }
+      }
+    }
+  }
+  //Sinon si la règle est désactivée alors les joueurs enfants et les non enfants sont regroupés
   else {
     joueursNonSpe.splice(0, joueursNonSpe.length)
     for (let i = 0; i < nbjoueurs; i++) {
       joueursNonSpe.push({...listeJoueurs[i]});
-    }
-  }
-
-  //Test si possible d'appliquer la règle jamaisMemeCoequipier
-  //TO DO : réussir à trouver les bons paramètres pour déclencher le message d'erreur sans empecher trop de tournois
-  if (jamaisMemeCoequipier == true) {
-    let nbCombinaisons = nbjoueurs;
-    //Si option de ne pas mettre spéciaux ensemble alors moins de combinaisons possibles
-    if (speciauxIncompatibles == true) {
-      if (nbJoueursSpe <= nbjoueurs / 2) {
-        nbCombinaisons -= nbJoueursSpe;
-      }
-    }
-    //Si + de matchs que de combinaisons alors on désactive la règle de ne jamais faire jouer avec la même personne
-    if (nbCombinaisons < nbTours) { //TODO message au-dessus
-      return {erreurMemesEquipes: true};
     }
   }
 
@@ -116,21 +190,46 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
   //eviterMemeAdversaire = false;
 
 
-  //On ordonne aléatoirement les ids des joueurs non spéciaux à chaque début de manche
-  let joueursNonSpeId = [];
-  for (let i = 0; i < joueursNonSpe.length; i++) {
-    joueursNonSpeId.push(joueursNonSpe[i].id);
-  }
+  //On ordonne aléatoirement les ids des joueurs non enfants à chaque début de manche
+  //Les listes pointeur ou tireur en 1ère et 2ème position
+  function _randomJoueursIds() {
+    let arrayIds = [];
+    let joueursPointeursId = [];
+    let joueursTireursId = [];
+    let joueursNonTypeId = [];
+    for (let i = 0; i < joueursPointeurs.length; i++) {
+      joueursPointeursId.push(joueursPointeurs[i].id);
+    }
+    for (let i = 0; i < joueursTireurs.length; i++) {
+      joueursTireursId.push(joueursTireurs[i].id);
+    }
+    for (let i = 0; i < joueursNonType.length; i++) {
+      joueursNonTypeId.push(joueursNonType[i].id);
+    }
+
+    if (joueursPointeurs.length > joueursTireurs.length) {
+      arrayIds.push(...shuffle(joueursPointeursId));
+      arrayIds.push(...shuffle(joueursTireursId));
+    }
+    else {
+      arrayIds.push(...shuffle(joueursTireursId));
+      arrayIds.push(...shuffle(joueursPointeursId));
+    }
+    arrayIds.push(...shuffle(joueursNonTypeId));
+    return arrayIds;
+  };
+
   function shuffle(o) {
     for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
     return o;
   };
 
   //FONCTIONNEMENT
-  //S'il y a eu des joueurs spéciaux avant alors ils ont déjà été affectés
-  //On complète avec tous les joueurs non spéciaux
+  //S'il y a eu des joueurs enfants avant alors ils ont déjà été affectés
+  //On complète avec tous les joueurs non enfants
   //Pour conpléter remplissage des matchs tour par tour
-  //A chaque tour les joueurs libres sont pris un par un dans une liste les triant aléatoirement à chaque début de tour
+  //A chaque tour les joueurs libres sont pris un par un dans une liste
+  //Cette liste est semi-aléatoire car les listes mélangées pointeurs et tireurs se suivront au début (selon la liste la + nombreuse des 2) puis les autres
   //Ils sont ensuite ajouté si possible (selon les options) dans le 1er match du tour en tant que joueur 1
   //Si joueur 1 déjà pris alors joueur 2 et si déjà pris alors joueur 3 etc
   //Si impossible d'être ajouté dans le match alors tentative dans le match suivant du même tour
@@ -147,7 +246,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
   let breaker = 0; //permet de détecter quand boucle infinie
   for (let i = 0; i < nbTours; i++) {
     breaker = 0;
-    let random = shuffle(joueursNonSpeId);
+    let random = _randomJoueursIds();
     for (let j = 0; j < joueursNonSpe.length;) {
       //Affectation joueur 1
       if (matchs[idMatch].equipe[0][0] == -1) {
@@ -199,7 +298,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
           }
           let totPartiesJ1 = 0;
           let totPartiesJ2 = 0;
-          //Compte le nombre de fois ou joueur 1 ou 2 a été l'adverse de joueur en affectation + ou bien si joueur 3 ou 4 a été l'adverse de joueur en affectation
+          //Compte le nombre de fois où joueur 1 ou 2 a été l'adverse de joueur en affectation + ou bien si joueur 3 ou 4 a été l'adverse de joueur en affectation
           const occurrencesAdversaireDansEquipe1 = (arr, joueurAdverse, joueurAffect) => arr.reduce((a, v) => ((v.equipe[0][0] === joueurAdverse || v.equipe[0][1] === joueurAdverse) && (v.equipe[1][0] === joueurAffect || v.equipe[1][1] === joueurAffect) ? a + 1 : a), 0);
           const occurrencesAdversaireDansEquipe2 = (arr, joueurAdverse, joueurAffect) => arr.reduce((a, v) => ((v.equipe[1][0] === joueurAdverse || v.equipe[1][1] === joueurAdverse) && (v.equipe[0][0] === joueurAffect || v.equipe[0][1] === joueurAffect) ? a + 1 : a), 0);
           totPartiesJ1 += occurrencesAdversaireDansEquipe1(matchs, joueur1, random[j]);
@@ -213,8 +312,8 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
           if (joueur2) {
             totPartiesJ2 += joueurs[joueur2].equipe.includes(random[j]) ? 1 : 0;
           }
-          let moitieNbManches = Math.floor(nbTours / 2);
-          if (totPartiesJ1 >= moitieNbManches || totPartiesJ2 >= moitieNbManches) {
+          let moitieNbManches = nbTours == 1 ? 1 : Math.floor(nbTours / 2); 
+          if (totPartiesJ1 > moitieNbManches || totPartiesJ2 > moitieNbManches) {
             affectationPossible = false;
           }
         }

@@ -1,8 +1,6 @@
 
 export const generationAvecEquipes = (listeJoueurs, nbTours, typeEquipes) => {
   let nbjoueurs = listeJoueurs.length;
-  let speciauxIncompatibles = true
-  let jamaisMemeCoequipier = true
   let eviterMemeAdversaire = true;
   let matchs = [];
   let idMatch = 0;
