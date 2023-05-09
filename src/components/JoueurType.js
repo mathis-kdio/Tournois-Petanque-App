@@ -1,5 +1,6 @@
 import React from 'react'
-import { Box, CheckIcon, ChevronDownIcon, Select } from 'native-base';
+import { connect } from 'react-redux'
+import { CheckIcon, ChevronDownIcon, Select } from 'native-base';
 
 class JoueurType extends React.Component {
   constructor(props) {
@@ -26,12 +27,19 @@ class JoueurType extends React.Component {
         }}
         onValueChange={itemValue => _setJoueurType(itemValue)}>
         <Select.Item label="Enfant" value="enfant"/>
-        <Select.Item label="Tireur" value="tireur"/>
-        <Select.Item label="Pointeur" value="pointeur"/>
-        <Select.Item label="Milieu" value="milieu"/>
+        {/*TEMPORAIRE AFFICHAGE DES POSTES TIREURS ET POINTEURS SEULEMENT EN DOUBLETTE*/}
+        {this.props.optionsTournoi.typeEquipes == "doublette" && <Select.Item label="Tireur" value="tireur"/>}
+        {this.props.optionsTournoi.typeEquipes == "doublette" && <Select.Item label="Pointeur" value="pointeur"/>}
+        {this.props.optionsTournoi.typeEquipes == "doublette" && <Select.Item label="Milieu" value="milieu"/>}
       </Select>
     )
   }
 }
 
-export default JoueurType;
+const mapStateToProps = (state) => {
+  return {
+    optionsTournoi: state.optionsTournoi.options
+  }
+}
+
+export default connect(mapStateToProps)(JoueurType)
