@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TextInput } from 'react-native'
 import { connect } from 'react-redux'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker'
+import { Image } from 'native-base';
 
 class ListeJoueurItem extends React.Component {
   constructor(props) {
@@ -11,16 +12,6 @@ class ListeJoueurItem extends React.Component {
     this.state = {
       renommerOn: false,
       disabledBoutonRenommer: true,
-    }
-  }
-
-  _joueurType = (type) => {
-    if (type) {
-      return (
-        <View style={styles.type_container}>
-          <Text style={styles.type_text}>{type}</Text>
-        </View>
-      )
     }
   }
 
@@ -201,15 +192,40 @@ class ListeJoueurItem extends React.Component {
     )
   }
 
+  _joueurTypeIcon(type) {
+    if (type == "enfant") {
+      return (
+        <View style={styles.type_icon_container}>
+          <FontAwesome5 name="child" color="darkgray" size={24}/>
+        </View>
+      )
+    }
+    else if (type == "tireur") {
+      return (
+        <View style={styles.type_icon_container}>
+          <Image source={require('@assets/images/tireur.png')} alt={type} style={styles.icon}/>
+        </View>
+      )
+    }
+    else if (type == "pointeur") {
+      return (
+        <View style={styles.type_icon_container}>
+          <Image source={require('@assets/images/pointeur.png')} alt={type} style={styles.icon}/>
+        </View>
+      )
+    }
+  }
+
+
   render() {
     const { joueur, isInscription, avecEquipes, typeEquipes, nbJoueurs } = this.props;
     return (
       <View style={styles.main_container}>
+        {this._joueurTypeIcon(joueur.type)}
         <View style={styles.name_container}>
           {this._joueurName(joueur, isInscription, avecEquipes)}
         </View>
         {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
-        {this._joueurType(joueur.type)}
         {this._showRenommerJoueur(joueur, isInscription, avecEquipes)}
         {this._showSupprimerJoueur(joueur, isInscription)}
       </View>
@@ -235,14 +251,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'white'
   },
-  type_container: {
-    marginLeft: 5,
-    marginRight: 5,
-  },
-  type_text: {
-    fontSize: 20,
-    color: 'white'
-  },
   text_input: {
     height: 50,
     paddingLeft: 5,
@@ -255,6 +263,14 @@ const styles = StyleSheet.create({
   picker: {
     color: 'white',
     width: 115
+  },
+  type_icon_container: {
+    flexDirection: 'row',
+    justifyContent:'center'
+  },
+  icon: {
+    width: 30,
+    height: 30
   }
 })
 
