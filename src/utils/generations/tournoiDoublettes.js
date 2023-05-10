@@ -267,7 +267,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
         }
       }
       //Affectation joueur 2
-      else if (typeEquipes != "teteatete" && matchs[idMatch].equipe[0][1] == -1) {
+      if (random[j] && typeEquipes != "teteatete" && matchs[idMatch].equipe[0][1] == -1) {
         //Empeche joueur 2 d'être du même type que joueur 1 si regle speciauxIncompatibles
         if (speciauxIncompatibles == false || joueurs[random[j]].type == undefined || (speciauxIncompatibles == true && joueurs[random[j]].type != joueurs[matchs[idMatch].equipe[0][0]].type)) {
 
@@ -294,7 +294,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
         }
       }
       //Affectation joueur 3 & 4
-      else if (matchs[idMatch].equipe[1][0] == -1 || matchs[idMatch].equipe[1][1] == -1) {
+      if (random[j] && matchs[idMatch].equipe[1][0] == -1 || matchs[idMatch].equipe[1][1] == -1) {
         //Test si le joueur 1 ou 2 n'a pas déjà joué (ensemble et contre) + de la moitié de ses matchs contre le joueur en cours d'affectation
         let affectationPossible = true
         if (eviterMemeAdversaire == true) {
@@ -375,7 +375,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
         }
       }
       //Affectation joueur(s) complémentaire(s) du tour si tournoi doublette avec complément en triplette
-      else if ((idMatch + 1) % nbMatchsParTour == 0) {
+      if (random[j] && (idMatch + 1) % nbMatchsParTour == 0) {
         if (typeEquipes == "doublette" && nbjoueurs % 4 != 0 && complement == "3" && matchs[idMatch].equipe[0][2] == -1) {
           let joueursEnTrop = nbjoueurs % 4;
           matchs[idMatch].equipe[0][2] = random[j];
