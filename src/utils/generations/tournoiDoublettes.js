@@ -209,11 +209,11 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
 
     if (joueursPointeurs.length > joueursTireurs.length) {
       arrayIds.push(...shuffle(joueursPointeursId));
-      arrayIds.push(...shuffle(joueursTireursId));
+      joueursNonTypeId.push(...joueursTireursId);
     }
     else {
       arrayIds.push(...shuffle(joueursTireursId));
-      arrayIds.push(...shuffle(joueursPointeursId));
+      joueursNonTypeId.push(...joueursPointeursId);
     }
     arrayIds.push(...shuffle(joueursNonTypeId));
     return arrayIds;
@@ -267,27 +267,34 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
         }
       }
       //Affectation joueur 2
-      else if (typeEquipes != "teteatete" && matchs[idMatch].equipe[0][1] == -1) {
-        //Empeche que le joueur 1 joue plusieurs fois dans la même équipe avec le même joueur
-        //Ne s'applique qu'à partir de la manche 2
-        if (jamaisMemeCoequipier == true && i > 0) {
-          if (joueurs[random[j]].equipe.includes(matchs[idMatch].equipe[0][0]) == false) {
+      if (random[j] && typeEquipes != "teteatete" && matchs[idMatch].equipe[0][1] == -1) {
+        //Empeche joueur 2 d'être du même type que joueur 1 si regle speciauxIncompatibles
+        if (speciauxIncompatibles == false || joueurs[random[j]].type == undefined || (speciauxIncompatibles == true && joueurs[random[j]].type != joueurs[matchs[idMatch].equipe[0][0]].type)) {
+
+          //Empeche que le joueur 1 joue plusieurs fois dans la même équipe avec le même joueur
+          //Ne s'applique qu'à partir de la manche 2
+          if (jamaisMemeCoequipier == true && i > 0) {
+            if (joueurs[random[j]].equipe.includes(matchs[idMatch].equipe[0][0]) == false) {
+              matchs[idMatch].equipe[0][1] = random[j];
+              j++;
+              breaker = 0;
+            }
+            else {
+              breaker++;
+            }
+          }
+          else {
             matchs[idMatch].equipe[0][1] = random[j];
             j++;
             breaker = 0;
           }
-          else {
-            breaker++;
-          }
         }
         else {
-          matchs[idMatch].equipe[0][1] = random[j];
-          j++;
-          breaker = 0;
+          breaker++;
         }
       }
       //Affectation joueur 3 & 4
-      else if (matchs[idMatch].equipe[1][0] == -1 || matchs[idMatch].equipe[1][1] == -1) {
+      if (random[j] && matchs[idMatch].equipe[1][0] == -1 || matchs[idMatch].equipe[1][1] == -1) {
         //Test si le joueur 1 ou 2 n'a pas déjà joué (ensemble et contre) + de la moitié de ses matchs contre le joueur en cours d'affectation
         let affectationPossible = true
         if (eviterMemeAdversaire == true) {
@@ -312,8 +319,8 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
           if (joueur2) {
             totPartiesJ2 += joueurs[joueur2].equipe.includes(random[j]) ? 1 : 0;
           }
-          let moitieNbManches = nbTours == 1 ? 1 : Math.floor(nbTours / 2); 
-          if (totPartiesJ1 > moitieNbManches || totPartiesJ2 > moitieNbManches) {
+          let moitieNbManches = nbTours == 1 ? 1 : Math.floor(nbTours / 2);
+          if (totPartiesJ1 >= moitieNbManches || totPartiesJ2 >= moitieNbManches) {
             affectationPossible = false;
           }
         }
@@ -338,22 +345,28 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
           }
           //Affectation joueur 4
           else if (typeEquipes != "teteatete" && matchs[idMatch].equipe[1][1] == -1) {
-            //Empeche que le joueur 4 joue plusieurs fois dans la même équipe avec le même joueur
-            //Ne s'applique qu'à partir de la manche 2
-            if (jamaisMemeCoequipier == true && i > 0) {
-              if (joueurs[random[j]].equipe.includes(matchs[idMatch].equipe[1][0]) == false) {
+            //Empeche joueur 4 d'être du même type que joueur 3 si regle speciauxIncompatibles
+            if (speciauxIncompatibles == false || joueurs[random[j]].type == undefined || (speciauxIncompatibles == true && joueurs[random[j]].type != joueurs[matchs[idMatch].equipe[1][0]].type)) {
+              //Empeche que le joueur 4 joue plusieurs fois dans la même équipe avec le même joueur
+              //Ne s'applique qu'à partir de la manche 2
+              if (jamaisMemeCoequipier == true && i > 0) {
+                if (joueurs[random[j]].equipe.includes(matchs[idMatch].equipe[1][0]) == false) {
+                  matchs[idMatch].equipe[1][1] = random[j];
+                  j++;
+                  breaker = 0;
+                }
+                else {
+                  breaker++;
+                }
+              }
+              else {
                 matchs[idMatch].equipe[1][1] = random[j];
                 j++;
                 breaker = 0;
               }
-              else {
-                breaker++;
-              }
             }
             else {
-              matchs[idMatch].equipe[1][1] = random[j];
-              j++;
-              breaker = 0;
+              breaker++;
             }
           }
         }
@@ -362,7 +375,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
         }
       }
       //Affectation joueur(s) complémentaire(s) du tour si tournoi doublette avec complément en triplette
-      else if ((idMatch + 1) % nbMatchsParTour == 0) {
+      if (random[j] && (idMatch + 1) % nbMatchsParTour == 0) {
         if (typeEquipes == "doublette" && nbjoueurs % 4 != 0 && complement == "3" && matchs[idMatch].equipe[0][2] == -1) {
           let joueursEnTrop = nbjoueurs % 4;
           matchs[idMatch].equipe[0][2] = random[j];
