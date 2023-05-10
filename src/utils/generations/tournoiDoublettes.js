@@ -209,11 +209,11 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
 
     if (joueursPointeurs.length > joueursTireurs.length) {
       arrayIds.push(...shuffle(joueursPointeursId));
-      arrayIds.push(...shuffle(joueursTireursId));
+      joueursNonTypeId.push(...joueursTireursId);
     }
     else {
       arrayIds.push(...shuffle(joueursTireursId));
-      arrayIds.push(...shuffle(joueursPointeursId));
+      joueursNonTypeId.push(...joueursPointeursId);
     }
     arrayIds.push(...shuffle(joueursNonTypeId));
     return arrayIds;
@@ -319,8 +319,8 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
           if (joueur2) {
             totPartiesJ2 += joueurs[joueur2].equipe.includes(random[j]) ? 1 : 0;
           }
-          let moitieNbManches = nbTours == 1 ? 1 : Math.floor(nbTours / 2); 
-          if (totPartiesJ1 > moitieNbManches || totPartiesJ2 > moitieNbManches) {
+          let moitieNbManches = nbTours == 1 ? 1 : Math.floor(nbTours / 2);
+          if (totPartiesJ1 >= moitieNbManches || totPartiesJ2 >= moitieNbManches) {
             affectationPossible = false;
           }
         }
