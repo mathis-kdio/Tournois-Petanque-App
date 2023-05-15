@@ -124,6 +124,7 @@ class MatchDetail extends React.Component {
             <View style={styles.content_container} >
               <View>
                 <Text style={styles.title}>Partie n°{(this.state.match + 1)}</Text>
+                {match.terrain && <Text style={styles.title}>Terrain {match.terrain}</Text>}
               </View>
               <View style={styles.equipe_container}>
                 <View style={styles.equipe1}>
