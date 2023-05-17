@@ -19,6 +19,7 @@ import OptionsTournoi from '@screens/Inscriptions/OptionsTournoi'
 import GenerationMatchs from '@screens/Inscriptions/GenerationMatchs'
 import ListeResultats from '@screens/Resultats/ListeResultats'
 import ListeMatchs from '@screens/Matchs/ListeMatchs'
+import ListeTerrains from '@screens/ListeTerrains/ListeTerrains'
 import MatchDetail from '@screens/Matchs/MatchDetail'
 import JoueursTournoi from '@screens/Matchs/JoueursTournoi'
 import ParametresTournoi from '@screens/Matchs/ParametresTournoi'
@@ -161,6 +162,8 @@ function General() {
 
       <Stack.Screen name="InscriptionsAvecNoms" component={InscriptionsAvecNoms} options={{title: 'Inscription Avec Noms'}} />
       <Stack.Screen name="InscriptionsSansNoms" component={InscriptionsSansNoms} options={{title: 'Inscription Sans Noms'}} />
+
+      <Stack.Screen name="ListeTerrains" component={ListeTerrains} options={{title: 'Liste des Terrains'}} />     
 
       <Stack.Screen name="GenerationMatchs" component={GenerationMatchs} options={{title: 'Générations des parties en cours', headerTitleAlign: 'center', headerLeft: false, headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
 
