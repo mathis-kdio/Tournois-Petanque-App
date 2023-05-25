@@ -1,5 +1,16 @@
 [
   {
+    "id":"20",
+    "version": "1.12.0",
+    "infos": [
+      "- Possibilité d'attribuer aux joueurs les rôles Pointeur/Tireur/Milieu en doublette pour améliorer l'équilibrage des équipes.\n",
+      "- Nouvelle page d'accueil.\n",
+      "- Choix nombre de points pour victoire.\n",
+      "- Ecran de paramétrage déplacé.\n",
+      "- Amélioration du renommage des joueurs.\n"
+    ]
+  },
+  {
     "id":"19",
     "version": "1.11.0",
     "infos": [
