@@ -49,9 +49,9 @@ class ParametresTournoi extends React.Component {
             <Text style={styles.titre}>Les options du tournois :</Text>
             <Text style={styles.texte}>- Nombre de tours: {parametresTournoi.nbTours.toString()}</Text>
             <Text style={styles.texte}>- Nombre de points pour la victoire: {parametresTournoi.nbPtVictoire.toString()}</Text>
-            <Text style={styles.texte}>- Ne jamais faire jouer 2 joueurs enfants dans la même équipe : {parametresTournoi.speciauxIncompatibles.toString() ? "Activé" : "Désactivé"}</Text>
-            <Text style={styles.texte}>- Ne jamais former les mêmes équipes : {parametresTournoi.memesEquipes.toString() ? "Activé" : "Désactivé"}</Text>
-            <Text style={styles.texte}>- Empecher 2 joueurs de jouer + de la moitié des matchs contre et ensemble : {parametresTournoi.memesAdversaires.toString() ? "Activé" : "Désactivé"}</Text>
+            <Text style={styles.texte}>- Ne jamais faire jouer 2 joueurs enfants dans la même équipe : {parametresTournoi.speciauxIncompatibles ? "Activé" : "Désactivé"}</Text>
+            <Text style={styles.texte}>- Ne jamais former les mêmes équipes : {parametresTournoi.memesEquipes ? "Activé" : "Désactivé"}</Text>
+            <Text style={styles.texte}>- Empecher 2 joueurs de jouer + de la moitié des matchs contre et ensemble : {parametresTournoi.memesAdversaires ? "Activé" : "Désactivé"}</Text>
           </View>
           <View style={styles.button_container}>
             <View style={styles.buttonView}>
