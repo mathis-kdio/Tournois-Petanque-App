@@ -267,7 +267,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
         }
       }
       //Affectation joueur 2
-      if (random[j] && typeEquipes != "teteatete" && matchs[idMatch].equipe[0][1] == -1) {
+      if (random[j] != undefined && typeEquipes != "teteatete" && matchs[idMatch].equipe[0][1] == -1) {
         //Empeche joueur 2 d'être du même type que joueur 1 si regle speciauxIncompatibles
         if (speciauxIncompatibles == false || joueurs[random[j]].type == undefined || (speciauxIncompatibles == true && joueurs[random[j]].type != joueurs[matchs[idMatch].equipe[0][0]].type)) {
 
@@ -294,33 +294,38 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
         }
       }
       //Affectation joueur 3 & 4
-      if (random[j] && matchs[idMatch].equipe[1][0] == -1 || matchs[idMatch].equipe[1][1] == -1) {
+      if (random[j] != undefined) {
         //Test si le joueur 1 ou 2 n'a pas déjà joué (ensemble et contre) + de la moitié de ses matchs contre le joueur en cours d'affectation
         let affectationPossible = true
         if (eviterMemeAdversaire == true) {
-          let joueur1 = matchs[idMatch].equipe[0][0];
-          let joueur2 = undefined;
-          if (typeEquipes != "teteatete" && matchs[idMatch].equipe[0][1] != -1) {
-            joueur2 = matchs[idMatch].equipe[0][1];
+          if (matchs[idMatch].equipe[0][0] != -1) {
+            let joueur1 = matchs[idMatch].equipe[0][0];
+            let joueur2 = undefined;
+            if (typeEquipes != "teteatete" && matchs[idMatch].equipe[0][1] != -1) {
+              joueur2 = matchs[idMatch].equipe[0][1];
+            }
+            let totPartiesJ1 = 0;
+            let totPartiesJ2 = 0;
+            //Compte le nombre de fois où joueur 1 ou 2 a été l'adverse de joueur en affectation + ou bien si joueur 3 ou 4 a été l'adverse de joueur en affectation
+            const occurrencesAdversaireDansEquipe1 = (arr, joueurAdverse, joueurAffect) => arr.reduce((a, v) => ((v.equipe[0][0] === joueurAdverse || v.equipe[0][1] === joueurAdverse) && (v.equipe[1][0] === joueurAffect || v.equipe[1][1] === joueurAffect) ? a + 1 : a), 0);
+            const occurrencesAdversaireDansEquipe2 = (arr, joueurAdverse, joueurAffect) => arr.reduce((a, v) => ((v.equipe[1][0] === joueurAdverse || v.equipe[1][1] === joueurAdverse) && (v.equipe[0][0] === joueurAffect || v.equipe[0][1] === joueurAffect) ? a + 1 : a), 0);
+            totPartiesJ1 += occurrencesAdversaireDansEquipe1(matchs, joueur1, random[j]);
+            totPartiesJ1 += occurrencesAdversaireDansEquipe2(matchs, joueur1, random[j]);
+            if (joueur2) {
+              totPartiesJ2 += occurrencesAdversaireDansEquipe1(matchs, joueur2, random[j]);
+              totPartiesJ2 += occurrencesAdversaireDansEquipe2(matchs, joueur2, random[j]);
+            }
+            //+1 si joueur en cours d'affectation a déjà joué dans la même équipe
+            totPartiesJ1 += joueurs[joueur1].equipe.includes(random[j]) ? 1 : 0;
+            if (joueur2) {
+              totPartiesJ2 += joueurs[joueur2].equipe.includes(random[j]) ? 1 : 0;
+            }
+            let moitieNbManches = nbTours == 1 ? 1 : Math.floor(nbTours / 2);
+            if (totPartiesJ1 >= moitieNbManches || totPartiesJ2 >= moitieNbManches) {
+              affectationPossible = false;
+            }
           }
-          let totPartiesJ1 = 0;
-          let totPartiesJ2 = 0;
-          //Compte le nombre de fois où joueur 1 ou 2 a été l'adverse de joueur en affectation + ou bien si joueur 3 ou 4 a été l'adverse de joueur en affectation
-          const occurrencesAdversaireDansEquipe1 = (arr, joueurAdverse, joueurAffect) => arr.reduce((a, v) => ((v.equipe[0][0] === joueurAdverse || v.equipe[0][1] === joueurAdverse) && (v.equipe[1][0] === joueurAffect || v.equipe[1][1] === joueurAffect) ? a + 1 : a), 0);
-          const occurrencesAdversaireDansEquipe2 = (arr, joueurAdverse, joueurAffect) => arr.reduce((a, v) => ((v.equipe[1][0] === joueurAdverse || v.equipe[1][1] === joueurAdverse) && (v.equipe[0][0] === joueurAffect || v.equipe[0][1] === joueurAffect) ? a + 1 : a), 0);
-          totPartiesJ1 += occurrencesAdversaireDansEquipe1(matchs, joueur1, random[j]);
-          totPartiesJ1 += occurrencesAdversaireDansEquipe2(matchs, joueur1, random[j]);
-          if (joueur2) {
-            totPartiesJ2 += occurrencesAdversaireDansEquipe1(matchs, joueur2, random[j]);
-            totPartiesJ2 += occurrencesAdversaireDansEquipe2(matchs, joueur2, random[j]);
-          }
-          //+1 si joueur en cours d'affectation a déjà joué dans la même équipe
-          totPartiesJ1 += joueurs[joueur1].equipe.includes(random[j]) ? 1 : 0;
-          if (joueur2) {
-            totPartiesJ2 += joueurs[joueur2].equipe.includes(random[j]) ? 1 : 0;
-          }
-          let moitieNbManches = nbTours == 1 ? 1 : Math.floor(nbTours / 2);
-          if (totPartiesJ1 >= moitieNbManches || totPartiesJ2 >= moitieNbManches) {
+          else {
             affectationPossible = false;
           }
         }
@@ -375,7 +380,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
         }
       }
       //Affectation joueur(s) complémentaire(s) du tour si tournoi doublette avec complément en triplette
-      if (random[j] && (idMatch + 1) % nbMatchsParTour == 0) {
+      if (random[j] != undefined && (idMatch + 1) % nbMatchsParTour == 0) {
         if (typeEquipes == "doublette" && nbjoueurs % 4 != 0 && complement == "3" && matchs[idMatch].equipe[0][2] == -1) {
           let joueursEnTrop = nbjoueurs % 4;
           matchs[idMatch].equipe[0][2] = random[j];

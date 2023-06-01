@@ -187,6 +187,7 @@ class GenerationMatchs extends React.Component {
       return (
         <View style={styles.error_container}>
           <Text style={styles.texte}>La générations n'a pas réussie, certaines options rendent la génération trop compliqué.</Text>
+          <Text style={styles.texte}>Vous pouvez essayer en désactivant l'option de ne jamais former les mêmes équipes ou d'empêcher les joueurs de trop se rencontrer</Text>
           <Button title="Retourner à l'inscription" onPress={() => this._retourInscription()}/>
         </View>
       )

@@ -1,5 +1,16 @@
 # Change Log
 
+## [1.12.0] - 25-05-2023
+
+### Ajouté
+- Possibilité d'attribuer aux joueurs les rôles Pointeur/Tireur/Milieu en doublette pour améliorer l'équilibrage des équipes.
+- Nouvelle page d'accueil.
+- Choix nombre de points pour victoire.
+
+### Changement
+- Ecran de paramétrage déplacé.
+- Amélioration du renommage des joueurs.
+
 ## [1.11.0] - 09-02-2023
 
 ### Ajouté
