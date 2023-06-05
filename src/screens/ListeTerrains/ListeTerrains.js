@@ -10,19 +10,26 @@ class ListeTerrains extends React.Component {
   }
 
   _ajoutTerrains() {
-    const ajoutTerrain = { type: "AJOUT_TERRAIN", value: []}
+    const ajoutTerrain = { type: "AJOUT_TERRAIN", value: []};
     this.props.dispatch(ajoutTerrain);
   }
 
   _ajoutTerrainButton() {
     return (
-      <Button color="green" title="Ajouter un terrain" onPress={() => this._ajoutTerrains()}/>
+      <View style={styles.ajoutTerrain_container}>
+        <Button color="green" title="Ajouter un terrain" onPress={() => this._ajoutTerrains()}/>
+      </View>
     )
   }
 
   _commencer() {
+    let nbTerrainsNecessaires = 0;
+    let disabled = true;
+    if (nbTerrainsNecessaires < this.props.listeTerrains.length) {
+      disabled = false;
+    }
     return (
-      <Button title="Commencer"/>
+      <Button title="Commencer" disabled={disabled}/>
     )
   }
 
@@ -74,8 +81,10 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   flatList_container: {
-    flex: 1,
-    margin: 10
+    flex: 1
+  },
+  ajoutTerrain_container: {
+    marginTop: 10
   },
   createBtnView: {
     alignItems: 'center'

@@ -12,9 +12,22 @@ function listeTerrains(state = initialState, action) {
       return nextState || state
     case 'SUPPR_TERRAIN':
       if (action.value.terrainId != undefined) {
+        const liste = state.listeTerrains.filter((item, index) => item.id !== action.value.terrainId)
+        liste.forEach((e, index) => e.id = index);
+        console.log(liste)
         nextState = {
           ...state,
-          listeTerrains: state.listeTerrains.filter((item, index) => item.id !== action.value.terrainId)
+          listeTerrains: liste
+        }
+      }
+      return nextState || state
+    case 'RENOMMER_TERRAIN':
+      if (action.value.terrainId != undefined && action.value.newName != "") {
+        const liste = [ ...state.listeTerrains ];
+        liste[action.value.terrainId].name = action.value.newName;
+        nextState = {
+          ...state,
+          listeTerrains: liste
         }
       }
       return nextState || state
