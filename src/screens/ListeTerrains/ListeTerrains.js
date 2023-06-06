@@ -22,15 +22,24 @@ class ListeTerrains extends React.Component {
     )
   }
 
-  _commencer() {
+  _commencerButton() {
     let nbTerrainsNecessaires = 0;
     let disabled = true;
     if (nbTerrainsNecessaires < this.props.listeTerrains.length) {
       disabled = false;
     }
     return (
-      <Button title="Commencer" disabled={disabled}/>
+      <Button disabled={disabled} color='green' title="Commencer" onPress={() => this._commencer()}/>
     )
+  }
+
+  _commencer() {
+    this.props.navigation.navigate({
+      name: "GenerationMatchs",
+      params: {
+        screenStackName: 'InscriptionsAvecNoms'
+      }
+    });
   }
 
   render() {
@@ -57,7 +66,7 @@ class ListeTerrains extends React.Component {
               }
             />
             <View style={styles.createBtnView}>
-              {this._commencer()}
+              {this._commencerButton()}
             </View>
           </View>
         </View>

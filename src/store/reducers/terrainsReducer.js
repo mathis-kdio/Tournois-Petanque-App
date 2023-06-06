@@ -14,7 +14,6 @@ function listeTerrains(state = initialState, action) {
       if (action.value.terrainId != undefined) {
         const liste = state.listeTerrains.filter((item, index) => item.id !== action.value.terrainId)
         liste.forEach((e, index) => e.id = index);
-        console.log(liste)
         nextState = {
           ...state,
           listeTerrains: liste
