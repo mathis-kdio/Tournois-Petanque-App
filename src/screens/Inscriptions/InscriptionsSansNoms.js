@@ -44,8 +44,12 @@ class InscriptionsSansNoms extends React.Component {
       this._ajoutJoueur("enfant")
     }
 
+    let screenName = "GenerationMatchs";
+    if (this.props.optionsTournoi.avecTerrains) {
+      screenName = "ListeTerrains";
+    }
     this.props.navigation.navigate({
-      name: 'GenerationMatchs',
+      name: screenName,
       params: {
         screenStackName: 'InscriptionsSansNoms'
       }

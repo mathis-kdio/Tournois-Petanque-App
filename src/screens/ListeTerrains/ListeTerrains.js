@@ -39,7 +39,7 @@ class ListeTerrains extends React.Component {
     this.props.navigation.navigate({
       name: "GenerationMatchs",
       params: {
-        screenStackName: 'InscriptionsAvecNoms'
+        screenStackName: this.props.route.params.screenStackName
       }
     });
   }
