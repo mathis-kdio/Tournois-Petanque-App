@@ -7,6 +7,7 @@ import { generationAvecEquipes } from 'utils/generations/tournoiAvecEquipes'
 import { generationDoublettes } from 'utils/generations/tournoiDoublettes'
 import { generationTeteATete } from 'utils/generations/tournoiTeteATete'
 import { generationTriplettes } from 'utils/generations/tournoiTriplettes'
+import { uniqueValueArrayRandOrder } from "utils/generations/generation";
 
 class GenerationMatchs extends React.Component {
   constructor(props) {
@@ -19,7 +20,8 @@ class GenerationMatchs extends React.Component {
     this.typeEquipes = "doublette";
     this.typeInscription = "avecNoms";
     this.complement = "3";
-    this.typeTournoi = "mele-demele"
+    this.typeTournoi = "mele-demele";
+    this.avecTerrains = false;
     this.state = {
       isLoading: true,
       isValid: true,
@@ -66,6 +68,7 @@ class GenerationMatchs extends React.Component {
     this.typeInscription = this.props.optionsTournoi.mode;
     this.complement = this.props.optionsTournoi.complement;
     this.typeTournoi = this.props.optionsTournoi.type;
+    this.avecTerrains = this.props.optionsTournoi.avecTerrains;
 
     let listeJoueurs = this.props.listesJoueurs[this.typeInscription];
     let nbjoueurs = listeJoueurs.length;
@@ -140,6 +143,22 @@ class GenerationMatchs extends React.Component {
       return 1;
     }
 
+    //attributions des terrains
+    if (this.avecTerrains) {
+      let manche = matchs[0].manche;
+      let arrRandIdsTerrains = uniqueValueArrayRandOrder(this.props.listeTerrains.length);
+      let i = 0;
+      matchs.forEach(match => {
+        if (match.manche != manche) {
+          manche = match.manche;
+          arrRandIdsTerrains = uniqueValueArrayRandOrder(this.props.listeTerrains.length);
+          i = 0;
+        }
+        match.terrain = this.props.listeTerrains[arrRandIdsTerrains[i]];
+        i++;
+      });
+    }
+
     //Ajout des options du match à la fin du tableau contenant les matchs
     matchs.push({
       tournoiID: undefined,
@@ -152,7 +171,8 @@ class GenerationMatchs extends React.Component {
       typeEquipes: this.typeEquipes,
       complement: this.complement,
       typeTournoi: this.typeTournoi,
-      listeJoueurs: this.props.listesJoueurs[this.typeInscription].slice()
+      listeJoueurs: this.props.listesJoueurs[this.typeInscription].slice(),
+      avecTerrains: this.avecTerrains
     });
 
     //Ajout dans le store
@@ -265,7 +285,8 @@ const mapStateToProps = (state) => {
     listesJoueurs: state.listesJoueurs.listesJoueurs,
     listeMatchs: state.gestionMatchs.listematchs,
     listeTournois: state.listeTournois.listeTournois,
-    optionsTournoi: state.optionsTournoi.options
+    optionsTournoi: state.optionsTournoi.options,
+    listeTerrains: state.listeTerrains.listeTerrains
   }
 }
 

@@ -17,7 +17,8 @@ class OptionsTournoi extends React.Component {
       memesAdversaires: true,
       complement: "3",
       nbTours: 5,
-      nbPtVictoire: 13
+      nbPtVictoire: 13,
+      avecTerrains: false
     }
   }
 
@@ -48,6 +49,8 @@ class OptionsTournoi extends React.Component {
     this.props.dispatch(updateOptionMemesAdversaires);
     const updateOptionComplement = { type: "UPDATE_OPTION_TOURNOI", value: ['complement', this.state.complement]}
     this.props.dispatch(updateOptionComplement);
+    const updateOptionAvecTerrains = { type: "UPDATE_OPTION_TOURNOI", value: ['avecTerrains', this.state.avecTerrains]}
+    this.props.dispatch(updateOptionAvecTerrains);
 
     this.props.navigation.navigate(this.props.route.params.screenStackName);
   }
@@ -149,6 +152,20 @@ class OptionsTournoi extends React.Component {
                 </Picker>
               </View>
             </View>
+            <View style={styles.checkbox_container}>
+              <BouncyCheckbox
+                onPress={()=>{
+                  this.setState({
+                    avecTerrains: !this.state.avecTerrains
+                  })
+                }}
+                disableBuiltInState="true"
+                isChecked={this.state.avecTerrains}
+                text="Définir, dans une prochaine étape, une liste de terrains sur lequels les joueurs joueront"
+                textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
+                fillColor="white"
+              />
+            </View>
           </View>
           <View style={styles.buttonView}>
             {this._boutonValider()}
@@ -192,8 +209,8 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   avecEquipes_container: {
-    flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginBottom: 10
   },
   avecEquipes_texte: {
     flex: 1,

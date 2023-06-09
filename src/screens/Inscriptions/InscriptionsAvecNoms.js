@@ -12,12 +12,16 @@ class InscriptionsAvecNoms extends React.Component {
   }
 
   _commencer() {
+    let screenName = "GenerationMatchs";
+    if (this.props.optionsTournoi.avecTerrains) {
+      screenName = "ListeTerrains";
+    }
     this.props.navigation.navigate({
-      name: "GenerationMatchs",
+      name: screenName,
       params: {
         screenStackName: 'InscriptionsAvecNoms'
       }
-    })
+    });
   }
 
   _showNbJoueur() {
