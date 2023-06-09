@@ -75,6 +75,9 @@ class ChoixModeTournoi extends React.Component {
   _buttonInscription() {
     let boutonDesactive = false
     let title = "Valider et passer aux options"
+    if (this.props.optionsTournoi.type === "championnat" || this.props.optionsTournoi.type === "coupe") {
+      title = "Valider et passer aux inscriptions"
+    }
     if(this.state.avecEquipes == true && this.state.teteatete) {
       boutonDesactive = true
       title = "Mode de tournois incompatible"
