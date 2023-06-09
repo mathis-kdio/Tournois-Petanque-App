@@ -29,7 +29,9 @@ class Accueil extends React.Component {
   }
 
   componentDidMount() {
-    NavigationBar.setBackgroundColorAsync("#0594ae");
+    if (Platform.OS === 'android') {
+      NavigationBar.setBackgroundColorAsync("#0594ae");
+    }
     VersionCheck.needUpdate().then(async res => {
       if (res.isNeeded && this.state.modalVisible != true) {
         this.setState({modalVisible: true});
@@ -38,7 +40,9 @@ class Accueil extends React.Component {
   }
 
   componentDidUpdate() {
-    NavigationBar.setBackgroundColorAsync("#0594ae");
+    if (Platform.OS === 'android') {
+      NavigationBar.setBackgroundColorAsync("#0594ae");
+    }
   }
 
   _showUpdateModal() {

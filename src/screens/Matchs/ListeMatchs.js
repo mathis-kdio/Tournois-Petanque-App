@@ -49,7 +49,9 @@ class ListeMatchs extends React.Component {
   }
 
   render() {
-    NavigationBar.setBackgroundColorAsync("#ffda00");
+    if (Platform.OS === 'android') {
+      NavigationBar.setBackgroundColorAsync("#ffda00");
+    }
     return (
       <View style={styles.main_container} >
         {this._displayListeMatch()}
