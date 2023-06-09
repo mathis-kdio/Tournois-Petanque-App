@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Text, Button, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import ListeTerrainItem from '@components/ListeTerrainItem';
+import { calcNbMatchsParTour } from 'utils/generations/generation';
 
 class ListeTerrains extends React.Component {
 
@@ -23,13 +24,14 @@ class ListeTerrains extends React.Component {
   }
 
   _commencerButton() {
-    let nbTerrainsNecessaires = 0;
-    let disabled = true;
-    if (nbTerrainsNecessaires < this.props.listeTerrains.length) {
-      disabled = false;
-    }
+    const { typeEquipes, mode, type, complement } = this.props.optionsTournoi;
+    const { listesJoueurs, listeTerrains } = this.props;
+    const nbJoueurs = listesJoueurs[mode].length;
+    const nbTerrainsNecessaires = calcNbMatchsParTour(nbJoueurs, typeEquipes, mode, type, complement);
+    const disabled = listeTerrains.length < nbTerrainsNecessaires;
+    const title = disabled ? "Pas assez de terrains" : "Commencer";
     return (
-      <Button disabled={disabled} color='green' title="Commencer" onPress={() => this._commencer()}/>
+      <Button disabled={disabled} color='green' title={title} onPress={() => this._commencer()}/>
     )
   }
 
@@ -102,7 +104,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    listeTerrains: state.listeTerrains.listeTerrains
+    listeTerrains: state.listeTerrains.listeTerrains,
+    listesJoueurs: state.listesJoueurs.listesJoueurs,
+    optionsTournoi: state.optionsTournoi.options
   }
 }
 
