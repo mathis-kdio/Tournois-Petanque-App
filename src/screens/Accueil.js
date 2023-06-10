@@ -189,7 +189,7 @@ class Accueil extends React.Component {
               <Pressable flex={1} alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => _openURL(this.mail)}>
                 <FontAwesome5 name="envelope" color="white" size={20}/>
               </Pressable>
-              <Pressable flex={1} alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => this.props.navigation.navigate('Changelog')}>
+              <Pressable flex={1} alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => this.props.navigation.navigate('Parametres')}>
                 <FontAwesome5 name="wrench" color="white" size={20}/>
               </Pressable>
             </HStack>
