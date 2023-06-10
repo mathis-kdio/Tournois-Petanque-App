@@ -1,42 +1,36 @@
 import React from 'react'
-import { StyleSheet, View, Button, Alert } from 'react-native'
 import { expo } from '../../app.json'
 import { connect } from 'react-redux'
-import ChangelogData from '@assets/ChangelogData.json'
 import { _openURL } from 'utils/link'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
-import { HStack, VStack, Text, Spacer, FlatList, Divider, AlertDialog, Pressable, Box, Heading } from 'native-base'
+import { HStack, VStack, Text, Spacer, FlatList, Divider, AlertDialog, Pressable, Box, Center, Button } from 'native-base'
 import TopBarBack from 'components/TopBarBack'
 import { FontAwesome5 } from '@expo/vector-icons';
+import ChangelogData from '@assets/ChangelogData.json'
 
 class Parametres extends React.Component {
   constructor(props) {
     super(props)
     this.githubRepository = "https://github.com/sponsors/mathis-kdio";
+    this.state = {
+      alertOpen: false
+    }
   }
 
-  _modalClearData() {
-    Alert.alert(
-      "Suppression des données",
-      "Êtes-vous sûr de vouloir supprimer toutes les données (listes joueurs, anciens tournois, etc) ?",
-      [
-        { text: "Annuler", onPress: () => undefined, style: "cancel" },
-        { text: "Oui", onPress: () => this._clearData() },
-      ],
-      { cancelable: true }
-    );
-    /*
-      <AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}>
+  _alertDialogClearData() {
+    const cancelRef = React.createRef(null);
+    return (
+      <AlertDialog leastDestructiveRef={cancelRef} isOpen={this.state.alertOpen} onClose={() => this.setState({alertOpen: false})}>
         <AlertDialog.Content>
           <AlertDialog.CloseButton />
           <AlertDialog.Header>Suppression des données</AlertDialog.Header>
           <AlertDialog.Body>
-            Êtes-vous sûr de vouloir supprimer toutes les données (listes joueurs, anciens tournois, etc) ?
+            Êtes-vous sûr de vouloir supprimer toutes les données (listes joueurs, anciens tournois, terrains, etc) ?
           </AlertDialog.Body>
           <AlertDialog.Footer>
             <Button.Group space={2}>
-              <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>
+              <Button variant="unstyled" colorScheme="coolGray" onPress={() => this.setState({alertOpen: false})} ref={cancelRef}>
                 Annuler
               </Button>
               <Button colorScheme="danger" onPress={() => this._clearData()}>
@@ -46,10 +40,11 @@ class Parametres extends React.Component {
           </AlertDialog.Footer>
         </AlertDialog.Content>
       </AlertDialog>
-      */
+    )
   }
 
   _clearData() {
+    this.setState({alertOpen: false})
     const actionRemoveAllPlayersAvecNoms = { type: "SUPPR_ALL_JOUEURS", value: ["avecNoms"] }
     this.props.dispatch(actionRemoveAllPlayersAvecNoms);
     const actionRemoveAllPlayersSansNoms = { type: "SUPPR_ALL_JOUEURS", value: ["sansNoms"] }
@@ -72,16 +67,17 @@ class Parametres extends React.Component {
     this.props.dispatch(actionRemoveAllOptions);
   }
 
-  _item(text, action, type) {
+  _item(text, action, icon, type) {
     let colorTxt = "white";
-    let btnColor = "white"
+    let btnColor = "white";
     if (type == "danger") {
       colorTxt = "red.500";
-      btnColor = "red"
+      btnColor = "red";
     }
     return (
-      <Pressable onPress={() => action}>
-        <HStack m="2">
+      <Pressable onPress={() => action()}>
+        <HStack m="2" alignItems="center">
+          <FontAwesome5 name={icon} size={16} color={btnColor} style={{marginRight: 5}}/>
           <Text fontSize={16} color={colorTxt}>{text}</Text>
           <Spacer/>
           <FontAwesome5 name="arrow-right" size={20} color={btnColor}/>
@@ -95,7 +91,7 @@ class Parametres extends React.Component {
     let action = () => console.log("press");
     return (
       <VStack>
-        {this._item(text, action)}
+        {this._item(text, action, undefined, undefined)}
         <Divider/>
       </VStack>
     )
@@ -107,18 +103,21 @@ class Parametres extends React.Component {
         <StatusBar backgroundColor="#0594ae"/>
         <VStack flex="1" bgColor={"#0594ae"}>
           <TopBarBack title="Paramètres" navigation={this.props.navigation}/>
-          <VStack flex="1" px="10">
-            <VStack space="4">
+          <VStack flex="1" px="10" space="4">
+            <VStack>
+              <Text fontSize="xl" color="white">À propos</Text>
               <Box borderWidth="1" borderColor="white" borderRadius="lg">
-                {this._item("Voir le code source", () => _openURL(this.githubRepository))}
+                {this._item("Voir le code source", () => _openURL(this.githubRepository), "code", undefined)}
               </Box>
+            </VStack>
+            <VStack>
+              <Text fontSize="xl" color="white">Réglages</Text>
               <Box borderWidth="1" borderColor="red.500" borderRadius="lg">
-                {this._item("Supprimer toutes les données", () => this._modalClearData(), "danger")}
+                {this._item("Supprimer toutes les données", () => this.setState({alertOpen: true}), "trash-alt", "danger")}
               </Box>
             </VStack>
             <VStack flex="1">
-              <Text textAlign="center" fontSize="xl" color="white">Liste des nouveautés</Text>
-              <Text textAlign="center" fontSize="md" color="white">Version actuelle : {expo.version}</Text>
+              <Text fontSize="xl" color="white">Nouveautés</Text>
               <FlatList 
                 data={ChangelogData}
                 keyExtractor={(item) => item.id.toString() }
@@ -128,8 +127,12 @@ class Parametres extends React.Component {
                 borderRadius="lg"
               />
             </VStack>
+            <Center>
+              <Text textAlign="center" fontSize="md" color="white">Version {expo.version}</Text>
+            </Center>
           </VStack>
         </VStack>
+        {this._alertDialogClearData()}
       </SafeAreaView>
     )
   }
