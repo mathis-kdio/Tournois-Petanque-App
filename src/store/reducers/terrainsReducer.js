@@ -30,6 +30,12 @@ function listeTerrains(state = initialState, action) {
         }
       }
       return nextState || state
+    case 'REMOVE_ALL_TERRAINS':
+      nextState = {
+        ...state,
+        listeTerrains: initialState.listeTerrains
+      }
+      return nextState || state
   default:
     return state
   }
