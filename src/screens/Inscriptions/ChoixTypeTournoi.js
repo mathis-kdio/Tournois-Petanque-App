@@ -2,7 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
-import { VStack, Text, Spacer } from 'native-base'
+import { VStack, Text, Spacer, Modal, Pressable } from 'native-base'
+import { FontAwesome5 } from '@expo/vector-icons';
 import TopBarBack from 'components/TopBarBack'
 import CardButton from 'components/buttons/CardButton'
 
@@ -10,7 +11,40 @@ class ChoixTypeTournoi extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      showModal: false,
+      modalType: undefined
     }
+  }
+
+  _modalInfos() {
+    if (!this.state.modalType) return;
+    const infosModal = {
+      "melee-demelee": {
+        title: "Mélée-Démêlée",
+        text: "Les joueurs sont solitaires ou en équipes fixes.\nLes matchs peuvent se dérouler en tête-à-tête, doublettes ou triplettes.\nPossibilité de compléter un match avec une triplette ou tête à tête."
+      },
+      "championnat": {
+        title: "Championnat",
+        text: "Les joueurs ne se rencontrent qu'une seule fois pendant le tournoi."
+      },
+      "coupe": {
+        title: "Coupe",
+        text: "Un 1er tour aléatoire puis qualification si victoire sinon élimination du tournoi.\n\nIndisponible pour l'instant : phase de poule"
+      }
+    };
+    let infos = infosModal[this.state.modalType];
+    if (!infos) return;
+    return (
+      <Modal isOpen={this.state.showModal} onClose={() => this.setState({showModal: false})}>
+        <Modal.Content>
+          <Modal.CloseButton />
+          <Modal.Header>{infos.title}</Modal.Header>
+          <Modal.Body>
+            <Text>{infos.text}</Text>
+          </Modal.Body>
+        </Modal.Content>
+      </Modal>
+    )
   }
 
   _navigate(typeTournoi) {
@@ -32,33 +66,34 @@ class ChoixTypeTournoi extends React.Component {
               icon="random"
               navigate={() => this._navigate('mele-demele')}
             />
-            <VStack>
-              <Text>En savoir plus:</Text>
-              <Text>Choisissez vos équipes ou laisser la génération aléatoire. En tête-à-tête, doublettes ou triplettes :</Text>
-            </VStack>
+            <Pressable flexDirection="row" justifyContent="center" mt="2" onPress={() => this.setState({showModal: true, modalType: "melee-demelee"})}>
+              <FontAwesome5 name="info-circle" color="white" size={24}/>
+              <Text color="white"> En savoir plus</Text>
+            </Pressable>
             <Spacer/>
             <CardButton
               text="Type Championnat"
               icon="table"
               navigate={() => this._navigate('championnat')}
             />
-            <VStack>
-              <Text>En savoir plus:</Text>
-              <Text>Tous les joueurs se rencontrent à un moment dans le tournoi :</Text>
-            </VStack>
+            <Pressable flexDirection="row" justifyContent="center" mt="2" onPress={() => this.setState({showModal: true, modalType: "championnat"})}>
+              <FontAwesome5 name="info-circle" color="white" size={24}/>
+              <Text color="white"> En savoir plus</Text>
+            </Pressable>
             <Spacer/>
             <CardButton
               text="Type Coupe"
               icon="trophy"
               navigate={() => this._navigate('coupe')}
             />
-            <VStack>
-              <Text>En savoir plus:</Text>
-              <Text>Une phase de poule puis les phases finales :</Text>
-            </VStack>
+            <Pressable flexDirection="row" justifyContent="center" mt="2" onPress={() => this.setState({showModal: true, modalType: "coupe"})}>
+              <FontAwesome5 name="info-circle" color="white" size={24}/>
+              <Text color="white"> En savoir plus</Text>
+            </Pressable>
             <Spacer/>
           </VStack>
         </VStack>
+        {this._modalInfos()}
       </SafeAreaView>
     )
   }
