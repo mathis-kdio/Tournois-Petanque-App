@@ -10,51 +10,40 @@ class ChoixModeTournoi extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      option1: "doublette",
-      option2: "avecNoms"
+      typeEquipes: "doublette",
+      modeTournoi: "avecNoms"
     }
   }
 
   _inscription() {
-    let typeEquipes
-    if (this.state.option1 = "teteatete") {
-      typeEquipes = 'teteatete'
-    }
-    else if (this.state.option1 = "doublette") {
-      typeEquipes = 'doublette'
-    }
-    else {
-      typeEquipes = 'triplette'
-    }
-
-    let screenName
-    let modeTournoi
+    let screenName;
+    let modeTournoi;
     if (this.props.optionsTournoi.type == "mele-demele") {
-      if (this.state.option2 = "avecNoms") {
-        screenName = 'InscriptionsAvecNoms'
-        modeTournoi = 'avecNoms'
+      if (this.state.modeTournoi = "avecNoms") {
+        screenName = 'InscriptionsAvecNoms';
+        modeTournoi = this.state.modeTournoi;
       }
-      else if (this.state.option2 = "sansNoms") {
-        screenName = 'InscriptionsSansNoms'
-        modeTournoi = 'sansNoms'
+      else if (this.state.modeTournoi = "sansNoms") {
+        screenName = 'InscriptionsSansNoms';
+        modeTournoi = this.state.modeTournoi;
       }
       else {
-        screenName = 'InscriptionsAvecNoms'
-        modeTournoi = 'avecEquipes'
+        screenName = 'InscriptionsAvecNoms';
+        modeTournoi = 'avecEquipes';
       }
     }
     else if (this.props.optionsTournoi.type == "championnat") {
-      screenName = 'InscriptionsAvecNoms'
-      modeTournoi = 'avecEquipes'
+      screenName = 'InscriptionsAvecNoms';
+      modeTournoi = 'avecEquipes';
     }
     else if (this.props.optionsTournoi.type == "coupe") {
-      screenName = 'InscriptionsAvecNoms'
-      modeTournoi = 'avecEquipes'
+      screenName = 'InscriptionsAvecNoms';
+      modeTournoi = 'avecEquipes';
     }
     
-    const updateOptionEquipesTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['typeEquipes', typeEquipes]}
+    const updateOptionEquipesTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['typeEquipes', this.state.typeEquipes]};
     this.props.dispatch(updateOptionEquipesTournoi);
-    const updateOptionModeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['mode', modeTournoi]}
+    const updateOptionModeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['mode', modeTournoi]};
     this.props.dispatch(updateOptionModeTournoi);
 
     if (this.props.optionsTournoi.type != 'championnat' && this.props.optionsTournoi.type != 'coupe') {
@@ -63,7 +52,7 @@ class ChoixModeTournoi extends React.Component {
         params: {
           screenStackName: screenName
         }
-      })
+      });
     }
     else {
       this.props.navigation.navigate(screenName);
@@ -76,7 +65,7 @@ class ChoixModeTournoi extends React.Component {
     if (this.props.optionsTournoi.type === "championnat" || this.props.optionsTournoi.type === "coupe") {
       title = "Valider et passer aux inscriptions";
     }
-    if(this.state.option2 == "avecEquipes" && this.state.option1 == "teteatete") {
+    if(this.state.modeTournoi == "avecEquipes" && this.state.typeEquipes == "teteatete") {
       boutonDesactive = true;
       title = "Mode de tournois incompatible";
     }
@@ -93,52 +82,35 @@ class ChoixModeTournoi extends React.Component {
     )
   }
 
-  _titre() {
-    const titles = {
-      "mele-demele": {
-        title: "Choix du types d'équipe et du mode du tournoi mêlée-démêlée :"
-      },
-      "championnat": {
-        title: "Choix du mode du championnat :"
-      },
-      "coupe": {
-        title: "Choix du mode de la coupe :"
-      }
-    };
-    let title = titles[this.props.optionsTournoi.type];
-    if (!title) return;
-    return <Text color="white">{title.title}</Text>
-  }
-
   _typeEquipes() {
     return (
       <Radio.Group
-        name="myRadioGroup"
-        accessibilityLabel="Choix"
-        value={this.state.option1}
-        onChange={nextValue => {this.setState({option1: nextValue})}}
+        name="typeEquipesRadioGroup"
+        accessibilityLabel="Choix du type des équipes"
+        value={this.state.typeEquipes}
+        onChange={nextValue => {this.setState({typeEquipes: nextValue})}}
         space={3}
       >
-        <Radio value="teteatete" size="md" _text={{color:"white"}}>Tournoi mêlée-démêlée avec nom</Radio>
-        <Radio value="doublette" size="md" _text={{color:"white"}}>Tournoi mêlée-dêmêlée sans nom</Radio>
-        <Radio value="triplette" size="md" _text={{color:"white"}}>Tournoi mêlée avec équipes constituées</Radio>
+        <Radio value="teteatete" size="md" _text={{color:"white"}}>Tête-à-tête</Radio>
+        <Radio value="doublette" size="md" _text={{color:"white"}}>Doublettes</Radio>
+        <Radio value="triplette" size="md" _text={{color:"white"}}>Triplettes</Radio>
       </Radio.Group>
     )
   }
 
-  _typeTournoi() {
+  _modeTournoi() {
     if (!this.props.optionsTournoi.type == "mele-demele") return;
     return (
       <Radio.Group
-        name="myRadioGroup"
-        accessibilityLabel="Choix"
-        value={this.state.option2}
-        onChange={nextValue => {this.setState({option2: nextValue})}}
+        name="modeTournoiRadioGroup"
+        accessibilityLabel="Choix du mode du tournoi"
+        value={this.state.modeTournoi}
+        onChange={nextValue => {this.setState({modeTournoi: nextValue})}}
         space={3}
       >
-        <Radio value="avecNoms" size="md" _text={{color:"white"}}>Tournoi mêlée-démêlée avec nom</Radio>
-        <Radio value="sansNoms" size="md" _text={{color:"white"}}>Tournoi mêlée-dêmêlée sans nom</Radio>
-        <Radio value="avecEquipes" size="md" _text={{color:"white"}}>Tournoi mêlée avec équipes constituées</Radio>
+        <Radio value="avecNoms" size="md" _text={{color:"white"}}>Mêlée-démêlée avec nom</Radio>
+        <Radio value="sansNoms" size="md" _text={{color:"white"}}>Mêlée-dêmêlée sans nom</Radio>
+        <Radio value="avecEquipes" size="md" _text={{color:"white"}}>Mêlée avec équipes constituées</Radio>
       </Radio.Group>
     )
   }
@@ -149,10 +121,15 @@ class ChoixModeTournoi extends React.Component {
         <StatusBar backgroundColor="#0594ae"/>
         <VStack flex="1" bgColor={"#0594ae"}>
           <TopBarBack title="Mode du tournoi" navigation={this.props.navigation}/>
-          <VStack flex="1" px="10">
-            {this._titre()}
-            {this._typeEquipes()}
-            {this._typeTournoi()}
+          <VStack flex="1" px="10" space="10">
+            <VStack>
+              <Text color="white" fontSize="2xl" textAlign="center">Type des équipes</Text>
+              {this._typeEquipes()}
+            </VStack>
+            <VStack>
+              <Text color="white" fontSize="2xl" textAlign="center">Mode du tournoi</Text>
+              {this._modeTournoi()}
+            </VStack>
             {this._validButton()}
           </VStack>
         </VStack>
