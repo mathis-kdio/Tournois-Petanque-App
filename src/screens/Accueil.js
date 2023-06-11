@@ -109,7 +109,7 @@ class Accueil extends React.Component {
     this.props.navigation.reset({
       index: 0,
       routes: [{
-        name: 'ListeMatchsInscription'
+        name: 'ListeMatchsStack'
       }]
     });
   }
