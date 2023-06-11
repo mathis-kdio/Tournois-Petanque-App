@@ -143,7 +143,7 @@ function InscriptionStack() {
   return (
     <Stack.Navigator initialRouteName='ChoixTypeTournoi' screenOptions={{headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}}>
       <Stack.Screen name="ChoixTypeTournoi" component={ChoixTypeTournoi} options={{headerShown: false}} />
-      <Stack.Screen name="ChoixModeTournoi" component={ChoixModeTournoi} options={{title: 'Choix du mode de tournoi'}} />
+      <Stack.Screen name="ChoixModeTournoi" component={ChoixModeTournoi} options={{headerShown: false}} />
       <Stack.Screen name="OptionsTournoi" component={OptionsTournoi} options={{title: 'Options du tournoi'}} />     
       <Stack.Screen name="InscriptionsAvecNoms" component={InscriptionsAvecNoms} options={{title: 'Inscription Avec Noms'}} />
       <Stack.Screen name="InscriptionsSansNoms" component={InscriptionsSansNoms} options={{title: 'Inscription Sans Noms'}} />
@@ -156,7 +156,7 @@ function InscriptionStack() {
 
 function ListeMatchsStack() {
   const listeMatchs = useSelector(state => state.gestionMatchs.listematchs);
-  let typeTournoi = 'melee-demele'
+  let typeTournoi = 'mele-demele'
   if (listeMatchs && listeMatchs.length > 0 && listeMatchs[listeMatchs.length - 1].typeTournoi) {
     typeTournoi = listeMatchs[listeMatchs.length - 1].typeTournoi;
   }

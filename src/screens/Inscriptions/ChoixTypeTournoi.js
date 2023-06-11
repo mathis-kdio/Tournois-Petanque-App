@@ -19,7 +19,7 @@ class ChoixTypeTournoi extends React.Component {
   _modalInfos() {
     if (!this.state.modalType) return;
     const infosModal = {
-      "melee-demelee": {
+      "mele-demele": {
         title: "Mélée-Démêlée",
         text: "Les joueurs sont solitaires ou en équipes fixes.\nLes matchs peuvent se dérouler en tête-à-tête, doublettes ou triplettes.\nPossibilité de compléter un match avec une triplette ou tête à tête."
       },
@@ -66,7 +66,7 @@ class ChoixTypeTournoi extends React.Component {
               icon="random"
               navigate={() => this._navigate('mele-demele')}
             />
-            <Pressable flexDirection="row" justifyContent="center" mt="2" onPress={() => this.setState({showModal: true, modalType: "melee-demelee"})}>
+            <Pressable flexDirection="row" justifyContent="center" mt="2" onPress={() => this.setState({showModal: true, modalType: "mele-demele"})}>
               <FontAwesome5 name="info-circle" color="white" size={24}/>
               <Text color="white"> En savoir plus</Text>
             </Pressable>
