@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { _openURL } from 'utils/link'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
-import { HStack, VStack, Text, Spacer, FlatList, Divider, AlertDialog, Pressable, Box, Center, Button } from 'native-base'
+import { HStack, VStack, Text, Spacer, FlatList, Divider, AlertDialog, Pressable, Box, Center, Button, Modal } from 'native-base'
 import TopBarBack from 'components/TopBarBack'
 import { FontAwesome5 } from '@expo/vector-icons';
 import ChangelogData from '@assets/ChangelogData.json'
@@ -14,7 +14,9 @@ class Parametres extends React.Component {
     super(props)
     this.githubRepository = "https://github.com/sponsors/mathis-kdio";
     this.state = {
-      alertOpen: false
+      alertOpen: false,
+      modalChangelogOpen: false,
+      modalChangelogItem: undefined
     }
   }
 
@@ -67,6 +69,23 @@ class Parametres extends React.Component {
     this.props.dispatch(actionRemoveAllOptions);
   }
 
+  _modalChangelog() {
+    if (this.state.modalChangelogItem) {
+      let title = "Version "+this.state.modalChangelogItem.version;
+      return (
+        <Modal isOpen={this.state.modalChangelogOpen} onClose={() => this.setState({modalChangelogOpen: false})}>
+          <Modal.Content>
+            <Modal.CloseButton/>
+            <Modal.Header>{title}</Modal.Header>
+            <Modal.Body>
+              <Text>{this.state.modalChangelogItem.infos}</Text>
+            </Modal.Body>
+          </Modal.Content>
+        </Modal>
+      )
+    }
+  }
+
   _item(text, action, icon, type) {
     let colorTxt = "white";
     let btnColor = "white";
@@ -87,11 +106,9 @@ class Parametres extends React.Component {
   }
 
   _changelogItem(item) {
-    let text = "Version "+item.version+" :";
-    let action = () => console.log("press");
     return (
       <VStack>
-        {this._item(text, action, undefined, undefined)}
+        {this._item("Version "+item.version+" :", () => this.setState({modalChangelogOpen: true, modalChangelogItem: item}), undefined, undefined)}
         <Divider/>
       </VStack>
     )
@@ -133,6 +150,7 @@ class Parametres extends React.Component {
           </VStack>
         </VStack>
         {this._alertDialogClearData()}
+        {this._modalChangelog()}
       </SafeAreaView>
     )
   }
