@@ -13,6 +13,7 @@ class Parametres extends React.Component {
   constructor(props) {
     super(props)
     this.githubRepository = "https://github.com/sponsors/mathis-kdio";
+    this.mail = "mailto: tournoispetanqueapp@gmail.com";
     this.state = {
       alertOpen: false,
       modalChangelogOpen: false,
@@ -25,7 +26,7 @@ class Parametres extends React.Component {
     return (
       <AlertDialog leastDestructiveRef={cancelRef} isOpen={this.state.alertOpen} onClose={() => this.setState({alertOpen: false})}>
         <AlertDialog.Content>
-          <AlertDialog.CloseButton />
+          <AlertDialog.CloseButton/>
           <AlertDialog.Header>Suppression des données</AlertDialog.Header>
           <AlertDialog.Body>
             Êtes-vous sûr de vouloir supprimer toutes les données (listes joueurs, anciens tournois, terrains, etc) ?
@@ -125,6 +126,8 @@ class Parametres extends React.Component {
               <Text fontSize="xl" color="white">À propos</Text>
               <Box borderWidth="1" borderColor="white" borderRadius="lg">
                 {this._item("Voir le code source", () => _openURL(this.githubRepository), "code", undefined)}
+                <Divider/>
+                {this._item("tournoispetanqueapp@gmail.com", () => _openURL(this.mail), "envelope", undefined)}
               </Box>
             </VStack>
             <VStack>
