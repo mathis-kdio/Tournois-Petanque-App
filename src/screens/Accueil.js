@@ -151,7 +151,7 @@ class Accueil extends React.Component {
               {this._buttonShowMatchs()}
             </HStack>
             <HStack>
-              <Pressable bg="#1c3969" flex={1} space="1" alignItems={"center"} rounded="3xl" py={"5"} onPress={() => this._navigate('ChoixTypeTournoi')}>
+              <Pressable bg="#1c3969" flex={1} space="1" alignItems={"center"} rounded="3xl" py={"5"} onPress={() => this._navigate('InscriptionStack')}>
                 <FontAwesome5 name="plus" color="white" size={24}/>
                 <Text color={"white"}>Nouveau Tournoi</Text>
               </Pressable>

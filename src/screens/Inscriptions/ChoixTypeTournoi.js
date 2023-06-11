@@ -1,6 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, View, Button, Text } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { StatusBar } from 'expo-status-bar'
+import { Box, VStack,Text, Button } from 'native-base'
+import TopBarBack from 'components/TopBarBack'
 
 class ChoixTypeTournoi extends React.Component {
   constructor(props) {
@@ -17,48 +20,29 @@ class ChoixTypeTournoi extends React.Component {
 
   render() {
     return (
-      <View style={styles.main_container}>
-        <View style={styles.body_container}>
-          <View style={styles.button_container}>
-            <Text style={styles.texte}>Choisissez vos équipes ou laisser la génération aléatoire. En tête-à-tête, doublettes ou triplettes :</Text>
-            <Button title='Type Mêlée-Démêlée' onPress={() => this._navigate('mele-demele')} color="#1c3969"/>
-          </View>
-          <View style={styles.button_container}>
-            <Text style={styles.texte}>Tous les joueurs se rencontrent à un moment dans le tournoi :</Text>
-            <Button title='Type Championnat' onPress={() => this._navigate('championnat')} color="#1c3969"/>
-          </View>
-          <View style={styles.button_container}>
-            <Text style={styles.texte}>Une phase de poule puis les phases finales :</Text>
-            <Button title='Type Coupe' onPress={() => this._navigate('coupe')} color="#1c3969"/>
-          </View>
-        </View>
-      </View>
+      <SafeAreaView style={{flex: 1}}>
+        <StatusBar backgroundColor="#0594ae"/>
+        <VStack flex="1" bgColor={"#0594ae"}>
+        <TopBarBack title="Type de tournoi" navigation={this.props.navigation}/>
+          <VStack flex="1" px="10" space="4">
+            <Box>
+              <Text>Choisissez vos équipes ou laisser la génération aléatoire. En tête-à-tête, doublettes ou triplettes :</Text>
+              <Button onPress={() => this._navigate('mele-demele')} bg="#1c3969">Type Mêlée-Démêlée</Button>
+            </Box>
+            <Box>
+              <Text>Tous les joueurs se rencontrent à un moment dans le tournoi :</Text>
+              <Button onPress={() => this._navigate('championnat')} bg="#1c3969">Type Championnat</Button>
+            </Box>
+            <Box>
+              <Text>Une phase de poule puis les phases finales :</Text>
+              <Button onPress={() => this._navigate('coupe')} bg="#1c3969">Type Coupe</Button>
+            </Box>
+          </VStack>
+        </VStack>
+      </SafeAreaView>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  main_container: {
-    flex: 1,
-    backgroundColor: "#0594ae"
-  },
-  body_container: {
-    flex: 1,
-    marginHorizontal: '5%',
-    justifyContent: 'center',
-  },
-  button_container: {
-    marginBottom: 40,
-    paddingLeft: 15,
-    paddingRight: 15
-  },
-  texte: {
-    marginBottom: 5,
-    textAlign: 'center',
-    fontSize: 15,
-    color: 'white'
-  },
-})
 
 const mapStateToProps = (state) => {
   return {
