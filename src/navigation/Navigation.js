@@ -9,7 +9,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { FontAwesome5 } from '@expo/vector-icons';
 
 import Accueil from '@screens/Accueil'
-import Changelog from '@screens/Changelog'
+import Parametres from '@screens/Parametres'
 import ListeTournois from '@screens/ListeTournois/ListeTournois';
 import ChoixTypeTournoi from '@screens/Inscriptions/ChoixTypeTournoi';
 import ChoixModeTournoi from '@screens/Inscriptions/ChoixModeTournoi'
@@ -148,7 +148,7 @@ function General() {
   return (
     <Stack.Navigator initialRouteName='AccueilGeneral' screenOptions={{headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}}>
       <Stack.Screen name="AccueilGeneral" component={Accueil} options={{headerShown: false}} />
-      <Stack.Screen name="Changelog" component={Changelog} options={{title: 'Changelog - Pétanque GCU'}} />
+      <Stack.Screen name="Parametres" component={Parametres} options={{headerShown: false}} />
 
       <Stack.Screen name="ListeTournois" component={ListeTournois} options={{title: 'Choix d\'un tournoi'}} />
 
