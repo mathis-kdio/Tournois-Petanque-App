@@ -41,6 +41,7 @@
     "react-native": "0.71.8",
     "react-native-bouncy-checkbox": "^3.0.7",
     "react-native-gesture-handler": "~2.9.0",
+    "react-native-google-mobile-ads": "^11.1.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-material-menu": "^2.0.0",
     "react-native-pager-view": "6.1.2",
