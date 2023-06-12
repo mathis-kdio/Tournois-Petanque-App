@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { VStack, Button, Text, Radio, Icon } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 import TopBarBack from 'components/TopBarBack';
 
 class ChoixModeTournoi extends React.Component {
@@ -106,6 +107,13 @@ class ChoixModeTournoi extends React.Component {
             {this._modeTournoi()}
             {this._validButton()}
           </VStack>
+          <BannerAd
+            unitId="ca-app-pub-4863676282747598/3937725790"
+            size={BannerAdSize.FULL_BANNER}
+            requestOptions={{
+              requestNonPersonalizedAdsOnly: true,
+            }}
+          />
         </VStack>
       </SafeAreaView>
     )
