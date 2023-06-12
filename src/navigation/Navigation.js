@@ -139,12 +139,39 @@ function MatchsResultatsBottomNavigator() {
   );
 }
 
-function General() {
+function InscriptionStack() {
+  return (
+    <Stack.Navigator initialRouteName='ChoixTypeTournoi' screenOptions={{headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}}>
+      <Stack.Screen name="ChoixTypeTournoi" component={ChoixTypeTournoi} options={{headerShown: false}} />
+      <Stack.Screen name="ChoixModeTournoi" component={ChoixModeTournoi} options={{headerShown: false}} />
+      <Stack.Screen name="OptionsTournoi" component={OptionsTournoi} options={{title: 'Options du tournoi'}} />     
+      <Stack.Screen name="InscriptionsAvecNoms" component={InscriptionsAvecNoms} options={{title: 'Inscription Avec Noms'}} />
+      <Stack.Screen name="InscriptionsSansNoms" component={InscriptionsSansNoms} options={{title: 'Inscription Sans Noms'}} />
+      <Stack.Screen name="ListeTerrains" component={ListeTerrains} options={{title: 'Liste des Terrains'}} />     
+      <Stack.Screen name="GenerationMatchs" component={GenerationMatchs} options={{title: 'Générations des parties en cours', headerTitleAlign: 'center', headerLeft: false, headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
+      <Stack.Screen name="ListeMatchsInscription" component={ListeMatchsStack} options={{headerShown: false}}/>
+    </Stack.Navigator>
+  )
+}
+
+function ListeMatchsStack() {
   const listeMatchs = useSelector(state => state.gestionMatchs.listematchs);
-  let typeTournoi = 'melee-demelee'
+  let typeTournoi = 'mele-demele'
   if (listeMatchs && listeMatchs.length > 0 && listeMatchs[listeMatchs.length - 1].typeTournoi) {
     typeTournoi = listeMatchs[listeMatchs.length - 1].typeTournoi;
   }
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="ListeMatchsScreen"
+        component={typeTournoi != 'Coupe' ? MatchsResultatsBottomNavigator : MatchsStack} 
+        options={{headerShown: false}}
+      />
+    </Stack.Navigator>
+  )
+}
+
+function General() {
   return (
     <Stack.Navigator initialRouteName='AccueilGeneral' screenOptions={{headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}}>
       <Stack.Screen name="AccueilGeneral" component={Accueil} options={{headerShown: false}} />
@@ -155,22 +182,8 @@ function General() {
       <Stack.Screen name="ListesJoueurs" component={ListesJoueurs} options={{title: 'Listes de Joueurs'}} />
       <Stack.Screen name="CreateListeJoueurs" component={CreateListeJoueurs} options={{title: 'Création d\'une liste de Joueurs'}} />
 
-      <Stack.Screen name="ChoixTypeTournoi" component={ChoixTypeTournoi} options={{title: 'Choix du type de tournoi'}} />
-      <Stack.Screen name="ChoixModeTournoi" component={ChoixModeTournoi} options={{title: 'Choix du mode de tournoi'}} />
-
-      <Stack.Screen name="OptionsTournoi" component={OptionsTournoi} options={{title: 'Options du tournoi'}} />     
-
-      <Stack.Screen name="InscriptionsAvecNoms" component={InscriptionsAvecNoms} options={{title: 'Inscription Avec Noms'}} />
-      <Stack.Screen name="InscriptionsSansNoms" component={InscriptionsSansNoms} options={{title: 'Inscription Sans Noms'}} />
-
-      <Stack.Screen name="ListeTerrains" component={ListeTerrains} options={{title: 'Liste des Terrains'}} />     
-
-      <Stack.Screen name="GenerationMatchs" component={GenerationMatchs} options={{title: 'Générations des parties en cours', headerTitleAlign: 'center', headerLeft: false, headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
-
-      <Stack.Screen name="ListeMatchsInscription"
-        component={typeTournoi != 'Coupe' ? MatchsResultatsBottomNavigator : MatchsStack} 
-        options={{headerShown: false}}
-      />   
+      <Stack.Screen name="InscriptionStack" component={InscriptionStack} options={{headerShown: false}} />
+      <Stack.Screen name="ListeMatchsStack" component={ListeMatchsStack} options={{headerShown: false}} />
     </Stack.Navigator>
   );
 }

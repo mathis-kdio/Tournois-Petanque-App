@@ -1,12 +1,50 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, View, Button, Text } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { StatusBar } from 'expo-status-bar'
+import { VStack, Text, Spacer, Modal, Pressable } from 'native-base'
+import { FontAwesome5 } from '@expo/vector-icons';
+import TopBarBack from 'components/TopBarBack'
+import CardButton from 'components/buttons/CardButton'
 
 class ChoixTypeTournoi extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      showModal: false,
+      modalType: undefined
     }
+  }
+
+  _modalInfos() {
+    if (!this.state.modalType) return;
+    const infosModal = {
+      "mele-demele": {
+        title: "Mélée-Démêlée",
+        text: "Les joueurs sont solitaires ou en équipes fixes.\nLes matchs peuvent se dérouler en tête-à-tête, doublettes ou triplettes.\nPossibilité de compléter un match avec une triplette ou tête à tête."
+      },
+      "championnat": {
+        title: "Championnat",
+        text: "Les joueurs ne se rencontrent qu'une seule fois pendant le tournoi."
+      },
+      "coupe": {
+        title: "Coupe",
+        text: "Un 1er tour aléatoire puis qualification si victoire sinon élimination du tournoi.\n\nIndisponible pour l'instant : phase de poule"
+      }
+    };
+    let infos = infosModal[this.state.modalType];
+    if (!infos) return;
+    return (
+      <Modal isOpen={this.state.showModal} onClose={() => this.setState({showModal: false})}>
+        <Modal.Content>
+          <Modal.CloseButton />
+          <Modal.Header>{infos.title}</Modal.Header>
+          <Modal.Body>
+            <Text>{infos.text}</Text>
+          </Modal.Body>
+        </Modal.Content>
+      </Modal>
+    )
   }
 
   _navigate(typeTournoi) {
@@ -17,48 +55,49 @@ class ChoixTypeTournoi extends React.Component {
 
   render() {
     return (
-      <View style={styles.main_container}>
-        <View style={styles.body_container}>
-          <View style={styles.button_container}>
-            <Text style={styles.texte}>Choisissez vos équipes ou laisser la génération aléatoire. En tête-à-tête, doublettes ou triplettes :</Text>
-            <Button title='Type Mêlée-Démêlée' onPress={() => this._navigate('mele-demele')} color="#1c3969"/>
-          </View>
-          <View style={styles.button_container}>
-            <Text style={styles.texte}>Tous les joueurs se rencontrent à un moment dans le tournoi :</Text>
-            <Button title='Type Championnat' onPress={() => this._navigate('championnat')} color="#1c3969"/>
-          </View>
-          <View style={styles.button_container}>
-            <Text style={styles.texte}>Une phase de poule puis les phases finales :</Text>
-            <Button title='Type Coupe' onPress={() => this._navigate('coupe')} color="#1c3969"/>
-          </View>
-        </View>
-      </View>
+      <SafeAreaView style={{flex: 1}}>
+        <StatusBar backgroundColor="#0594ae"/>
+        <VStack flex="1" bgColor={"#0594ae"}>
+        <TopBarBack title="Type de tournoi" navigation={this.props.navigation}/>
+          <VStack flex="1" px="10">
+            <Spacer/>
+            <CardButton
+              text="Type Mêlée-Démêlée"
+              icon="random"
+              navigate={() => this._navigate('mele-demele')}
+            />
+            <Pressable flexDirection="row" justifyContent="center" mt="2" onPress={() => this.setState({showModal: true, modalType: "mele-demele"})}>
+              <FontAwesome5 name="info-circle" color="white" size={24}/>
+              <Text color="white"> En savoir plus</Text>
+            </Pressable>
+            <Spacer/>
+            <CardButton
+              text="Type Championnat"
+              icon="table"
+              navigate={() => this._navigate('championnat')}
+            />
+            <Pressable flexDirection="row" justifyContent="center" mt="2" onPress={() => this.setState({showModal: true, modalType: "championnat"})}>
+              <FontAwesome5 name="info-circle" color="white" size={24}/>
+              <Text color="white"> En savoir plus</Text>
+            </Pressable>
+            <Spacer/>
+            <CardButton
+              text="Type Coupe"
+              icon="trophy"
+              navigate={() => this._navigate('coupe')}
+            />
+            <Pressable flexDirection="row" justifyContent="center" mt="2" onPress={() => this.setState({showModal: true, modalType: "coupe"})}>
+              <FontAwesome5 name="info-circle" color="white" size={24}/>
+              <Text color="white"> En savoir plus</Text>
+            </Pressable>
+            <Spacer/>
+          </VStack>
+        </VStack>
+        {this._modalInfos()}
+      </SafeAreaView>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  main_container: {
-    flex: 1,
-    backgroundColor: "#0594ae"
-  },
-  body_container: {
-    flex: 1,
-    marginHorizontal: '5%',
-    justifyContent: 'center',
-  },
-  button_container: {
-    marginBottom: 40,
-    paddingLeft: 15,
-    paddingRight: 15
-  },
-  texte: {
-    marginBottom: 5,
-    textAlign: 'center',
-    fontSize: 15,
-    color: 'white'
-  },
-})
 
 const mapStateToProps = (state) => {
   return {

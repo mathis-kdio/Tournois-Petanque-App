@@ -8,6 +8,7 @@ import { _openPlateformLink, _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Box, HStack, VStack, Text, Pressable, Spacer, Modal, Image } from 'native-base';
 import { StatusBar } from 'expo-status-bar';
+import CardButton from 'components/buttons/CardButton';
 
 class Accueil extends React.Component {
   constructor(props) {
@@ -109,7 +110,7 @@ class Accueil extends React.Component {
     this.props.navigation.reset({
       index: 0,
       routes: [{
-        name: 'ListeMatchsInscription'
+        name: 'ListeMatchsStack'
       }]
     });
   }
@@ -122,10 +123,11 @@ class Accueil extends React.Component {
     if (this.props.listeMatchs) {
       if (this.props.listeMatchs.length != 0) {
         return (
-          <Pressable bg="#1c3969" flex={1} space="1" alignItems={"center"} rounded="3xl" py={"5"} onPress={() => this._showMatchs()}>
-            <FontAwesome5 name="play" color="white" size={24}/>
-            <Text color={"white"}>Reprendre le tournoi</Text>
-          </Pressable>
+          <CardButton
+            text="Reprendre le tournoi"
+            icon="play"
+            navigate={() => this._showMatchs()}
+          />
         ) 
       }
     }
@@ -151,20 +153,23 @@ class Accueil extends React.Component {
               {this._buttonShowMatchs()}
             </HStack>
             <HStack>
-              <Pressable bg="#1c3969" flex={1} space="1" alignItems={"center"} rounded="3xl" py={"5"} onPress={() => this._navigate('ChoixTypeTournoi')}>
-                <FontAwesome5 name="plus" color="white" size={24}/>
-                <Text color={"white"}>Nouveau Tournoi</Text>
-              </Pressable>
+              <CardButton
+                text="Nouveau Tournoi"
+                icon="plus"
+                navigate={() => this._navigate('InscriptionStack')}
+              />
             </HStack>
             <HStack space={"3"}>
-              <Pressable bg="#1c3969" flex={1} space="1" alignItems={"center"} justifyContent={"center"} py={5} rounded="3xl" onPress={() => this._navigate('ListeTournois')}>
-                <FontAwesome5 name="list" color="white" size={24}/>
-                <Text color={"white"}>Mes anciens tournois</Text>
-              </Pressable>
-              <Pressable bg="#1c3969" flex={1} space="1" alignItems={"center"} justifyContent={"center"} py={5} rounded="3xl" onPress={() => this._navigate('ListesJoueurs')}>
-                <FontAwesome5 name="users" color="white" size={24}/>
-                <Text color={"white"}>Mes listes de joueurs</Text>
-              </Pressable>
+              <CardButton
+                text="Mes anciens tournois"
+                icon="list"
+                navigate={() => this._navigate('ListeTournois')}
+              />
+              <CardButton
+                text="Mes listes de joueurs"
+                icon="users"
+                navigate={() => this._navigate('ListesJoueurs')}
+              />
             </HStack> 
           </VStack>
           <Spacer/>
