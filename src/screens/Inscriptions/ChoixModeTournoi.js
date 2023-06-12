@@ -1,11 +1,11 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React from 'react';
+import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { VStack, Button, Text, Radio, Icon } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 import TopBarBack from 'components/TopBarBack';
+import AdMobBanner from 'components/adMob/adMobBanner';
 
 class ChoixModeTournoi extends React.Component {
   constructor(props) {
@@ -19,7 +19,7 @@ class ChoixModeTournoi extends React.Component {
   _nextStep() {
     let modeTournoi = this.state.modeTournoi;
     if (this.props.optionsTournoi.type != 'mele-demele') {
-      modeTournoi = "avecEquipes"
+      modeTournoi = "avecEquipes";
     }
     const updateOptionEquipesTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['typeEquipes', this.state.typeEquipes]};
     this.props.dispatch(updateOptionEquipesTournoi);
@@ -107,13 +107,7 @@ class ChoixModeTournoi extends React.Component {
             {this._modeTournoi()}
             {this._validButton()}
           </VStack>
-          <BannerAd
-            unitId="ca-app-pub-4863676282747598/3937725790"
-            size={BannerAdSize.FULL_BANNER}
-            requestOptions={{
-              requestNonPersonalizedAdsOnly: true,
-            }}
-          />
+          <AdMobBanner/>
         </VStack>
       </SafeAreaView>
     )

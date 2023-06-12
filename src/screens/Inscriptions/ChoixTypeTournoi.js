@@ -1,11 +1,12 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { StatusBar } from 'expo-status-bar'
-import { VStack, Text, Spacer, Modal, Pressable } from 'native-base'
+import React from 'react';
+import { connect } from 'react-redux';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
+import { VStack, Text, Spacer, Modal, Pressable } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
-import TopBarBack from 'components/TopBarBack'
-import CardButton from 'components/buttons/CardButton'
+import TopBarBack from 'components/TopBarBack';
+import CardButton from 'components/buttons/CardButton';
+import AdMobBanner from 'components/adMob/adMobBanner';
 
 class ChoixTypeTournoi extends React.Component {
   constructor(props) {
@@ -92,6 +93,7 @@ class ChoixTypeTournoi extends React.Component {
             </Pressable>
             <Spacer/>
           </VStack>
+          <AdMobBanner/>
         </VStack>
         {this._modalInfos()}
       </SafeAreaView>
