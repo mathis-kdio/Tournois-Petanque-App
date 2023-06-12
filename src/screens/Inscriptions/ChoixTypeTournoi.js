@@ -59,7 +59,7 @@ class ChoixTypeTournoi extends React.Component {
       <SafeAreaView style={{flex: 1}}>
         <StatusBar backgroundColor="#0594ae"/>
         <VStack flex="1" bgColor={"#0594ae"}>
-        <TopBarBack title="Type de tournoi" navigation={this.props.navigation}/>
+          <TopBarBack title="Type de tournoi" navigation={this.props.navigation}/>
           <VStack flex="1" px="10">
             <Spacer/>
             <CardButton

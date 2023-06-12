@@ -7,10 +7,13 @@ class AdMobBanner extends React.Component {
   }
 
   render() {
+    let unitId = "ca-app-pub-4863676282747598/3937725790";
+    if (__DEV__) {
+      unitId = TestIds.BANNER;
+    }
     return (
       <BannerAd
-        unitId={TestIds.BANNER}
-        //unitId="ca-app-pub-4863676282747598/3937725790"
+        unitId={unitId}
         size={BannerAdSize.FULL_BANNER}
         requestOptions={{
           requestNonPersonalizedAdsOnly: true,
