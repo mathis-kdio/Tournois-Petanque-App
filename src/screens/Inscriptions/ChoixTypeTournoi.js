@@ -6,7 +6,7 @@ import { VStack, Text, Spacer, Modal, Pressable } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
 import TopBarBack from 'components/TopBarBack';
 import CardButton from 'components/buttons/CardButton';
-import AdMobBanner from 'components/adMob/adMobBanner';
+import AdMobBanner from 'components/adMob/AdMobBanner';
 
 class ChoixTypeTournoi extends React.Component {
   constructor(props) {

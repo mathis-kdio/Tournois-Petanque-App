@@ -5,7 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import { VStack, Button, Text, Radio, Icon } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
 import TopBarBack from 'components/TopBarBack';
-import AdMobBanner from 'components/adMob/adMobBanner';
+import AdMobBanner from 'components/adMob/AdMobBanner';
 
 class ChoixModeTournoi extends React.Component {
   constructor(props) {
