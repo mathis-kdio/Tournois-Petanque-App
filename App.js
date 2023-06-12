@@ -9,6 +9,7 @@ import { NativeBaseProvider } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import * as Sentry from 'sentry-expo';
+import mobileAds from 'react-native-google-mobile-ads';
 
 const routingInstrumentation = new Sentry.Native.ReactNavigationInstrumentation();
 
@@ -29,6 +30,7 @@ class App extends React.Component {
   navigation = React.createRef();
   render() {
     let persistor = persistStore(Store);
+    mobileAds().initialize().then(adapterStatuses => {});
     return (
       <Provider store={Store}>
         <PersistGate persistor={persistor}>
