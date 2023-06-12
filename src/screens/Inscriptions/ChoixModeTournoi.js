@@ -16,9 +16,13 @@ class ChoixModeTournoi extends React.Component {
   }
 
   _nextStep() {
+    let modeTournoi = this.state.modeTournoi;
+    if (this.props.optionsTournoi.type != 'mele-demele') {
+      modeTournoi = "avecEquipes"
+    }
     const updateOptionEquipesTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['typeEquipes', this.state.typeEquipes]};
     this.props.dispatch(updateOptionEquipesTournoi);
-    const updateOptionModeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['mode', this.state.modeTournoi]};
+    const updateOptionModeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['mode', modeTournoi]};
     this.props.dispatch(updateOptionModeTournoi);
 
     if (this.props.optionsTournoi.type != 'championnat' && this.props.optionsTournoi.type != 'coupe') {
