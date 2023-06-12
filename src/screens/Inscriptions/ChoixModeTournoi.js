@@ -16,25 +16,13 @@ class ChoixModeTournoi extends React.Component {
   }
 
   _nextStep() {
-    let screenName = "InscriptionsAvecNoms";
-    if (this.state.modeTournoi == "sansNoms") {
-      screenName = "InscriptionsSansNoms";
-    }
-
-    let modeTournoi = "avecEquipes";
-    if (this.state.modeTournoi = "avecNoms") {
-      modeTournoi = this.state.modeTournoi;
-    }
-    else if (this.state.modeTournoi == "sansNoms") {
-      modeTournoi = this.state.modeTournoi;
-    }
-
     const updateOptionEquipesTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['typeEquipes', this.state.typeEquipes]};
     this.props.dispatch(updateOptionEquipesTournoi);
-    const updateOptionModeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['mode', modeTournoi]};
+    const updateOptionModeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['mode', this.state.modeTournoi]};
     this.props.dispatch(updateOptionModeTournoi);
 
     if (this.props.optionsTournoi.type != 'championnat' && this.props.optionsTournoi.type != 'coupe') {
+      let screenName = this.state.modeTournoi == "sansNoms" ? "InscriptionsSansNoms" : "InscriptionsAvecNoms";
       this.props.navigation.navigate({
         name: 'OptionsTournoi',
         params: {
@@ -48,19 +36,19 @@ class ChoixModeTournoi extends React.Component {
   }
 
   _validButton() {
-    let boutonDesactive = false;
+    let bouttonDisable = false;
     let title = "Valider et passer aux options";
     if (this.props.optionsTournoi.type === "championnat" || this.props.optionsTournoi.type === "coupe") {
       title = "Valider et passer aux inscriptions";
     }
     if (this.state.modeTournoi == "avecEquipes" && this.state.typeEquipes == "teteatete") {
-      boutonDesactive = true;
-      title = "Mode de tournois incompatible";
+      bouttonDisable = true;
+      title = "Tournoi en tête à tête avec des équipes impossible";
     }
     return (
       <Button
         bg="#1c3969"
-        disabled={boutonDesactive}
+        disabled={bouttonDisable}
         onPress={() => this._nextStep()}
         endIcon={<Icon as={FontAwesome5} name="arrow-right"/>}
         size="lg"
