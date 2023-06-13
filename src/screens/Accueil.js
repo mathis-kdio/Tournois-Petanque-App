@@ -8,6 +8,7 @@ import { _openPlateformLink, _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Box, HStack, VStack, Text, Pressable, Spacer, Modal, Image } from 'native-base';
 import { StatusBar } from 'expo-status-bar';
+import { AdsConsent } from 'react-native-google-mobile-ads';
 import CardButton from 'components/buttons/CardButton';
 
 class Accueil extends React.Component {
@@ -38,6 +39,12 @@ class Accueil extends React.Component {
         this.setState({modalVisible: true});
       }
     })
+
+    AdsConsent.requestInfoUpdate().then(async consentInfo => {
+      if (consentInfo.isConsentFormAvailable && consentInfo.status === AdsConsentStatus.REQUIRED) {
+        const { status } = await AdsConsent.showForm();
+      }
+    });
   }
 
   componentDidUpdate() {
