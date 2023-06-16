@@ -46,7 +46,26 @@ class App extends React.Component {
               }
             },
             _pressed:{
-              borderColor: "white",
+              borderColor: "white"
+            }
+          },
+          sizes: {
+            md: { _text: { fontSize: 'md' } }
+          },
+        },
+        Input: {
+          baseStyle: {
+            color: "white",
+            borderColor: "white",
+            _focus: {
+              borderColor: "white"
+            }
+          }
+        },
+        Select: {
+          baseStyle: {
+            _customDropdownIconProps: {
+              color: "white"
             }
           }
         }
