@@ -37,7 +37,7 @@ class ParametresTournoi extends React.Component {
   }
 
   render() {
-    let parametresTournoi = {nbTours: 0, nbPtVictoire: 13, speciauxIncompatibles: false, memesEquipes: false, memesAdversaires: false};
+    let parametresTournoi = {nbTours: 0, nbPtVictoire: 13, speciauxIncompatibles: false, memesEquipes: false, memesAdversaires: 50};
     if (this.props.listeMatchs) {
       parametresTournoi = this.props.listeMatchs[this.props.listeMatchs.length - 1];
       parametresTournoi.nbPtVictoire = parametresTournoi.nbPtVictoire ? parametresTournoi.nbPtVictoire : 13;
@@ -51,7 +51,7 @@ class ParametresTournoi extends React.Component {
             <Text style={styles.texte}>- Nombre de points pour la victoire: {parametresTournoi.nbPtVictoire.toString()}</Text>
             <Text style={styles.texte}>- Ne jamais faire jouer 2 joueurs enfants dans la même équipe : {parametresTournoi.speciauxIncompatibles ? "Activé" : "Désactivé"}</Text>
             <Text style={styles.texte}>- Ne jamais former les mêmes équipes : {parametresTournoi.memesEquipes ? "Activé" : "Désactivé"}</Text>
-            <Text style={styles.texte}>- Empecher 2 joueurs de jouer + de la moitié des matchs contre et ensemble : {parametresTournoi.memesAdversaires ? "Activé" : "Désactivé"}</Text>
+            <Text style={styles.texte}>- Les joueurs peuvent avoir le même adversaire au maximum: {parametresTournoi.memesAdversaires === 0 ? "1 match" : parametresTournoi.memesAdversaires+"% des matchs"}</Text>
           </View>
           <View style={styles.button_container}>
             <View style={styles.buttonView}>
