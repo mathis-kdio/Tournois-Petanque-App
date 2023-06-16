@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
@@ -170,4 +171,4 @@ class OptionsTournoi extends React.Component {
   }
 }
 
-export default OptionsTournoi
+export default connect()(OptionsTournoi)
