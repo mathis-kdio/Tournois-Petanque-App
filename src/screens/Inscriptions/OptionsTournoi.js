@@ -1,9 +1,10 @@
 import React from 'react'
-import { StyleSheet, View, TextInput, Text, Button } from 'react-native'
-import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { connect } from 'react-redux'
-import { Picker } from '@react-native-picker/picker'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
+import { Checkbox, VStack, Button, Text, Input, Select, CheckIcon, Icon } from 'native-base';
+import { FontAwesome5 } from '@expo/vector-icons';
+import TopBarBack from 'components/TopBarBack';
 
 class OptionsTournoi extends React.Component {
 
@@ -36,7 +37,7 @@ class OptionsTournoi extends React.Component {
     });
   }
 
-  _inscription() {
+  _nextStep() {
     const updateOptionNbTours = { type: "UPDATE_OPTION_TOURNOI", value: ['nbTours', this.state.nbTours]}
     this.props.dispatch(updateOptionNbTours);
     const updateOptionNbPtVictoire = { type: "UPDATE_OPTION_TOURNOI", value: ['nbPtVictoire', this.state.nbPtVictoire]}
@@ -56,180 +57,117 @@ class OptionsTournoi extends React.Component {
   }
 
   _boutonValider() {
-    let boutonActive = true;
-    let boutonTitle = "Un des champs n'est pas valide";
+    let btnDisabled = true;
+    let btnTitle = "Un des champs n'est pas valide";
     if (this.state.nbTours > 0 && this.state.nbTours % 1 == 0 && this.state.nbPtVictoire > 0 && this.state.nbPtVictoire % 1 == 0) {
-      boutonTitle = 'Valider les options et passer aux inscriptions';
-      boutonActive = false;
+      btnTitle = 'Valider et passer aux inscriptions';
+      btnDisabled = false;
     }
     return (
-      <Button disabled={boutonActive} color='green' title={boutonTitle} onPress={() => this._inscription()}/>
+      <Button
+        bg="#1c3969"
+        isDisabled={btnDisabled}
+        onPress={() => this._nextStep()}
+        endIcon={<Icon as={FontAwesome5} name="arrow-right"/>}
+        size="lg"
+      >
+        {btnTitle}
+      </Button>
     )
   }
 
   render() {
     return (
       <KeyboardAwareScrollView contentContainerStyle={{flex: 1}}>
-        <View style={styles.main_container} >
-          <View style={styles.body_container} >
-            <View style={styles.input_nbtours_container}>
-              <Text style={styles.texte}>Nombre de tours : </Text>
-              <TextInput
-                style={styles.textinput}
-                placeholderTextColor='white'
-                underlineColorAndroid='white'
-                placeholder="Veuillez indiquer un nombre"
-                keyboardType="numeric"
-                defaultValue={this.nbToursTxt}
-                onChangeText={(text) => this._nbToursTxtInputChanged(text)}
-              />
-            </View>
-            <View style={styles.input_nbtours_container}>
-              <Text style={styles.texte}>Nombre de points pour la victoire : </Text>
-              <TextInput
-                style={styles.textinput}
-                placeholderTextColor='white'
-                underlineColorAndroid='white'
-                placeholder="Veuillez indiquer un nombre"
-                keyboardType="numeric"
-                defaultValue={this.nbPtVictoireTxt}
-                onChangeText={(text) => this._nbPtVictoireTxtInputChanged(text)}
-              />
-            </View>
-            <View style={styles.checkbox_container}>
-              <BouncyCheckbox
-                onPress={()=>{
-                  this.setState({
-                    speciauxIncompatibles: !this.state.speciauxIncompatibles
-                  })
-                }}
-                disableBuiltInState="true"
-                isChecked={this.state.speciauxIncompatibles}
-                text="Ne jamais faire jouer 2 enfants dans la même équipe"
-                textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
-                fillColor="white"
-              />
-            </View>
-            <View style={styles.checkbox_container}>
-              <BouncyCheckbox
-                onPress={()=>{
-                  this.setState({
-                    memesEquipes: !this.state.memesEquipes
-                  })
-                }}
-                disableBuiltInState="true"
-                isChecked={this.state.memesEquipes}
-                text="Ne jamais former les mêmes équipes"
-                textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
-                fillColor="white"
-              />
-            </View>
-            <View style={styles.checkbox_container}>
-              <BouncyCheckbox
-                onPress={()=>{
-                  this.setState({
-                    memesAdversaires: !this.state.memesAdversaires
-                  })
-                }}
-                disableBuiltInState="true"
-                isChecked={this.state.memesAdversaires}
-                text="Empecher 2 joueurs de jouer + de la moitié des matchs contre et ensemble"
-                textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
-                fillColor="white"
-              />
-            </View>
-            <View style={styles.avecEquipes_container}>
-              <Text style={styles.avecEquipes_texte}>En doublette, si le nombre de joueur n'est pas multiple de 4 alors les joueurs en trop seront mis en :</Text>
-              <View style={styles.pickerContainer}>
-                <Picker
-                  selectedValue={this.state.complement}
-                  onValueChange={(itemValue, itemIndex) => this.setState({complement: itemValue})}
-                  style={styles.picker}
-                  dropdownIconColor="white"
+        <SafeAreaView style={{flex: 1}}>
+          <StatusBar backgroundColor="#0594ae"/>
+          <VStack flex="1" bgColor={"#0594ae"}>
+            <TopBarBack title="Options du tournoi" navigation={this.props.navigation}/>
+            <VStack px="10" space="2">
+              <VStack space="3">
+                <VStack>
+                  <Text color="white" fontSize="md">Indiquer un nombre de tours : </Text>
+                  <Input
+                    placeholderTextColor='white'
+                    placeholder="Veuillez indiquer un nombre"
+                    keyboardType="numeric"
+                    defaultValue={this.nbToursTxt}
+                    onChangeText={(text) => this._nbToursTxtInputChanged(text)}
+                    size="lg"
+                  />
+                </VStack>
+                <VStack>
+                  <Text color="white" fontSize="md">Indiquer le nombre de points pour gagner : </Text>
+                  <Input
+                    placeholderTextColor='white'
+                    placeholder="Veuillez indiquer un nombre"
+                    keyboardType="numeric"
+                    defaultValue={this.nbPtVictoireTxt}
+                    onChangeText={(text) => this._nbPtVictoireTxtInputChanged(text)}
+                    size="lg"
+                  />
+                </VStack>
+              </VStack>
+              <VStack space="5">
+                <Checkbox
+                  onChange={() => this.setState({speciauxIncompatibles: !this.state.speciauxIncompatibles})}
+                  accessibilityLabel="Choix enfants dans équipes différentes"
+                  defaultIsChecked
+                  size="md"
                 >
-                  <Picker.Item label="Triplette" value="3"/>
-                  <Picker.Item label="Tête-à-Tête" value="1"/>
-                </Picker>
-              </View>
-            </View>
-            <View style={styles.checkbox_container}>
-              <BouncyCheckbox
-                onPress={()=>{
-                  this.setState({
-                    avecTerrains: !this.state.avecTerrains
-                  })
-                }}
-                disableBuiltInState="true"
-                isChecked={this.state.avecTerrains}
-                text="Définir, dans une prochaine étape, une liste de terrains sur lequels les joueurs joueront"
-                textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
-                fillColor="white"
-              />
-            </View>
-          </View>
-          <View style={styles.buttonView}>
-            {this._boutonValider()}
-          </View>
-        </View>
+                  Ne jamais faire jouer 2 enfants dans la même équipe
+                </Checkbox>
+                <Checkbox
+                  onChange={() => this.setState({memesEquipes: !this.state.memesEquipes})}
+                  accessibilityLabel="Choix ne jamais former les mêmes équipes"
+                  defaultIsChecked
+                  size="md"
+                >
+                  Ne jamais former les mêmes équipes
+                </Checkbox>
+                <Checkbox
+                  onChange={() => this.setState({memesAdversaires: !this.state.memesAdversaires})}
+                  accessibilityLabel="Choix mêmes coéquipiers et mêmes adversaires"
+                  defaultIsChecked
+                  size="md"
+                >
+                  Empecher 2 joueurs de jouer + de la moitié des matchs contre et ensemble
+                </Checkbox>
+              </VStack>
+              <VStack>
+                <Text color="white" fontSize="md">En doublette, si le nombre de joueur n'est pas multiple de 4 alors les joueurs en trop seront mis en :</Text>
+                <Select
+                  selectedValue={this.state.complement}
+                  accessibilityLabel="Choix complément"
+                  placeholder="Choix complément"
+                  onValueChange={itemValue => this.setState({complement: itemValue})}
+                  _selectedItem={{
+                    endIcon: <CheckIcon size="5" color="cyan.500"/>
+                  }}
+                  size="lg"
+                >
+                  <Select.Item label="Triplette" value="3"/>
+                  <Select.Item label="Tête-à-Tête" value="1"/>
+                </Select>
+              </VStack>
+              <VStack>
+                <Checkbox
+                  onChange={() => this.setState({avecTerrains: !this.state.avecTerrains})}
+                  accessibilityLabel="Choix avec ou sans terrains"
+                  size="md"
+                >
+                  Avant de lancer le tournoi, créer une liste de terrains qui seront attribués aux matchs
+                </Checkbox>
+              </VStack>
+              <VStack>
+                {this._boutonValider()}
+              </VStack>
+            </VStack>
+          </VStack>
+        </SafeAreaView>
       </KeyboardAwareScrollView>
     )
   }
 }
 
-const styles = StyleSheet.create({
-  main_container: {
-    flex: 1,
-    backgroundColor: "#0594ae"
-  },
-  body_container: {
-    flex:1,
-    marginHorizontal: '5%'
-  },
-  input_nbtours_container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  checkbox_container: {
-    marginBottom: 10,
-  },
-  textinput: {
-    flex: 1,
-    height: 50,
-    paddingLeft: 5,
-    color: 'white'
-  },
-  buttonView: {
-    marginBottom: 20,
-    paddingLeft: 15,
-    paddingRight: 15
-  },
-  texte: {
-    fontSize: 15,
-    color: 'white'
-  },
-  avecEquipes_container: {
-    flexDirection: 'row',
-    marginBottom: 10
-  },
-  avecEquipes_texte: {
-    flex: 1,
-    fontSize: 15,
-    color: 'white'
-  },
-  pickerContainer: {
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-  picker: {
-    color: 'white',
-    width: 150
-  }
-})
-
-const mapStateToProps = (state) => {
-  return {
-  }
-}
-
-export default connect(mapStateToProps)(OptionsTournoi)
+export default OptionsTournoi
