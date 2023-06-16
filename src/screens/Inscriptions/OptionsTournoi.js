@@ -16,7 +16,7 @@ class OptionsTournoi extends React.Component {
     this.state = {
       speciauxIncompatibles: true,
       memesEquipes: true,
-      memesAdversaires: true,
+      memesAdversaires: 50,
       complement: "3",
       nbTours: 5,
       nbPtVictoire: 13,
@@ -128,7 +128,7 @@ class OptionsTournoi extends React.Component {
                 </Checkbox>
               </VStack>
               <VStack>
-                <Text color="white" fontSize="md">Les joueurs peuvent jouer contre et ensemble au maximum :</Text>
+                <Text color="white" fontSize="md">Les joueurs peuvent avoir le même adversaire au maximum :</Text>
                 <HStack justifyContent="space-between">
                   <Text color="white">1 seul match</Text>
                   <Text color="white">100% des matchs</Text>
@@ -139,7 +139,7 @@ class OptionsTournoi extends React.Component {
                   defaultValue={50}
                   step={50}
                   accessibilityLabel="Choix mêmes coéquipiers et mêmes adversaires"
-                  onChangeEnd={v => {v && this.setState({memesAdversaires: !this.state.memesAdversaires})}}
+                  onChangeEnd={v => {this.setState({memesAdversaires: v})}}
                 >
                   <Slider.Track >
                     <Slider.FilledTrack bg="#1c3969"/>

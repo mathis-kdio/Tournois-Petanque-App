@@ -303,7 +303,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
       if (random[j] != undefined) {
         //Test si le joueur 1 ou 2 n'a pas déjà joué (ensemble et contre) + de la moitié de ses matchs contre le joueur en cours d'affectation
         let affectationPossible = true
-        if (eviterMemeAdversaire == true) {
+        if (eviterMemeAdversaire !== 100) {
           if (matchs[idMatch].equipe[0][0] != -1) {
             let joueur1 = matchs[idMatch].equipe[0][0];
             let joueur2 = undefined;
@@ -326,8 +326,13 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
             if (joueur2) {
               totPartiesJ2 += joueurs[joueur2].equipe.includes(random[j]) ? 1 : 0;
             }
-            let moitieNbManches = nbTours == 1 ? 1 : Math.floor(nbTours / 2);
-            if (totPartiesJ1 >= moitieNbManches || totPartiesJ2 >= moitieNbManches) {
+
+            //Règle eviterMemeAdversaire choix dans slider options (0: seul match possible, 50: la moitié des matchs, 100: tous les matchs = règle désactivée)
+            let maxNbMatchs = 1;
+            if (eviterMemeAdversaire == 50) {
+              maxNbMatchs = nbTours == 1 ? 1 : Math.floor(nbTours / 2);
+            }
+            if (totPartiesJ1 >= maxNbMatchs || totPartiesJ2 >= maxNbMatchs) {
               affectationPossible = false;
             }
           }
