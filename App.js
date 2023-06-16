@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import Store from './src/store/configureStore';
 import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/es/integration/react';
-import { NativeBaseProvider } from 'native-base';
+import { NativeBaseProvider, extendTheme } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import * as Sentry from 'sentry-expo';
@@ -28,11 +28,54 @@ Sentry.init({
 class App extends React.Component {
   navigation = React.createRef();
   render() {
+    const theme = extendTheme({
+      components: {
+        Checkbox: {
+          baseStyle: {
+            _text: {
+              color:"white"
+            },
+            bg: "cyan.600",
+            borderColor: "white",
+            _checked: {
+              borderColor: "white",
+              bg: "cyan.600",
+              _pressed: {
+                borderColor: "white",
+                bg: "cyan.600"
+              }
+            },
+            _pressed:{
+              borderColor: "white"
+            }
+          },
+          sizes: {
+            md: { _text: { fontSize: 'md' } }
+          },
+        },
+        Input: {
+          baseStyle: {
+            color: "white",
+            borderColor: "white",
+            _focus: {
+              borderColor: "white"
+            }
+          }
+        },
+        Select: {
+          baseStyle: {
+            _customDropdownIconProps: {
+              color: "white"
+            }
+          }
+        }
+      }
+    });
     let persistor = persistStore(Store);
     return (
       <Provider store={Store}>
         <PersistGate persistor={persistor}>
-          <NativeBaseProvider>
+          <NativeBaseProvider theme={theme}>
             <NavigationContainer ref={this.navigation} onReady={() => {routingInstrumentation.registerNavigationContainer(this.navigation);}}>
               <Navigation/>
               <StatusBar style="light" backgroundColor="#ffda00"/>

@@ -53,7 +53,7 @@ class ChoixModeTournoi extends React.Component {
     return (
       <Button
         bg="#1c3969"
-        disabled={bouttonDisable}
+        isDisabled={bouttonDisable}
         onPress={() => this._nextStep()}
         endIcon={<Icon as={FontAwesome5} name="arrow-right"/>}
         size="lg"
