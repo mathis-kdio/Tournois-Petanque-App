@@ -2,8 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Text, TextInput } from 'react-native'
 import { connect } from 'react-redux'
 import { FontAwesome5 } from '@expo/vector-icons';
-import { Picker } from '@react-native-picker/picker'
-import { Image } from 'native-base';
+import { CheckIcon, Image, Select, VStack } from 'native-base';
 
 class ListeJoueurItem extends React.Component {
   constructor(props) {
@@ -171,24 +170,28 @@ class ListeJoueurItem extends React.Component {
         }
       }
       return (
-        <View style={styles.picker_container}>
-          <Picker
+        <VStack flex="1" borderWidth="1">
+          <Select
             selectedValue={selectedValue}
-            onValueChange={(itemValue, itemIndex) => this._ajoutEquipe(joueur.id, itemValue)}
-            style={styles.picker}
-            dropdownIconColor="white"
+            accessibilityLabel="Choix de l'équipe"
+            placeholder="Choix de l'équipe"
+            onValueChange={itemValue => this._ajoutEquipe(joueur.id, itemValue)}
+            _selectedItem={{
+              endIcon: <CheckIcon size="5" color="cyan.500"/>
+            }}
+            size="lg"
           >
-            <Picker.Item label="Choisir" value={undefined} key="0"/>
+            <Select.Item label="Choisir" value={undefined} key="0"/>
             {pickerItem}
-          </Picker>
-        </View>
+          </Select>
+        </VStack>
       )
     }
   }
 
   _equipePickerItem(equipe) {
     return (
-      <Picker.Item label={equipe.toString()} value={equipe} key={equipe}/>
+      <Select.Item label={equipe.toString()} value={equipe} key={equipe}/>
     )
   }
 
@@ -255,10 +258,6 @@ const styles = StyleSheet.create({
     height: 50,
     paddingLeft: 5,
     color: 'white'
-  },
-  picker_container: {
-    flex: 1,
-    alignItems: 'flex-end',
   },
   picker: {
     color: 'white',
