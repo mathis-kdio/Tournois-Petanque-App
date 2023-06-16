@@ -132,9 +132,11 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
           return {erreurSpeciaux: true};
         }
         //Test si possible d'appliquer la règle jamaisMemeCoequipier
-        let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs);
-        if (!regleValide) {
-          return {erreurMemesEquipes: true};
+        if (jamaisMemeCoequipier == true) {
+          let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs);
+          if (!regleValide) {
+            return {erreurMemesEquipes: true};
+          }
         }
       }
       if (complement == "3") { //Complément triplette
@@ -144,18 +146,22 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
           return {erreurSpeciaux: true};
         }
         //Test si possible d'appliquer la règle jamaisMemeCoequipier
-        let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs);
-        if (!regleValide) {
-          return {erreurMemesEquipes: true};
+        if (jamaisMemeCoequipier == true) {
+          let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs);
+          if (!regleValide) {
+            return {erreurMemesEquipes: true};
+          }
         }
       }
     }
   }
   else if (speciauxIncompatibles == false && typeEquipes == "doublette") {
     //Test si possible d'appliquer la règle jamaisMemeCoequipier
-    let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, 0, 0, 0, nbjoueurs);
-    if (!regleValide) {
-      return {erreurMemesEquipes: true};
+    if (jamaisMemeCoequipier == true) {
+      let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, 0, 0, 0, nbjoueurs);
+      if (!regleValide) {
+        return {erreurMemesEquipes: true};
+      }
     }
   }
 
