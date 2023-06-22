@@ -132,9 +132,11 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
           return {erreurSpeciaux: true};
         }
         //Test si possible d'appliquer la règle jamaisMemeCoequipier
-        let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs);
-        if (!regleValide) {
-          return {erreurMemesEquipes: true};
+        if (jamaisMemeCoequipier == true) {
+          let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs);
+          if (!regleValide) {
+            return {erreurMemesEquipes: true};
+          }
         }
       }
       if (complement == "3") { //Complément triplette
@@ -144,18 +146,22 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
           return {erreurSpeciaux: true};
         }
         //Test si possible d'appliquer la règle jamaisMemeCoequipier
-        let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs);
-        if (!regleValide) {
-          return {erreurMemesEquipes: true};
+        if (jamaisMemeCoequipier == true) {
+          let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs);
+          if (!regleValide) {
+            return {erreurMemesEquipes: true};
+          }
         }
       }
     }
   }
   else if (speciauxIncompatibles == false && typeEquipes == "doublette") {
     //Test si possible d'appliquer la règle jamaisMemeCoequipier
-    let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, 0, 0, 0, nbjoueurs);
-    if (!regleValide) {
-      return {erreurMemesEquipes: true};
+    if (jamaisMemeCoequipier == true) {
+      let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, 0, 0, 0, nbjoueurs);
+      if (!regleValide) {
+        return {erreurMemesEquipes: true};
+      }
     }
   }
 
@@ -297,7 +303,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
       if (random[j] != undefined) {
         //Test si le joueur 1 ou 2 n'a pas déjà joué (ensemble et contre) + de la moitié de ses matchs contre le joueur en cours d'affectation
         let affectationPossible = true
-        if (eviterMemeAdversaire == true) {
+        if (eviterMemeAdversaire !== 100) {
           if (matchs[idMatch].equipe[0][0] != -1) {
             let joueur1 = matchs[idMatch].equipe[0][0];
             let joueur2 = undefined;
@@ -306,7 +312,10 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
             }
             let totPartiesJ1 = 0;
             let totPartiesJ2 = 0;
-            //Compte le nombre de fois où joueur 1 ou 2 a été l'adverse de joueur en affectation + ou bien si joueur 3 ou 4 a été l'adverse de joueur en affectation
+            //Compte le nombre de fois où dans des matchs :
+            //Si le joueur en affectation était joueur 3 ou 4 et qu'il a déjà eu le joueur 1 ou 2 comme adversaire
+            //OU
+            //Si le joueur en affectation était joueur 1 ou 2 et qu'il a déjà eu le joueur 3 ou 4 comme adversaire
             const occurrencesAdversaireDansEquipe1 = (arr, joueurAdverse, joueurAffect) => arr.reduce((a, v) => ((v.equipe[0][0] === joueurAdverse || v.equipe[0][1] === joueurAdverse) && (v.equipe[1][0] === joueurAffect || v.equipe[1][1] === joueurAffect) ? a + 1 : a), 0);
             const occurrencesAdversaireDansEquipe2 = (arr, joueurAdverse, joueurAffect) => arr.reduce((a, v) => ((v.equipe[1][0] === joueurAdverse || v.equipe[1][1] === joueurAdverse) && (v.equipe[0][0] === joueurAffect || v.equipe[0][1] === joueurAffect) ? a + 1 : a), 0);
             totPartiesJ1 += occurrencesAdversaireDansEquipe1(matchs, joueur1, random[j]);
@@ -320,8 +329,13 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
             if (joueur2) {
               totPartiesJ2 += joueurs[joueur2].equipe.includes(random[j]) ? 1 : 0;
             }
-            let moitieNbManches = nbTours == 1 ? 1 : Math.floor(nbTours / 2);
-            if (totPartiesJ1 >= moitieNbManches || totPartiesJ2 >= moitieNbManches) {
+
+            //Règle eviterMemeAdversaire choix dans slider options (0: seul match possible, 50: la moitié des matchs, 100: tous les matchs = règle désactivée)
+            let maxNbMatchs = 1;
+            if (eviterMemeAdversaire == 50) {
+              maxNbMatchs = nbTours == 1 ? 1 : Math.floor(nbTours / 2);
+            }
+            if (totPartiesJ1 >= maxNbMatchs || totPartiesJ2 >= maxNbMatchs) {
               affectationPossible = false;
             }
           }

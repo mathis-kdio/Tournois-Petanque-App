@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-import { Checkbox, VStack, Button, Text, Input, Select, CheckIcon, Icon } from 'native-base';
+import { Checkbox, VStack, Button, Text, Input, Select, CheckIcon, Icon, Slider, HStack } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
 import TopBarBack from 'components/TopBarBack';
 
@@ -16,7 +16,7 @@ class OptionsTournoi extends React.Component {
     this.state = {
       speciauxIncompatibles: true,
       memesEquipes: true,
-      memesAdversaires: true,
+      memesAdversaires: 50,
       complement: "3",
       nbTours: 5,
       nbPtVictoire: 13,
@@ -84,7 +84,7 @@ class OptionsTournoi extends React.Component {
           <StatusBar backgroundColor="#0594ae"/>
           <VStack flex="1" bgColor={"#0594ae"}>
             <TopBarBack title="Options du tournoi" navigation={this.props.navigation}/>
-            <VStack px="10" space="2">
+            <VStack px="10" space="md">
               <VStack space="3">
                 <VStack>
                   <Text color="white" fontSize="md">Indiquer un nombre de tours : </Text>
@@ -126,14 +126,29 @@ class OptionsTournoi extends React.Component {
                 >
                   Ne jamais former les mêmes équipes
                 </Checkbox>
-                <Checkbox
-                  onChange={() => this.setState({memesAdversaires: !this.state.memesAdversaires})}
+              </VStack>
+              <VStack>
+                <Text color="white" fontSize="md">Les joueurs peuvent avoir le même adversaire au maximum :</Text>
+                <HStack justifyContent="space-between">
+                  <Text color="white">1 seul match</Text>
+                  <Text color="white">100% des matchs</Text>
+                </HStack>
+                <Slider
+                  minValue={0}
+                  maxValue={100}
+                  defaultValue={50}
+                  step={50}
                   accessibilityLabel="Choix mêmes coéquipiers et mêmes adversaires"
-                  defaultIsChecked
-                  size="md"
+                  onChangeEnd={v => {this.setState({memesAdversaires: v})}}
                 >
-                  Empecher 2 joueurs de jouer + de la moitié des matchs contre et ensemble
-                </Checkbox>
+                  <Slider.Track >
+                    <Slider.FilledTrack bg="#1c3969"/>
+                  </Slider.Track>
+                  <Slider.Thumb bg="#1c3969"/>
+                </Slider>
+                <HStack justifyContent="center">
+                  <Text color="white">50% des matchs</Text>
+                </HStack>
               </VStack>
               <VStack>
                 <Text color="white" fontSize="md">En doublette, si le nombre de joueur n'est pas multiple de 4 alors les joueurs en trop seront mis en :</Text>

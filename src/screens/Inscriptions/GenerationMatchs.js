@@ -16,7 +16,7 @@ class GenerationMatchs extends React.Component {
     this.nbPtVictoire = 13;
     this.speciauxIncompatibles = true;
     this.jamaisMemeCoequipier = true;
-    this.eviterMemeAdversaire = true;
+    this.eviterMemeAdversaire = 50;
     this.typeEquipes = "doublette";
     this.typeInscription = "avecNoms";
     this.complement = "3";
