@@ -64,34 +64,27 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
     Le tableau contenant les tous les joueurs permettra de connaitre dans quel équipe chaque joueur a été
   */
   for (let i = 0; i < nbjoueurs; i++) {
-    if (speciauxIncompatibles == true && typeEquipes == "doublette") {
-      if (listeJoueurs[i].type === "enfant") {
-        joueursEnfants.push({...listeJoueurs[i]});
-        joueursEnfants[joueursEnfants.length - 1].equipe = [];
+    const joueur = { ...listeJoueurs[i], equipe: [] };
+
+    if (listeJoueurs[i].type === "enfant") {
+      if (speciauxIncompatibles) {
+        joueursEnfants.push(joueur);
+      } else {
+        joueursNonType.push(joueur);
+        joueursNonSpe.push(joueur);
       }
-      else {
-        if (listeJoueurs[i].type === "tireur") {
-          joueursTireurs.push({...listeJoueurs[i]});
-          joueursTireurs[joueursTireurs.length - 1].equipe = [];
-        }
-        else if (listeJoueurs[i].type === "pointeur") {
-          joueursPointeurs.push({...listeJoueurs[i]});
-          joueursPointeurs[joueursPointeurs.length - 1].equipe = [];
-        }
-        else {
-          joueursNonType.push({...listeJoueurs[i]});
-          joueursNonType[joueursNonType.length - 1].equipe = [];
-        }
-        joueursNonSpe.push({...listeJoueurs[i]});
-        joueursNonSpe[joueursNonSpe.length - 1].equipe = [];
+    } else {
+      if (listeJoueurs[i].type === "tireur") {
+        joueursTireurs.push(joueur);
+      } else if (listeJoueurs[i].type === "pointeur") {
+        joueursPointeurs.push(joueur);
+      } else {
+        joueursNonType.push(joueur);
       }
+      joueursNonSpe.push(joueur);
     }
-    else {
-      joueursNonSpe.push({...listeJoueurs[i]});
-      joueursNonSpe[joueursNonSpe.length - 1].equipe = [];
-    }
-    joueurs.push({...listeJoueurs[i]});
-    joueurs[i].equipe = [];
+
+    joueurs.push(joueur);
   }
   let nbJoueursSpe = joueursEnfants.length;
   //Test si mode doublette et qu'il faut compléter
@@ -185,9 +178,11 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
   }
   //Sinon si la règle est désactivée alors les joueurs enfants et les non enfants sont regroupés
   else {
-    joueursNonSpe.splice(0, joueursNonSpe.length)
+    joueursNonSpe.splice(0, joueursNonSpe.length);
+    joueursNonType.splice(0, joueursNonType.length);
     for (let i = 0; i < nbjoueurs; i++) {
       joueursNonSpe.push({...listeJoueurs[i]});
+      joueursNonType.push({...listeJoueurs[i]});
     }
   }
 
