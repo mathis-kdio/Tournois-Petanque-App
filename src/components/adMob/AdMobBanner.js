@@ -1,3 +1,4 @@
+import { VStack } from 'native-base';
 import * as React from 'react';
 import { BannerAd, BannerAdSize, TestIds, AdsConsent } from 'react-native-google-mobile-ads';
 
@@ -36,13 +37,15 @@ class AdMobBanner extends React.Component {
     }
     if (!unitId) return;
     return (
-      <BannerAd
-        unitId={unitId}
-        size={BannerAdSize.FULL_BANNER}
-        requestOptions={{
-          requestNonPersonalizedAdsOnly: this.state.personalisedAds
-        }}
-      />
+      <VStack alignItems="center">
+        <BannerAd
+          unitId={unitId}
+          size={BannerAdSize.FULL_BANNER}
+          requestOptions={{
+            requestNonPersonalizedAdsOnly: this.state.personalisedAds
+          }}
+        />
+      </VStack>
     )
   }
 }
