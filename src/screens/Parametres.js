@@ -5,6 +5,7 @@ import { _openURL } from 'utils/link'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
 import { HStack, VStack, Text, Spacer, FlatList, Divider, AlertDialog, Pressable, Box, Center, Button, Modal } from 'native-base'
+import { AdsConsent } from 'react-native-google-mobile-ads';
 import TopBarBack from 'components/TopBarBack'
 import { FontAwesome5 } from '@expo/vector-icons';
 import ChangelogData from '@assets/ChangelogData.json'
@@ -132,7 +133,9 @@ class Parametres extends React.Component {
             </VStack>
             <VStack>
               <Text fontSize="xl" color="white">Réglages</Text>
-              <Box borderWidth="1" borderColor="red.500" borderRadius="lg">
+              <Box borderWidth="1" borderColor="white" borderRadius="lg">
+              {this._item("Modifier le consentement", () => AdsConsent.showForm(), "ad", undefined)}
+                <Divider/>
                 {this._item("Supprimer toutes les données", () => this.setState({alertOpen: true}), "trash-alt", "danger")}
               </Box>
             </VStack>
