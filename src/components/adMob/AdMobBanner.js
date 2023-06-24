@@ -6,7 +6,7 @@ class AdMobBanner extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      personalisedAds: true
+      nonPersonalizedAdsOnly: false
     }
   }
 
@@ -17,7 +17,7 @@ class AdMobBanner extends React.Component {
     } = await AdsConsent.getUserChoices();
 
     if (selectPersonalisedAds === false || createAPersonalisedAdsProfile == false) {
-      this.setState({personalisedAds: false});
+      this.setState({nonPersonalizedAdsOnly: true});
     }
   }
   
@@ -42,7 +42,7 @@ class AdMobBanner extends React.Component {
           unitId={unitId}
           size={BannerAdSize.FULL_BANNER}
           requestOptions={{
-            requestNonPersonalizedAdsOnly: this.state.personalisedAds
+            requestNonPersonalizedAdsOnly: this.state.nonPersonalizedAdsOnly
           }}
         />
       </VStack>
