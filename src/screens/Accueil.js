@@ -10,7 +10,6 @@ import { Box, HStack, VStack, Text, Pressable, Spacer, Modal, Image } from 'nati
 import { StatusBar } from 'expo-status-bar';
 import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import { AdsConsent, AdsConsentStatus, mobileAds } from 'react-native-google-mobile-ads';
-import mobileAds from 'react-native-google-mobile-ads';
 import CardButton from 'components/buttons/CardButton';
 
 class Accueil extends React.Component {
