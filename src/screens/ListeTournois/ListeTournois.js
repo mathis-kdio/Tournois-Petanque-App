@@ -60,7 +60,7 @@ class ListeTournois extends React.Component {
                 <Text style={modalStyles.modalText}>Nombre de points pour la victoire: {nbPtVictoire}</Text>
                 <Text style={modalStyles.modalText}>Si complément: {tournoiOptions.complement}</Text>
                 <Text style={modalStyles.modalText}>Empêcher les mêmes équipes: {tournoiOptions.memesEquipes ? "Oui" : "Non"}</Text>
-                <Text style={modalStyles.modalText}>Empêcher les mêmes adversaires: {tournoiOptions.memesAdversaires ? "Oui" : "Non"}</Text>
+                <Text style={modalStyles.modalText}>Les joueurs peuvent avoir le même adversaire au maximum: {tournoiOptions.memesAdversaires === 0 ? "1 match" : tournoiOptions.memesAdversaires+"% des matchs"}</Text>
                 <Text style={modalStyles.modalText}>Les joueurs enfants sont incompatibles: {tournoiOptions.speciauxIncompatibles ? "Oui" : "Non"}</Text>
               </View>
               <View style={styles.buttonView}>

@@ -4,7 +4,6 @@ export const generationTriplettes = (listeJoueurs, nbTours) => {
   let nbjoueurs = listeJoueurs.length;
   let speciauxIncompatibles = true
   let jamaisMemeCoequipier = true;
-  let eviterMemeAdversaire = true;
   let equipe = "triplette"
   let matchs = [];
   let idMatch = 0;

@@ -1,7 +1,6 @@
 
 export const generationAvecEquipes = (listeJoueurs, nbTours, typeEquipes) => {
   let nbjoueurs = listeJoueurs.length;
-  let eviterMemeAdversaire = true;
   let matchs = [];
   let idMatch = 0;
   let equipe = []
@@ -72,18 +71,15 @@ export const generationAvecEquipes = (listeJoueurs, nbTours, typeEquipes) => {
       }
       //Affectation Equipe 2
       if (matchs[idMatch].equipe[1][0] == -1) {
-        //Test si les équipes 1 et 2 n'ont pas déjà jouées ensemble
-        if (eviterMemeAdversaire == true) {
-          matchs[idMatch].equipe[1][0] = equipe[randomEquipesIds[j]][0]
-          if (typeEquipes == "doublette" || typeEquipes == "triplette") {
-            matchs[idMatch].equipe[1][1] = equipe[randomEquipesIds[j]][1]
-          }
-          if (typeEquipes == "triplette") {
-            matchs[idMatch].equipe[1][2] = equipe[randomEquipesIds[j]][2]
-          }
-          j++
-          breaker = 0
+        matchs[idMatch].equipe[1][0] = equipe[randomEquipesIds[j]][0]
+        if (typeEquipes == "doublette" || typeEquipes == "triplette") {
+          matchs[idMatch].equipe[1][1] = equipe[randomEquipesIds[j]][1]
         }
+        if (typeEquipes == "triplette") {
+          matchs[idMatch].equipe[1][2] = equipe[randomEquipesIds[j]][2]
+        }
+        j++
+        breaker = 0
       }
       else {
         breaker++
