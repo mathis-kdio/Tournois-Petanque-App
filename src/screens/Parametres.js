@@ -134,7 +134,7 @@ class Parametres extends React.Component {
             <VStack>
               <Text fontSize="xl" color="white">Réglages</Text>
               <Box borderWidth="1" borderColor="white" borderRadius="lg">
-              {this._item("Modifier le consentement", () => AdsConsent.showForm(), "ad", undefined)}
+                {this._item("Modifier le consentement", () => AdsConsent.showForm(), "ad", undefined)}
                 <Divider/>
                 {this._item("Supprimer toutes les données", () => this.setState({alertOpen: true}), "trash-alt", "danger")}
               </Box>

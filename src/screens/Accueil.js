@@ -9,7 +9,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Box, HStack, VStack, Text, Pressable, Spacer, Modal, Image } from 'native-base';
 import { StatusBar } from 'expo-status-bar';
 import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
-import { AdsConsent, AdsConsentStatus, mobileAds } from 'react-native-google-mobile-ads';
+import { AdsConsent, AdsConsentStatus } from 'react-native-google-mobile-ads';
+import mobileAds from 'react-native-google-mobile-ads';
 import CardButton from 'components/buttons/CardButton';
 
 class Accueil extends React.Component {
