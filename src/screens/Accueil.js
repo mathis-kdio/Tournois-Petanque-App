@@ -8,6 +8,9 @@ import { _openPlateformLink, _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Box, HStack, VStack, Text, Pressable, Spacer, Modal, Image } from 'native-base';
 import { StatusBar } from 'expo-status-bar';
+import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import { AdsConsent, AdsConsentStatus } from 'react-native-google-mobile-ads';
+import mobileAds from 'react-native-google-mobile-ads';
 import CardButton from 'components/buttons/CardButton';
 
 class Accueil extends React.Component {
@@ -38,6 +41,27 @@ class Accueil extends React.Component {
         this.setState({modalVisible: true});
       }
     })
+
+    if (Platform.OS === 'android') {
+      mobileAds().initialize().then(async adapterStatuses => {console.log(adapterStatuses)});
+    }
+    else if (Platform.OS === 'ios') {
+      check(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY).then(async result => {
+        if (result === RESULTS.DENIED) {
+          request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY).then(async res => {
+            if (res === RESULTS.GRANTED) {
+              mobileAds().initialize().then(async adapterStatuses => {console.log(adapterStatuses)});
+            }
+          });
+        }
+      });
+    }
+
+    AdsConsent.requestInfoUpdate().then(async consentInfo => {
+      if (consentInfo.isConsentFormAvailable && consentInfo.status === AdsConsentStatus.REQUIRED) {
+        AdsConsent.showForm().then(async status => {console.log(status)});
+      }
+    });
   }
 
   componentDidUpdate() {
