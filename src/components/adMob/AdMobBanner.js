@@ -22,14 +22,14 @@ class AdMobBanner extends React.Component {
   
   render() {
     let unitId = undefined;
-    if (Platform.OS === 'android') {
+    if (__DEV__) {
+      unitId = TestIds.BANNER;
+    }
+    else if (Platform.OS === 'android') {
       unitId = "ca-app-pub-4863676282747598/3937725790";
     }
     else if (Platform.OS === 'ios') {
       unitId = "ca-app-pub-4863676282747598/3784972118";
-    }
-    else if (__DEV__) {
-      unitId = TestIds.BANNER;
     }
     else {
       console.log("Plateforme non prise en charge pour admob banner");
