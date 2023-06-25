@@ -37,10 +37,9 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.MK.PetanqueGCU",
-      "versionCode": 74,
-      "permissions": [],
-      "blockedPermissions": [
-        "android.permission.REQUEST_INSTALL_PACKAGES"
+      "versionCode": 78,
+      "permissions": [
+        "com.google.android.gms.permission.AD_ID"
       ],
       "userInterfaceStyle": "light"
     },
