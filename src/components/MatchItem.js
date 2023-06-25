@@ -10,6 +10,15 @@ class MatchItem extends React.Component {
     }
   }
 
+  _displayTitle(match) {
+    return (
+      match.terrain ? 
+      <Text style={styles.title}>{(match.terrain.name)}</Text>
+      :
+      <Text style={styles.title}>Partie n°{(match.id + 1)}</Text>
+    )
+  }
+
   _displayEquipe(equipe, match, nbPtVictoire) {
     let nomsJoueurs = []
     for (let i = 0; i < 3; i++) {
@@ -69,8 +78,7 @@ class MatchItem extends React.Component {
           onPress={() => displayDetailForMatch(match.id, match )}>
           <View style={styles.content_container}>
             <View>
-              <Text style={styles.title}>Partie n°{(match.id + 1)}</Text>
-              {match.terrain && <Text style={styles.title}>{(match.terrain.name)}</Text>}
+            {this._displayTitle(match)}
             </View>
             <View style={styles.equipe_container}>
               <View style={styles.equipe1}>
