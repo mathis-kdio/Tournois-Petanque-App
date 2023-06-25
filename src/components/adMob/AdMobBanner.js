@@ -40,7 +40,7 @@ class AdMobBanner extends React.Component {
       <VStack alignItems="center">
         <BannerAd
           unitId={unitId}
-          size={BannerAdSize.FULL_BANNER}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
           requestOptions={{
             requestNonPersonalizedAdsOnly: this.state.nonPersonalizedAdsOnly
           }}

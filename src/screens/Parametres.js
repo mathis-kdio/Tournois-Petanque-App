@@ -88,6 +88,14 @@ class Parametres extends React.Component {
     }
   }
 
+  _adsConsentShowForm() {
+    AdsConsent.requestInfoUpdate().then(async consentInfo => {
+      if (consentInfo.isConsentFormAvailable) {
+        AdsConsent.showForm().then(async status => {console.log(status)});
+      }
+    });
+  }
+
   _item(text, action, icon, type) {
     let colorTxt = "white";
     let btnColor = "white";
@@ -134,7 +142,7 @@ class Parametres extends React.Component {
             <VStack>
               <Text fontSize="xl" color="white">Réglages</Text>
               <Box borderWidth="1" borderColor="white" borderRadius="lg">
-                {this._item("Modifier le consentement", () => AdsConsent.showForm(), "ad", undefined)}
+                {this._item("Modifier le consentement", () => this._adsConsentShowForm(), "ad", undefined)}
                 <Divider/>
                 {this._item("Supprimer toutes les données", () => this.setState({alertOpen: true}), "trash-alt", "danger")}
               </Box>
