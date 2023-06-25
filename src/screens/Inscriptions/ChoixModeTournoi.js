@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-import { VStack, Button, Text, Radio, Icon } from 'native-base';
+import { VStack, Button, Text, Radio, Icon, Spacer } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
 import TopBarBack from 'components/TopBarBack';
 import AdMobBanner from 'components/adMob/AdMobBanner';
@@ -106,8 +106,10 @@ class ChoixModeTournoi extends React.Component {
             </VStack>
             {this._modeTournoi()}
             {this._validButton()}
+            <Spacer/>
+            <AdMobBanner/>
+            <Spacer/>
           </VStack>
-          <AdMobBanner/>
         </VStack>
       </SafeAreaView>
     )

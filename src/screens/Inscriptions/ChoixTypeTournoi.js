@@ -92,8 +92,9 @@ class ChoixTypeTournoi extends React.Component {
               <Text color="white"> En savoir plus</Text>
             </Pressable>
             <Spacer/>
+            <AdMobBanner/>
+            <Spacer/>
           </VStack>
-          <AdMobBanner/>
         </VStack>
         {this._modalInfos()}
       </SafeAreaView>
