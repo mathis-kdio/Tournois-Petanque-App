@@ -33,6 +33,15 @@ class MatchDetail extends React.Component {
     })
   }
 
+  _displayTitle(match) {
+    return (
+      match.terrain ? 
+      <Text style={styles.title}>{(match.terrain.name)}</Text>
+      :
+      <Text style={styles.title}>Partie n°{(match.id + 1)}</Text>
+    )
+  }
+
   _displayName = (joueurNumber) => {
     let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs
     let joueur = listeJoueurs.find(item => item.id === joueurNumber)
@@ -123,8 +132,7 @@ class MatchDetail extends React.Component {
           <View style={styles.body_container}>
             <View style={styles.content_container} >
               <View>
-                <Text style={styles.title}>Partie n°{(this.state.match + 1)}</Text>
-                {match.terrain && <Text style={styles.title}>{match.terrain.name}</Text>}
+                {this._displayTitle(match)}
               </View>
               <View style={styles.equipe_container}>
                 <View style={styles.equipe1}>
