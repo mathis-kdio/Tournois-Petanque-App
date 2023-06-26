@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-import { Checkbox, VStack, Button, Text, Input, Select, CheckIcon, Icon, Slider, HStack } from 'native-base';
+import { Checkbox, VStack, Button, Text, Input, Select, CheckIcon, Icon, Slider, HStack, ScrollView } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
 import TopBarBack from 'components/TopBarBack';
 
@@ -81,105 +81,107 @@ class OptionsTournoi extends React.Component {
     return (
       <KeyboardAwareScrollView contentContainerStyle={{flex: 1}}>
         <SafeAreaView style={{flex: 1}}>
-          <StatusBar backgroundColor="#0594ae"/>
-          <VStack flex="1" bgColor={"#0594ae"}>
-            <TopBarBack title="Options du tournoi" navigation={this.props.navigation}/>
-            <VStack px="10" space="md">
-              <VStack space="3">
-                <VStack>
-                  <Text color="white" fontSize="md">Indiquer un nombre de tours : </Text>
-                  <Input
-                    placeholderTextColor='white'
-                    placeholder="Veuillez indiquer un nombre"
-                    keyboardType="numeric"
-                    defaultValue={this.nbToursTxt}
-                    onChangeText={(text) => this._nbToursTxtInputChanged(text)}
-                    size="lg"
-                  />
+          <ScrollView bgColor="#0594ae">
+            <StatusBar backgroundColor="#0594ae"/>
+            <VStack flex="1">
+              <TopBarBack title="Options du tournoi" navigation={this.props.navigation}/>
+              <VStack px="10" space="md">
+                <VStack space="3">
+                  <VStack>
+                    <Text color="white" fontSize="md">Indiquer un nombre de tours : </Text>
+                    <Input
+                      placeholderTextColor='white'
+                      placeholder="Veuillez indiquer un nombre"
+                      keyboardType="numeric"
+                      defaultValue={this.nbToursTxt}
+                      onChangeText={(text) => this._nbToursTxtInputChanged(text)}
+                      size="lg"
+                    />
+                  </VStack>
+                  <VStack>
+                    <Text color="white" fontSize="md">Indiquer le nombre de points pour gagner : </Text>
+                    <Input
+                      placeholderTextColor='white'
+                      placeholder="Veuillez indiquer un nombre"
+                      keyboardType="numeric"
+                      defaultValue={this.nbPtVictoireTxt}
+                      onChangeText={(text) => this._nbPtVictoireTxtInputChanged(text)}
+                      size="lg"
+                    />
+                  </VStack>
+                </VStack>
+                <VStack space="5">
+                  <Checkbox
+                    onChange={() => this.setState({speciauxIncompatibles: !this.state.speciauxIncompatibles})}
+                    accessibilityLabel="Choix enfants dans équipes différentes"
+                    defaultIsChecked
+                    size="md"
+                  >
+                    Ne jamais faire jouer 2 enfants dans la même équipe
+                  </Checkbox>
+                  <Checkbox
+                    onChange={() => this.setState({memesEquipes: !this.state.memesEquipes})}
+                    accessibilityLabel="Choix ne jamais former les mêmes équipes"
+                    defaultIsChecked
+                    size="md"
+                  >
+                    Ne jamais former les mêmes équipes
+                  </Checkbox>
                 </VStack>
                 <VStack>
-                  <Text color="white" fontSize="md">Indiquer le nombre de points pour gagner : </Text>
-                  <Input
-                    placeholderTextColor='white'
-                    placeholder="Veuillez indiquer un nombre"
-                    keyboardType="numeric"
-                    defaultValue={this.nbPtVictoireTxt}
-                    onChangeText={(text) => this._nbPtVictoireTxtInputChanged(text)}
-                    size="lg"
-                  />
+                  <Text color="white" fontSize="md">Les joueurs peuvent avoir le même adversaire au maximum :</Text>
+                  <HStack justifyContent="space-between">
+                    <Text color="white">1 seul match</Text>
+                    <Text color="white">100% des matchs</Text>
+                  </HStack>
+                  <Slider
+                    minValue={0}
+                    maxValue={100}
+                    defaultValue={50}
+                    step={50}
+                    accessibilityLabel="Choix mêmes coéquipiers et mêmes adversaires"
+                    onChangeEnd={v => {this.setState({memesAdversaires: v})}}
+                  >
+                    <Slider.Track >
+                      <Slider.FilledTrack bg="#1c3969"/>
+                    </Slider.Track>
+                    <Slider.Thumb bg="#1c3969"/>
+                  </Slider>
+                  <HStack justifyContent="center">
+                    <Text color="white">50% des matchs</Text>
+                  </HStack>
                 </VStack>
-              </VStack>
-              <VStack space="5">
-                <Checkbox
-                  onChange={() => this.setState({speciauxIncompatibles: !this.state.speciauxIncompatibles})}
-                  accessibilityLabel="Choix enfants dans équipes différentes"
-                  defaultIsChecked
-                  size="md"
-                >
-                  Ne jamais faire jouer 2 enfants dans la même équipe
-                </Checkbox>
-                <Checkbox
-                  onChange={() => this.setState({memesEquipes: !this.state.memesEquipes})}
-                  accessibilityLabel="Choix ne jamais former les mêmes équipes"
-                  defaultIsChecked
-                  size="md"
-                >
-                  Ne jamais former les mêmes équipes
-                </Checkbox>
-              </VStack>
-              <VStack>
-                <Text color="white" fontSize="md">Les joueurs peuvent avoir le même adversaire au maximum :</Text>
-                <HStack justifyContent="space-between">
-                  <Text color="white">1 seul match</Text>
-                  <Text color="white">100% des matchs</Text>
-                </HStack>
-                <Slider
-                  minValue={0}
-                  maxValue={100}
-                  defaultValue={50}
-                  step={50}
-                  accessibilityLabel="Choix mêmes coéquipiers et mêmes adversaires"
-                  onChangeEnd={v => {this.setState({memesAdversaires: v})}}
-                >
-                  <Slider.Track >
-                    <Slider.FilledTrack bg="#1c3969"/>
-                  </Slider.Track>
-                  <Slider.Thumb bg="#1c3969"/>
-                </Slider>
-                <HStack justifyContent="center">
-                  <Text color="white">50% des matchs</Text>
-                </HStack>
-              </VStack>
-              <VStack>
-                <Text color="white" fontSize="md">En doublette, si le nombre de joueur n'est pas multiple de 4 alors les joueurs en trop seront mis en :</Text>
-                <Select
-                  selectedValue={this.state.complement}
-                  accessibilityLabel="Choix complément"
-                  placeholder="Choix complément"
-                  onValueChange={itemValue => this.setState({complement: itemValue})}
-                  _selectedItem={{
-                    endIcon: <CheckIcon size="5" color="cyan.500"/>
-                  }}
-                  size="lg"
-                >
-                  <Select.Item label="Triplette" value="3"/>
-                  <Select.Item label="Tête-à-Tête" value="1"/>
-                </Select>
-              </VStack>
-              <VStack>
-                <Checkbox
-                  onChange={() => this.setState({avecTerrains: !this.state.avecTerrains})}
-                  accessibilityLabel="Choix avec ou sans terrains"
-                  size="md"
-                >
-                  Avant de lancer le tournoi, créer une liste de terrains qui seront attribués aux matchs
-                </Checkbox>
-              </VStack>
-              <VStack>
-                {this._boutonValider()}
+                <VStack>
+                  <Text color="white" fontSize="md">En doublette, si le nombre de joueur n'est pas multiple de 4 alors les joueurs en trop seront mis en :</Text>
+                  <Select
+                    selectedValue={this.state.complement}
+                    accessibilityLabel="Choix complément"
+                    placeholder="Choix complément"
+                    onValueChange={itemValue => this.setState({complement: itemValue})}
+                    _selectedItem={{
+                      endIcon: <CheckIcon size="5" color="cyan.500"/>
+                    }}
+                    size="lg"
+                  >
+                    <Select.Item label="Triplette" value="3"/>
+                    <Select.Item label="Tête-à-Tête" value="1"/>
+                  </Select>
+                </VStack>
+                <VStack>
+                  <Checkbox
+                    onChange={() => this.setState({avecTerrains: !this.state.avecTerrains})}
+                    accessibilityLabel="Choix avec ou sans terrains"
+                    size="md"
+                  >
+                    Avant de lancer le tournoi, créer une liste de terrains qui seront attribués aux matchs
+                  </Checkbox>
+                </VStack>
+                <VStack>
+                  {this._boutonValider()}
+                </VStack>
               </VStack>
             </VStack>
-          </VStack>
+          </ScrollView>
         </SafeAreaView>
       </KeyboardAwareScrollView>
     )
