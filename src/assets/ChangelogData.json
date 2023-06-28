@@ -1,5 +1,16 @@
 [
   {
+    "id":"21",
+    "version": "1.13.0",
+    "infos": [
+      "- Options pour affecter les matchs à des terrains.\n",
+      "- Nouvelles pages de : Paramètres, Type de tournoi, Mode de tournoi, Options de tournoi.\n",
+      "- Amélioration de l'option « Sans mêmes adversaires ».\n",
+      "- Correction de la génération des tournois en mêlée-démêlée.\n",
+      "- Corrections de l'affichage du type de joueur.\n"
+    ]
+  },
+  {
     "id":"20",
     "version": "1.12.0",
     "infos": [

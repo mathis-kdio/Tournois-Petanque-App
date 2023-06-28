@@ -14,9 +14,7 @@
     },
     "production": {
       "channel": "production",
-      "android": {
-        "autoIncrement": true
-      }
+      "autoIncrement": true
     }
   },
   "submit": {
