@@ -10,6 +10,7 @@ import { Box, HStack, VStack, Text, Pressable, Spacer, Modal, Image } from 'nati
 import { StatusBar } from 'expo-status-bar';
 import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import { AdsConsent, AdsConsentStatus } from 'react-native-google-mobile-ads';
+import { withTranslation } from 'react-i18next';
 import mobileAds from 'react-native-google-mobile-ads';
 import CardButton from 'components/buttons/CardButton';
 
@@ -164,6 +165,7 @@ class Accueil extends React.Component {
   }
 
   render() {
+    const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
         <StatusBar backgroundColor="#0594ae"/>
@@ -178,7 +180,7 @@ class Accueil extends React.Component {
             </HStack>
             <HStack>
               <CardButton
-                text="Nouveau Tournoi"
+                text={t("nouveau_tournoi")}
                 icon="plus"
                 navigate={() => this._navigate('InscriptionStack')}
               />
@@ -246,4 +248,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(Accueil)
+export default connect(mapStateToProps)(withTranslation()(Accueil))

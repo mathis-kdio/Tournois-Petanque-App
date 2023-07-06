@@ -5,9 +5,10 @@ import { _openURL } from 'utils/link'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
 import { HStack, VStack, Text, Spacer, FlatList, Divider, AlertDialog, Pressable, Box, Center, Button, Modal } from 'native-base'
-import { AdsConsent } from 'react-native-google-mobile-ads';
-import TopBarBack from 'components/TopBarBack'
 import { FontAwesome5 } from '@expo/vector-icons';
+import { AdsConsent } from 'react-native-google-mobile-ads';
+import { withTranslation } from "react-i18next";
+import TopBarBack from 'components/TopBarBack'
 import ChangelogData from '@assets/ChangelogData.json'
 
 class Parametres extends React.Component {
@@ -125,11 +126,12 @@ class Parametres extends React.Component {
   }
 
   render() {
+    const { t, i18n } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
         <StatusBar backgroundColor="#0594ae"/>
         <VStack flex="1" bgColor={"#0594ae"}>
-          <TopBarBack title="Paramètres" navigation={this.props.navigation}/>
+          <TopBarBack title={t("parametres")} navigation={this.props.navigation}/>
           <VStack flex="1" px="10" space="4">
             <VStack>
               <Text fontSize="xl" color="white">À propos</Text>
@@ -142,6 +144,10 @@ class Parametres extends React.Component {
             <VStack>
               <Text fontSize="xl" color="white">Réglages</Text>
               <Box borderWidth="1" borderColor="white" borderRadius="lg">
+                {this._item("Français", () => i18n.changeLanguage("fr-FR"), "flag", undefined)}
+                <Divider/>
+                {this._item("English", () => i18n.changeLanguage("en-US"), "flag-usa", undefined)}
+                <Divider/>
                 {this._item("Modifier le consentement", () => this._adsConsentShowForm(), "ad", undefined)}
                 <Divider/>
                 {this._item("Supprimer toutes les données", () => this.setState({alertOpen: true}), "trash-alt", "danger")}
@@ -181,4 +187,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(Parametres)
+export default connect(mapStateToProps)(withTranslation()(Parametres))
