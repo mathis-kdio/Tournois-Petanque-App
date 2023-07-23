@@ -1,19 +1,21 @@
 import React from 'react'
+import { withTranslation } from 'react-i18next'
 import { StyleSheet, View, Text, Image } from 'react-native'
 import { connect } from 'react-redux'
 
 class ListeResultatItem extends React.Component {
 
   _displayName(joueurId) {
+    const { t } = this.props;
     let joueur = {}
     let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs
     joueur = listeJoueurs.find(item => item.id === joueurId)
     let joueurName = "";
     if (joueur.name === undefined) {
-      joueurName = "Sans Nom" + ' (' + (joueur.id+1) + ')';
+      joueurName = t("sans_nom") + ' (' + (joueur.id+1) + ')';
     }
     else if (joueur.name == "") {
-      joueurName = "Joueur " + (joueur.id+1);
+      joueurName = t("joueur") + " " + (joueur.id+1);
     }
     else {
       joueurName = joueur.name + ' (' + (joueur.id+1) + ')';
@@ -49,7 +51,7 @@ class ListeResultatItem extends React.Component {
   }
 
   render() {
-    let { joueur } = this.props;
+    const { joueur } = this.props;
     return (
       <View style={styles.main_container}>
         <View style={styles.position_nom_container}>
@@ -115,4 +117,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(ListeResultatItem)
+export default connect(mapStateToProps)(withTranslation()(ListeResultatItem))

@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import { rankingCalc } from '@utils/ranking';
+import { withTranslation } from 'react-i18next';
 
 class PDFExport extends React.Component {
   constructor(props) {
@@ -175,9 +176,10 @@ class PDFExport extends React.Component {
   }
 
   render() {
+    const { t } = this.props;
     let warningText = "";
     if (this.props.listeMatchs[this.props.listeMatchs.length - 1].typeTournoi == "coupe") {
-      warningText = "Export désactivé en mode coupe !";
+      warningText = t("export_coupe_desactive");
     }
     return (
       <View style={styles.main_container}>
@@ -186,13 +188,13 @@ class PDFExport extends React.Component {
             <Text style={styles.warning_text}>{warningText}</Text>
           </View>
           <View style={styles.buttonView}>
-            {this._exportButton(0, "Exporter en PDF (sans scores)", false, false)}
+            {this._exportButton(0, t("export_pdf_sans_scores"), false, false)}
           </View>
           <View style={styles.buttonView}>
-            {this._exportButton(1, "Exporter en PDF (avec scores)", true, false)}
+            {this._exportButton(1, t("export_pdf_avec_scores"), true, false)}
           </View>
           <View style={styles.buttonView}>
-            {this._exportButton(2, "Exporter en PDF (avec scores + classement)", true, true)}
+            {this._exportButton(2, t("export_pdf_avec_scores_classement"), true, true)}
           </View>
         </View>
       </View>
@@ -247,4 +249,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(PDFExport)
+export default connect(mapStateToProps)(withTranslation()(PDFExport))

@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Button, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import ListeTerrainItem from '@components/ListeTerrainItem';
 import { calcNbMatchsParTour } from 'utils/generations/generation';
+import { withTranslation } from 'react-i18next';
 
 class ListeTerrains extends React.Component {
 
@@ -16,20 +17,22 @@ class ListeTerrains extends React.Component {
   }
 
   _ajoutTerrainButton() {
+    const { t } = this.props;
     return (
       <View style={styles.ajoutTerrain_container}>
-        <Button color="green" title="Ajouter un terrain" onPress={() => this._ajoutTerrains()}/>
+        <Button color="green" title={t("ajouter_terrain")} onPress={() => this._ajoutTerrains()}/>
       </View>
     )
   }
 
   _commencerButton() {
+    const { t } = this.props;
     const { typeEquipes, mode, type, complement } = this.props.optionsTournoi;
     const { listesJoueurs, listeTerrains } = this.props;
     const nbJoueurs = listesJoueurs[mode].length;
     const nbTerrainsNecessaires = calcNbMatchsParTour(nbJoueurs, typeEquipes, mode, type, complement);
     const disabled = listeTerrains.length < nbTerrainsNecessaires;
-    const title = disabled ? "Pas assez de terrains" : "Commencer";
+    const title = disabled ? t("terrains_insuffisants") : t("commencer");
     return (
       <Button disabled={disabled} color='green' title={title} onPress={() => this._commencer()}/>
     )
@@ -45,11 +48,12 @@ class ListeTerrains extends React.Component {
   }
 
   render() {
+    const { t } = this.props;
     return (
       <View style={styles.main_container}>
         <View style={styles.body_container}>
           <View>
-            <Text style={styles.title}>Vous avez {this.props.listeTerrains.length} terrains</Text>
+            <Text style={styles.title}>{t("nombre_terrains", {nb: this.props.listeTerrains.length})}</Text>
           </View>
           <View style={styles.flatList_container}>
             <FlatList
@@ -110,4 +114,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(ListeTerrains)
+export default connect(mapStateToProps)(withTranslation()(ListeTerrains))

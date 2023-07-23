@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Text, Button } from 'react-native'
 import { connect } from 'react-redux'
 import Inscriptions from '@components/Inscriptions';
+import { withTranslation } from 'react-i18next';
 
 class CreateListeJoueur extends React.Component {
   constructor(props) {
@@ -44,6 +45,7 @@ class CreateListeJoueur extends React.Component {
   }
 
   render() {
+    const { t } = this.props;
     let nbJoueurs = 0;
     if (this.props.listesJoueurs.sauvegarde) {
       nbJoueurs = this.props.listesJoueurs.sauvegarde.length;
@@ -51,7 +53,7 @@ class CreateListeJoueur extends React.Component {
     return (
       <View style={styles.main_container}>
           <View style={styles.text_container}>
-            <Text style={styles.titre}>Il y a {nbJoueurs} joueurs:</Text>
+            <Text style={styles.titre}>{t("nombre_joueurs", {nb: nbJoueurs})}</Text>
           </View>
           <Inscriptions
             navigation={this.props.navigation}
@@ -94,4 +96,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(CreateListeJoueur)
+export default connect(mapStateToProps)(withTranslation()(CreateListeJoueur))

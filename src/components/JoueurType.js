@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { CheckIcon, ChevronDownIcon, Select } from 'native-base';
+import { withTranslation } from 'react-i18next';
 
 class JoueurType extends React.Component {
   constructor(props) {
@@ -11,19 +12,20 @@ class JoueurType extends React.Component {
   }
 
   _selectItemList() {
+    const { t } = this.props;
     const { mode, type, typeEquipes } = this.props.optionsTournoi;
     if (mode == "sauvegarde") {
       return [
-        <Select.Item label="Tireur" value="tireur"/>,
-        <Select.Item label="Pointeur" value="pointeur"/>,
-        <Select.Item label="Milieu" value="milieu"/>
+        <Select.Item label={t("tireur")} value="tireur"/>,
+        <Select.Item label={t("pointeur")} value="pointeur"/>,
+        <Select.Item label={t("milieu")} value="milieu"/>
       ]
     }
     else if (type == "mele-demele" && typeEquipes == "doublette") {
       /*TEMPORAIRE AFFICHAGE DES POSTES TIREURS ET POINTEURS SEULEMENT EN DOUBLETTE*/
       return [
-        <Select.Item label="Tireur" value="tireur"/>,
-        <Select.Item label="Pointeur" value="pointeur"/>
+        <Select.Item label={t("tireur")} value="tireur"/>,
+        <Select.Item label={t("pointeur")} value="pointeur"/>
       ]
     }
     else {
@@ -32,12 +34,12 @@ class JoueurType extends React.Component {
   }
 
   render() {
-    const { joueurType, _setJoueurType } = this.props;
+    const { joueurType, _setJoueurType, t } = this.props;
     return (
       <Select
         selectedValue={joueurType ? joueurType : ""}
-        accessibilityLabel="Choisir un poste"
-        placeholder="Choisir un poste"
+        accessibilityLabel={t("choisir_poste")}
+        placeholder={t("choisir_poste")}
         placeholderTextColor="white"
         color="white"
         variant="rounded"
@@ -47,7 +49,7 @@ class JoueurType extends React.Component {
           endIcon: <CheckIcon size="5"/>
         }}
         onValueChange={itemValue => _setJoueurType(itemValue)}>
-        <Select.Item label="Enfant" value="enfant"/>
+        <Select.Item label={t("enfant")} value="enfant"/>
         {this._selectItemList()}
       </Select>
     )
@@ -60,4 +62,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(JoueurType)
+export default connect(mapStateToProps)(withTranslation()(JoueurType))

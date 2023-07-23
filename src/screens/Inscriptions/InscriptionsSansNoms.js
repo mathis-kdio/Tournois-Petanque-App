@@ -1,4 +1,5 @@
 import React from 'react'
+import { withTranslation } from 'react-i18next'
 import { StyleSheet, View, Text, Button, TextInput } from 'react-native'
 import { connect } from 'react-redux'
 
@@ -67,34 +68,27 @@ class InscriptionsSansNoms extends React.Component {
     return nbJoueur
   }
 
-  _showNbJoueur() {
-    let nbJoueur = this._nbJoueurs()
-    return (
-      <Text>{nbJoueur}</Text>
-    )
-  }
-
   _boutonCommencer() {
     let boutonDesactive
     let boutonTitle = ''
     let nbJoueurs = this._nbJoueurs()
     if (this.props.optionsTournoi.typeEquipes == 'doublette' || this.props.optionsTournoi.typeEquipes == "teteatete") {
       if (nbJoueurs % 2 == 0 && nbJoueurs != 0) {
-        boutonTitle = 'Commencer le tournoi'
+        boutonTitle = t("commencer_tournoi")
         boutonDesactive = false
       }
       else {
-        boutonTitle = "Nombre de joueurs n'est pas un multiple de 2"
+        boutonTitle = t("doublette_multiple_2")
         boutonDesactive = true
       }
     }
     else {
       if (nbJoueurs % 6 == 0 && nbJoueurs >= 6) {
-        boutonTitle = 'Commencer le tournoi'
+        boutonTitle = t("commencer_tournoi")
         boutonDesactive = false
       }
       else {
-        boutonTitle = "En triplette, le nombre de joueurs doit être un multiple de 6"
+        boutonTitle = t("triplette_multiple_6")
         boutonDesactive = true
       }
     }
@@ -104,11 +98,12 @@ class InscriptionsSansNoms extends React.Component {
   }
 
   render() {
+    const { t } = this.props;
     return (
       <View style={styles.main_container} >
         <View style={styles.body_container}>
           <View style={styles.nbjoueur_container}>
-            <Text style={styles.text_nbjoueur}>Il y aura {this._showNbJoueur()} joueurs</Text>
+            <Text style={styles.text_nbjoueur}>{t("nombre_joueurs", {nb: this._nbJoueurs()})}</Text>
           </View>
           <View style={styles.ajoutjoueur_container}>
             <View style={styles.textinput_ajoutjoueur_container}>
@@ -117,7 +112,7 @@ class InscriptionsSansNoms extends React.Component {
                 keyboardType={'number-pad'}
                 placeholderTextColor='white'
                 underlineColorAndroid='white'
-                placeholder="Nombre de joueurs normaux"
+                placeholder={t("nombre_joueurs_adultes")}
                 autoFocus={true}
                 blurOnSubmit={false}
                 returnKeyType={'next'}
@@ -133,14 +128,14 @@ class InscriptionsSansNoms extends React.Component {
                 keyboardType={'number-pad'}
                 placeholderTextColor='white'
                 underlineColorAndroid='white'
-                placeholder="Nombre de joueurs enfants"
+                placeholder={t("nombre_joueurs_enfants")}
                 ref={ref => {this.secondInput = ref}}
                 onChangeText={(text) => this._textInputJoueursEnfants(text)}
               />
             </View>
           </View>
           <View>
-            <Text style={styles.texte}>Les joueurs enfants sont des joueurs qui ne peuvent pas jouer dans la même équipe</Text>
+            <Text style={styles.texte}>{t("joueurs_enfants_explication")}</Text>
           </View>
           <View style={styles.buttonView}>
             {this._boutonCommencer()}
@@ -199,4 +194,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(InscriptionsSansNoms)
+export default connect(mapStateToProps)(withTranslation()(InscriptionsSansNoms))

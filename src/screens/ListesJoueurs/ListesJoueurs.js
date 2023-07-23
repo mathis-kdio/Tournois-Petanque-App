@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Text, Button, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import ListeJoueursItem from '@components/ListeJoueursItem';
+import { withTranslation } from 'react-i18next';
 
 class ListesJoueurs extends React.Component {
 
@@ -27,14 +28,16 @@ class ListesJoueurs extends React.Component {
   }
 
   _addListButton() {
+    const { t } = this.props;
     if (this.props.route.params == undefined || this.props.route.params.loadListScreen != true) {
       return(
-        <Button color="green" title="Créer une liste" onPress={() => this._addList()}/>
+        <Button color="green" title={t("creer_liste")} onPress={() => this._addList()}/>
       )
     }
   }
 
   render() {
+    const { t } = this.props;
     let nbLists = 0;
     if (this.props.savedLists) {
       nbLists += this.props.savedLists.avecEquipes.length;
@@ -45,7 +48,7 @@ class ListesJoueurs extends React.Component {
       <View style={styles.main_container}>
         <View style={styles.body_container}>
           <View>
-            <Text style={styles.title}>Vous avez {nbLists} listes</Text>
+            <Text style={styles.title}>{t("nombre_listes", {nb: nbLists})}</Text>
           </View>
           <View style={styles.createBtnView}>
             {this._addListButton()}
@@ -99,4 +102,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(ListesJoueurs)
+export default connect(mapStateToProps)(withTranslation()(ListesJoueurs))

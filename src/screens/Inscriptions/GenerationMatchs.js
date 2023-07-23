@@ -8,6 +8,7 @@ import { generationDoublettes } from 'utils/generations/tournoiDoublettes'
 import { generationTeteATete } from 'utils/generations/tournoiTeteATete'
 import { generationTriplettes } from 'utils/generations/tournoiTriplettes'
 import { uniqueValueArrayRandOrder } from "utils/generations/generation";
+import { withTranslation } from 'react-i18next'
 
 class GenerationMatchs extends React.Component {
   constructor(props) {
@@ -192,47 +193,51 @@ class GenerationMatchs extends React.Component {
   }
 
   _displayLoading() {
+    const { t } = this.props;
     if (this.state.isLoading === true) {
       return (
         <View style={styles.loading_container}>
           <ActivityIndicator size='large' color="#ffda00"/>
-          <Text style={styles.texte}>Génération des parties, veuillez patienter</Text>
+          <Text style={styles.texte}>{t("attente_generation_matchs")}</Text>
         </View>
       )
     }
   }
 
   _displayErrorGenerationFail() {
+    const { t } = this.props;
     if (this.state.isGenerationSuccess === false && this.state.isLoading === false) {
       return (
         <View style={styles.error_container}>
-          <Text style={styles.texte}>La générations n'a pas réussie, certaines options rendent la génération trop compliqué.</Text>
-          <Text style={styles.texte}>Vous pouvez essayer en désactivant l'option de ne jamais former les mêmes équipes ou d'empêcher les joueurs de trop se rencontrer</Text>
-          <Button title="Retourner à l'inscription" onPress={() => this._retourInscription()}/>
+          <Text style={styles.texte}>{t("erreur_generation_options")}</Text>
+          <Text style={styles.texte}>{t("erreur_generation_options_regles")}</Text>
+          <Button title={t("retour_inscription")} onPress={() => this._retourInscription()}/>
         </View>
       )
     }
   }
 
   _displayErreurSpeciaux() {
+    const { t } = this.props;
     if (this.state.erreurSpeciaux == true && this.state.isLoading == false) {
       return (
         <View style={styles.error_container}>
-          <Text style={styles.texte}>La générations ne peux pas fonctionner avec les options.</Text>
-          <Text style={styles.texte}>Il y a trop d'enfants ou de tireurs ou de pointeurs pour appliquer l'option de les faire jouer séparement</Text>
-          <Button title="Désactiver l'option ou enlever des enfants" onPress={() => this._retourInscription()}/>
+          <Text style={styles.texte}>{t("erreur_generation_options")}</Text>
+          <Text style={styles.texte}>{t("erreur_generation_joueurs_speciaux")}</Text>
+          <Button title={t("retour_inscription")} onPress={() => this._retourInscription()}/>
         </View>
       )
     }
   }
 
   _displayErreurMemesEquipes() {
+    const { t } = this.props;
     if (this.state.erreurMemesEquipes == true && this.state.isLoading == false) {
       return (
         <View style={styles.error_container}>
-          <Text style={styles.texte}>La générations ne peux pas fonctionner avec les options.</Text>
-          <Text style={styles.texte}>Il semble trop compliqué de ne jamais faire jouer des équipes identiques</Text>
-          <Button title="Désactiver l'option ou rajouter des joueurs ou diminuer le nombre de tours" onPress={() => this._retourInscription()}/>
+          <Text style={styles.texte}>{t("erreur_generation_options")}</Text>
+          <Text style={styles.texte}>{t("erreur_generation_regle_equipes")}</Text>
+          <Button title={t("retour_inscription")} onPress={() => this._retourInscription()}/>
         </View>
       )
     }
@@ -290,4 +295,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(GenerationMatchs)
+export default connect(mapStateToProps)(withTranslation()(GenerationMatchs))

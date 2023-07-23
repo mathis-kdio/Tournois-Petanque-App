@@ -6,6 +6,7 @@ import { VStack, Button, Text, Radio, Icon, Spacer } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
 import TopBarBack from 'components/TopBarBack';
 import AdMobBanner from 'components/adMob/AdMobBanner';
+import { withTranslation } from 'react-i18next';
 
 class ChoixModeTournoi extends React.Component {
   constructor(props) {
@@ -41,14 +42,15 @@ class ChoixModeTournoi extends React.Component {
   }
 
   _validButton() {
+    const { t } = this.props;
     let bouttonDisable = false;
-    let title = "Valider et passer aux options";
+    let title = t("valider_et_options");
     if (this.props.optionsTournoi.type === "championnat" || this.props.optionsTournoi.type === "coupe") {
-      title = "Valider et passer aux inscriptions";
+      title = t("valider_et_inscriptions");
     }
     if (this.state.modeTournoi == "avecEquipes" && this.state.typeEquipes == "teteatete") {
       bouttonDisable = true;
-      title = "Tournoi en tête à tête avec des équipes impossible";
+      title = t("erreur_tournoi_tete_a_tete_et_equipes");
     }
     return (
       <Button
@@ -64,44 +66,46 @@ class ChoixModeTournoi extends React.Component {
   }
 
   _modeTournoi() {
+    const { t } = this.props;
     if (this.props.optionsTournoi.type !== "mele-demele") return;
     return (
       <VStack>
-        <Text color="white" fontSize="2xl" textAlign="center">Mode du tournoi</Text>
+        <Text color="white" fontSize="2xl" textAlign="center">{t("mode_tournoi")}</Text>
         <Radio.Group
           name="modeTournoiRadioGroup"
-          accessibilityLabel="Choix du mode du tournoi"
+          accessibilityLabel={t("choix_mode_tournoi")}
           value={this.state.modeTournoi}
           onChange={nextValue => {this.setState({modeTournoi: nextValue})}}
           space={3}
         >
-          <Radio value="avecNoms" size="md" _text={{color:"white"}}>Mêlée-démêlée avec nom</Radio>
-          <Radio value="sansNoms" size="md" _text={{color:"white"}}>Mêlée-dêmêlée sans nom</Radio>
-          <Radio value="avecEquipes" size="md" _text={{color:"white"}}>Mêlée avec équipes constituées</Radio>
+          <Radio value="avecNoms" size="md" _text={{color:"white"}}>{t("melee_demelee_avec_nom")}</Radio>
+          <Radio value="sansNoms" size="md" _text={{color:"white"}}>{t("melee_demelee_sans_nom")}</Radio>
+          <Radio value="avecEquipes" size="md" _text={{color:"white"}}>{t("melee_avec_équipes_constituées")}</Radio>
         </Radio.Group>
       </VStack>
     )
   }
 
   render() {
+    const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
         <StatusBar backgroundColor="#0594ae"/>
         <VStack flex="1" bgColor={"#0594ae"}>
-          <TopBarBack title="Mode du tournoi" navigation={this.props.navigation}/>
+          <TopBarBack title={t("mode_tournoi")} navigation={this.props.navigation}/>
           <VStack flex="1" px="10" space="10">
             <VStack>
-              <Text color="white" fontSize="2xl" textAlign="center">Type des équipes</Text>
+              <Text color="white" fontSize="2xl" textAlign="center">{t("type_equipes")}</Text>
               <Radio.Group
                 name="typeEquipesRadioGroup"
-                accessibilityLabel="Choix du type des équipes"
+                accessibilityLabel={t("choix_type_equipes")}
                 value={this.state.typeEquipes}
                 onChange={nextValue => {this.setState({typeEquipes: nextValue})}}
                 space={3}
               >
-                <Radio value="teteatete" size="md" _text={{color:"white"}}>Tête-à-tête</Radio>
-                <Radio value="doublette" size="md" _text={{color:"white"}}>Doublettes</Radio>
-                <Radio value="triplette" size="md" _text={{color:"white"}}>Triplettes</Radio>
+                <Radio value="teteatete" size="md" _text={{color:"white"}}>{t("tete_a_tete")}</Radio>
+                <Radio value="doublette" size="md" _text={{color:"white"}}>{t("doublettes")}</Radio>
+                <Radio value="triplette" size="md" _text={{color:"white"}}>{t("triplettes")}</Radio>
               </Radio.Group>
             </VStack>
             {this._modeTournoi()}
@@ -122,4 +126,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(ChoixModeTournoi)
+export default connect(mapStateToProps)(withTranslation()(ChoixModeTournoi))

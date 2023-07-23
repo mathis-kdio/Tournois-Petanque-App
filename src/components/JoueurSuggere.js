@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { StyleSheet, View, Text, Alert } from 'react-native'
 import { FontAwesome5 } from '@expo/vector-icons';
 import JoueurType from '@components/JoueurType'
+import { withTranslation } from 'react-i18next';
 
 class JoueurSuggere extends React.Component {
   constructor(props) {
@@ -13,12 +14,13 @@ class JoueurSuggere extends React.Component {
   }
 
   _modalRemovePlayer(playerId) {
+    const { t } = this.props;
     Alert.alert(
-      "Supprimer le joueur des suggestions",
-      "Êtes-vous sûr de vouloir supprimer définitivement ce joueur des suggestions ?",
+      t("supprimer_joueur_suggestions_modal_titre"),
+      t("supprimer_joueur_suggestions_modal_texte"),
       [
-        { text: "Annuler", onPress: () => undefined, style: "cancel" },
-        { text: "Oui", onPress: () => this._removePlayer(playerId) },
+        { text: t("annuler"), onPress: () => undefined, style: "cancel" },
+        { text: t("oui"), onPress: () => this._removePlayer(playerId) },
       ],
       { cancelable: true }
     );
@@ -102,4 +104,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(JoueurSuggere)
+export default connect(mapStateToProps)(withTranslation()(JoueurSuggere))

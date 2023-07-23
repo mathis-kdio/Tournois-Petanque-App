@@ -4,6 +4,7 @@ import React from 'react'
 import { StyleSheet, View, FlatList, Text, Button, Modal } from 'react-native'
 import { connect } from 'react-redux'
 import ListeTournoiItem from '@components/ListeTournoiItem'
+import { withTranslation } from 'react-i18next'
 
 class ListeTournois extends React.Component {
   constructor(props) {
@@ -22,11 +23,12 @@ class ListeTournois extends React.Component {
   }
 
   _modalTournoiInfos() {
+    const { t } = this.props;
     let tournoi = this.state.infosTournoi;
     if (tournoi.tournoi) {
       let tournoiOptions = tournoi.tournoi[tournoi.tournoi.length - 1];
-      let creationDate = 'date inconnue';
-      let updateDate = 'date inconnue';
+      let creationDate = t("date_inconnue");
+      let updateDate = t("date_inconnue");
       moment.locale('fr');
       let dateFormat = 'd MMMM YYYY à HH:mm:ss';
       if (tournoi.creationDate) {
@@ -47,21 +49,21 @@ class ListeTournois extends React.Component {
         >
           <View style={modalStyles.centeredView}>
             <View style={modalStyles.modalView}>
-              <Text style={modalStyles.modalText}>Informations concernant le tournoi :</Text>
+              <Text style={modalStyles.modalText}>{t("informations_tournoi_modal_titre")}</Text>
               <View>
-                <Text style={modalStyles.modalText}>Id: {tournoi.tournoiId}</Text>
-                <Text style={modalStyles.modalText}>Nom: {tournoi.name}</Text>
-                <Text style={modalStyles.modalText}>Création: {creationDate}</Text>
-                <Text style={modalStyles.modalText}>Dernière modification: {updateDate}</Text>
-                <Text style={modalStyles.modalText}>Nombre de joueurs: {tournoiOptions.listeJoueurs.length}</Text>
-                <Text style={modalStyles.modalText}>Type d'équipes: {tournoiOptions.typeEquipes}</Text>
-                <Text style={modalStyles.modalText}>Nombre de tours: {tournoiOptions.nbTours}</Text>
-                <Text style={modalStyles.modalText}>Nombre de matchs: {tournoiOptions.nbMatchs}</Text>
-                <Text style={modalStyles.modalText}>Nombre de points pour la victoire: {nbPtVictoire}</Text>
-                <Text style={modalStyles.modalText}>Si complément: {tournoiOptions.complement}</Text>
-                <Text style={modalStyles.modalText}>Empêcher les mêmes équipes: {tournoiOptions.memesEquipes ? "Oui" : "Non"}</Text>
-                <Text style={modalStyles.modalText}>Les joueurs peuvent avoir le même adversaire au maximum: {tournoiOptions.memesAdversaires === 0 ? "1 match" : tournoiOptions.memesAdversaires+"% des matchs"}</Text>
-                <Text style={modalStyles.modalText}>Les joueurs enfants sont incompatibles: {tournoiOptions.speciauxIncompatibles ? "Oui" : "Non"}</Text>
+                <Text style={modalStyles.modalText}>{t("id_modal_informations_tournoi")}{tournoi.tournoiId}</Text>
+                <Text style={modalStyles.modalText}>{t("nom_modal_informations_tournoi")}{tournoi.name}</Text>
+                <Text style={modalStyles.modalText}>{t("creation_modal_informations_tournoi")}{creationDate}</Text>
+                <Text style={modalStyles.modalText}>{t("derniere_modification_modal_informations_tournoi")}{updateDate}</Text>
+                <Text style={modalStyles.modalText}>{t("nombre_joueurs_modal_informations_tournoi")}{tournoiOptions.listeJoueurs.length}</Text>
+                <Text style={modalStyles.modalText}>{t("type_equipes_modal_informations_tournoi")}{tournoiOptions.typeEquipes}</Text>
+                <Text style={modalStyles.modalText}>{t("nombre_tours_modal_informations_tournoi")}{tournoiOptions.nbTours}</Text>
+                <Text style={modalStyles.modalText}>{t("nombre_matchs_modal_informations_tournoi")}{tournoiOptions.nbMatchs}</Text>
+                <Text style={modalStyles.modalText}>{t("nombre_points_victoire_modal_informations_tournoi")}{nbPtVictoire}</Text>
+                <Text style={modalStyles.modalText}>{t("complement_modal_informations_tournoi")}{tournoiOptions.complement}</Text>
+                <Text style={modalStyles.modalText}>{t("regle_equipes_differentes_modal_informations_tournoi")}{tournoiOptions.memesEquipes ? t("oui") : t("non")}</Text>
+                <Text style={modalStyles.modalText}>{t("regle_adversaires_modal_informations_tournoi")}{tournoiOptions.memesAdversaires === 0 ? t("1_match") : t("pourcent_matchs", {pourcent: tournoiOptions.memesAdversaires})}</Text>
+                <Text style={modalStyles.modalText}>{t("regle_enfants_modal_informations_tournoi")}{tournoiOptions.speciauxIncompatibles ? t("oui") : t("non")}</Text>
               </View>
               <View style={styles.buttonView}>
                 <Button color="red" title='Fermer' onPress={() => this.setState({modalTournoiInfos: false}) }/>
@@ -74,11 +76,12 @@ class ListeTournois extends React.Component {
   }
 
   render() {
+    const { t } = this.props;
     return (
       <View style={styles.main_container}>
         <View style={styles.body_container}>
           <View>
-            <Text style={styles.titre}>Vous avez {this.props.listeTournois.length} tournois</Text>
+            <Text style={styles.titre}>{t("nombre_tournois", {nb: this.props.listeTournois.length})}</Text>
           </View>
           <View style={styles.flatList_container}>
             <FlatList
@@ -175,4 +178,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(ListeTournois)
+export default connect(mapStateToProps)(withTranslation()(ListeTournois))

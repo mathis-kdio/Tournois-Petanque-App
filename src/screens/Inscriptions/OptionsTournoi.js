@@ -6,6 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Checkbox, VStack, Button, Text, Input, Select, CheckIcon, Icon, Slider, HStack, ScrollView } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
 import TopBarBack from 'components/TopBarBack';
+import { withTranslation } from 'react-i18next';
 
 class OptionsTournoi extends React.Component {
 
@@ -58,10 +59,11 @@ class OptionsTournoi extends React.Component {
   }
 
   _boutonValider() {
+    const { t } = this.props;
     let btnDisabled = true;
-    let btnTitle = "Un des champs n'est pas valide";
+    let btnTitle = t("champ_invalide");
     if (this.state.nbTours > 0 && this.state.nbTours % 1 == 0 && this.state.nbPtVictoire > 0 && this.state.nbPtVictoire % 1 == 0) {
-      btnTitle = 'Valider et passer aux inscriptions';
+      btnTitle = t("valider_et_inscriptions");
       btnDisabled = false;
     }
     return (
@@ -78,20 +80,21 @@ class OptionsTournoi extends React.Component {
   }
 
   render() {
+    const { t } = this.props;
     return (
       <KeyboardAwareScrollView contentContainerStyle={{flex: 1}}>
         <SafeAreaView style={{flex: 1}}>
           <ScrollView bgColor="#0594ae">
             <StatusBar backgroundColor="#0594ae"/>
             <VStack flex="1">
-              <TopBarBack title="Options du tournoi" navigation={this.props.navigation}/>
+              <TopBarBack title={t("options_tournoi_title")} navigation={this.props.navigation}/>
               <VStack px="10" space="md">
                 <VStack space="3">
                   <VStack>
-                    <Text color="white" fontSize="md">Indiquer un nombre de tours : </Text>
+                    <Text color="white" fontSize="md">{t("indiquer_nombre_tours")}</Text>
                     <Input
                       placeholderTextColor='white'
-                      placeholder="Veuillez indiquer un nombre"
+                      placeholder={t("indiquer_nombre")}
                       keyboardType="numeric"
                       defaultValue={this.nbToursTxt}
                       onChangeText={(text) => this._nbToursTxtInputChanged(text)}
@@ -99,10 +102,10 @@ class OptionsTournoi extends React.Component {
                     />
                   </VStack>
                   <VStack>
-                    <Text color="white" fontSize="md">Indiquer le nombre de points pour gagner : </Text>
+                    <Text color="white" fontSize="md">{t("indiquer_nombre_points_victoire")}</Text>
                     <Input
                       placeholderTextColor='white'
-                      placeholder="Veuillez indiquer un nombre"
+                      placeholder={t("indiquer_nombre")}
                       keyboardType="numeric"
                       defaultValue={this.nbPtVictoireTxt}
                       onChangeText={(text) => this._nbPtVictoireTxtInputChanged(text)}
@@ -113,33 +116,33 @@ class OptionsTournoi extends React.Component {
                 <VStack space="5">
                   <Checkbox
                     onChange={() => this.setState({speciauxIncompatibles: !this.state.speciauxIncompatibles})}
-                    accessibilityLabel="Choix enfants dans équipes différentes"
+                    accessibilityLabel={t("choix_regle_enfants")}
                     defaultIsChecked
                     size="md"
                   >
-                    Ne jamais faire jouer 2 enfants dans la même équipe
+                    {t("options_regle_enfants")}
                   </Checkbox>
                   <Checkbox
                     onChange={() => this.setState({memesEquipes: !this.state.memesEquipes})}
-                    accessibilityLabel="Choix ne jamais former les mêmes équipes"
+                    accessibilityLabel={t("choix_regle_equipes")}
                     defaultIsChecked
                     size="md"
                   >
-                    Ne jamais former les mêmes équipes
+                    {t("options_regle_equipes")}
                   </Checkbox>
                 </VStack>
                 <VStack>
-                  <Text color="white" fontSize="md">Les joueurs peuvent avoir le même adversaire au maximum :</Text>
+                  <Text color="white" fontSize="md">{t("options_regle_adversaires")}</Text>
                   <HStack justifyContent="space-between">
-                    <Text color="white">1 seul match</Text>
-                    <Text color="white">100% des matchs</Text>
+                    <Text color="white">{t("1_seul_match")}</Text>
+                    <Text color="white">{t("pourcent_matchs", {pourcent: "100"})}</Text>
                   </HStack>
                   <Slider
                     minValue={0}
                     maxValue={100}
                     defaultValue={50}
                     step={50}
-                    accessibilityLabel="Choix mêmes coéquipiers et mêmes adversaires"
+                    accessibilityLabel={t("choix_regle_adversaires")}
                     onChangeEnd={v => {this.setState({memesAdversaires: v})}}
                   >
                     <Slider.Track >
@@ -148,32 +151,32 @@ class OptionsTournoi extends React.Component {
                     <Slider.Thumb bg="#1c3969"/>
                   </Slider>
                   <HStack justifyContent="center">
-                    <Text color="white">50% des matchs</Text>
+                    <Text color="white">{t("pourcent_matchs", {pourcent: "50"})}</Text>
                   </HStack>
                 </VStack>
                 <VStack>
-                  <Text color="white" fontSize="md">En doublette, si le nombre de joueur n'est pas multiple de 4 alors les joueurs en trop seront mis en :</Text>
+                  <Text color="white" fontSize="md">{t("options_regle_complement")}</Text>
                   <Select
                     selectedValue={this.state.complement}
-                    accessibilityLabel="Choix complément"
-                    placeholder="Choix complément"
+                    accessibilityLabel={t("choix_complement")}
+                    placeholder={t("choix_complement")}
                     onValueChange={itemValue => this.setState({complement: itemValue})}
                     _selectedItem={{
                       endIcon: <CheckIcon size="5" color="cyan.500"/>
                     }}
                     size="lg"
                   >
-                    <Select.Item label="Triplette" value="3"/>
-                    <Select.Item label="Tête-à-Tête" value="1"/>
+                    <Select.Item label={t("triplette")} value="3"/>
+                    <Select.Item label={t("tete_a_tete")} value="1"/>
                   </Select>
                 </VStack>
                 <VStack>
                   <Checkbox
                     onChange={() => this.setState({avecTerrains: !this.state.avecTerrains})}
-                    accessibilityLabel="Choix avec ou sans terrains"
+                    accessibilityLabel={t("choix_option_terrains")}
                     size="md"
                   >
-                    Avant de lancer le tournoi, créer une liste de terrains qui seront attribués aux matchs
+                    {t("options_terrains_explications")}
                   </Checkbox>
                 </VStack>
                 <VStack>
@@ -188,4 +191,4 @@ class OptionsTournoi extends React.Component {
   }
 }
 
-export default connect()(OptionsTournoi)
+export default connect()(withTranslation()(OptionsTournoi))

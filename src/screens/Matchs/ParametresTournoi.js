@@ -1,4 +1,5 @@
 import React from 'react'
+import { withTranslation } from 'react-i18next';
 import { StyleSheet, View, Button, Text, Alert } from 'react-native'
 import { connect } from 'react-redux'
 
@@ -21,22 +22,24 @@ class ParametresTournoi extends React.Component {
   }
 
   _modalSupprimerTournoi() {
+    const { t } = this.props;
     let tournoiId = 0;
     if (this.props.listeMatchs) {
       tournoiId = this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID;
     }
     Alert.alert(
-      "Suppression du tournoi en cours",
-      "Êtes-vous sûr de vouloir supprimer l'actuel tournoi n°" + (tournoiId + 1) + " ?",
+      t("supprimer_tournoi_actuel_modal_titre"),
+      t("supprimer_tournoi_actuel_modal_texte", {id: tournoiId + 1}),
       [
-        { text: "Annuler", onPress: () => undefined, style: "cancel" },
-        { text: "OK", onPress: () => this._supprimerTournoi() },
+        { text: t("annuler"), onPress: () => undefined, style: "cancel" },
+        { text: t("oui"), onPress: () => this._supprimerTournoi() },
       ],
       { cancelable: true }
     );
   }
 
   render() {
+    const { t } = this.props;
     let parametresTournoi = {nbTours: 0, nbPtVictoire: 13, speciauxIncompatibles: false, memesEquipes: false, memesAdversaires: 50};
     if (this.props.listeMatchs) {
       parametresTournoi = this.props.listeMatchs[this.props.listeMatchs.length - 1];
@@ -46,19 +49,19 @@ class ParametresTournoi extends React.Component {
       <View style={styles.main_container} >
         <View style={styles.body_container}>
           <View style={styles.options_container}>
-            <Text style={styles.titre}>Les options du tournois :</Text>
-            <Text style={styles.texte}>- Nombre de tours: {parametresTournoi.nbTours.toString()}</Text>
-            <Text style={styles.texte}>- Nombre de points pour la victoire: {parametresTournoi.nbPtVictoire.toString()}</Text>
-            <Text style={styles.texte}>- Ne jamais faire jouer 2 joueurs enfants dans la même équipe : {parametresTournoi.speciauxIncompatibles ? "Activé" : "Désactivé"}</Text>
-            <Text style={styles.texte}>- Ne jamais former les mêmes équipes : {parametresTournoi.memesEquipes ? "Activé" : "Désactivé"}</Text>
-            <Text style={styles.texte}>- Les joueurs peuvent avoir le même adversaire au maximum: {parametresTournoi.memesAdversaires === 0 ? "1 match" : parametresTournoi.memesAdversaires+"% des matchs"}</Text>
+            <Text style={styles.titre}>{t("options_tournoi")}</Text>
+            <Text style={styles.texte}>{t("nombre_tours")} {parametresTournoi.nbTours.toString()}</Text>
+            <Text style={styles.texte}>{t("nombre_points_victoire")} {parametresTournoi.nbPtVictoire.toString()}</Text>
+            <Text style={styles.texte}>{t("regle_enfants")} {parametresTournoi.speciauxIncompatibles ? "Activé" : "Désactivé"}</Text>
+            <Text style={styles.texte}>{t("regle_equipes_differentes")} {parametresTournoi.memesEquipes ? "Activé" : "Désactivé"}</Text>
+            <Text style={styles.texte}>{t("regle_adversaires")} {parametresTournoi.memesAdversaires === 0 ? "1 match" : parametresTournoi.memesAdversaires+"% des matchs"}</Text>
           </View>
           <View style={styles.button_container}>
             <View style={styles.buttonView}>
-              <Button color='red' title='Supprimer le tournoi' onPress={() => this._modalSupprimerTournoi()}/>
+              <Button color='red' title={t("supprimer_tournoi")} onPress={() => this._modalSupprimerTournoi()}/>
             </View>
             <View style={styles.buttonView}>
-              <Button color="#1c3969" title='Retourner à la liste des parties' onPress={() => this._showMatchs()}/>
+              <Button color="#1c3969" title={t("retour_liste_parties_bouton")} onPress={() => this._showMatchs()}/>
             </View>
           </View>
         </View>
@@ -111,4 +114,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(ParametresTournoi)
+export default connect(mapStateToProps)(withTranslation()(ParametresTournoi))
