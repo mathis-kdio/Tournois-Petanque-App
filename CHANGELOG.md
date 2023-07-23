@@ -1,5 +1,18 @@
 # Change Log
 
+## [1.13.0] - 28-06-2023
+
+### Ajouté
+- Options pour affecter les matchs à des terrains.
+
+### Changement
+- Nouvelles pages de : Paramètres, Type de tournoi, Mode de tournoi, Options de tournoi.
+- Amélioration de l'option « Sans mêmes adversaires ».
+
+### Corrigé
+- Correction de la génération des tournois en mêlée-démêlée.
+- Corrections de l'affichage du type de joueur.
+
 ## [1.12.0] - 25-05-2023
 
 ### Ajouté

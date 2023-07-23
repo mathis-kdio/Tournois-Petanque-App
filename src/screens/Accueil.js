@@ -43,26 +43,33 @@ class Accueil extends React.Component {
       }
     })
 
-    if (Platform.OS === 'android') {
-      mobileAds().initialize().then(async adapterStatuses => {console.log(adapterStatuses)});
-    }
-    else if (Platform.OS === 'ios') {
-      check(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY).then(async result => {
-        if (result === RESULTS.DENIED) {
-          request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY).then(async res => {
-            if (res === RESULTS.GRANTED) {
-              mobileAds().initialize().then(async adapterStatuses => {console.log(adapterStatuses)});
-            }
-          });
-        }
-      });
-    }
-
     AdsConsent.requestInfoUpdate().then(async consentInfo => {
-      if (consentInfo.isConsentFormAvailable && consentInfo.status === AdsConsentStatus.REQUIRED) {
-        AdsConsent.showForm().then(async status => {console.log(status)});
+      if (consentInfo.isConsentFormAvailable && (consentInfo.status === AdsConsentStatus.UNKNOWN || consentInfo.status === AdsConsentStatus.REQUIRED)) {
+        AdsConsent.showForm().then(async res => {this._mobileAdsInitialize(res.status)});
       }
     });
+  }
+
+  _mobileAdsInitialize(status) {
+    if (status === AdsConsentStatus.OBTAINED) {
+      if (Platform.OS === 'android') {
+        mobileAds().initialize().then(async adapterStatuses => {console.log(adapterStatuses)});
+      }
+      else if (Platform.OS === 'ios') {
+        check(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY).then(async result => {
+          if (result === RESULTS.DENIED) {
+            request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY).then(async res => {
+              if (res === RESULTS.GRANTED) {
+                mobileAds().initialize().then(async adapterStatuses => {console.log(adapterStatuses)});
+              }
+            });
+          }
+          else if (result === RESULTS.GRANTED) {
+            mobileAds().initialize().then(async adapterStatuses => {console.log(adapterStatuses)});
+          }
+        });
+      }
+    }
   }
 
   componentDidUpdate() {

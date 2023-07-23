@@ -195,25 +195,21 @@ class ListeJoueurItem extends React.Component {
     )
   }
 
-  _joueurTypeIcon(type) {
-    if (type == "enfant") {
+  _joueurTypeIcon(joueurType) {
+    const { mode, type, typeEquipes } = this.props.optionsTournoi;
+    if (mode == "sauvegarde" || (type == "mele-demele" && typeEquipes == "doublette")) {
       return (
         <View style={styles.type_icon_container}>
-          <FontAwesome5 name="child" color="darkgray" size={24}/>
+          {joueurType == "enfant" && <FontAwesome5 name="child" color="darkgray" size={24}/>}
+          {joueurType == "tireur" && <Image source={require('@assets/images/tireur.png')} alt={type} style={styles.icon}/>}
+          {joueurType == "pointeur" && <Image source={require('@assets/images/pointeur.png')} alt={type} style={styles.icon}/>}
         </View>
       )
     }
-    else if (type == "tireur") {
+    else {
       return (
         <View style={styles.type_icon_container}>
-          <Image source={require('@assets/images/tireur.png')} alt={type} style={styles.icon}/>
-        </View>
-      )
-    }
-    else if (type == "pointeur") {
-      return (
-        <View style={styles.type_icon_container}>
-          <Image source={require('@assets/images/pointeur.png')} alt={type} style={styles.icon}/>
+          {joueurType == "enfant" && <FontAwesome5 name="child" color="darkgray" size={24}/>}
         </View>
       )
     }
