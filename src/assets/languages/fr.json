@@ -148,6 +148,16 @@
     "options_regle_adversaires": "Les joueurs peuvent avoir le même adversaire au maximum :",
     "options_regle_complement": "En doublette, si le nombre de joueur n'est pas multiple de 4 alors les joueurs en trop seront mis en :",
     "choix_option_terrains": "Choix avec ou sans terrains",
-    "options_terrains_explications": "Avant de lancer le tournoi, créer une liste de terrains qui seront attribués aux matchs"
+    "options_terrains_explications": "Avant de lancer le tournoi, créer une liste de terrains qui seront attribués aux matchs",
+    "supprimer_donnees_modal_titre": "Suppression des données",
+    "supprimer_donnees_modal_texte": "Êtes-vous sûr de vouloir supprimer toutes les données (listes joueurs, anciens tournois, terrains, etc) ?",
+    "a_props": "À propos",
+    "voir_source_code": "Voir le code source",
+    "reglages": "Réglages",
+    "francais": "Français",
+    "anglais": "English",
+    "modifier_consentement": "Modifier le consentement",
+    "supprimer_donnees": "Supprimer toutes les données locale",
+    "nouveautes": "Nouveautés"
   }
 }
