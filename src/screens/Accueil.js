@@ -79,6 +79,7 @@ class Accueil extends React.Component {
   }
 
   _showUpdateModal() {
+    const { t } = this.props;
     return (
       <Modal
         isOpen={this.state.modalVisible}
