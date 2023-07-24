@@ -69,6 +69,7 @@ class InscriptionsSansNoms extends React.Component {
   }
 
   _boutonCommencer() {
+    const { t } = this.props;
     let boutonDesactive
     let boutonTitle = ''
     let nbJoueurs = this._nbJoueurs()

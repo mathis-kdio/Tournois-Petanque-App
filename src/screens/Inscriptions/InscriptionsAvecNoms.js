@@ -26,6 +26,7 @@ class InscriptionsAvecNoms extends React.Component {
   }
 
   _boutonCommencer() {
+    const { t } = this.props;
     let boutonDesactive = false
     let boutonTitle = t("commencer_tournoi")
     let nbJoueurs = this.props.listesJoueurs[this.props.optionsTournoi.mode].length
