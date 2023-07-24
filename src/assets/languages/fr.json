@@ -174,6 +174,7 @@
     "mise_a_jour": "Mise à jour",
     "mise_a_jour_modal_texte_1": "Une nouvelle version de l'application est disponible !",
     "mise_a_jour_modal_texte_2": "Si elle n'apparait pas encore, réessayer plus tard",
-    "mettre_a_jour": "Mettre à jour"
+    "mettre_a_jour": "Mettre à jour",
+    "valider_modification": "Valider la modification"
   }
 }

@@ -23,15 +23,16 @@ class CreateListeJoueur extends React.Component {
   }
 
   _submitButton() {
+    const { t } = this.props;
     let params = this.props.route.params;
     if (params) {
       let nbPlayers = this.props.listesJoueurs.sauvegarde.length;
       let title = "error";
       if (params.type == "create") {
-        title = "Créer cette liste";
+        title = t("creer_liste");
       }
       else if (params.type == "edit") {
-        title = "Valider la modification";
+        title = t("valider_modification");
       }
       return (
         <Button
