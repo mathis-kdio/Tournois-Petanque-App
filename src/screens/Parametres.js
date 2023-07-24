@@ -135,7 +135,7 @@ class Parametres extends React.Component {
           <TopBarBack title={t("parametres")} navigation={this.props.navigation}/>
           <VStack flex="1" px="10" space="4">
             <VStack>
-              <Text fontSize="xl" color="white">{t("a_props")}</Text>
+              <Text fontSize="xl" color="white">{t("a_propos")}</Text>
               <Box borderWidth="1" borderColor="white" borderRadius="lg">
                 {this._item(t("voir_source_code"), () => _openURL(this.githubRepository), "code", undefined)}
                 <Divider/>

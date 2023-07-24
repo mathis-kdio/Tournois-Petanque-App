@@ -80,7 +80,7 @@ class ChoixModeTournoi extends React.Component {
         >
           <Radio value="avecNoms" size="md" _text={{color:"white"}}>{t("melee_demelee_avec_nom")}</Radio>
           <Radio value="sansNoms" size="md" _text={{color:"white"}}>{t("melee_demelee_sans_nom")}</Radio>
-          <Radio value="avecEquipes" size="md" _text={{color:"white"}}>{t("melee_avec_équipes_constituées")}</Radio>
+          <Radio value="avecEquipes" size="md" _text={{color:"white"}}>{t("melee_avec_equipes_constituees")}</Radio>
         </Radio.Group>
       </VStack>
     )
