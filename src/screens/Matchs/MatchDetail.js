@@ -35,6 +35,7 @@ class MatchDetail extends React.Component {
   }
 
   _displayTitle(match) {
+    const { t } = this.props;
     return (
       match.terrain ? 
       <Text style={styles.title}>{(match.terrain.name)}</Text>
@@ -116,6 +117,7 @@ class MatchDetail extends React.Component {
   }
 
   _boutonValider(match) {
+    const { t } = this.props;
     let boutonActive = true
     if (this.state.score1 && this.state.score2) {
       boutonActive = false

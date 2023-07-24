@@ -13,16 +13,16 @@ class ListeResultats extends React.Component {
       <View style={styles.main_container}>
         <View style={styles.entete}>
           <View style={styles.position_container}>
-            <Text style={styles.texte}>{t("place")}Place</Text>
+            <Text style={styles.texte}>{t("place")}</Text>
           </View>
           <View style={styles.victoires_container}>
-            <Text style={styles.texte}>{t("victoire")}Victoire</Text>
+            <Text style={styles.texte}>{t("victoire")}</Text>
           </View>
           <View style={styles.mj_container}>
-            <Text style={styles.texte}>{t("m_j")}MJ</Text>
+            <Text style={styles.texte}>{t("m_j")}</Text>
           </View>
           <View style={styles.points_container}>
-            <Text style={styles.texte}>{t("point")}Point</Text>
+            <Text style={styles.texte}>{t("point")}</Text>
           </View>
         </View>
         <FlatList
