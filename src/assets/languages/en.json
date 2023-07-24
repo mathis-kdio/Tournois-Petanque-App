@@ -158,6 +158,22 @@
     "anglais": "English",
     "modifier_consentement": "Modifying consent",
     "supprimer_donnees": "Delete all local data",
-    "nouveautes": "What's new"
+    "nouveautes": "What's new",
+    "mes_anciens_tournois": "My old tournaments",
+    "mes_listes_joueurs": "My player lists",
+    "rejoindre_page_fb": "Join the page",
+    "decouvrir_gcu": "Discover the GCU",
+    "developpe_par": "Developed by ",
+    "version": "Version : ",
+    "reprendre_tournoi": "Resume the tournament",
+    "aucun_tournoi": "No current tournament",
+    "soutenir": "To support",
+    "githubsponsor": "GitHub Sponsor",
+    "patreon": "Patreon",
+    "buymeacoffee": "BuyMeACoffee",
+    "mise_a_jour": "Update",
+    "mise_a_jour_modal_texte_1": "A new version of the application is available!",
+    "mise_a_jour_modal_texte_2": "If it doesn't appear yet, try again later",
+    "mettre_a_jour": "Update"
   }
 }
