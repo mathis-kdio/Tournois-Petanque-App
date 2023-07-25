@@ -42,33 +42,35 @@ class Accueil extends React.Component {
       }
     })
 
-    AdsConsent.requestInfoUpdate().then(async consentInfo => {
-      if (consentInfo.isConsentFormAvailable && (consentInfo.status === AdsConsentStatus.UNKNOWN || consentInfo.status === AdsConsentStatus.REQUIRED)) {
-        AdsConsent.showForm().then(async res => {this._mobileAdsInitialize(res.status)});
-      }
-    });
+    if (Platform.OS === 'android') {
+      this._adsConsentForm();
+    }
+    else if (Platform.OS === 'ios') {
+      check(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY).then(async result => {
+        if (result === RESULTS.DENIED) {
+          request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY).then(async res => {
+            if (res === RESULTS.GRANTED) {
+              this._adsConsentForm();
+            }
+          });
+        }
+        else if (result === RESULTS.GRANTED) {
+          this._adsConsentForm();
+        }
+      })
+    }
   }
 
-  _mobileAdsInitialize(status) {
-    if (status === AdsConsentStatus.OBTAINED) {
-      if (Platform.OS === 'android') {
-        mobileAds().initialize().then(async adapterStatuses => {console.log(adapterStatuses)});
-      }
-      else if (Platform.OS === 'ios') {
-        check(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY).then(async result => {
-          if (result === RESULTS.DENIED) {
-            request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY).then(async res => {
-              if (res === RESULTS.GRANTED) {
-                mobileAds().initialize().then(async adapterStatuses => {console.log(adapterStatuses)});
-              }
-            });
-          }
-          else if (result === RESULTS.GRANTED) {
+  _adsConsentForm() {
+    AdsConsent.requestInfoUpdate().then(async consentInfo => {
+      if (consentInfo.isConsentFormAvailable && (consentInfo.status === AdsConsentStatus.UNKNOWN || consentInfo.status === AdsConsentStatus.REQUIRED)) {
+        AdsConsent.showForm().then(async res => {
+          if (res.status === AdsConsentStatus.OBTAINED) {
             mobileAds().initialize().then(async adapterStatuses => {console.log(adapterStatuses)});
           }
         });
       }
-    }
+    });
   }
 
   componentDidUpdate() {
