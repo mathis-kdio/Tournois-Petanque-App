@@ -175,6 +175,20 @@
     "mise_a_jour_modal_texte_1": "Une nouvelle version de l'application est disponible !",
     "mise_a_jour_modal_texte_2": "Si elle n'apparait pas encore, réessayer plus tard",
     "mettre_a_jour": "Mettre à jour",
-    "valider_modification": "Valider la modification"
+    "valider_modification": "Valider la modification",
+    "choix_tournoi_navigation_title": "Choix d'un tournoi",
+    "listes_joueurs_navigation_title": "Listes de Joueurs",
+    "creation_liste_joueurs_navigation_title": "Création d'une liste de Joueurs",
+    "liste_matchs_navigation_title": "Liste des matchs",
+    "detail_match_navigation_title": "Détail du match",
+    "liste_joueurs_inscrits_navigation_title": "Liste des joueurs inscrits",
+    "parametres_tournoi_navigation_title": "Paramètres du tournoi",
+    "exporter_pdf_navigation_title": "Exporter en PDF",
+    "resultats_classement_navigation_title": "Résultats & Classement",
+    "matchs_details_navigation_title": "Matchs & Détails",
+    "inscription_avec_noms_navigation_title": "Inscription Avec Noms",
+    "inscription_sans_noms_navigation_title": "Inscription Sans Noms",
+    "liste_terrains_navigation_title": "Liste des Terrains",
+    "generation_matchs_navigation_title": "Générations des matchs en cours"
   }
 }

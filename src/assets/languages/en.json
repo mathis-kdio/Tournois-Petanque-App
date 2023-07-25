@@ -175,6 +175,20 @@
     "mise_a_jour_modal_texte_1": "A new version of the application is available!",
     "mise_a_jour_modal_texte_2": "If it doesn't appear yet, try again later",
     "mettre_a_jour": "Update",
-    "valider_modification": "Validate modification"
+    "valider_modification": "Validate modification",
+    "choix_tournoi_navigation_title": "Choosing a tournament",
+    "listes_joueurs_navigation_title": "Player lists",
+    "creation_liste_joueurs_navigation_title": "Creation of a Players list",
+    "liste_matchs_navigation_title": "List of matches",
+    "detail_match_navigation_title": "Match details",
+    "liste_joueurs_inscrits_navigation_title": "List of registered players",
+    "parametres_tournoi_navigation_title": "Tournament parameters",
+    "exporter_pdf_navigation_title": "Export to PDF",
+    "resultats_classement_navigation_title": "Results & Ranking",
+    "matchs_details_navigation_title": "Matches & Details",
+    "inscription_avec_noms_navigation_title": "Registration with names",
+    "inscription_sans_noms_navigation_title": "Registration without names",
+    "liste_terrains_navigation_title": "List of Grounds",
+    "generation_matchs_navigation_title": "Generations of games in progress"
   }
 }
