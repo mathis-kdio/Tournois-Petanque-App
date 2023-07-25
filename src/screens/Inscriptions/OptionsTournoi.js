@@ -91,7 +91,7 @@ class OptionsTournoi extends React.Component {
               <VStack px="10" space="md">
                 <VStack space="3">
                   <VStack>
-                    <Text color="white" fontSize="md">{t("indiquer_nombre_tours")}</Text>
+                    <Text color="white" fontSize="md">{t("indiquer_nombre_tours")} </Text>
                     <Input
                       placeholderTextColor='white'
                       placeholder={t("indiquer_nombre")}
@@ -102,7 +102,7 @@ class OptionsTournoi extends React.Component {
                     />
                   </VStack>
                   <VStack>
-                    <Text color="white" fontSize="md">{t("indiquer_nombre_points_victoire")}</Text>
+                    <Text color="white" fontSize="md">{t("indiquer_nombre_points_victoire")} </Text>
                     <Input
                       placeholderTextColor='white'
                       placeholder={t("indiquer_nombre")}

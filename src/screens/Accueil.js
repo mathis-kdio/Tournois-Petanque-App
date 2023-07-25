@@ -240,8 +240,8 @@ class Accueil extends React.Component {
               </Pressable>
             </HStack>
             <VStack>
-              <Text textAlign={"center"} color={"white"} fontSize={"md"}>{t("developpe_par")}Mathis Cadio</Text>
-              <Text textAlign={"center"} color={"white"} fontSize={"md"}>{t("version")}{expo.version}</Text>
+              <Text textAlign={"center"} color={"white"} fontSize={"md"}>{t("developpe_par")} Mathis Cadio</Text>
+              <Text textAlign={"center"} color={"white"} fontSize={"md"}>{t("version")} {expo.version}</Text>
             </VStack>
           </VStack>
           {this._showDonsModal()}

@@ -51,19 +51,19 @@ class ListeTournois extends React.Component {
             <View style={modalStyles.modalView}>
               <Text style={modalStyles.modalText}>{t("informations_tournoi_modal_titre")}</Text>
               <View>
-                <Text style={modalStyles.modalText}>{t("id_modal_informations_tournoi")}{tournoi.tournoiId}</Text>
-                <Text style={modalStyles.modalText}>{t("nom_modal_informations_tournoi")}{tournoi.name}</Text>
+                <Text style={modalStyles.modalText}>{t("id_modal_informations_tournoi")} {tournoi.tournoiId}</Text>
+                <Text style={modalStyles.modalText}>{t("nom_modal_informations_tournoi")} {tournoi.name}</Text>
                 <Text style={modalStyles.modalText}>{t("creation_modal_informations_tournoi")}{creationDate}</Text>
-                <Text style={modalStyles.modalText}>{t("derniere_modification_modal_informations_tournoi")}{updateDate}</Text>
-                <Text style={modalStyles.modalText}>{t("nombre_joueurs_modal_informations_tournoi")}{tournoiOptions.listeJoueurs.length}</Text>
-                <Text style={modalStyles.modalText}>{t("type_equipes_modal_informations_tournoi")}{tournoiOptions.typeEquipes}</Text>
-                <Text style={modalStyles.modalText}>{t("nombre_tours_modal_informations_tournoi")}{tournoiOptions.nbTours}</Text>
-                <Text style={modalStyles.modalText}>{t("nombre_matchs_modal_informations_tournoi")}{tournoiOptions.nbMatchs}</Text>
-                <Text style={modalStyles.modalText}>{t("nombre_points_victoire_modal_informations_tournoi")}{nbPtVictoire}</Text>
+                <Text style={modalStyles.modalText}>{t("derniere_modification_modal_informations_tournoi")} {updateDate}</Text>
+                <Text style={modalStyles.modalText}>{t("nombre_joueurs_modal_informations_tournoi")} {tournoiOptions.listeJoueurs.length}</Text>
+                <Text style={modalStyles.modalText}>{t("type_equipes_modal_informations_tournoi")} {tournoiOptions.typeEquipes}</Text>
+                <Text style={modalStyles.modalText}>{t("nombre_tours_modal_informations_tournoi")} {tournoiOptions.nbTours}</Text>
+                <Text style={modalStyles.modalText}>{t("nombre_matchs_modal_informations_tournoi")} {tournoiOptions.nbMatchs}</Text>
+                <Text style={modalStyles.modalText}>{t("nombre_points_victoire_modal_informations_tournoi")} {nbPtVictoire}</Text>
                 <Text style={modalStyles.modalText}>{t("complement_modal_informations_tournoi")}{tournoiOptions.complement}</Text>
-                <Text style={modalStyles.modalText}>{t("regle_equipes_differentes_modal_informations_tournoi")}{tournoiOptions.memesEquipes ? t("oui") : t("non")}</Text>
-                <Text style={modalStyles.modalText}>{t("regle_adversaires_modal_informations_tournoi")}{tournoiOptions.memesAdversaires === 0 ? t("1_match") : t("pourcent_matchs", {pourcent: tournoiOptions.memesAdversaires})}</Text>
-                <Text style={modalStyles.modalText}>{t("regle_enfants_modal_informations_tournoi")}{tournoiOptions.speciauxIncompatibles ? t("oui") : t("non")}</Text>
+                <Text style={modalStyles.modalText}>{t("regle_equipes_differentes_modal_informations_tournoi")} {tournoiOptions.memesEquipes ? t("oui") : t("non")}</Text>
+                <Text style={modalStyles.modalText}>{t("regle_adversaires_modal_informations_tournoi")} {tournoiOptions.memesAdversaires === 0 ? t("1_match") : t("pourcent_matchs", {pourcent: tournoiOptions.memesAdversaires})}</Text>
+                <Text style={modalStyles.modalText}>{t("regle_enfants_modal_informations_tournoi")} {tournoiOptions.speciauxIncompatibles ? t("oui") : t("non")}</Text>
               </View>
               <View style={styles.buttonView}>
                 <Button color="red" title='Fermer' onPress={() => this.setState({modalTournoiInfos: false}) }/>
