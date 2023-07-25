@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
 import { connect, useSelector } from 'react-redux';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -84,7 +84,7 @@ function ManchesTopTabNavigator() {
 }
 
 function MatchsStack() {
-  const { t } = this.props;
+  const { t } = useTranslation();
   const navigation = useNavigation();
   return (
     <Stack.Navigator screenOptions={{headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}}>
@@ -111,7 +111,7 @@ function MatchsStack() {
 }
 
 function ResultatsStack() {
-  const { t } = this.props;
+  const { t } = useTranslation();
   return (
     <Stack.Navigator>
       <Stack.Screen name="ListeResultatsStack" component={ListeResultats} options={{title: t("resultats_classement_navigation_title"), headerTitleAlign: 'center', headerLeft: false, headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
@@ -120,7 +120,7 @@ function ResultatsStack() {
 }
 
 function MatchsResultatsBottomNavigator() {
-  const { t } = this.props;
+  const { t } = useTranslation();
   return (
     <BottomTab.Navigator initialRouteName="ListeMatchsBottom" backBehavior='none' screenOptions={{headerShown: false, tabBarStyle: {backgroundColor: '#ffda00'}, tabBarActiveTintColor: '#1c3969', tabBarLabelStyle: {fontSize: 15}}}>
       <BottomTab.Screen
@@ -144,7 +144,7 @@ function MatchsResultatsBottomNavigator() {
 }
 
 function InscriptionStack() {
-  const { t } = this.props;
+  const { t } = useTranslation();
   return (
     <Stack.Navigator initialRouteName='ChoixTypeTournoi' screenOptions={{headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}}>
       <Stack.Screen name="ChoixTypeTournoi" component={ChoixTypeTournoi} options={{headerShown: false}} />
@@ -177,7 +177,7 @@ function ListeMatchsStack() {
 }
 
 function General() {
-  const { t } = this.props;
+  const { t } = useTranslation();
   return (
     <Stack.Navigator initialRouteName='AccueilGeneral' screenOptions={{headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}}>
       <Stack.Screen name="AccueilGeneral" component={Accueil} options={{headerShown: false}} />
@@ -194,12 +194,10 @@ function General() {
   );
 }
 
-function App() {
+export default function App() {
   return (
     <Stack.Navigator initialRouteName="Root">
       <Stack.Screen name="Root" component={General} options={{headerShown: false}} />
     </Stack.Navigator>
   );
 }
-
-export default withTranslation()(App)
