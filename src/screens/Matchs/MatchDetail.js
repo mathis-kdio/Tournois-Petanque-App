@@ -40,7 +40,7 @@ class MatchDetail extends React.Component {
       match.terrain ? 
       <Text style={styles.title}>{(match.terrain.name)}</Text>
       :
-      <Text style={styles.title}>{t("partie_numero")}{(match.id + 1)}</Text>
+      <Text style={styles.title}>{t("match_numero")}{(match.id + 1)}</Text>
     )
   }
 

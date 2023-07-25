@@ -49,7 +49,7 @@ class JoueursTournoi extends React.Component {
           {this._displayListeJoueur()}
         </View>
         <View style={styles.buttonView}>
-          <Button color='#1c3969' title={t("retour_liste_parties_bouton")} onPress={() => this._retourMatchs()}/>
+          <Button color='#1c3969' title={t("retour_liste_matchs_bouton")} onPress={() => this._retourMatchs()}/>
         </View>
       </View>
     )

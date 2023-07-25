@@ -61,7 +61,7 @@ class ParametresTournoi extends React.Component {
               <Button color='red' title={t("supprimer_tournoi")} onPress={() => this._modalSupprimerTournoi()}/>
             </View>
             <View style={styles.buttonView}>
-              <Button color="#1c3969" title={t("retour_liste_parties_bouton")} onPress={() => this._showMatchs()}/>
+              <Button color="#1c3969" title={t("retour_liste_matchs_bouton")} onPress={() => this._showMatchs()}/>
             </View>
           </View>
         </View>
