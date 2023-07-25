@@ -57,7 +57,7 @@ class Accueil extends React.Component {
         else if (result === RESULTS.GRANTED) {
           this._adsConsentForm();
         }
-      })
+      });
     }
   }
 
