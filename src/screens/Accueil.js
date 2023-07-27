@@ -8,10 +8,10 @@ import { _openPlateformLink, _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Box, HStack, VStack, Text, Pressable, Spacer, Modal, Image } from 'native-base';
 import { StatusBar } from 'expo-status-bar';
-import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import { AdsConsent, AdsConsentStatus } from 'react-native-google-mobile-ads';
 import mobileAds from 'react-native-google-mobile-ads';
 import CardButton from 'components/buttons/CardButton';
+import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
 
 class Accueil extends React.Component {
   constructor(props) {
@@ -46,15 +46,8 @@ class Accueil extends React.Component {
       this._adsConsentForm();
     }
     else if (Platform.OS === 'ios') {
-      check(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY).then(async result => {
-        if (result === RESULTS.DENIED) {
-          request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY).then(async res => {
-            if (res === RESULTS.GRANTED) {
-              this._adsConsentForm();
-            }
-          });
-        }
-        else if (result === RESULTS.GRANTED) {
+      requestTrackingPermissionsAsync().then(status => {
+        if (status === 'granted') {
           this._adsConsentForm();
         }
       });
