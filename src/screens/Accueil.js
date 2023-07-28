@@ -46,11 +46,13 @@ class Accueil extends React.Component {
       this._adsConsentForm();
     }
     else if (Platform.OS === 'ios') {
-      requestTrackingPermissionsAsync().then(status => {
-        if (status === 'granted') {
-          this._adsConsentForm();
-        }
-      });
+      setTimeout(async () => {
+        requestTrackingPermissionsAsync().then(status => {
+          if (status === 'granted') {
+            this._adsConsentForm();
+          }
+        });
+      }, 1000);
     }
   }
 
