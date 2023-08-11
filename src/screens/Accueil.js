@@ -8,11 +8,11 @@ import { _openPlateformLink, _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Box, HStack, VStack, Text, Pressable, Spacer, Modal, Image } from 'native-base';
 import { StatusBar } from 'expo-status-bar';
-import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import { AdsConsent, AdsConsentStatus } from 'react-native-google-mobile-ads';
 import { withTranslation } from 'react-i18next';
 import mobileAds from 'react-native-google-mobile-ads';
 import CardButton from 'components/buttons/CardButton';
+import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
 
 class Accueil extends React.Component {
   constructor(props) {
@@ -43,33 +43,30 @@ class Accueil extends React.Component {
       }
     })
 
-    AdsConsent.requestInfoUpdate().then(async consentInfo => {
-      if (consentInfo.isConsentFormAvailable && (consentInfo.status === AdsConsentStatus.UNKNOWN || consentInfo.status === AdsConsentStatus.REQUIRED)) {
-        AdsConsent.showForm().then(async res => {this._mobileAdsInitialize(res.status)});
-      }
-    });
+    if (Platform.OS === 'android') {
+      this._adsConsentForm();
+    }
+    else if (Platform.OS === 'ios') {
+      setTimeout(async () => {
+        requestTrackingPermissionsAsync().then(status => {
+          if (status === 'granted') {
+            this._adsConsentForm();
+          }
+        });
+      }, 1000);
+    }
   }
 
-  _mobileAdsInitialize(status) {
-    if (status === AdsConsentStatus.OBTAINED) {
-      if (Platform.OS === 'android') {
-        mobileAds().initialize().then(async adapterStatuses => {console.log(adapterStatuses)});
-      }
-      else if (Platform.OS === 'ios') {
-        check(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY).then(async result => {
-          if (result === RESULTS.DENIED) {
-            request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY).then(async res => {
-              if (res === RESULTS.GRANTED) {
-                mobileAds().initialize().then(async adapterStatuses => {console.log(adapterStatuses)});
-              }
-            });
-          }
-          else if (result === RESULTS.GRANTED) {
+  _adsConsentForm() {
+    AdsConsent.requestInfoUpdate().then(async consentInfo => {
+      if (consentInfo.isConsentFormAvailable && (consentInfo.status === AdsConsentStatus.UNKNOWN || consentInfo.status === AdsConsentStatus.REQUIRED)) {
+        AdsConsent.showForm().then(async res => {
+          if (res.status === AdsConsentStatus.OBTAINED) {
             mobileAds().initialize().then(async adapterStatuses => {console.log(adapterStatuses)});
           }
         });
       }
-    }
+    });
   }
 
   componentDidUpdate() {
