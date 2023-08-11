@@ -9,6 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Box, HStack, VStack, Text, Pressable, Spacer, Modal, Image } from 'native-base';
 import { StatusBar } from 'expo-status-bar';
 import { AdsConsent, AdsConsentStatus } from 'react-native-google-mobile-ads';
+import { withTranslation } from 'react-i18next';
 import mobileAds from 'react-native-google-mobile-ads';
 import CardButton from 'components/buttons/CardButton';
 import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
@@ -75,6 +76,7 @@ class Accueil extends React.Component {
   }
 
   _showUpdateModal() {
+    const { t } = this.props;
     return (
       <Modal
         isOpen={this.state.modalVisible}
@@ -82,14 +84,14 @@ class Accueil extends React.Component {
       >
         <Modal.Content>
           <Modal.CloseButton/>
-          <Modal.Header>Mise à jour</Modal.Header>
+          <Modal.Header>{t("mise_a_jour")}ise à jour</Modal.Header>
           <Modal.Body>
-            <Text textAlign={"center"}>Une nouvelle version de l'application est disponible !</Text>
-            <Text textAlign={"center"}>Si elle n'apparait pas encore, réessayer plus tard</Text>
+            <Text textAlign={"center"}>{t("mise_a_jour_modal_texte_1")}</Text>
+            <Text textAlign={"center"}>{t("mise_a_jour_modal_texte_2")}</Text>
             <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p={3} onPress={() => _openPlateformLink(this.googleMarket, this.appleMarket)}>
               <HStack>
                 <FontAwesome5 name="download" color="white" size={20}/>
-                <Text color={"white"}> Mettre à jour</Text>
+                <Text color={"white"}> {t("mettre_a_jour")}</Text>
               </HStack>
             </Pressable>
           </Modal.Body>
@@ -99,6 +101,7 @@ class Accueil extends React.Component {
   }
 
   _showDonsModal() {
+    const { t } = this.props;
     return (
       <Modal
         isOpen={this.state.modalDonsVisible}
@@ -106,25 +109,25 @@ class Accueil extends React.Component {
       >
         <Modal.Content>
           <Modal.CloseButton/>
-          <Modal.Header>Pour Soutenir</Modal.Header>
+          <Modal.Header>{t("soutenir")}</Modal.Header>
           <Modal.Body>
             <VStack space={3}>
               <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p={3} onPress={() => _openURL(this.githubSponsor)}>
                 <HStack>
                   <FontAwesome5 name="github" color="white" size={20}/>
-                  <Text color={"white"}> GitHub Sponsor</Text>
+                  <Text color={"white"}> {t("githubsponsor")}</Text>
                 </HStack>
               </Pressable>
               <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p={3} onPress={() => _openURL(this.patreon)}>
                 <HStack>
                   <FontAwesome5 name="patreon" color="white" size={20}/>
-                  <Text color={"white"}> Patreon</Text>
+                  <Text color={"white"}> {t("patreon")}</Text>
                 </HStack>
               </Pressable>
               <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p={3} onPress={() => _openURL(this.buymeacoffee)}>
                 <HStack>
                   <FontAwesome5 name="coffee" color="white" size={20}/>
-                  <Text color={"white"}> BuyMeACoffee</Text>
+                  <Text color={"white"}> {t("buymeacoffee")}</Text>
                 </HStack>
               </Pressable>
             </VStack>
@@ -148,11 +151,12 @@ class Accueil extends React.Component {
   }
 
   _buttonShowMatchs() {
+    const { t } = this.props;
     if (this.props.listeMatchs) {
       if (this.props.listeMatchs.length != 0) {
         return (
           <CardButton
-            text="Reprendre le tournoi"
+            text={t("reprendre_tournoi")}
             icon="play"
             navigate={() => this._showMatchs()}
           />
@@ -162,12 +166,13 @@ class Accueil extends React.Component {
     else {
       <Box bg="gray.500" flex={1} space="1" alignItems={"center"} rounded="3xl" py={"5"}>
         <FontAwesome5 name="play" color="white" size={24}/>
-        <Text color={"white"}>Pas de tournoi en cours</Text>
+        <Text color={"white"}>{t("aucun_tournoi")}</Text>
       </Box>
     }
   }
 
   render() {
+    const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
         <StatusBar backgroundColor="#0594ae"/>
@@ -182,19 +187,19 @@ class Accueil extends React.Component {
             </HStack>
             <HStack>
               <CardButton
-                text="Nouveau Tournoi"
+                text={t("nouveau_tournoi")}
                 icon="plus"
                 navigate={() => this._navigate('InscriptionStack')}
               />
             </HStack>
             <HStack space={"3"}>
               <CardButton
-                text="Mes anciens tournois"
+                text={t("mes_anciens_tournois")}
                 icon="list"
                 navigate={() => this._navigate('ListeTournois')}
               />
               <CardButton
-                text="Mes listes de joueurs"
+                text={t("mes_listes_joueurs")}
                 icon="users"
                 navigate={() => this._navigate('ListesJoueurs')}
               />
@@ -206,7 +211,7 @@ class Accueil extends React.Component {
               <Spacer/>
               <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p={3} onPress={() => _openURL(this.facebook)}>
                 <FontAwesome5 name="facebook" color="white" size={20}/>
-                <Text color={"white"}>Rejoindre la page</Text>
+                <Text color={"white"}>{t("rejoindre_page_fb")}</Text>
               </Pressable>
               <Spacer/>
             </HStack>
@@ -228,12 +233,12 @@ class Accueil extends React.Component {
             </HStack>
             <HStack justifyContent={"center"}>
               <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p="3" onPress={() => _openURL(this.gcuWebsite)}>
-                <Text color={"white"} fontSize={16}>Découvrir le GCU</Text>
+                <Text color={"white"} fontSize={16}>{t("decouvrir_gcu")}</Text>
               </Pressable>
             </HStack>
             <VStack>
-              <Text textAlign={"center"} color={"white"} fontSize={"md"}>Développé par Mathis Cadio</Text>
-              <Text textAlign={"center"} color={"white"} fontSize={"md"}>Version: {expo.version}</Text>
+              <Text textAlign={"center"} color={"white"} fontSize={"md"}>{t("developpe_par")} Mathis Cadio</Text>
+              <Text textAlign={"center"} color={"white"} fontSize={"md"}>{t("version")} {expo.version}</Text>
             </VStack>
           </VStack>
           {this._showDonsModal()}
@@ -250,4 +255,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(Accueil)
+export default connect(mapStateToProps)(withTranslation()(Accueil))

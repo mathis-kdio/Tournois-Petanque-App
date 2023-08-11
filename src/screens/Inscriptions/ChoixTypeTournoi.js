@@ -7,6 +7,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import TopBarBack from 'components/TopBarBack';
 import CardButton from 'components/buttons/CardButton';
 import AdMobBanner from 'components/adMob/AdMobBanner';
+import { withTranslation } from 'react-i18next';
 
 class ChoixTypeTournoi extends React.Component {
   constructor(props) {
@@ -18,19 +19,20 @@ class ChoixTypeTournoi extends React.Component {
   }
 
   _modalInfos() {
+    const { t } = this.props;
     if (!this.state.modalType) return;
     const infosModal = {
-      "mele-demele": {
-        title: "Mélée-Démêlée",
-        text: "Les joueurs sont solitaires ou en équipes fixes.\nLes matchs peuvent se dérouler en tête-à-tête, doublettes ou triplettes.\nPossibilité de compléter un match avec une triplette ou tête à tête."
+      "melee-demelee": {
+        title: t("melee_demelee"),
+        text:  t("description_melee_demelee")
       },
       "championnat": {
-        title: "Championnat",
-        text: "Les joueurs ne se rencontrent qu'une seule fois pendant le tournoi."
+        title: t("championnat"),
+        text: t("description_championnat")
       },
       "coupe": {
-        title: "Coupe",
-        text: "Un 1er tour aléatoire puis qualification si victoire sinon élimination du tournoi.\n\nIndisponible pour l'instant : phase de poule"
+        title: t("coupe"),
+        text: t("description_coupe")
       }
     };
     let infos = infosModal[this.state.modalType];
@@ -55,41 +57,42 @@ class ChoixTypeTournoi extends React.Component {
   }
 
   render() {
+    const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
         <StatusBar backgroundColor="#0594ae"/>
         <VStack flex="1" bgColor={"#0594ae"}>
-          <TopBarBack title="Type de tournoi" navigation={this.props.navigation}/>
+          <TopBarBack title={t("type_tournoi")} navigation={this.props.navigation}/>
           <VStack flex="1" px="10">
             <Spacer/>
             <CardButton
-              text="Type Mêlée-Démêlée"
+              text={t("type_melee_demelee")}
               icon="random"
               navigate={() => this._navigate('mele-demele')}
             />
-            <Pressable flexDirection="row" justifyContent="center" mt="2" onPress={() => this.setState({showModal: true, modalType: "mele-demele"})}>
+            <Pressable flexDirection="row" justifyContent="center" mt="2" onPress={() => this.setState({showModal: true, modalType: "melee-demelee"})}>
               <FontAwesome5 name="info-circle" color="white" size={24}/>
-              <Text color="white"> En savoir plus</Text>
+              <Text color="white"> {t("savoir_plus")}</Text>
             </Pressable>
             <Spacer/>
             <CardButton
-              text="Type Championnat"
+              text={t("type_championnat")}
               icon="table"
               navigate={() => this._navigate('championnat')}
             />
             <Pressable flexDirection="row" justifyContent="center" mt="2" onPress={() => this.setState({showModal: true, modalType: "championnat"})}>
               <FontAwesome5 name="info-circle" color="white" size={24}/>
-              <Text color="white"> En savoir plus</Text>
+              <Text color="white"> {t("savoir_plus")}</Text>
             </Pressable>
             <Spacer/>
             <CardButton
-              text="Type Coupe"
+              text={t("type_coupe")}
               icon="trophy"
               navigate={() => this._navigate('coupe')}
             />
             <Pressable flexDirection="row" justifyContent="center" mt="2" onPress={() => this.setState({showModal: true, modalType: "coupe"})}>
               <FontAwesome5 name="info-circle" color="white" size={24}/>
-              <Text color="white"> En savoir plus</Text>
+              <Text color="white"> {t("savoir_plus")}</Text>
             </Pressable>
             <Spacer/>
             <AdMobBanner/>
@@ -108,4 +111,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(ChoixTypeTournoi)
+export default connect(mapStateToProps)(withTranslation()(ChoixTypeTournoi))

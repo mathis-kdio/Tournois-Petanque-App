@@ -1,4 +1,5 @@
 import React from 'react'
+import { withTranslation } from 'react-i18next'
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 
@@ -11,11 +12,12 @@ class MatchItem extends React.Component {
   }
 
   _displayTitle(match) {
+    const { t } = this.props;
     return (
       match.terrain ? 
       <Text style={styles.title}>{(match.terrain.name)}</Text>
       :
-      <Text style={styles.title}>Partie n°{(match.id + 1)}</Text>
+      <Text style={styles.title}>{t("match_numero")}{(match.id + 1)}</Text>
     )
   }
 
@@ -149,4 +151,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(MatchItem)
+export default connect(mapStateToProps)(withTranslation()(MatchItem))

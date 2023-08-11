@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Text, TextInput } from 'react-native'
 import { connect } from 'react-redux'
 import { FontAwesome5 } from '@expo/vector-icons';
+import { withTranslation } from 'react-i18next';
 
 class ListeTerrainItem extends React.Component {
   constructor(props) {
@@ -148,4 +149,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(ListeTerrainItem)
+export default connect(mapStateToProps)(withTranslation()(ListeTerrainItem))

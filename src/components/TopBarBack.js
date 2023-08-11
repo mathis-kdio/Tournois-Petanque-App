@@ -10,7 +10,7 @@ class TopBarBack extends React.Component {
   }
 
   render() {
-    let { title, navigation } = this.props;
+    const { title, navigation } = this.props;
     return (
       <HStack alignItems="center" px="5" py="2">
         <Pressable rounded="2xl" p="10px" onPress={() => navigation.goBack()}>

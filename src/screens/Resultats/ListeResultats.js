@@ -3,24 +3,26 @@ import { StyleSheet, View, FlatList, Text } from 'react-native'
 import { connect } from 'react-redux'
 import ListeResultatItem from '@components/ListeResultatItem'
 import { rankingCalc } from '@utils/ranking'
+import { withTranslation } from 'react-i18next'
 
 class ListeResultats extends React.Component {
 
   render() {
+    const { t } = this.props;
     return (
       <View style={styles.main_container}>
         <View style={styles.entete}>
           <View style={styles.position_container}>
-            <Text style={styles.texte}>Place</Text>
+            <Text style={styles.texte}>{t("place")}</Text>
           </View>
           <View style={styles.victoires_container}>
-            <Text style={styles.texte}>Victoire</Text>
+            <Text style={styles.texte}>{t("victoire")}</Text>
           </View>
           <View style={styles.mj_container}>
-            <Text style={styles.texte}>MJ</Text>
+            <Text style={styles.texte}>{t("m_j")}</Text>
           </View>
           <View style={styles.points_container}>
-            <Text style={styles.texte}>Point</Text>
+            <Text style={styles.texte}>{t("point")}</Text>
           </View>
         </View>
         <FlatList
@@ -75,4 +77,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(ListeResultats)
+export default connect(mapStateToProps)(withTranslation()(ListeResultats))

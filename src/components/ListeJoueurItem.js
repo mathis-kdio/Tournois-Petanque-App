@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TextInput } from 'react-native'
 import { connect } from 'react-redux'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { CheckIcon, Image, Select, VStack } from 'native-base';
+import { withTranslation } from 'react-i18next';
 
 class ListeJoueurItem extends React.Component {
   constructor(props) {
@@ -140,6 +141,7 @@ class ListeJoueurItem extends React.Component {
   }
 
   _equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs) {
+    const { t } = this.props;
     if (avecEquipes == true) {
       let selectedValue = 0;
       if (joueur.equipe) {
@@ -173,15 +175,15 @@ class ListeJoueurItem extends React.Component {
         <VStack flex="1" borderWidth="1">
           <Select
             selectedValue={selectedValue}
-            accessibilityLabel="Choix de l'équipe"
-            placeholder="Choix de l'équipe"
+            accessibilityLabel={t("choix_equipe")}
+            placeholder={t("choix_equipe")}
             onValueChange={itemValue => this._ajoutEquipe(joueur.id, itemValue)}
             _selectedItem={{
               endIcon: <CheckIcon size="5" color="cyan.500"/>
             }}
             size="lg"
           >
-            <Select.Item label="Choisir" value={undefined} key="0"/>
+            <Select.Item label={t("choisir")} value={undefined} key="0"/>
             {pickerItem}
           </Select>
         </VStack>
@@ -277,4 +279,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(ListeJoueurItem)
+export default connect(mapStateToProps)(withTranslation()(ListeJoueurItem))

@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Text, TextInput, Button, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import { FontAwesome5 } from '@expo/vector-icons';
+import { withTranslation } from 'react-i18next';
 
 class ListeJoueursItem extends React.Component {
   constructor(props) {
@@ -30,6 +31,7 @@ class ListeJoueursItem extends React.Component {
   }
 
   _modalRemoveList(list) {
+    const { t } = this.props;
     Alert.alert(
       "Suppression d'une liste",
       "Êtes-vous sûr de vouloir supprimer la liste n°" + (list[list.length - 1].listId + 1) + " ?",
@@ -93,10 +95,11 @@ class ListeJoueursItem extends React.Component {
   }
 
   _buttons(list) {
+    const { t } = this.props;
     if(this.props.route && this.props.route.params && this.props.route.params.loadListScreen) {
       return (
         <View style={styles.buttonView}>
-          <Button color="#1c3969" title="Charger" onPress={() => this._loadList(list[list.length - 1].listId)}/>
+          <Button color="#1c3969" title={t("charger")} onPress={() => this._loadList(list[list.length - 1].listId)}/>
         </View>
       )
     }
@@ -104,7 +107,7 @@ class ListeJoueursItem extends React.Component {
       return(
         <View style={styles.buttonContainer}>
           <View style={styles.buttonView}>
-            <Button color="#1c3969" title="Modifier" onPress={() => this._modifyList(list)}/>
+            <Button color="#1c3969" title={t("modifier")} onPress={() => this._modifyList(list)}/>
           </View>
           <View style={styles.buttonView}>
             <FontAwesome5.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._modalRemoveList(list)}/>
@@ -141,7 +144,7 @@ class ListeJoueursItem extends React.Component {
   }
 
   render() {
-    const {list} = this.props;
+    const { list} = this.props;
     return (
       <View style={styles.saved_list_container}>
         <View style={styles.saved_list_name_container}>
@@ -196,4 +199,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(ListeJoueursItem)
+export default connect(mapStateToProps)(withTranslation()(ListeJoueursItem))

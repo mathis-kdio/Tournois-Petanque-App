@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Text, Button } from 'react-native'
 import { connect } from 'react-redux'
 import Inscriptions from '@components/Inscriptions'
+import { withTranslation } from 'react-i18next'
 
 class InscriptionsAvecNoms extends React.Component {
 
@@ -24,16 +25,10 @@ class InscriptionsAvecNoms extends React.Component {
     });
   }
 
-  _showNbJoueur() {
-    let nbJoueur = this.props.listesJoueurs[this.props.optionsTournoi.mode].length;
-    return (
-      <Text>{nbJoueur}</Text>
-    )
-  }
-
   _boutonCommencer() {
+    const { t } = this.props;
     let boutonDesactive = false
-    let boutonTitle = 'Valider et commencer'
+    let boutonTitle = t("commencer_tournoi")
     let nbJoueurs = this.props.listesJoueurs[this.props.optionsTournoi.mode].length
 
     let nbEquipes
@@ -48,25 +43,25 @@ class InscriptionsAvecNoms extends React.Component {
     }
 
     if (this.props.optionsTournoi.type == 'coupe' && (nbEquipes < 4 || Math.log2(nbEquipes) % 1 !== 0)) {
-      boutonTitle = "En coupe, le nombre d'équipes doit être de 4, 8, 16, ..."
-      boutonDesactive = true
+      boutonTitle = t("configuration_impossible_coupe");
+      boutonDesactive = true;
     }
     else if (this.props.optionsTournoi.mode == 'avecEquipes') {
       if (this.props.listesJoueurs.avecEquipes.find(el => el.equipe == undefined) != undefined || this.props.listesJoueurs.avecEquipes.find(el => el.equipe > nbEquipes) != undefined) {
-        boutonTitle = "Des joueurs n'ont pas d'équipe"
-        boutonDesactive = true
+        boutonTitle = t("joueurs_sans_equipe");
+        boutonDesactive = true;
       }
       else if (this.props.optionsTournoi.typeEquipes == "teteatete") {
         if (this.props.listesJoueurs.avecEquipes.length % 2 != 0 || this.props.listesJoueurs.avecEquipes.length < 2) {
-          boutonTitle = "Le nombre d'equipe doit être un multiple de 2"
-          boutonDesactive = true
+          boutonTitle = t("nombre_equipe_multiple_2");
+          boutonDesactive = true;
         }
         else {
           for (let i = 0; i < nbEquipes; i++) {
             let count = this.props.listesJoueurs.avecEquipes.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
             if (count > 1) {
-              boutonTitle = "Des équipes ont trop de joueurs"
-              boutonDesactive = true
+              boutonTitle = t("equipes_trop_joueurs");
+              boutonDesactive = true;
               break
             }
           }
@@ -74,54 +69,54 @@ class InscriptionsAvecNoms extends React.Component {
       }
       else if (this.props.optionsTournoi.typeEquipes == "doublette") {
         if (this.props.listesJoueurs.avecEquipes.length % 4 != 0 || this.props.listesJoueurs.avecEquipes.length == 0) {
-          boutonTitle = "Avec des équipes en doublette, le nombre de joueurs doit être un multiple de 4"
-          boutonDesactive = true
+          boutonTitle = t("equipe_doublette_multiple_4");
+          boutonDesactive = true;
         }
         else {
           for (let i = 0; i < nbEquipes; i++) {
             let count = this.props.listesJoueurs.avecEquipes.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
             if (count > 2) {
-              boutonTitle = "Des équipes ont trop de joueurs"
-              boutonDesactive = true
-              break
+              boutonTitle = t("equipes_trop_joueurs");
+              boutonDesactive = true;
+              break;
             }
           }
         }
       }
       else if (this.props.optionsTournoi.typeEquipes == "triplette" && (this.props.listesJoueurs.avecEquipes.length % 6 != 0 || this.props.listesJoueurs.avecEquipes.length == 0)) {
-        boutonTitle = "En triplette avec des équipes formées, le nombre de joueurs doit être un multiple de 6"
-        boutonDesactive = true
+        boutonTitle = t("equipe_triplette_multiple_6");
+        boutonDesactive = true;
       }
     }
     else if (this.props.optionsTournoi.typeEquipes == "teteatete" && (this.props.listesJoueurs.avecNoms.length % 2 != 0 || this.props.listesJoueurs.avecNoms.length < 2)) {
-      boutonTitle = "En tête-à-tête, le nombre de joueurs doit être un multiple de 2"
-      boutonDesactive = true
+      boutonTitle = t("tete_a_tete_multiple_2");
+      boutonDesactive = true;
     }
     else if (this.props.optionsTournoi.typeEquipes == "doublette" && (this.props.listesJoueurs.avecNoms.length % 4 != 0 || this.props.listesJoueurs.avecNoms.length < 4)) {
       if (this.props.listesJoueurs.avecNoms.length < 4) {
-        boutonTitle = "Pas assez de joueurs"
-        boutonDesactive = true
+        boutonTitle = t("joueurs_insuffisants");
+        boutonDesactive = true;
       }
       else if (this.props.listesJoueurs.avecNoms.length % 2 == 0 && this.props.optionsTournoi.complement == "1") {
-        boutonTitle = "Nombre de joueurs pas multiple de 4, l'option sélectionnée formera un tête-à-tête"
+        boutonTitle = t("complement_tete_a_tete");
       }
       else if (this.props.optionsTournoi.complement == "3") {
         if (this.props.listesJoueurs.avecNoms.length == 7) {
-          boutonTitle = "Mode 3vs2 + 1vs1 n'est pas encore disponible"
-          boutonDesactive = true
+          boutonTitle = t("configuration_impossible");
+          boutonDesactive = true;
         }
         else {
-          boutonTitle = "Nombre de joueurs pas multiple de 4, l'option sélectionnée formera des triplettes pour compléter"
+          boutonTitle = t("complement_triplette");
         }
       }
       else if (this.props.optionsTournoi.complement != "3") {
-        boutonTitle = "Nombre de joueurs pas multiple de 4, veuiller choisir l'option pour former des triplettes pour compléter si vous voulez lancer"
-        boutonDesactive = true
+        boutonTitle = t("blocage_complement");
+        boutonDesactive = true;
       }
     }
     else if (this.props.optionsTournoi.typeEquipes == "triplette" && (this.props.listesJoueurs.avecNoms.length % 6 != 0 || this.props.listesJoueurs.avecNoms.length < 6)) {
-      boutonTitle = "En triplette, le nombre de joueurs doit être un multiple de 6"
-      boutonDesactive = true
+      boutonTitle = t("triplette_multiple_6");
+      boutonDesactive = true;
     }
     return (
       <Button disabled={boutonDesactive} color='green' title={boutonTitle} onPress={() => this._commencer()}/>
@@ -129,10 +124,12 @@ class InscriptionsAvecNoms extends React.Component {
   }
 
   render() {
+    const { t } = this.props;
+    let nbJoueur = this.props.listesJoueurs[this.props.optionsTournoi.mode].length;
     return (
       <View style={styles.main_container}>
         <View style={styles.text_container}>
-          <Text style={styles.text_nbjoueur}>Il y a : {this._showNbJoueur()} inscrit.e.s</Text>
+          <Text style={styles.text_nbjoueur}>{t("nombre_joueurs", {nb: nbJoueur})}</Text>
         </View>
           <Inscriptions 
             navigation={this.props.navigation}
@@ -176,4 +173,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(InscriptionsAvecNoms)
+export default connect(mapStateToProps)(withTranslation()(InscriptionsAvecNoms))

@@ -1,4 +1,5 @@
 import React from 'react'
+import { withTranslation } from 'react-i18next';
 import { StyleSheet, View, Text, TextInput, Button } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux'
@@ -34,11 +35,12 @@ class MatchDetail extends React.Component {
   }
 
   _displayTitle(match) {
+    const { t } = this.props;
     return (
       match.terrain ? 
       <Text style={styles.title}>{(match.terrain.name)}</Text>
       :
-      <Text style={styles.title}>Partie n°{(match.id + 1)}</Text>
+      <Text style={styles.title}>{t("match_numero")}{(match.id + 1)}</Text>
     )
   }
 
@@ -115,16 +117,18 @@ class MatchDetail extends React.Component {
   }
 
   _boutonValider(match) {
+    const { t } = this.props;
     let boutonActive = true
     if (this.state.score1 && this.state.score2) {
       boutonActive = false
     }
     return (
-      <Button disabled={boutonActive} color="green" title='Valider le score' onPress={() => this._envoyerResultat(match)}/>
+      <Button disabled={boutonActive} color="green" title={t("valider_score")} onPress={() => this._envoyerResultat(match)}/>
     )
   }
 
   render() {
+    const { t } = this.props;
     let match = this.props.route.params.match
     return (
       <KeyboardAwareScrollView contentContainerStyle={{flex: 1}}>
@@ -153,7 +157,7 @@ class MatchDetail extends React.Component {
                 maxLength={2}
                 autoFocus = {true}
                 returnKeyType= {'next'}
-                placeholder="score équipe 1"
+                placeholder={t("score_equipe_1")}
                 onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 1)}
                 onSubmitEditing={() => this.secondInput.focus()}
               />
@@ -164,13 +168,13 @@ class MatchDetail extends React.Component {
                 keyboardType={'decimal-pad'}
                 maxLength={2}
                 ref={ref => {this.secondInput = ref}}
-                placeholder="score équipe 2"
+                placeholder={t("score_equipe_2")}
                 onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 2)}
                 onSubmitEditing={() => this._envoyerResultat(match)}
               />
             </View>
             <View style={styles.buttonView}>
-              <Button color="red" title='Supprimer le score' onPress={() => this._supprimerResultat()}/>
+              <Button color="red" title={t("supprimer_score")} onPress={() => this._supprimerResultat()}/>
             </View>
             <View style={styles.buttonView}>
               {this._boutonValider(match)}
@@ -246,4 +250,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(MatchDetail)
+export default connect(mapStateToProps)(withTranslation()(MatchDetail))

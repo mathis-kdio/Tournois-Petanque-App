@@ -6,6 +6,7 @@ import ListeJoueurItem from '@components/ListeJoueurItem'
 import JoueurSuggere from '@components/JoueurSuggere'
 import JoueurType from '@components/JoueurType'
 import { Box, HStack } from 'native-base';
+import { withTranslation } from 'react-i18next'
 
 class Inscription extends React.Component {
 
@@ -82,12 +83,13 @@ class Inscription extends React.Component {
   }
 
   _modalRemoveAllPlayers() {
+    const { t } = this.props;
     Alert.alert(
-      "Supprimer tous les joueurs",
-      "Êtes-vous sûr de vouloir supprimer tous les joueurs déjà inscrits ?",
+      t("supprimer_joueurs_modal_titre"),
+      t("supprimer_joueurs_modal_texte"),
       [
-        { text: "Annuler", onPress: () => undefined, style: "cancel" },
-        { text: "Oui", onPress: () => this._removeAllPlayers() },
+        { text: t("annuler"), onPress: () => undefined, style: "cancel" },
+        { text: t("oui"), onPress: () => this._removeAllPlayers() },
       ],
       { cancelable: true }
     );
@@ -141,12 +143,13 @@ class Inscription extends React.Component {
   }
 
   _displayListeJoueursSuggeres() {
+    const { t } = this.props;
     if (this.state.suggestions.length > 0) {
       let partialSuggested = this.state.suggestions.slice(0, this.state.nbSuggestions);
       return (
         <View>
           <View style={styles.text_container}>
-            <Text style={styles.text_nbjoueur}>Suggestions de Joueurs</Text>
+            <Text style={styles.text_nbjoueur}>{t("suggestions_joueurs")}</Text>
           </View>
           <FlatList
             removeClippedSubviews={false}
@@ -168,9 +171,10 @@ class Inscription extends React.Component {
   }
 
   _buttonMoreSuggestedPlayers() {
+    const { t } = this.props;
     if (this.state.nbSuggestions < this.state.suggestions.length) {
       return (
-        <Button style={styles.text_nbjoueur} color='green' title='Afficher + de joueurs suggérés' onPress={() => this._showMoreSuggestedPlayers()}/>
+        <Button style={styles.text_nbjoueur} color='green' title={t("plus_suggestions_joueurs_bouton")} onPress={() => this._showMoreSuggestedPlayers()}/>
       )
     }
   }
@@ -180,29 +184,32 @@ class Inscription extends React.Component {
   }
 
   _buttonRemoveAllPlayers() {
+    const { t } = this.props;
     if (this.props.listesJoueurs[this.props.optionsTournoi.mode].length > 0) {
       return (
         <View style={styles.buttonView}>
-          <Button style={styles.text_nbjoueur} color='red' title='Supprimer tous les joueurs' onPress={() => this._modalRemoveAllPlayers()}/>
+          <Button style={styles.text_nbjoueur} color='red' title={t("supprimer_joueurs_bouton")} onPress={() => this._modalRemoveAllPlayers()}/>
         </View>
       )
     }
   }
 
   _buttonLoadSavedList() {
+    const { t } = this.props;
     if (!this.props.loadListScreen) {
       return (
         <View style={styles.buttonView}>
-          <Button style={styles.text_nbjoueur} color='green' title='Charger une liste de joueurs' onPress={() => this._loadSavedList()}/>
+          <Button style={styles.text_nbjoueur} color='green' title={t("charger_liste_joueurs_bouton")} onPress={() => this._loadSavedList()}/>
         </View>
       )
     }
   }
 
   _showEquipeEntete() {
+    const { t } = this.props;
     if (this.props.optionsTournoi.mode == 'avecEquipes') {
       return (
-        <Text style={styles.texte_entete}>Equipe</Text>
+        <Text style={styles.texte_entete}>{t("equipe")}</Text>
       )
     }
   }
@@ -214,6 +221,7 @@ class Inscription extends React.Component {
   }
 
   render() {
+    const { t } = this.props;
     return (
       <View style={styles.main_container}>
         <HStack alignItems="center" mx="1" space="1">
@@ -222,7 +230,7 @@ class Inscription extends React.Component {
               style={styles.textinput}
               placeholderTextColor="white"
               underlineColorAndroid="white"
-              placeholder="Nom du joueur"
+              placeholder={t("nom_joueur")}
               autoFocus={true}
               onChangeText={(text) => this._ajoutJoueurTextInputChanged(text)}
               onSubmitEditing={() => this._ajoutJoueur()}
@@ -239,23 +247,23 @@ class Inscription extends React.Component {
             <Button
               disabled={!this.state.etatBouton}
               color="green"
-              title="Ajouter"
+              title={t("ajouter")}
               onPress={() => this._ajoutJoueur()}
             />
           </Box>
         </HStack>
         <View style={styles.entete_container}>
           <View style={styles.prenom_container}>
-            <Text style={styles.texte_entete}>N° Prénom</Text>
+            <Text style={styles.texte_entete}>{t("numero_prenom")}</Text>
           </View>
           <View style={styles.equipe_container}>
             {this._showEquipeEntete()}
           </View>
           <View style={styles.renommer_container}>
-            <Text style={styles.texte_entete}>Renommer</Text>
+            <Text style={styles.texte_entete}>{t("renommer")}</Text>
           </View>
           <View style={styles.supprimer_container}>
-            <Text style={styles.texte_entete}>Supprimer</Text>
+            <Text style={styles.texte_entete}>{t("supprimer")}</Text>
           </View>
         </View>
         <View style={styles.flatList_container}>
@@ -328,4 +336,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(Inscription)
+export default connect(mapStateToProps)(withTranslation()(Inscription))

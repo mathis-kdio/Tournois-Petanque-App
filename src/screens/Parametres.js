@@ -5,9 +5,10 @@ import { _openURL } from 'utils/link'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
 import { HStack, VStack, Text, Spacer, FlatList, Divider, AlertDialog, Pressable, Box, Center, Button, Modal } from 'native-base'
-import { AdsConsent } from 'react-native-google-mobile-ads';
-import TopBarBack from 'components/TopBarBack'
 import { FontAwesome5 } from '@expo/vector-icons';
+import { AdsConsent } from 'react-native-google-mobile-ads';
+import { withTranslation } from "react-i18next";
+import TopBarBack from 'components/TopBarBack'
 import ChangelogData from '@assets/ChangelogData.json'
 
 class Parametres extends React.Component {
@@ -23,22 +24,23 @@ class Parametres extends React.Component {
   }
 
   _alertDialogClearData() {
+    const { t } = this.props;
     const cancelRef = React.createRef(null);
     return (
       <AlertDialog leastDestructiveRef={cancelRef} isOpen={this.state.alertOpen} onClose={() => this.setState({alertOpen: false})}>
         <AlertDialog.Content>
           <AlertDialog.CloseButton/>
-          <AlertDialog.Header>Suppression des données</AlertDialog.Header>
+          <AlertDialog.Header>{t("supprimer_donnees_modal_titre")}</AlertDialog.Header>
           <AlertDialog.Body>
-            Êtes-vous sûr de vouloir supprimer toutes les données (listes joueurs, anciens tournois, terrains, etc) ?
+          {t("supprimer_donnees_modal_texte")}
           </AlertDialog.Body>
           <AlertDialog.Footer>
             <Button.Group space={2}>
               <Button variant="unstyled" colorScheme="coolGray" onPress={() => this.setState({alertOpen: false})} ref={cancelRef}>
-                Annuler
+                {t("annuler")}
               </Button>
               <Button colorScheme="danger" onPress={() => this._clearData()}>
-                Confirmer
+                {t("oui")}
               </Button>
             </Button.Group>
           </AlertDialog.Footer>
@@ -125,30 +127,35 @@ class Parametres extends React.Component {
   }
 
   render() {
+    const { t, i18n } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
         <StatusBar backgroundColor="#0594ae"/>
         <VStack flex="1" bgColor={"#0594ae"}>
-          <TopBarBack title="Paramètres" navigation={this.props.navigation}/>
+          <TopBarBack title={t("parametres")} navigation={this.props.navigation}/>
           <VStack flex="1" px="10" space="4">
             <VStack>
-              <Text fontSize="xl" color="white">À propos</Text>
+              <Text fontSize="xl" color="white">{t("a_propos")}</Text>
               <Box borderWidth="1" borderColor="white" borderRadius="lg">
-                {this._item("Voir le code source", () => _openURL(this.githubRepository), "code", undefined)}
+                {this._item(t("voir_source_code"), () => _openURL(this.githubRepository), "code", undefined)}
                 <Divider/>
                 {this._item("tournoispetanqueapp@gmail.com", () => _openURL(this.mail), "envelope", undefined)}
               </Box>
             </VStack>
             <VStack>
-              <Text fontSize="xl" color="white">Réglages</Text>
+              <Text fontSize="xl" color="white">{t("reglages")}</Text>
               <Box borderWidth="1" borderColor="white" borderRadius="lg">
-                {this._item("Modifier le consentement", () => this._adsConsentShowForm(), "ad", undefined)}
+                {this._item(t("francais"), () => i18n.changeLanguage("fr-FR"), "flag", undefined)}
                 <Divider/>
-                {this._item("Supprimer toutes les données", () => this.setState({alertOpen: true}), "trash-alt", "danger")}
+                {this._item(t("anglais"), () => i18n.changeLanguage("en-US"), "flag-usa", undefined)}
+                <Divider/>
+                {this._item(t("modifier_consentement"), () => this._adsConsentShowForm(), "ad", undefined)}
+                <Divider/>
+                {this._item(t("supprimer_donnees"), () => this.setState({alertOpen: true}), "trash-alt", "danger")}
               </Box>
             </VStack>
             <VStack flex="1">
-              <Text fontSize="xl" color="white">Nouveautés</Text>
+              <Text fontSize="xl" color="white">{t("nouveautes")}</Text>
               <FlatList 
                 data={ChangelogData}
                 keyExtractor={(item) => item.id.toString() }
@@ -181,4 +188,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(Parametres)
+export default connect(mapStateToProps)(withTranslation()(Parametres))
