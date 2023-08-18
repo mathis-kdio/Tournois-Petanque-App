@@ -72,10 +72,6 @@
           "userTrackingPermission": "This identifier will be used to deliver personalized ads to you."
         }
       ],
-      [
-        "./src/plugins/fixSentry.js",
-        {}
-      ],
       "sentry-expo",
       [
         "./src/plugins/withDisableForcedDarkModeAndroid.js",
@@ -88,8 +84,7 @@
           "file": "sentry-expo/upload-sourcemaps",
           "config": {
             "organization": "tournois-petanque-app",
-            "project": "tournois-petanque-gcu",
-            "authToken": null
+            "project": "tournois-petanque-gcu"
           }
         }
       ]

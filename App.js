@@ -91,4 +91,4 @@ class App extends React.Component {
   }
 }
 
-export default Sentry.Native.wrap(App);
+export default Sentry.Native.wrap(App, {touchEventBoundaryProps: { labelName: "accessibilityLabel" }});
