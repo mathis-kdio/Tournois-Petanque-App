@@ -6,7 +6,9 @@
     "ios": "npx expo start --ios",
     "web": "npx expo start --web",
     "eject": "npx expo prebuild",
-    "build android": "eas build --platform android"
+    "build": "npx eas-cli build",
+    "build Android": "npx eas-cli build --platform android",
+    "build Android Development": "npx eas-cli build --profile development"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.18.2",
