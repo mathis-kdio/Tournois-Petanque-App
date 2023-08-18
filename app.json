@@ -72,10 +72,6 @@
           "userTrackingPermission": "This identifier will be used to deliver personalized ads to you."
         }
       ],
-      [
-        "./src/plugins/fixSentry.js",
-        {}
-      ],
       "sentry-expo",
       [
         "./src/plugins/withDisableForcedDarkModeAndroid.js",
