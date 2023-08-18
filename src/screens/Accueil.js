@@ -11,7 +11,7 @@ import { StatusBar } from 'expo-status-bar';
 import { AdsConsent, AdsConsentStatus } from 'react-native-google-mobile-ads';
 import { withTranslation } from 'react-i18next';
 import mobileAds from 'react-native-google-mobile-ads';
-import CardButton from 'components/buttons/CardButton';
+import CardButton from '@components/buttons/CardButton';
 import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
 
 class Accueil extends React.Component {

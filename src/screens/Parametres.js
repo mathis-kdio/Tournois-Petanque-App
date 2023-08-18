@@ -1,14 +1,14 @@
 import React from 'react'
 import { expo } from '../../app.json'
 import { connect } from 'react-redux'
-import { _openURL } from 'utils/link'
+import { _openURL } from '@utils/link'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
 import { HStack, VStack, Text, Spacer, FlatList, Divider, AlertDialog, Pressable, Box, Center, Button, Modal } from 'native-base'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AdsConsent } from 'react-native-google-mobile-ads';
 import { withTranslation } from "react-i18next";
-import TopBarBack from 'components/TopBarBack'
+import TopBarBack from '@components/TopBarBack'
 import ChangelogData from '@assets/ChangelogData.json'
 
 class Parametres extends React.Component {

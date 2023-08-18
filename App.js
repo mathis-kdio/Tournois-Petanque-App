@@ -1,8 +1,8 @@
 import 'expo-dev-client';
 import React from 'react';
-import Navigation from './src/navigation/Navigation';
+import Navigation from '@navigation/Navigation';
 import { Provider } from 'react-redux';
-import Store from './src/store/configureStore';
+import Store from '@store/configureStore';
 import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/es/integration/react';
 import { NativeBaseProvider, extendTheme } from 'native-base';

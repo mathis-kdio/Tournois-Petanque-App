@@ -4,9 +4,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { VStack, Text, Spacer, Modal, Pressable } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
-import TopBarBack from 'components/TopBarBack';
-import CardButton from 'components/buttons/CardButton';
-import AdMobBanner from 'components/adMob/AdMobBanner';
+import TopBarBack from '@components/TopBarBack';
+import CardButton from '@components/buttons/CardButton';
+import AdMobBanner from '@components/adMob/AdMobBanner';
 import { withTranslation } from 'react-i18next';
 
 class ChoixTypeTournoi extends React.Component {

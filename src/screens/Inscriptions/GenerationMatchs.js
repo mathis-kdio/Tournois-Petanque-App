@@ -1,13 +1,13 @@
 import React from 'react'
 import { StyleSheet, View, ActivityIndicator, Text, Button } from 'react-native'
 import { connect } from 'react-redux'
-import { generationChampionnat } from 'utils/generations/championnat'
-import { generationCoupe } from 'utils/generations/coupe'
-import { generationAvecEquipes } from 'utils/generations/tournoiAvecEquipes'
-import { generationDoublettes } from 'utils/generations/tournoiDoublettes'
-import { generationTeteATete } from 'utils/generations/tournoiTeteATete'
-import { generationTriplettes } from 'utils/generations/tournoiTriplettes'
-import { uniqueValueArrayRandOrder } from "utils/generations/generation";
+import { generationChampionnat } from '@utils/generations/championnat'
+import { generationCoupe } from '@utils/generations/coupe'
+import { generationAvecEquipes } from '@utils/generations/tournoiAvecEquipes'
+import { generationDoublettes } from '@utils/generations/tournoiDoublettes'
+import { generationTeteATete } from '@utils/generations/tournoiTeteATete'
+import { generationTriplettes } from '@utils/generations/tournoiTriplettes'
+import { uniqueValueArrayRandOrder } from '@utils/generations/generation';
 import { withTranslation } from 'react-i18next'
 
 class GenerationMatchs extends React.Component {

@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Text, Button, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import ListeTerrainItem from '@components/ListeTerrainItem';
-import { calcNbMatchsParTour } from 'utils/generations/generation';
+import { calcNbMatchsParTour } from '@utils/generations/generation';
 import { withTranslation } from 'react-i18next';
 
 class ListeTerrains extends React.Component {

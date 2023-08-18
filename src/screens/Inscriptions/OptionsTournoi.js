@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { Checkbox, VStack, Button, Text, Input, Select, CheckIcon, Icon, Slider, HStack, ScrollView } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
-import TopBarBack from 'components/TopBarBack';
+import TopBarBack from '@components/TopBarBack';
 import { withTranslation } from 'react-i18next';
 
 class OptionsTournoi extends React.Component {
