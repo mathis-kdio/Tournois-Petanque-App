@@ -1,11 +1,12 @@
 import React from 'react'
-import { StyleSheet, View, TextInput, Text, Button, Alert } from 'react-native'
+import { StyleSheet, View, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import { FlatList } from 'react-native-gesture-handler'
 import ListeJoueurItem from '@components/ListeJoueurItem'
 import JoueurSuggere from '@components/JoueurSuggere'
 import JoueurType from '@components/JoueurType'
-import { Box, HStack } from 'native-base';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { Box, HStack, Input, VStack, Button, Text, Icon, Divider } from 'native-base';
 import { withTranslation } from 'react-i18next'
 
 class Inscription extends React.Component {
@@ -131,11 +132,13 @@ class Inscription extends React.Component {
             />
           )}
           ListFooterComponent={
-            <View>
-              {this._buttonRemoveAllPlayers()}
-              {this._buttonLoadSavedList()}
+            <VStack space="md">
+              <VStack px="10" space="sm">
+                {this._buttonRemoveAllPlayers()}
+                {this._buttonLoadSavedList()}
+              </VStack>
               {this._displayListeJoueursSuggeres()}
-            </View>
+            </VStack>
           }
         />
       )
@@ -147,10 +150,8 @@ class Inscription extends React.Component {
     if (this.state.suggestions.length > 0) {
       let partialSuggested = this.state.suggestions.slice(0, this.state.nbSuggestions);
       return (
-        <View>
-          <View style={styles.text_container}>
-            <Text style={styles.text_nbjoueur}>{t("suggestions_joueurs")}</Text>
-          </View>
+        <VStack>
+          <Text color="white" fontSize="xl" textAlign="center">{t("suggestions_joueurs")}</Text>
           <FlatList
             removeClippedSubviews={false}
             persistentScrollbar={true}
@@ -162,10 +163,10 @@ class Inscription extends React.Component {
               />
             )}
           />
-          <View style={styles.buttonView}>
+          <Box px="10">
             {this._buttonMoreSuggestedPlayers()}
-          </View>
-        </View>
+          </Box>
+        </VStack>
       )
     }
   }
@@ -174,7 +175,14 @@ class Inscription extends React.Component {
     const { t } = this.props;
     if (this.state.nbSuggestions < this.state.suggestions.length) {
       return (
-        <Button style={styles.text_nbjoueur} color='green' title={t("plus_suggestions_joueurs_bouton")} onPress={() => this._showMoreSuggestedPlayers()}/>
+        <Button
+          bg="green.700"
+          onPress={() => this._showMoreSuggestedPlayers()}
+          startIcon={<Icon as={FontAwesome5} name="chevron-down"/>}
+          endIcon={<Icon as={FontAwesome5} name="chevron-down"/>}
+        >
+          {t("plus_suggestions_joueurs_bouton")}
+        </Button>
       )
     }
   }
@@ -187,9 +195,12 @@ class Inscription extends React.Component {
     const { t } = this.props;
     if (this.props.listesJoueurs[this.props.optionsTournoi.mode].length > 0) {
       return (
-        <View style={styles.buttonView}>
-          <Button style={styles.text_nbjoueur} color='red' title={t("supprimer_joueurs_bouton")} onPress={() => this._modalRemoveAllPlayers()}/>
-        </View>
+        <Button
+          bg="red.600"
+          onPress={() => this._modalRemoveAllPlayers()}
+        >
+          {t("supprimer_joueurs_bouton")}
+        </Button>
       )
     }
   }
@@ -198,9 +209,12 @@ class Inscription extends React.Component {
     const { t } = this.props;
     if (!this.props.loadListScreen) {
       return (
-        <View style={styles.buttonView}>
-          <Button style={styles.text_nbjoueur} color='green' title={t("charger_liste_joueurs_bouton")} onPress={() => this._loadSavedList()}/>
-        </View>
+        <Button
+          bg="green.700"
+          onPress={() => this._loadSavedList()}
+        >
+          {t("charger_liste_joueurs_bouton")}
+        </Button>
       )
     }
   }
@@ -209,124 +223,63 @@ class Inscription extends React.Component {
     const { t } = this.props;
     if (this.props.optionsTournoi.mode == 'avecEquipes') {
       return (
-        <Text style={styles.texte_entete}>{t("equipe")}</Text>
+        <Text color="white" fontSize="md" textAlign="center">{t("equipe")}</Text>
       )
     }
   }
 
-  _setJoueurType(type) {
-    this.setState({
-      joueurType: type
-    })
-  }
+
 
   render() {
     const { t } = this.props;
     return (
-      <View style={styles.main_container}>
+      <VStack flex="1">
         <HStack alignItems="center" mx="1" space="1">
           <Box flex="1">
-            <TextInput
-              style={styles.textinput}
-              placeholderTextColor="white"
-              underlineColorAndroid="white"
+            <Input
+              placeholderTextColor='white'
               placeholder={t("nom_joueur")}
+              keyboardType="default"
               autoFocus={true}
+              defaultValue={this.nbToursTxt}
               onChangeText={(text) => this._ajoutJoueurTextInputChanged(text)}
               onSubmitEditing={() => this._ajoutJoueur()}
               ref={this.addPlayerTextInput}
+              size="lg"
             />
           </Box>
           <Box flex="1">
             <JoueurType
               joueurType={this.state.joueurType}
-              _setJoueurType={(type) => this._setJoueurType(type)}
+              _setJoueurType={(type) => this.setState({joueurType: type})}
             />
           </Box>
           <Box>
             <Button
-              disabled={!this.state.etatBouton}
-              color="green"
-              title={t("ajouter")}
+              bg="green.700"
+              isDisabled={!this.state.etatBouton}
               onPress={() => this._ajoutJoueur()}
-            />
+              size="lg"
+            >
+              {t("ajouter")}
+            </Button>
           </Box>
         </HStack>
-        <View style={styles.entete_container}>
-          <View style={styles.prenom_container}>
-            <Text style={styles.texte_entete}>{t("numero_prenom")}</Text>
-          </View>
-          <View style={styles.equipe_container}>
-            {this._showEquipeEntete()}
-          </View>
-          <View style={styles.renommer_container}>
-            <Text style={styles.texte_entete}>{t("renommer")}</Text>
-          </View>
-          <View style={styles.supprimer_container}>
-            <Text style={styles.texte_entete}>{t("supprimer")}</Text>
-          </View>
-        </View>
-        <View style={styles.flatList_container}>
+        <Divider bg="white" height="0.5" my="2"/>
+        <VStack flex="1">
           {this._displayListeJoueur()}
-        </View>
-      </View>
+        </VStack>
+      </VStack>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  main_container: {
-    flex: 1,
-    backgroundColor: "#0594ae"
-  },
-  text_container: {
-    alignItems: 'center',
-    marginTop: 5
-  },
-  text_nbjoueur: {
-    fontSize: 20,
-    color: 'white'
-  },
   textinput: {
     height: 50,
     paddingLeft: 5,
     color: 'white'
-  },
-  entete_container: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    borderBottomWidth: 2,
-    borderColor: 'white'
-  },
-  prenom_container: {
-    flex: 3,
-  },
-  equipe_container: {
-    flex: 2,
-    alignItems: 'center',
-  },
-  renommer_container: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  supprimer_container: {
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-  texte_entete: {
-    textAlign: 'center',
-    fontSize: 15,
-    color: 'white'
-  },
-  flatList_container: {
-    flex: 1
-  },
-  buttonView: {
-    marginTop: 10,
-    marginBottom: 10,
-    paddingLeft: 15,
-    paddingRight: 15
-  },
+  }
 })
 
 const mapStateToProps = (state) => {

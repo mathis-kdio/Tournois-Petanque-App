@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Text, TextInput } from 'react-native'
 import { connect } from 'react-redux'
 import { FontAwesome5 } from '@expo/vector-icons';
-import { CheckIcon, Image, Select, VStack } from 'native-base';
+import { Box, CheckIcon, HStack, Image, Select, VStack } from 'native-base';
 import { withTranslation } from 'react-i18next';
 
 class ListeJoueurItem extends React.Component {
@@ -18,9 +18,9 @@ class ListeJoueurItem extends React.Component {
   _showSupprimerJoueur(joueur, isInscription) {
     if (isInscription === true) {
       return (
-        <View style={{marginLeft: 5}}>
+        <Box style={{marginLeft: 5}}>
           <FontAwesome5.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._supprimerJoueur(joueur.id)}/>
-        </View>
+        </Box>
       )
     }
   }
@@ -221,7 +221,7 @@ class ListeJoueurItem extends React.Component {
   render() {
     const { joueur, isInscription, avecEquipes, typeEquipes, nbJoueurs } = this.props;
     return (
-      <View style={styles.main_container}>
+      <HStack borderWidth="1" borderColor="white" borderRadius="xl" margin="1" paddingX="1" alignItems="center">
         {this._joueurTypeIcon(joueur.type)}
         <View style={styles.name_container}>
           {this._joueurName(joueur, isInscription, avecEquipes)}
@@ -229,21 +229,12 @@ class ListeJoueurItem extends React.Component {
         {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
         {this._showRenommerJoueur(joueur, isInscription, avecEquipes)}
         {this._showSupprimerJoueur(joueur, isInscription)}
-      </View>
+      </HStack>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  main_container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingTop: 5,
-    paddingBottom: 5,
-    marginHorizontal: 10,
-    borderBottomWidth: 1,
-    borderColor: 'white'
-  },
   name_container: {
     flex: 1,
   },
