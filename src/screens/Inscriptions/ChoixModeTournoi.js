@@ -43,19 +43,19 @@ class ChoixModeTournoi extends React.Component {
 
   _validButton() {
     const { t } = this.props;
-    let bouttonDisable = false;
+    let buttonDisabled = false;
     let title = t("valider_et_options");
     if (this.props.optionsTournoi.type === "championnat" || this.props.optionsTournoi.type === "coupe") {
       title = t("valider_et_inscriptions");
     }
     if (this.state.modeTournoi == "avecEquipes" && this.state.typeEquipes == "teteatete") {
-      bouttonDisable = true;
+      buttonDisabled = true;
       title = t("erreur_tournoi_tete_a_tete_et_equipes");
     }
     return (
       <Button
         bg="#1c3969"
-        isDisabled={bouttonDisable}
+        isDisabled={buttonDisabled}
         onPress={() => this._nextStep()}
         endIcon={<Icon as={FontAwesome5} name="arrow-right"/>}
         size="lg"
