@@ -164,7 +164,7 @@ class Accueil extends React.Component {
       }
     }
     else {
-      <Box bg="gray.500" flex={1} space="1" alignItems={"center"} rounded="3xl" py={"5"}>
+      <Box bg="gray.500" flex="1" space="1" alignItems={"center"} rounded="3xl" py={"5"}>
         <FontAwesome5 name="play" color="white" size={24}/>
         <Text color={"white"}>{t("aucun_tournoi")}</Text>
       </Box>
@@ -217,17 +217,17 @@ class Accueil extends React.Component {
             </HStack>
             <HStack space={3}>
               {Platform.OS !== 'ios' && <>
-                <Pressable flex={1} alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => this.setState({ modalDonsVisible: true })}>
+                <Pressable flex="1" alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => this.setState({ modalDonsVisible: true })}>
                   <FontAwesome5 name="euro-sign" color="white" size={20}/>
                 </Pressable>
               </>}
-              <Pressable flex={1} alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => _openPlateformLink(this.googleMarketReviews, this.appleMarketReviews)}>
+              <Pressable flex="1" alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => _openPlateformLink(this.googleMarketReviews, this.appleMarketReviews)}>
                 <FontAwesome5 name="star" color="white" size={20}/>
               </Pressable>
-              <Pressable flex={1} alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => _openURL(this.mail)}>
+              <Pressable flex="1" alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => _openURL(this.mail)}>
                 <FontAwesome5 name="envelope" color="white" size={20}/>
               </Pressable>
-              <Pressable flex={1} alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => this.props.navigation.navigate('Parametres')}>
+              <Pressable flex="1" alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => this.props.navigation.navigate('Parametres')}>
                 <FontAwesome5 name="wrench" color="white" size={20}/>
               </Pressable>
             </HStack>
