@@ -30,38 +30,40 @@ class InscriptionsAvecNoms extends React.Component {
 
   _boutonCommencer() {
     const { t } = this.props;
-    let buttonDisabled = false
-    let title = t("commencer_tournoi")
-    let nbJoueurs = this.props.listesJoueurs[this.props.optionsTournoi.mode].length
+    let buttonDisabled = false;
+    let title = t("commencer_tournoi");
+    const nbJoueurs = this.props.listesJoueurs[this.props.optionsTournoi.mode].length;
+    const listesJoueurs = this.props.listesJoueurs;
+    const optionsTournoi = this.props.optionsTournoi;
+    let nbEquipes = 0;
 
-    let nbEquipes
-    if (this.props.optionsTournoi.typeEquipes == "teteatete") {
-      nbEquipes = nbJoueurs
+    if (optionsTournoi.typeEquipes == "teteatete") {
+      nbEquipes = nbJoueurs;
     }
-    else if (this.props.optionsTournoi.typeEquipes == "doublette") {
-      nbEquipes = Math.ceil(nbJoueurs / 2)
+    else if (optionsTournoi.typeEquipes == "doublette") {
+      nbEquipes = Math.ceil(nbJoueurs / 2);
     }
     else {
-      nbEquipes = Math.ceil(nbJoueurs / 3)
+      nbEquipes = Math.ceil(nbJoueurs / 3);
     }
 
-    if (this.props.optionsTournoi.type == 'coupe' && (nbEquipes < 4 || Math.log2(nbEquipes) % 1 !== 0)) {
+    if (optionsTournoi.type == 'coupe' && (nbEquipes < 4 || Math.log2(nbEquipes) % 1 !== 0)) {
       title = t("configuration_impossible_coupe");
       buttonDisabled = true;
     }
-    else if (this.props.optionsTournoi.mode == 'avecEquipes') {
-      if (this.props.listesJoueurs.avecEquipes.find(el => el.equipe == undefined) != undefined || this.props.listesJoueurs.avecEquipes.find(el => el.equipe > nbEquipes) != undefined) {
+    else if (optionsTournoi.mode == 'avecEquipes') {
+      if (listesJoueurs.avecEquipes.find(el => el.equipe == undefined) != undefined || listesJoueurs.avecEquipes.find(el => el.equipe > nbEquipes) != undefined) {
         title = t("joueurs_sans_equipe");
         buttonDisabled = true;
       }
-      else if (this.props.optionsTournoi.typeEquipes == "teteatete") {
-        if (this.props.listesJoueurs.avecEquipes.length % 2 != 0 || this.props.listesJoueurs.avecEquipes.length < 2) {
+      else if (optionsTournoi.typeEquipes == "teteatete") {
+        if (listesJoueurs.avecEquipes.length % 2 != 0 || listesJoueurs.avecEquipes.length < 2) {
           title = t("nombre_equipe_multiple_2");
           buttonDisabled = true;
         }
         else {
           for (let i = 0; i < nbEquipes; i++) {
-            let count = this.props.listesJoueurs.avecEquipes.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
+            let count = listesJoueurs.avecEquipes.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
             if (count > 1) {
               title = t("equipes_trop_joueurs");
               buttonDisabled = true;
@@ -70,14 +72,14 @@ class InscriptionsAvecNoms extends React.Component {
           }
         }
       }
-      else if (this.props.optionsTournoi.typeEquipes == "doublette") {
-        if (this.props.listesJoueurs.avecEquipes.length % 4 != 0 || this.props.listesJoueurs.avecEquipes.length == 0) {
+      else if (optionsTournoi.typeEquipes == "doublette") {
+        if (listesJoueurs.avecEquipes.length % 4 != 0 || listesJoueurs.avecEquipes.length == 0) {
           title = t("equipe_doublette_multiple_4");
           buttonDisabled = true;
         }
         else {
           for (let i = 0; i < nbEquipes; i++) {
-            let count = this.props.listesJoueurs.avecEquipes.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
+            let count = listesJoueurs.avecEquipes.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
             if (count > 2) {
               title = t("equipes_trop_joueurs");
               buttonDisabled = true;
@@ -86,25 +88,25 @@ class InscriptionsAvecNoms extends React.Component {
           }
         }
       }
-      else if (this.props.optionsTournoi.typeEquipes == "triplette" && (this.props.listesJoueurs.avecEquipes.length % 6 != 0 || this.props.listesJoueurs.avecEquipes.length == 0)) {
+      else if (optionsTournoi.typeEquipes == "triplette" && (listesJoueurs.avecEquipes.length % 6 != 0 || listesJoueurs.avecEquipes.length == 0)) {
         title = t("equipe_triplette_multiple_6");
         buttonDisabled = true;
       }
     }
-    else if (this.props.optionsTournoi.typeEquipes == "teteatete" && (this.props.listesJoueurs.avecNoms.length % 2 != 0 || this.props.listesJoueurs.avecNoms.length < 2)) {
+    else if (optionsTournoi.typeEquipes == "teteatete" && (listesJoueurs.avecNoms.length % 2 != 0 || listesJoueurs.avecNoms.length < 2)) {
       title = t("tete_a_tete_multiple_2");
       buttonDisabled = true;
     }
-    else if (this.props.optionsTournoi.typeEquipes == "doublette" && (this.props.listesJoueurs.avecNoms.length % 4 != 0 || this.props.listesJoueurs.avecNoms.length < 4)) {
-      if (this.props.listesJoueurs.avecNoms.length < 4) {
+    else if (optionsTournoi.typeEquipes == "doublette" && (listesJoueurs.avecNoms.length % 4 != 0 || listesJoueurs.avecNoms.length < 4)) {
+      if (listesJoueurs.avecNoms.length < 4) {
         title = t("joueurs_insuffisants");
         buttonDisabled = true;
       }
-      else if (this.props.listesJoueurs.avecNoms.length % 2 == 0 && this.props.optionsTournoi.complement == "1") {
+      else if (listesJoueurs.avecNoms.length % 2 == 0 && optionsTournoi.complement == "1") {
         title = t("complement_tete_a_tete");
       }
-      else if (this.props.optionsTournoi.complement == "3") {
-        if (this.props.listesJoueurs.avecNoms.length == 7) {
+      else if (optionsTournoi.complement == "3") {
+        if (listesJoueurs.avecNoms.length == 7) {
           title = t("configuration_impossible");
           buttonDisabled = true;
         }
@@ -112,15 +114,16 @@ class InscriptionsAvecNoms extends React.Component {
           title = t("complement_triplette");
         }
       }
-      else if (this.props.optionsTournoi.complement != "3") {
+      else if (optionsTournoi.complement != "3") {
         title = t("blocage_complement");
         buttonDisabled = true;
       }
     }
-    else if (this.props.optionsTournoi.typeEquipes == "triplette" && (this.props.listesJoueurs.avecNoms.length % 6 != 0 || this.props.listesJoueurs.avecNoms.length < 6)) {
+    else if (optionsTournoi.typeEquipes == "triplette" && (listesJoueurs.avecNoms.length % 6 != 0 || listesJoueurs.avecNoms.length < 6)) {
       title = t("triplette_multiple_6");
       buttonDisabled = true;
     }
+
     return (
       <Button
         bg="green.700"
@@ -135,7 +138,7 @@ class InscriptionsAvecNoms extends React.Component {
 
   render() {
     const { t } = this.props;
-    let nbJoueur = this.props.listesJoueurs[this.props.optionsTournoi.mode].length;
+    const nbJoueur = this.props.listesJoueurs[this.props.optionsTournoi.mode].length;
     return (
       <SafeAreaView style={{flex: 1}}>
         <StatusBar backgroundColor="#0594ae"/>
