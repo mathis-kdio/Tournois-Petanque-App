@@ -222,7 +222,7 @@ class ListeJoueurItem extends React.Component {
     return (
       <HStack borderWidth="1" borderColor="white" borderRadius="xl" margin="1" paddingX="1" alignItems="center">
         {this._joueurTypeIcon(joueur.type)}
-        <Box flex="1">
+        <Box flex="2">
           {this._joueurName(joueur, isInscription, avecEquipes)}
         </Box>
         {(avecEquipes == true && <Box flex="1">
