@@ -1,12 +1,11 @@
 import React from 'react'
-import { StyleSheet, View, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import { FlatList } from 'react-native-gesture-handler'
 import ListeJoueurItem from '@components/ListeJoueurItem'
 import JoueurSuggere from '@components/JoueurSuggere'
 import JoueurType from '@components/JoueurType'
 import { FontAwesome5 } from '@expo/vector-icons';
-import { Box, HStack, Input, VStack, Button, Text, Icon, Divider } from 'native-base';
+import { Box, HStack, Input, VStack, Button, Text, Icon, Divider, AlertDialog } from 'native-base';
 import { withTranslation } from 'react-i18next'
 
 class Inscription extends React.Component {
@@ -20,7 +19,8 @@ class Inscription extends React.Component {
       joueurType: undefined,
       etatBouton: false,
       suggestions: [],
-      nbSuggestions: 5
+      nbSuggestions: 5,
+      modalRemoveIsOpen: false
     }
   }
 
@@ -85,20 +85,30 @@ class Inscription extends React.Component {
 
   _modalRemoveAllPlayers() {
     const { t } = this.props;
-    Alert.alert(
-      t("supprimer_joueurs_modal_titre"),
-      t("supprimer_joueurs_modal_texte"),
-      [
-        { text: t("annuler"), onPress: () => undefined, style: "cancel" },
-        { text: t("oui"), onPress: () => this._removeAllPlayers() },
-      ],
-      { cancelable: true }
-    );
+    return (
+      <AlertDialog isOpen={this.state.modalRemoveIsOpen} onClose={() => this.setState({modalRemoveIsOpen: false})}>
+        <AlertDialog.Content>
+          <AlertDialog.Header>{t("supprimer_joueurs_modal_titre")}</AlertDialog.Header>
+          <AlertDialog.Body>{t("supprimer_joueurs_modal_texte")}</AlertDialog.Body>
+          <AlertDialog.Footer>
+            <Button.Group space={2}>
+              <Button variant="unstyled" colorScheme="coolGray" onPress={() => this.setState({modalRemoveIsOpen: false})}>
+                {t("annuler")}
+              </Button>
+              <Button colorScheme="danger" onPress={() => this._removeAllPlayers()}>
+                {t("oui")}
+              </Button>
+            </Button.Group>
+          </AlertDialog.Footer>
+        </AlertDialog.Content>
+      </AlertDialog>
+    )
   }
 
   _removeAllPlayers() {
     const actionRemoveAll = { type: "SUPPR_ALL_JOUEURS", value: [this.props.optionsTournoi.mode] }
     this.props.dispatch(actionRemoveAll);
+    this.setState({modalRemoveIsOpen: false});
   }
 
   _loadSavedList() {
@@ -163,7 +173,7 @@ class Inscription extends React.Component {
               />
             )}
           />
-          <Box px="10">
+          <Box px="10" pb="2">
             {this._buttonMoreSuggestedPlayers()}
           </Box>
         </VStack>
@@ -197,7 +207,7 @@ class Inscription extends React.Component {
       return (
         <Button
           bg="red.600"
-          onPress={() => this._modalRemoveAllPlayers()}
+          onPress={() => this.setState({modalRemoveIsOpen: true})}
         >
           {t("supprimer_joueurs_bouton")}
         </Button>
@@ -227,8 +237,6 @@ class Inscription extends React.Component {
       )
     }
   }
-
-
 
   render() {
     const { t } = this.props;
@@ -269,18 +277,11 @@ class Inscription extends React.Component {
         <VStack flex="1">
           {this._displayListeJoueur()}
         </VStack>
+        {this._modalRemoveAllPlayers()}
       </VStack>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  textinput: {
-    height: 50,
-    paddingLeft: 5,
-    color: 'white'
-  }
-})
 
 const mapStateToProps = (state) => {
   return {

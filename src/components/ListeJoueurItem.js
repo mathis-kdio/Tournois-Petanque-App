@@ -1,8 +1,7 @@
 import React from 'react'
-import { StyleSheet, View, Text, TextInput } from 'react-native'
 import { connect } from 'react-redux'
 import { FontAwesome5 } from '@expo/vector-icons';
-import { Box, CheckIcon, HStack, Image, Select, VStack } from 'native-base';
+import { Box, CheckIcon, HStack, Image, Input, Select, Text } from 'native-base';
 import { withTranslation } from 'react-i18next';
 
 class ListeJoueurItem extends React.Component {
@@ -18,7 +17,7 @@ class ListeJoueurItem extends React.Component {
   _showSupprimerJoueur(joueur, isInscription) {
     if (isInscription === true) {
       return (
-        <Box style={{marginLeft: 5}}>
+        <Box ml="2">
           <FontAwesome5.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._supprimerJoueur(joueur.id)}/>
         </Box>
       )
@@ -40,24 +39,24 @@ class ListeJoueurItem extends React.Component {
   _showRenommerJoueur(joueur, isInscription, avecEquipes) {
     if (this.state.renommerOn == false) {
       return (
-        <View>
+        <Box>
           <FontAwesome5.Button name="edit" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renommerJoueurInput(joueur)}/>
-        </View>
+        </Box>
       )
     }
     else {
       if (this.state.disabledBoutonRenommer == true) {
         return (
-          <View>
+          <Box>
             <FontAwesome5.Button name="edit" backgroundColor="gray" iconStyle={{paddingHorizontal: 2, marginRight: 0}}/>
-          </View>
+          </Box>
         )
       }
       else {
         return (
-          <View>
+          <Box>
             <FontAwesome5.Button name="check" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renommerJoueur(joueur, isInscription, avecEquipes)}/>
-          </View>
+          </Box>
         )
       }
     }
@@ -119,18 +118,20 @@ class ListeJoueurItem extends React.Component {
   _joueurName(joueur, isInscription, avecEquipes) {
     if (this.state.renommerOn == true) {
       return(
-        <TextInput
-          style={styles.text_input}
+        <Input
           placeholder={joueur.name}
+          borderWidth="0"
+          keyboardType="default"
           autoFocus={true}
           onChangeText={(text) => this._joueurTxtInputChanged(text)}
           onSubmitEditing={() => this._renommerJoueur(joueur, isInscription, avecEquipes)}
+          size="lg"
         />
       )
     }
     else {
       return(
-        <Text style={styles.name_text}>{(joueur.id+1)} {joueur.name}</Text>
+        <Text color="white" fontSize="xl" fontWeight="bold">{(joueur.id+1)}-{joueur.name}</Text>
       )
     }
   }
@@ -172,21 +173,19 @@ class ListeJoueurItem extends React.Component {
         }
       }
       return (
-        <VStack flex="1" borderWidth="1">
-          <Select
-            selectedValue={selectedValue}
-            accessibilityLabel={t("choix_equipe")}
-            placeholder={t("choix_equipe")}
-            onValueChange={itemValue => this._ajoutEquipe(joueur.id, itemValue)}
-            _selectedItem={{
-              endIcon: <CheckIcon size="5" color="cyan.500"/>
-            }}
-            size="lg"
-          >
-            <Select.Item label={t("choisir")} value={undefined} key="0"/>
-            {pickerItem}
-          </Select>
-        </VStack>
+        <Select
+          selectedValue={selectedValue}
+          accessibilityLabel={t("choix_equipe")}
+          placeholder={t("choix_equipe")}
+          onValueChange={itemValue => this._ajoutEquipe(joueur.id, itemValue)}
+          _selectedItem={{
+            endIcon: <CheckIcon size="5" color="cyan.500"/>
+          }}
+          size="lg"
+        >
+          <Select.Item label={t("choisir")} value={undefined} key="0"/>
+          {pickerItem}
+        </Select>
       )
     }
   }
@@ -201,18 +200,18 @@ class ListeJoueurItem extends React.Component {
     const { mode, type, typeEquipes } = this.props.optionsTournoi;
     if (mode == "sauvegarde" || (type == "mele-demele" && typeEquipes == "doublette")) {
       return (
-        <View style={styles.type_icon_container}>
+        <Box>
           {joueurType == "enfant" && <FontAwesome5 name="child" color="darkgray" size={24}/>}
-          {joueurType == "tireur" && <Image source={require('@assets/images/tireur.png')} alt={type} style={styles.icon}/>}
-          {joueurType == "pointeur" && <Image source={require('@assets/images/pointeur.png')} alt={type} style={styles.icon}/>}
-        </View>
+          {joueurType == "tireur" && <Image source={require('@assets/images/tireur.png')} alt={type} width={30} height={30}/>}
+          {joueurType == "pointeur" && <Image source={require('@assets/images/pointeur.png')} alt={type} width={30} height={30}/>}
+        </Box>
       )
     }
     else {
       return (
-        <View style={styles.type_icon_container}>
+        <Box>
           {joueurType == "enfant" && <FontAwesome5 name="child" color="darkgray" size={24}/>}
-        </View>
+        </Box>
       )
     }
   }
@@ -223,44 +222,18 @@ class ListeJoueurItem extends React.Component {
     return (
       <HStack borderWidth="1" borderColor="white" borderRadius="xl" margin="1" paddingX="1" alignItems="center">
         {this._joueurTypeIcon(joueur.type)}
-        <View style={styles.name_container}>
+        <Box flex="1">
           {this._joueurName(joueur, isInscription, avecEquipes)}
-        </View>
-        {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
+        </Box>
+        {(avecEquipes == true && <Box flex="1" borderWidth="1">
+          {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
+        </Box>)}
         {this._showRenommerJoueur(joueur, isInscription, avecEquipes)}
         {this._showSupprimerJoueur(joueur, isInscription)}
       </HStack>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  name_container: {
-    flex: 1,
-  },
-  name_text: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    color: 'white'
-  },
-  text_input: {
-    height: 50,
-    paddingLeft: 5,
-    color: 'white'
-  },
-  picker: {
-    color: 'white',
-    width: 115
-  },
-  type_icon_container: {
-    flexDirection: 'row',
-    justifyContent:'center'
-  },
-  icon: {
-    width: 30,
-    height: 30
-  }
-})
 
 const mapStateToProps = (state) => {
   return {

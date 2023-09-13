@@ -1,29 +1,39 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, View, Text, Alert } from 'react-native'
 import { FontAwesome5 } from '@expo/vector-icons';
 import JoueurType from '@components/JoueurType'
 import { withTranslation } from 'react-i18next';
+import { AlertDialog, Box, Button, HStack, Text } from 'native-base';
 
 class JoueurSuggere extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       joueurType: undefined,
+      modalRemoveIsOpen: false
     }
   }
 
   _modalRemovePlayer(playerId) {
     const { t } = this.props;
-    Alert.alert(
-      t("supprimer_joueur_suggestions_modal_titre"),
-      t("supprimer_joueur_suggestions_modal_texte"),
-      [
-        { text: t("annuler"), onPress: () => undefined, style: "cancel" },
-        { text: t("oui"), onPress: () => this._removePlayer(playerId) },
-      ],
-      { cancelable: true }
-    );
+    return (
+      <AlertDialog isOpen={this.state.modalRemoveIsOpen} onClose={() => this.setState({modalRemoveIsOpen: false})}>
+        <AlertDialog.Content>
+          <AlertDialog.Header>{t("supprimer_joueur_suggestions_modal_titre")}</AlertDialog.Header>
+          <AlertDialog.Body>{t("supprimer_joueur_suggestions_modal_texte")}</AlertDialog.Body>
+          <AlertDialog.Footer>
+            <Button.Group space={2}>
+              <Button variant="unstyled" colorScheme="coolGray" onPress={() => this.setState({modalRemoveIsOpen: false})}>
+                {t("annuler")}
+              </Button>
+              <Button colorScheme="danger" onPress={() => this._removePlayer(playerId)}>
+                {t("oui")}
+              </Button>
+            </Button.Group>
+          </AlertDialog.Footer>
+        </AlertDialog.Content>
+      </AlertDialog>
+    )
   }
 
   _removePlayer(playerId) {
@@ -49,53 +59,27 @@ class JoueurSuggere extends React.Component {
   render() {
     const { joueur } = this.props;
     return (
-      <View style={styles.main_container}>
-        <View style={styles.name_container}>
-          <Text style={styles.name_text}>{joueur.name}</Text>
-        </View>
-        <View style={styles.type_container}>
+      <HStack borderWidth="1" borderColor="white" borderRadius="xl" margin="1" paddingX="1" alignItems="center">
+        <Box flex="1">
+          <Text color="white" fontSize="xl" fontWeight="bold">{joueur.name}</Text>
+        </Box>
+        <Box flex="1">
           <JoueurType
             joueurType={this.state.joueurType}
             _setJoueurType={(type) => this._setJoueurType(type)}
           />
-        </View>
-        <View style={styles.button_container}>
-          <FontAwesome5.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._modalRemovePlayer(joueur.id)}/>
-        </View>
-        <View style={styles.button_container}>
+        </Box>
+        <Box ml="2">
+          <FontAwesome5.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this.setState({modalRemoveIsOpen: true})}/>
+        </Box>
+        <Box ml="2">
           <FontAwesome5.Button name="plus" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._addPlayer(joueur.name)}/>
-        </View>
-      </View>
+        </Box>
+        {this._modalRemovePlayer(joueur.id)}
+      </HStack>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  main_container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderColor: 'white',
-    paddingHorizontal: 10,
-    paddingBottom: 2,
-    marginBottom: 2,
-  },
-  name_container: {
-    flex: 2,
-  },
-  name_text: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    color: 'white'
-  },
-  type_container: {
-    flex: 2,
-  },
-  button_container: {
-    marginLeft: 5
-  }
-})
 
 const mapStateToProps = (state) => {
   return {
