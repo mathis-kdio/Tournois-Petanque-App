@@ -229,15 +229,6 @@ class Inscription extends React.Component {
     }
   }
 
-  _showEquipeEntete() {
-    const { t } = this.props;
-    if (this.props.optionsTournoi.mode == 'avecEquipes') {
-      return (
-        <Text color="white" fontSize="md" textAlign="center">{t("equipe")}</Text>
-      )
-    }
-  }
-
   render() {
     const { t } = this.props;
     return (

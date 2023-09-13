@@ -225,7 +225,7 @@ class ListeJoueurItem extends React.Component {
         <Box flex="1">
           {this._joueurName(joueur, isInscription, avecEquipes)}
         </Box>
-        {(avecEquipes == true && <Box flex="1" borderWidth="1">
+        {(avecEquipes == true && <Box flex="1">
           {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
         </Box>)}
         {this._showRenommerJoueur(joueur, isInscription, avecEquipes)}
