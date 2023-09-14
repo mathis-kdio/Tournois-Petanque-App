@@ -1,5 +1,44 @@
 # Change Log
 
+## [1.13.0] - 28-06-2023
+
+### Ajouté
+- Options pour affecter les matchs à des terrains.
+
+### Changement
+- Nouvelles pages de : Paramètres, Type de tournoi, Mode de tournoi, Options de tournoi.
+- Amélioration de l'option « Sans mêmes adversaires ».
+
+### Corrigé
+- Correction de la génération des tournois en mêlée-démêlée.
+- Corrections de l'affichage du type de joueur.
+
+## [1.12.0] - 25-05-2023
+
+### Ajouté
+- Possibilité d'attribuer aux joueurs les rôles Pointeur/Tireur/Milieu en doublette pour améliorer l'équilibrage des équipes.
+- Nouvelle page d'accueil.
+- Choix nombre de points pour victoire.
+
+### Changement
+- Ecran de paramétrage déplacé.
+- Amélioration du renommage des joueurs.
+
+## [1.11.0] - 09-02-2023
+
+### Ajouté
+- Application disponible sur iOS !
+- Création d'une page Facebook communautaire et ajout d'un bouton sur la page d'accueil.
+- Ajout de la date de création et de modification d'un tournoi.
+- Possibilité de renommer une liste de joueurs.
+
+### Changement
+- Amélioration de l'affichage des informations de tournoi.
+
+### Corrigé
+- Correction de bugs liés aux listes de joueurs.
+- Correction de l'affichage du mode clair de l'application.
+
 ## [1.10.1] - 06-12-2022
 
 ### Ajouté

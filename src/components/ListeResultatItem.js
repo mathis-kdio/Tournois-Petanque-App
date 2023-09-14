@@ -1,19 +1,21 @@
 import React from 'react'
+import { withTranslation } from 'react-i18next'
 import { StyleSheet, View, Text, Image } from 'react-native'
 import { connect } from 'react-redux'
 
 class ListeResultatItem extends React.Component {
 
   _displayName(joueurId) {
+    const { t } = this.props;
     let joueur = {}
     let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs
     joueur = listeJoueurs.find(item => item.id === joueurId)
     let joueurName = "";
     if (joueur.name === undefined) {
-      joueurName = "Sans Nom" + ' (' + (joueur.id+1) + ')';
+      joueurName = t("sans_nom") + ' (' + (joueur.id+1) + ')';
     }
     else if (joueur.name == "") {
-      joueurName = "Joueur " + (joueur.id+1);
+      joueurName = t("joueur") + " " + (joueur.id+1);
     }
     else {
       joueurName = joueur.name + ' (' + (joueur.id+1) + ')';
@@ -41,30 +43,15 @@ class ListeResultatItem extends React.Component {
     if (fanny == true) {
       return (
         <View style={styles.fanny_container}>
-          <Image source={require('../assets/images/fanny.png')} style={styles.icon}/>
+          <Image source={require('@assets/images/fanny.png')} style={styles.icon}/>
           <Text style={styles.texte}>X{nbFanny}</Text>
         </View>
       )
     }
   }
 
-  _partieJoue(joueurNumber) {
-    let partieJoue = 0
-    let listeMatchs = this.props.listeMatchs
-    for (let i = 0; i < listeMatchs[listeMatchs.length - 1].nbMatchs; i++) {
-      if (listeMatchs[i].equipe.some(row => row.includes(joueurNumber))) {
-        if (listeMatchs[i].score1 && listeMatchs[i].score2) {
-          partieJoue++
-        }
-      }
-    }
-    return (
-      <Text style={styles.texte}>{partieJoue}</Text>
-    )
-  }
-
   render() {
-    let { joueur } = this.props;
+    const { joueur } = this.props;
     return (
       <View style={styles.main_container}>
         <View style={styles.position_nom_container}>
@@ -75,11 +62,11 @@ class ListeResultatItem extends React.Component {
           <Text style={styles.texte}>{joueur.victoires}</Text>
         </View>
         <View style={styles.mj_container}>
-          {this._partieJoue(joueur.joueurId)}
+          <Text style={styles.texte}>{joueur.nbMatchs}</Text>
         </View>
         <View style={styles.points_container}>
           {this._fanny(joueur.joueurId)}
-          <Text style={styles.texte}>{joueur.points}</Text>
+          <Text style={styles.texte}> {joueur.points}</Text>
         </View>
       </View>
     )
@@ -130,4 +117,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(ListeResultatItem)
+export default connect(mapStateToProps)(withTranslation()(ListeResultatItem))

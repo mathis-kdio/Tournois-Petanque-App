@@ -1,35 +1,14 @@
 import React from 'react'
+import { withTranslation } from 'react-i18next'
 import { StyleSheet, View, Text, Button, TextInput } from 'react-native'
 import { connect } from 'react-redux'
 
 class InscriptionsSansNoms extends React.Component {
   constructor(props) {
     super(props)
-    this.nbTours = "5"
-    this.speciauxIncompatibles = true
-    this.memesEquipes = true
-    this.memesAdversaires = true
     this.state = {
       nbJoueurNormaux: 0,
-      nbJoueurSpeciaux: 0,
-    }
-  }
-
-  componentDidUpdate() {
-    if (this.props.route.params != undefined) {
-      let routeparams = this.props.route.params;
-      if (routeparams.nbTours != undefined) {
-        this.nbTours = routeparams.nbTours
-      }
-      if (routeparams.speciauxIncompatibles != undefined) {
-        this.speciauxIncompatibles = routeparams.speciauxIncompatibles
-      }
-      if (routeparams.memesEquipes != undefined) {
-        this.memesEquipes = routeparams.memesEquipes
-      }
-      if (routeparams.memesAdversaires != undefined) {
-        this.memesAdversaires = routeparams.memesAdversaires
-      }
+      nbJoueurEnfants: 0,
     }
   }
 
@@ -39,14 +18,14 @@ class InscriptionsSansNoms extends React.Component {
     })
   }
 
-  _textInputJoueursSpeciaux(text) {
+  _textInputJoueursEnfants(text) {
     this.setState({
-      nbJoueurSpeciaux: parseInt(text)
+      nbJoueurEnfants: parseInt(text)
     })
   } 
 
-  _ajoutJoueur(isSpecial) {
-    const action = { type: "AJOUT_JOUEUR", value: ["sansNoms","", isSpecial, undefined] }
+  _ajoutJoueur(type) {
+    const action = { type: "AJOUT_JOUEUR", value: ["sansNoms","", type, undefined] }
     this.props.dispatch(action)
   }
 
@@ -59,43 +38,20 @@ class InscriptionsSansNoms extends React.Component {
     this._supprimerJoueurs()
 
     for (let i = 0; i < this.state.nbJoueurNormaux; i++) {
-      this._ajoutJoueur(false)
+      this._ajoutJoueur(undefined)
     }
 
-    for (let i = 0; i < this.state.nbJoueurSpeciaux; i++) {
-      this._ajoutJoueur(true)
+    for (let i = 0; i < this.state.nbJoueurEnfants; i++) {
+      this._ajoutJoueur("enfant")
     }
 
-    let screenName
-    if (this.props.optionsTournoi.typeEquipes == "doublette" || this.props.optionsTournoi.typeEquipes == "teteatete") {
-      screenName = 'GenerationMatchs'
+    let screenName = "GenerationMatchs";
+    if (this.props.optionsTournoi.avecTerrains) {
+      screenName = "ListeTerrains";
     }
-    else {
-      screenName = 'GenerationMatchsTriplettes'
-    }
-
     this.props.navigation.navigate({
       name: screenName,
       params: {
-        nbTours: parseInt(this.nbTours),
-        speciauxIncompatibles: this.speciauxIncompatibles,
-        memesEquipes: this.memesEquipes,
-        memesAdversaires: this.memesAdversaires,
-        typeEquipes: this.props.optionsTournoi.typeEquipes,
-        typeInscription: this.props.optionsTournoi.mode,
-        screenStackName: 'InscriptionsSansNoms'
-      }
-    })
-  }
-
-  _options() {
-    this.props.navigation.navigate({
-      name: 'OptionsTournoi',
-      params: {
-        nbTours: this.nbTours,
-        speciauxIncompatibles: this.speciauxIncompatibles,
-        memesEquipes: this.memesEquipes,
-        memesAdversaires: this.memesAdversaires,
         screenStackName: 'InscriptionsSansNoms'
       }
     })
@@ -106,40 +62,34 @@ class InscriptionsSansNoms extends React.Component {
     if (!isNaN(this.state.nbJoueurNormaux)) {
       nbJoueur = this.state.nbJoueurNormaux
     }
-    if (!isNaN(this.state.nbJoueurSpeciaux)) {
-      nbJoueur += this.state.nbJoueurSpeciaux
+    if (!isNaN(this.state.nbJoueurEnfants)) {
+      nbJoueur += this.state.nbJoueurEnfants
     }
     return nbJoueur
   }
 
-  _showNbJoueur() {
-    let nbJoueur = this._nbJoueurs()
-    return (
-      <Text>{nbJoueur}</Text>
-    )
-  }
-
   _boutonCommencer() {
+    const { t } = this.props;
     let boutonDesactive
     let boutonTitle = ''
     let nbJoueurs = this._nbJoueurs()
     if (this.props.optionsTournoi.typeEquipes == 'doublette' || this.props.optionsTournoi.typeEquipes == "teteatete") {
       if (nbJoueurs % 2 == 0 && nbJoueurs != 0) {
-        boutonTitle = 'Commencer le tournoi'
+        boutonTitle = t("commencer_tournoi")
         boutonDesactive = false
       }
       else {
-        boutonTitle = "Nombre de joueurs n'est pas un multiple de 2"
+        boutonTitle = t("doublette_multiple_2")
         boutonDesactive = true
       }
     }
     else {
       if (nbJoueurs % 6 == 0 && nbJoueurs >= 6) {
-        boutonTitle = 'Commencer le tournoi'
+        boutonTitle = t("commencer_tournoi")
         boutonDesactive = false
       }
       else {
-        boutonTitle = "En triplette, le nombre de joueurs doit être un multiple de 6"
+        boutonTitle = t("triplette_multiple_6")
         boutonDesactive = true
       }
     }
@@ -149,11 +99,12 @@ class InscriptionsSansNoms extends React.Component {
   }
 
   render() {
+    const { t } = this.props;
     return (
       <View style={styles.main_container} >
         <View style={styles.body_container}>
           <View style={styles.nbjoueur_container}>
-            <Text style={styles.text_nbjoueur}>Il y aura {this._showNbJoueur()} joueurs</Text>
+            <Text style={styles.text_nbjoueur}>{t("nombre_joueurs", {nb: this._nbJoueurs()})}</Text>
           </View>
           <View style={styles.ajoutjoueur_container}>
             <View style={styles.textinput_ajoutjoueur_container}>
@@ -162,7 +113,7 @@ class InscriptionsSansNoms extends React.Component {
                 keyboardType={'number-pad'}
                 placeholderTextColor='white'
                 underlineColorAndroid='white'
-                placeholder="Nombre de joueurs normaux"
+                placeholder={t("nombre_joueurs_adultes")}
                 autoFocus={true}
                 blurOnSubmit={false}
                 returnKeyType={'next'}
@@ -178,17 +129,14 @@ class InscriptionsSansNoms extends React.Component {
                 keyboardType={'number-pad'}
                 placeholderTextColor='white'
                 underlineColorAndroid='white'
-                placeholder="Nombre de joueurs spéciaux"
+                placeholder={t("nombre_joueurs_enfants")}
                 ref={ref => {this.secondInput = ref}}
-                onChangeText={(text) => this._textInputJoueursSpeciaux(text)}
+                onChangeText={(text) => this._textInputJoueursEnfants(text)}
               />
             </View>
           </View>
           <View>
-            <Text style={styles.texte}>Les joueurs spéciaux sont des joueurs qui ne peuvent pas jouer dans la même équipe</Text>
-          </View>
-          <View style={styles.buttonView}>
-            <Button color='#1c3969' title='Options Tournoi' onPress={() => this._options()}/>
+            <Text style={styles.texte}>{t("joueurs_enfants_explication")}</Text>
           </View>
           <View style={styles.buttonView}>
             {this._boutonCommencer()}
@@ -247,4 +195,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(InscriptionsSansNoms)
+export default connect(mapStateToProps)(withTranslation()(InscriptionsSansNoms))

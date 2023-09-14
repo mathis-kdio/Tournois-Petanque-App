@@ -1,222 +1,194 @@
 import React from 'react'
-import { StyleSheet, View, TextInput, Text, Button } from 'react-native'
-import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { connect } from 'react-redux'
-import { Picker } from '@react-native-picker/picker'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
+import { Checkbox, VStack, Button, Text, Input, Select, CheckIcon, Icon, Slider, HStack, ScrollView } from 'native-base';
+import { FontAwesome5 } from '@expo/vector-icons';
+import TopBarBack from '@components/TopBarBack';
+import { withTranslation } from 'react-i18next';
 
 class OptionsTournoi extends React.Component {
 
   constructor(props) {
     super(props)
-    this.nbTours = "5"
+    this.nbToursTxt = "5";
+    this.nbPtVictoireTxt = "13";
     this.state = {
       speciauxIncompatibles: true,
       memesEquipes: true,
-      memesAdversaires: true,
+      memesAdversaires: 50,
       complement: "3",
-      nbTours: "5"
+      nbTours: 5,
+      nbPtVictoire: 13,
+      avecTerrains: false
     }
   }
 
-  componentDidMount() {
-    if (this.props.route.params != undefined) {
-      let routeparams = this.props.route.params;
-      if (routeparams.nbTours != undefined) {
-        this.setState({
-          nbTours: routeparams.nbTours,
-        })
-        this.nbTours = routeparams.nbTours
-      }
-      if (routeparams.speciauxIncompatibles != undefined) {
-        this.setState({
-          speciauxIncompatibles: routeparams.speciauxIncompatibles,
-        })
-      }
-      if (routeparams.memesEquipes != undefined) {
-        this.setState({
-          memesEquipes: routeparams.memesEquipes,
-        })
-      }
-      if (routeparams.memesAdversaires != undefined) {
-        this.setState({
-          memesAdversaires: routeparams.memesAdversaires,
-        })
-      }
-      if (routeparams.complement != undefined) {
-        this.setState({
-          complement: routeparams.complement
-        })
-      }
-    }
-  }
-
-  _optionsNombreToursTextInputChanged(text) {
-    this.nbTours = text.toString()
+  _nbToursTxtInputChanged(text) {
+    this.nbToursTxt = text;
     this.setState({
-      nbTours: this.nbTours
-    })
+      nbTours: this.nbToursTxt ? parseInt(this.nbToursTxt) : undefined
+    });
   }
 
-  _retourInscription() {
-    this.props.navigation.navigate({
-      name: this.props.route.params.screenStackName,
-      params: {
-        nbTours: this.nbTours,
-        speciauxIncompatibles: this.state.speciauxIncompatibles,
-        memesEquipes: this.state.memesEquipes,
-        memesAdversaires: this.state.memesAdversaires,
-        complement: this.state.complement
-      }
-    })
+  _nbPtVictoireTxtInputChanged(text) {
+    this.nbPtVictoireTxt = text;
+    this.setState({
+      nbPtVictoire: this.nbPtVictoireTxt ? parseInt(this.nbPtVictoireTxt) : undefined
+    });
+  }
+
+  _nextStep() {
+    const updateOptionNbTours = { type: "UPDATE_OPTION_TOURNOI", value: ['nbTours', this.state.nbTours]}
+    this.props.dispatch(updateOptionNbTours);
+    const updateOptionNbPtVictoire = { type: "UPDATE_OPTION_TOURNOI", value: ['nbPtVictoire', this.state.nbPtVictoire]}
+    this.props.dispatch(updateOptionNbPtVictoire);
+    const updateOptionSpeciauxIncompatibles = { type: "UPDATE_OPTION_TOURNOI", value: ['speciauxIncompatibles', this.state.speciauxIncompatibles]}
+    this.props.dispatch(updateOptionSpeciauxIncompatibles);
+    const updateOptionMemesEquipes = { type: "UPDATE_OPTION_TOURNOI", value: ['memesEquipes', this.state.memesEquipes]}
+    this.props.dispatch(updateOptionMemesEquipes);
+    const updateOptionMemesAdversaires = { type: "UPDATE_OPTION_TOURNOI", value: ['memesAdversaires', this.state.memesAdversaires]}
+    this.props.dispatch(updateOptionMemesAdversaires);
+    const updateOptionComplement = { type: "UPDATE_OPTION_TOURNOI", value: ['complement', this.state.complement]}
+    this.props.dispatch(updateOptionComplement);
+    const updateOptionAvecTerrains = { type: "UPDATE_OPTION_TOURNOI", value: ['avecTerrains', this.state.avecTerrains]}
+    this.props.dispatch(updateOptionAvecTerrains);
+
+    this.props.navigation.navigate(this.props.route.params.screenStackName);
   }
 
   _boutonValider() {
-    let boutonActive = true
-    let boutonTitle = "Vous devez indiquer un nombre de tours"
-    if (this.state.nbTours != "" && this.state.nbTours != "0") {
-      boutonTitle = 'Valider les options'
-      boutonActive = false
+    const { t } = this.props;
+    let btnDisabled = true;
+    let btnTitle = t("champ_invalide");
+    if (this.state.nbTours > 0 && this.state.nbTours % 1 == 0 && this.state.nbPtVictoire > 0 && this.state.nbPtVictoire % 1 == 0) {
+      btnTitle = t("valider_et_inscriptions");
+      btnDisabled = false;
     }
     return (
-      <Button disabled={boutonActive} color='green' title={boutonTitle} onPress={() => this._retourInscription()}/>
+      <Button
+        bg="#1c3969"
+        isDisabled={btnDisabled}
+        onPress={() => this._nextStep()}
+        endIcon={<Icon as={FontAwesome5} name="arrow-right"/>}
+        size="lg"
+      >
+        {btnTitle}
+      </Button>
     )
   }
 
   render() {
+    const { t } = this.props;
     return (
-      <View style={styles.main_container} >
-        <View style={styles.body_container} >
-          <View style={styles.input_nbtours_container}>
-            <Text style={styles.texte}>Nombre de tours: </Text>
-            <TextInput
-              style={styles.textinput}
-              placeholderTextColor='white'
-              underlineColorAndroid='white'
-              placeholder="Nombre de tours"
-              keyboardType="numeric"
-              defaultValue= {this.state.nbTours}
-              onChangeText={(text) => this._optionsNombreToursTextInputChanged(text)}
-              ref={this.addPlayerTextInput}
-            />
-          </View>
-          <View style={styles.checkbox_container}>
-            <BouncyCheckbox
-              onPress={()=>{
-                this.setState({
-                  speciauxIncompatibles: !this.state.speciauxIncompatibles
-                })
-              }}
-              disableBuiltInState="true"
-              isChecked={this.state.speciauxIncompatibles}
-              text="Ne jamais faire jouer 2 enfants dans la même équipe"
-              textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
-              fillColor="white"
-            />
-          </View>
-          <View style={styles.checkbox_container}>
-            <BouncyCheckbox
-              onPress={()=>{
-                this.setState({
-                  memesEquipes: !this.state.memesEquipes
-                })
-              }}
-              disableBuiltInState="true"
-              isChecked={this.state.memesEquipes}
-              text="Ne jamais former les mêmes équipes"
-              textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
-              fillColor="white"
-            />
-          </View>
-          <View style={styles.checkbox_container}>
-            <BouncyCheckbox
-              onPress={()=>{
-                this.setState({
-                  memesAdversaires: !this.state.memesAdversaires
-                })
-              }}
-              disableBuiltInState="true"
-              isChecked={this.state.memesAdversaires}
-              text="Empecher 2 joueurs de jouer + de la moitié des matchs contre et ensemble"
-              textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
-              fillColor="white"
-            />
-          </View>
-          <View style={styles.avecEquipes_container}>
-            <Text style={styles.avecEquipes_texte}>En doublette, si le nombre de joueur n'est pas multiple de 4 alors les joueurs en trop seront mis en :</Text>
-            <View style={styles.pickerContainer}>
-              <Picker
-                selectedValue={this.state.complement}
-                onValueChange={(itemValue, itemIndex) => this.setState({complement: itemValue})}
-                style={styles.picker}
-                dropdownIconColor="white"
-              >
-                <Picker.Item label="Triplette" value="3"/>
-                <Picker.Item label="Tête-à-Tête" value="1"/>
-              </Picker>
-            </View>
-          </View>
-        </View>
-        <View style={styles.buttonView}>
-          {this._boutonValider()}
-        </View>
-      </View>
+      <KeyboardAwareScrollView contentContainerStyle={{flex: 1}}>
+        <SafeAreaView style={{flex: 1}}>
+          <ScrollView bgColor="#0594ae">
+            <StatusBar backgroundColor="#0594ae"/>
+            <VStack flex="1">
+              <TopBarBack title={t("options_tournoi_title")} navigation={this.props.navigation}/>
+              <VStack px="10" space="md">
+                <VStack space="3">
+                  <VStack>
+                    <Text color="white" fontSize="md">{t("indiquer_nombre_tours")} </Text>
+                    <Input
+                      placeholderTextColor='white'
+                      placeholder={t("indiquer_nombre")}
+                      keyboardType="numeric"
+                      defaultValue={this.nbToursTxt}
+                      onChangeText={(text) => this._nbToursTxtInputChanged(text)}
+                      size="lg"
+                    />
+                  </VStack>
+                  <VStack>
+                    <Text color="white" fontSize="md">{t("indiquer_nombre_points_victoire")} </Text>
+                    <Input
+                      placeholderTextColor='white'
+                      placeholder={t("indiquer_nombre")}
+                      keyboardType="numeric"
+                      defaultValue={this.nbPtVictoireTxt}
+                      onChangeText={(text) => this._nbPtVictoireTxtInputChanged(text)}
+                      size="lg"
+                    />
+                  </VStack>
+                </VStack>
+                <VStack space="5">
+                  <Checkbox
+                    onChange={() => this.setState({speciauxIncompatibles: !this.state.speciauxIncompatibles})}
+                    accessibilityLabel={t("choix_regle_enfants")}
+                    defaultIsChecked
+                    size="md"
+                  >
+                    {t("options_regle_enfants")}
+                  </Checkbox>
+                  <Checkbox
+                    onChange={() => this.setState({memesEquipes: !this.state.memesEquipes})}
+                    accessibilityLabel={t("choix_regle_equipes")}
+                    defaultIsChecked
+                    size="md"
+                  >
+                    {t("options_regle_equipes")}
+                  </Checkbox>
+                </VStack>
+                <VStack>
+                  <Text color="white" fontSize="md">{t("options_regle_adversaires")}</Text>
+                  <HStack justifyContent="space-between">
+                    <Text color="white">{t("1_seul_match")}</Text>
+                    <Text color="white">{t("pourcent_matchs", {pourcent: "100"})}</Text>
+                  </HStack>
+                  <Slider
+                    minValue={0}
+                    maxValue={100}
+                    defaultValue={50}
+                    step={50}
+                    accessibilityLabel={t("choix_regle_adversaires")}
+                    onChangeEnd={v => {this.setState({memesAdversaires: v})}}
+                  >
+                    <Slider.Track >
+                      <Slider.FilledTrack bg="#1c3969"/>
+                    </Slider.Track>
+                    <Slider.Thumb bg="#1c3969"/>
+                  </Slider>
+                  <HStack justifyContent="center">
+                    <Text color="white">{t("pourcent_matchs", {pourcent: "50"})}</Text>
+                  </HStack>
+                </VStack>
+                <VStack>
+                  <Text color="white" fontSize="md">{t("options_regle_complement")}</Text>
+                  <Select
+                    selectedValue={this.state.complement}
+                    accessibilityLabel={t("choix_complement")}
+                    placeholder={t("choix_complement")}
+                    onValueChange={itemValue => this.setState({complement: itemValue})}
+                    _selectedItem={{
+                      endIcon: <CheckIcon size="5" color="cyan.500"/>
+                    }}
+                    size="lg"
+                  >
+                    <Select.Item label={t("triplette")} value="3"/>
+                    <Select.Item label={t("tete_a_tete")} value="1"/>
+                  </Select>
+                </VStack>
+                <VStack>
+                  <Checkbox
+                    onChange={() => this.setState({avecTerrains: !this.state.avecTerrains})}
+                    accessibilityLabel={t("choix_option_terrains")}
+                    size="md"
+                  >
+                    {t("options_terrains_explications")}
+                  </Checkbox>
+                </VStack>
+                <VStack>
+                  {this._boutonValider()}
+                </VStack>
+              </VStack>
+            </VStack>
+          </ScrollView>
+        </SafeAreaView>
+      </KeyboardAwareScrollView>
     )
   }
 }
 
-const styles = StyleSheet.create({
-  main_container: {
-    flex: 1,
-    backgroundColor: "#0594ae"
-  },
-  body_container: {
-    flex:1,
-    marginHorizontal: '5%'
-  },
-  input_nbtours_container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  checkbox_container: {
-    marginBottom: 10,
-  },
-  textinput: {
-    height: 50,
-    paddingLeft: 5,
-    color: 'white'
-  },
-  buttonView: {
-    marginBottom: 20,
-    paddingLeft: 15,
-    paddingRight: 15
-  },
-  texte: {
-    fontSize: 15,
-    color: 'white'
-  },
-  avecEquipes_container: {
-    flex: 1,
-    flexDirection: 'row'
-  },
-  avecEquipes_texte: {
-    flex: 1,
-    fontSize: 15,
-    color: 'white'
-  },
-  pickerContainer: {
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-  picker: {
-    color: 'white',
-    width: 150
-  }
-})
-
-const mapStateToProps = (state) => {
-  return {
-  }
-}
-
-export default connect(mapStateToProps)(OptionsTournoi)
+export default connect()(withTranslation()(OptionsTournoi))

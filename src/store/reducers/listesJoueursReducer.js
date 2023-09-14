@@ -3,8 +3,8 @@ const initialState = {listesJoueurs: { avecNoms: [], sansNoms: [], avecEquipes: 
 function listesJoueurs(state = initialState, action) {
   let nextState
   switch (action.type) {
-    case 'AJOUT_JOUEUR'://action: 0: type d'inscription  1: nom du joueur  2: special ou non  3: numéro d'équipe (option)
-      if (action.value[0] != "" || action.value[1] != "" || action.value[2] != "") {
+    case 'AJOUT_JOUEUR'://action: 0: type d'inscription  1: nom du joueur  2: type ou undefined  3: numéro d'équipe (option)
+      if (action.value[0] != "" || action.value[1] != "") {
         const listes = { ...state.listesJoueurs };
         if (listes[action.value[0]] == undefined) {
           listes[action.value[0]] = Array();
@@ -21,7 +21,7 @@ function listesJoueurs(state = initialState, action) {
         let newJoueur = {
           id: idNewJoueur,
           name: action.value[1],
-          special: action.value[2],
+          type: action.value[2],
           equipe: action.value[3]
         }
         listes[action.value[0]].push(newJoueur)
@@ -109,8 +109,9 @@ function listesJoueurs(state = initialState, action) {
       if (action.value.typeInscription != "" && action.value.savedList != "") {
         const savedLists = { ...state.listesSauvegarde };
         let listId = 0;
-        if (state.listesSauvegarde[action.value.typeInscription]) {
-          listId = state.listesSauvegarde[action.value.typeInscription].length;
+        if (savedLists[action.value.typeInscription].length != 0) {
+          let lastlist = savedLists[action.value.typeInscription][savedLists[action.value.typeInscription].length - 1];
+          listId = lastlist[lastlist.length - 1].listId + 1;
         }
         savedLists[action.value.typeInscription].push(action.value.savedList);
         savedLists[action.value.typeInscription][savedLists[action.value.typeInscription].length - 1].push({listId: listId});
@@ -124,7 +125,9 @@ function listesJoueurs(state = initialState, action) {
       if (action.value.typeInscription != "" && action.value.listId != undefined && action.value.savedList != "") {
         const savedLists = { ...state.listesSauvegarde };
         action.value.savedList.push({listId: action.value.listId})
-        savedLists[action.value.typeInscription][action.value.listId] = action.value.savedList;
+        let typeSavedLists = savedLists[action.value.typeInscription]
+        let listIndex = typeSavedLists.findIndex(e => e[e.length - 1].listId == action.value.listId);
+        typeSavedLists[listIndex] = action.value.savedList;
         nextState = {
           ...state,
           listesSauvegarde: savedLists
@@ -133,10 +136,12 @@ function listesJoueurs(state = initialState, action) {
       return nextState || state;      
     case 'LOAD_SAVED_LIST'://typeInscriptionSrc: avecNoms/sansNoms/AvecEquipes/sauvegarde    //typeInscriptionDst: avecNoms/sansNoms/AvecEquipes/sauvegarde     listId: id
       if (action.value.typeInscriptionSrc != undefined && action.value.typeInscriptionDst != undefined && action.value.listId != undefined) {
-        const savedList = { ...state.listesSauvegarde };
+        const savedLists = { ...state.listesSauvegarde };
         const listsOfPlayers = { ...state.listesJoueurs };
         //Add to list
-        const copySeletedSavedList = JSON.parse(JSON.stringify(savedList[action.value.typeInscriptionSrc][action.value.listId].slice(0, -1)))
+        let typeSavedLists = savedLists[action.value.typeInscriptionSrc]
+        let listIndex = typeSavedLists.findIndex(e => e[e.length - 1].listId == action.value.listId);
+        const copySeletedSavedList = JSON.parse(JSON.stringify(typeSavedLists[listIndex].slice(0, -1)))
         listsOfPlayers[action.value.typeInscriptionDst].push(...copySeletedSavedList);
         //Update Ids
         for (let i = 0; i < listsOfPlayers[action.value.typeInscriptionDst].length; i++) {
@@ -148,6 +153,18 @@ function listesJoueurs(state = initialState, action) {
         }
       }
     return nextState || state;
+    case 'RENAME_SAVED_LIST'://typeInscription: avecNoms/sansNoms/AvecEquipes  listId: id   newName: name
+      if (action.value.typeInscription != undefined && action.value.listId != undefined && action.value.newName != "") {
+        const savedLists = { ...state.listesSauvegarde };
+        let typeSavedLists = savedLists[action.value.typeInscription]
+        let listIndex = typeSavedLists.findIndex(e => e[e.length - 1].listId == action.value.listId);
+        typeSavedLists[listIndex][typeSavedLists[listIndex].length - 1].name = action.value.newName;
+        nextState = {
+          ...state,
+          listesSauvegarde: savedLists
+        }
+      }
+      return nextState || state 
     case 'REMOVE_SAVED_LIST'://typeInscription: avecNoms/sansNoms/AvecEquipes     listId: id
       if (action.value.listId != undefined) {
         const savedLists = { ...state.listesSauvegarde };

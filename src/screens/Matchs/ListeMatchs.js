@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, FlatList } from 'react-native'
 import { connect } from 'react-redux'
-import MatchItem from '../../components/MatchItem'
+import MatchItem from '@components/MatchItem'
 import * as NavigationBar from 'expo-navigation-bar';
 
 class ListeMatchs extends React.Component {
@@ -23,9 +23,11 @@ class ListeMatchs extends React.Component {
   _displayListeMatch() {
     let nbMatchs = 0
     let matchs = []
+    let nbPtVictoire = 13
     if (this.props.listeMatchs != undefined) {
       let tournoi = this.props.listeMatchs //tournoi contient les matchs + la config du tournoi en dernière position
       nbMatchs = tournoi[tournoi.length - 1].nbMatchs //On récup nb matchs dans la config
+      nbPtVictoire = tournoi[tournoi.length - 1].nbPtVictoire ? tournoi[tournoi.length - 1].nbPtVictoire : 13; //On récup le nb de pt pour la victoire sinon 13
       matchs = tournoi.slice(0, -1) //On retire la config et donc seulement la liste des matchs
     }
     matchs = matchs.filter(match => match.manche == this.props.extraData)
@@ -39,6 +41,7 @@ class ListeMatchs extends React.Component {
             match={item}
             displayDetailForMatch={this._displayDetailForMatch}
             manche={this.props.extraData}
+            nbPtVictoire={nbPtVictoire}
           />
         )}
       />
@@ -46,7 +49,9 @@ class ListeMatchs extends React.Component {
   }
 
   render() {
-    NavigationBar.setBackgroundColorAsync("#ffda00");
+    if (Platform.OS === 'android') {
+      NavigationBar.setBackgroundColorAsync("#ffda00");
+    }
     return (
       <View style={styles.main_container} >
         {this._displayListeMatch()}

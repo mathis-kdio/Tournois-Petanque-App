@@ -1,253 +1,124 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { StyleSheet, View, Button, Text } from 'react-native'
-import BouncyCheckbox from "react-native-bouncy-checkbox";
+import React from 'react';
+import { connect } from 'react-redux';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
+import { VStack, Button, Text, Radio, Icon, Spacer } from 'native-base';
+import { FontAwesome5 } from '@expo/vector-icons';
+import TopBarBack from '@components/TopBarBack';
+import AdMobBanner from '@components/adMob/AdMobBanner';
+import { withTranslation } from 'react-i18next';
 
 class ChoixModeTournoi extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      teteatete: false,
-      doublette: true,
-      triplette: false,
-      avecNoms: true,
-      sansNoms: false,
-      avecEquipes: false,
+      typeEquipes: "doublette",
+      modeTournoi: "avecNoms"
     }
   }
 
-  _inscription() {
-    let typeEquipes
-    if (this.state.teteatete == true) {
-      typeEquipes = 'teteatete'
+  _nextStep() {
+    let modeTournoi = this.state.modeTournoi;
+    if (this.props.optionsTournoi.type != 'mele-demele') {
+      modeTournoi = "avecEquipes";
     }
-    else if (this.state.doublette == true) {
-      typeEquipes = 'doublette'
-    }
-    else {
-      typeEquipes = 'triplette'
-    }
-
-    let screenName
-    let avecEquipes
-    let modeTournoi
-    if (this.props.optionsTournoi.type == "mele-demele") {
-      if (this.state.avecNoms == true) {
-        screenName = 'InscriptionsAvecNoms'
-        modeTournoi = 'avecNoms'
-      }
-      else if (this.state.sansNoms == true) {
-        screenName = 'InscriptionsSansNoms'
-        modeTournoi = 'sansNoms'
-      }
-      else {
-        screenName = 'InscriptionsAvecNoms'
-        modeTournoi = 'avecEquipes'
-      }
-    }
-    else if (this.props.optionsTournoi.type == "championnat") {
-      screenName = 'InscriptionsAvecNoms'
-      modeTournoi = 'avecEquipes'
-    }
-    else if (this.props.optionsTournoi.type == "coupe") {
-      screenName = 'InscriptionsAvecNoms'
-      modeTournoi = 'avecEquipes'
-    }
-    
-    const updateOptionEquipesTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['typeEquipes', typeEquipes]}
+    const updateOptionEquipesTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['typeEquipes', this.state.typeEquipes]};
     this.props.dispatch(updateOptionEquipesTournoi);
-    const updateOptionModeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['mode', modeTournoi]}
+    const updateOptionModeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['mode', modeTournoi]};
     this.props.dispatch(updateOptionModeTournoi);
 
-    this.props.navigation.navigate(screenName);
-  }
-
-  _buttonInscription() {
-    let boutonDesactive = false
-    let title = "Valider et passer à l'inscription"
-    if(this.state.avecEquipes == true && this.state.teteatete) {
-      boutonDesactive = true
-      title = "Mode de tournois incompatible"
+    if (this.props.optionsTournoi.type != 'championnat' && this.props.optionsTournoi.type != 'coupe') {
+      let screenName = this.state.modeTournoi == "sansNoms" ? "InscriptionsSansNoms" : "InscriptionsAvecNoms";
+      this.props.navigation.navigate({
+        name: 'OptionsTournoi',
+        params: {
+          screenStackName: screenName
+        }
+      });
     }
-    return <Button color="#1c3969" disabled={boutonDesactive} title={title} onPress={() => this._inscription()}/>
-  }
-
-  _titre() {
-    if (this.props.optionsTournoi.type == "mele-demele") {
-      return <Text style={styles.titre}>Choix du types d'équipe et mode du tournoi mêlée-démêlée :</Text>
-    }
-    else if (this.props.optionsTournoi.type == "championnat") {
-      return <Text style={styles.titre}>Choix du mode du championnat :</Text>
-    }
-    else if (this.props.optionsTournoi.type == "coupe") {
-      return <Text style={styles.titre}>Choix du mode de la coupe :</Text>
+    else {
+      this.props.navigation.navigate("InscriptionsAvecNoms");
     }
   }
 
-  _typeEquipes() {
+  _validButton() {
+    const { t } = this.props;
+    let buttonDisabled = false;
+    let title = t("valider_et_options");
+    if (this.props.optionsTournoi.type === "championnat" || this.props.optionsTournoi.type === "coupe") {
+      title = t("valider_et_inscriptions");
+    }
+    if (this.state.modeTournoi == "avecEquipes" && this.state.typeEquipes == "teteatete") {
+      buttonDisabled = true;
+      title = t("erreur_tournoi_tete_a_tete_et_equipes");
+    }
     return (
-      <View>
-        <View style={styles.checkbox_container}>
-          <BouncyCheckbox 
-            onPress={()=>{
-              this.setState({
-                teteatete: true,
-                doublette: false,
-                triplette: false
-              })
-            }}
-            disableBuiltInState="true"
-            isChecked={this.state.teteatete}
-            text="Tête-à-tête"
-            textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
-            fillColor="white"
-          />
-        </View>
-        <View style={styles.checkbox_container}>
-          <BouncyCheckbox 
-            onPress={()=>{
-              this.setState({
-                teteatete: false,
-                doublette: true,
-                triplette: false
-              })
-            }}
-            disableBuiltInState="true"
-            isChecked={this.state.doublette}
-            text="Doublettes"
-            textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
-            fillColor="white"
-          />
-        </View>
-        <View style={styles.checkbox_container}>
-          <BouncyCheckbox 
-            onPress={()=>{
-              this.setState({
-                teteatete: false,
-                doublette: false,
-                triplette: true
-              })
-            }}
-            disableBuiltInState="true"
-            isChecked={this.state.triplette}
-            text="Triplettes"
-            textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
-            fillColor="white"
-          />
-        </View>
-      </View>
+      <Button
+        bg="#1c3969"
+        isDisabled={buttonDisabled}
+        onPress={() => this._nextStep()}
+        endIcon={<Icon as={FontAwesome5} name="arrow-right"/>}
+        size="lg"
+      >
+        {title}
+      </Button>
     )
   }
 
-  _typeTournoi() {
-    if (this.props.optionsTournoi.type == "mele-demele") {
-      return (
-        <View>
-          <View style={styles.checkbox_container}>
-            <BouncyCheckbox 
-              onPress={()=>{
-                this.setState({
-                  avecNoms: true,
-                  sansNoms: false,
-                  avecEquipes: false
-                })
-              }}
-              disableBuiltInState="true"
-              isChecked={this.state.avecNoms}
-              text="Tournoi mêlée-démêlée avec nom"
-              textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
-              fillColor="white"
-            />
-          </View>
-          <View style={styles.checkbox_container}>
-            <BouncyCheckbox 
-              onPress={()=>{
-                this.setState({
-                  avecNoms: false,
-                  sansNoms: true,
-                  avecEquipes: false
-                })
-              }}
-              disableBuiltInState="true"
-              isChecked={this.state.sansNoms}
-              text="Tournoi mêlée-dêmêlée sans nom"
-              textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
-              fillColor="white"
-            />
-          </View>
-          <View style={styles.checkbox_container}>
-            <BouncyCheckbox 
-              onPress={()=>{
-                this.setState({
-                  avecNoms: false,
-                  sansNoms: false,
-                  avecEquipes: true,
-                })
-              }}
-              disableBuiltInState="true"
-              isChecked={this.state.avecEquipes}
-              text="Tournoi mêlée avec équipes constituées"
-              textStyle={{color: "white", fontSize: 15, textDecorationLine: "none"}}
-              fillColor="white"
-            />
-          </View>
-        </View>
-      )
-    }
+  _modeTournoi() {
+    const { t } = this.props;
+    if (this.props.optionsTournoi.type !== "mele-demele") return;
+    return (
+      <VStack>
+        <Text color="white" fontSize="2xl" textAlign="center">{t("mode_tournoi")}</Text>
+        <Radio.Group
+          name="modeTournoiRadioGroup"
+          accessibilityLabel={t("choix_mode_tournoi")}
+          value={this.state.modeTournoi}
+          onChange={nextValue => {this.setState({modeTournoi: nextValue})}}
+          space={3}
+        >
+          <Radio value="avecNoms" size="md" _text={{color:"white"}}>{t("melee_demelee_avec_nom")}</Radio>
+          <Radio value="sansNoms" size="md" _text={{color:"white"}}>{t("melee_demelee_sans_nom")}</Radio>
+          <Radio value="avecEquipes" size="md" _text={{color:"white"}}>{t("melee_avec_equipes_constituees")}</Radio>
+        </Radio.Group>
+      </VStack>
+    )
   }
 
   render() {
+    const { t } = this.props;
     return (
-      <View style={styles.main_container}>
-        <View style={styles.body_container}>
-          <View>
-            {this._titre()}
-          </View>
-          <View style={styles.type_equipe}>
-            {this._typeEquipes()}
-          </View>
-          <View style={styles.type_tournoi}>
-            {this._typeTournoi()}
-          </View>
-          <View style={styles.buttonView}>
-            {this._buttonInscription()}
-          </View>
-        </View>
-      </View>
+      <SafeAreaView style={{flex: 1}}>
+        <StatusBar backgroundColor="#0594ae"/>
+        <VStack flex="1" bgColor={"#0594ae"}>
+          <TopBarBack title={t("mode_tournoi")} navigation={this.props.navigation}/>
+          <VStack flex="1" px="10" space="10">
+            <VStack>
+              <Text color="white" fontSize="2xl" textAlign="center">{t("type_equipes")}</Text>
+              <Radio.Group
+                name="typeEquipesRadioGroup"
+                accessibilityLabel={t("choix_type_equipes")}
+                value={this.state.typeEquipes}
+                onChange={nextValue => {this.setState({typeEquipes: nextValue})}}
+                space={3}
+              >
+                <Radio value="teteatete" size="md" _text={{color:"white"}}>{t("tete_a_tete")}</Radio>
+                <Radio value="doublette" size="md" _text={{color:"white"}}>{t("doublettes")}</Radio>
+                <Radio value="triplette" size="md" _text={{color:"white"}}>{t("triplettes")}</Radio>
+              </Radio.Group>
+            </VStack>
+            {this._modeTournoi()}
+            {this._validButton()}
+            <Spacer/>
+            <AdMobBanner type="ANCHORED_ADAPTIVE_BANNER"/>
+            <Spacer/>
+          </VStack>
+        </VStack>
+      </SafeAreaView>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  main_container: {
-    flex: 1,
-    backgroundColor: "#0594ae"
-  },
-  body_container: {
-    flex: 1,
-    marginHorizontal: '5%',
-    justifyContent: 'center',
-  },
-  titre: {
-    marginBottom: 20,
-    textAlign: 'center',
-    fontSize: 24,
-    color: 'white'
-  },
-  type_equipe: {
-    marginBottom: 20,
-  },
-  type_tournoi: {
-    marginBottom: 20,
-  },
-  checkbox_container: {
-    marginBottom: 10,
-  },
-  buttonView: {
-    paddingLeft: 15,
-    paddingRight: 15
-  },
-})
 
 const mapStateToProps = (state) => {
   return {
@@ -255,4 +126,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(ChoixModeTournoi)
+export default connect(mapStateToProps)(withTranslation()(ChoixModeTournoi))

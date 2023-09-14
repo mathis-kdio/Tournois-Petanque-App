@@ -1,4 +1,5 @@
 import React from 'react'
+import { withTranslation } from 'react-i18next'
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 
@@ -10,22 +11,32 @@ class MatchItem extends React.Component {
     }
   }
 
-  _displayEquipe(equipe, match) {
+  _displayTitle(match) {
+    const { t } = this.props;
+    return (
+      match.terrain ? 
+      <Text style={styles.title}>{(match.terrain.name)}</Text>
+      :
+      <Text style={styles.title}>{t("match_numero")}{(match.id + 1)}</Text>
+    )
+  }
+
+  _displayEquipe(equipe, match, nbPtVictoire) {
     let nomsJoueurs = []
     for (let i = 0; i < 3; i++) {
-      nomsJoueurs.push(this._displayName(match.equipe[equipe - 1][i], equipe, match.id))
+      nomsJoueurs.push(this._displayName(match.equipe[equipe - 1][i], equipe, match.id, nbPtVictoire))
     }
     return nomsJoueurs
   }
 
-  _displayName = (joueurNumber, equipe, matchID) => {
+  _displayName = (joueurNumber, equipe, matchID, nbPtVictoire) => {
     let colorEquipe1 = 'white'
     let colorEquipe2 = 'white'
-    if (this.props.listeMatchs[matchID].score1 == 13) {
+    if (this.props.listeMatchs[matchID].score1 == nbPtVictoire) {
       colorEquipe1 = 'green'
       colorEquipe2 = 'red'
     }
-    else if (this.props.listeMatchs[matchID].score2 == 13) {
+    else if (this.props.listeMatchs[matchID].score2 == nbPtVictoire) {
       colorEquipe1 = 'red'
       colorEquipe2 = 'green'
     }
@@ -61,7 +72,7 @@ class MatchItem extends React.Component {
   }
 
   render() {
-    let { match, displayDetailForMatch, manche } = this.props;
+    let { match, displayDetailForMatch, manche, nbPtVictoire } = this.props;
     if (match.manche == manche) {
       return (
         <TouchableOpacity
@@ -69,15 +80,15 @@ class MatchItem extends React.Component {
           onPress={() => displayDetailForMatch(match.id, match )}>
           <View style={styles.content_container}>
             <View>
-              <Text style={styles.title}>Partie n°{(match.id + 1)}</Text>
+            {this._displayTitle(match)}
             </View>
             <View style={styles.equipe_container}>
               <View style={styles.equipe1}>
-                {this._displayEquipe(1, match)}
+                {this._displayEquipe(1, match, nbPtVictoire)}
               </View>
               {this._displayScore(match.id)}
               <View style={styles.equipe2}>
-                {this._displayEquipe(2, match)}
+                {this._displayEquipe(2, match, nbPtVictoire)}
               </View>
             </View>
           </View>
@@ -140,4 +151,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(MatchItem)
+export default connect(mapStateToProps)(withTranslation()(MatchItem))

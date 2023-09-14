@@ -1,5 +1,8 @@
+import AdMobBanner from 'components/adMob/AdMobBanner';
 import React from 'react'
-import { StyleSheet, View, Text, TextInput, Button } from 'react-native'
+import { withTranslation } from 'react-i18next';
+import { StyleSheet, View, Text, TextInput, Button, Keyboard } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux'
 
 class MatchDetail extends React.Component {
@@ -8,8 +11,26 @@ class MatchDetail extends React.Component {
     this.state = {
       match: undefined,
       score1: undefined,
-      score2: undefined
+      score2: undefined,
+      keyboardOpen: false
     }
+  }
+
+  componentDidMount() {
+    var idMatch = this.props.route.params.idMatch;
+    this.setState({
+      match: idMatch,
+    });
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+  }
+
+  _keyboardDidShow = () => {
+    this.setState({keyboardOpen: true});
+  }
+
+  _keyboardDidHide = () => {
+    this.setState({keyboardOpen: false});
   }
 
   _ajoutScoreTextInputChanged = (score, equipe) => {
@@ -25,11 +46,14 @@ class MatchDetail extends React.Component {
     }
   } 
 
-  componentDidMount() {
-    var idMatch = this.props.route.params.idMatch;
-    this.setState({
-      match: idMatch,
-    })
+  _displayTitle(match) {
+    const { t } = this.props;
+    return (
+      match.terrain ? 
+      <Text style={styles.title}>{(match.terrain.name)}</Text>
+      :
+      <Text style={styles.title}>{t("match_numero")}{(match.id + 1)}</Text>
+    )
   }
 
   _displayName = (joueurNumber) => {
@@ -105,67 +129,73 @@ class MatchDetail extends React.Component {
   }
 
   _boutonValider(match) {
+    const { t } = this.props;
     let boutonActive = true
     if (this.state.score1 && this.state.score2) {
       boutonActive = false
     }
     return (
-      <Button disabled={boutonActive} color="green" title='Valider le score' onPress={() => this._envoyerResultat(match)}/>
+      <Button disabled={boutonActive} color="green" title={t("valider_score")} onPress={() => this._envoyerResultat(match)}/>
     )
   }
 
   render() {
-    let match = this.props.route.params.match
+    const { t } = this.props;
+    let match = this.props.route.params.match;
     return (
-      <View style={styles.main_container}>
-        <View style={styles.body_container}>
-          <View style={styles.content_container} >
-            <View>
-              <Text style={styles.title}>Partie n°{(this.state.match + 1)}</Text>
-            </View>
-            <View style={styles.equipe_container}>
-              <View style={styles.equipe1}>
-                {this._displayEquipe(1, match)}
+      <KeyboardAwareScrollView contentContainerStyle={{flex: 1}}>
+        <View style={styles.main_container}>
+          <View style={styles.body_container}>
+            <View style={styles.content_container} >
+              <View>
+                {this._displayTitle(match)}
               </View>
-              <Text style={styles.vs}>VS</Text>
-              <View style={styles.equipe2}>
-                {this._displayEquipe(2, match)}
+              <View style={styles.equipe_container}>
+                <View style={styles.equipe1}>
+                  {this._displayEquipe(1, match)}
+                </View>
+                <Text style={styles.vs}>VS</Text>
+                <View style={styles.equipe2}>
+                  {this._displayEquipe(2, match)}
+                </View>
               </View>
             </View>
-          </View>
-          <View style={styles.resultat_container} >
-            <TextInput
-              style={styles.textinput}
-              placeholderTextColor='white'
-              underlineColorAndroid='white'
-              keyboardType={'decimal-pad'}
-              maxLength={2}
-              autoFocus = {true}
-              returnKeyType= {'next'}
-              placeholder="score équipe 1"
-              onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 1)}
-              onSubmitEditing={() => this.secondInput.focus()}
-            />
-            <TextInput
-              style={styles.textinput}
-              placeholderTextColor='white'
-              underlineColorAndroid='white'
-              keyboardType={'decimal-pad'}
-              maxLength={2}
-              ref={ref => {this.secondInput = ref}}
-              placeholder="score équipe 2"
-              onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 2)}
-              onSubmitEditing={() => this._envoyerResultat(match)}
-            />
-          </View>
-          <View style={styles.buttonView}>
-            <Button color="red" title='Supprimer le score' onPress={() => this._supprimerResultat()}/>
-          </View>
-          <View style={styles.buttonView}>
-            {this._boutonValider(match)}
+            <View style={styles.resultat_container} >
+              <TextInput
+                style={styles.textinput}
+                placeholderTextColor='white'
+                underlineColorAndroid='white'
+                keyboardType={'decimal-pad'}
+                maxLength={2}
+                returnKeyType= {'next'}
+                placeholder={t("score_equipe_1")}
+                onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 1)}
+                onSubmitEditing={() => this.secondInput.focus()}
+              />
+              <TextInput
+                style={styles.textinput}
+                placeholderTextColor='white'
+                underlineColorAndroid='white'
+                keyboardType={'decimal-pad'}
+                maxLength={2}
+                ref={ref => {this.secondInput = ref}}
+                placeholder={t("score_equipe_2")}
+                onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 2)}
+                onSubmitEditing={() => this._envoyerResultat(match)}
+              />
+            </View>
+            {!this.state.keyboardOpen && <View style={styles.banner_container}>
+              <AdMobBanner type="MEDIUM_RECTANGLE"/>
+            </View>}
+            <View style={styles.buttonView}>
+              <Button color="red" title={t("supprimer_score")} onPress={() => this._supprimerResultat()}/>
+            </View>
+            <View style={styles.buttonView}>
+              {this._boutonValider(match)}
+            </View>
           </View>
         </View>
-      </View>
+      </KeyboardAwareScrollView>
     )
   }
 }
@@ -215,6 +245,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
+  banner_container: {
+    flex: 2,
+    marginBottom: 10
+  },
   buttonView: {
     marginBottom: 20,
     paddingLeft: 15,
@@ -234,4 +268,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(MatchDetail)
+export default connect(mapStateToProps)(withTranslation()(MatchDetail))

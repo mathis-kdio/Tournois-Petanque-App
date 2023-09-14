@@ -1,8 +1,8 @@
 import React from 'react'
-import { StyleSheet, View, Text, TextInput } from 'react-native'
 import { connect } from 'react-redux'
-import Icon from 'react-native-vector-icons/FontAwesome'
-import { Picker } from '@react-native-picker/picker'
+import { FontAwesome5 } from '@expo/vector-icons';
+import { Box, CheckIcon, HStack, Image, Input, Select, Text } from 'native-base';
+import { withTranslation } from 'react-i18next';
 
 class ListeJoueurItem extends React.Component {
   constructor(props) {
@@ -14,27 +14,20 @@ class ListeJoueurItem extends React.Component {
     }
   }
 
-  _isSpecial = (joueurSpecial) => {
-    if (joueurSpecial === true) {
-      return (
-        <View style={styles.special_container}>
-          <Text style={styles.special_text}>Enfant</Text>
-        </View>
-      )
-    }
-  }
-
   _showSupprimerJoueur(joueur, isInscription) {
     if (isInscription === true) {
       return (
-        <View style={{marginLeft: 5}}>
-            <Icon.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._supprimerJoueur(joueur.id)}/>
-        </View>
+        <Box ml="2">
+          <FontAwesome5.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._supprimerJoueur(joueur.id)}/>
+        </Box>
       )
     }
   }
 
   _supprimerJoueur(idJoueur) {
+    this.setState({
+      renommerOn: false
+    })
     const actionSuppr = {type: "SUPPR_JOUEUR", value: [this.props.optionsTournoi.mode, idJoueur]};
     this.props.dispatch(actionSuppr);
     if (this.props.optionsTournoi.typeEquipes == "teteatete") {
@@ -46,24 +39,24 @@ class ListeJoueurItem extends React.Component {
   _showRenommerJoueur(joueur, isInscription, avecEquipes) {
     if (this.state.renommerOn == false) {
       return (
-        <View>
-            <Icon.Button name="edit" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renommerJoueurInput(joueur)}/>
-        </View>
+        <Box>
+          <FontAwesome5.Button name="edit" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renommerJoueurInput(joueur)}/>
+        </Box>
       )
     }
     else {
       if (this.state.disabledBoutonRenommer == true) {
         return (
-          <View>
-            <Icon.Button name="edit" backgroundColor="gray" iconStyle={{paddingHorizontal: 2, marginRight: 0}}/>
-          </View>
+          <Box>
+            <FontAwesome5.Button name="edit" backgroundColor="gray" iconStyle={{paddingHorizontal: 2, marginRight: 0}}/>
+          </Box>
         )
       }
       else {
         return (
-          <View>
-            <Icon.Button name="check" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renommerJoueur(joueur, isInscription, avecEquipes)}/>
-          </View>
+          <Box>
+            <FontAwesome5.Button name="check" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renommerJoueur(joueur, isInscription, avecEquipes)}/>
+          </Box>
         )
       }
     }
@@ -83,8 +76,11 @@ class ListeJoueurItem extends React.Component {
         disabledBoutonRenommer: true
       })
       if (isInscription === true) {
-        let typeInscription
-        if (avecEquipes == true) {
+        let typeInscription = "";
+        if (this.props.optionsTournoi.mode == "sauvegarde") {
+          typeInscription = "sauvegarde"
+        }
+        else if (avecEquipes == true) {
           typeInscription = "avecEquipes"
         }
         else {
@@ -122,18 +118,20 @@ class ListeJoueurItem extends React.Component {
   _joueurName(joueur, isInscription, avecEquipes) {
     if (this.state.renommerOn == true) {
       return(
-        <TextInput
-          style={styles.text_input}
+        <Input
           placeholder={joueur.name}
+          borderWidth="0"
+          keyboardType="default"
           autoFocus={true}
           onChangeText={(text) => this._joueurTxtInputChanged(text)}
           onSubmitEditing={() => this._renommerJoueur(joueur, isInscription, avecEquipes)}
+          size="lg"
         />
       )
     }
     else {
       return(
-        <Text style={styles.name_text}>{(joueur.id+1)} {joueur.name}</Text>
+        <Text color="white" fontSize="xl" fontWeight="bold">{(joueur.id+1)}-{joueur.name}</Text>
       )
     }
   }
@@ -144,6 +142,7 @@ class ListeJoueurItem extends React.Component {
   }
 
   _equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs) {
+    const { t } = this.props;
     if (avecEquipes == true) {
       let selectedValue = 0;
       if (joueur.equipe) {
@@ -174,83 +173,67 @@ class ListeJoueurItem extends React.Component {
         }
       }
       return (
-        <View style={styles.picker_container}>
-          <Picker
-            selectedValue={selectedValue}
-            onValueChange={(itemValue, itemIndex) => this._ajoutEquipe(joueur.id, itemValue)}
-            style={styles.picker}
-            dropdownIconColor="white"
-          >
-            <Picker.Item label="Choisir" value={undefined} key="0"/>
-            {pickerItem}
-          </Picker>
-        </View>
+        <Select
+          selectedValue={selectedValue}
+          accessibilityLabel={t("choix_equipe")}
+          placeholder={t("choix_equipe")}
+          onValueChange={itemValue => this._ajoutEquipe(joueur.id, itemValue)}
+          _selectedItem={{
+            endIcon: <CheckIcon size="5" color="cyan.500"/>
+          }}
+          size="lg"
+        >
+          <Select.Item label={t("choisir")} value={undefined} key="0"/>
+          {pickerItem}
+        </Select>
       )
     }
   }
 
   _equipePickerItem(equipe) {
     return (
-      <Picker.Item label={equipe.toString()} value={equipe} key={equipe}/>
+      <Select.Item label={equipe.toString()} value={equipe} key={equipe}/>
     )
   }
+
+  _joueurTypeIcon(joueurType) {
+    const { mode, type, typeEquipes } = this.props.optionsTournoi;
+    if (mode == "sauvegarde" || (type == "mele-demele" && typeEquipes == "doublette")) {
+      return (
+        <Box>
+          {joueurType == "enfant" && <FontAwesome5 name="child" color="darkgray" size={24}/>}
+          {joueurType == "tireur" && <Image source={require('@assets/images/tireur.png')} alt={type} width={30} height={30}/>}
+          {joueurType == "pointeur" && <Image source={require('@assets/images/pointeur.png')} alt={type} width={30} height={30}/>}
+        </Box>
+      )
+    }
+    else {
+      return (
+        <Box>
+          {joueurType == "enfant" && <FontAwesome5 name="child" color="darkgray" size={24}/>}
+        </Box>
+      )
+    }
+  }
+
 
   render() {
     const { joueur, isInscription, avecEquipes, typeEquipes, nbJoueurs } = this.props;
     return (
-      <View style={styles.main_container}>
-        <View style={styles.name_container}>
+      <HStack borderWidth="1" borderColor="white" borderRadius="xl" margin="1" paddingX="1" alignItems="center">
+        {this._joueurTypeIcon(joueur.type)}
+        <Box flex="2">
           {this._joueurName(joueur, isInscription, avecEquipes)}
-        </View>
-        {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
-        {this._isSpecial(joueur.special)}
+        </Box>
+        {(avecEquipes == true && <Box flex="1">
+          {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
+        </Box>)}
         {this._showRenommerJoueur(joueur, isInscription, avecEquipes)}
         {this._showSupprimerJoueur(joueur, isInscription)}
-      </View>
+      </HStack>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  main_container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingTop: 5,
-    paddingBottom: 5,
-    marginHorizontal: 10,
-    borderBottomWidth: 1,
-    borderColor: 'white'
-  },
-  name_container: {
-    flex: 1,
-  },
-  name_text: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    color: 'white'
-  },
-  special_container: {
-    marginLeft: 5,
-    marginRight: 5,
-  },
-  special_text: {
-    fontSize: 20,
-    color: 'white'
-  },
-  text_input: {
-    height: 50,
-    paddingLeft: 5,
-    color: 'white'
-  },
-  picker_container: {
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-  picker: {
-    color: 'white',
-    width: 115
-  }
-})
 
 const mapStateToProps = (state) => {
   return {
@@ -260,4 +243,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(ListeJoueurItem)
+export default connect(mapStateToProps)(withTranslation()(ListeJoueurItem))
