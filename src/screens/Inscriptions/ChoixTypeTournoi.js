@@ -95,7 +95,7 @@ class ChoixTypeTournoi extends React.Component {
               <Text color="white"> {t("savoir_plus")}</Text>
             </Pressable>
             <Spacer/>
-            <AdMobBanner/>
+            <AdMobBanner type="ANCHORED_ADAPTIVE_BANNER"/>
             <Spacer/>
           </VStack>
         </VStack>

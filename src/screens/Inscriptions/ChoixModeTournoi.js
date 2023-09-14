@@ -111,7 +111,7 @@ class ChoixModeTournoi extends React.Component {
             {this._modeTournoi()}
             {this._validButton()}
             <Spacer/>
-            <AdMobBanner/>
+            <AdMobBanner type="ANCHORED_ADAPTIVE_BANNER"/>
             <Spacer/>
           </VStack>
         </VStack>
