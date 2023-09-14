@@ -1,6 +1,7 @@
+import AdMobBanner from 'components/adMob/AdMobBanner';
 import React from 'react'
 import { withTranslation } from 'react-i18next';
-import { StyleSheet, View, Text, TextInput, Button } from 'react-native'
+import { StyleSheet, View, Text, TextInput, Button, Keyboard } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux'
 
@@ -10,8 +11,26 @@ class MatchDetail extends React.Component {
     this.state = {
       match: undefined,
       score1: undefined,
-      score2: undefined
+      score2: undefined,
+      keyboardOpen: false
     }
+  }
+
+  componentDidMount() {
+    var idMatch = this.props.route.params.idMatch;
+    this.setState({
+      match: idMatch,
+    });
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+  }
+
+  _keyboardDidShow = () => {
+    this.setState({keyboardOpen: true});
+  }
+
+  _keyboardDidHide = () => {
+    this.setState({keyboardOpen: false});
   }
 
   _ajoutScoreTextInputChanged = (score, equipe) => {
@@ -26,13 +45,6 @@ class MatchDetail extends React.Component {
       })
     }
   } 
-
-  componentDidMount() {
-    var idMatch = this.props.route.params.idMatch;
-    this.setState({
-      match: idMatch,
-    })
-  }
 
   _displayTitle(match) {
     const { t } = this.props;
@@ -129,7 +141,7 @@ class MatchDetail extends React.Component {
 
   render() {
     const { t } = this.props;
-    let match = this.props.route.params.match
+    let match = this.props.route.params.match;
     return (
       <KeyboardAwareScrollView contentContainerStyle={{flex: 1}}>
         <View style={styles.main_container}>
@@ -155,7 +167,6 @@ class MatchDetail extends React.Component {
                 underlineColorAndroid='white'
                 keyboardType={'decimal-pad'}
                 maxLength={2}
-                autoFocus = {true}
                 returnKeyType= {'next'}
                 placeholder={t("score_equipe_1")}
                 onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 1)}
@@ -173,6 +184,9 @@ class MatchDetail extends React.Component {
                 onSubmitEditing={() => this._envoyerResultat(match)}
               />
             </View>
+            {!this.state.keyboardOpen && <View style={styles.banner_container}>
+              <AdMobBanner type="MEDIUM_RECTANGLE"/>
+            </View>}
             <View style={styles.buttonView}>
               <Button color="red" title={t("supprimer_score")} onPress={() => this._supprimerResultat()}/>
             </View>
@@ -230,6 +244,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between'
+  },
+  banner_container: {
+    flex: 2,
+    marginBottom: 10
   },
   buttonView: {
     marginBottom: 20,

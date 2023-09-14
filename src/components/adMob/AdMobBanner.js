@@ -22,6 +22,15 @@ class AdMobBanner extends React.Component {
   }
   
   render() {
+    const { type } = this.props;
+    let size = BannerAdSize.ANCHORED_ADAPTIVE_BANNER;
+    if (type == "MEDIUM_RECTANGLE") {
+      size = BannerAdSize.MEDIUM_RECTANGLE
+    }
+    else if (type == "ANCHORED_ADAPTIVE_BANNER") {
+      size = BannerAdSize.ANCHORED_ADAPTIVE_BANNER;
+    }
+
     let unitId = undefined;
     if (__DEV__) {
       unitId = TestIds.BANNER;
@@ -40,7 +49,7 @@ class AdMobBanner extends React.Component {
       <VStack alignItems="center">
         <BannerAd
           unitId={unitId}
-          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          size={size}
           requestOptions={{
             requestNonPersonalizedAdsOnly: this.state.nonPersonalizedAdsOnly
           }}
