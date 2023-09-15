@@ -194,16 +194,9 @@ class PDFExport extends React.Component {
 
   render() {
     const { t } = this.props;
-    let warningText = "";
-    if (this.props.listeMatchs[this.props.listeMatchs.length - 1].typeTournoi == "coupe") {
-      warningText = t("export_coupe_desactive");
-    }
     return (
       <View style={styles.main_container}>
         <View style={styles.body_container}>
-          <View style={styles.buttonView}>
-            <Text style={styles.warning_text}>{warningText}</Text>
-          </View>
           <View style={styles.buttonView}>
             {this._exportButton(0, t("export_pdf_sans_scores"), false, false)}
           </View>
