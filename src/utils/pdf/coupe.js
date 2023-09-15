@@ -1,4 +1,6 @@
-export const generationPDFCoupe = (affichageScore, affichageClassement, typeTournoi, listeJoueurs, listeMatchs, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables) => {
+import { rankingCalc } from "utils/ranking";
+
+export const generationPDFCoupe = (affichageScore, affichageClassement, listeJoueurs, listeMatchs, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables) => {
   let html = `<!DOCTYPE html><html><head><style>@page{margin: 10px;} table{width: 100%;} table,th,td{border: 1px solid black;border-collapse: collapse;} td{min-width: 50px; word-break:break-all;} .td-score{min-width: 20px;} .text-right{text-align: right;} .text-center{text-align: center;} .no-border-top{border-top: none;} .no-border-bottom{border-bottom: none;} .border-top{border-top: 1px solid;}</style></head><body>
   <h1 class="text-center">Tournoi</h1>`;
   for (let tableIdx = 0; tableIdx < nbTables; tableIdx++) {
@@ -13,7 +15,6 @@ export const generationPDFCoupe = (affichageScore, affichageClassement, typeTour
       html += '<th colspan="4">Tour n°' + (minTourTable + i) + '</th>';      
     }
     html += '</tr>';
-
     for (let i = 0; i < nbMatchsParTour; i++) {
       let matchNbJoueur = 1;
       if (listeMatchs[i].equipe[0][2] != -1) {
@@ -29,71 +30,73 @@ export const generationPDFCoupe = (affichageScore, affichageClassement, typeTour
         else {
           html += '<tr class="">';
         }
+        let nbMatchsTour = nbMatchsParTour;
+        let idxFirstMatchsTour = 0;
         for (let j = 0; j < nbTourTable; j++) {
-          console.log("test")
-          let matchId = tableIdx * (toursParLigne * nbMatchsParTour) + j * nbMatchsParTour + i;
-          console.log("tableIdx "+tableIdx)
-          console.log("toursParLigne "+toursParLigne)
-          console.log("nbMatchsParTour "+nbMatchsParTour)
-          console.log("j "+j)
-          console.log("i "+i)
-          console.log("matchId "+matchId)
-          console.log("end test4")
+          let tourIdx = minTourTable + j;
+          if (tourIdx != 0) {
+            idxFirstMatchsTour += nbMatchsTour;
+            nbMatchsTour = nbMatchsTour / 2;
+          }
+          let matchId = tableIdx * (toursParLigne * nbMatchsParTour) + idxFirstMatchsTour + i;
           //Joueur equipe 1
-          html += '<td class="no-border-bottom no-border-top">';
-          console.log(listeMatchs[matchId])
-          console.log(listeMatchs[matchId].equipe)
-          if (listeMatchs[matchId].equipe[0][jidx] != -1) {
-            let joueur = listeJoueurs[listeMatchs[matchId].equipe[0][jidx]];
-            if (joueur.name === undefined) {
-              html += 'Sans Nom ('+ (joueur.id+1) +')';
-            }
-            else if (joueur.name == "") {
-              html += 'Joueur '+ (joueur.id+1);
-            }
-            else {
-              html += joueur.name +' ('+ (joueur.id+1) +')';
-            }
-          }
-          html += '</td>';
-
-          if (jidx == 0) {//Cases scores
-            //score equipe 1
-            html += '<td rowspan="'+ matchNbJoueur +'" class="td-score text-center">';
-            if (affichageScore == true && listeMatchs[matchId].score1) {
-              html += listeMatchs[matchId].score1;
+          if (matchId < idxFirstMatchsTour + nbMatchsTour) {
+            html += '<td class="no-border-bottom no-border-top">';
+            if (listeMatchs[matchId].equipe[0][jidx] != -1) {
+              let joueur = listeJoueurs[listeMatchs[matchId].equipe[0][jidx]];
+              if (joueur.name === undefined) {
+                html += 'Sans Nom ('+ (joueur.id+1) +')';
+              }
+              else if (joueur.name == "") {
+                html += 'Joueur '+ (joueur.id+1);
+              }
+              else {
+                html += joueur.name +' ('+ (joueur.id+1) +')';
+              }
             }
             html += '</td>';
-            //score equipe 2
-            html += '<td rowspan="'+ matchNbJoueur +'" class="td-score text-center">';
-            if (affichageScore == true && listeMatchs[matchId].score2) {
-              html += listeMatchs[matchId].score2;
+
+            if (jidx == 0) {//Cases scores
+              //score equipe 1
+              html += '<td rowspan="'+ matchNbJoueur +'" class="td-score text-center">';
+              if (affichageScore == true && listeMatchs[matchId].score1) {
+                html += listeMatchs[matchId].score1;
+              }
+              html += '</td>';
+              //score equipe 2
+              html += '<td rowspan="'+ matchNbJoueur +'" class="td-score text-center">';
+              if (affichageScore == true && listeMatchs[matchId].score2) {
+                html += listeMatchs[matchId].score2;
+              }
+              html += '</td>';
+            }
+
+            //Joueur equipe 2
+            html += '<td class="text-right no-border-bottom no-border-top">';
+            if (listeMatchs[matchId].equipe[1][jidx] != -1) {
+              let joueur = listeJoueurs[listeMatchs[matchId].equipe[1][jidx]];
+              if (joueur.name === undefined) {
+                html += 'Sans Nom ('+ (joueur.id+1) +')';
+              }
+              else if (joueur.name == "") {
+                html += 'Joueur '+ (joueur.id+1);
+              }
+              else {
+                html += joueur.name +' ('+ (joueur.id+1) +')';
+              }
             }
             html += '</td>';
           }
-
-          //Joueur equipe 2
-          html += '<td class="text-right no-border-bottom no-border-top">';
-          console.log(listeMatchs[matchId].equipe)
-          if (listeMatchs[matchId].equipe[1][jidx] != -1) {
-            let joueur = listeJoueurs[listeMatchs[matchId].equipe[1][jidx]];
-            if (joueur.name === undefined) {
-              html += 'Sans Nom ('+ (joueur.id+1) +')';
-            }
-            else if (joueur.name == "") {
-              html += 'Joueur '+ (joueur.id+1);
-            }
-            else {
-              html += joueur.name +' ('+ (joueur.id+1) +')';
-            }
+          else {
+            html += '<td class="no-border-bottom no-border-top">';
+            html += '</td>';
+            html += '<td rowspan="'+ matchNbJoueur +'" class="td-score text-center">';
+            html += '</td>';
+            html += '<td rowspan="'+ matchNbJoueur +'" class="td-score text-center">';
+            html += '</td>';
+            html += '<td class="text-right no-border-bottom no-border-top">';
+            html += '</td>';
           }
-          html += '</td>';
-          if (typeTournoi == "coupe") {
-            nbMatchsParTour /= 2;
-          }
-        }
-        if (typeTournoi == "coupe") {
-          nbMatchsParTour = (nbMatchs + 1) / 2;
         }
         html += '</tr>';
       }
@@ -103,7 +106,7 @@ export const generationPDFCoupe = (affichageScore, affichageClassement, typeTour
   if (affichageClassement == true) {
     html += '<br><table><tr>';
     html += '<th>Place</th><th>Victoires</th><th>Matchs Joués</th><th>Points</th>';
-    let classement = rankingCalc(this.props.listeMatchs);
+    let classement = rankingCalc(listeMatchs);
     for (let i = 0; i < listeJoueurs.length; i++) {
       html += '<tr>';
       html += '<td>' + classement[i].position + ' - ';

@@ -34,10 +34,10 @@ class PDFExport extends React.Component {
     let nbToursRestants = nbTours;
     let html = "";
     if (typeTournoi == "coupe") {
-      html = generationPDFCoupe(affichageScore, affichageClassement, typeTournoi, listeJoueurs, listeMatchs, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables);
+      html = generationPDFCoupe(affichageScore, affichageClassement, listeJoueurs, listeMatchs, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables);
     }
     else {
-      html = generationPDFTournoi(affichageScore, affichageClassement, typeTournoi, listeJoueurs, listeMatchs, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables);
+      html = generationPDFTournoi(affichageScore, affichageClassement, listeJoueurs, listeMatchs, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables);
     }
     const { uri } = await Print.printToFileAsync({ html });
     if (await Sharing.isAvailableAsync()) {
