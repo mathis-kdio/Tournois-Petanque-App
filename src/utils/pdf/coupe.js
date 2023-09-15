@@ -3,6 +3,7 @@ import { rankingCalc } from "utils/ranking";
 export const generationPDFCoupe = (affichageScore, affichageClassement, listeJoueurs, listeMatchs, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables) => {
   let html = `<!DOCTYPE html><html><head><style>@page{margin: 10px;} table{width: 100%;} table,th,td{border: 1px solid black;border-collapse: collapse;} td{min-width: 50px; word-break:break-all;} .td-score{min-width: 20px;} .text-right{text-align: right;} .text-center{text-align: center;} .no-border-top{border-top: none;} .no-border-bottom{border-bottom: none;} .border-top{border-top: 1px solid;}</style></head><body>
   <h1 class="text-center">Tournoi</h1>`;
+  let idxFirstMatchsTable = 0;
   for (let tableIdx = 0; tableIdx < nbTables; tableIdx++) {
     let minTourTable = tableIdx * toursParLigne;
     html += '<table><tr>';
@@ -31,14 +32,13 @@ export const generationPDFCoupe = (affichageScore, affichageClassement, listeJou
           html += '<tr class="">';
         }
         let nbMatchsTour = nbMatchsParTour;
-        let idxFirstMatchsTour = 0;
+        let idxFirstMatchsTour = idxFirstMatchsTable;
         for (let j = 0; j < nbTourTable; j++) {
-          let tourIdx = minTourTable + j;
-          if (tourIdx != 0) {
+          if (j != 0) {
             idxFirstMatchsTour += nbMatchsTour;
             nbMatchsTour = nbMatchsTour / 2;
           }
-          let matchId = tableIdx * (toursParLigne * nbMatchsParTour) + idxFirstMatchsTour + i;
+          let matchId = idxFirstMatchsTour + i;
           //Joueur equipe 1
           if (matchId < idxFirstMatchsTour + nbMatchsTour) {
             html += '<td class="no-border-bottom no-border-top">';
@@ -100,6 +100,11 @@ export const generationPDFCoupe = (affichageScore, affichageClassement, listeJou
         }
         html += '</tr>';
       }
+    }
+    idxFirstMatchsTable += nbMatchsParTour - 1;
+    for (let index = 0; index < nbTourTable; index++) {
+      nbMatchsParTour /= 2;
+      idxFirstMatchsTable += nbMatchsParTour;
     }
     html += '</tr></table><br>';
   }
