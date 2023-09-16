@@ -62,11 +62,18 @@ class PDFExport extends React.Component {
   };
 
   _exportButton(buttonId, buttonText, affichageScore, affichageClassement) {
+    let pressableDisabled = false;
+    let opacityStyle = 1;
+    if (this.state.btnIsLoading[buttonId]) {
+      pressableDisabled = true;
+      opacityStyle = 0.7;
+    }
     return (
-      <Pressable 
+      <Pressable
+        disabled={pressableDisabled}
         onPress={() => this._onPressExportBtn(buttonId, affichageScore, affichageClassement)}
       >
-        <View style={styles.button}>
+        <View style={{...styles.button, opacity: opacityStyle}}>
           {this.state.btnIsLoading[buttonId] && <ActivityIndicator size="small" color="white" />}
           <Text style={styles.buttonText}>{buttonText}</Text>
         </View>
@@ -103,11 +110,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  warning_text: {
-    fontSize: 20,
-    textAlign: "justify",
-    color: 'white'
   },
   buttonView: {
     marginBottom: 20,
