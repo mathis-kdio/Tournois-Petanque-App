@@ -5,6 +5,8 @@ import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import { rankingCalc } from '@utils/ranking';
 import { withTranslation } from 'react-i18next';
+import { generationPDFTournoi } from 'utils/pdf/tournoi';
+import { generationPDFCoupe } from 'utils/pdf/coupe';
 
 class PDFExport extends React.Component {
   constructor(props) {
@@ -20,119 +22,23 @@ class PDFExport extends React.Component {
     let nbMatchs = this.props.listeMatchs[this.props.listeMatchs.length - 1].nbMatchs;
     let listeMatchs = this.props.listeMatchs;
     let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs;
-    let nbMatchsParTour = nbMatchs / nbTours;
+    let nbMatchsParTour = 0;
+    let typeTournoi = this.props.listeMatchs[this.props.listeMatchs.length - 1].typeTournoi;
+    if (typeTournoi == "coupe") {
+      nbMatchsParTour = (nbMatchs + 1) / 2;
+    }
+    else {
+      nbMatchsParTour = nbMatchs / nbTours;
+    }
     let nbTables = Math.ceil(nbTours / toursParLigne);
     let nbToursRestants = nbTours;
-    let html = `<!DOCTYPE html><html><head><style>@page{margin: 10px;} table{width: 100%;} table,th,td{border: 1px solid black;border-collapse: collapse;} td{min-width: 50px; word-break:break-all;} .td-score{min-width: 20px;} .text-right{text-align: right;} .text-center{text-align: center;} .no-border-top{border-top: none;} .no-border-bottom{border-bottom: none;} .border-top{border-top: 1px solid;}</style></head><body>
-    <h1 class="text-center">Tournoi</h1>`;
-    for (let tableIdx = 0; tableIdx < nbTables; tableIdx++) {
-      let minTourTable = tableIdx * toursParLigne;
-      html += '<table><tr>';
-      let nbTourTable = toursParLigne;
-      if (nbToursRestants < toursParLigne) {
-        nbTourTable = nbToursRestants;
-      }
-      nbToursRestants -= toursParLigne; 
-      for (let i = 1; i <= nbTourTable; i++) {
-        html += '<th colspan="4">Tour n°' + (minTourTable + i) + '</th>';      
-      }
-      html += '</tr>';
-
-      for (let i = 0; i < nbMatchsParTour; i++) {
-        let matchNbJoueur = 1;
-        if (listeMatchs[i].equipe[0][2] != -1) {
-          matchNbJoueur = 3;
-        }
-        else if (listeMatchs[i].equipe[0][1] != -1) {
-          matchNbJoueur = 2;
-        }
-        for (let jidx = 0; jidx < matchNbJoueur; jidx++) {
-          if (jidx == 0) {
-            html += '<tr class="border-top">';
-          }
-          else {
-            html += '<tr class="">';
-          }
-          for (let j = 0; j < nbTourTable; j++) {
-            let matchId = tableIdx * (toursParLigne * nbMatchsParTour) + j * nbMatchsParTour + i;
-            //Joueur equipe 1
-            html += '<td class="no-border-bottom no-border-top">';
-            if (listeMatchs[matchId].equipe[0][jidx] != -1) {
-              let joueur = listeJoueurs[listeMatchs[matchId].equipe[0][jidx]];
-              if (joueur.name === undefined) {
-                html += 'Sans Nom ('+ (joueur.id+1) +')';
-              }
-              else if (joueur.name == "") {
-                html += 'Joueur '+ (joueur.id+1);
-              }
-              else {
-                html += joueur.name +' ('+ (joueur.id+1) +')';
-              }
-            }
-            html += '</td>';
-
-            if (jidx == 0) {//Cases scores
-              //score equipe 1
-              html += '<td rowspan="'+ matchNbJoueur +'" class="td-score text-center">';
-              if (affichageScore == true && listeMatchs[matchId].score1) {
-                html += listeMatchs[matchId].score1;
-              }
-              html += '</td>';
-              //score equipe 2
-              html += '<td rowspan="'+ matchNbJoueur +'" class="td-score text-center">';
-              if (affichageScore == true && listeMatchs[matchId].score2) {
-                html += listeMatchs[matchId].score2;
-              }
-              html += '</td>';
-            }
-
-            //Joueur equipe 2
-            html += '<td class="text-right no-border-bottom no-border-top">';
-            if (listeMatchs[matchId].equipe[1][jidx] != -1) {
-              let joueur = listeJoueurs[listeMatchs[matchId].equipe[1][jidx]];
-              if (joueur.name === undefined) {
-                html += 'Sans Nom ('+ (joueur.id+1) +')';
-              }
-              else if (joueur.name == "") {
-                html += 'Joueur '+ (joueur.id+1);
-              }
-              else {
-                html += joueur.name +' ('+ (joueur.id+1) +')';
-              }
-            }
-            html += '</td>';
-          }
-          html += '</tr>';
-        }
-      }
-      html += '</tr></table><br>';
+    let html = "";
+    if (typeTournoi == "coupe") {
+      html = generationPDFCoupe(affichageScore, affichageClassement, listeJoueurs, listeMatchs, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables);
     }
-    if (affichageClassement == true) {
-      html += '<br><table><tr>';
-      html += '<th>Place</th><th>Victoires</th><th>Matchs Joués</th><th>Points</th>';
-      let classement = rankingCalc(this.props.listeMatchs);
-      for (let i = 0; i < listeJoueurs.length; i++) {
-        html += '<tr>';
-        html += '<td>' + classement[i].position + ' - ';
-        let joueur = listeJoueurs[classement[i].joueurId];
-        if (joueur.name === undefined) {
-          html += 'Sans Nom ('+ (joueur.id+1) +')';
-        }
-        else if (joueur.name == "") {
-          html += 'Joueur '+ (joueur.id+1);
-        }
-        else {
-          html += joueur.name +' ('+ (joueur.id+1) +')';
-        }
-        html += '</td>'
-        html += '<td class="text-center">'+ classement[i].victoires +'</td>';
-        html += '<td class="text-center">'+ classement[i].nbMatchs +'</td>';
-        html += '<td class="text-center">'+ classement[i].points +'</td>';
-        html += '</tr>';
-      }
-      html += '</tr></table>';
+    else {
+      html = generationPDFTournoi(affichageScore, affichageClassement, listeJoueurs, listeMatchs, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables);
     }
-    html += '</body></html>';
     const { uri } = await Print.printToFileAsync({ html });
     if (await Sharing.isAvailableAsync()) {
       Sharing.shareAsync(uri).then(this._toggleLoading(buttonId));
@@ -158,12 +64,12 @@ class PDFExport extends React.Component {
   _exportButton(buttonId, buttonText, affichageScore, affichageClassement) {
     let pressableDisabled = false;
     let opacityStyle = 1;
-    if (this.props.listeMatchs[this.props.listeMatchs.length - 1].typeTournoi == "coupe" || this.state.btnIsLoading[buttonId]) {
+    if (this.state.btnIsLoading[buttonId]) {
       pressableDisabled = true;
       opacityStyle = 0.7;
     }
     return (
-      <Pressable 
+      <Pressable
         disabled={pressableDisabled}
         onPress={() => this._onPressExportBtn(buttonId, affichageScore, affichageClassement)}
       >
@@ -177,16 +83,9 @@ class PDFExport extends React.Component {
 
   render() {
     const { t } = this.props;
-    let warningText = "";
-    if (this.props.listeMatchs[this.props.listeMatchs.length - 1].typeTournoi == "coupe") {
-      warningText = t("export_coupe_desactive");
-    }
     return (
       <View style={styles.main_container}>
         <View style={styles.body_container}>
-          <View style={styles.buttonView}>
-            <Text style={styles.warning_text}>{warningText}</Text>
-          </View>
           <View style={styles.buttonView}>
             {this._exportButton(0, t("export_pdf_sans_scores"), false, false)}
           </View>
@@ -211,11 +110,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  warning_text: {
-    fontSize: 20,
-    textAlign: "justify",
-    color: 'white'
   },
   buttonView: {
     marginBottom: 20,

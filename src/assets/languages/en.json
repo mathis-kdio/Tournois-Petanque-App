@@ -56,7 +56,6 @@
     "export_pdf_sans_scores": "Export to PDF (without scores)",
     "export_pdf_avec_scores": "Export to PDF (with scores)",
     "export_pdf_avec_scores_classement": "Export to PDF (with scores + ranking)",
-    "export_coupe_desactive": "Export disabled in cup mode!",
     "supprimer_tournoi": "Delete tournament",
     "supprimer_tournoi_actuel_modal_titre": "Delete current tournament",
     "supprimer_tournoi_actuel_modal_texte": "Are you sure you want to delete the current tournament n°{{id}}?",
