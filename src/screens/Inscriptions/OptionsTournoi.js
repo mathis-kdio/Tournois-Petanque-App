@@ -166,7 +166,7 @@ class OptionsTournoi extends React.Component {
                     }}
                     size="lg"
                   >
-                    <Select.Item label={t("triplette")} value="3"/>
+                    <Select.Item label={t("triplettes")} value="3"/>
                     <Select.Item label={t("tete_a_tete")} value="1"/>
                   </Select>
                 </VStack>
