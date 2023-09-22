@@ -13,6 +13,7 @@ i18n
     resources: {
       'fr-FR': francais,
       'en-US': english,
+      'en-GB': english,
       ns: ['translation'],
       supportedLngs: [
         {
@@ -21,7 +22,12 @@ i18n
         },
         {
           code: 'en-US',
-          locale: 'English'
+          locale: 'English US'
+        },
+        ,
+        {
+          code: 'en-GB',
+          locale: 'English GB'
         }
       ],
       defaultNS: 'translation',
