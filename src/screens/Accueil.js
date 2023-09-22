@@ -22,7 +22,7 @@ class Accueil extends React.Component {
     this.appleMarket =          "itms-apps://apps.apple.com/app/petanque-gcu/id1661710973";
     this.googleMarketReviews =  "market://details?id=com.MK.PetanqueGCU&showAllReviews=true";
     this.appleMarketReviews =   "itms-apps://apps.apple.com/app/petanque-gcu/id1661710973?mt=8&action=write-review"
-    this.mail =                 "mailto: tournoispetanqueapp@gmail.com";
+    this.mail =                 "mailto:tournoispetanqueapp@gmail.com";
     this.gcuWebsite =           "https://www.gcu.asso.fr/";
     this.githubSponsor =        "https://github.com/sponsors/mathis-kdio";
     this.patreon =              "https://patreon.com/tournoipetanque";
@@ -76,11 +76,13 @@ class Accueil extends React.Component {
     if (this.state.appState == "active") {
       AdsConsent.requestInfoUpdate().then(async consentInfo => {
         if (consentInfo.isConsentFormAvailable && (consentInfo.status === AdsConsentStatus.UNKNOWN || consentInfo.status === AdsConsentStatus.REQUIRED)) {
-          AdsConsent.showForm().then(async res => {
-            if (res.status === AdsConsentStatus.OBTAINED) {
-              mobileAds().initialize().then(async adapterStatuses => {console.log(adapterStatuses)});
-            }
-          });
+          if (this.state.appState == "active") {
+            AdsConsent.showForm().then(async res => {
+              if (res.status === AdsConsentStatus.OBTAINED) {
+                mobileAds().initialize().then(async adapterStatuses => {console.log(adapterStatuses)});
+              }
+            });
+          }
         }
       });
     }
