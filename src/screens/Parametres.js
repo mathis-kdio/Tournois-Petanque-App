@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { _openURL } from '@utils/link'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
-import { HStack, VStack, Text, Spacer, FlatList, Divider, AlertDialog, Pressable, Box, Center, Button, Modal } from 'native-base'
+import { HStack, VStack, Text, Spacer, FlatList, Divider, AlertDialog, Pressable, Box, Center, Button, Modal, Image } from 'native-base'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AdsConsent } from 'react-native-google-mobile-ads';
 import { withTranslation } from "react-i18next";
@@ -19,7 +19,8 @@ class Parametres extends React.Component {
     this.state = {
       alertOpen: false,
       modalChangelogOpen: false,
-      modalChangelogItem: undefined
+      modalChangelogItem: undefined,
+      modalLanguagesOpen: false,
     }
   }
 
@@ -90,6 +91,31 @@ class Parametres extends React.Component {
     }
   }
 
+  _modalLanguages() {
+    const { t } = this.props;
+    let drapeauUSA = require('@assets/images/drapeau-usa.png');
+    let drapeauFrance = require('@assets/images/drapeau-france.png');
+    return (
+      <Modal isOpen={this.state.modalLanguagesOpen} onClose={() => this.setState({modalLanguagesOpen: false})}>
+        <Modal.Content>
+          <Modal.CloseButton/>
+          <Modal.Header>{t("languages_disponibles")}</Modal.Header>
+          <Modal.Body>
+            {this._item(t("francais"), () => this._changeLanguage("fr-FR"), "flag", "modal", drapeauFrance)}
+            <Divider/>
+            {this._item(t("anglais"), () => this._changeLanguage("en-US"), "flag-usa", "modal", drapeauUSA)}
+          </Modal.Body>
+        </Modal.Content>
+      </Modal>
+    )
+  }
+
+  _changeLanguage(language) {
+    const { i18n } = this.props;
+    i18n.changeLanguage(language);
+    this.setState({modalLanguagesOpen: false});
+  }
+
   _adsConsentShowForm() {
     AdsConsent.requestInfoUpdate().then(async consentInfo => {
       if (consentInfo.isConsentFormAvailable) {
@@ -98,17 +124,25 @@ class Parametres extends React.Component {
     });
   }
 
-  _item(text, action, icon, type) {
+  _item(text, action, icon, type, drapeau) {
     let colorTxt = "white";
     let btnColor = "white";
     if (type == "danger") {
       colorTxt = "red.500";
       btnColor = "red";
     }
+    else if (type == "modal") {
+      colorTxt = "black";
+      btnColor = "black";
+    }
     return (
       <Pressable onPress={() => action()}>
         <HStack m="2" alignItems="center">
-          <FontAwesome5 name={icon} size={16} color={btnColor} style={{marginRight: 5}}/>
+          {drapeau == undefined ?
+            <FontAwesome5 name={icon} size={16} color={btnColor} style={{marginRight: 5}}/>
+            :
+            <Image source={drapeau} alt="drapeau" size="xs"/>
+          }
           <Text fontSize={16} color={colorTxt}>{text}</Text>
           <Spacer/>
           <FontAwesome5 name="arrow-right" size={20} color={btnColor}/>
@@ -120,14 +154,14 @@ class Parametres extends React.Component {
   _changelogItem(item) {
     return (
       <VStack>
-        {this._item("Version "+item.version+" :", () => this.setState({modalChangelogOpen: true, modalChangelogItem: item}), undefined, undefined)}
+        {this._item("Version "+item.version+" :", () => this.setState({modalChangelogOpen: true, modalChangelogItem: item}), undefined, undefined, undefined)}
         <Divider/>
       </VStack>
     )
   }
 
   render() {
-    const { t, i18n } = this.props;
+    const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
         <StatusBar backgroundColor="#0594ae"/>
@@ -137,21 +171,19 @@ class Parametres extends React.Component {
             <VStack>
               <Text fontSize="xl" color="white">{t("a_propos")}</Text>
               <Box borderWidth="1" borderColor="white" borderRadius="lg">
-                {this._item(t("voir_source_code"), () => _openURL(this.githubRepository), "code", undefined)}
+                {this._item(t("voir_source_code"), () => _openURL(this.githubRepository), "code", undefined, undefined)}
                 <Divider/>
-                {this._item("tournoispetanqueapp@gmail.com", () => _openURL(this.mail), "envelope", undefined)}
+                {this._item("tournoispetanqueapp@gmail.com", () => _openURL(this.mail), "envelope", undefined, undefined)}
               </Box>
             </VStack>
             <VStack>
               <Text fontSize="xl" color="white">{t("reglages")}</Text>
               <Box borderWidth="1" borderColor="white" borderRadius="lg">
-                {this._item(t("francais"), () => i18n.changeLanguage("fr-FR"), "flag", undefined)}
+                {this._item(t("changer_langue"), () => this.setState({modalLanguagesOpen: true}), "language", undefined, undefined)}
                 <Divider/>
-                {this._item(t("anglais"), () => i18n.changeLanguage("en-US"), "flag-usa", undefined)}
+                {this._item(t("modifier_consentement"), () => this._adsConsentShowForm(), "ad", undefined, undefined)}
                 <Divider/>
-                {this._item(t("modifier_consentement"), () => this._adsConsentShowForm(), "ad", undefined)}
-                <Divider/>
-                {this._item(t("supprimer_donnees"), () => this.setState({alertOpen: true}), "trash-alt", "danger")}
+                {this._item(t("supprimer_donnees"), () => this.setState({alertOpen: true}), "trash-alt", "danger", undefined)}
               </Box>
             </VStack>
             <VStack flex="1">
@@ -172,6 +204,7 @@ class Parametres extends React.Component {
         </VStack>
         {this._alertDialogClearData()}
         {this._modalChangelog()}
+        {this._modalLanguages()}
       </SafeAreaView>
     )
   }
