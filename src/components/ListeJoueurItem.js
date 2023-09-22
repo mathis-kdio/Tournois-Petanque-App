@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { FontAwesome5 } from '@expo/vector-icons';
-import { Box, CheckIcon, HStack, Image, Input, Select, Text } from 'native-base';
+import { Box, CheckIcon, Checkbox, HStack, Image, Input, Select, Text } from 'native-base';
 import { withTranslation } from 'react-i18next';
 
 class ListeJoueurItem extends React.Component {
@@ -217,10 +217,27 @@ class ListeJoueurItem extends React.Component {
   }
 
 
+  _joueurCheckBox(showCheckbox, isChecked) {
+    const {t} = this.props;
+    if (showCheckbox) {
+      return (
+        <Box mr="1">
+          <Checkbox
+            onChange={() => this.setState({speciauxIncompatibles: !this.state.speciauxIncompatibles})}
+            accessibilityLabel={t("checkbox_inscription_joueuritem")}
+            size="md"
+            isChecked={isChecked}
+          />
+        </Box>
+      )
+    }
+  }
+
   render() {
-    const { joueur, isInscription, avecEquipes, typeEquipes, nbJoueurs } = this.props;
+    const { joueur, isInscription, avecEquipes, typeEquipes, nbJoueurs, showCheckbox } = this.props;
     return (
       <HStack borderWidth="1" borderColor="white" borderRadius="xl" margin="1" paddingX="1" alignItems="center">
+        {this._joueurCheckBox(showCheckbox, joueur)}
         {this._joueurTypeIcon(joueur.type)}
         <Box flex="2">
           {this._joueurName(joueur, isInscription, avecEquipes)}

@@ -190,6 +190,7 @@
     "inscription_avec_noms_navigation_title": "Registration with names",
     "inscription_sans_noms_navigation_title": "Registration without names",
     "liste_terrains_navigation_title": "List of Terrain",
-    "generation_matchs_navigation_title": "Generations of games in progress"
+    "generation_matchs_navigation_title": "Generations of games in progress",
+    "checkbox_inscription_joueuritem": "Checkbox of player"
   }
 }
