@@ -20,7 +20,8 @@ class Inscription extends React.Component {
       etatBouton: false,
       suggestions: [],
       nbSuggestions: 5,
-      modalRemoveIsOpen: false
+      modalRemoveIsOpen: false,
+      showCheckbox: false
     }
   }
 
@@ -139,6 +140,7 @@ class Inscription extends React.Component {
               avecEquipes={avecEquipes}
               typeEquipes={this.props.optionsTournoi.typeEquipes}
               nbJoueurs={this.props.listesJoueurs[this.props.optionsTournoi.mode].length}
+              showCheckbox={this.state.showCheckbox}
             />
           )}
           ListFooterComponent={
@@ -229,6 +231,22 @@ class Inscription extends React.Component {
     }
   }
 
+  _showCheckboxSection() {
+    const { t } = this.props;
+    let icon = "eye";
+    let text = t("afficher");
+    if (this.state.showCheckbox) {
+      icon = "eye-slash";
+      text = t("cacher");
+    }
+    return (
+      <HStack my="1" alignItems="center">
+        <FontAwesome5 name={icon} size={15} color="white"/>
+        <Text color="white" fontSize="md" onPress={() => this.setState({showCheckbox: !this.state.showCheckbox})}>{text} {t("case_a_cocher")}</Text>
+      </HStack>
+    )
+  }
+
   render() {
     const { t } = this.props;
     return (
@@ -264,6 +282,7 @@ class Inscription extends React.Component {
             </Button>
           </Box>
         </HStack>
+        {this._showCheckboxSection()}
         <Divider bg="white" height="0.5" my="2"/>
         <VStack flex="1">
           {this._displayListeJoueur()}

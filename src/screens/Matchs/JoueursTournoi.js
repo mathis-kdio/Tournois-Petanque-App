@@ -30,6 +30,7 @@ class JoueursTournoi extends React.Component {
             <ListeJoueurItem
               joueur={item}
               isInscription={false}
+              showCheckbox={true}
             />
           )}
         />

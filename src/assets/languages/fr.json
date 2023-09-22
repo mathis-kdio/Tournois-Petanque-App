@@ -190,6 +190,12 @@
     "inscription_avec_noms_navigation_title": "Inscription Avec Noms",
     "inscription_sans_noms_navigation_title": "Inscription Sans Noms",
     "liste_terrains_navigation_title": "Liste des Terrains",
-    "generation_matchs_navigation_title": "Générations des matchs en cours"
+    "generation_matchs_navigation_title": "Générations des matchs en cours",
+    "checkbox_inscription_joueuritem": "Case à cocher du joueur",
+    "afficher": "Afficher",
+    "cacher": "Cacher",
+    "case_a_cocher" : "les cases à cocher",
+    "confirmer_uncheck_modal_titre" : "Confirmation décochage",
+    "confirmer_uncheck_modal_texte" : "Êtes-vous sûr de vouloir décocher la case ?"
   }
 }
