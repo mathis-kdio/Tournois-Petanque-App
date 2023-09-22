@@ -194,6 +194,8 @@
     "checkbox_inscription_joueuritem": "Checkbox of player",
     "afficher": "Show",
     "cacher": "Hide",
-    "case_a_cocher" : " checkboxes"
+    "case_a_cocher" : "checkboxes",
+    "confirmer_uncheck_modal_titre" : "Confirmation of unchecking",
+    "confirmer_uncheck_modal_texte" : "Are you sure you want to uncheck the box?"
   }
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { FontAwesome5 } from '@expo/vector-icons';
-import { Box, CheckIcon, Checkbox, HStack, Image, Input, Select, Text } from 'native-base';
+import { AlertDialog, Box, Button, CheckIcon, Checkbox, HStack, Image, Input, Select, Text } from 'native-base';
 import { withTranslation } from 'react-i18next';
 
 class ListeJoueurItem extends React.Component {
@@ -11,6 +11,7 @@ class ListeJoueurItem extends React.Component {
     this.state = {
       renommerOn: false,
       disabledBoutonRenommer: true,
+      modalConfirmUncheckIsOpen: false
     }
   }
 
@@ -104,14 +105,10 @@ class ListeJoueurItem extends React.Component {
     this.joueurText = text
     //Le bouton valider est désactivé si aucune lettre
     if (this.joueurText == '') {
-      this.setState({
-        disabledBoutonRenommer: true
-      })
+      this.setState({disabledBoutonRenommer: true});
     }
     else {
-      this.setState({
-        disabledBoutonRenommer: false
-      })
+      this.setState({disabledBoutonRenommer: false});
     }
   }
 
@@ -137,8 +134,8 @@ class ListeJoueurItem extends React.Component {
   }
 
   _ajoutEquipe(joueurId, equipeId) {
-    const action = { type: "AJOUT_EQUIPE_JOUEUR", value: ["avecEquipes", joueurId, equipeId] }
-    this.props.dispatch(action)
+    const action = { type: "AJOUT_EQUIPE_JOUEUR", value: ["avecEquipes", joueurId, equipeId] };
+    this.props.dispatch(action);
   }
 
   _equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs) {
@@ -216,14 +213,17 @@ class ListeJoueurItem extends React.Component {
     }
   }
 
-
-  _joueurCheckBox(showCheckbox, isChecked) {
+  _joueurCheckbox(showCheckbox, joueur) {
     const {t} = this.props;
     if (showCheckbox) {
+      let isChecked = true;
+      if (joueur.isChecked == undefined || !joueur.isChecked) {
+        isChecked = false;
+      }
       return (
         <Box mr="1">
           <Checkbox
-            onChange={() => this.setState({speciauxIncompatibles: !this.state.speciauxIncompatibles})}
+            onChange={() => this._onCheckboxChange(isChecked, joueur.id)}
             accessibilityLabel={t("checkbox_inscription_joueuritem")}
             size="md"
             isChecked={isChecked}
@@ -233,11 +233,48 @@ class ListeJoueurItem extends React.Component {
     }
   }
 
+  _onCheckboxChange(isChecked, joueurId) {
+    console.log(isChecked)
+    if (!isChecked) {
+      this._ajoutCheck(joueurId, true);
+    } else {
+      this.setState({modalConfirmUncheckIsOpen: true})
+    }
+  }
+
+  _modalConfirmUncheck() {
+    const { t, joueur } = this.props;
+    return (
+      <AlertDialog isOpen={this.state.modalConfirmUncheckIsOpen} onClose={() => this.setState({modalConfirmUncheckIsOpen: false})}>
+        <AlertDialog.Content>
+          <AlertDialog.Header>{t("confirmer_uncheck_modal_titre")}</AlertDialog.Header>
+          <AlertDialog.Body>{t("confirmer_uncheck_modal_texte")}</AlertDialog.Body>
+          <AlertDialog.Footer>
+            <Button.Group space={2}>
+              <Button variant="unstyled" colorScheme="coolGray" onPress={() => this.setState({modalConfirmUncheckIsOpen: false})}>
+                {t("annuler")}
+              </Button>
+              <Button colorScheme="danger" onPress={() => this._ajoutCheck(joueur.id, false)}>
+                {t("oui")}
+              </Button>
+            </Button.Group>
+          </AlertDialog.Footer>
+        </AlertDialog.Content>
+      </AlertDialog>
+    )
+  }
+
+  _ajoutCheck(joueurId, isChecked) {
+    const action = { type: "CHECK_JOUEUR", value: [this.props.optionsTournoi.mode, joueurId, isChecked] };
+    this.props.dispatch(action);
+    this.setState({modalConfirmUncheckIsOpen: false});
+  }
+
   render() {
     const { joueur, isInscription, avecEquipes, typeEquipes, nbJoueurs, showCheckbox } = this.props;
     return (
       <HStack borderWidth="1" borderColor="white" borderRadius="xl" margin="1" paddingX="1" alignItems="center">
-        {this._joueurCheckBox(showCheckbox, joueur)}
+        {this._joueurCheckbox(showCheckbox, joueur)}
         {this._joueurTypeIcon(joueur.type)}
         <Box flex="2">
           {this._joueurName(joueur, isInscription, avecEquipes)}
@@ -247,6 +284,7 @@ class ListeJoueurItem extends React.Component {
         </Box>)}
         {this._showRenommerJoueur(joueur, isInscription, avecEquipes)}
         {this._showSupprimerJoueur(joueur, isInscription)}
+        {this._modalConfirmUncheck()}
       </HStack>
     )
   }

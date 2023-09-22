@@ -83,6 +83,16 @@ function listesJoueurs(state = initialState, action) {
         }
       }
       return nextState || state
+    case 'CHECK_JOUEUR'://action: 0: type d'inscription  1: id du joueur  2: état du check
+      if (action.value[0] != "" || action.value[1] != "" || action.value[2] != "") {
+        const listes = { ...state.listesJoueurs };
+        listes[action.value[0]][action.value[1]].isChecked = action.value[2];
+        nextState = {
+          ...state,
+          listesJoueurs: listes
+        }
+      }
+      return nextState || state
     case 'AJOUT_EQUIPE_JOUEUR'://action: 0: type d'inscription  1: id du joueur  2: équipe
       if (action.value[0] != "" || action.value[1] != "" || action.value[2] != "") {
         const listes = { ...state.listesJoueurs };
