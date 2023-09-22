@@ -232,16 +232,17 @@ class Inscription extends React.Component {
   }
 
   _showCheckboxSection() {
+    const { t } = this.props;
     let icon = "eye";
-    let text = "Afficher";
+    let text = t("afficher");
     if (this.state.showCheckbox) {
       icon = "eye-slash";
-      text = "Cacher";
+      text = t("cacher");
     }
     return (
       <HStack my="1" alignItems="center">
         <FontAwesome5 name={icon} size={15} color="white"/>
-        <Text color="white" fontSize="md" onPress={() => this.setState({showCheckbox: !this.state.showCheckbox})}>{text} les cases à cocher</Text>
+        <Text color="white" fontSize="md" onPress={() => this.setState({showCheckbox: !this.state.showCheckbox})}>{text} {t("case_a_cocher")}</Text>
       </HStack>
     )
   }
