@@ -13,6 +13,7 @@ import { withTranslation } from 'react-i18next';
 import mobileAds from 'react-native-google-mobile-ads';
 import CardButton from '@components/buttons/CardButton';
 import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
+import { AppState } from 'react-native';
 
 class Accueil extends React.Component {
   constructor(props) {
@@ -29,20 +30,28 @@ class Accueil extends React.Component {
     this.facebook =             "https://www.facebook.com/groups/tournoisptanqueapp";
     this.state = {
       modalDonsVisible: false,
-      modalVisible: false
+      modalVisible: false,
+      appState: "active"
     }
   }
 
   componentDidMount() {
+    AppState.addEventListener("change", nextAppState => this.setState({ appState: nextAppState }));
+
     if (Platform.OS === 'android') {
       NavigationBar.setBackgroundColorAsync("#0594ae");
     }
-    VersionCheck.needUpdate().then(async res => {
-      if (res.isNeeded && this.state.modalVisible != true) {
-        this.setState({modalVisible: true});
-      }
-    })
 
+    //MODAL UPDATE
+    if (Platform.OS === 'android') { //TEMP car bug sur iOS
+      VersionCheck.needUpdate().then(async res => {
+        if (res != null && res.isNeeded && this.state.modalVisible != true) {
+          this.setState({modalVisible: true});
+        }
+      })
+    }
+
+    //GOOGLE ADMOB
     if (Platform.OS === 'android') {
       this._adsConsentForm();
     }
@@ -57,21 +66,23 @@ class Accueil extends React.Component {
     }
   }
 
-  _adsConsentForm() {
-    AdsConsent.requestInfoUpdate().then(async consentInfo => {
-      if (consentInfo.isConsentFormAvailable && (consentInfo.status === AdsConsentStatus.UNKNOWN || consentInfo.status === AdsConsentStatus.REQUIRED)) {
-        AdsConsent.showForm().then(async res => {
-          if (res.status === AdsConsentStatus.OBTAINED) {
-            mobileAds().initialize().then(async adapterStatuses => {console.log(adapterStatuses)});
-          }
-        });
-      }
-    });
-  }
-
   componentDidUpdate() {
     if (Platform.OS === 'android') {
       NavigationBar.setBackgroundColorAsync("#0594ae");
+    }
+  }
+
+  _adsConsentForm() {
+    if (this.state.appState == "active") {
+      AdsConsent.requestInfoUpdate().then(async consentInfo => {
+        if (consentInfo.isConsentFormAvailable && (consentInfo.status === AdsConsentStatus.UNKNOWN || consentInfo.status === AdsConsentStatus.REQUIRED)) {
+          AdsConsent.showForm().then(async res => {
+            if (res.status === AdsConsentStatus.OBTAINED) {
+              mobileAds().initialize().then(async adapterStatuses => {console.log(adapterStatuses)});
+            }
+          });
+        }
+      });
     }
   }
 
@@ -84,7 +95,7 @@ class Accueil extends React.Component {
       >
         <Modal.Content>
           <Modal.CloseButton/>
-          <Modal.Header>{t("mise_a_jour")}ise à jour</Modal.Header>
+          <Modal.Header>{t("mise_a_jour")}</Modal.Header>
           <Modal.Body>
             <Text textAlign={"center"}>{t("mise_a_jour_modal_texte_1")}</Text>
             <Text textAlign={"center"}>{t("mise_a_jour_modal_texte_2")}</Text>
