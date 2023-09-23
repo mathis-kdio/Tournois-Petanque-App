@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { _openURL } from '@utils/link'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
-import { HStack, VStack, Text, Spacer, FlatList, Divider, AlertDialog, Pressable, Box, Center, Button, Modal, Image } from 'native-base'
+import { HStack, VStack, Text, FlatList, Divider, AlertDialogContent, AlertDialog, Pressable, Box, Center, Button, ButtonText, Modal, Image, ModalBackdrop, ModalContent, ModalCloseButton, ModalHeader, ModalBody, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, ButtonGroup, Heading, AlertDialogCloseButton, CloseIcon, AlertDialogBackdrop } from '@gluestack-ui/themed'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AdsConsent } from 'react-native-google-mobile-ads';
 import { withTranslation } from "react-i18next";
@@ -26,26 +26,30 @@ class Parametres extends React.Component {
 
   _alertDialogClearData() {
     const { t } = this.props;
-    const cancelRef = React.createRef(null);
     return (
-      <AlertDialog leastDestructiveRef={cancelRef} isOpen={this.state.alertOpen} onClose={() => this.setState({alertOpen: false})}>
-        <AlertDialog.Content>
-          <AlertDialog.CloseButton/>
-          <AlertDialog.Header>{t("supprimer_donnees_modal_titre")}</AlertDialog.Header>
-          <AlertDialog.Body>
-          {t("supprimer_donnees_modal_texte")}
-          </AlertDialog.Body>
-          <AlertDialog.Footer>
-            <Button.Group space={2}>
-              <Button variant="unstyled" colorScheme="coolGray" onPress={() => this.setState({alertOpen: false})} ref={cancelRef}>
-                {t("annuler")}
+      <AlertDialog isOpen={this.state.alertOpen} onClose={() => this.setState({alertOpen: false})}>
+        <AlertDialogBackdrop/>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <Heading>{t("supprimer_donnees_modal_titre")}</Heading>
+            <AlertDialogCloseButton>
+              <CloseIcon/>
+            </AlertDialogCloseButton>
+          </AlertDialogHeader>
+          <AlertDialogBody>
+            <Text>{t("supprimer_donnees_modal_texte")}</Text>
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <ButtonGroup space='lg'>
+              <Button variant='outline' action='secondary' onPress={() => this.setState({alertOpen: false})}>
+                <ButtonText>{t("annuler")}</ButtonText>
               </Button>
-              <Button colorScheme="danger" onPress={() => this._clearData()}>
-                {t("oui")}
+              <Button action='negative' onPress={() => this._clearData()}>
+                <ButtonText>{t("oui")}</ButtonText>
               </Button>
-            </Button.Group>
-          </AlertDialog.Footer>
-        </AlertDialog.Content>
+            </ButtonGroup>
+          </AlertDialogFooter>
+        </AlertDialogContent>
       </AlertDialog>
     )
   }
@@ -79,13 +83,18 @@ class Parametres extends React.Component {
       let title = "Version "+this.state.modalChangelogItem.version;
       return (
         <Modal isOpen={this.state.modalChangelogOpen} onClose={() => this.setState({modalChangelogOpen: false})}>
-          <Modal.Content>
-            <Modal.CloseButton/>
-            <Modal.Header>{title}</Modal.Header>
-            <Modal.Body>
+          <ModalBackdrop/>
+          <ModalContent>
+            <ModalHeader>
+              <Heading>{title}</Heading>
+              <ModalCloseButton>
+                <CloseIcon/>
+              </ModalCloseButton>
+            </ModalHeader>
+            <ModalBody>
               <Text>{this.state.modalChangelogItem.infos}</Text>
-            </Modal.Body>
-          </Modal.Content>
+            </ModalBody>
+          </ModalContent>
         </Modal>
       )
     }
@@ -97,15 +106,20 @@ class Parametres extends React.Component {
     let drapeauFrance = require('@assets/images/drapeau-france.png');
     return (
       <Modal isOpen={this.state.modalLanguagesOpen} onClose={() => this.setState({modalLanguagesOpen: false})}>
-        <Modal.Content>
-          <Modal.CloseButton/>
-          <Modal.Header>{t("languages_disponibles")}</Modal.Header>
-          <Modal.Body>
+        <ModalBackdrop/>
+        <ModalContent>
+          <ModalHeader>
+            <Heading>{t("languages_disponibles")}</Heading>
+            <ModalCloseButton>
+              <CloseIcon/>
+            </ModalCloseButton>
+          </ModalHeader>
+          <ModalBody>
             {this._item(t("francais"), () => this._changeLanguage("fr-FR"), "flag", "modal", drapeauFrance)}
             <Divider/>
             {this._item(t("anglais"), () => this._changeLanguage("en-US"), "flag-usa", "modal", drapeauUSA)}
-          </Modal.Body>
-        </Modal.Content>
+          </ModalBody>
+        </ModalContent>
       </Modal>
     )
   }
@@ -125,26 +139,27 @@ class Parametres extends React.Component {
   }
 
   _item(text, action, icon, type, drapeau) {
-    let colorTxt = "white";
-    let btnColor = "white";
+    let colorTxt = 'white';
+    let btnColor = 'white';
     if (type == "danger") {
-      colorTxt = "red.500";
-      btnColor = "red";
+      colorTxt = '$red500';
+      btnColor = 'red';
     }
     else if (type == "modal") {
-      colorTxt = "black";
-      btnColor = "black";
+      colorTxt = 'black';
+      btnColor = 'black';
     }
     return (
       <Pressable onPress={() => action()}>
-        <HStack m="2" alignItems="center">
-          {drapeau == undefined ?
-            <FontAwesome5 name={icon} size={16} color={btnColor} style={{marginRight: 5}}/>
-            :
-            <Image source={drapeau} alt="drapeau" size="xs"/>
-          }
-          <Text fontSize={16} color={colorTxt}>{text}</Text>
-          <Spacer/>
+        <HStack m={'$2'} alignItems='center' justifyContent='space-between'>
+          <HStack alignItems='center'>
+            {drapeau == undefined ?
+              <FontAwesome5 name={icon} size={16} color={btnColor} style={{marginRight: 5}}/>
+              :
+              <Image source={drapeau} alt="drapeau" size='xs'/>
+            }
+            <Text fontSize={16} color={colorTxt}>{text}</Text>
+          </HStack>
           <FontAwesome5 name="arrow-right" size={20} color={btnColor}/>
         </HStack>
       </Pressable>
@@ -164,21 +179,21 @@ class Parametres extends React.Component {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <StatusBar backgroundColor="#0594ae"/>
-        <VStack flex="1" bgColor={"#0594ae"}>
+        <StatusBar backgroundColor='#0594ae'/>
+        <VStack flex={1} bgColor='#0594ae'>
           <TopBarBack title={t("parametres")} navigation={this.props.navigation}/>
-          <VStack flex="1" px="10" space="4">
+          <VStack flex={1} px={'$10'} space='lg'>
             <VStack>
-              <Text fontSize="xl" color="white">{t("a_propos")}</Text>
-              <Box borderWidth="1" borderColor="white" borderRadius="lg">
+              <Text fontSize={'$xl'} color='white'>{t("a_propos")}</Text>
+              <Box borderWidth={'$1'} borderColor='white' borderRadius={'$lg'}>
                 {this._item(t("voir_source_code"), () => _openURL(this.githubRepository), "code", undefined, undefined)}
                 <Divider/>
                 {this._item("tournoispetanqueapp@gmail.com", () => _openURL(this.mail), "envelope", undefined, undefined)}
               </Box>
             </VStack>
             <VStack>
-              <Text fontSize="xl" color="white">{t("reglages")}</Text>
-              <Box borderWidth="1" borderColor="white" borderRadius="lg">
+              <Text fontSize={'$xl'} color='white'>{t("reglages")}</Text>
+              <Box borderWidth={'$1'} borderColor='white' borderRadius={'$lg'}>
                 {this._item(t("changer_langue"), () => this.setState({modalLanguagesOpen: true}), "language", undefined, undefined)}
                 <Divider/>
                 {this._item(t("modifier_consentement"), () => this._adsConsentShowForm(), "ad", undefined, undefined)}
@@ -186,19 +201,19 @@ class Parametres extends React.Component {
                 {this._item(t("supprimer_donnees"), () => this.setState({alertOpen: true}), "trash-alt", "danger", undefined)}
               </Box>
             </VStack>
-            <VStack flex="1">
-              <Text fontSize="xl" color="white">{t("nouveautes")}</Text>
+            <VStack flex={1}>
+              <Text fontSize={'$xl'} color='white'>{t("nouveautes")}</Text>
               <FlatList 
                 data={ChangelogData}
                 keyExtractor={(item) => item.id.toString() }
                 renderItem={({item}) => this._changelogItem(item)}
-                borderWidth="1"
-                borderColor="white"
-                borderRadius="lg"
+                borderWidth={'$1'}
+                borderColor='white'
+                borderRadius={'$lg'}
               />
             </VStack>
             <Center>
-              <Text textAlign="center" fontSize="md" color="white">Version {expo.version}</Text>
+              <Text textAlign='center' fontSize={'$md'} color='white'>Version {expo.version}</Text>
             </Center>
           </VStack>
         </VStack>
