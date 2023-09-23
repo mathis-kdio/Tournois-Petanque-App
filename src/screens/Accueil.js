@@ -6,7 +6,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import VersionCheck from 'react-native-version-check-expo';
 import { _openPlateformLink, _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Box, HStack, VStack, Text, Pressable, Modal, Image, ModalHeader, ModalBody, ModalContent, ModalCloseButton, Heading, CloseIcon } from '@gluestack-ui/themed';
+import { Box, HStack, VStack, Text, Pressable, Modal, Image, ModalHeader, ModalBody, ModalContent, ModalCloseButton, Heading, CloseIcon, ModalBackdrop } from '@gluestack-ui/themed';
 import { StatusBar } from 'expo-status-bar';
 import { AdsConsent, AdsConsentStatus } from 'react-native-google-mobile-ads';
 import { withTranslation } from 'react-i18next';
@@ -95,6 +95,7 @@ class Accueil extends React.Component {
         isOpen={this.state.modalVisible}
         onClose={() => this.setState({ modalVisible: false })}
       >
+        <ModalBackdrop/>
         <ModalContent>
           <ModalHeader>
             <Heading size='lg'>{t("mise_a_jour")}</Heading>
@@ -124,6 +125,7 @@ class Accueil extends React.Component {
         isOpen={this.state.modalDonsVisible}
         onClose={() => this.setState({ modalDonsVisible: false })}
       >
+        <ModalBackdrop/>
         <ModalContent>
           <ModalHeader>
             <Heading size='lg'>{t("soutenir")}</Heading>
