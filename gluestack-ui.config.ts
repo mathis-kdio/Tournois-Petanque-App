@@ -7,7 +7,7 @@ export const config = createConfig({
     jc: "justifyContent",
   },
   components: {
-    Checkbox: {
+    /*Checkbox: {
       theme: {
         _text: {
           color:"white"
@@ -43,6 +43,17 @@ export const config = createConfig({
       theme: {
         _customDropdownIconProps: {
           color: "white"
+        },
+      },
+    },*/
+    RadioIndicator: {
+      theme: {
+        borderColor: '$white',
+        ':checked': {
+          borderColor: '$white',
+        },
+        ':active': {
+          borderColor: '$white',
         },
       },
     },
