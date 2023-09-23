@@ -187,7 +187,7 @@ class Accueil extends React.Component {
       }
     }
     else {
-      <Box bg='grey' flex={1} alignItems='center' rounded={'$3xl'} py={"$5"}>
+      <Box bg='$secondary500' flex={1} alignItems='center' rounded={'$3xl'} py={"$5"}>
         <FontAwesome5 name="play" color='white' size={24}/>
         <Text color='white'>{t("aucun_tournoi")}</Text>
       </Box>
