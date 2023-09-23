@@ -56,7 +56,7 @@ class ChoixModeTournoi extends React.Component {
         bg='#1c3969'
         isDisabled={buttonDisabled}
         onPress={() => this._nextStep()}
-        size='lg'
+        size='md'
       >
         <ButtonText>{title}</ButtonText>
       </Button>
