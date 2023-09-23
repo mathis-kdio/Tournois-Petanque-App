@@ -7,45 +7,33 @@ export const config = createConfig({
     jc: "justifyContent",
   },
   components: {
-    /*Checkbox: {
+    CheckboxIndicator: {
       theme: {
-        _text: {
-          color:"white"
+        borderColor: '$white',
+        ':checked': {
+          borderColor: '$white',
+          ':pressed': {
+            borderColor: '$white',
+          },
         },
-        bg: "cyan.600",
-        borderColor: "white",
-        _checked: {
-          borderColor: "white",
-          bg: "cyan.600",
-          _pressed: {
-            borderColor: "white",
-            bg: "cyan.600"
-          }
+        ':pressed': {
+          borderColor: '$white',
         },
-        _pressed:{
-          borderColor: "white"
-        }
-      },
-      sizes: {
-        md: { _text: { fontSize: 'md' } }
       },
     },
     Input: {
       theme: {
-        color: "white",
-        borderColor: "white",
-        _focus: {
-          borderColor: "white"
-        }
-      }
-    },
-    Select: {
-      theme: {
-        _customDropdownIconProps: {
-          color: "white"
+        borderColor: '$white',
+        ':focus': {
+          borderColor: '$white',
         },
       },
-    },*/
+    },
+    SelectTrigger: {
+      theme: {
+        borderColor: '$white',
+      },
+    },
     RadioIndicator: {
       theme: {
         borderColor: '$white',
