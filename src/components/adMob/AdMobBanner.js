@@ -1,4 +1,4 @@
-import { VStack } from 'native-base';
+import { VStack } from '@gluestack-ui/themed';
 import * as React from 'react';
 import { BannerAd, BannerAdSize, TestIds, AdsConsent } from 'react-native-google-mobile-ads';
 
@@ -46,7 +46,7 @@ class AdMobBanner extends React.Component {
     }
     if (!unitId) return;
     return (
-      <VStack alignItems="center">
+      <VStack alignItems='center'>
         <BannerAd
           unitId={unitId}
           size={size}

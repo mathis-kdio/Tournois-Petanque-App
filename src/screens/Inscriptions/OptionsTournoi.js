@@ -3,8 +3,7 @@ import { connect } from 'react-redux'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-import { Checkbox, VStack, Button, Text, Input, Select, CheckIcon, Icon, Slider, HStack, ScrollView } from 'native-base';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { Checkbox, VStack, Button, Text, Input, Select, CheckIcon, Slider, HStack, ScrollView, ButtonText, SliderTrack, SliderFilledTrack, SliderThumb, SelectItem, CheckboxIndicator, SelectTrigger, SelectInput, SelectIcon, SelectPortal, SelectBackdrop, SelectContent, SelectDragIndicatorWrapper, SelectDragIndicator, ChevronDownIcon, InputField, CheckboxLabel } from '@gluestack-ui/themed';
 import TopBarBack from '@components/TopBarBack';
 import { withTranslation } from 'react-i18next';
 
@@ -68,13 +67,12 @@ class OptionsTournoi extends React.Component {
     }
     return (
       <Button
-        bg="#1c3969"
+        bg='#1c3969'
         isDisabled={btnDisabled}
         onPress={() => this._nextStep()}
-        endIcon={<Icon as={FontAwesome5} name="arrow-right"/>}
-        size="lg"
+        size='md'
       >
-        {btnTitle}
+        <ButtonText>{btnTitle}</ButtonText>
       </Button>
     )
   }
@@ -84,58 +82,66 @@ class OptionsTournoi extends React.Component {
     return (
       <KeyboardAwareScrollView contentContainerStyle={{flex: 1}}>
         <SafeAreaView style={{flex: 1}}>
-          <ScrollView bgColor="#0594ae">
-            <StatusBar backgroundColor="#0594ae"/>
-            <VStack flex="1">
+          <ScrollView bgColor='#0594ae'>
+            <StatusBar backgroundColor='#0594ae'/>
+            <VStack flex={1}>
               <TopBarBack title={t("options_tournoi_title")} navigation={this.props.navigation}/>
-              <VStack px="10" space="md">
-                <VStack space="3">
+              <VStack px={'$10'} space='4xl'>
+                <VStack space='md'>
                   <VStack>
-                    <Text color="white" fontSize="md">{t("indiquer_nombre_tours")} </Text>
-                    <Input
-                      placeholderTextColor='white'
-                      placeholder={t("indiquer_nombre")}
-                      keyboardType="numeric"
-                      defaultValue={this.nbToursTxt}
-                      onChangeText={(text) => this._nbToursTxtInputChanged(text)}
-                      size="lg"
-                    />
+                    <Text color='white' fontSize={'$md'}>{t("indiquer_nombre_tours")} </Text>
+                    <Input size='md' borderColor='$white'>
+                      <InputField
+                        placeholder={t("indiquer_nombre")}
+                        placeholderTextColor='$white'
+                        keyboardType="numeric"
+                        defaultValue={this.nbToursTxt}
+                        onChangeText={(text) => this._nbToursTxtInputChanged(text)}
+                      />
+                    </Input>
                   </VStack>
                   <VStack>
-                    <Text color="white" fontSize="md">{t("indiquer_nombre_points_victoire")} </Text>
-                    <Input
-                      placeholderTextColor='white'
-                      placeholder={t("indiquer_nombre")}
-                      keyboardType="numeric"
-                      defaultValue={this.nbPtVictoireTxt}
-                      onChangeText={(text) => this._nbPtVictoireTxtInputChanged(text)}
-                      size="lg"
-                    />
+                    <Text color='white' fontSize={'$md'}>{t("indiquer_nombre_points_victoire")} </Text>
+                    <Input size='md' borderColor='$white'>
+                      <InputField
+                        placeholder={t("indiquer_nombre")}
+                        placeholderTextColor='$white'
+                        keyboardType="numeric"
+                        defaultValue={this.nbPtVictoireTxt}
+                        onChangeText={(text) => this._nbPtVictoireTxtInputChanged(text)}
+                      />
+                    </Input>
                   </VStack>
                 </VStack>
-                <VStack space="5">
+                <VStack space='md'>
                   <Checkbox
                     onChange={() => this.setState({speciauxIncompatibles: !this.state.speciauxIncompatibles})}
                     accessibilityLabel={t("choix_regle_enfants")}
                     defaultIsChecked
-                    size="md"
+                    size='md'
                   >
-                    {t("options_regle_enfants")}
+                    <CheckboxIndicator mr='$2' sx={{bgColor: '$cyan600'}} borderColor='$white'>
+                      <CheckIcon color={this.state.speciauxIncompatibles ? '$white' : '$cyan600'}/>
+                    </CheckboxIndicator>
+                    <CheckboxLabel color='white'>{t("options_regle_enfants")}</CheckboxLabel>
                   </Checkbox>
                   <Checkbox
                     onChange={() => this.setState({memesEquipes: !this.state.memesEquipes})}
                     accessibilityLabel={t("choix_regle_equipes")}
                     defaultIsChecked
-                    size="md"
+                    size='md'
                   >
-                    {t("options_regle_equipes")}
+                    <CheckboxIndicator mr='$2' sx={{bgColor: '$cyan600'}} borderColor='$white'>
+                      <CheckIcon color={this.state.memesEquipes ? '$white' : '$cyan600'}/>
+                    </CheckboxIndicator>
+                    <CheckboxLabel color='white'>{t("options_regle_equipes")}</CheckboxLabel>
                   </Checkbox>
                 </VStack>
                 <VStack>
-                  <Text color="white" fontSize="md">{t("options_regle_adversaires")}</Text>
+                  <Text color='white' fontSize={'$md'}>{t("options_regle_adversaires")}</Text>
                   <HStack justifyContent="space-between">
-                    <Text color="white">{t("1_seul_match")}</Text>
-                    <Text color="white">{t("pourcent_matchs", {pourcent: "100"})}</Text>
+                    <Text color='white'>{t("1_seul_match")}</Text>
+                    <Text color='white'>{t("pourcent_matchs", {pourcent: "100"})}</Text>
                   </HStack>
                   <Slider
                     minValue={0}
@@ -145,38 +151,51 @@ class OptionsTournoi extends React.Component {
                     accessibilityLabel={t("choix_regle_adversaires")}
                     onChangeEnd={v => {this.setState({memesAdversaires: v})}}
                   >
-                    <Slider.Track >
-                      <Slider.FilledTrack bg="#1c3969"/>
-                    </Slider.Track>
-                    <Slider.Thumb bg="#1c3969"/>
+                    <SliderTrack>
+                      <SliderFilledTrack bg='#1c3969'/>
+                    </SliderTrack>
+                    <SliderThumb bg='#1c3969'/>
                   </Slider>
-                  <HStack justifyContent="center">
-                    <Text color="white">{t("pourcent_matchs", {pourcent: "50"})}</Text>
+                  <HStack justifyContent='center'>
+                    <Text color='white'>{t("pourcent_matchs", {pourcent: "50"})}</Text>
                   </HStack>
                 </VStack>
                 <VStack>
-                  <Text color="white" fontSize="md">{t("options_regle_complement")}</Text>
+                  <Text color='white' fontSize={'$md'}>{t("options_regle_complement")}</Text>
                   <Select
                     selectedValue={this.state.complement}
                     accessibilityLabel={t("choix_complement")}
                     placeholder={t("choix_complement")}
                     onValueChange={itemValue => this.setState({complement: itemValue})}
-                    _selectedItem={{
-                      endIcon: <CheckIcon size="5" color="cyan.500"/>
-                    }}
-                    size="lg"
                   >
-                    <Select.Item label={t("triplettes")} value="3"/>
-                    <Select.Item label={t("tete_a_tete")} value="1"/>
+                    <SelectTrigger variant='outline' size='md'>
+                      <SelectInput/>
+                      <SelectIcon mr={'$3'}>
+                        <ChevronDownIcon color='$white'/>
+                      </SelectIcon>
+                    </SelectTrigger>
+                    <SelectPortal>
+                      <SelectBackdrop/>
+                      <SelectContent>
+                        <SelectDragIndicatorWrapper>
+                          <SelectDragIndicator/>
+                        </SelectDragIndicatorWrapper>
+                        <SelectItem label={t("triplettes")} value="3"/>
+                        <SelectItem label={t("tete_a_tete")} value="1"/>
+                      </SelectContent>
+                    </SelectPortal>
                   </Select>
                 </VStack>
                 <VStack>
                   <Checkbox
                     onChange={() => this.setState({avecTerrains: !this.state.avecTerrains})}
                     accessibilityLabel={t("choix_option_terrains")}
-                    size="md"
+                    size='md'
                   >
-                    {t("options_terrains_explications")}
+                    <CheckboxIndicator mr={'$2'} sx={{bgColor: '$cyan600'}} borderColor='$white'>
+                      <CheckIcon color={this.state.avecTerrains ? '$white' : '$cyan600'}/>
+                    </CheckboxIndicator>
+                    <CheckboxLabel color='white'>{t("options_terrains_explications")}</CheckboxLabel>
                   </Checkbox>
                 </VStack>
                 <VStack>

@@ -5,12 +5,13 @@ import { Provider } from 'react-redux';
 import Store from '@store/configureStore';
 import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/es/integration/react';
-import { NativeBaseProvider, extendTheme } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { I18nextProvider } from "react-i18next";
 import * as Sentry from 'sentry-expo';
 import i18n from "./i18n";
+import { GluestackUIProvider } from "@gluestack-ui/themed"
+import { config } from "./gluestack-ui.config.ts"
 
 const routingInstrumentation = new Sentry.Native.ReactNavigationInstrumentation();
 
@@ -30,61 +31,18 @@ Sentry.init({
 class App extends React.Component {
   navigation = React.createRef();
   render() {
-    const theme = extendTheme({
-      components: {
-        Checkbox: {
-          baseStyle: {
-            _text: {
-              color:"white"
-            },
-            bg: "cyan.600",
-            borderColor: "white",
-            _checked: {
-              borderColor: "white",
-              bg: "cyan.600",
-              _pressed: {
-                borderColor: "white",
-                bg: "cyan.600"
-              }
-            },
-            _pressed:{
-              borderColor: "white"
-            }
-          },
-          sizes: {
-            md: { _text: { fontSize: 'md' } }
-          },
-        },
-        Input: {
-          baseStyle: {
-            color: "white",
-            borderColor: "white",
-            _focus: {
-              borderColor: "white"
-            }
-          }
-        },
-        Select: {
-          baseStyle: {
-            _customDropdownIconProps: {
-              color: "white"
-            }
-          }
-        }
-      }
-    });
     let persistor = persistStore(Store);
     return (
       <Provider store={Store}>
         <PersistGate persistor={persistor}>
-          <NativeBaseProvider theme={theme}>
+          <GluestackUIProvider config={config}>
             <NavigationContainer ref={this.navigation} onReady={() => {routingInstrumentation.registerNavigationContainer(this.navigation);}}>
               <I18nextProvider i18n={i18n} defaultNS={'translation'}>
                 <Navigation/>
                 <StatusBar style="light" backgroundColor="#ffda00"/>
               </I18nextProvider>
             </NavigationContainer>
-          </NativeBaseProvider>
+          </GluestackUIProvider>
         </PersistGate>
       </Provider>
     )

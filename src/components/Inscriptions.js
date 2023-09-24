@@ -5,7 +5,7 @@ import ListeJoueurItem from '@components/ListeJoueurItem'
 import JoueurSuggere from '@components/JoueurSuggere'
 import JoueurType from '@components/JoueurType'
 import { FontAwesome5 } from '@expo/vector-icons';
-import { Box, HStack, Input, VStack, Button, Text, Icon, Divider, AlertDialog } from 'native-base';
+import { Box, HStack, Input, VStack, Button, Text, Icon, Divider, AlertDialog, ButtonGroup, AlertDialogHeader, AlertDialogContent, AlertDialogBody, ButtonText, AlertDialogFooter, InputField, AlertDialogBackdrop, AlertDialogCloseButton, CloseIcon, Heading } from '@gluestack-ui/themed';
 import { withTranslation } from 'react-i18next'
 
 class Inscription extends React.Component {
@@ -88,20 +88,28 @@ class Inscription extends React.Component {
     const { t } = this.props;
     return (
       <AlertDialog isOpen={this.state.modalRemoveIsOpen} onClose={() => this.setState({modalRemoveIsOpen: false})}>
-        <AlertDialog.Content>
-          <AlertDialog.Header>{t("supprimer_joueurs_modal_titre")}</AlertDialog.Header>
-          <AlertDialog.Body>{t("supprimer_joueurs_modal_texte")}</AlertDialog.Body>
-          <AlertDialog.Footer>
-            <Button.Group space={2}>
-              <Button variant="unstyled" colorScheme="coolGray" onPress={() => this.setState({modalRemoveIsOpen: false})}>
-                {t("annuler")}
+        <AlertDialogBackdrop/>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <Heading>{t("supprimer_joueurs_modal_titre")}</Heading>
+            <AlertDialogCloseButton>
+              <CloseIcon/>
+            </AlertDialogCloseButton>
+          </AlertDialogHeader>
+          <AlertDialogBody>
+            <Text>{t("supprimer_joueurs_modal_texte")}</Text>
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <ButtonGroup>
+              <Button variant='outline' action='secondary' onPress={() => this.setState({modalRemoveIsOpen: false})}>
+                <ButtonText>{t("annuler")}</ButtonText>
               </Button>
-              <Button colorScheme="danger" onPress={() => this._removeAllPlayers()}>
-                {t("oui")}
+              <Button action='negative' onPress={() => this._removeAllPlayers()}>
+                <ButtonText>{t("oui")}</ButtonText>
               </Button>
-            </Button.Group>
-          </AlertDialog.Footer>
-        </AlertDialog.Content>
+            </ButtonGroup>
+          </AlertDialogFooter>
+        </AlertDialogContent>
       </AlertDialog>
     )
   }
@@ -144,8 +152,8 @@ class Inscription extends React.Component {
             />
           )}
           ListFooterComponent={
-            <VStack space="md">
-              <VStack px="10" space="sm">
+            <VStack space='md'>
+              <VStack px={'$10'} space='sm'>
                 {this._buttonRemoveAllPlayers()}
                 {this._buttonLoadSavedList()}
               </VStack>
@@ -163,7 +171,7 @@ class Inscription extends React.Component {
       let partialSuggested = this.state.suggestions.slice(0, this.state.nbSuggestions);
       return (
         <VStack>
-          <Text color="white" fontSize="xl" textAlign="center">{t("suggestions_joueurs")}</Text>
+          <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("suggestions_joueurs")}</Text>
           <FlatList
             removeClippedSubviews={false}
             persistentScrollbar={true}
@@ -175,7 +183,7 @@ class Inscription extends React.Component {
               />
             )}
           />
-          <Box px="10" pb="2">
+          <Box px={'$10'} pb={'$2'}>
             {this._buttonMoreSuggestedPlayers()}
           </Box>
         </VStack>
@@ -188,12 +196,12 @@ class Inscription extends React.Component {
     if (this.state.nbSuggestions < this.state.suggestions.length) {
       return (
         <Button
-          bg="green.700"
+          bg='$green700'
           onPress={() => this._showMoreSuggestedPlayers()}
           startIcon={<Icon as={FontAwesome5} name="chevron-down"/>}
           endIcon={<Icon as={FontAwesome5} name="chevron-down"/>}
         >
-          {t("plus_suggestions_joueurs_bouton")}
+          <ButtonText>{t("plus_suggestions_joueurs_bouton")}</ButtonText>
         </Button>
       )
     }
@@ -208,10 +216,10 @@ class Inscription extends React.Component {
     if (this.props.listesJoueurs[this.props.optionsTournoi.mode].length > 0) {
       return (
         <Button
-          bg="red.600"
+          bg='$red600'
           onPress={() => this.setState({modalRemoveIsOpen: true})}
         >
-          {t("supprimer_joueurs_bouton")}
+          <ButtonText>{t("supprimer_joueurs_bouton")}</ButtonText>
         </Button>
       )
     }
@@ -222,10 +230,10 @@ class Inscription extends React.Component {
     if (!this.props.loadListScreen) {
       return (
         <Button
-          bg="green.700"
+          bg='$green700'
           onPress={() => this._loadSavedList()}
         >
-          {t("charger_liste_joueurs_bouton")}
+          <ButtonText>{t("charger_liste_joueurs_bouton")}</ButtonText>
         </Button>
       )
     }
@@ -240,9 +248,9 @@ class Inscription extends React.Component {
       text = t("cacher");
     }
     return (
-      <HStack my="1" alignItems="center">
-        <FontAwesome5 name={icon} size={15} color="white"/>
-        <Text color="white" fontSize="md" onPress={() => this.setState({showCheckbox: !this.state.showCheckbox})}>{text} {t("case_a_cocher")}</Text>
+      <HStack my={'$1'} alignItems='center'>
+        <FontAwesome5 name={icon} size={15} color='white'/>
+        <Text color='$white' fontSize={'$md'} onPress={() => this.setState({showCheckbox: !this.state.showCheckbox})}>{text} {t("case_a_cocher")}</Text>
       </HStack>
     )
   }
@@ -250,22 +258,23 @@ class Inscription extends React.Component {
   render() {
     const { t } = this.props;
     return (
-      <VStack flex="1">
-        <HStack alignItems="center" mx="1" space="1">
-          <Box flex="1">
-            <Input
-              placeholderTextColor='white'
-              placeholder={t("nom_joueur")}
-              keyboardType="default"
-              autoFocus={true}
-              defaultValue={this.nbToursTxt}
-              onChangeText={(text) => this._ajoutJoueurTextInputChanged(text)}
-              onSubmitEditing={() => this._ajoutJoueur()}
-              ref={this.addPlayerTextInput}
-              size="lg"
-            />
+      <VStack flex={1}>
+        <HStack alignItems='center' mx={'$1'} space='md'>
+          <Box flex={1}>
+            <Input size='md' borderColor='$white'>
+              <InputField
+                placeholder={t("nom_joueur")}
+                placeholderTextColor='white'
+                autoFocus={true}
+                defaultValue={this.nbToursTxt}
+                keyboardType="default"
+                onChangeText={(text) => this._ajoutJoueurTextInputChanged(text)}
+                onSubmitEditing={() => this._ajoutJoueur()}
+                ref={this.addPlayerTextInput}
+              />
+            </Input>
           </Box>
-          <Box flex="1">
+          <Box flex={1}>
             <JoueurType
               joueurType={this.state.joueurType}
               _setJoueurType={(type) => this.setState({joueurType: type})}
@@ -273,18 +282,18 @@ class Inscription extends React.Component {
           </Box>
           <Box>
             <Button
-              bg="green.700"
+              bg='$green700'
               isDisabled={!this.state.etatBouton}
               onPress={() => this._ajoutJoueur()}
-              size="lg"
+              size='md'
             >
-              {t("ajouter")}
+              <ButtonText>{t("ajouter")}</ButtonText>
             </Button>
           </Box>
         </HStack>
         {this._showCheckboxSection()}
-        <Divider bg="white" height="0.5" my="2"/>
-        <VStack flex="1">
+        <Divider bg='$white' h={'$0.5'} my={'$2'}/>
+        <VStack flex={1}>
           {this._displayListeJoueur()}
         </VStack>
         {this._modalRemoveAllPlayers()}

@@ -6,7 +6,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import VersionCheck from 'react-native-version-check-expo';
 import { _openPlateformLink, _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Box, HStack, VStack, Text, Pressable, Spacer, Modal, Image } from 'native-base';
+import { Box, HStack, VStack, Text, Pressable, Modal, Image, ModalHeader, ModalBody, ModalContent, ModalCloseButton, Heading, CloseIcon, ModalBackdrop } from '@gluestack-ui/themed';
 import { StatusBar } from 'expo-status-bar';
 import { AdsConsent, AdsConsentStatus } from 'react-native-google-mobile-ads';
 import { withTranslation } from 'react-i18next';
@@ -95,20 +95,25 @@ class Accueil extends React.Component {
         isOpen={this.state.modalVisible}
         onClose={() => this.setState({ modalVisible: false })}
       >
-        <Modal.Content>
-          <Modal.CloseButton/>
-          <Modal.Header>{t("mise_a_jour")}</Modal.Header>
-          <Modal.Body>
-            <Text textAlign={"center"}>{t("mise_a_jour_modal_texte_1")}</Text>
-            <Text textAlign={"center"}>{t("mise_a_jour_modal_texte_2")}</Text>
-            <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p={3} onPress={() => _openPlateformLink(this.googleMarket, this.appleMarket)}>
+        <ModalBackdrop/>
+        <ModalContent>
+          <ModalHeader>
+            <Heading size='lg'>{t("mise_a_jour")}</Heading>
+            <ModalCloseButton>
+              <CloseIcon/>
+            </ModalCloseButton>
+          </ModalHeader>
+          <ModalBody>
+            <Text textAlign='center'>{t("mise_a_jour_modal_texte_1")}</Text>
+            <Text textAlign='center'>{t("mise_a_jour_modal_texte_2")}</Text>
+            <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openPlateformLink(this.googleMarket, this.appleMarket)}>
               <HStack>
-                <FontAwesome5 name="download" color="white" size={20}/>
-                <Text color={"white"}> {t("mettre_a_jour")}</Text>
+                <FontAwesome5 name="download" color='white' size={20}/>
+                <Text color='white'> {t("mettre_a_jour")}</Text>
               </HStack>
             </Pressable>
-          </Modal.Body>
-        </Modal.Content>
+          </ModalBody>
+        </ModalContent>
       </Modal>
     )
   }
@@ -120,32 +125,37 @@ class Accueil extends React.Component {
         isOpen={this.state.modalDonsVisible}
         onClose={() => this.setState({ modalDonsVisible: false })}
       >
-        <Modal.Content>
-          <Modal.CloseButton/>
-          <Modal.Header>{t("soutenir")}</Modal.Header>
-          <Modal.Body>
-            <VStack space={3}>
-              <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p={3} onPress={() => _openURL(this.githubSponsor)}>
+        <ModalBackdrop/>
+        <ModalContent>
+          <ModalHeader>
+            <Heading size='lg'>{t("soutenir")}</Heading>
+            <ModalCloseButton>
+              <CloseIcon/>
+            </ModalCloseButton>
+          </ModalHeader>
+          <ModalBody>
+            <VStack space='md'>
+              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.githubSponsor)}>
                 <HStack>
-                  <FontAwesome5 name="github" color="white" size={20}/>
-                  <Text color={"white"}> {t("githubsponsor")}</Text>
+                  <FontAwesome5 name="github" color='white' size={20}/>
+                  <Text color='white'> {t("githubsponsor")}</Text>
                 </HStack>
               </Pressable>
-              <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p={3} onPress={() => _openURL(this.patreon)}>
+              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.patreon)}>
                 <HStack>
-                  <FontAwesome5 name="patreon" color="white" size={20}/>
-                  <Text color={"white"}> {t("patreon")}</Text>
+                  <FontAwesome5 name="patreon" color='white' size={20}/>
+                  <Text color='white'> {t("patreon")}</Text>
                 </HStack>
               </Pressable>
-              <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p={3} onPress={() => _openURL(this.buymeacoffee)}>
+              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.buymeacoffee)}>
                 <HStack>
-                  <FontAwesome5 name="coffee" color="white" size={20}/>
-                  <Text color={"white"}> {t("buymeacoffee")}</Text>
+                  <FontAwesome5 name="coffee" color='white' size={20}/>
+                  <Text color='white'> {t("buymeacoffee")}</Text>
                 </HStack>
               </Pressable>
             </VStack>
-          </Modal.Body>
-        </Modal.Content>
+          </ModalBody>
+        </ModalContent>
       </Modal>
     )
   }
@@ -177,9 +187,9 @@ class Accueil extends React.Component {
       }
     }
     else {
-      <Box bg="gray.500" flex="1" space="1" alignItems={"center"} rounded="3xl" py={"5"}>
-        <FontAwesome5 name="play" color="white" size={24}/>
-        <Text color={"white"}>{t("aucun_tournoi")}</Text>
+      <Box bg='$secondary500' flex={1} alignItems='center' rounded={'$3xl'} py={"$5"}>
+        <FontAwesome5 name="play" color='white' size={24}/>
+        <Text color='white'>{t("aucun_tournoi")}</Text>
       </Box>
     }
   }
@@ -188,13 +198,12 @@ class Accueil extends React.Component {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <StatusBar backgroundColor="#0594ae"/>
-        <VStack flex="1" px="10" bgColor={"#0594ae"}>
-          <VStack alignItems={"center"}>
-            <Image size={"xl"} alt="Logo de l'application" source={require('@assets/icon.png')}/>
+        <StatusBar backgroundColor='#0594ae'/>
+        <VStack flex={1} px={'$5'} bgColor='#0594ae' justifyContent='space-between'>
+          <VStack alignItems='center'>
+            <Image size='xl' alt="Logo de l'application" source={require('@assets/icon.png')}/>
           </VStack>
-          <Spacer/>
-          <VStack space={"3"}>
+          <VStack space='md'>
             <HStack>
               {this._buttonShowMatchs()}
             </HStack>
@@ -205,7 +214,7 @@ class Accueil extends React.Component {
                 navigate={() => this._navigate('InscriptionStack')}
               />
             </HStack>
-            <HStack space={"3"}>
+            <HStack space='sm'>
               <CardButton
                 text={t("mes_anciens_tournois")}
                 icon="list"
@@ -218,40 +227,37 @@ class Accueil extends React.Component {
               />
             </HStack> 
           </VStack>
-          <Spacer/>
-          <VStack space={3}>
-            <HStack>
-              <Spacer/>
-              <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p={3} onPress={() => _openURL(this.facebook)}>
-                <FontAwesome5 name="facebook" color="white" size={20}/>
-                <Text color={"white"}>{t("rejoindre_page_fb")}</Text>
+          <VStack space='sm'>
+            <HStack justifyContent='center'>
+              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.facebook)}>
+                <FontAwesome5 name="facebook" color='white' size={20}/>
+                <Text color='white'>{t("rejoindre_page_fb")}</Text>
               </Pressable>
-              <Spacer/>
             </HStack>
-            <HStack space={3}>
+            <HStack space='sm'>
               {Platform.OS !== 'ios' && <>
-                <Pressable flex="1" alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => this.setState({ modalDonsVisible: true })}>
-                  <FontAwesome5 name="euro-sign" color="white" size={20}/>
+                <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => this.setState({ modalDonsVisible: true })}>
+                  <FontAwesome5 name="euro-sign" color='white' size={20}/>
                 </Pressable>
               </>}
-              <Pressable flex="1" alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => _openPlateformLink(this.googleMarketReviews, this.appleMarketReviews)}>
-                <FontAwesome5 name="star" color="white" size={20}/>
+              <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => _openPlateformLink(this.googleMarketReviews, this.appleMarketReviews)}>
+                <FontAwesome5 name="star" color='white' size={20}/>
               </Pressable>
-              <Pressable flex="1" alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => _openURL(this.mail)}>
-                <FontAwesome5 name="envelope" color="white" size={20}/>
+              <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => _openURL(this.mail)}>
+                <FontAwesome5 name="envelope" color='white' size={20}/>
               </Pressable>
-              <Pressable flex="1" alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => this.props.navigation.navigate('Parametres')}>
-                <FontAwesome5 name="wrench" color="white" size={20}/>
+              <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => this.props.navigation.navigate('Parametres')}>
+                <FontAwesome5 name="wrench" color='white' size={20}/>
               </Pressable>
             </HStack>
-            <HStack justifyContent={"center"}>
-              <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p="3" onPress={() => _openURL(this.gcuWebsite)}>
-                <Text color={"white"} fontSize={16}>{t("decouvrir_gcu")}</Text>
+            <HStack justifyContent='center'>
+              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.gcuWebsite)}>
+                <Text color='white' fontSize={16}>{t("decouvrir_gcu")}</Text>
               </Pressable>
             </HStack>
             <VStack>
-              <Text textAlign={"center"} color={"white"} fontSize={"md"}>{t("developpe_par")} Mathis Cadio</Text>
-              <Text textAlign={"center"} color={"white"} fontSize={"md"}>{t("version")} {expo.version}</Text>
+              <Text textAlign='center' color='white' fontSize={'$md'}>{t("developpe_par")} Mathis Cadio</Text>
+              <Text textAlign='center' color='white' fontSize={'$md'}>{t("version")} {expo.version}</Text>
             </VStack>
           </VStack>
           {this._showDonsModal()}
