@@ -16,6 +16,7 @@ class Parametres extends React.Component {
     super(props)
     this.githubRepository = "https://github.com/sponsors/mathis-kdio";
     this.mail = "mailto: tournoispetanqueapp@gmail.com";
+    this.crowdin = "https://crowdin.com/project/tournois-de-ptanque-gcu";
     this.state = {
       alertOpen: false,
       modalChangelogOpen: false,
@@ -118,6 +119,9 @@ class Parametres extends React.Component {
             {this._item(t("francais"), () => this._changeLanguage("fr-FR"), "flag", "modal", drapeauFrance)}
             <Divider/>
             {this._item(t("anglais"), () => this._changeLanguage("en-US"), "flag-usa", "modal", drapeauUSA)}
+            <Divider/>
+            <Text textAlign='center'>{t("envie_aider_traduction")}</Text>
+            <Text textAlign='center' onPress={() => _openURL(this.crowdin)} color='$blue500'>{t("texte_lien_traduction")}</Text>
           </ModalBody>
         </ModalContent>
       </Modal>
