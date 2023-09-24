@@ -117,7 +117,6 @@ class ListeJoueurItem extends React.Component {
       return(
         <Input variant='underlined' size='md'>
           <InputField
-            color='$white'
             placeholder={joueur.name}
             placeholderTextColor={'$white'}
             autoFocus={true}
@@ -175,7 +174,6 @@ class ListeJoueurItem extends React.Component {
           selectedValue={selectedValue}
           accessibilityLabel={t("choix_equipe")}
           onValueChange={itemValue => this._ajoutEquipe(joueur.id, itemValue)}
-          size='md'
         >
           <SelectTrigger>
             <SelectInput placeholder={t("choix_equipe")} placeholderTextColor="white"/>

@@ -129,7 +129,7 @@ class InscriptionsAvecNoms extends React.Component {
         bg="$green700"
         isDisabled={buttonDisabled}
         onPress={() => this._commencer()}
-        size="lg"
+        size="md"
       >
         <ButtonText>{title}</ButtonText>
       </Button>

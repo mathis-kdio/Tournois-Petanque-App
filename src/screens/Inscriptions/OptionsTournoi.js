@@ -71,7 +71,6 @@ class OptionsTournoi extends React.Component {
         bg='#1c3969'
         isDisabled={btnDisabled}
         onPress={() => this._nextStep()}
-        endIcon={<Icon as={FontAwesome5} name="arrow-right"/>}
         size='md'
       >
         <ButtonText>{btnTitle}</ButtonText>
@@ -99,7 +98,6 @@ class OptionsTournoi extends React.Component {
                         keyboardType="numeric"
                         defaultValue={this.nbToursTxt}
                         onChangeText={(text) => this._nbToursTxtInputChanged(text)}
-                        color='$white'
                       />
                     </Input>
                   </VStack>
@@ -112,7 +110,6 @@ class OptionsTournoi extends React.Component {
                         keyboardType="numeric"
                         defaultValue={this.nbPtVictoireTxt}
                         onChangeText={(text) => this._nbPtVictoireTxtInputChanged(text)}
-                        color='$white'
                       />
                     </Input>
                   </VStack>
@@ -171,10 +168,9 @@ class OptionsTournoi extends React.Component {
                     accessibilityLabel={t("choix_complement")}
                     placeholder={t("choix_complement")}
                     onValueChange={itemValue => this.setState({complement: itemValue})}
-                    size='lg'
                   >
                     <SelectTrigger variant='outline' size='md'>
-                      <SelectInput placeholder="Select option" color='$white'/>
+                      <SelectInput/>
                       <SelectIcon mr={'$3'}>
                         <ChevronDownIcon color='$white'/>
                       </SelectIcon>
@@ -183,7 +179,7 @@ class OptionsTournoi extends React.Component {
                       <SelectBackdrop/>
                       <SelectContent>
                         <SelectDragIndicatorWrapper>
-                          <SelectDragIndicator color='$white'/>
+                          <SelectDragIndicator/>
                         </SelectDragIndicatorWrapper>
                         <SelectItem label={t("triplettes")} value="3"/>
                         <SelectItem label={t("tete_a_tete")} value="1"/>

@@ -29,6 +29,11 @@ export const config = createConfig({
         },
       },
     },
+    InputField: {
+      theme: {
+        color: '$white',
+      },
+    },
     SelectInput: {
       theme: {
         color: '$white',
