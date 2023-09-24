@@ -237,7 +237,7 @@ class ListeJoueurItem extends React.Component {
             size='md'
             isChecked={isChecked}
           >
-            <CheckboxIndicator mr='$2' sx={{bgColor: '$cyan600'}}>
+            <CheckboxIndicator mr='$2' sx={{bgColor: '$cyan600'}} borderColor='$white'>
               <CheckIcon color={isChecked ? '$white' : '$cyan600'}/>
             </CheckboxIndicator>
             <CheckboxLabel/>

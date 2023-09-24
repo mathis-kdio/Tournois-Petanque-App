@@ -121,7 +121,7 @@ class OptionsTournoi extends React.Component {
                     defaultIsChecked
                     size='md'
                   >
-                    <CheckboxIndicator mr='$2' sx={{bgColor: '$cyan600'}}>
+                    <CheckboxIndicator mr='$2' sx={{bgColor: '$cyan600'}} borderColor='$white'>
                       <CheckIcon color={this.state.speciauxIncompatibles ? '$white' : '$cyan600'}/>
                     </CheckboxIndicator>
                     <CheckboxLabel color='white'>{t("options_regle_enfants")}</CheckboxLabel>
@@ -132,7 +132,7 @@ class OptionsTournoi extends React.Component {
                     defaultIsChecked
                     size='md'
                   >
-                    <CheckboxIndicator mr='$2' sx={{bgColor: '$cyan600'}}>
+                    <CheckboxIndicator mr='$2' sx={{bgColor: '$cyan600'}} borderColor='$white'>
                       <CheckIcon color={this.state.memesEquipes ? '$white' : '$cyan600'}/>
                     </CheckboxIndicator>
                     <CheckboxLabel color='white'>{t("options_regle_equipes")}</CheckboxLabel>
@@ -193,7 +193,7 @@ class OptionsTournoi extends React.Component {
                     accessibilityLabel={t("choix_option_terrains")}
                     size='md'
                   >
-                    <CheckboxIndicator mr={'$2'} sx={{bgColor: '$cyan600'}}>
+                    <CheckboxIndicator mr={'$2'} sx={{bgColor: '$cyan600'}} borderColor='$white'>
                       <CheckIcon color={this.state.avecTerrains ? '$white' : '$cyan600'}/>
                     </CheckboxIndicator>
                     <CheckboxLabel color='white'>{t("options_terrains_explications")}</CheckboxLabel>
