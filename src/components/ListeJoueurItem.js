@@ -141,9 +141,9 @@ class ListeJoueurItem extends React.Component {
   _equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs) {
     const { t } = this.props;
     if (avecEquipes == true) {
-      let selectedValue = 0;
+      let selectedValue = "0";
       if (joueur.equipe) {
-        selectedValue = joueur.equipe;
+        selectedValue = joueur.equipe.toString();
       }
       let nbEquipes = nbJoueurs;
       if (typeEquipes == "doublette") {
@@ -187,7 +187,7 @@ class ListeJoueurItem extends React.Component {
               <SelectDragIndicatorWrapper>
                 <SelectDragIndicator/>
               </SelectDragIndicatorWrapper>
-              <SelectItem label={t("choisir")} value={undefined} key="0"/>
+              <SelectItem label={t("choisir")} value="0" key="0"/>
               {pickerItem}
             </SelectContent>
           </SelectPortal>
@@ -198,7 +198,7 @@ class ListeJoueurItem extends React.Component {
 
   _equipePickerItem(equipe) {
     return (
-      <SelectItem label={equipe.toString()} value={equipe} key={equipe}/>
+      <SelectItem label={equipe.toString()} value={equipe.toString()} key={equipe}/>
     )
   }
 
