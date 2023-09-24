@@ -3,8 +3,7 @@ import { connect } from 'react-redux'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-import { Checkbox, VStack, Button, Text, Input, Select, CheckIcon, Icon, Slider, HStack, ScrollView, ButtonText, SliderTrack, SliderFilledTrack, SliderThumb, SelectItem, CheckboxIndicator, SelectTrigger, SelectInput, SelectIcon, SelectPortal, SelectBackdrop, SelectContent, SelectDragIndicatorWrapper, SelectDragIndicator, ChevronDownIcon, InputField, CheckboxLabel } from '@gluestack-ui/themed';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { Checkbox, VStack, Button, Text, Input, Select, CheckIcon, Slider, HStack, ScrollView, ButtonText, SliderTrack, SliderFilledTrack, SliderThumb, SelectItem, CheckboxIndicator, SelectTrigger, SelectInput, SelectIcon, SelectPortal, SelectBackdrop, SelectContent, SelectDragIndicatorWrapper, SelectDragIndicator, ChevronDownIcon, InputField, CheckboxLabel } from '@gluestack-ui/themed';
 import TopBarBack from '@components/TopBarBack';
 import { withTranslation } from 'react-i18next';
 
