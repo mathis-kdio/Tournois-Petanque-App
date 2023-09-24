@@ -115,7 +115,7 @@ class ListeJoueurItem extends React.Component {
   _joueurName(joueur, isInscription, avecEquipes) {
     if (this.state.renommerOn == true) {
       return(
-        <Input variant='underlined' size='md'>
+        <Input variant='underlined' size='md' borderColor='$white'>
           <InputField
             placeholder={joueur.name}
             placeholderTextColor={'$white'}
