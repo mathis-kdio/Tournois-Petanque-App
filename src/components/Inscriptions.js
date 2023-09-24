@@ -100,7 +100,7 @@ class Inscription extends React.Component {
             <Text>{t("supprimer_joueurs_modal_texte")}</Text>
           </AlertDialogBody>
           <AlertDialogFooter>
-            <ButtonGroup space={2}>
+            <ButtonGroup>
               <Button variant='outline' action='secondary' onPress={() => this.setState({modalRemoveIsOpen: false})}>
                 <ButtonText>{t("annuler")}</ButtonText>
               </Button>

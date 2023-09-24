@@ -40,7 +40,7 @@ class Parametres extends React.Component {
             <Text>{t("supprimer_donnees_modal_texte")}</Text>
           </AlertDialogBody>
           <AlertDialogFooter>
-            <ButtonGroup space='lg'>
+            <ButtonGroup>
               <Button variant='outline' action='secondary' onPress={() => this.setState({alertOpen: false})}>
                 <ButtonText>{t("annuler")}</ButtonText>
               </Button>

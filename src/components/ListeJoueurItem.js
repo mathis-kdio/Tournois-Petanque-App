@@ -271,7 +271,7 @@ class ListeJoueurItem extends React.Component {
             <Text>{t("confirmer_uncheck_modal_texte")}</Text>
           </AlertDialogBody>
           <AlertDialogFooter>
-            <ButtonGroup space={2}>
+            <ButtonGroup>
               <Button variant='outline' action='secondary' onPress={() => this.setState({modalConfirmUncheckIsOpen: false})}>
                 <ButtonText>{t("annuler")}</ButtonText>
               </Button>
