@@ -5,7 +5,7 @@ import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
 import TopBarBack from 'components/TopBarBack'
-import { Box, Button, Text, VStack } from 'native-base'
+import { Box, Button, ButtonText, Text, VStack } from '@gluestack-ui/themed'
 
 class InscriptionsAvecNoms extends React.Component {
 
@@ -126,12 +126,12 @@ class InscriptionsAvecNoms extends React.Component {
 
     return (
       <Button
-        bg="green.700"
+        bg="$green700"
         isDisabled={buttonDisabled}
         onPress={() => this._commencer()}
         size="lg"
       >
-        {title}
+        <ButtonText>{title}</ButtonText>
       </Button>
     )
   }
@@ -141,16 +141,16 @@ class InscriptionsAvecNoms extends React.Component {
     const nbJoueur = this.props.listesJoueurs[this.props.optionsTournoi.mode].length;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <StatusBar backgroundColor="#0594ae"/>
-        <VStack flex="1" bgColor={"#0594ae"}>
+        <StatusBar backgroundColor='#0594ae'/>
+        <VStack flex={1} bgColor='#0594ae'>
           <TopBarBack title={t("inscription_avec_noms_navigation_title")} navigation={this.props.navigation}/>
-          <VStack flex="1">
-            <Text color="white" fontSize="xl" textAlign="center">{t("nombre_joueurs", {nb: nbJoueur})}</Text>
+          <VStack flex={1}>
+            <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("nombre_joueurs", {nb: nbJoueur})}</Text>
             <Inscriptions 
               navigation={this.props.navigation}
               loadListScreen={false}
             />
-            <Box px="10">
+            <Box px={'$10'}>
               {this._boutonCommencer()}
             </Box>
           </VStack>

@@ -29,6 +29,11 @@ export const config = createConfig({
         },
       },
     },
+    SelectInput: {
+      theme: {
+        color: '$white',
+      },
+    },
     SelectTrigger: {
       theme: {
         borderColor: '$white',
