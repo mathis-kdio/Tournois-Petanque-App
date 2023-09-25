@@ -1,5 +1,17 @@
 [
   {
+    "id":"22",
+    "version": "1.14.0",
+    "infos": [
+      "- Traduction de l'application.\n",
+      "- Export en PDF des Coupes.\n",
+      "- Possibilité d'afficher des cases à cocher à l'inscription.\n",
+      "- Nouvelles pages d'inscription.\n",
+      "- Correction de libellés.\n",
+      "- Corrections de bugs.\n"
+    ]
+  },
+  {
     "id":"21",
     "version": "1.13.0",
     "infos": [

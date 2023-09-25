@@ -1,5 +1,19 @@
 # Change Log
 
+## [1.14.0] - 25-09-2023
+
+### Ajouté
+- Traduction de l'application.
+- Export en PDF des Coupes.
+- Possibilité d'afficher des cases à cocher à l'inscription.
+
+### Changement
+- Nouvelles pages d'inscription.
+
+### Corrigé
+- Correction de libellés.
+- Corrections de bugs.
+
 ## [1.13.0] - 28-06-2023
 
 ### Ajouté
