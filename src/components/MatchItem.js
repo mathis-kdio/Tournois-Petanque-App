@@ -77,7 +77,7 @@ class MatchItem extends React.Component {
       return (
         <TouchableOpacity
           style={styles.main_container}
-          onPress={() => displayDetailForMatch(match.id, match )}>
+          onPress={() => displayDetailForMatch(match.id, match)}>
           <View style={styles.content_container}>
             <View>
             {this._displayTitle(match)}
