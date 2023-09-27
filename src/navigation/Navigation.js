@@ -56,7 +56,7 @@ function topTabScreens() {
 const TitleTopTabContainer = connect((state, numero) => ({ listeMatchs: state.gestionMatchs.listematchs}))(texteTitleTopTab);
 
 function texteTitleTopTab({ listeMatchs, numero }) {
-  let titleColor = '#1c3969'
+  let titleColor = '#ffda00';
   let TabTitle = 'Tour '+numero;
   if (listeMatchs) {
     let testTourFiltre = listeMatchs.filter(el => el.manche === numero)
@@ -77,7 +77,14 @@ function texteTitleTopTab({ listeMatchs, numero }) {
 
 function ManchesTopTabNavigator() {
   return (
-    <TopTab.Navigator initialRouteName='Screen1Manche' screenOptions={{tabBarScrollEnabled: true, tabBarStyle: {backgroundColor: '#ffda00'}, tabBarIndicatorStyle: {backgroundColor: "#1c3969"}}}>
+    <TopTab.Navigator
+      initialRouteName='Screen1Manche'
+      screenOptions={{
+        tabBarScrollEnabled: true,
+        tabBarStyle: {backgroundColor: '#0594ae'},
+        tabBarIndicatorStyle: {backgroundColor: 'white'}
+      }}
+    >
       {topTabScreens()}
     </TopTab.Navigator>
   );
@@ -87,19 +94,17 @@ function MatchsStack() {
   const { t } = useTranslation();
   const navigation = useNavigation();
   return (
-    <Stack.Navigator screenOptions={{headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}}>
+    <Stack.Navigator screenOptions={{headerStyle: {backgroundColor: '#ffda00'}}}>
       <Stack.Screen
         name="ListeMatchsStack"
         component={ManchesTopTabNavigator}
         options={{
-          title: t("liste_matchs_navigation_title"),
-          headerTitleAlign: 'center',
+          title: false,
+          headerStyle: {backgroundColor: '#0594ae', elevation: 0},
           headerLeft: false,
           headerRight: () => (
             <BoutonMenuHeaderNav navigation={navigation}/>
-          ),
-          headerStyle: {backgroundColor: '#ffda00'},
-          headerTitleStyle: {color: '#1c3969'}
+          )
         }}
       />
       <Stack.Screen name="MatchDetailStack" component={MatchDetail} options={{title: t("detail_match_navigation_title")}} />
@@ -122,12 +127,12 @@ function ResultatsStack() {
 function MatchsResultatsBottomNavigator() {
   const { t } = useTranslation();
   return (
-    <BottomTab.Navigator initialRouteName="ListeMatchsBottom" backBehavior='none' screenOptions={{headerShown: false, tabBarStyle: {backgroundColor: '#ffda00'}, tabBarActiveTintColor: '#1c3969', tabBarLabelStyle: {fontSize: 15}}}>
+    <BottomTab.Navigator initialRouteName="ListeMatchsBottom" backBehavior='none' screenOptions={{headerShown: false, tabBarStyle: {backgroundColor: '#0594ae'}, tabBarActiveTintColor: 'white', tabBarInactiveTintColor: 'black', tabBarLabelStyle: {fontSize: 15}}}>
       <BottomTab.Screen
         name="ListeResultatsBottom"
         component={ResultatsStack}
         options={{
-          tabBarIcon: () => {return <FontAwesome5 name="trophy" size={28}/>},
+          tabBarIcon: ({color}) => {return <FontAwesome5 name="trophy" size={28} color={color}/>},
           title: t("resultats_classement_navigation_title")
         }} 
       />
@@ -135,7 +140,7 @@ function MatchsResultatsBottomNavigator() {
         name="ListeMatchsBottom" 
         component={MatchsStack}
         options={{
-          tabBarIcon: () => {return <FontAwesome5 name="bars" size={28}/>},
+          tabBarIcon: ({color}) => {return <FontAwesome5 name="bars" size={28} color={color}/>},
           title: t("matchs_details_navigation_title")
         }}
       />
