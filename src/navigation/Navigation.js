@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text } from '@gluestack-ui/themed';
 import { connect, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
@@ -101,7 +101,7 @@ function MatchsStack() {
         options={{
           title: false,
           headerStyle: {backgroundColor: '#0594ae', elevation: 0},
-          headerLeft: false,
+          headerLeft: () => <Text color='$white' fontSize={'$xl'} ml={'$2'}>Tournoi #</Text>,
           headerRight: () => (
             <BoutonMenuHeaderNav navigation={navigation}/>
           )
