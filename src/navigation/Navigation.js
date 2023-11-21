@@ -107,7 +107,7 @@ function MatchsStack() {
           )
         }}
       />
-      <Stack.Screen name="MatchDetailStack" component={MatchDetail} options={{title: t("detail_match_navigation_title")}} />
+      <Stack.Screen name="MatchDetailStack" component={MatchDetail} options={{headerShown: false}} />
       <Stack.Screen name="ListeJoueur" component={JoueursTournoi} options={{title: t("liste_joueurs_inscrits_navigation_title")}} />
       <Stack.Screen name="ParametresTournoi" component={ParametresTournoi} options={{title: t("parametres_tournoi_navigation_title")}} />
       <Stack.Screen name="PDFExport" component={PDFExport} options={{title: t("exporter_pdf_navigation_title")}} />
