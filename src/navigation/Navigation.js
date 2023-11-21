@@ -35,22 +35,22 @@ const BottomTab = createBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
 
 function topTabScreens() {
-  const counter = useSelector(state => state.gestionMatchs.listematchs)
-  let nbTours = 5
+  const counter = useSelector(state => state.gestionMatchs.listematchs);
+  let nbTours = 5;
   if (counter != undefined) {
-    nbTours = counter[counter.length - 1].nbTours
+    nbTours = counter[counter.length - 1].nbTours;
   }
-  let TopTabScreenListe = []
+  let topTabScreenListe = [];
   for (let i = 0; i < nbTours; i++) {
-    const name = "Screen"+ (i + 1) +"Manche"
-    let titleTour = {tabBarLabel: () => <TitleTopTabContainer numero={i + 1} />}
-    TopTabScreenListe.push(
+    const name = "Screen"+ (i + 1) +"Manche";
+    let titleTour = {tabBarLabel: () => <TitleTopTabContainer numero={i + 1} />};
+    topTabScreenListe.push(
       <TopTab.Screen key={i} name={name} options={titleTour}>
         {props => <ListeMatchs {...props} extraData={i + 1} />}
       </TopTab.Screen>
     )
   }
-  return TopTabScreenListe
+  return topTabScreenListe;
 }
 
 const TitleTopTabContainer = connect((state, numero) => ({ listeMatchs: state.gestionMatchs.listematchs}))(texteTitleTopTab);
