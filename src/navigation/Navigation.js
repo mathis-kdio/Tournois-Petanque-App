@@ -102,9 +102,7 @@ function MatchsStack() {
           title: false,
           headerStyle: {backgroundColor: '#0594ae', elevation: 0},
           headerLeft: () => <Text color='$white' fontSize={'$xl'} ml={'$2'}>Tournoi #</Text>,
-          headerRight: () => (
-            <BoutonMenuHeaderNav navigation={navigation}/>
-          )
+          headerRight: () => <BoutonMenuHeaderNav navigation={navigation}/>
         }}
       />
       <Stack.Screen name="MatchDetailStack" component={MatchDetail} options={{headerShown: false}} />
@@ -117,9 +115,19 @@ function MatchsStack() {
 
 function ResultatsStack() {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   return (
     <Stack.Navigator>
-      <Stack.Screen name="ListeResultatsStack" component={ListeResultats} options={{title: t("resultats_classement_navigation_title"), headerTitleAlign: 'center', headerLeft: false, headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
+      <Stack.Screen
+        name="ListeResultatsStack"
+        component={ListeResultats}
+        options={{
+          title: '',
+          headerStyle: {backgroundColor: '#0594ae', elevation: 0},
+          headerLeft: () => <Text color='$white' fontSize={'$xl'} ml={'$2'}>Tournoi #</Text>,
+          headerRight: () => <BoutonMenuHeaderNav navigation={navigation}/>
+        }}
+      />
     </Stack.Navigator>
   );
 }

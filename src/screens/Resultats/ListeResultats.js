@@ -1,75 +1,45 @@
 import React from 'react'
-import { StyleSheet, View, FlatList, Text } from 'react-native'
 import { connect } from 'react-redux'
 import ListeResultatItem from '@components/ListeResultatItem'
 import { rankingCalc } from '@utils/ranking'
 import { withTranslation } from 'react-i18next'
+import { HStack, FlatList, Text, VStack, Divider } from '@gluestack-ui/themed'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { StatusBar } from 'expo-status-bar'
+import TopBarBack from '../../components/TopBarBack'
 
 class ListeResultats extends React.Component {
 
   render() {
     const { t } = this.props;
     return (
-      <View style={styles.main_container}>
-        <View style={styles.entete}>
-          <View style={styles.position_container}>
-            <Text style={styles.texte}>{t("place")}</Text>
-          </View>
-          <View style={styles.victoires_container}>
-            <Text style={styles.texte}>{t("victoire")}</Text>
-          </View>
-          <View style={styles.mj_container}>
-            <Text style={styles.texte}>{t("m_j")}</Text>
-          </View>
-          <View style={styles.points_container}>
-            <Text style={styles.texte}>{t("point")}</Text>
-          </View>
-        </View>
-        <FlatList
-          data={rankingCalc(this.props.listeMatchs)}
-          keyExtractor={(item) => item.joueurId.toString()}
-          renderItem={({item}) => (
-            <ListeResultatItem
-              joueur={item}
+      <SafeAreaView style={{flex: 1}}>
+        <StatusBar backgroundColor="#0594ae"/>
+        <VStack flex={1} bgColor={"#0594ae"}>
+          {<TopBarBack title={t("resultats_classement_navigation_title")} navigation={this.props.navigation}/>}
+          <VStack flex={1} justifyContent='space-between'>
+            <HStack px={'$2'}>
+              <Text flex={2} color='white' fontSize={'$lg'}>{t("place")}</Text>
+              <Text flex={1} textAlign='center' color='white' fontSize={'$lg'}>{t("victoire")}</Text>
+              <Text flex={1} textAlign='center' color='white' fontSize={'$lg'}>{t("m_j")}</Text>
+              <Text flex={1} textAlign='right' color='white' fontSize={'$lg'}>{t("point")}</Text>
+            </HStack>
+            <Divider my="$0.5" />
+            <FlatList
+              data={rankingCalc(this.props.listeMatchs)}
+              keyExtractor={(item) => item.joueurId.toString()}
+              renderItem={({item}) => (
+                <ListeResultatItem
+                  joueur={item}
+                />
+              )}
             />
-          )}
-        />
-      </View>
+          </VStack>
+        </VStack>
+      </SafeAreaView>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  main_container: {
-    flex: 1,
-    backgroundColor: "#0594ae"
-  },
-  entete: {
-    flexDirection: 'row',
-    borderBottomWidth: 2,
-    borderColor: 'white'
-  },
-  position_container: {
-    flex: 2
-  },
-  victoires_container: {
-    flex: 1,
-    alignItems: 'center'
-  },
-  mj_container: {
-    flex: 1,
-    alignItems: 'center'
-  },
-  points_container: {
-    flex: 1,
-    alignItems: 'flex-end'
-  },
-  texte: {
-    fontSize: 20,
-    textAlign: 'left',
-    color: 'white'
-  },
-})
 
 const mapStateToProps = (state) => {
   return {
