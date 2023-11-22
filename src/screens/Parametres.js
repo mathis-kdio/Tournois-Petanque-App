@@ -15,7 +15,7 @@ class Parametres extends React.Component {
   constructor(props) {
     super(props)
     this.githubRepository = "https://github.com/sponsors/mathis-kdio";
-    this.mail = "mailto: tournoispetanqueapp@gmail.com";
+    this.mail = "mailto:tournoispetanqueapp@gmail.com";
     this.crowdin = "https://crowdin.com/project/tournois-de-ptanque-gcu";
     this.state = {
       alertOpen: false,
