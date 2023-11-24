@@ -1,25 +1,28 @@
 import moment from 'moment/moment'
 import 'moment/locale/fr'
 import React from 'react'
-import { StyleSheet, View, FlatList, Text, Button, Modal } from 'react-native'
 import { connect } from 'react-redux'
 import ListeTournoiItem from '@components/ListeTournoiItem'
 import { withTranslation } from 'react-i18next'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { StatusBar } from 'expo-status-bar'
+import { VStack, Text, FlatList, Modal, CloseIcon, ModalBackdrop, ModalContent, ModalHeader, Heading, ModalCloseButton, ModalBody } from '@gluestack-ui/themed'
+import TopBarBack from '../../components/TopBarBack'
 
 class ListeTournois extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      modalTournoiInfos: false,
+      modalTournoiInfosIsOpen: false,
       infosTournoi: {}
     }
   }
 
   _showModalTournoiInfos(tournoi) {
     this.setState({
-      modalTournoiInfos: true,
+      modalTournoiInfosIsOpen: true,
       infosTournoi: tournoi
-    })
+    });
   }
 
   _modalTournoiInfos() {
@@ -40,36 +43,33 @@ class ListeTournois extends React.Component {
       let nbPtVictoire = tournoiOptions.nbPtVictoire ? tournoiOptions.nbPtVictoire : 13;
       return (
         <Modal
-          animationType="slide"
-          transparent={true}
-          visible={this.state.modalTournoiInfos}
-          onRequestClose={() => {
-            this.setState({ modalTournoiInfos: false })
-          }}
+          isOpen={this.state.modalTournoiInfosIsOpen}
+          onClose={() => this.setState({modalTournoiInfosIsOpen: false})}
         >
-          <View style={modalStyles.centeredView}>
-            <View style={modalStyles.modalView}>
-              <Text style={modalStyles.modalText}>{t("informations_tournoi_modal_titre")}</Text>
-              <View>
-                <Text style={modalStyles.modalText}>{t("id_modal_informations_tournoi")} {tournoi.tournoiId}</Text>
-                <Text style={modalStyles.modalText}>{t("nom_modal_informations_tournoi")} {tournoi.name}</Text>
-                <Text style={modalStyles.modalText}>{t("creation_modal_informations_tournoi")}{creationDate}</Text>
-                <Text style={modalStyles.modalText}>{t("derniere_modification_modal_informations_tournoi")} {updateDate}</Text>
-                <Text style={modalStyles.modalText}>{t("nombre_joueurs_modal_informations_tournoi")} {tournoiOptions.listeJoueurs.length}</Text>
-                <Text style={modalStyles.modalText}>{t("type_equipes_modal_informations_tournoi")} {tournoiOptions.typeEquipes}</Text>
-                <Text style={modalStyles.modalText}>{t("nombre_tours_modal_informations_tournoi")} {tournoiOptions.nbTours}</Text>
-                <Text style={modalStyles.modalText}>{t("nombre_matchs_modal_informations_tournoi")} {tournoiOptions.nbMatchs}</Text>
-                <Text style={modalStyles.modalText}>{t("nombre_points_victoire_modal_informations_tournoi")} {nbPtVictoire}</Text>
-                <Text style={modalStyles.modalText}>{t("complement_modal_informations_tournoi")}{tournoiOptions.complement}</Text>
-                <Text style={modalStyles.modalText}>{t("regle_equipes_differentes_modal_informations_tournoi")} {tournoiOptions.memesEquipes ? t("oui") : t("non")}</Text>
-                <Text style={modalStyles.modalText}>{t("regle_adversaires_modal_informations_tournoi")} {tournoiOptions.memesAdversaires === 0 ? t("1_match") : t("pourcent_matchs", {pourcent: tournoiOptions.memesAdversaires})}</Text>
-                <Text style={modalStyles.modalText}>{t("regle_enfants_modal_informations_tournoi")} {tournoiOptions.speciauxIncompatibles ? t("oui") : t("non")}</Text>
-              </View>
-              <View style={styles.buttonView}>
-                <Button color="red" title='Fermer' onPress={() => this.setState({modalTournoiInfos: false}) }/>
-              </View>
-            </View>
-          </View>
+          <ModalBackdrop/>
+          <ModalContent>
+            <ModalHeader>
+              <Heading size='lg'>{t("informations_tournoi_modal_titre")}</Heading>
+              <ModalCloseButton>
+                <CloseIcon/>
+              </ModalCloseButton>
+            </ModalHeader>
+            <ModalBody>
+              <Text>{t("id_modal_informations_tournoi")} {tournoi.tournoiId}</Text>
+              <Text>{t("nom_modal_informations_tournoi")} {tournoi.name}</Text>
+              <Text>{t("creation_modal_informations_tournoi")}{creationDate}</Text>
+              <Text>{t("derniere_modification_modal_informations_tournoi")} {updateDate}</Text>
+              <Text>{t("nombre_joueurs_modal_informations_tournoi")} {tournoiOptions.listeJoueurs.length}</Text>
+              <Text>{t("type_equipes_modal_informations_tournoi")} {tournoiOptions.typeEquipes}</Text>
+              <Text>{t("nombre_tours_modal_informations_tournoi")} {tournoiOptions.nbTours}</Text>
+              <Text>{t("nombre_matchs_modal_informations_tournoi")} {tournoiOptions.nbMatchs}</Text>
+              <Text>{t("nombre_points_victoire_modal_informations_tournoi")} {nbPtVictoire}</Text>
+              <Text>{t("complement_modal_informations_tournoi")}{tournoiOptions.complement}</Text>
+              <Text>{t("regle_equipes_differentes_modal_informations_tournoi")} {tournoiOptions.memesEquipes ? t("oui") : t("non")}</Text>
+              <Text>{t("regle_adversaires_modal_informations_tournoi")} {tournoiOptions.memesAdversaires === 0 ? t("1_match") : t("pourcent_matchs", {pourcent: tournoiOptions.memesAdversaires})}</Text>
+              <Text>{t("regle_enfants_modal_informations_tournoi")} {tournoiOptions.speciauxIncompatibles ? t("oui") : t("non")}</Text>
+            </ModalBody>
+          </ModalContent>
         </Modal>
       )
     }
@@ -78,12 +78,12 @@ class ListeTournois extends React.Component {
   render() {
     const { t } = this.props;
     return (
-      <View style={styles.main_container}>
-        <View style={styles.body_container}>
-          <View>
-            <Text style={styles.titre}>{t("nombre_tournois", {nb: this.props.listeTournois.length})}</Text>
-          </View>
-          <View style={styles.flatList_container}>
+      <SafeAreaView style={{flex: 1}}>
+        <StatusBar backgroundColor="#0594ae"/>
+        <VStack flex={1} bgColor={"#0594ae"}>
+          <TopBarBack title={t("choix_tournoi_navigation_title")} navigation={this.props.navigation}/>
+          <Text color='$white' fontSize={'$xl'} textAlign='center' px={'$10'}>{t("nombre_tournois", {nb: this.props.listeTournois.length})}</Text>
+          <VStack flex={1} my={'$2'}>
             <FlatList
               data={this.props.listeTournois}
               initialNumToRender={20}
@@ -96,80 +96,13 @@ class ListeTournois extends React.Component {
                 />
               )}
             />
-          </View>
-        </View>
-        {this._modalTournoiInfos()}
-      </View>
+          </VStack>
+          {this._modalTournoiInfos()}
+        </VStack>
+      </SafeAreaView>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  main_container: {
-    flex: 1,
-    backgroundColor: "#0594ae"
-  },
-  body_container: {
-    flex: 1
-  },
-  titre: {
-    marginBottom: 20,
-    textAlign: 'center',
-    fontSize: 24,
-    color: 'white'
-  },
-  flatList_container: {
-    flex: 1,
-    margin: 10
-  },
-  tournoi_container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  tournoi_name_container: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  tournoi_text: {
-    fontSize: 15,
-    color: 'white'
-  },
-  buttonView: {
-    alignItems: 'flex-end',
-    marginHorizontal: 5
-  },
-})
-
-const modalStyles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 20,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5
-  },
-  modalText: {
-    marginBottom: 5,
-    textAlign: "left"
-  }
-})
 
 const mapStateToProps = (state) => {
   return {

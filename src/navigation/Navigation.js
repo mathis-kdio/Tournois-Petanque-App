@@ -196,7 +196,7 @@ function General() {
       <Stack.Screen name="AccueilGeneral" component={Accueil} options={{headerShown: false}} />
       <Stack.Screen name="Parametres" component={Parametres} options={{headerShown: false}} />
 
-      <Stack.Screen name="ListeTournois" component={ListeTournois} options={{title: t("choix_tournoi_navigation_title")}} />
+      <Stack.Screen name="ListeTournois" component={ListeTournois} options={{headerShown: false}} />
 
       <Stack.Screen name="ListesJoueurs" component={ListesJoueurs} options={{title: t("listes_joueurs_navigation_title")}} />
       <Stack.Screen name="CreateListeJoueurs" component={CreateListeJoueurs} options={{title: t("creation_liste_joueurs_navigation_title")}} />
