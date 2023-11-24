@@ -165,7 +165,7 @@ function InscriptionStack() {
       <Stack.Screen name="OptionsTournoi" component={OptionsTournoi} options={{headerShown: false}} />     
       <Stack.Screen name="InscriptionsAvecNoms" component={InscriptionsAvecNoms} options={{headerShown: false}} />
       <Stack.Screen name="InscriptionsSansNoms" component={InscriptionsSansNoms} options={{headerShown: false}} />
-      <Stack.Screen name="ListeTerrains" component={ListeTerrains} options={{title: t("liste_terrains_navigation_title")}} />     
+      <Stack.Screen name="ListeTerrains" component={ListeTerrains} options={{headerShown: false}} />     
       <Stack.Screen name="GenerationMatchs" component={GenerationMatchs} options={{title: t("generation_matchs_navigation_title"), headerTitleAlign: 'center', headerLeft: false, headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
       <Stack.Screen name="ListeMatchsInscription" component={ListeMatchsStack} options={{headerShown: false}}/>
     </Stack.Navigator>
