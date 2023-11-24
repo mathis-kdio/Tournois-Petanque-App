@@ -198,8 +198,8 @@ function General() {
 
       <Stack.Screen name="ListeTournois" component={ListeTournois} options={{headerShown: false}} />
 
-      <Stack.Screen name="ListesJoueurs" component={ListesJoueurs} options={{title: t("listes_joueurs_navigation_title")}} />
-      <Stack.Screen name="CreateListeJoueurs" component={CreateListeJoueurs} options={{title: t("creation_liste_joueurs_navigation_title")}} />
+      <Stack.Screen name="ListesJoueurs" component={ListesJoueurs} options={{headerShown: false}} />
+      <Stack.Screen name="CreateListeJoueurs" component={CreateListeJoueurs} options={{headerShown: false}} />
 
       <Stack.Screen name="InscriptionStack" component={InscriptionStack} options={{headerShown: false}} />
       <Stack.Screen name="ListeMatchsStack" component={ListeMatchsStack} options={{headerShown: false}} />

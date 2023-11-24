@@ -1,8 +1,11 @@
 import React from 'react'
-import { StyleSheet, View, Text, Button, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import ListeJoueursItem from '@components/ListeJoueursItem';
 import { withTranslation } from 'react-i18next';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
+import { VStack, Text, Button, FlatList, ButtonText, Box } from '@gluestack-ui/themed';
+import TopBarBack from '../../components/TopBarBack';
 
 class ListesJoueurs extends React.Component {
 
@@ -14,24 +17,26 @@ class ListesJoueurs extends React.Component {
     const actionRemoveList = {type: "SUPPR_ALL_JOUEURS", value: ['sauvegarde']};
     this.props.dispatch(actionRemoveList);
     //Sera utilisé par le component inscription 
-    const updateOptionTypeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['type', 'mele-demele']}
+    const updateOptionTypeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['type', 'mele-demele']};
     this.props.dispatch(updateOptionTypeTournoi);
-    const updateOptionEquipesTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['typeEquipes', 'teteatete']}
+    const updateOptionEquipesTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['typeEquipes', 'teteatete']};
     this.props.dispatch(updateOptionEquipesTournoi);
-    const updateOptionModeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['mode', 'sauvegarde']}
+    const updateOptionModeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['mode', 'sauvegarde']};
     this.props.dispatch(updateOptionModeTournoi);
 
     this.props.navigation.navigate({
       name: 'CreateListeJoueurs',
       params: { type: "create" }
-    })
+    });
   }
 
   _addListButton() {
     const { t } = this.props;
     if (this.props.route.params == undefined || this.props.route.params.loadListScreen != true) {
       return(
-        <Button color="green" title={t("creer_liste")} onPress={() => this._addList()}/>
+        <Button action='positive' onPress={() => this._addList()}>
+          <ButtonText>{t("creer_liste")}</ButtonText>
+        </Button>
       )
     }
   }
@@ -45,19 +50,19 @@ class ListesJoueurs extends React.Component {
       nbLists += this.props.savedLists.sansNoms.length;
     }
     return (
-      <View style={styles.main_container}>
-        <View style={styles.body_container}>
-          <View>
-            <Text style={styles.title}>{t("nombre_listes", {nb: nbLists})}</Text>
-          </View>
-          <View style={styles.createBtnView}>
+      <SafeAreaView style={{flex: 1}}>
+        <StatusBar backgroundColor="#0594ae"/>
+        <VStack flex={1} bgColor={"#0594ae"}>
+          <TopBarBack title={t("listes_joueurs_navigation_title")} navigation={this.props.navigation}/>
+          <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("nombre_listes", {nb: nbLists})}</Text>
+          <Box px={'$10'}>
             {this._addListButton()}
-          </View>
-          <View style={styles.flatList_container}>
-          <FlatList
+          </Box>
+          <VStack flex={1} my={'$2'}>
+            <FlatList
               data={this.props.savedLists.avecNoms}
               initialNumToRender={20}
-              keyExtractor={(item) => item[item.length - 1].listId.toString() }
+              keyExtractor={(item) => item[item.length - 1].listId.toString()}
               renderItem={({item}) => (
                 <ListeJoueursItem
                   list={item}
@@ -66,35 +71,12 @@ class ListesJoueurs extends React.Component {
                 />
               )}
             />
-          </View>
-        </View>
-      </View>
+          </VStack>
+        </VStack>
+      </SafeAreaView>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  main_container: {
-    flex: 1,
-    backgroundColor: "#0594ae"
-  },
-  body_container: {
-    flex: 1
-  },
-  title: {
-    marginBottom: 20,
-    textAlign: 'center',
-    fontSize: 24,
-    color: 'white'
-  },
-  flatList_container: {
-    flex: 1,
-    margin: 10
-  },
-  createBtnView: {
-    alignItems: 'center'
-  }
-})
 
 const mapStateToProps = (state) => {
   return {
