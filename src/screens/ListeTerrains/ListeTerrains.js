@@ -60,7 +60,7 @@ class ListeTerrains extends React.Component {
         <VStack flex={1} bgColor={"#0594ae"}>
           <TopBarBack title={t("liste_terrains_navigation_title")} navigation={this.props.navigation}/>
           <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("nombre_terrains", {nb: this.props.listeTerrains.length})}</Text>
-          <VStack flex={1} space='2xl' my={'$2'}>
+          <VStack flex={1} my={'$2'}>
             <FlatList
               persistentScrollbar={true}
               data={this.props.listeTerrains}
@@ -71,12 +71,6 @@ class ListeTerrains extends React.Component {
                   terrain={item}
                 />
               )}
-              /*ListFooterComponent={
-                <Box px={'$10'} mt={'$2'}>
-                  {this._ajoutTerrainButton()}
-                  {this._commencerButton()}
-                </Box>
-              }*/
             />
           </VStack>
           <VStack px={'$10'} space='lg'>
