@@ -82,7 +82,7 @@ class ListeTerrainItem extends React.Component {
   render() {
     const { terrain } = this.props;
     return (
-      <HStack px={'$2'} my={'$2'} space='md'>
+      <HStack px={'$2'} my={'$2'} space='md' alignItems='center'>
         <Box flex={1}>
           {this._terrainName(terrain)}
         </Box>
