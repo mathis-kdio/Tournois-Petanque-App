@@ -1,6 +1,7 @@
+import { Box, Divider, HStack, Text, VStack } from '@gluestack-ui/themed'
 import React from 'react'
 import { withTranslation } from 'react-i18next'
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 
 class MatchItem extends React.Component {
@@ -13,45 +14,39 @@ class MatchItem extends React.Component {
 
   _displayTitle(match) {
     const { t } = this.props;
+    let txt = t("match_numero") + (match.id + 1);
+    if (match.terrain) {
+      txt = match.terrain.name;
+    }
     return (
-      match.terrain ? 
-      <Text style={styles.title}>{(match.terrain.name)}</Text>
-      :
-      <Text style={styles.title}>{t("match_numero")}{(match.id + 1)}</Text>
+      <Text color='$white' fontSize={'$2xl'} p={"$0.5"} textAlign='center'>{txt}</Text>
     )
   }
 
   _displayEquipe(equipe, match, nbPtVictoire) {
-    let nomsJoueurs = []
+    let nomsJoueurs = [];
     for (let i = 0; i < 3; i++) {
-      nomsJoueurs.push(this._displayName(match.equipe[equipe - 1][i], equipe, match.id, nbPtVictoire))
+      nomsJoueurs.push(this._displayName(match.equipe[equipe - 1][i], equipe, match.id, nbPtVictoire));
     }
-    return nomsJoueurs
+    return nomsJoueurs;
   }
 
   _displayName = (joueurNumber, equipe, matchID, nbPtVictoire) => {
-    let colorEquipe1 = 'white'
-    let colorEquipe2 = 'white'
+    let colorEquipe1 = 'white';
+    let colorEquipe2 = 'white';
     if (this.props.listeMatchs[matchID].score1 == nbPtVictoire) {
-      colorEquipe1 = 'green'
-      colorEquipe2 = 'red'
-    }
-    else if (this.props.listeMatchs[matchID].score2 == nbPtVictoire) {
-      colorEquipe1 = 'red'
-      colorEquipe2 = 'green'
-    }
-
-    let styleColor
-    if (equipe == 1) {
-      styleColor = colorEquipe1
-    }
-    else {
-      styleColor = colorEquipe2
+      colorEquipe1 = 'green';
+      colorEquipe2 = 'red';
+    } else if (this.props.listeMatchs[matchID].score2 == nbPtVictoire) {
+      colorEquipe1 = 'red';
+      colorEquipe2 = 'green';
     }
 
-    let joueur = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs.find(item => item.id === joueurNumber)
+    let styleColor = (equipe === 1) ? colorEquipe1 : colorEquipe2;
+
+    let joueur = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs.find(item => item.id === joueurNumber);
     if (joueur) {
-      return <Text key={joueur.id} style={{color:styleColor, fontSize: 20}}>{joueur.id+1} {joueur.name}</Text>
+      return <Text key={joueur.id} color={styleColor} fontSize={'$xl'}>{joueur.id+1} {joueur.name}</Text>
     }
   }
 
@@ -65,9 +60,11 @@ class MatchItem extends React.Component {
       score2 = '?'
     }
     return (
-      <View style={styles.vs_container}>
-        <Text style={styles.score}>{score1}</Text><Text style={styles.vs}> VS </Text><Text style={styles.score}>{score2}</Text>
-      </View>
+      <HStack>
+        <Text color='$white' fontSize={'$2xl'} p={'$2'}>{score1}</Text>
+        <Text color='$white' fontSize={'$2xl'} p={'$2'}> VS </Text>
+        <Text color='$white' fontSize={'$2xl'} p={'$2'}>{score2}</Text>
+      </HStack>
     )
   }
 
@@ -75,75 +72,26 @@ class MatchItem extends React.Component {
     let { match, displayDetailForMatch, manche, nbPtVictoire } = this.props;
     if (match.manche == manche) {
       return (
-        <TouchableOpacity
-          style={styles.main_container}
-          onPress={() => displayDetailForMatch(match.id, match)}>
-          <View style={styles.content_container}>
-            <View>
+        <TouchableOpacity onPress={() => displayDetailForMatch(match.id, match)}>
+          <VStack m={'$2'}>
             {this._displayTitle(match)}
-            </View>
-            <View style={styles.equipe_container}>
-              <View style={styles.equipe1}>
+            <HStack justifyContent='space-between' alignItems='center'>
+              <Box>
                 {this._displayEquipe(1, match, nbPtVictoire)}
-              </View>
+              </Box>
               {this._displayScore(match.id)}
-              <View style={styles.equipe2}>
+              <Box>
                 {this._displayEquipe(2, match, nbPtVictoire)}
-              </View>
-            </View>
-          </View>
+              </Box>
+            </HStack>
+          </VStack>
+          <Divider/>
         </TouchableOpacity>
       )
     }
     return (null);
   }
 }
-
-const styles = StyleSheet.create({
-  main_container: {
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderColor: 'white'
-  },
-  content_container: {
-    flex: 1,
-    margin: 5
-  },
-  title: {
-    textAlign: 'center',
-    fontSize: 20,
-    color: 'white'
-  },
-  vs_container: {
-    flexDirection: 'row',
-    position: 'absolute', 
-    top: 0, 
-    left: 0, 
-    right: 0, 
-    bottom: 0, 
-    justifyContent: 'center', 
-    alignItems: 'center',
-  },
-  vs: {
-    fontSize: 15,
-    color: 'white'
-  },
-  score: {
-    fontSize: 25,
-    color: 'white'
-  },
-  equipe_container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  equipe1: {
-    marginLeft: 10,
-  },  
-  equipe2: {
-    marginRight: 10,
-    alignItems: 'flex-end',
-  }
-})
 
 const mapStateToProps = (state) => {
     return {
