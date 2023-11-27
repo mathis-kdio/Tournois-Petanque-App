@@ -91,7 +91,6 @@ function ManchesTopTabNavigator() {
 }
 
 function MatchsStack() {
-  const { t } = useTranslation();
   const navigation = useNavigation();
   return (
     <Stack.Navigator screenOptions={{headerStyle: {backgroundColor: '#ffda00'}}}>
@@ -108,7 +107,7 @@ function MatchsStack() {
       <Stack.Screen name="MatchDetailStack" component={MatchDetail} options={{headerShown: false}} />
       <Stack.Screen name="ListeJoueur" component={JoueursTournoi} options={{headerShown: false}} />
       <Stack.Screen name="ParametresTournoi" component={ParametresTournoi} options={{headerShown: false}} />
-      <Stack.Screen name="PDFExport" component={PDFExport} options={{title: t("exporter_pdf_navigation_title")}} />
+      <Stack.Screen name="PDFExport" component={PDFExport} options={{headerShown: false}} />
     </Stack.Navigator>
   );
 }
