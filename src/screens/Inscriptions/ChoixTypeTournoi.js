@@ -6,8 +6,8 @@ import { VStack, Text, Modal, Pressable, ModalContent, ModalHeader, ModalBody, M
 import { FontAwesome5 } from '@expo/vector-icons';
 import TopBarBack from '@components/TopBarBack';
 import CardButton from '@components/buttons/CardButton';
-import AdMobBanner from '@components/adMob/AdMobBanner';
 import { withTranslation } from 'react-i18next';
+import AdMobInscriptionsBanner from '../../components/adMob/AdMobInscriptionsBanner';
 
 class ChoixTypeTournoi extends React.Component {
   constructor(props) {
@@ -103,7 +103,7 @@ class ChoixTypeTournoi extends React.Component {
               </Pressable>
             </VStack>
             <VStack flat={4} m={'$10'}>
-              <AdMobBanner type="ANCHORED_ADAPTIVE_BANNER"/>
+              <AdMobInscriptionsBanner/>
             </VStack>
           </VStack>
         </VStack>

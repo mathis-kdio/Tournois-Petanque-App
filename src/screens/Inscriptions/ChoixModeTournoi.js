@@ -4,8 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { VStack, Button, Text, Radio, RadioLabel, ButtonText, RadioGroup, RadioIndicator, CircleIcon, Box } from '@gluestack-ui/themed';
 import TopBarBack from '@components/TopBarBack';
-import AdMobBanner from '@components/adMob/AdMobBanner';
 import { withTranslation } from 'react-i18next';
+import AdMobInscriptionsBanner from '../../components/adMob/AdMobInscriptionsBanner';
 
 class ChoixModeTournoi extends React.Component {
   constructor(props) {
@@ -141,7 +141,7 @@ class ChoixModeTournoi extends React.Component {
               {this._validButton()}
             </VStack>
             <Box my={'$10'}>
-              <AdMobBanner type="ANCHORED_ADAPTIVE_BANNER"/>
+              <AdMobInscriptionsBanner/>
             </Box>
           </VStack>
         </VStack>
