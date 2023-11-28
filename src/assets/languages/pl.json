@@ -36,6 +36,8 @@
     "sans_nom": "Bez nazwy",
     "supprimer_tournoi_modal_titre": "Usunięcie turnieju",
     "supprimer_tournoi_modal_texte": "Czy na pewno chcesz usunąć turniej {{id}}?",
+    "supprimer_liste_modal_titre": "Usuwanie listy",
+    "supprimer_liste_modal_texte": "Czy na pewno chcesz usunąć listę nr {{id}}?",
     "match_numero": "Mecz nr",
     "place": "Pozycja",
     "victoire": "Zwycięstwo",
