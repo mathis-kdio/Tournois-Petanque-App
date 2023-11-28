@@ -22,7 +22,7 @@ class ListeResultatItem extends React.Component {
     }
 
     return (
-      <Text color='white' fontSize={'$lg'}>{joueurName}</Text>
+      <Text color='$white' fontSize={'$lg'}>{joueurName}</Text>
     )
   }
 
@@ -56,14 +56,14 @@ class ListeResultatItem extends React.Component {
       <VStack>
         <HStack px={'$2'} py={'$0.5'}>
           <HStack flex={2}>
-            <Text color='white' fontSize={'$lg'}>{joueur.position} - </Text>
+            <Text color='$white' fontSize={'$lg'}>{joueur.position} - </Text>
             {this._displayName(joueur.joueurId)}
           </HStack>
-          <Text flex={1} textAlign='center' color='white' fontSize={'$lg'}>{joueur.victoires}</Text>
-          <Text flex={1} textAlign='center' color='white' fontSize={'$lg'}>{joueur.nbMatchs}</Text>
+          <Text flex={1} textAlign='center' color='$white' fontSize={'$lg'}>{joueur.victoires}</Text>
+          <Text flex={1} textAlign='center' color='$white' fontSize={'$lg'}>{joueur.nbMatchs}</Text>
           <HStack flex={1} justifyContent='flex-end'>
             {this._fanny(joueur.joueurId)}
-            <Text color='white' fontSize={'$lg'}> {joueur.points}</Text>
+            <Text color='$white' fontSize={'$lg'}> {joueur.points}</Text>
           </HStack>
         </HStack>
         <Divider/>

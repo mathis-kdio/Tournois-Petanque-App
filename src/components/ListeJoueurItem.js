@@ -176,7 +176,7 @@ class ListeJoueurItem extends React.Component {
           onValueChange={itemValue => this._ajoutEquipe(joueur.id, itemValue)}
         >
           <SelectTrigger>
-            <SelectInput placeholder={t("choix_equipe")} placeholderTextColor="white"/>
+            <SelectInput placeholder={t("choix_equipe")} placeholderTextColor='$white'/>
             <SelectIcon mr={'$3'}>
               <ChevronDownIcon color='$white'/>
             </SelectIcon>

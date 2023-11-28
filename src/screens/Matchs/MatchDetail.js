@@ -153,7 +153,7 @@ class MatchDetail extends React.Component {
             <VStack flex={1} px={'$10'} justifyContent='space-between'>
               <VStack space='xl'>
                 {this._displayTitle(match)}
-                <HStack justifyContent='space-around'>
+                <HStack justifyContent='space-between'>
                   <Box>
                     {this._displayEquipe(1, match)}
                   </Box>
@@ -169,7 +169,7 @@ class MatchDetail extends React.Component {
                     <Input borderColor='$white'>
                       <InputField
                         placeholder={t("score_equipe_1")}
-                        placeholderTextColor='white'
+                        placeholderTextColor='$white'
                         autoFocus={true}
                         defaultValue={this.nbToursTxt}
                         keyboardType='decimal-pad'
@@ -184,7 +184,7 @@ class MatchDetail extends React.Component {
                     <Input size='md' borderColor='$white'>
                       <InputField
                         placeholder={t("score_equipe_2")}
-                        placeholderTextColor='white'
+                        placeholderTextColor='$white'
                         autoFocus={true}
                         defaultValue={this.nbToursTxt}
                         keyboardType='decimal-pad'
@@ -202,14 +202,12 @@ class MatchDetail extends React.Component {
                   <AdMobMatchDetailBanner/>
                 </Box>
               }
-              <Box>
+              <VStack space='lg' mb={'$5'}>
                 <Button action='negative' onPress={() => this._supprimerResultat()}>
                   <ButtonText>{t("supprimer_score")}</ButtonText>
                 </Button>
-              </Box>
-              <Box>
                 {this._boutonValider(match)}
-              </Box>
+              </VStack>
             </VStack>
           </VStack>
         </SafeAreaView>

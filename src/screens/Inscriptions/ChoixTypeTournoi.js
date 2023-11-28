@@ -77,7 +77,7 @@ class ChoixTypeTournoi extends React.Component {
               />
               <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: "melee-demelee"})}>
                 <FontAwesome5 name="info-circle" color='white' size={24}/>
-                <Text color='white'> {t("savoir_plus")}</Text>
+                <Text color='$white'> {t("savoir_plus")}</Text>
               </Pressable>
             </VStack>
             <VStack flex={1}>
@@ -88,7 +88,7 @@ class ChoixTypeTournoi extends React.Component {
               />
               <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: "championnat"})}>
                 <FontAwesome5 name="info-circle" color='white' size={24}/>
-                <Text color='white'> {t("savoir_plus")}</Text>
+                <Text color='$white'> {t("savoir_plus")}</Text>
               </Pressable>
             </VStack>
             <VStack flex={1}>
@@ -99,7 +99,7 @@ class ChoixTypeTournoi extends React.Component {
               />
               <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: "coupe"})}>
                 <FontAwesome5 name="info-circle" color='white' size={24}/>
-                <Text color='white'> {t("savoir_plus")}</Text>
+                <Text color='$white'> {t("savoir_plus")}</Text>
               </Pressable>
             </VStack>
             <VStack flat={4} m={'$10'}>
