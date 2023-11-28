@@ -91,7 +91,6 @@ function ManchesTopTabNavigator() {
 }
 
 function MatchsStack() {
-  const { t } = useTranslation();
   const navigation = useNavigation();
   return (
     <Stack.Navigator screenOptions={{headerStyle: {backgroundColor: '#ffda00'}}}>
@@ -106,9 +105,9 @@ function MatchsStack() {
         }}
       />
       <Stack.Screen name="MatchDetailStack" component={MatchDetail} options={{headerShown: false}} />
-      <Stack.Screen name="ListeJoueur" component={JoueursTournoi} options={{title: t("liste_joueurs_inscrits_navigation_title")}} />
-      <Stack.Screen name="ParametresTournoi" component={ParametresTournoi} options={{title: t("parametres_tournoi_navigation_title")}} />
-      <Stack.Screen name="PDFExport" component={PDFExport} options={{title: t("exporter_pdf_navigation_title")}} />
+      <Stack.Screen name="ListeJoueur" component={JoueursTournoi} options={{headerShown: false}} />
+      <Stack.Screen name="ParametresTournoi" component={ParametresTournoi} options={{headerShown: false}} />
+      <Stack.Screen name="PDFExport" component={PDFExport} options={{headerShown: false}} />
     </Stack.Navigator>
   );
 }
@@ -164,9 +163,9 @@ function InscriptionStack() {
       <Stack.Screen name="ChoixModeTournoi" component={ChoixModeTournoi} options={{headerShown: false}} />
       <Stack.Screen name="OptionsTournoi" component={OptionsTournoi} options={{headerShown: false}} />     
       <Stack.Screen name="InscriptionsAvecNoms" component={InscriptionsAvecNoms} options={{headerShown: false}} />
-      <Stack.Screen name="InscriptionsSansNoms" component={InscriptionsSansNoms} options={{title: t("inscription_sans_noms_navigation_title")}} />
-      <Stack.Screen name="ListeTerrains" component={ListeTerrains} options={{title: t("liste_terrains_navigation_title")}} />     
-      <Stack.Screen name="GenerationMatchs" component={GenerationMatchs} options={{title: t("generation_matchs_navigation_title"), headerTitleAlign: 'center', headerLeft: false, headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}} />
+      <Stack.Screen name="InscriptionsSansNoms" component={InscriptionsSansNoms} options={{headerShown: false}} />
+      <Stack.Screen name="ListeTerrains" component={ListeTerrains} options={{headerShown: false}} />     
+      <Stack.Screen name="GenerationMatchs" component={GenerationMatchs} options={{headerShown: false}} />
       <Stack.Screen name="ListeMatchsInscription" component={ListeMatchsStack} options={{headerShown: false}}/>
     </Stack.Navigator>
   )
@@ -196,10 +195,10 @@ function General() {
       <Stack.Screen name="AccueilGeneral" component={Accueil} options={{headerShown: false}} />
       <Stack.Screen name="Parametres" component={Parametres} options={{headerShown: false}} />
 
-      <Stack.Screen name="ListeTournois" component={ListeTournois} options={{title: t("choix_tournoi_navigation_title")}} />
+      <Stack.Screen name="ListeTournois" component={ListeTournois} options={{headerShown: false}} />
 
-      <Stack.Screen name="ListesJoueurs" component={ListesJoueurs} options={{title: t("listes_joueurs_navigation_title")}} />
-      <Stack.Screen name="CreateListeJoueurs" component={CreateListeJoueurs} options={{title: t("creation_liste_joueurs_navigation_title")}} />
+      <Stack.Screen name="ListesJoueurs" component={ListesJoueurs} options={{headerShown: false}} />
+      <Stack.Screen name="CreateListeJoueurs" component={CreateListeJoueurs} options={{headerShown: false}} />
 
       <Stack.Screen name="InscriptionStack" component={InscriptionStack} options={{headerShown: false}} />
       <Stack.Screen name="ListeMatchsStack" component={ListeMatchsStack} options={{headerShown: false}} />

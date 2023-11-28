@@ -68,7 +68,7 @@ class ChoixModeTournoi extends React.Component {
     if (this.props.optionsTournoi.type !== "mele-demele") return;
     return (
       <VStack>
-        <Text color='white' fontSize={'$2xl'} textAlign='center'>{t("mode_tournoi")}</Text>
+        <Text color='$white' fontSize={'$2xl'} textAlign='center'>{t("mode_tournoi")}</Text>
         <RadioGroup
           name="modeTournoiRadioGroup"
           accessibilityLabel={t("choix_mode_tournoi")}
@@ -80,19 +80,19 @@ class ChoixModeTournoi extends React.Component {
               <RadioIndicator mr='$2' sx={{_text: {color: '$red500'}}}>
                 <CircleIcon stroke={this.state.modeTournoi == "avecNoms" ? '$white' : '$secondary700'}/>
               </RadioIndicator>
-              <RadioLabel color='white'>{t("melee_demelee_avec_nom")}</RadioLabel>
+              <RadioLabel color='$white'>{t("melee_demelee_avec_nom")}</RadioLabel>
             </Radio>
             <Radio value="sansNoms" size='lg'>
               <RadioIndicator mr='$2'>
                 <CircleIcon stroke={this.state.modeTournoi == "sansNoms" ? '$white' : '$secondary700'}/>
               </RadioIndicator>
-              <RadioLabel color='white'>{t("melee_demelee_sans_nom")}</RadioLabel>
+              <RadioLabel color='$white'>{t("melee_demelee_sans_nom")}</RadioLabel>
             </Radio>
             <Radio value="avecEquipes" size='lg'>
               <RadioIndicator mr='$2'>
                 <CircleIcon stroke={this.state.modeTournoi == "avecEquipes" ? '$white' : '$secondary700'}/>
               </RadioIndicator>
-              <RadioLabel color='white'>{t("melee_avec_equipes_constituees")}</RadioLabel>
+              <RadioLabel color='$white'>{t("melee_avec_equipes_constituees")}</RadioLabel>
             </Radio>
           </VStack>
         </RadioGroup>
@@ -109,7 +109,7 @@ class ChoixModeTournoi extends React.Component {
           <TopBarBack title={t("mode_tournoi")} navigation={this.props.navigation}/>
           <VStack flex={1} px={'$10'} justifyContent='space-between'>
             <VStack space='4xl'>
-              <Text color='white' fontSize={'$2xl'} textAlign='center'>{t("type_equipes")}</Text>
+              <Text color='$white' fontSize={'$2xl'} textAlign='center'>{t("type_equipes")}</Text>
               <RadioGroup
                 name="typeEquipesRadioGroup"
                 accessibilityLabel={t("choix_type_equipes")}
@@ -121,19 +121,19 @@ class ChoixModeTournoi extends React.Component {
                     <RadioIndicator mr='$2'>
                       <CircleIcon stroke={this.state.typeEquipes == "teteatete" ? '$white' : '$secondary700'}/>
                     </RadioIndicator>
-                    <RadioLabel color='white'>{t("tete_a_tete")}</RadioLabel>
+                    <RadioLabel color='$white'>{t("tete_a_tete")}</RadioLabel>
                   </Radio>
                   <Radio value="doublette" size='lg'>
                     <RadioIndicator mr='$2'>
                       <CircleIcon stroke={this.state.typeEquipes == "doublette" ? '$white' : '$secondary700'}/>
                     </RadioIndicator>
-                    <RadioLabel color='white'>{t("doublettes")}</RadioLabel>
+                    <RadioLabel color='$white'>{t("doublettes")}</RadioLabel>
                   </Radio>
                   <Radio value="triplette" size='lg'>
                     <RadioIndicator mr='$2'>
                       <CircleIcon stroke={this.state.typeEquipes == "triplette" ? '$white' : '$secondary700'}/>
                     </RadioIndicator>
-                    <RadioLabel color='white'>{t("triplettes")}</RadioLabel>
+                    <RadioLabel color='$white'>{t("triplettes")}</RadioLabel>
                   </Radio>
                 </VStack>
               </RadioGroup>

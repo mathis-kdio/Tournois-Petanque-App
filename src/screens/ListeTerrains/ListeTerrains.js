@@ -1,9 +1,12 @@
 import React from 'react'
-import { StyleSheet, View, Text, Button, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import ListeTerrainItem from '@components/ListeTerrainItem';
 import { calcNbMatchsParTour } from '@utils/generations/generation';
 import { withTranslation } from 'react-i18next';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
+import { VStack, Text, Button, FlatList, ButtonText } from '@gluestack-ui/themed';
+import TopBarBack from '../../components/TopBarBack';
 
 class ListeTerrains extends React.Component {
 
@@ -19,9 +22,9 @@ class ListeTerrains extends React.Component {
   _ajoutTerrainButton() {
     const { t } = this.props;
     return (
-      <View style={styles.ajoutTerrain_container}>
-        <Button color="green" title={t("ajouter_terrain")} onPress={() => this._ajoutTerrains()}/>
-      </View>
+      <Button action='primary' onPress={() => this._ajoutTerrains()}>
+        <ButtonText>{t("ajouter_terrain")}</ButtonText>
+      </Button>
     )
   }
 
@@ -34,7 +37,9 @@ class ListeTerrains extends React.Component {
     const disabled = listeTerrains.length < nbTerrainsNecessaires;
     const title = disabled ? t("terrains_insuffisants") : t("commencer");
     return (
-      <Button disabled={disabled} color='green' title={title} onPress={() => this._commencer()}/>
+      <Button isDisabled={disabled} action='positive' onPress={() => this._commencer()}>
+        <ButtonText>{title}</ButtonText>
+      </Button>
     )
   }
 
@@ -50,13 +55,14 @@ class ListeTerrains extends React.Component {
   render() {
     const { t } = this.props;
     return (
-      <View style={styles.main_container}>
-        <View style={styles.body_container}>
-          <View>
-            <Text style={styles.title}>{t("nombre_terrains", {nb: this.props.listeTerrains.length})}</Text>
-          </View>
-          <View style={styles.flatList_container}>
+      <SafeAreaView style={{flex: 1}}>
+        <StatusBar backgroundColor="#0594ae"/>
+        <VStack flex={1} bgColor={"#0594ae"}>
+          <TopBarBack title={t("liste_terrains_navigation_title")} navigation={this.props.navigation}/>
+          <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("nombre_terrains", {nb: this.props.listeTerrains.length})}</Text>
+          <VStack flex={1} my={'$2'}>
             <FlatList
+              persistentScrollbar={true}
               data={this.props.listeTerrains}
               initialNumToRender={20}
               keyExtractor={(item) => item.id.toString()}
@@ -65,46 +71,17 @@ class ListeTerrains extends React.Component {
                   terrain={item}
                 />
               )}
-              ListFooterComponent={
-                <View style={styles.createBtnView}>
-                  {this._ajoutTerrainButton()}
-                </View>
-              }
             />
-            <View style={styles.createBtnView}>
-              {this._commencerButton()}
-            </View>
-          </View>
-        </View>
-      </View>
+          </VStack>
+          <VStack px={'$10'} space='lg'>
+            {this._ajoutTerrainButton()}
+            {this._commencerButton()}
+          </VStack>
+        </VStack>
+      </SafeAreaView>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  main_container: {
-    flex: 1,
-    backgroundColor: "#0594ae"
-  },
-  body_container: {
-    flex: 1
-  },
-  title: {
-    marginBottom: 20,
-    textAlign: 'center',
-    fontSize: 24,
-    color: 'white'
-  },
-  flatList_container: {
-    flex: 1
-  },
-  ajoutTerrain_container: {
-    marginTop: 10
-  },
-  createBtnView: {
-    alignItems: 'center'
-  }
-})
 
 const mapStateToProps = (state) => {
   return {
