@@ -1,5 +1,4 @@
 import { VStack, Text, Input, Button, HStack, Box, ButtonText } from '@gluestack-ui/themed';
-import AdMobBanner from 'components/adMob/AdMobBanner';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react'
 import { withTranslation } from 'react-i18next';
@@ -9,6 +8,7 @@ import { connect } from 'react-redux'
 import TopBarBack from '../../components/TopBarBack';
 import { InputField } from '@gluestack-ui/themed';
 import { Keyboard } from 'react-native';
+import AdMobMatchDetailBanner from '../../components/adMob/AdMobMatchDetailBanner';
 
 class MatchDetail extends React.Component {
   constructor(props) {
@@ -199,7 +199,7 @@ class MatchDetail extends React.Component {
               </VStack>
               {!this.state.keyboardOpen &&
                 <Box>
-                  <AdMobBanner type="MEDIUM_RECTANGLE"/>
+                  <AdMobMatchDetailBanner/>
                 </Box>
               }
               <Box>
