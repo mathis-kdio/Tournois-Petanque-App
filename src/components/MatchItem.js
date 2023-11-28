@@ -32,8 +32,8 @@ class MatchItem extends React.Component {
   }
 
   _displayName = (joueurNumber, equipe, matchID, nbPtVictoire) => {
-    let colorEquipe1 = 'white';
-    let colorEquipe2 = 'white';
+    let colorEquipe1 = '$white';
+    let colorEquipe2 = '$white';
     if (this.props.listeMatchs[matchID].score1 == nbPtVictoire) {
       colorEquipe1 = 'green';
       colorEquipe2 = 'red';

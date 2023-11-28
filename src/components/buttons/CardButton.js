@@ -14,7 +14,7 @@ class CardButton extends React.Component {
     return (
       <Pressable bg='#1c3969' flex={1} alignItems='center' justifyContent='center' py={'$5'} rounded={'$3xl'} onPress={() => navigate()}>
         <FontAwesome5 name={icon} color='white' size={24}/>
-        <Text color='white'>{text}</Text>
+        <Text color='$white'>{text}</Text>
       </Pressable>
     )
   }

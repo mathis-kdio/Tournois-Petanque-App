@@ -264,7 +264,7 @@ class Inscription extends React.Component {
             <Input size='md' borderColor='$white'>
               <InputField
                 placeholder={t("nom_joueur")}
-                placeholderTextColor='white'
+                placeholderTextColor='$white'
                 autoFocus={true}
                 defaultValue={this.nbToursTxt}
                 keyboardType="default"

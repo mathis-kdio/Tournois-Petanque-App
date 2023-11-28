@@ -96,7 +96,7 @@ class InscriptionsSansNoms extends React.Component {
     return (
       <Button
         isDisabled={boutonDesactive}
-        bg='$green700'
+        action='positive'
         onPress={() => this._commencer()}
       >
         <ButtonText>{boutonTitle}</ButtonText>

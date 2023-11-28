@@ -143,14 +143,14 @@ class Parametres extends React.Component {
   }
 
   _item(text, action, icon, type, drapeau) {
-    let colorTxt = 'white';
+    let colorTxt = '$white';
     let btnColor = 'white';
     if (type == "danger") {
       colorTxt = '$red500';
       btnColor = 'red';
     }
     else if (type == "modal") {
-      colorTxt = 'black';
+      colorTxt = '$black';
       btnColor = 'black';
     }
     return (
@@ -162,7 +162,7 @@ class Parametres extends React.Component {
               :
               <Image source={drapeau} alt="drapeau" size='xs'/>
             }
-            <Text fontSize={16} color={colorTxt}>{text}</Text>
+            <Text fontSize={'$md'} color={colorTxt}>{text}</Text>
           </HStack>
           <FontAwesome5 name="arrow-right" size={20} color={btnColor}/>
         </HStack>
@@ -188,16 +188,16 @@ class Parametres extends React.Component {
           <TopBarBack title={t("parametres")} navigation={this.props.navigation}/>
           <VStack flex={1} px={'$10'} space='lg'>
             <VStack>
-              <Text fontSize={'$xl'} color='white'>{t("a_propos")}</Text>
-              <Box borderWidth={'$1'} borderColor='white' borderRadius={'$lg'}>
+              <Text fontSize={'$xl'} color='$white'>{t("a_propos")}</Text>
+              <Box borderWidth={'$1'} borderColor='$white' borderRadius={'$lg'}>
                 {this._item(t("voir_source_code"), () => _openURL(this.githubRepository), "code", undefined, undefined)}
                 <Divider/>
                 {this._item("tournoispetanqueapp@gmail.com", () => _openURL(this.mail), "envelope", undefined, undefined)}
               </Box>
             </VStack>
             <VStack>
-              <Text fontSize={'$xl'} color='white'>{t("reglages")}</Text>
-              <Box borderWidth={'$1'} borderColor='white' borderRadius={'$lg'}>
+              <Text fontSize={'$xl'} color='$white'>{t("reglages")}</Text>
+              <Box borderWidth={'$1'} borderColor='$white' borderRadius={'$lg'}>
                 {this._item(t("changer_langue"), () => this.setState({modalLanguagesOpen: true}), "language", undefined, undefined)}
                 <Divider/>
                 {this._item(t("modifier_consentement"), () => this._adsConsentShowForm(), "ad", undefined, undefined)}
@@ -206,7 +206,7 @@ class Parametres extends React.Component {
               </Box>
             </VStack>
             <VStack flex={1}>
-              <Text fontSize={'$xl'} color='white'>{t("nouveautes")}</Text>
+              <Text fontSize={'$xl'} color='$white'>{t("nouveautes")}</Text>
               <FlatList 
                 data={ChangelogData}
                 keyExtractor={(item) => item.id.toString() }
@@ -217,7 +217,7 @@ class Parametres extends React.Component {
               />
             </VStack>
             <Center>
-              <Text textAlign='center' fontSize={'$md'} color='white'>Version {expo.version}</Text>
+              <Text textAlign='center' fontSize={'$md'} color='$white'>Version {expo.version}</Text>
             </Center>
           </VStack>
         </VStack>
