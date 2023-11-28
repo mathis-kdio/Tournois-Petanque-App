@@ -2,7 +2,7 @@ import { createStyle } from '@gluestack-style/react';
 
 export const SelectTrigger = createStyle({
   'borderWidth': 1,
-  'borderColor': '$backgroundLight300',
+  'borderColor': '$white',
   'borderRadius': '$sm',
   'flexDirection': 'row',
   'overflow': 'hidden',

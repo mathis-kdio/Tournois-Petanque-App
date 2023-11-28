@@ -7,7 +7,7 @@ export const SelectInput = createStyle({
   pointerEvents: 'none',
   flex: 1,
   h: '$full',
-  color: '$textLight900',
+  color: '$white',
   props: {
     placeholderTextColor: '$textLight500',
   },

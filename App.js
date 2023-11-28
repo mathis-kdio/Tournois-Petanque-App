@@ -11,7 +11,7 @@ import { I18nextProvider } from "react-i18next";
 import * as Sentry from 'sentry-expo';
 import i18n from "./i18n";
 import { GluestackUIProvider } from "@gluestack-ui/themed"
-import { config } from './config';
+import { config } from './config/gluestack-ui.config';
 
 const routingInstrumentation = new Sentry.Native.ReactNavigationInstrumentation();
 

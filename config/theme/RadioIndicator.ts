@@ -4,7 +4,7 @@ export const RadioIndicator = createStyle({
   'justifyContent': 'center',
   'alignItems': 'center',
   'bg': 'transparent',
-  'borderColor': '$borderLight400',
+  'borderColor': '$white',
   'borderWidth': 2,
   'borderRadius': 999,
   '_web': {
@@ -19,7 +19,7 @@ export const RadioIndicator = createStyle({
   },
 
   ':checked': {
-    borderColor: '$primary600',
+    borderColor: '$white',
     bg: 'transparent',
   },
 
@@ -46,7 +46,7 @@ export const RadioIndicator = createStyle({
 
   ':active': {
     bg: 'transparent',
-    borderColor: '$primary800',
+    borderColor: '$white',
   },
 
   '_dark': {

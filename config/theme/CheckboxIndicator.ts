@@ -3,7 +3,7 @@ import { createStyle } from '@gluestack-style/react';
 export const CheckboxIndicator = createStyle({
   'justifyContent': 'center',
   'alignItems': 'center',
-  'borderColor': '$borderLight400',
+  'borderColor': '$white',
   'bg': '$transparent',
   'borderRadius': 4,
 
@@ -19,7 +19,7 @@ export const CheckboxIndicator = createStyle({
   },
 
   ':checked': {
-    borderColor: '$primary600',
+    borderColor: '$white',
     bg: '$primary600',
   },
 
