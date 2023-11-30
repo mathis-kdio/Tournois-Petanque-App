@@ -116,7 +116,7 @@ class OptionsTournoi extends React.Component {
                 <VStack space='md'>
                   <Checkbox
                     onChange={() => this.setState({speciauxIncompatibles: !this.state.speciauxIncompatibles})}
-                    accessibilityLabel={t("choix_regle_enfants")}
+                    aria-label={t("choix_regle_enfants")}
                     defaultIsChecked
                     size='md'
                   >
@@ -127,7 +127,7 @@ class OptionsTournoi extends React.Component {
                   </Checkbox>
                   <Checkbox
                     onChange={() => this.setState({memesEquipes: !this.state.memesEquipes})}
-                    accessibilityLabel={t("choix_regle_equipes")}
+                    aria-label={t("choix_regle_equipes")}
                     defaultIsChecked
                     size='md'
                   >
@@ -148,7 +148,7 @@ class OptionsTournoi extends React.Component {
                     maxValue={100}
                     defaultValue={50}
                     step={50}
-                    accessibilityLabel={t("choix_regle_adversaires")}
+                    aria-label={t("choix_regle_adversaires")}
                     onChangeEnd={v => {this.setState({memesAdversaires: v})}}
                   >
                     <SliderTrack>
@@ -164,7 +164,7 @@ class OptionsTournoi extends React.Component {
                   <Text color='$white' fontSize={'$md'}>{t("options_regle_complement")}</Text>
                   <Select
                     selectedValue={this.state.complement}
-                    accessibilityLabel={t("choix_complement")}
+                    aria-label={t("choix_complement")}
                     placeholder={t("choix_complement")}
                     onValueChange={itemValue => this.setState({complement: itemValue})}
                   >
@@ -189,7 +189,7 @@ class OptionsTournoi extends React.Component {
                 <VStack>
                   <Checkbox
                     onChange={() => this.setState({avecTerrains: !this.state.avecTerrains})}
-                    accessibilityLabel={t("choix_option_terrains")}
+                    aria-label={t("choix_option_terrains")}
                     size='md'
                   >
                     <CheckboxIndicator mr={'$2'} sx={{bgColor: '$cyan600'}} borderColor='$white'>

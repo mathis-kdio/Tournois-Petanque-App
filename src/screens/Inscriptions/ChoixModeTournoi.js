@@ -71,7 +71,7 @@ class ChoixModeTournoi extends React.Component {
         <Text color='$white' fontSize={'$2xl'} textAlign='center'>{t("mode_tournoi")}</Text>
         <RadioGroup
           name="modeTournoiRadioGroup"
-          accessibilityLabel={t("choix_mode_tournoi")}
+          aria-label={t("choix_mode_tournoi")}
           value={this.state.modeTournoi}
           onChange={nextValue => {this.setState({modeTournoi: nextValue})}}
         >
@@ -112,7 +112,7 @@ class ChoixModeTournoi extends React.Component {
               <Text color='$white' fontSize={'$2xl'} textAlign='center'>{t("type_equipes")}</Text>
               <RadioGroup
                 name="typeEquipesRadioGroup"
-                accessibilityLabel={t("choix_type_equipes")}
+                aria-label={t("choix_type_equipes")}
                 value={this.state.typeEquipes}
                 onChange={nextValue => {this.setState({typeEquipes: nextValue})}}
               >

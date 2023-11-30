@@ -172,7 +172,7 @@ class ListeJoueurItem extends React.Component {
       return (
         <Select
           selectedValue={selectedValue}
-          accessibilityLabel={t("choix_equipe")}
+          aria-label={t("choix_equipe")}
           onValueChange={itemValue => this._ajoutEquipe(joueur.id, itemValue)}
         >
           <SelectTrigger>
@@ -233,7 +233,7 @@ class ListeJoueurItem extends React.Component {
         <Box mr={'$1'}>
           <Checkbox
             onChange={() => this._onCheckboxChange(isChecked, joueur.id)}
-            accessibilityLabel={t("checkbox_inscription_joueuritem")}
+            aria-label={t("checkbox_inscription_joueuritem")}
             size='md'
             isChecked={isChecked}
           >
