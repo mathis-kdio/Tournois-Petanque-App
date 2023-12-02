@@ -5,10 +5,13 @@
     "android": "npx expo start --android",
     "ios": "npx expo start --ios",
     "web": "npx expo start --web",
+    "tauri": "npx tauri dev",
     "eject": "npx expo prebuild",
     "build": "npx eas-cli build",
     "build Android": "npx eas-cli build --platform android",
-    "build Android Development": "npx eas-cli build --profile development"
+    "build Android Development": "npx eas-cli build --profile development",
+    "build web": "npx expo export --platform web",
+    "build desktop": "npx tauri build"
   },
   "dependencies": {
     "@expo/webpack-config": "^19.0.0",
@@ -23,6 +26,7 @@
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/stack": "^6.3.17",
     "@sentry/react-native": "5.10.0",
+    "@tauri-apps/api": "^1.0.2",
     "expo": "^49.0.7",
     "expo-application": "~5.3.0",
     "expo-build-properties": "^0.8.3",
@@ -66,6 +70,7 @@
   "devDependencies": {
     "@babel/core": "^7.22.10",
     "@expo/metro-runtime": "^2.2.16",
+    "@tauri-apps/cli": "^1.0.5",
     "babel-plugin-module-resolver": "^5.0.0",
     "babel-preset-expo": "^9.5.1"
   },
