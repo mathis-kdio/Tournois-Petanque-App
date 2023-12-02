@@ -13,6 +13,7 @@ import i18n from "./i18n";
 import { GluestackUIProvider } from "@gluestack-ui/themed"
 import { config } from './config/gluestack-ui.config';
 import { Platform } from 'react-native';
+import "@expo/metro-runtime"; //Fast-refresh web
 
 let routingInstrumentation = undefined;
 if (Platform.OS == "android" || Platform.OS == "ios") {
