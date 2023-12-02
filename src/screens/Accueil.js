@@ -3,14 +3,13 @@ import { expo } from '../../app.json';
 import { connect } from 'react-redux';
 import * as NavigationBar from 'expo-navigation-bar';
 import { FontAwesome5 } from '@expo/vector-icons';
-import VersionCheck from 'react-native-version-check-expo';
+import { _versionCheck } from '../utils/versionCheck/versionCheck'
 import { _openPlateformLink, _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Box, HStack, VStack, Text, Pressable, Modal, Image, ModalHeader, ModalBody, ModalContent, ModalCloseButton, Heading, CloseIcon, ModalBackdrop } from '@gluestack-ui/themed';
 import { StatusBar } from 'expo-status-bar';
-import { AdsConsent, AdsConsentStatus } from 'react-native-google-mobile-ads';
+import { _adsConsentForm } from '../utils/adMob/consentForm'
 import { withTranslation } from 'react-i18next';
-import mobileAds from 'react-native-google-mobile-ads';
 import CardButton from '@components/buttons/CardButton';
 import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
 import { AppState } from 'react-native';
@@ -44,22 +43,18 @@ class Accueil extends React.Component {
 
     //MODAL UPDATE
     if (Platform.OS === 'android') { //TEMP car bug sur iOS
-      VersionCheck.needUpdate().then(async res => {
-        if (res != null && res.isNeeded && this.state.modalVisible != true) {
-          this.setState({modalVisible: true});
-        }
-      })
+      _versionCheck().then(res => this.setState({modalVisible: res}));
     }
 
     //GOOGLE ADMOB
     if (Platform.OS === 'android') {
-      this._adsConsentForm();
+      _adsConsentForm(this.state.appState);
     }
     else if (Platform.OS === 'ios') {
       setTimeout(async () => {
         requestTrackingPermissionsAsync().then(status => {
           if (status === 'granted') {
-            this._adsConsentForm();
+            _adsConsentForm(this.state.appState);
           }
         });
       }, 1000);
@@ -69,22 +64,6 @@ class Accueil extends React.Component {
   componentDidUpdate() {
     if (Platform.OS === 'android') {
       NavigationBar.setBackgroundColorAsync("#0594ae");
-    }
-  }
-
-  _adsConsentForm() {
-    if (this.state.appState == "active") {
-      AdsConsent.requestInfoUpdate().then(async consentInfo => {
-        if (consentInfo.isConsentFormAvailable && (consentInfo.status === AdsConsentStatus.UNKNOWN || consentInfo.status === AdsConsentStatus.REQUIRED)) {
-          if (this.state.appState == "active") {
-            AdsConsent.showForm().then(async res => {
-              if (res.status === AdsConsentStatus.OBTAINED) {
-                mobileAds().initialize().then(async adapterStatuses => {console.log(adapterStatuses)});
-              }
-            });
-          }
-        }
-      });
     }
   }
 
