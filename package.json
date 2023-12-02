@@ -56,11 +56,12 @@
     "react-native-svg": "^13.9.0",
     "react-native-tab-view": "^3.5.2",
     "react-native-version-check-expo": "^3.4.7",
-    "react-native-web": "^0.19.7",
+    "react-native-web": "~0.19.6",
     "react-redux": "^8.1.2",
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
-    "sentry-expo": "~7.1.0"
+    "sentry-expo": "~7.1.0",
+    "@expo/webpack-config": "^19.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.22.10",
