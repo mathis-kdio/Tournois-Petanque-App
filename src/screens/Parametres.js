@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
 import { HStack, VStack, Text, FlatList, Divider, AlertDialogContent, AlertDialog, Pressable, Box, Center, Button, ButtonText, Modal, Image, ModalBackdrop, ModalContent, ModalCloseButton, ModalHeader, ModalBody, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, ButtonGroup, Heading, AlertDialogCloseButton, CloseIcon, AlertDialogBackdrop } from '@gluestack-ui/themed'
 import { FontAwesome5 } from '@expo/vector-icons';
-import { AdsConsent } from 'react-native-google-mobile-ads';
+import { _adsConsentShowForm } from '../utils/adMob/consentForm'
 import { withTranslation } from "react-i18next";
 import TopBarBack from '@components/TopBarBack'
 import ChangelogData from '@assets/ChangelogData.json'
@@ -134,14 +134,6 @@ class Parametres extends React.Component {
     this.setState({modalLanguagesOpen: false});
   }
 
-  _adsConsentShowForm() {
-    AdsConsent.requestInfoUpdate().then(async consentInfo => {
-      if (consentInfo.isConsentFormAvailable) {
-        AdsConsent.showForm().then(async status => {console.log(status)});
-      }
-    });
-  }
-
   _item(text, action, icon, type, drapeau) {
     let colorTxt = '$white';
     let btnColor = 'white';
@@ -200,7 +192,7 @@ class Parametres extends React.Component {
               <Box borderWidth={'$1'} borderColor='$white' borderRadius={'$lg'}>
                 {this._item(t("changer_langue"), () => this.setState({modalLanguagesOpen: true}), "language", undefined, undefined)}
                 <Divider/>
-                {this._item(t("modifier_consentement"), () => this._adsConsentShowForm(), "ad", undefined, undefined)}
+                {this._item(t("modifier_consentement"), () => _adsConsentShowForm(), "ad", undefined, undefined)}
                 <Divider/>
                 {this._item(t("supprimer_donnees"), () => this.setState({alertOpen: true}), "trash-alt", "danger", undefined)}
               </Box>
