@@ -3,8 +3,8 @@ name: 'Tauri Publish'
 # This will trigger the action on each push to the `release` branch.
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*'
 
 jobs:
   publish-tauri:
@@ -44,8 +44,8 @@ jobs:
         with:
           projectPath: './src-tauri'
           distPath: '../dist'
-          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
-          releaseName: 'App v__VERSION__'
-          releaseBody: 'See the assets to download this version and install.'
+          tagName: v__VERSION__
+          releaseName: 'Version __VERSION__'
+          releaseBody: '[CHANGELOG](https://github.com/mathis-kdio/Petanque-GCU/blob/main/CHANGELOG.md)'
           releaseDraft: true
           prerelease: false
