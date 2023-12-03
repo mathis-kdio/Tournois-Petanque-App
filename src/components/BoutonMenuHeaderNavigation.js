@@ -43,7 +43,7 @@ class BoutonMenuHeaderNav extends React.Component {
         }}
         closeOnSelect={true}
       >
-        <MenuItem key="Joueurs" textValue={t("liste_joueurs")} onPress={() => this._showJoueurs()} closeOnSelect={true}>
+        <MenuItem key="Joueurs" textValue={t("liste_joueurs")} onPress={() => this._showJoueurs()}>
           <MenuItemLabel size='sm'>{t("liste_joueurs")}</MenuItemLabel>
         </MenuItem>
         <MenuItem key="Options" textValue={t("parametres_tournoi")} onPress={() => this._showOptions()}>
