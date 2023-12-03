@@ -103,8 +103,9 @@ class Parametres extends React.Component {
 
   _modalLanguages() {
     const { t } = this.props;
-    let drapeauUSA = require('@assets/images/drapeau-usa.png');
     let drapeauFrance = require('@assets/images/drapeau-france.png');
+    let drapeauUSA = require('@assets/images/drapeau-usa.png');
+    let drapeauPologne = require('@assets/images/drapeau-pologne.png');
     return (
       <Modal isOpen={this.state.modalLanguagesOpen} onClose={() => this.setState({modalLanguagesOpen: false})}>
         <ModalBackdrop/>
@@ -116,9 +117,11 @@ class Parametres extends React.Component {
             </ModalCloseButton>
           </ModalHeader>
           <ModalBody>
-            {this._item(t("francais"), () => this._changeLanguage("fr-FR"), "flag", "modal", drapeauFrance)}
+            {this._item(t("francais"), () => this._changeLanguage("fr-FR"), undefined, "modal", drapeauFrance)}
             <Divider/>
-            {this._item(t("anglais"), () => this._changeLanguage("en-US"), "flag-usa", "modal", drapeauUSA)}
+            {this._item(t("anglais"), () => this._changeLanguage("en-US"), undefined, "modal", drapeauUSA)}
+            <Divider/>
+            {this._item(t("polonais"), () => this._changeLanguage("pl-PL"), undefined, "modal", drapeauPologne)}
             <Divider/>
             <Text textAlign='center'>{t("envie_aider_traduction")}</Text>
             <Text textAlign='center' onPress={() => _openURL(this.crowdin)} color='$blue500'>{t("texte_lien_traduction")}</Text>
