@@ -16,7 +16,7 @@ class TopBarBack extends React.Component {
         <Pressable rounded={'$2xl'} p={'$2'} onPress={() => navigation.goBack()}>
           <FontAwesome5 name="arrow-left" size={15} color='white'/>
         </Pressable>
-        <Text fontSize={'$xl'} color='white'>{title}</Text>
+        <Text fontSize={'$xl'} color='$white'>{title}</Text>
       </HStack>
     )
   }

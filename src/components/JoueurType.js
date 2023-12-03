@@ -38,11 +38,11 @@ class JoueurType extends React.Component {
     return (
       <Select
         selectedValue={joueurType ? joueurType : ""}
-        accessibilityLabel={t("choisir_poste")}
+        aria-label={t("choisir_poste")}
         onValueChange={itemValue => _setJoueurType(itemValue)}
       >
         <SelectTrigger variant='rounded'>
-          <SelectInput placeholder={t("choisir_poste")} placeholderTextColor="white"/>
+          <SelectInput placeholder={t("choisir_poste")} placeholderTextColor='$white'/>
           <SelectIcon mr={'$3'}>
             <ChevronDownIcon color='$white'/>
           </SelectIcon>

@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
 import { HStack, VStack, Text, FlatList, Divider, AlertDialogContent, AlertDialog, Pressable, Box, Center, Button, ButtonText, Modal, Image, ModalBackdrop, ModalContent, ModalCloseButton, ModalHeader, ModalBody, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, ButtonGroup, Heading, AlertDialogCloseButton, CloseIcon, AlertDialogBackdrop } from '@gluestack-ui/themed'
 import { FontAwesome5 } from '@expo/vector-icons';
-import { AdsConsent } from 'react-native-google-mobile-ads';
+import { _adsConsentShowForm } from '../utils/adMob/consentForm'
 import { withTranslation } from "react-i18next";
 import TopBarBack from '@components/TopBarBack'
 import ChangelogData from '@assets/ChangelogData.json'
@@ -15,7 +15,7 @@ class Parametres extends React.Component {
   constructor(props) {
     super(props)
     this.githubRepository = "https://github.com/sponsors/mathis-kdio";
-    this.mail = "mailto: tournoispetanqueapp@gmail.com";
+    this.mail = "mailto:tournoispetanqueapp@gmail.com";
     this.crowdin = "https://crowdin.com/project/tournois-de-ptanque-gcu";
     this.state = {
       alertOpen: false,
@@ -134,23 +134,15 @@ class Parametres extends React.Component {
     this.setState({modalLanguagesOpen: false});
   }
 
-  _adsConsentShowForm() {
-    AdsConsent.requestInfoUpdate().then(async consentInfo => {
-      if (consentInfo.isConsentFormAvailable) {
-        AdsConsent.showForm().then(async status => {console.log(status)});
-      }
-    });
-  }
-
   _item(text, action, icon, type, drapeau) {
-    let colorTxt = 'white';
+    let colorTxt = '$white';
     let btnColor = 'white';
     if (type == "danger") {
       colorTxt = '$red500';
       btnColor = 'red';
     }
     else if (type == "modal") {
-      colorTxt = 'black';
+      colorTxt = '$black';
       btnColor = 'black';
     }
     return (
@@ -162,7 +154,7 @@ class Parametres extends React.Component {
               :
               <Image source={drapeau} alt="drapeau" size='xs'/>
             }
-            <Text fontSize={16} color={colorTxt}>{text}</Text>
+            <Text fontSize={'$md'} color={colorTxt}>{text}</Text>
           </HStack>
           <FontAwesome5 name="arrow-right" size={20} color={btnColor}/>
         </HStack>
@@ -188,25 +180,25 @@ class Parametres extends React.Component {
           <TopBarBack title={t("parametres")} navigation={this.props.navigation}/>
           <VStack flex={1} px={'$10'} space='lg'>
             <VStack>
-              <Text fontSize={'$xl'} color='white'>{t("a_propos")}</Text>
-              <Box borderWidth={'$1'} borderColor='white' borderRadius={'$lg'}>
+              <Text fontSize={'$xl'} color='$white'>{t("a_propos")}</Text>
+              <Box borderWidth={'$1'} borderColor='$white' borderRadius={'$lg'}>
                 {this._item(t("voir_source_code"), () => _openURL(this.githubRepository), "code", undefined, undefined)}
                 <Divider/>
                 {this._item("tournoispetanqueapp@gmail.com", () => _openURL(this.mail), "envelope", undefined, undefined)}
               </Box>
             </VStack>
             <VStack>
-              <Text fontSize={'$xl'} color='white'>{t("reglages")}</Text>
-              <Box borderWidth={'$1'} borderColor='white' borderRadius={'$lg'}>
+              <Text fontSize={'$xl'} color='$white'>{t("reglages")}</Text>
+              <Box borderWidth={'$1'} borderColor='$white' borderRadius={'$lg'}>
                 {this._item(t("changer_langue"), () => this.setState({modalLanguagesOpen: true}), "language", undefined, undefined)}
                 <Divider/>
-                {this._item(t("modifier_consentement"), () => this._adsConsentShowForm(), "ad", undefined, undefined)}
+                {this._item(t("modifier_consentement"), () => _adsConsentShowForm(), "ad", undefined, undefined)}
                 <Divider/>
                 {this._item(t("supprimer_donnees"), () => this.setState({alertOpen: true}), "trash-alt", "danger", undefined)}
               </Box>
             </VStack>
             <VStack flex={1}>
-              <Text fontSize={'$xl'} color='white'>{t("nouveautes")}</Text>
+              <Text fontSize={'$xl'} color='$white'>{t("nouveautes")}</Text>
               <FlatList 
                 data={ChangelogData}
                 keyExtractor={(item) => item.id.toString() }
@@ -217,7 +209,7 @@ class Parametres extends React.Component {
               />
             </VStack>
             <Center>
-              <Text textAlign='center' fontSize={'$md'} color='white'>Version {expo.version}</Text>
+              <Text textAlign='center' fontSize={'$md'} color='$white'>Version {expo.version}</Text>
             </Center>
           </VStack>
         </VStack>

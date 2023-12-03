@@ -6,8 +6,8 @@ import { VStack, Text, Modal, Pressable, ModalContent, ModalHeader, ModalBody, M
 import { FontAwesome5 } from '@expo/vector-icons';
 import TopBarBack from '@components/TopBarBack';
 import CardButton from '@components/buttons/CardButton';
-import AdMobBanner from '@components/adMob/AdMobBanner';
 import { withTranslation } from 'react-i18next';
+import AdMobInscriptionsBanner from '../../components/adMob/AdMobInscriptionsBanner';
 
 class ChoixTypeTournoi extends React.Component {
   constructor(props) {
@@ -77,7 +77,7 @@ class ChoixTypeTournoi extends React.Component {
               />
               <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: "melee-demelee"})}>
                 <FontAwesome5 name="info-circle" color='white' size={24}/>
-                <Text color='white'> {t("savoir_plus")}</Text>
+                <Text color='$white'> {t("savoir_plus")}</Text>
               </Pressable>
             </VStack>
             <VStack flex={1}>
@@ -88,7 +88,7 @@ class ChoixTypeTournoi extends React.Component {
               />
               <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: "championnat"})}>
                 <FontAwesome5 name="info-circle" color='white' size={24}/>
-                <Text color='white'> {t("savoir_plus")}</Text>
+                <Text color='$white'> {t("savoir_plus")}</Text>
               </Pressable>
             </VStack>
             <VStack flex={1}>
@@ -99,11 +99,11 @@ class ChoixTypeTournoi extends React.Component {
               />
               <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: "coupe"})}>
                 <FontAwesome5 name="info-circle" color='white' size={24}/>
-                <Text color='white'> {t("savoir_plus")}</Text>
+                <Text color='$white'> {t("savoir_plus")}</Text>
               </Pressable>
             </VStack>
             <VStack flat={4} m={'$10'}>
-              <AdMobBanner type="ANCHORED_ADAPTIVE_BANNER"/>
+              <AdMobInscriptionsBanner/>
             </VStack>
           </VStack>
         </VStack>

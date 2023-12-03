@@ -1,9 +1,14 @@
-import AdMobBanner from 'components/adMob/AdMobBanner';
+import { VStack, Text, Input, Button, HStack, Box, ButtonText } from '@gluestack-ui/themed';
+import { StatusBar } from 'expo-status-bar';
 import React from 'react'
 import { withTranslation } from 'react-i18next';
-import { StyleSheet, View, Text, TextInput, Button, Keyboard } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux'
+import TopBarBack from '../../components/TopBarBack';
+import { InputField } from '@gluestack-ui/themed';
+import { Keyboard } from 'react-native';
+import AdMobMatchDetailBanner from '../../components/adMob/AdMobMatchDetailBanner';
 
 class MatchDetail extends React.Component {
   constructor(props) {
@@ -37,39 +42,37 @@ class MatchDetail extends React.Component {
     if(equipe === 1) {
       this.setState({
         score1: score
-      })
+      });
     }
     else if(equipe === 2) {
       this.setState({
         score2: score
-      })
+      });
     }
   } 
 
   _displayTitle(match) {
     const { t } = this.props;
+    let title = match.terrain ? match.terrain.name : t("match_numero")+(match.id + 1);
     return (
-      match.terrain ? 
-      <Text style={styles.title}>{(match.terrain.name)}</Text>
-      :
-      <Text style={styles.title}>{t("match_numero")}{(match.id + 1)}</Text>
+      <Text color='$white' fontSize={'$xl'} textAlign='center'>{title}</Text>
     )
   }
 
   _displayName = (joueurNumber) => {
-    let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs
-    let joueur = listeJoueurs.find(item => item.id === joueurNumber)
+    let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs;
+    let joueur = listeJoueurs.find(item => item.id === joueurNumber);
     if (joueur) {
-      return <Text key={joueur.id} style={styles.joueurName}>{joueur.id+1} {joueur.name}</Text>
+      return <Text color='$white' fontSize={'$md'} key={joueur.id}>{joueur.id+1} {joueur.name}</Text>
     }
   }
 
   _displayEquipe(equipe, match) {
-    let nomsJoueurs = []
+    let nomsJoueurs = [];
     for (let i = 0; i < 3; i++) {
-      nomsJoueurs.push(this._displayName(match.equipe[equipe - 1][i], equipe))
+      nomsJoueurs.push(this._displayName(match.equipe[equipe - 1][i], equipe));
     }
-    return nomsJoueurs
+    return nomsJoueurs;
   }
 
   _envoyerResultat(match) {
@@ -130,12 +133,11 @@ class MatchDetail extends React.Component {
 
   _boutonValider(match) {
     const { t } = this.props;
-    let boutonActive = true
-    if (this.state.score1 && this.state.score2) {
-      boutonActive = false
-    }
+    let btnDisabled = !(this.state.score1 && this.state.score2);
     return (
-      <Button disabled={boutonActive} color="green" title={t("valider_score")} onPress={() => this._envoyerResultat(match)}/>
+      <Button isDisabled={btnDisabled} action='positive' onPress={() => this._envoyerResultat(match)}>
+        <ButtonText>{t("valider_score")}</ButtonText>
+      </Button>
     )
   }
 
@@ -144,122 +146,75 @@ class MatchDetail extends React.Component {
     let match = this.props.route.params.match;
     return (
       <KeyboardAwareScrollView contentContainerStyle={{flex: 1}}>
-        <View style={styles.main_container}>
-          <View style={styles.body_container}>
-            <View style={styles.content_container} >
-              <View>
+        <SafeAreaView style={{flex: 1}}>
+          <StatusBar backgroundColor="#0594ae"/>
+          <VStack flex={1} bgColor={"#0594ae"}>
+            <TopBarBack title={t("detail_match_navigation_title")} navigation={this.props.navigation}/>
+            <VStack flex={1} px={'$10'} justifyContent='space-between'>
+              <VStack space='xl'>
                 {this._displayTitle(match)}
-              </View>
-              <View style={styles.equipe_container}>
-                <View style={styles.equipe1}>
-                  {this._displayEquipe(1, match)}
-                </View>
-                <Text style={styles.vs}>VS</Text>
-                <View style={styles.equipe2}>
-                  {this._displayEquipe(2, match)}
-                </View>
-              </View>
-            </View>
-            <View style={styles.resultat_container} >
-              <TextInput
-                style={styles.textinput}
-                placeholderTextColor='white'
-                underlineColorAndroid='white'
-                keyboardType={'decimal-pad'}
-                maxLength={2}
-                returnKeyType= {'next'}
-                placeholder={t("score_equipe_1")}
-                onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 1)}
-                onSubmitEditing={() => this.secondInput.focus()}
-              />
-              <TextInput
-                style={styles.textinput}
-                placeholderTextColor='white'
-                underlineColorAndroid='white'
-                keyboardType={'decimal-pad'}
-                maxLength={2}
-                ref={ref => {this.secondInput = ref}}
-                placeholder={t("score_equipe_2")}
-                onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 2)}
-                onSubmitEditing={() => this._envoyerResultat(match)}
-              />
-            </View>
-            {!this.state.keyboardOpen && <View style={styles.banner_container}>
-              <AdMobBanner type="MEDIUM_RECTANGLE"/>
-            </View>}
-            <View style={styles.buttonView}>
-              <Button color="red" title={t("supprimer_score")} onPress={() => this._supprimerResultat()}/>
-            </View>
-            <View style={styles.buttonView}>
-              {this._boutonValider(match)}
-            </View>
-          </View>
-        </View>
+                <HStack justifyContent='space-between'>
+                  <Box>
+                    {this._displayEquipe(1, match)}
+                  </Box>
+                  <VStack justifyContent='center'>
+                    <Text color='$white' fontSize={'$xl'}>VS</Text>
+                  </VStack>
+                  <Box>
+                    {this._displayEquipe(2, match)}
+                  </Box>
+                </HStack>
+                <HStack space='lg'>
+                  <Box flex={1}>
+                    <Input borderColor='$white'>
+                      <InputField
+                        placeholder={t("score_equipe_1")}
+                        placeholderTextColor='$white'
+                        autoFocus={true}
+                        defaultValue={this.nbToursTxt}
+                        keyboardType='decimal-pad'
+                        returnKeyType='next'
+                        maxLength={2}
+                        onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 1)}
+                        onSubmitEditing={() => this.secondInput.focus()}
+                      />
+                    </Input>
+                  </Box>
+                  <Box flex={1}>
+                    <Input size='md' borderColor='$white'>
+                      <InputField
+                        placeholder={t("score_equipe_2")}
+                        placeholderTextColor='$white'
+                        autoFocus={true}
+                        defaultValue={this.nbToursTxt}
+                        keyboardType='decimal-pad'
+                        maxLength={2}
+                        onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 2)}
+                        onSubmitEditing={() => this._envoyerResultat(match)}
+                        ref={ref => {this.secondInput = ref}}
+                      />
+                    </Input>
+                  </Box>
+                </HStack>
+              </VStack>
+              {!this.state.keyboardOpen &&
+                <Box>
+                  <AdMobMatchDetailBanner/>
+                </Box>
+              }
+              <VStack space='lg' mb={'$5'}>
+                <Button action='negative' onPress={() => this._supprimerResultat()}>
+                  <ButtonText>{t("supprimer_score")}</ButtonText>
+                </Button>
+                {this._boutonValider(match)}
+              </VStack>
+            </VStack>
+          </VStack>
+        </SafeAreaView>
       </KeyboardAwareScrollView>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  main_container: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: "#0594ae",
-  },
-  body_container: {
-    flex: 1,
-    marginHorizontal: '5%'
-  },
-  content_container: {
-    margin: 5
-  },
-  title: {
-    textAlign: 'center',
-    fontSize: 20,
-    color: 'white'
-  },
-  equipe_container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  equipe1: {
-    marginLeft: 10
-  },  
-  equipe2: {
-    alignItems: 'flex-end',
-    marginRight: 10
-  },
-  joueurName: {
-    fontSize: 15,
-    color: 'white'
-  },
-  vs_container: {
-    justifyContent: 'center'
-  },
-  vs: {
-    fontSize: 20,
-    color: 'white'
-  },
-  resultat_container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  banner_container: {
-    flex: 2,
-    marginBottom: 10
-  },
-  buttonView: {
-    marginBottom: 20,
-    paddingLeft: 15,
-    paddingRight: 15
-  },
-  textinput: {
-    height: 50,
-    paddingLeft: 5,
-    color: 'white'
-  }
-})
 
 const mapStateToProps = (state) => {
   return {

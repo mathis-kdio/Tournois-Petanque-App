@@ -89,7 +89,7 @@ class OptionsTournoi extends React.Component {
               <VStack px={'$10'} space='4xl'>
                 <VStack space='md'>
                   <VStack>
-                    <Text color='white' fontSize={'$md'}>{t("indiquer_nombre_tours")} </Text>
+                    <Text color='$white' fontSize={'$md'}>{t("indiquer_nombre_tours")} </Text>
                     <Input size='md' borderColor='$white'>
                       <InputField
                         placeholder={t("indiquer_nombre")}
@@ -101,7 +101,7 @@ class OptionsTournoi extends React.Component {
                     </Input>
                   </VStack>
                   <VStack>
-                    <Text color='white' fontSize={'$md'}>{t("indiquer_nombre_points_victoire")} </Text>
+                    <Text color='$white' fontSize={'$md'}>{t("indiquer_nombre_points_victoire")} </Text>
                     <Input size='md' borderColor='$white'>
                       <InputField
                         placeholder={t("indiquer_nombre")}
@@ -116,39 +116,39 @@ class OptionsTournoi extends React.Component {
                 <VStack space='md'>
                   <Checkbox
                     onChange={() => this.setState({speciauxIncompatibles: !this.state.speciauxIncompatibles})}
-                    accessibilityLabel={t("choix_regle_enfants")}
+                    aria-label={t("choix_regle_enfants")}
                     defaultIsChecked
                     size='md'
                   >
                     <CheckboxIndicator mr='$2' sx={{bgColor: '$cyan600'}} borderColor='$white'>
                       <CheckIcon color={this.state.speciauxIncompatibles ? '$white' : '$cyan600'}/>
                     </CheckboxIndicator>
-                    <CheckboxLabel color='white'>{t("options_regle_enfants")}</CheckboxLabel>
+                    <CheckboxLabel color='$white'>{t("options_regle_enfants")}</CheckboxLabel>
                   </Checkbox>
                   <Checkbox
                     onChange={() => this.setState({memesEquipes: !this.state.memesEquipes})}
-                    accessibilityLabel={t("choix_regle_equipes")}
+                    aria-label={t("choix_regle_equipes")}
                     defaultIsChecked
                     size='md'
                   >
                     <CheckboxIndicator mr='$2' sx={{bgColor: '$cyan600'}} borderColor='$white'>
                       <CheckIcon color={this.state.memesEquipes ? '$white' : '$cyan600'}/>
                     </CheckboxIndicator>
-                    <CheckboxLabel color='white'>{t("options_regle_equipes")}</CheckboxLabel>
+                    <CheckboxLabel color='$white'>{t("options_regle_equipes")}</CheckboxLabel>
                   </Checkbox>
                 </VStack>
                 <VStack>
-                  <Text color='white' fontSize={'$md'}>{t("options_regle_adversaires")}</Text>
+                  <Text color='$white' fontSize={'$md'}>{t("options_regle_adversaires")}</Text>
                   <HStack justifyContent="space-between">
-                    <Text color='white'>{t("1_seul_match")}</Text>
-                    <Text color='white'>{t("pourcent_matchs", {pourcent: "100"})}</Text>
+                    <Text color='$white'>{t("1_seul_match")}</Text>
+                    <Text color='$white'>{t("pourcent_matchs", {pourcent: "100"})}</Text>
                   </HStack>
                   <Slider
                     minValue={0}
                     maxValue={100}
                     defaultValue={50}
                     step={50}
-                    accessibilityLabel={t("choix_regle_adversaires")}
+                    aria-label={t("choix_regle_adversaires")}
                     onChangeEnd={v => {this.setState({memesAdversaires: v})}}
                   >
                     <SliderTrack>
@@ -157,14 +157,14 @@ class OptionsTournoi extends React.Component {
                     <SliderThumb bg='#1c3969'/>
                   </Slider>
                   <HStack justifyContent='center'>
-                    <Text color='white'>{t("pourcent_matchs", {pourcent: "50"})}</Text>
+                    <Text color='$white'>{t("pourcent_matchs", {pourcent: "50"})}</Text>
                   </HStack>
                 </VStack>
                 <VStack>
-                  <Text color='white' fontSize={'$md'}>{t("options_regle_complement")}</Text>
+                  <Text color='$white' fontSize={'$md'}>{t("options_regle_complement")}</Text>
                   <Select
                     selectedValue={this.state.complement}
-                    accessibilityLabel={t("choix_complement")}
+                    aria-label={t("choix_complement")}
                     placeholder={t("choix_complement")}
                     onValueChange={itemValue => this.setState({complement: itemValue})}
                   >
@@ -189,13 +189,13 @@ class OptionsTournoi extends React.Component {
                 <VStack>
                   <Checkbox
                     onChange={() => this.setState({avecTerrains: !this.state.avecTerrains})}
-                    accessibilityLabel={t("choix_option_terrains")}
+                    aria-label={t("choix_option_terrains")}
                     size='md'
                   >
                     <CheckboxIndicator mr={'$2'} sx={{bgColor: '$cyan600'}} borderColor='$white'>
                       <CheckIcon color={this.state.avecTerrains ? '$white' : '$cyan600'}/>
                     </CheckboxIndicator>
-                    <CheckboxLabel color='white'>{t("options_terrains_explications")}</CheckboxLabel>
+                    <CheckboxLabel color='$white'>{t("options_terrains_explications")}</CheckboxLabel>
                   </Checkbox>
                 </VStack>
                 <VStack>
