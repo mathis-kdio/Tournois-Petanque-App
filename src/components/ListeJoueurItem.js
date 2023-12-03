@@ -1,8 +1,7 @@
 import React from 'react'
-import { StyleSheet, View, Text, TextInput } from 'react-native'
 import { connect } from 'react-redux'
 import { FontAwesome5 } from '@expo/vector-icons';
-import { CheckIcon, Image, Select, VStack } from 'native-base';
+import { AlertDialog, AlertDialogBackdrop, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, Box, Button, ButtonGroup, ButtonText, CheckIcon, Checkbox, CheckboxIndicator, CheckboxLabel, ChevronDownIcon, CloseIcon, HStack, Heading, Image, Input, InputField, Select, SelectBackdrop, SelectContent, SelectDragIndicator, SelectDragIndicatorWrapper, SelectIcon, SelectInput, SelectItem, SelectPortal, SelectTrigger, Text } from '@gluestack-ui/themed';
 import { withTranslation } from 'react-i18next';
 
 class ListeJoueurItem extends React.Component {
@@ -12,15 +11,16 @@ class ListeJoueurItem extends React.Component {
     this.state = {
       renommerOn: false,
       disabledBoutonRenommer: true,
+      modalConfirmUncheckIsOpen: false
     }
   }
 
   _showSupprimerJoueur(joueur, isInscription) {
     if (isInscription === true) {
       return (
-        <View style={{marginLeft: 5}}>
-          <FontAwesome5.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._supprimerJoueur(joueur.id)}/>
-        </View>
+        <Box ml={'$2'}>
+          <FontAwesome5.Button name="times" backgroundColor='red' iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._supprimerJoueur(joueur.id)}/>
+        </Box>
       )
     }
   }
@@ -40,24 +40,24 @@ class ListeJoueurItem extends React.Component {
   _showRenommerJoueur(joueur, isInscription, avecEquipes) {
     if (this.state.renommerOn == false) {
       return (
-        <View>
+        <Box>
           <FontAwesome5.Button name="edit" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renommerJoueurInput(joueur)}/>
-        </View>
+        </Box>
       )
     }
     else {
       if (this.state.disabledBoutonRenommer == true) {
         return (
-          <View>
+          <Box>
             <FontAwesome5.Button name="edit" backgroundColor="gray" iconStyle={{paddingHorizontal: 2, marginRight: 0}}/>
-          </View>
+          </Box>
         )
       }
       else {
         return (
-          <View>
+          <Box>
             <FontAwesome5.Button name="check" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renommerJoueur(joueur, isInscription, avecEquipes)}/>
-          </View>
+          </Box>
         )
       }
     }
@@ -105,47 +105,45 @@ class ListeJoueurItem extends React.Component {
     this.joueurText = text
     //Le bouton valider est désactivé si aucune lettre
     if (this.joueurText == '') {
-      this.setState({
-        disabledBoutonRenommer: true
-      })
+      this.setState({disabledBoutonRenommer: true});
     }
     else {
-      this.setState({
-        disabledBoutonRenommer: false
-      })
+      this.setState({disabledBoutonRenommer: false});
     }
   }
 
   _joueurName(joueur, isInscription, avecEquipes) {
     if (this.state.renommerOn == true) {
       return(
-        <TextInput
-          style={styles.text_input}
-          placeholder={joueur.name}
-          autoFocus={true}
-          onChangeText={(text) => this._joueurTxtInputChanged(text)}
-          onSubmitEditing={() => this._renommerJoueur(joueur, isInscription, avecEquipes)}
-        />
+        <Input variant='underlined' size='md' borderColor='$white'>
+          <InputField
+            placeholder={joueur.name}
+            placeholderTextColor={'$white'}
+            autoFocus={true}
+            onChangeText={(text) => this._joueurTxtInputChanged(text)}
+            onSubmitEditing={() => this._renommerJoueur(joueur, isInscription, avecEquipes)}
+          />
+        </Input>
       )
     }
     else {
       return(
-        <Text style={styles.name_text}>{(joueur.id+1)} {joueur.name}</Text>
+        <Text color='$white' fontSize={'$xl'} fontWeight='$bold'>{(joueur.id+1)}-{joueur.name}</Text>
       )
     }
   }
 
   _ajoutEquipe(joueurId, equipeId) {
-    const action = { type: "AJOUT_EQUIPE_JOUEUR", value: ["avecEquipes", joueurId, equipeId] }
-    this.props.dispatch(action)
+    const action = { type: "AJOUT_EQUIPE_JOUEUR", value: ["avecEquipes", joueurId, equipeId] };
+    this.props.dispatch(action);
   }
 
   _equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs) {
     const { t } = this.props;
     if (avecEquipes == true) {
-      let selectedValue = 0;
+      let selectedValue = "0";
       if (joueur.equipe) {
-        selectedValue = joueur.equipe;
+        selectedValue = joueur.equipe.toString();
       }
       let nbEquipes = nbJoueurs;
       if (typeEquipes == "doublette") {
@@ -172,28 +170,35 @@ class ListeJoueurItem extends React.Component {
         }
       }
       return (
-        <VStack flex="1" borderWidth="1">
-          <Select
-            selectedValue={selectedValue}
-            accessibilityLabel={t("choix_equipe")}
-            placeholder={t("choix_equipe")}
-            onValueChange={itemValue => this._ajoutEquipe(joueur.id, itemValue)}
-            _selectedItem={{
-              endIcon: <CheckIcon size="5" color="cyan.500"/>
-            }}
-            size="lg"
-          >
-            <Select.Item label={t("choisir")} value={undefined} key="0"/>
-            {pickerItem}
-          </Select>
-        </VStack>
+        <Select
+          selectedValue={selectedValue}
+          aria-label={t("choix_equipe")}
+          onValueChange={itemValue => this._ajoutEquipe(joueur.id, itemValue)}
+        >
+          <SelectTrigger>
+            <SelectInput placeholder={t("choix_equipe")} placeholderTextColor='$white'/>
+            <SelectIcon mr={'$3'}>
+              <ChevronDownIcon color='$white'/>
+            </SelectIcon>
+          </SelectTrigger>
+          <SelectPortal>
+            <SelectBackdrop/>
+            <SelectContent>
+              <SelectDragIndicatorWrapper>
+                <SelectDragIndicator/>
+              </SelectDragIndicatorWrapper>
+              <SelectItem label={t("choisir")} value="0" key="0"/>
+              {pickerItem}
+            </SelectContent>
+          </SelectPortal>
+        </Select>
       )
     }
   }
 
   _equipePickerItem(equipe) {
     return (
-      <Select.Item label={equipe.toString()} value={equipe} key={equipe}/>
+      <SelectItem label={equipe.toString()} value={equipe.toString()} key={equipe}/>
     )
   }
 
@@ -201,75 +206,110 @@ class ListeJoueurItem extends React.Component {
     const { mode, type, typeEquipes } = this.props.optionsTournoi;
     if (mode == "sauvegarde" || (type == "mele-demele" && typeEquipes == "doublette")) {
       return (
-        <View style={styles.type_icon_container}>
+        <Box>
           {joueurType == "enfant" && <FontAwesome5 name="child" color="darkgray" size={24}/>}
-          {joueurType == "tireur" && <Image source={require('@assets/images/tireur.png')} alt={type} style={styles.icon}/>}
-          {joueurType == "pointeur" && <Image source={require('@assets/images/pointeur.png')} alt={type} style={styles.icon}/>}
-        </View>
+          {joueurType == "tireur" && <Image source={require('@assets/images/tireur.png')} alt={type} width={30} height={30}/>}
+          {joueurType == "pointeur" && <Image source={require('@assets/images/pointeur.png')} alt={type} width={30} height={30}/>}
+        </Box>
       )
     }
     else {
       return (
-        <View style={styles.type_icon_container}>
+        <Box>
           {joueurType == "enfant" && <FontAwesome5 name="child" color="darkgray" size={24}/>}
-        </View>
+        </Box>
       )
     }
   }
 
+  _joueurCheckbox(showCheckbox, joueur) {
+    const {t} = this.props;
+    if (showCheckbox) {
+      let isChecked = true;
+      if (joueur.isChecked == undefined || !joueur.isChecked) {
+        isChecked = false;
+      }
+      return (
+        <Box mr={'$1'}>
+          <Checkbox
+            onChange={() => this._onCheckboxChange(isChecked, joueur.id)}
+            aria-label={t("checkbox_inscription_joueuritem")}
+            size='md'
+            isChecked={isChecked}
+          >
+            <CheckboxIndicator mr='$2' sx={{bgColor: '$cyan600'}} borderColor='$white'>
+              <CheckIcon color={isChecked ? '$white' : '$cyan600'}/>
+            </CheckboxIndicator>
+            <CheckboxLabel/>
+          </Checkbox>
+        </Box>
+      )
+    }
+  }
+
+  _onCheckboxChange(isChecked, joueurId) {
+    if (!isChecked) {
+      this._ajoutCheck(joueurId, true);
+    } else {
+      this.setState({modalConfirmUncheckIsOpen: true})
+    }
+  }
+
+  _modalConfirmUncheck() {
+    const { t, joueur } = this.props;
+    return (
+      <AlertDialog isOpen={this.state.modalConfirmUncheckIsOpen} onClose={() => this.setState({modalConfirmUncheckIsOpen: false})}>
+        <AlertDialogBackdrop/>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <Heading>{t("confirmer_uncheck_modal_titre")}</Heading>
+            <AlertDialogCloseButton>
+              <CloseIcon/>
+            </AlertDialogCloseButton>
+          </AlertDialogHeader>
+          <AlertDialogBody>
+            <Text>{t("confirmer_uncheck_modal_texte")}</Text>
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <ButtonGroup>
+              <Button variant='outline' action='secondary' onPress={() => this.setState({modalConfirmUncheckIsOpen: false})}>
+                <ButtonText>{t("annuler")}</ButtonText>
+              </Button>
+              <Button action='negative' onPress={() => this._ajoutCheck(joueur.id, false)}>
+                <ButtonText>{t("oui")}</ButtonText>
+              </Button>
+            </ButtonGroup>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    )
+  }
+
+  _ajoutCheck(joueurId, isChecked) {
+    const action = { type: "CHECK_JOUEUR", value: [this.props.optionsTournoi.mode, joueurId, isChecked] };
+    this.props.dispatch(action);
+    this.setState({modalConfirmUncheckIsOpen: false});
+  }
 
   render() {
-    const { joueur, isInscription, avecEquipes, typeEquipes, nbJoueurs } = this.props;
+    const { joueur, isInscription, avecEquipes, typeEquipes, nbJoueurs, showCheckbox } = this.props;
     return (
-      <View style={styles.main_container}>
+      <HStack borderWidth={'$1'} borderColor='$white' borderRadius={'$xl'} m={'$1'} px={'$1'} alignItems='center'>
+        {this._joueurCheckbox(showCheckbox, joueur)}
         {this._joueurTypeIcon(joueur.type)}
-        <View style={styles.name_container}>
+        <Box flex={2}>
           {this._joueurName(joueur, isInscription, avecEquipes)}
-        </View>
-        {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
+        </Box>
+        {(avecEquipes == true && <Box flex={1}>
+          {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
+        </Box>)}
         {this._showRenommerJoueur(joueur, isInscription, avecEquipes)}
         {this._showSupprimerJoueur(joueur, isInscription)}
-      </View>
+        {this._modalConfirmUncheck()}
+      </HStack>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  main_container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingTop: 5,
-    paddingBottom: 5,
-    marginHorizontal: 10,
-    borderBottomWidth: 1,
-    borderColor: 'white'
-  },
-  name_container: {
-    flex: 1,
-  },
-  name_text: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    color: 'white'
-  },
-  text_input: {
-    height: 50,
-    paddingLeft: 5,
-    color: 'white'
-  },
-  picker: {
-    color: 'white',
-    width: 115
-  },
-  type_icon_container: {
-    flexDirection: 'row',
-    justifyContent:'center'
-  },
-  icon: {
-    width: 30,
-    height: 30
-  }
-})
 
 const mapStateToProps = (state) => {
   return {

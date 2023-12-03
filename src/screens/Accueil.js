@@ -3,16 +3,16 @@ import { expo } from '../../app.json';
 import { connect } from 'react-redux';
 import * as NavigationBar from 'expo-navigation-bar';
 import { FontAwesome5 } from '@expo/vector-icons';
-import VersionCheck from 'react-native-version-check-expo';
+import { _versionCheck } from '../utils/versionCheck/versionCheck'
 import { _openPlateformLink, _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Box, HStack, VStack, Text, Pressable, Spacer, Modal, Image } from 'native-base';
+import { Box, HStack, VStack, Text, Pressable, Modal, Image, ModalHeader, ModalBody, ModalContent, ModalCloseButton, Heading, CloseIcon, ModalBackdrop } from '@gluestack-ui/themed';
 import { StatusBar } from 'expo-status-bar';
-import { AdsConsent, AdsConsentStatus } from 'react-native-google-mobile-ads';
+import { _adsConsentForm } from '../utils/adMob/consentForm'
 import { withTranslation } from 'react-i18next';
-import mobileAds from 'react-native-google-mobile-ads';
-import CardButton from 'components/buttons/CardButton';
+import CardButton from '@components/buttons/CardButton';
 import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
+import { AppState, StyleSheet } from 'react-native';
 
 class Accueil extends React.Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class Accueil extends React.Component {
     this.appleMarket =          "itms-apps://apps.apple.com/app/petanque-gcu/id1661710973";
     this.googleMarketReviews =  "market://details?id=com.MK.PetanqueGCU&showAllReviews=true";
     this.appleMarketReviews =   "itms-apps://apps.apple.com/app/petanque-gcu/id1661710973?mt=8&action=write-review"
-    this.mail =                 "mailto: tournoispetanqueapp@gmail.com";
+    this.mail =                 "mailto:tournoispetanqueapp@gmail.com";
     this.gcuWebsite =           "https://www.gcu.asso.fr/";
     this.githubSponsor =        "https://github.com/sponsors/mathis-kdio";
     this.patreon =              "https://patreon.com/tournoipetanque";
@@ -29,44 +29,36 @@ class Accueil extends React.Component {
     this.facebook =             "https://www.facebook.com/groups/tournoisptanqueapp";
     this.state = {
       modalDonsVisible: false,
-      modalVisible: false
+      modalVisible: false,
+      appState: "active"
     }
   }
 
   componentDidMount() {
+    AppState.addEventListener("change", nextAppState => this.setState({ appState: nextAppState }));
+
     if (Platform.OS === 'android') {
       NavigationBar.setBackgroundColorAsync("#0594ae");
     }
-    VersionCheck.needUpdate().then(async res => {
-      if (res.isNeeded && this.state.modalVisible != true) {
-        this.setState({modalVisible: true});
-      }
-    })
 
+    //MODAL UPDATE
+    if (Platform.OS === 'android') { //TEMP car bug sur iOS
+      _versionCheck().then(res => this.setState({modalVisible: res}));
+    }
+
+    //GOOGLE ADMOB
     if (Platform.OS === 'android') {
-      this._adsConsentForm();
+      _adsConsentForm(this.state.appState);
     }
     else if (Platform.OS === 'ios') {
       setTimeout(async () => {
         requestTrackingPermissionsAsync().then(status => {
           if (status === 'granted') {
-            this._adsConsentForm();
+            _adsConsentForm(this.state.appState);
           }
         });
       }, 1000);
     }
-  }
-
-  _adsConsentForm() {
-    AdsConsent.requestInfoUpdate().then(async consentInfo => {
-      if (consentInfo.isConsentFormAvailable && (consentInfo.status === AdsConsentStatus.UNKNOWN || consentInfo.status === AdsConsentStatus.REQUIRED)) {
-        AdsConsent.showForm().then(async res => {
-          if (res.status === AdsConsentStatus.OBTAINED) {
-            mobileAds().initialize().then(async adapterStatuses => {console.log(adapterStatuses)});
-          }
-        });
-      }
-    });
   }
 
   componentDidUpdate() {
@@ -82,20 +74,25 @@ class Accueil extends React.Component {
         isOpen={this.state.modalVisible}
         onClose={() => this.setState({ modalVisible: false })}
       >
-        <Modal.Content>
-          <Modal.CloseButton/>
-          <Modal.Header>{t("mise_a_jour")}ise à jour</Modal.Header>
-          <Modal.Body>
-            <Text textAlign={"center"}>{t("mise_a_jour_modal_texte_1")}</Text>
-            <Text textAlign={"center"}>{t("mise_a_jour_modal_texte_2")}</Text>
-            <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p={3} onPress={() => _openPlateformLink(this.googleMarket, this.appleMarket)}>
+        <ModalBackdrop/>
+        <ModalContent>
+          <ModalHeader>
+            <Heading size='lg'>{t("mise_a_jour")}</Heading>
+            <ModalCloseButton>
+              <CloseIcon/>
+            </ModalCloseButton>
+          </ModalHeader>
+          <ModalBody>
+            <Text textAlign='center'>{t("mise_a_jour_modal_texte_1")}</Text>
+            <Text textAlign='center'>{t("mise_a_jour_modal_texte_2")}</Text>
+            <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openPlateformLink(this.googleMarket, this.appleMarket)}>
               <HStack>
-                <FontAwesome5 name="download" color="white" size={20}/>
-                <Text color={"white"}> {t("mettre_a_jour")}</Text>
+                <FontAwesome5 name="download" color='$white' size={20}/>
+                <Text color='$white'> {t("mettre_a_jour")}</Text>
               </HStack>
             </Pressable>
-          </Modal.Body>
-        </Modal.Content>
+          </ModalBody>
+        </ModalContent>
       </Modal>
     )
   }
@@ -107,32 +104,37 @@ class Accueil extends React.Component {
         isOpen={this.state.modalDonsVisible}
         onClose={() => this.setState({ modalDonsVisible: false })}
       >
-        <Modal.Content>
-          <Modal.CloseButton/>
-          <Modal.Header>{t("soutenir")}</Modal.Header>
-          <Modal.Body>
-            <VStack space={3}>
-              <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p={3} onPress={() => _openURL(this.githubSponsor)}>
+        <ModalBackdrop/>
+        <ModalContent>
+          <ModalHeader>
+            <Heading size='lg'>{t("soutenir")}</Heading>
+            <ModalCloseButton>
+              <CloseIcon/>
+            </ModalCloseButton>
+          </ModalHeader>
+          <ModalBody>
+            <VStack space='md'>
+              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.githubSponsor)}>
                 <HStack>
-                  <FontAwesome5 name="github" color="white" size={20}/>
-                  <Text color={"white"}> {t("githubsponsor")}</Text>
+                  <FontAwesome5 name="github" color='white' size={20}/>
+                  <Text color='$white'> {t("githubsponsor")}</Text>
                 </HStack>
               </Pressable>
-              <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p={3} onPress={() => _openURL(this.patreon)}>
+              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.patreon)}>
                 <HStack>
-                  <FontAwesome5 name="patreon" color="white" size={20}/>
-                  <Text color={"white"}> {t("patreon")}</Text>
+                  <FontAwesome5 name="patreon" color='white' size={20}/>
+                  <Text color='$white'> {t("patreon")}</Text>
                 </HStack>
               </Pressable>
-              <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p={3} onPress={() => _openURL(this.buymeacoffee)}>
+              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.buymeacoffee)}>
                 <HStack>
-                  <FontAwesome5 name="coffee" color="white" size={20}/>
-                  <Text color={"white"}> {t("buymeacoffee")}</Text>
+                  <FontAwesome5 name="coffee" color='white' size={20}/>
+                  <Text color='$white'> {t("buymeacoffee")}</Text>
                 </HStack>
               </Pressable>
             </VStack>
-          </Modal.Body>
-        </Modal.Content>
+          </ModalBody>
+        </ModalContent>
       </Modal>
     )
   }
@@ -164,9 +166,9 @@ class Accueil extends React.Component {
       }
     }
     else {
-      <Box bg="gray.500" flex={1} space="1" alignItems={"center"} rounded="3xl" py={"5"}>
-        <FontAwesome5 name="play" color="white" size={24}/>
-        <Text color={"white"}>{t("aucun_tournoi")}</Text>
+      <Box bg='$secondary500' flex={1} alignItems='center' rounded={'$3xl'} py={"$5"}>
+        <FontAwesome5 name="play" color='white' size={24}/>
+        <Text color='$white'>{t("aucun_tournoi")}</Text>
       </Box>
     }
   }
@@ -175,13 +177,16 @@ class Accueil extends React.Component {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <StatusBar backgroundColor="#0594ae"/>
-        <VStack flex="1" px="10" bgColor={"#0594ae"}>
-          <VStack alignItems={"center"}>
-            <Image size={"xl"} alt="Logo de l'application" source={require('@assets/icon.png')}/>
+        <StatusBar backgroundColor='#0594ae'/>
+        <VStack flex={1} px={'$5'} bgColor='#0594ae' justifyContent='space-between'>
+          <VStack alignItems='center'>
+            <Image
+              size='xl'
+              style={styles.imageWeb} //TMP FIX bug size web gluestack
+              alt="Logo de l'application"
+              source={require('@assets/icon.png')}/>
           </VStack>
-          <Spacer/>
-          <VStack space={"3"}>
+          <VStack space='md'>
             <HStack>
               {this._buttonShowMatchs()}
             </HStack>
@@ -192,7 +197,7 @@ class Accueil extends React.Component {
                 navigate={() => this._navigate('InscriptionStack')}
               />
             </HStack>
-            <HStack space={"3"}>
+            <HStack space='sm'>
               <CardButton
                 text={t("mes_anciens_tournois")}
                 icon="list"
@@ -205,40 +210,37 @@ class Accueil extends React.Component {
               />
             </HStack> 
           </VStack>
-          <Spacer/>
-          <VStack space={3}>
-            <HStack>
-              <Spacer/>
-              <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p={3} onPress={() => _openURL(this.facebook)}>
-                <FontAwesome5 name="facebook" color="white" size={20}/>
-                <Text color={"white"}>{t("rejoindre_page_fb")}</Text>
+          <VStack space='sm'>
+            <HStack justifyContent='center'>
+              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.facebook)}>
+                <FontAwesome5 name="facebook" color='white' size={20}/>
+                <Text color='$white'>{t("rejoindre_page_fb")}</Text>
               </Pressable>
-              <Spacer/>
             </HStack>
-            <HStack space={3}>
+            <HStack space='sm'>
               {Platform.OS !== 'ios' && <>
-                <Pressable flex={1} alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => this.setState({ modalDonsVisible: true })}>
-                  <FontAwesome5 name="euro-sign" color="white" size={20}/>
+                <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => this.setState({ modalDonsVisible: true })}>
+                  <FontAwesome5 name="euro-sign" color='white' size={20}/>
                 </Pressable>
               </>}
-              <Pressable flex={1} alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => _openPlateformLink(this.googleMarketReviews, this.appleMarketReviews)}>
-                <FontAwesome5 name="star" color="white" size={20}/>
+              <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => _openPlateformLink(this.googleMarketReviews, this.appleMarketReviews)}>
+                <FontAwesome5 name="star" color='white' size={20}/>
               </Pressable>
-              <Pressable flex={1} alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => _openURL(this.mail)}>
-                <FontAwesome5 name="envelope" color="white" size={20}/>
+              <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => _openURL(this.mail)}>
+                <FontAwesome5 name="envelope" color='white' size={20}/>
               </Pressable>
-              <Pressable flex={1} alignItems={"center"} bg="#1c3969" rounded="3xl" p="2" onPress={() => this.props.navigation.navigate('Parametres')}>
-                <FontAwesome5 name="wrench" color="white" size={20}/>
+              <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => this.props.navigation.navigate('Parametres')}>
+                <FontAwesome5 name="wrench" color='white' size={20}/>
               </Pressable>
             </HStack>
-            <HStack justifyContent={"center"}>
-              <Pressable alignItems={"center"} bg="#1c3969" rounded="3xl" p="3" onPress={() => _openURL(this.gcuWebsite)}>
-                <Text color={"white"} fontSize={16}>{t("decouvrir_gcu")}</Text>
+            <HStack justifyContent='center'>
+              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.gcuWebsite)}>
+                <Text color='$white' fontSize={16}>{t("decouvrir_gcu")}</Text>
               </Pressable>
             </HStack>
             <VStack>
-              <Text textAlign={"center"} color={"white"} fontSize={"md"}>{t("developpe_par")} Mathis Cadio</Text>
-              <Text textAlign={"center"} color={"white"} fontSize={"md"}>{t("version")} {expo.version}</Text>
+              <Text textAlign='center' color='$white' fontSize={'$md'}>{t("developpe_par")} Mathis Cadio</Text>
+              <Text textAlign='center' color='$white' fontSize={'$md'}>{t("version")} {expo.version}</Text>
             </VStack>
           </VStack>
           {this._showDonsModal()}
@@ -248,6 +250,17 @@ class Accueil extends React.Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  imageWeb: {
+    ...Platform.select({
+      web: {
+        height: '124px',
+        width: '124px'
+      }
+    })
+  }
+});
 
 const mapStateToProps = (state) => {
   return {

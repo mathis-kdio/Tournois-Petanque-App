@@ -1,11 +1,11 @@
 import React from 'react'
-import { StyleSheet, View, TextInput, Text, Button, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import { FlatList } from 'react-native-gesture-handler'
 import ListeJoueurItem from '@components/ListeJoueurItem'
 import JoueurSuggere from '@components/JoueurSuggere'
 import JoueurType from '@components/JoueurType'
-import { Box, HStack } from 'native-base';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { Box, HStack, Input, VStack, Button, Text, Icon, Divider, AlertDialog, ButtonGroup, AlertDialogHeader, AlertDialogContent, AlertDialogBody, ButtonText, AlertDialogFooter, InputField, AlertDialogBackdrop, AlertDialogCloseButton, CloseIcon, Heading } from '@gluestack-ui/themed';
 import { withTranslation } from 'react-i18next'
 
 class Inscription extends React.Component {
@@ -19,7 +19,9 @@ class Inscription extends React.Component {
       joueurType: undefined,
       etatBouton: false,
       suggestions: [],
-      nbSuggestions: 5
+      nbSuggestions: 5,
+      modalRemoveIsOpen: false,
+      showCheckbox: false
     }
   }
 
@@ -84,20 +86,38 @@ class Inscription extends React.Component {
 
   _modalRemoveAllPlayers() {
     const { t } = this.props;
-    Alert.alert(
-      t("supprimer_joueurs_modal_titre"),
-      t("supprimer_joueurs_modal_texte"),
-      [
-        { text: t("annuler"), onPress: () => undefined, style: "cancel" },
-        { text: t("oui"), onPress: () => this._removeAllPlayers() },
-      ],
-      { cancelable: true }
-    );
+    return (
+      <AlertDialog isOpen={this.state.modalRemoveIsOpen} onClose={() => this.setState({modalRemoveIsOpen: false})}>
+        <AlertDialogBackdrop/>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <Heading>{t("supprimer_joueurs_modal_titre")}</Heading>
+            <AlertDialogCloseButton>
+              <CloseIcon/>
+            </AlertDialogCloseButton>
+          </AlertDialogHeader>
+          <AlertDialogBody>
+            <Text>{t("supprimer_joueurs_modal_texte")}</Text>
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <ButtonGroup>
+              <Button variant='outline' action='secondary' onPress={() => this.setState({modalRemoveIsOpen: false})}>
+                <ButtonText>{t("annuler")}</ButtonText>
+              </Button>
+              <Button action='negative' onPress={() => this._removeAllPlayers()}>
+                <ButtonText>{t("oui")}</ButtonText>
+              </Button>
+            </ButtonGroup>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    )
   }
 
   _removeAllPlayers() {
     const actionRemoveAll = { type: "SUPPR_ALL_JOUEURS", value: [this.props.optionsTournoi.mode] }
     this.props.dispatch(actionRemoveAll);
+    this.setState({modalRemoveIsOpen: false});
   }
 
   _loadSavedList() {
@@ -128,14 +148,17 @@ class Inscription extends React.Component {
               avecEquipes={avecEquipes}
               typeEquipes={this.props.optionsTournoi.typeEquipes}
               nbJoueurs={this.props.listesJoueurs[this.props.optionsTournoi.mode].length}
+              showCheckbox={this.state.showCheckbox}
             />
           )}
           ListFooterComponent={
-            <View>
-              {this._buttonRemoveAllPlayers()}
-              {this._buttonLoadSavedList()}
+            <VStack space='md'>
+              <VStack px={'$10'} space='sm'>
+                {this._buttonRemoveAllPlayers()}
+                {this._buttonLoadSavedList()}
+              </VStack>
               {this._displayListeJoueursSuggeres()}
-            </View>
+            </VStack>
           }
         />
       )
@@ -147,10 +170,8 @@ class Inscription extends React.Component {
     if (this.state.suggestions.length > 0) {
       let partialSuggested = this.state.suggestions.slice(0, this.state.nbSuggestions);
       return (
-        <View>
-          <View style={styles.text_container}>
-            <Text style={styles.text_nbjoueur}>{t("suggestions_joueurs")}</Text>
-          </View>
+        <VStack>
+          <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("suggestions_joueurs")}</Text>
           <FlatList
             removeClippedSubviews={false}
             persistentScrollbar={true}
@@ -162,10 +183,10 @@ class Inscription extends React.Component {
               />
             )}
           />
-          <View style={styles.buttonView}>
+          <Box px={'$10'} pb={'$2'}>
             {this._buttonMoreSuggestedPlayers()}
-          </View>
-        </View>
+          </Box>
+        </VStack>
       )
     }
   }
@@ -174,7 +195,14 @@ class Inscription extends React.Component {
     const { t } = this.props;
     if (this.state.nbSuggestions < this.state.suggestions.length) {
       return (
-        <Button style={styles.text_nbjoueur} color='green' title={t("plus_suggestions_joueurs_bouton")} onPress={() => this._showMoreSuggestedPlayers()}/>
+        <Button
+          bg='$green700'
+          onPress={() => this._showMoreSuggestedPlayers()}
+          startIcon={<Icon as={FontAwesome5} name="chevron-down"/>}
+          endIcon={<Icon as={FontAwesome5} name="chevron-down"/>}
+        >
+          <ButtonText>{t("plus_suggestions_joueurs_bouton")}</ButtonText>
+        </Button>
       )
     }
   }
@@ -187,9 +215,12 @@ class Inscription extends React.Component {
     const { t } = this.props;
     if (this.props.listesJoueurs[this.props.optionsTournoi.mode].length > 0) {
       return (
-        <View style={styles.buttonView}>
-          <Button style={styles.text_nbjoueur} color='red' title={t("supprimer_joueurs_bouton")} onPress={() => this._modalRemoveAllPlayers()}/>
-        </View>
+        <Button
+          bg='$red600'
+          onPress={() => this.setState({modalRemoveIsOpen: true})}
+        >
+          <ButtonText>{t("supprimer_joueurs_bouton")}</ButtonText>
+        </Button>
       )
     }
   }
@@ -198,136 +229,78 @@ class Inscription extends React.Component {
     const { t } = this.props;
     if (!this.props.loadListScreen) {
       return (
-        <View style={styles.buttonView}>
-          <Button style={styles.text_nbjoueur} color='green' title={t("charger_liste_joueurs_bouton")} onPress={() => this._loadSavedList()}/>
-        </View>
+        <Button
+          bg='$green700'
+          onPress={() => this._loadSavedList()}
+        >
+          <ButtonText>{t("charger_liste_joueurs_bouton")}</ButtonText>
+        </Button>
       )
     }
   }
 
-  _showEquipeEntete() {
+  _showCheckboxSection() {
     const { t } = this.props;
-    if (this.props.optionsTournoi.mode == 'avecEquipes') {
-      return (
-        <Text style={styles.texte_entete}>{t("equipe")}</Text>
-      )
+    let icon = "eye";
+    let text = t("afficher");
+    if (this.state.showCheckbox) {
+      icon = "eye-slash";
+      text = t("cacher");
     }
-  }
-
-  _setJoueurType(type) {
-    this.setState({
-      joueurType: type
-    })
+    return (
+      <HStack my={'$1'} alignItems='center'>
+        <FontAwesome5 name={icon} size={15} color='white'/>
+        <Text color='$white' fontSize={'$md'} onPress={() => this.setState({showCheckbox: !this.state.showCheckbox})}>{text} {t("case_a_cocher")}</Text>
+      </HStack>
+    )
   }
 
   render() {
     const { t } = this.props;
     return (
-      <View style={styles.main_container}>
-        <HStack alignItems="center" mx="1" space="1">
-          <Box flex="1">
-            <TextInput
-              style={styles.textinput}
-              placeholderTextColor="white"
-              underlineColorAndroid="white"
-              placeholder={t("nom_joueur")}
-              autoFocus={true}
-              onChangeText={(text) => this._ajoutJoueurTextInputChanged(text)}
-              onSubmitEditing={() => this._ajoutJoueur()}
-              ref={this.addPlayerTextInput}
-            />
+      <VStack flex={1}>
+        <HStack alignItems='center' mx={'$1'} space='md'>
+          <Box flex={1}>
+            <Input size='md' borderColor='$white'>
+              <InputField
+                placeholder={t("nom_joueur")}
+                placeholderTextColor='$white'
+                autoFocus={true}
+                defaultValue={this.nbToursTxt}
+                keyboardType="default"
+                onChangeText={(text) => this._ajoutJoueurTextInputChanged(text)}
+                onSubmitEditing={() => this._ajoutJoueur()}
+                ref={this.addPlayerTextInput}
+              />
+            </Input>
           </Box>
-          <Box flex="1">
+          <Box flex={1}>
             <JoueurType
               joueurType={this.state.joueurType}
-              _setJoueurType={(type) => this._setJoueurType(type)}
+              _setJoueurType={(type) => this.setState({joueurType: type})}
             />
           </Box>
           <Box>
             <Button
-              disabled={!this.state.etatBouton}
-              color="green"
-              title={t("ajouter")}
+              bg='$green700'
+              isDisabled={!this.state.etatBouton}
               onPress={() => this._ajoutJoueur()}
-            />
+              size='md'
+            >
+              <ButtonText>{t("ajouter")}</ButtonText>
+            </Button>
           </Box>
         </HStack>
-        <View style={styles.entete_container}>
-          <View style={styles.prenom_container}>
-            <Text style={styles.texte_entete}>{t("numero_prenom")}</Text>
-          </View>
-          <View style={styles.equipe_container}>
-            {this._showEquipeEntete()}
-          </View>
-          <View style={styles.renommer_container}>
-            <Text style={styles.texte_entete}>{t("renommer")}</Text>
-          </View>
-          <View style={styles.supprimer_container}>
-            <Text style={styles.texte_entete}>{t("supprimer")}</Text>
-          </View>
-        </View>
-        <View style={styles.flatList_container}>
+        {this._showCheckboxSection()}
+        <Divider bg='$white' h={'$0.5'} my={'$2'}/>
+        <VStack flex={1}>
           {this._displayListeJoueur()}
-        </View>
-      </View>
+        </VStack>
+        {this._modalRemoveAllPlayers()}
+      </VStack>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  main_container: {
-    flex: 1,
-    backgroundColor: "#0594ae"
-  },
-  text_container: {
-    alignItems: 'center',
-    marginTop: 5
-  },
-  text_nbjoueur: {
-    fontSize: 20,
-    color: 'white'
-  },
-  textinput: {
-    height: 50,
-    paddingLeft: 5,
-    color: 'white'
-  },
-  entete_container: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    borderBottomWidth: 2,
-    borderColor: 'white'
-  },
-  prenom_container: {
-    flex: 3,
-  },
-  equipe_container: {
-    flex: 2,
-    alignItems: 'center',
-  },
-  renommer_container: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  supprimer_container: {
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-  texte_entete: {
-    textAlign: 'center',
-    fontSize: 15,
-    color: 'white'
-  },
-  flatList_container: {
-    flex: 1
-  },
-  buttonView: {
-    marginTop: 10,
-    marginBottom: 10,
-    paddingLeft: 15,
-    paddingRight: 15
-  },
-})
 
 const mapStateToProps = (state) => {
   return {

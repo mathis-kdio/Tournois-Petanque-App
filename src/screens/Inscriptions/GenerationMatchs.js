@@ -1,14 +1,17 @@
 import React from 'react'
-import { StyleSheet, View, ActivityIndicator, Text, Button } from 'react-native'
 import { connect } from 'react-redux'
-import { generationChampionnat } from 'utils/generations/championnat'
-import { generationCoupe } from 'utils/generations/coupe'
-import { generationAvecEquipes } from 'utils/generations/tournoiAvecEquipes'
-import { generationDoublettes } from 'utils/generations/tournoiDoublettes'
-import { generationTeteATete } from 'utils/generations/tournoiTeteATete'
-import { generationTriplettes } from 'utils/generations/tournoiTriplettes'
-import { uniqueValueArrayRandOrder } from "utils/generations/generation";
+import { generationChampionnat } from '@utils/generations/championnat'
+import { generationCoupe } from '@utils/generations/coupe'
+import { generationAvecEquipes } from '@utils/generations/tournoiAvecEquipes'
+import { generationDoublettes } from '@utils/generations/tournoiDoublettes'
+import { generationTeteATete } from '@utils/generations/tournoiTeteATete'
+import { generationTriplettes } from '@utils/generations/tournoiTriplettes'
+import { uniqueValueArrayRandOrder } from '@utils/generations/generation';
 import { withTranslation } from 'react-i18next'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { StatusBar } from 'expo-status-bar'
+import { VStack, Text, Button, ButtonText, Spinner } from '@gluestack-ui/themed'
+import TopBarBack from '../../components/TopBarBack'
 
 class GenerationMatchs extends React.Component {
   constructor(props) {
@@ -194,51 +197,57 @@ class GenerationMatchs extends React.Component {
 
   _displayLoading() {
     const { t } = this.props;
-    if (this.state.isLoading === true) {
+    if (this.state.isLoading) {
       return (
-        <View style={styles.loading_container}>
-          <ActivityIndicator size='large' color="#ffda00"/>
-          <Text style={styles.texte}>{t("attente_generation_matchs")}</Text>
-        </View>
+        <VStack>
+          <Spinner size={'large'} color="#ffda00"/>
+          <Text color='$white'>{t("attente_generation_matchs")}</Text>
+        </VStack>
       )
     }
   }
 
   _displayErrorGenerationFail() {
     const { t } = this.props;
-    if (this.state.isGenerationSuccess === false && this.state.isLoading === false) {
+    if (!this.state.isGenerationSuccess && !this.state.isLoading) {
       return (
-        <View style={styles.error_container}>
-          <Text style={styles.texte}>{t("erreur_generation_options")}</Text>
-          <Text style={styles.texte}>{t("erreur_generation_options_regles")}</Text>
-          <Button title={t("retour_inscription")} onPress={() => this._retourInscription()}/>
-        </View>
+        <VStack>
+          <Text color='$white'>{t("erreur_generation_options")}</Text>
+          <Text color='$white'>{t("erreur_generation_options_regles")}</Text>
+          <Button title={t("retour_inscription")} onPress={() => this._retourInscription()}>
+            <ButtonText>{t("retour_inscription")}</ButtonText>
+          </Button>
+        </VStack>
       )
     }
   }
 
   _displayErreurSpeciaux() {
     const { t } = this.props;
-    if (this.state.erreurSpeciaux == true && this.state.isLoading == false) {
+    if (this.state.erreurSpeciaux && !this.state.isLoading) {
       return (
-        <View style={styles.error_container}>
-          <Text style={styles.texte}>{t("erreur_generation_options")}</Text>
-          <Text style={styles.texte}>{t("erreur_generation_joueurs_speciaux")}</Text>
-          <Button title={t("retour_inscription")} onPress={() => this._retourInscription()}/>
-        </View>
+        <VStack>
+          <Text color='$white'>{t("erreur_generation_options")}</Text>
+          <Text color='$white'>{t("erreur_generation_joueurs_speciaux")}</Text>
+          <Button title={t("retour_inscription")} onPress={() => this._retourInscription()}>
+            <ButtonText>{t("retour_inscription")}</ButtonText>
+          </Button>
+        </VStack>
       )
     }
   }
 
   _displayErreurMemesEquipes() {
     const { t } = this.props;
-    if (this.state.erreurMemesEquipes == true && this.state.isLoading == false) {
+    if (this.state.erreurMemesEquipes && !this.state.isLoading) {
       return (
-        <View style={styles.error_container}>
-          <Text style={styles.texte}>{t("erreur_generation_options")}</Text>
-          <Text style={styles.texte}>{t("erreur_generation_regle_equipes")}</Text>
-          <Button title={t("retour_inscription")} onPress={() => this._retourInscription()}/>
-        </View>
+        <VStack>
+          <Text color='$white'>{t("erreur_generation_options")}</Text>
+          <Text color='$white'>{t("erreur_generation_regle_equipes")}</Text>
+          <Button onPress={() => this._retourInscription()}>
+            <ButtonText>{t("retour_inscription")}</ButtonText>
+          </Button>
+        </VStack>
       )
     }
   }
@@ -248,42 +257,23 @@ class GenerationMatchs extends React.Component {
   }
 
   render() {
+    const { t } = this.props;
     return (
-      <View style={styles.main_container}>
-        {this._displayLoading()}
-        {this._displayErreurSpeciaux()}
-        {this._displayErreurMemesEquipes()}
-        {this._displayErrorGenerationFail()}
-      </View>
+      <SafeAreaView style={{flex: 1}}>
+        <StatusBar backgroundColor='#0594ae'/>
+        <VStack flex={1} bgColor='#0594ae'>
+          <TopBarBack title={t("generation_matchs_navigation_title")} navigation={this.props.navigation}/>
+          <VStack flex={1} px={'$10'} justifyContent='center'>
+            {this._displayLoading()}
+            {this._displayErreurSpeciaux()}
+            {this._displayErreurMemesEquipes()}
+            {this._displayErrorGenerationFail()}
+          </VStack>
+        </VStack>
+      </SafeAreaView>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  main_container: {
-    flex: 1,
-    backgroundColor: "#0594ae"
-  },
-  loading_container: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  error_container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: '5%'
-  },
-  texte: {
-    fontSize: 15,
-    color: 'white'
-  }
-})
 
 const mapStateToProps = (state) => {
   return {

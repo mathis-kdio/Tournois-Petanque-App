@@ -1,8 +1,8 @@
 import i18n from 'i18next';
 import * as Localization from 'expo-localization';
 import { initReactI18next } from "react-i18next";
-import francais from 'assets/languages/fr.json';
-import english from 'assets/languages/en.json';
+import francais from '@assets/languages/fr.json';
+import english from '@assets/languages/en.json';
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
@@ -13,6 +13,7 @@ i18n
     resources: {
       'fr-FR': francais,
       'en-US': english,
+      'en-GB': english,
       ns: ['translation'],
       supportedLngs: [
         {
@@ -21,7 +22,12 @@ i18n
         },
         {
           code: 'en-US',
-          locale: 'English'
+          locale: 'English US'
+        },
+        ,
+        {
+          code: 'en-GB',
+          locale: 'English GB'
         }
       ],
       defaultNS: 'translation',

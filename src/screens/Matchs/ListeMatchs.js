@@ -1,11 +1,11 @@
 import React from 'react'
-import { StyleSheet, View, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import MatchItem from '@components/MatchItem'
 import * as NavigationBar from 'expo-navigation-bar';
+import { VStack } from '@gluestack-ui/themed';
+import { FlatList } from '@gluestack-ui/themed';
 
 class ListeMatchs extends React.Component {
-
   constructor(props) {
     super(props)
   }
@@ -17,20 +17,20 @@ class ListeMatchs extends React.Component {
         idMatch: idMatch, 
         match: match,
       }
-    })
+    });
   }
 
   _displayListeMatch() {
-    let nbMatchs = 0
-    let matchs = []
-    let nbPtVictoire = 13
+    let nbMatchs = 0;
+    let matchs = [];
+    let nbPtVictoire = 13;
     if (this.props.listeMatchs != undefined) {
-      let tournoi = this.props.listeMatchs //tournoi contient les matchs + la config du tournoi en dernière position
-      nbMatchs = tournoi[tournoi.length - 1].nbMatchs //On récup nb matchs dans la config
+      let tournoi = this.props.listeMatchs; //tournoi contient les matchs + la config du tournoi en dernière position
+      nbMatchs = tournoi[tournoi.length - 1].nbMatchs; //On récup nb matchs dans la config
       nbPtVictoire = tournoi[tournoi.length - 1].nbPtVictoire ? tournoi[tournoi.length - 1].nbPtVictoire : 13; //On récup le nb de pt pour la victoire sinon 13
-      matchs = tournoi.slice(0, -1) //On retire la config et donc seulement la liste des matchs
+      matchs = tournoi.slice(0, -1); //On retire la config et donc seulement la liste des matchs
     }
-    matchs = matchs.filter(match => match.manche == this.props.extraData)
+    matchs = matchs.filter(match => match.manche == this.props.extraData);
     return (
       <FlatList
         data={matchs}
@@ -50,22 +50,15 @@ class ListeMatchs extends React.Component {
 
   render() {
     if (Platform.OS === 'android') {
-      NavigationBar.setBackgroundColorAsync("#ffda00");
+      NavigationBar.setBackgroundColorAsync("#0594ae");
     }
     return (
-      <View style={styles.main_container} >
+      <VStack flex={1} bgColor='#0594ae'>
         {this._displayListeMatch()}
-      </View>
+      </VStack>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  main_container: {
-    flex: 1,
-    backgroundColor: "#0594ae"
-  }
-})
 
 const mapStateToProps = (state) => {
   return {

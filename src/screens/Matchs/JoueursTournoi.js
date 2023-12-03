@@ -1,25 +1,23 @@
 import React from 'react'
-import { StyleSheet, View, Text, Button } from 'react-native'
 import { connect } from 'react-redux'
-import { FlatList } from 'react-native-gesture-handler'
 import ListeJoueurItem from '@components/ListeJoueurItem'
 import { withTranslation } from 'react-i18next'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { StatusBar } from 'expo-status-bar'
+import { ButtonText, VStack, Button, Text, Box, FlatList } from '@gluestack-ui/themed'
+import TopBarBack from '../../components/TopBarBack'
 
 class JoueursTournoi extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      joueur: undefined,
-    }
   }
 
   _retourMatchs() {
     this.props.navigation.navigate('ListeMatchsStack');   
   }
 
-  _displayListeJoueur() {
-    let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs
+  _displayListeJoueur(listeJoueurs) {
     if (listeJoueurs !== undefined) {
       return (
         <FlatList
@@ -30,6 +28,7 @@ class JoueursTournoi extends React.Component {
             <ListeJoueurItem
               joueur={item}
               isInscription={false}
+              showCheckbox={true}
             />
           )}
         />
@@ -39,45 +38,26 @@ class JoueursTournoi extends React.Component {
 
   render() {
     const { t } = this.props;
-    let nbJoueur = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs.length
+    let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs;
     return (
-      <View style={styles.main_container}>
-        <View style={styles.nbjoueur_container}>
-          <Text style={styles.text_nbjoueur}>{t("nombre_joueurs", {nb: nbJoueur})}</Text>
-        </View>
-        <View style={styles.flatList}>
-          {this._displayListeJoueur()}
-        </View>
-        <View style={styles.buttonView}>
-          <Button color='#1c3969' title={t("retour_liste_matchs_bouton")} onPress={() => this._retourMatchs()}/>
-        </View>
-      </View>
+      <SafeAreaView style={{flex: 1}}>
+        <StatusBar backgroundColor="#0594ae"/>
+        <VStack flex={1} bgColor={"#0594ae"}>
+          <TopBarBack title={t("liste_joueurs_inscrits_navigation_title")} navigation={this.props.navigation}/>
+          <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("nombre_joueurs", {nb: listeJoueurs.length})}</Text>
+          <VStack flex={1} my={'$2'}>
+            {this._displayListeJoueur(listeJoueurs)}
+          </VStack>
+          <Box px={'$10'} mb={'$2'}>
+            <Button action='primary' onPress={() => this._retourMatchs()}>
+              <ButtonText>{t("retour_liste_matchs_bouton")}</ButtonText>
+            </Button>
+          </Box>
+        </VStack>
+      </SafeAreaView>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  main_container: {
-    flex: 1,
-    backgroundColor: "#0594ae"
-  },
-  buttonView: {
-    marginBottom: 20,
-    paddingLeft: 15,
-    paddingRight: 15
-  },
-  flatList: {
-    flex: 1
-  },
-  nbjoueur_container: {
-    alignItems: 'center',
-    marginTop: 5
-  },
-  text_nbjoueur: {
-    fontSize: 20,
-    color: 'white'
-  }
-})
 
 const mapStateToProps = (state) => {
   return {

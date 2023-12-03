@@ -2,12 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-import { VStack, Text, Spacer, Modal, Pressable } from 'native-base';
+import { VStack, Text, Modal, Pressable, ModalContent, ModalHeader, ModalBody, ModalBackdrop, ModalCloseButton, CloseIcon, Heading } from '@gluestack-ui/themed';
 import { FontAwesome5 } from '@expo/vector-icons';
-import TopBarBack from 'components/TopBarBack';
-import CardButton from 'components/buttons/CardButton';
-import AdMobBanner from 'components/adMob/AdMobBanner';
+import TopBarBack from '@components/TopBarBack';
+import CardButton from '@components/buttons/CardButton';
 import { withTranslation } from 'react-i18next';
+import AdMobInscriptionsBanner from '../../components/adMob/AdMobInscriptionsBanner';
 
 class ChoixTypeTournoi extends React.Component {
   constructor(props) {
@@ -39,13 +39,18 @@ class ChoixTypeTournoi extends React.Component {
     if (!infos) return;
     return (
       <Modal isOpen={this.state.showModal} onClose={() => this.setState({showModal: false})}>
-        <Modal.Content>
-          <Modal.CloseButton />
-          <Modal.Header>{infos.title}</Modal.Header>
-          <Modal.Body>
+        <ModalBackdrop/>
+        <ModalContent>
+          <ModalHeader>
+            <Heading>{infos.title}</Heading>
+            <ModalCloseButton>
+              <CloseIcon/>
+            </ModalCloseButton>
+          </ModalHeader>
+          <ModalBody>
             <Text>{infos.text}</Text>
-          </Modal.Body>
-        </Modal.Content>
+          </ModalBody>
+        </ModalContent>
       </Modal>
     )
   }
@@ -60,43 +65,46 @@ class ChoixTypeTournoi extends React.Component {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <StatusBar backgroundColor="#0594ae"/>
-        <VStack flex="1" bgColor={"#0594ae"}>
+        <StatusBar backgroundColor='#0594ae'/>
+        <VStack flex={1} bgColor='#0594ae'>
           <TopBarBack title={t("type_tournoi")} navigation={this.props.navigation}/>
-          <VStack flex="1" px="10">
-            <Spacer/>
-            <CardButton
-              text={t("type_melee_demelee")}
-              icon="random"
-              navigate={() => this._navigate('mele-demele')}
-            />
-            <Pressable flexDirection="row" justifyContent="center" mt="2" onPress={() => this.setState({showModal: true, modalType: "melee-demelee"})}>
-              <FontAwesome5 name="info-circle" color="white" size={24}/>
-              <Text color="white"> {t("savoir_plus")}</Text>
-            </Pressable>
-            <Spacer/>
-            <CardButton
-              text={t("type_championnat")}
-              icon="table"
-              navigate={() => this._navigate('championnat')}
-            />
-            <Pressable flexDirection="row" justifyContent="center" mt="2" onPress={() => this.setState({showModal: true, modalType: "championnat"})}>
-              <FontAwesome5 name="info-circle" color="white" size={24}/>
-              <Text color="white"> {t("savoir_plus")}</Text>
-            </Pressable>
-            <Spacer/>
-            <CardButton
-              text={t("type_coupe")}
-              icon="trophy"
-              navigate={() => this._navigate('coupe')}
-            />
-            <Pressable flexDirection="row" justifyContent="center" mt="2" onPress={() => this.setState({showModal: true, modalType: "coupe"})}>
-              <FontAwesome5 name="info-circle" color="white" size={24}/>
-              <Text color="white"> {t("savoir_plus")}</Text>
-            </Pressable>
-            <Spacer/>
-            <AdMobBanner/>
-            <Spacer/>
+          <VStack flex={1} px={'$10'} space='2xl'>
+            <VStack flex={1}>
+              <CardButton
+                text={t("type_melee_demelee")}
+                icon="random"
+                navigate={() => this._navigate('mele-demele')}
+              />
+              <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: "melee-demelee"})}>
+                <FontAwesome5 name="info-circle" color='white' size={24}/>
+                <Text color='$white'> {t("savoir_plus")}</Text>
+              </Pressable>
+            </VStack>
+            <VStack flex={1}>
+              <CardButton
+                text={t("type_championnat")}
+                icon="table"
+                navigate={() => this._navigate('championnat')}
+              />
+              <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: "championnat"})}>
+                <FontAwesome5 name="info-circle" color='white' size={24}/>
+                <Text color='$white'> {t("savoir_plus")}</Text>
+              </Pressable>
+            </VStack>
+            <VStack flex={1}>
+              <CardButton
+                text={t("type_coupe")}
+                icon="trophy"
+                navigate={() => this._navigate('coupe')}
+              />
+              <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: "coupe"})}>
+                <FontAwesome5 name="info-circle" color='white' size={24}/>
+                <Text color='$white'> {t("savoir_plus")}</Text>
+              </Pressable>
+            </VStack>
+            <VStack flat={4} m={'$10'}>
+              <AdMobInscriptionsBanner/>
+            </VStack>
           </VStack>
         </VStack>
         {this._modalInfos()}
