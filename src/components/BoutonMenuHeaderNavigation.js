@@ -6,6 +6,9 @@ import { FontAwesome5 } from '@expo/vector-icons';
 class BoutonMenuHeaderNav extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      selected: undefined
+    }
   }
 
   _showOptions() {
@@ -34,6 +37,24 @@ class BoutonMenuHeaderNav extends React.Component {
     return (
       <Menu
         placement='bottom left'
+        //FIX BUG https://github.com/gluestack/gluestack-ui/issues/1431
+        selectionMode='single'
+        selectedKeys={this.state.selected}
+        onSelectionChange={(keys) => {
+          this.setState({selected: keys});
+          if (keys.currentKey === 'Joueurs') {
+            this._showJoueurs();
+          }
+          if (keys.currentKey === 'Options') {
+            this._showOptions();
+          }
+          if (keys.currentKey === 'PDF') {
+            this._showPDFExport();
+          }
+          if (keys.currentKey === 'Accueil') {
+            this._showAccueil();
+          }
+        }}
         trigger={({ ...triggerProps }) => {
           return (
             <Button {...triggerProps} bgColor='#0594ae'>
