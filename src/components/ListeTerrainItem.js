@@ -64,7 +64,6 @@ class ListeTerrainItem extends React.Component {
         <Input>
           <InputField
             placeholder={terrain.name}
-            placeholderTextColor='$white'
             autoFocus={true}
             onChangeText={(text) => this._terrainTxtInputChanged(text)}
             onSubmitEditing={() => this._renommerTerrain(terrain)}

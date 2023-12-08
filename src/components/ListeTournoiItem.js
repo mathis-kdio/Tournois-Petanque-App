@@ -117,7 +117,6 @@ class ListeTournoiItem extends React.Component {
         <Input>
           <InputField
             placeholder={tournoiName}
-            placeholderTextColor='$white'
             autoFocus={true}
             onChangeText={(text) => this._tournoiTextInputChanged(text)}
             onSubmitEditing={() => this._renameTournoi(tournoi)}

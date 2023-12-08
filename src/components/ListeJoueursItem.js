@@ -138,7 +138,6 @@ class ListeJoueursItem extends React.Component {
         <Input>
           <InputField
             placeholder={listName}
-            placeholderTextColor='$white'
             autoFocus={true}
             onChangeText={(text) => this._listTextInputChanged(text)}
             onSubmitEditing={() => this._renameList(list)}

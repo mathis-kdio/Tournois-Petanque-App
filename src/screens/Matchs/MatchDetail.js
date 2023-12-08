@@ -169,7 +169,6 @@ class MatchDetail extends React.Component {
                     <Input borderColor='$white'>
                       <InputField
                         placeholder={t("score_equipe_1")}
-                        placeholderTextColor='$white'
                         autoFocus={true}
                         defaultValue={this.nbToursTxt}
                         keyboardType='decimal-pad'
@@ -184,7 +183,6 @@ class MatchDetail extends React.Component {
                     <Input size='md' borderColor='$white'>
                       <InputField
                         placeholder={t("score_equipe_2")}
-                        placeholderTextColor='$white'
                         autoFocus={true}
                         defaultValue={this.nbToursTxt}
                         keyboardType='decimal-pad'

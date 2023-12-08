@@ -118,7 +118,6 @@ class ListeJoueurItem extends React.Component {
         <Input variant='underlined' size='md' borderColor='$white'>
           <InputField
             placeholder={joueur.name}
-            placeholderTextColor={'$white'}
             autoFocus={true}
             onChangeText={(text) => this._joueurTxtInputChanged(text)}
             onSubmitEditing={() => this._renommerJoueur(joueur, isInscription, avecEquipes)}
@@ -176,7 +175,7 @@ class ListeJoueurItem extends React.Component {
           onValueChange={itemValue => this._ajoutEquipe(joueur.id, itemValue)}
         >
           <SelectTrigger>
-            <SelectInput placeholder={t("choix_equipe")} placeholderTextColor='$white'/>
+            <SelectInput placeholder={t("choix_equipe")}/>
             <SelectIcon mr={'$3'}>
               <ChevronDownIcon color='$white'/>
             </SelectIcon>

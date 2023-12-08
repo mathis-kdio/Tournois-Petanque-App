@@ -9,7 +9,7 @@ export const SelectInput = createStyle({
   h: '$full',
   color: '$white',
   props: {
-    placeholderTextColor: '$textLight500',
+    placeholderTextColor: '$textLight300',
   },
   _dark: {
     color: '$textDark50',

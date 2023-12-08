@@ -93,7 +93,6 @@ class OptionsTournoi extends React.Component {
                     <Input size='md' borderColor='$white'>
                       <InputField
                         placeholder={t("indiquer_nombre")}
-                        placeholderTextColor='$white'
                         keyboardType="numeric"
                         defaultValue={this.nbToursTxt}
                         onChangeText={(text) => this._nbToursTxtInputChanged(text)}
@@ -105,7 +104,6 @@ class OptionsTournoi extends React.Component {
                     <Input size='md' borderColor='$white'>
                       <InputField
                         placeholder={t("indiquer_nombre")}
-                        placeholderTextColor='$white'
                         keyboardType="numeric"
                         defaultValue={this.nbPtVictoireTxt}
                         onChangeText={(text) => this._nbPtVictoireTxtInputChanged(text)}
