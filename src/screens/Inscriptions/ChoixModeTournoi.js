@@ -77,19 +77,19 @@ class ChoixModeTournoi extends React.Component {
         >
           <VStack space='lg'>
             <Radio value="avecNoms" size='lg'>
-              <RadioIndicator mr='$2' sx={{_text: {color: '$red500'}}}>
+              <RadioIndicator mr={'$2'}>
                 <CircleIcon stroke={this.state.modeTournoi == "avecNoms" ? '$white' : '$secondary700'}/>
               </RadioIndicator>
               <RadioLabel>{t("melee_demelee_avec_nom")}</RadioLabel>
             </Radio>
             <Radio value="sansNoms" size='lg'>
-              <RadioIndicator mr='$2'>
+              <RadioIndicator mr={'$2'}>
                 <CircleIcon stroke={this.state.modeTournoi == "sansNoms" ? '$white' : '$secondary700'}/>
               </RadioIndicator>
               <RadioLabel>{t("melee_demelee_sans_nom")}</RadioLabel>
             </Radio>
             <Radio value="avecEquipes" size='lg'>
-              <RadioIndicator mr='$2'>
+              <RadioIndicator mr={'$2'}>
                 <CircleIcon stroke={this.state.modeTournoi == "avecEquipes" ? '$white' : '$secondary700'}/>
               </RadioIndicator>
               <RadioLabel>{t("melee_avec_equipes_constituees")}</RadioLabel>
@@ -118,19 +118,19 @@ class ChoixModeTournoi extends React.Component {
               >
                 <VStack space='lg'>
                   <Radio value="teteatete" size='lg'>
-                    <RadioIndicator mr='$2'>
+                    <RadioIndicator mr={'$2'}>
                       <CircleIcon stroke={this.state.typeEquipes == "teteatete" ? '$white' : '$secondary700'}/>
                     </RadioIndicator>
                     <RadioLabel>{t("tete_a_tete")}</RadioLabel>
                   </Radio>
                   <Radio value="doublette" size='lg'>
-                    <RadioIndicator mr='$2'>
+                    <RadioIndicator mr={'$2'}>
                       <CircleIcon stroke={this.state.typeEquipes == "doublette" ? '$white' : '$secondary700'}/>
                     </RadioIndicator>
                     <RadioLabel>{t("doublettes")}</RadioLabel>
                   </Radio>
                   <Radio value="triplette" size='lg'>
-                    <RadioIndicator mr='$2'>
+                    <RadioIndicator mr={'$2'}>
                       <CircleIcon stroke={this.state.typeEquipes == "triplette" ? '$white' : '$secondary700'}/>
                     </RadioIndicator>
                     <RadioLabel>{t("triplettes")}</RadioLabel>

@@ -235,7 +235,7 @@ class Accueil extends React.Component {
             </HStack>
             <HStack justifyContent='center'>
               <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.gcuWebsite)}>
-                <Text color='$white' fontSize={16}>{t("decouvrir_gcu")}</Text>
+                <Text color='$white' fontSize={'$md'}>{t("decouvrir_gcu")}</Text>
               </Pressable>
             </HStack>
             <VStack>

@@ -19,7 +19,7 @@ class MatchItem extends React.Component {
       txt = match.terrain.name;
     }
     return (
-      <Text color='$white' fontSize={'$2xl'} p={"$0.5"} textAlign='center'>{txt}</Text>
+      <Text color='$white' fontSize={'$2xl'} p={'$0.5'} textAlign='center'>{txt}</Text>
     )
   }
 

@@ -20,7 +20,7 @@ class ListeResultats extends React.Component {
             <Text flex={1} textAlign='center' color='$white' fontSize={'$lg'}>{t("m_j")}</Text>
             <Text flex={1} textAlign='right' color='$white' fontSize={'$lg'}>{t("point")}</Text>
           </HStack>
-          <Divider my="$0.5" />
+          <Divider my={'$0.5'} />
           <FlatList
             data={rankingCalc(this.props.listeMatchs)}
             keyExtractor={(item) => item.joueurId.toString()}

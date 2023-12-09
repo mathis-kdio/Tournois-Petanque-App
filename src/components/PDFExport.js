@@ -69,7 +69,7 @@ class PDFExport extends React.Component {
     }
     return (
       <Button isDisabled={pressableDisabled} onPress={() => this._onPressExportBtn(buttonId, affichageScore, affichageClassement)}>
-        {this.state.btnIsLoading[buttonId] && <ButtonSpinner mr="$1" />}
+        {this.state.btnIsLoading[buttonId] && <ButtonSpinner mr={'$1'} />}
         <ButtonText>{buttonText}</ButtonText>
       </Button>
     )
