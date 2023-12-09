@@ -113,25 +113,31 @@ class InscriptionsSansNoms extends React.Component {
           <TopBarBack title={t("inscription_sans_noms_navigation_title")} navigation={this.props.navigation}/>
           <VStack flex={1} px={'$10'} space='2xl'>
             <Text color='$white' textAlign='center' fontSize={'$xl'}>{t("nombre_joueurs", {nb: this._nbJoueurs()})}</Text>
-            <Input borderColor='$white'>
-              <InputField
-                placeholder={t("nombre_joueurs_adultes")}
-                keyboardType='number-pad'
-                returnKeyType='next'
-                autoFocus={true}
-                blurOnSubmit={false}
-                onChangeText={(text) => this._textInputJoueursNormaux(text)}
-                onSubmitEditing={() => this.secondInput.focus()}
-              />
-            </Input>
-            <Input borderColor='$white'>
-              <InputField
-                placeholder={t("nombre_joueurs_enfants")}
-                keyboardType='number-pad'
-                onChangeText={(text) => this._textInputJoueursEnfants(text)}
-                ref={ref => {this.secondInput = ref}}
-              />
-            </Input>
+            <VStack>
+              <Text color='$white' fontSize={'$md'}>{t("nombre_joueurs_adultes")} </Text>
+              <Input size='md'>
+                <InputField
+                  placeholder={t("nombre_joueurs_adultes")}
+                  keyboardType='number-pad'
+                  returnKeyType='next'
+                  autoFocus={true}
+                  blurOnSubmit={false}
+                  onChangeText={(text) => this._textInputJoueursNormaux(text)}
+                  onSubmitEditing={() => this.secondInput.focus()}
+                />
+              </Input>
+            </VStack>
+            <VStack>
+              <Text color='$white' fontSize={'$md'}>{t("nombre_joueurs_enfants")} </Text>
+              <Input size='md'>
+                <InputField
+                  placeholder={t("nombre_joueurs_enfants")}
+                  keyboardType='number-pad'
+                  onChangeText={(text) => this._textInputJoueursEnfants(text)}
+                  ref={ref => {this.secondInput = ref}}
+                />
+              </Input>
+            </VStack>
             <Text color='$white'>{t("joueurs_enfants_explication")}</Text>
             {this._boutonCommencer()}
           </VStack>
