@@ -118,10 +118,10 @@ class OptionsTournoi extends React.Component {
                     defaultIsChecked
                     size='md'
                   >
-                    <CheckboxIndicator mr='$2' sx={{bgColor: '$cyan600'}} borderColor='$white'>
+                    <CheckboxIndicator mr={'$2'}>
                       <CheckIcon color={this.state.speciauxIncompatibles ? '$white' : '$cyan600'}/>
                     </CheckboxIndicator>
-                    <CheckboxLabel color='$white'>{t("options_regle_enfants")}</CheckboxLabel>
+                    <CheckboxLabel>{t("options_regle_enfants")}</CheckboxLabel>
                   </Checkbox>
                   <Checkbox
                     onChange={() => this.setState({memesEquipes: !this.state.memesEquipes})}
@@ -129,10 +129,10 @@ class OptionsTournoi extends React.Component {
                     defaultIsChecked
                     size='md'
                   >
-                    <CheckboxIndicator mr='$2' sx={{bgColor: '$cyan600'}} borderColor='$white'>
+                    <CheckboxIndicator mr={'$2'}>
                       <CheckIcon color={this.state.memesEquipes ? '$white' : '$cyan600'}/>
                     </CheckboxIndicator>
-                    <CheckboxLabel color='$white'>{t("options_regle_equipes")}</CheckboxLabel>
+                    <CheckboxLabel>{t("options_regle_equipes")}</CheckboxLabel>
                   </Checkbox>
                 </VStack>
                 <VStack>
@@ -190,10 +190,10 @@ class OptionsTournoi extends React.Component {
                     aria-label={t("choix_option_terrains")}
                     size='md'
                   >
-                    <CheckboxIndicator mr={'$2'} sx={{bgColor: '$cyan600'}} borderColor='$white'>
+                    <CheckboxIndicator mr={'$2'}>
                       <CheckIcon color={this.state.avecTerrains ? '$white' : '$cyan600'}/>
                     </CheckboxIndicator>
-                    <CheckboxLabel color='$white'>{t("options_terrains_explications")}</CheckboxLabel>
+                    <CheckboxLabel>{t("options_terrains_explications")}</CheckboxLabel>
                   </Checkbox>
                 </VStack>
                 <VStack>
