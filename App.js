@@ -49,7 +49,7 @@ class App extends React.Component {
             <NavigationContainer ref={this.navigation} onReady={() => onNavigationContainerReady(this.navigation)}>
               <I18nextProvider i18n={i18n} defaultNS={'translation'}>
                 <Navigation/>
-                <StatusBar style="light" backgroundColor="#ffda00"/>
+                <StatusBar style="light" backgroundColor="#0594ae"/>
               </I18nextProvider>
             </NavigationContainer>
           </GluestackUIProvider>

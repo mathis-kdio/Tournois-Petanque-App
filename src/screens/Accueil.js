@@ -7,7 +7,6 @@ import { _versionCheck } from '../utils/versionCheck/versionCheck'
 import { _openPlateformLink, _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Box, HStack, VStack, Text, Pressable, Modal, Image, ModalHeader, ModalBody, ModalContent, ModalCloseButton, Heading, CloseIcon, ModalBackdrop } from '@gluestack-ui/themed';
-import { StatusBar } from 'expo-status-bar';
 import { _adsConsentForm } from '../utils/adMob/consentForm'
 import { withTranslation } from 'react-i18next';
 import CardButton from '@components/buttons/CardButton';
@@ -177,7 +176,6 @@ class Accueil extends React.Component {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <StatusBar backgroundColor='#0594ae'/>
         <VStack flex={1} px={'$5'} bgColor='#0594ae' justifyContent='space-between'>
           <VStack alignItems='center'>
             <Image

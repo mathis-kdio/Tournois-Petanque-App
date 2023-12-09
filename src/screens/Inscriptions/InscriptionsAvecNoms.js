@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import Inscriptions from '@components/Inscriptions'
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { StatusBar } from 'expo-status-bar'
 import TopBarBack from 'components/TopBarBack'
 import { Box, Button, ButtonText, Text, VStack } from '@gluestack-ui/themed'
 
@@ -141,7 +140,6 @@ class InscriptionsAvecNoms extends React.Component {
     const nbJoueur = this.props.listesJoueurs[this.props.optionsTournoi.mode].length;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <StatusBar backgroundColor='#0594ae'/>
         <VStack flex={1} bgColor='#0594ae'>
           <TopBarBack title={t("inscription_avec_noms_navigation_title")} navigation={this.props.navigation}/>
           <VStack flex={1}>

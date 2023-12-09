@@ -4,7 +4,6 @@ import ListeResultatItem from '@components/ListeResultatItem'
 import { rankingCalc } from '@utils/ranking'
 import { withTranslation } from 'react-i18next'
 import { HStack, FlatList, Text, VStack, Divider } from '@gluestack-ui/themed'
-import { StatusBar } from 'expo-status-bar'
 
 class ListeResultats extends React.Component {
 
@@ -12,7 +11,6 @@ class ListeResultats extends React.Component {
     const { t } = this.props;
     return (
       <VStack flex={1} bgColor={"#0594ae"}>
-        <StatusBar backgroundColor="#0594ae"/>
         <VStack flex={1} justifyContent='space-between'>
           <HStack px={'$2'}>
             <Text flex={2} color='$white' fontSize={'$lg'}>{t("place")}</Text>

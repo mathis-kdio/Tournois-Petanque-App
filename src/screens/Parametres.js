@@ -3,7 +3,6 @@ import { expo } from '../../app.json'
 import { connect } from 'react-redux'
 import { _openURL } from '@utils/link'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { StatusBar } from 'expo-status-bar'
 import { HStack, VStack, Text, FlatList, Divider, AlertDialogContent, AlertDialog, Pressable, Box, Center, Button, ButtonText, Modal, Image, ModalBackdrop, ModalContent, ModalCloseButton, ModalHeader, ModalBody, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, ButtonGroup, Heading, AlertDialogCloseButton, CloseIcon, AlertDialogBackdrop } from '@gluestack-ui/themed'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { _adsConsentShowForm } from '../utils/adMob/consentForm'
@@ -178,7 +177,6 @@ class Parametres extends React.Component {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <StatusBar backgroundColor='#0594ae'/>
         <VStack flex={1} bgColor='#0594ae'>
           <TopBarBack title={t("parametres")} navigation={this.props.navigation}/>
           <VStack flex={1} px={'$10'} space='lg'>

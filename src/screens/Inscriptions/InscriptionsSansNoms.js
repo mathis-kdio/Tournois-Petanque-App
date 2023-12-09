@@ -1,5 +1,4 @@
 import { VStack, Text, Button, ButtonText, Input, InputField } from '@gluestack-ui/themed'
-import { StatusBar } from 'expo-status-bar'
 import React from 'react'
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -108,7 +107,6 @@ class InscriptionsSansNoms extends React.Component {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <StatusBar backgroundColor='#0594ae'/>
         <VStack flex={1} bgColor='#0594ae'>
           <TopBarBack title={t("inscription_sans_noms_navigation_title")} navigation={this.props.navigation}/>
           <VStack flex={1} px={'$10'} space='2xl'>

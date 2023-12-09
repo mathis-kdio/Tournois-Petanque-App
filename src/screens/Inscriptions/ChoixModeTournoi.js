@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StatusBar } from 'expo-status-bar';
 import { VStack, Button, Text, Radio, RadioLabel, ButtonText, RadioGroup, RadioIndicator, CircleIcon, Box } from '@gluestack-ui/themed';
 import TopBarBack from '@components/TopBarBack';
 import { withTranslation } from 'react-i18next';
@@ -104,7 +103,6 @@ class ChoixModeTournoi extends React.Component {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <StatusBar backgroundColor="#0594ae"/>
         <VStack flex={1} bgColor={"#0594ae"}>
           <TopBarBack title={t("mode_tournoi")} navigation={this.props.navigation}/>
           <VStack flex={1} px={'$10'} justifyContent='space-between'>

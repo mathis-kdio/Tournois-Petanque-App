@@ -1,5 +1,4 @@
 import { VStack, Text, Input, Button, HStack, Box, ButtonText } from '@gluestack-ui/themed';
-import { StatusBar } from 'expo-status-bar';
 import React from 'react'
 import { withTranslation } from 'react-i18next';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -147,7 +146,6 @@ class MatchDetail extends React.Component {
     return (
       <KeyboardAwareScrollView contentContainerStyle={{flex: 1}}>
         <SafeAreaView style={{flex: 1}}>
-          <StatusBar backgroundColor="#0594ae"/>
           <VStack flex={1} bgColor={"#0594ae"}>
             <TopBarBack title={t("detail_match_navigation_title")} navigation={this.props.navigation}/>
             <VStack flex={1} px={'$10'} justifyContent='space-between'>
