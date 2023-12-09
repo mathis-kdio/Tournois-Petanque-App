@@ -67,7 +67,7 @@ class OptionsTournoi extends React.Component {
     }
     return (
       <Button
-        bg='#1c3969'
+        action='primary'
         isDisabled={btnDisabled}
         onPress={() => this._nextStep()}
         size='md'

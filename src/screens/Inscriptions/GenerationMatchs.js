@@ -214,7 +214,7 @@ class GenerationMatchs extends React.Component {
         <VStack>
           <Text color='$white'>{t("erreur_generation_options")}</Text>
           <Text color='$white'>{t("erreur_generation_options_regles")}</Text>
-          <Button title={t("retour_inscription")} onPress={() => this._retourInscription()}>
+          <Button action='primary' onPress={() => this._retourInscription()}>
             <ButtonText>{t("retour_inscription")}</ButtonText>
           </Button>
         </VStack>
@@ -229,7 +229,7 @@ class GenerationMatchs extends React.Component {
         <VStack>
           <Text color='$white'>{t("erreur_generation_options")}</Text>
           <Text color='$white'>{t("erreur_generation_joueurs_speciaux")}</Text>
-          <Button title={t("retour_inscription")} onPress={() => this._retourInscription()}>
+          <Button action='primary' onPress={() => this._retourInscription()}>
             <ButtonText>{t("retour_inscription")}</ButtonText>
           </Button>
         </VStack>
@@ -244,7 +244,7 @@ class GenerationMatchs extends React.Component {
         <VStack>
           <Text color='$white'>{t("erreur_generation_options")}</Text>
           <Text color='$white'>{t("erreur_generation_regle_equipes")}</Text>
-          <Button onPress={() => this._retourInscription()}>
+          <Button action='primary' onPress={() => this._retourInscription()}>
             <ButtonText>{t("retour_inscription")}</ButtonText>
           </Button>
         </VStack>

@@ -36,8 +36,8 @@ export const Button = createStyle({
   'variants': {
     action: {
       primary: {
-        'bg': '$primary500',
-        'borderColor': '$primary300',
+        'bg': '$primary700',
+        'borderColor': '$primary700',
 
         ':hover': {
           bg: '$primary600',
