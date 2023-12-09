@@ -261,7 +261,7 @@ class Inscription extends React.Component {
       <VStack flex={1}>
         <HStack alignItems='center' mx={'$1'} space='md'>
           <Box flex={1}>
-            <Input size='md' borderColor='$white'>
+            <Input size='md'>
               <InputField
                 placeholder={t("nom_joueur")}
                 autoFocus={true}

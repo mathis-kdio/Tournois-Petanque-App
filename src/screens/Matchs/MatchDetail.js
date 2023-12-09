@@ -166,7 +166,7 @@ class MatchDetail extends React.Component {
                 </HStack>
                 <HStack space='lg'>
                   <Box flex={1}>
-                    <Input borderColor='$white'>
+                    <Input size='md'>
                       <InputField
                         placeholder={t("score_equipe_1")}
                         autoFocus={true}
@@ -180,7 +180,7 @@ class MatchDetail extends React.Component {
                     </Input>
                   </Box>
                   <Box flex={1}>
-                    <Input size='md' borderColor='$white'>
+                    <Input size='md'>
                       <InputField
                         placeholder={t("score_equipe_2")}
                         autoFocus={true}
