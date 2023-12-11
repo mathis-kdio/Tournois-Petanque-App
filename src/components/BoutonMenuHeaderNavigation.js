@@ -39,7 +39,6 @@ class BoutonMenuHeaderNav extends React.Component {
         placement='bottom left'
         //FIX BUG https://github.com/gluestack/gluestack-ui/issues/1431
         selectionMode='single'
-        selectedKeys={this.state.selected}
         onSelectionChange={(keys) => {
           this.setState({selected: keys});
           if (keys.currentKey === 'Joueurs') {
@@ -64,16 +63,16 @@ class BoutonMenuHeaderNav extends React.Component {
         }}
         closeOnSelect={true}
       >
-        <MenuItem key="Joueurs" textValue={t("liste_joueurs")} onPress={() => this._showJoueurs()}>
+        <MenuItem key="Joueurs" textValue={t("liste_joueurs")}>
           <MenuItemLabel size='sm'>{t("liste_joueurs")}</MenuItemLabel>
         </MenuItem>
-        <MenuItem key="Options" textValue={t("parametres_tournoi")} onPress={() => this._showOptions()}>
+        <MenuItem key="Options" textValue={t("parametres_tournoi")}>
           <MenuItemLabel size='sm'>{t("parametres_tournoi")}</MenuItemLabel>
         </MenuItem>
-        <MenuItem key="PDF" textValue={t("exporter_pdf")} onPress={() => this._showPDFExport()}>
+        <MenuItem key="PDF" textValue={t("exporter_pdf")}>
           <MenuItemLabel size='sm'>{t("exporter_pdf")}</MenuItemLabel>
         </MenuItem>
-        <MenuItem key="Accueil" textValue={t("accueil")} onPress={() => this._showAccueil()}>
+        <MenuItem key="Accueil" textValue={t("accueil")}>
           <MenuItemLabel size='sm'>{t("accueil")}</MenuItemLabel>
         </MenuItem>
       </Menu>
