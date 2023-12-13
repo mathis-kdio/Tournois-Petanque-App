@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import ListeJoueurItem from '@components/ListeJoueurItem'
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { StatusBar } from 'expo-status-bar'
 import { ButtonText, VStack, Button, Text, Box, FlatList } from '@gluestack-ui/themed'
 import TopBarBack from '../../components/TopBarBack'
 
@@ -41,7 +40,6 @@ class JoueursTournoi extends React.Component {
     let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <StatusBar backgroundColor="#0594ae"/>
         <VStack flex={1} bgColor={"#0594ae"}>
           <TopBarBack title={t("liste_joueurs_inscrits_navigation_title")} navigation={this.props.navigation}/>
           <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("nombre_joueurs", {nb: listeJoueurs.length})}</Text>

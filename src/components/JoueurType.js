@@ -42,7 +42,7 @@ class JoueurType extends React.Component {
         onValueChange={itemValue => _setJoueurType(itemValue)}
       >
         <SelectTrigger variant='rounded'>
-          <SelectInput placeholder={t("choisir_poste")} placeholderTextColor='$white'/>
+          <SelectInput placeholder={t("choisir_poste")}/>
           <SelectIcon mr={'$3'}>
             <ChevronDownIcon color='$white'/>
           </SelectIcon>

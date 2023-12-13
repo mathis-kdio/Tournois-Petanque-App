@@ -1,9 +1,9 @@
 import { createStyle } from '@gluestack-style/react';
 
 export const CheckboxLabel = createStyle({
-  'color': '$textLight600',
+  'color': '$white',
   ':checked': {
-    color: '$textLight900',
+    color: '$white',
   },
   ':hover': {
     'color': '$textLight900',

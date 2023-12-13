@@ -10,12 +10,13 @@ class ListeMatchs extends React.Component {
     super(props)
   }
 
-  _displayDetailForMatch = (idMatch, match) => {
+  _displayDetailForMatch = (idMatch, match, nbPtVictoire) => {
     this.props.navigation.navigate({
       name: 'MatchDetailStack', 
       params: {
         idMatch: idMatch, 
         match: match,
+        nbPtVictoire: nbPtVictoire,
       }
     });
   }

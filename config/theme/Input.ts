@@ -121,7 +121,7 @@ export const Input = createStyle({
         'borderRadius': 0,
         'borderBottomWidth': '$1',
         ':focus': {
-          borderColor: '$primary700',
+          borderColor: '$white',
           _web: {
             boxShadow: 'inset 0 -1px 0 0 $primary700',
           },
@@ -197,7 +197,7 @@ export const Input = createStyle({
           },
         },
         ':focus': {
-          borderColor: '$primary700',
+          borderColor: '$white',
           _web: {
             boxShadow: 'inset 0 0 0 1px $primary700',
           },
@@ -274,7 +274,7 @@ export const Input = createStyle({
           },
         },
         ':focus': {
-          borderColor: '$primary700',
+          borderColor: '$white',
           _web: {
             boxShadow: 'inset 0 0 0 1px $primary700',
           },

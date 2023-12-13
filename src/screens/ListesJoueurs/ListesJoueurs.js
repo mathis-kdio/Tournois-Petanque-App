@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import ListeJoueursItem from '@components/ListeJoueursItem';
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StatusBar } from 'expo-status-bar';
 import { VStack, Text, Button, FlatList, ButtonText, Box } from '@gluestack-ui/themed';
 import TopBarBack from '../../components/TopBarBack';
 
@@ -51,7 +50,6 @@ class ListesJoueurs extends React.Component {
     }
     return (
       <SafeAreaView style={{flex: 1}}>
-        <StatusBar backgroundColor="#0594ae"/>
         <VStack flex={1} bgColor={"#0594ae"}>
           <TopBarBack title={t("listes_joueurs_navigation_title")} navigation={this.props.navigation}/>
           <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("nombre_listes", {nb: nbLists})}</Text>

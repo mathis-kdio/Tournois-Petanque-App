@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AlertDialog, AlertDialogBackdrop, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, Box, Button, ButtonGroup, ButtonText, CheckIcon, Checkbox, CheckboxIndicator, CheckboxLabel, ChevronDownIcon, CloseIcon, HStack, Heading, Image, Input, InputField, Select, SelectBackdrop, SelectContent, SelectDragIndicator, SelectDragIndicatorWrapper, SelectIcon, SelectInput, SelectItem, SelectPortal, SelectTrigger, Text } from '@gluestack-ui/themed';
 import { withTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native';
 
 class ListeJoueurItem extends React.Component {
   constructor(props) {
@@ -10,7 +11,6 @@ class ListeJoueurItem extends React.Component {
     this.joueurText = ""
     this.state = {
       renommerOn: false,
-      disabledBoutonRenommer: true,
       modalConfirmUncheckIsOpen: false
     }
   }
@@ -19,7 +19,7 @@ class ListeJoueurItem extends React.Component {
     if (isInscription === true) {
       return (
         <Box ml={'$2'}>
-          <FontAwesome5.Button name="times" backgroundColor='red' iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._supprimerJoueur(joueur.id)}/>
+          <FontAwesome5.Button name="times" backgroundColor='#E63535' iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._supprimerJoueur(joueur.id)}/>
         </Box>
       )
     }
@@ -38,29 +38,28 @@ class ListeJoueurItem extends React.Component {
   }
 
   _showRenommerJoueur(joueur, isInscription, avecEquipes) {
-    if (this.state.renommerOn == false) {
-      return (
-        <Box>
-          <FontAwesome5.Button name="edit" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renommerJoueurInput(joueur)}/>
-        </Box>
-      )
+    let name;
+    let bgColor;
+    let action;
+    if (!this.state.renommerOn) {
+      name = 'edit';
+      bgColor = '#004282';
+      action = () => this.setState({renommerOn: true});
+    } else if (this.joueurText == '') {
+      name = 'times';
+      bgColor = '#5F5F5F';
+      action = () => this.setState({renommerOn: false});
+    } else {
+      name = 'check';
+      bgColor = '#348352';
+      action = () => this._renommerJoueur(joueur, isInscription, avecEquipes);
     }
-    else {
-      if (this.state.disabledBoutonRenommer == true) {
-        return (
-          <Box>
-            <FontAwesome5.Button name="edit" backgroundColor="gray" iconStyle={{paddingHorizontal: 2, marginRight: 0}}/>
-          </Box>
-        )
-      }
-      else {
-        return (
-          <Box>
-            <FontAwesome5.Button name="check" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renommerJoueur(joueur, isInscription, avecEquipes)}/>
-          </Box>
-        )
-      }
-    }
+
+    return (
+      <Box>
+        <FontAwesome5.Button name={name} backgroundColor={bgColor} iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={action}/>
+      </Box>
+    )
   }
 
   _renommerJoueurInput(joueur) {
@@ -72,10 +71,7 @@ class ListeJoueurItem extends React.Component {
 
   _renommerJoueur(joueur, isInscription, avecEquipes) {
     if (this.joueurText != "") {
-      this.setState({
-        renommerOn: false,
-        disabledBoutonRenommer: true
-      })
+      this.setState({renommerOn: false})
       if (isInscription === true) {
         let typeInscription = "";
         if (this.props.optionsTournoi.mode == "sauvegarde") {
@@ -103,22 +99,15 @@ class ListeJoueurItem extends React.Component {
 
   _joueurTxtInputChanged = (text) => {
     this.joueurText = text
-    //Le bouton valider est désactivé si aucune lettre
-    if (this.joueurText == '') {
-      this.setState({disabledBoutonRenommer: true});
-    }
-    else {
-      this.setState({disabledBoutonRenommer: false});
-    }
+    this.setState({renommerOn: true});
   }
 
   _joueurName(joueur, isInscription, avecEquipes) {
     if (this.state.renommerOn == true) {
       return(
-        <Input variant='underlined' size='md' borderColor='$white'>
+        <Input variant='underlined' size='md'>
           <InputField
             placeholder={joueur.name}
-            placeholderTextColor={'$white'}
             autoFocus={true}
             onChangeText={(text) => this._joueurTxtInputChanged(text)}
             onSubmitEditing={() => this._renommerJoueur(joueur, isInscription, avecEquipes)}
@@ -176,7 +165,7 @@ class ListeJoueurItem extends React.Component {
           onValueChange={itemValue => this._ajoutEquipe(joueur.id, itemValue)}
         >
           <SelectTrigger>
-            <SelectInput placeholder={t("choix_equipe")} placeholderTextColor='$white'/>
+            <SelectInput placeholder={t("choix_equipe")}/>
             <SelectIcon mr={'$3'}>
               <ChevronDownIcon color='$white'/>
             </SelectIcon>
@@ -208,8 +197,8 @@ class ListeJoueurItem extends React.Component {
       return (
         <Box>
           {joueurType == "enfant" && <FontAwesome5 name="child" color="darkgray" size={24}/>}
-          {joueurType == "tireur" && <Image source={require('@assets/images/tireur.png')} alt={type} width={30} height={30}/>}
-          {joueurType == "pointeur" && <Image source={require('@assets/images/pointeur.png')} alt={type} width={30} height={30}/>}
+          {joueurType == "tireur" && <Image source={require('@assets/images/tireur.png')} alt={type} width={30} height={30} style={styles.imageWeb} /> /*TMP FIX bug size web gluestack*/}
+          {joueurType == "pointeur" && <Image source={require('@assets/images/pointeur.png')} alt={type} width={30} height={30} style={styles.imageWeb} /> /*TMP FIX bug size web gluestack*/}
         </Box>
       )
     }
@@ -237,7 +226,7 @@ class ListeJoueurItem extends React.Component {
             size='md'
             isChecked={isChecked}
           >
-            <CheckboxIndicator mr='$2' sx={{bgColor: '$cyan600'}} borderColor='$white'>
+            <CheckboxIndicator mr={'$2'}>
               <CheckIcon color={isChecked ? '$white' : '$cyan600'}/>
             </CheckboxIndicator>
             <CheckboxLabel/>
@@ -310,6 +299,18 @@ class ListeJoueurItem extends React.Component {
     )
   }
 }
+
+//TMP FIX bug size web gluestack
+const styles = StyleSheet.create({
+  imageWeb: {
+    ...Platform.select({
+      web: {
+        height: '48px',
+        width: '48px'
+      }
+    })
+  }
+});
 
 const mapStateToProps = (state) => {
   return {

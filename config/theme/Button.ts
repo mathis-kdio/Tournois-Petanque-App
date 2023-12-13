@@ -36,8 +36,8 @@ export const Button = createStyle({
   'variants': {
     action: {
       primary: {
-        'bg': '$primary500',
-        'borderColor': '$primary300',
+        'bg': '$primary700',
+        'borderColor': '$primary700',
 
         ':hover': {
           bg: '$primary600',
@@ -386,6 +386,95 @@ export const Button = createStyle({
             },
             ':active': {
               props: { color: '$error200' },
+            },
+          },
+          ':focusVisible': {
+            _web: {
+              boxShadow: 'offset 0 0 0 2px $info400',
+            },
+          },
+        },
+      },
+
+      warning: {
+        'bg': '$warning500',
+        'borderColor': '$warning300',
+        ':hover': {
+          bg: '$warning600',
+          borderColor: '$warning400',
+        },
+
+        ':active': {
+          bg: '$warning700',
+          borderColor: '$warning700',
+        },
+        '_text': {
+          'color': '$warning600',
+          ':hover': {
+            color: '$warning600',
+          },
+          ':active': {
+            color: '$warning700',
+          },
+        },
+        '_icon': {
+          'color': '$warning600',
+          ':hover': {
+            color: '$warning600',
+          },
+          ':active': {
+            color: '$warning700',
+          },
+        },
+        '_spinner': {
+          'props': {
+            color: '$warning600',
+          },
+          ':hover': {
+            props: { color: '$warning600' },
+          },
+          ':active': {
+            props: { color: '$warning700' },
+          },
+        },
+        '_dark': {
+          'bg': '$warning400',
+          'borderColor': '$warning700',
+          ':hover': {
+            bg: '$warning500',
+            borderColor: '$warning400',
+          },
+          ':active': {
+            bg: '$warning600',
+            borderColor: '$warning300',
+          },
+          '_text': {
+            'color': '$warning300',
+            ':hover': {
+              color: '$warning300',
+            },
+            ':active': {
+              color: '$warning200',
+            },
+          },
+          '_icon': {
+            'color': '$warning300',
+            ':hover': {
+              color: '$warning300',
+            },
+            ':active': {
+              color: '$warning200',
+            },
+          },
+          '_spinner': {
+            'props': {
+              color: '$warning300',
+            },
+            ':hover': {
+              props: { color: '$warning300' },
+            },
+            ':active': {
+              props: { color: '$warning200' },
             },
           },
           ':focusVisible': {

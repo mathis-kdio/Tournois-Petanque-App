@@ -4,7 +4,7 @@ export const InputField = createStyle({
   flex: 1,
   color: '$white',
   props: {
-    placeholderTextColor: '$textLight500',
+    placeholderTextColor: '$textLight300',
   },
   _dark: {
     color: '$textDark50',

@@ -70,15 +70,15 @@ class ListeTournoiItem extends React.Component {
     let action;
     if (!this.state.renommerOn) {
       name = 'edit';
-      bgColor = '#1976d2';
+      bgColor = '#004282';
       action = () => this.setState({renommerOn: true});
     } else if (this.tournoiNameText == '') {
       name = 'times';
-      bgColor = 'gray';
+      bgColor = '#5F5F5F';
       action = () => this.setState({renommerOn: false});
     } else {
       name = 'check';
-      bgColor = 'green';
+      bgColor = '#348352';
       action = () => this._renameTournoi(tournoi);
     }
 
@@ -111,13 +111,13 @@ class ListeTournoiItem extends React.Component {
   }
 
   _tournoiName(tournoi) {
-    let tournoiName = 'Tournoi ' + (tournoi.name ? tournoi.name : 'n°' + tournoi.tournoiId);
+    const { t } = this.props;
+    let tournoiName = tournoi.name ? tournoi.name : 'n°' + tournoi.tournoiId;
     if (this.state.renommerOn) {
       return (
         <Input>
           <InputField
             placeholder={tournoiName}
-            placeholderTextColor='$white'
             autoFocus={true}
             onChangeText={(text) => this._tournoiTextInputChanged(text)}
             onSubmitEditing={() => this._renameTournoi(tournoi)}
@@ -127,7 +127,7 @@ class ListeTournoiItem extends React.Component {
     }
     else {
       return (
-        <Text color='$white'>{tournoiName}</Text>
+        <Text color='$white'>{t("tournoi")} {tournoiName}</Text>
       )
     }
   }
@@ -145,11 +145,11 @@ class ListeTournoiItem extends React.Component {
         </Box>
         <HStack space='sm'>
           {this._showRenameTournoi(tournoi)}
-          <FontAwesome5.Button name="info-circle" backgroundColor="#1976d2" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => _showModalTournoiInfos(tournoi)}/>
+          <FontAwesome5.Button name="info-circle" backgroundColor="#004282" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => _showModalTournoiInfos(tournoi)}/>
           <Button isDisabled={btnDisabled} action='primary' onPress={() => this._chargerTournoi(tournoi)}>
             <ButtonText>{t("charger")}</ButtonText>
           </Button>
-          <FontAwesome5.Button disabled={btnDisabled} name="times" backgroundColor={btnDisabled ? "#c0c0c0" : "red"} iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this.setState({modalDeleteIsOpen: true})}/>
+          <FontAwesome5.Button disabled={btnDisabled} name="times" backgroundColor={btnDisabled ? "#C0C0C0" : "#E63535"} iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this.setState({modalDeleteIsOpen: true})}/>
         </HStack>
         {this._modalSupprimerTournoi(tournoi.tournoiId)}
       </HStack>

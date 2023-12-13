@@ -6,7 +6,6 @@ import { withTranslation } from 'react-i18next';
 import { generationPDFTournoi } from 'utils/pdf/tournoi';
 import { generationPDFCoupe } from 'utils/pdf/coupe';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StatusBar } from 'expo-status-bar';
 import { VStack, Button, ButtonSpinner, ButtonText } from '@gluestack-ui/themed';
 import TopBarBack from './TopBarBack';
 
@@ -69,7 +68,7 @@ class PDFExport extends React.Component {
     }
     return (
       <Button isDisabled={pressableDisabled} onPress={() => this._onPressExportBtn(buttonId, affichageScore, affichageClassement)}>
-        {this.state.btnIsLoading[buttonId] && <ButtonSpinner mr="$1" />}
+        {this.state.btnIsLoading[buttonId] && <ButtonSpinner mr={'$1'} />}
         <ButtonText>{buttonText}</ButtonText>
       </Button>
     )
@@ -79,7 +78,6 @@ class PDFExport extends React.Component {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <StatusBar backgroundColor="#0594ae"/>
         <VStack flex={1} bgColor={"#0594ae"}>
           <TopBarBack title={t("exporter_pdf_navigation_title")} navigation={this.props.navigation}/>
           <VStack flex={1} px={'$10'} justifyContent='center' space='3xl'>

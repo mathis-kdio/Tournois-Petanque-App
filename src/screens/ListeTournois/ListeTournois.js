@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import ListeTournoiItem from '@components/ListeTournoiItem'
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { StatusBar } from 'expo-status-bar'
 import { VStack, Text, FlatList, Modal, CloseIcon, ModalBackdrop, ModalContent, ModalHeader, Heading, ModalCloseButton, ModalBody } from '@gluestack-ui/themed'
 import TopBarBack from '../../components/TopBarBack'
 
@@ -79,7 +78,6 @@ class ListeTournois extends React.Component {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <StatusBar backgroundColor="#0594ae"/>
         <VStack flex={1} bgColor={"#0594ae"}>
           <TopBarBack title={t("choix_tournoi_navigation_title")} navigation={this.props.navigation}/>
           <Text color='$white' fontSize={'$xl'} textAlign='center' px={'$10'}>{t("nombre_tournois", {nb: this.props.listeTournois.length})}</Text>

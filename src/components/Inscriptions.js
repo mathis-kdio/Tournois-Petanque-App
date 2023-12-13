@@ -196,7 +196,7 @@ class Inscription extends React.Component {
     if (this.state.nbSuggestions < this.state.suggestions.length) {
       return (
         <Button
-          bg='$green700'
+          action='primary'
           onPress={() => this._showMoreSuggestedPlayers()}
           startIcon={<Icon as={FontAwesome5} name="chevron-down"/>}
           endIcon={<Icon as={FontAwesome5} name="chevron-down"/>}
@@ -216,7 +216,7 @@ class Inscription extends React.Component {
     if (this.props.listesJoueurs[this.props.optionsTournoi.mode].length > 0) {
       return (
         <Button
-          bg='$red600'
+          action='negative'
           onPress={() => this.setState({modalRemoveIsOpen: true})}
         >
           <ButtonText>{t("supprimer_joueurs_bouton")}</ButtonText>
@@ -230,7 +230,7 @@ class Inscription extends React.Component {
     if (!this.props.loadListScreen) {
       return (
         <Button
-          bg='$green700'
+          action='primary'
           onPress={() => this._loadSavedList()}
         >
           <ButtonText>{t("charger_liste_joueurs_bouton")}</ButtonText>
@@ -261,10 +261,9 @@ class Inscription extends React.Component {
       <VStack flex={1}>
         <HStack alignItems='center' mx={'$1'} space='md'>
           <Box flex={1}>
-            <Input size='md' borderColor='$white'>
+            <Input size='md'>
               <InputField
-                placeholder={t("nom_joueur")}
-                placeholderTextColor='$white'
+                placeholder={t("nom_inscription")}
                 autoFocus={true}
                 defaultValue={this.nbToursTxt}
                 keyboardType="default"
@@ -282,7 +281,7 @@ class Inscription extends React.Component {
           </Box>
           <Box>
             <Button
-              bg='$green700'
+              action='positive'
               isDisabled={!this.state.etatBouton}
               onPress={() => this._ajoutJoueur()}
               size='md'

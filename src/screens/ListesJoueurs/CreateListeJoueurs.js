@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import Inscriptions from '@components/Inscriptions';
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StatusBar } from 'expo-status-bar';
 import { Box, Button, ButtonText, Text, VStack } from '@gluestack-ui/themed';
 import TopBarBack from '../../components/TopBarBack';
 
@@ -51,7 +50,6 @@ class CreateListeJoueur extends React.Component {
     }
     return (
       <SafeAreaView style={{flex: 1}}>
-        <StatusBar backgroundColor="#0594ae"/>
         <VStack flex={1} bgColor={"#0594ae"}>
           <TopBarBack title={t("creation_liste_joueurs_navigation_title")} navigation={this.props.navigation}/>
           <VStack flex={1} justifyContent='space-between'>

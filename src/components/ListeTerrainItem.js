@@ -25,15 +25,15 @@ class ListeTerrainItem extends React.Component {
     let action;
     if (!this.state.renommerOn) {
       name = 'edit';
-      bgColor = 'green';
+      bgColor = '#004282';
       action = () => this.setState({renommerOn: true});
     } else if (this.terrainText == '') {
       name = 'times';
-      bgColor = 'gray';
+      bgColor = '#5F5F5F';
       action = () => this.setState({renommerOn: false});
     } else {
       name = 'check';
-      bgColor = 'green';
+      bgColor = '#348352';
       action = () => this._renommerTerrain(terrain);
     }
 
@@ -64,7 +64,6 @@ class ListeTerrainItem extends React.Component {
         <Input>
           <InputField
             placeholder={terrain.name}
-            placeholderTextColor='$white'
             autoFocus={true}
             onChangeText={(text) => this._terrainTxtInputChanged(text)}
             onSubmitEditing={() => this._renommerTerrain(terrain)}
@@ -88,7 +87,7 @@ class ListeTerrainItem extends React.Component {
         </Box>
         <HStack space='md'>
           {this._showRenommerTerrain(terrain)}
-          <FontAwesome5.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._supprimerTerrain(terrain)}/>
+          <FontAwesome5.Button name="times" backgroundColor="#E63535" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._supprimerTerrain(terrain)}/>
         </HStack>
       </HStack>
     )

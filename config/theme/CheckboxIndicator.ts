@@ -20,7 +20,7 @@ export const CheckboxIndicator = createStyle({
 
   ':checked': {
     borderColor: '$white',
-    bg: '$primary600',
+    bg: '$cyan600',
   },
 
   ':hover': {
@@ -51,8 +51,8 @@ export const CheckboxIndicator = createStyle({
 
   ':active': {
     ':checked': {
-      bg: '$primary800',
-      borderColor: '$primary800',
+      bg: '$cyan600',
+      borderColor: '$white',
     },
   },
   ':invalid': {

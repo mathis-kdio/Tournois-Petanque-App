@@ -9,7 +9,6 @@ import { generationTriplettes } from '@utils/generations/tournoiTriplettes'
 import { uniqueValueArrayRandOrder } from '@utils/generations/generation';
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { StatusBar } from 'expo-status-bar'
 import { VStack, Text, Button, ButtonText, Spinner } from '@gluestack-ui/themed'
 import TopBarBack from '../../components/TopBarBack'
 
@@ -214,7 +213,7 @@ class GenerationMatchs extends React.Component {
         <VStack>
           <Text color='$white'>{t("erreur_generation_options")}</Text>
           <Text color='$white'>{t("erreur_generation_options_regles")}</Text>
-          <Button title={t("retour_inscription")} onPress={() => this._retourInscription()}>
+          <Button action='primary' onPress={() => this._retourInscription()}>
             <ButtonText>{t("retour_inscription")}</ButtonText>
           </Button>
         </VStack>
@@ -229,7 +228,7 @@ class GenerationMatchs extends React.Component {
         <VStack>
           <Text color='$white'>{t("erreur_generation_options")}</Text>
           <Text color='$white'>{t("erreur_generation_joueurs_speciaux")}</Text>
-          <Button title={t("retour_inscription")} onPress={() => this._retourInscription()}>
+          <Button action='primary' onPress={() => this._retourInscription()}>
             <ButtonText>{t("retour_inscription")}</ButtonText>
           </Button>
         </VStack>
@@ -244,7 +243,7 @@ class GenerationMatchs extends React.Component {
         <VStack>
           <Text color='$white'>{t("erreur_generation_options")}</Text>
           <Text color='$white'>{t("erreur_generation_regle_equipes")}</Text>
-          <Button onPress={() => this._retourInscription()}>
+          <Button action='primary' onPress={() => this._retourInscription()}>
             <ButtonText>{t("retour_inscription")}</ButtonText>
           </Button>
         </VStack>
@@ -260,7 +259,6 @@ class GenerationMatchs extends React.Component {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <StatusBar backgroundColor='#0594ae'/>
         <VStack flex={1} bgColor='#0594ae'>
           <TopBarBack title={t("generation_matchs_navigation_title")} navigation={this.props.navigation}/>
           <VStack flex={1} px={'$10'} justifyContent='center'>

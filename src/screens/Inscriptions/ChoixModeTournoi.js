@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StatusBar } from 'expo-status-bar';
 import { VStack, Button, Text, Radio, RadioLabel, ButtonText, RadioGroup, RadioIndicator, CircleIcon, Box } from '@gluestack-ui/themed';
 import TopBarBack from '@components/TopBarBack';
 import { withTranslation } from 'react-i18next';
@@ -53,7 +52,7 @@ class ChoixModeTournoi extends React.Component {
     }
     return (
       <Button
-        bg='#1c3969'
+        action='primary'
         isDisabled={buttonDisabled}
         onPress={() => this._nextStep()}
         size='md'
@@ -77,22 +76,22 @@ class ChoixModeTournoi extends React.Component {
         >
           <VStack space='lg'>
             <Radio value="avecNoms" size='lg'>
-              <RadioIndicator mr='$2' sx={{_text: {color: '$red500'}}}>
+              <RadioIndicator mr={'$2'}>
                 <CircleIcon stroke={this.state.modeTournoi == "avecNoms" ? '$white' : '$secondary700'}/>
               </RadioIndicator>
-              <RadioLabel color='$white'>{t("melee_demelee_avec_nom")}</RadioLabel>
+              <RadioLabel>{t("melee_demelee_avec_nom")}</RadioLabel>
             </Radio>
             <Radio value="sansNoms" size='lg'>
-              <RadioIndicator mr='$2'>
+              <RadioIndicator mr={'$2'}>
                 <CircleIcon stroke={this.state.modeTournoi == "sansNoms" ? '$white' : '$secondary700'}/>
               </RadioIndicator>
-              <RadioLabel color='$white'>{t("melee_demelee_sans_nom")}</RadioLabel>
+              <RadioLabel>{t("melee_demelee_sans_nom")}</RadioLabel>
             </Radio>
             <Radio value="avecEquipes" size='lg'>
-              <RadioIndicator mr='$2'>
+              <RadioIndicator mr={'$2'}>
                 <CircleIcon stroke={this.state.modeTournoi == "avecEquipes" ? '$white' : '$secondary700'}/>
               </RadioIndicator>
-              <RadioLabel color='$white'>{t("melee_avec_equipes_constituees")}</RadioLabel>
+              <RadioLabel>{t("melee_avec_equipes_constituees")}</RadioLabel>
             </Radio>
           </VStack>
         </RadioGroup>
@@ -104,7 +103,6 @@ class ChoixModeTournoi extends React.Component {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <StatusBar backgroundColor="#0594ae"/>
         <VStack flex={1} bgColor={"#0594ae"}>
           <TopBarBack title={t("mode_tournoi")} navigation={this.props.navigation}/>
           <VStack flex={1} px={'$10'} justifyContent='space-between'>
@@ -118,22 +116,22 @@ class ChoixModeTournoi extends React.Component {
               >
                 <VStack space='lg'>
                   <Radio value="teteatete" size='lg'>
-                    <RadioIndicator mr='$2'>
+                    <RadioIndicator mr={'$2'}>
                       <CircleIcon stroke={this.state.typeEquipes == "teteatete" ? '$white' : '$secondary700'}/>
                     </RadioIndicator>
-                    <RadioLabel color='$white'>{t("tete_a_tete")}</RadioLabel>
+                    <RadioLabel>{t("tete_a_tete")}</RadioLabel>
                   </Radio>
                   <Radio value="doublette" size='lg'>
-                    <RadioIndicator mr='$2'>
+                    <RadioIndicator mr={'$2'}>
                       <CircleIcon stroke={this.state.typeEquipes == "doublette" ? '$white' : '$secondary700'}/>
                     </RadioIndicator>
-                    <RadioLabel color='$white'>{t("doublettes")}</RadioLabel>
+                    <RadioLabel>{t("doublettes")}</RadioLabel>
                   </Radio>
                   <Radio value="triplette" size='lg'>
-                    <RadioIndicator mr='$2'>
+                    <RadioIndicator mr={'$2'}>
                       <CircleIcon stroke={this.state.typeEquipes == "triplette" ? '$white' : '$secondary700'}/>
                     </RadioIndicator>
-                    <RadioLabel color='$white'>{t("triplettes")}</RadioLabel>
+                    <RadioLabel>{t("triplettes")}</RadioLabel>
                   </Radio>
                 </VStack>
               </RadioGroup>

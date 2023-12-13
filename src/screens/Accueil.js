@@ -7,7 +7,6 @@ import { _versionCheck } from '../utils/versionCheck/versionCheck'
 import { _openPlateformLink, _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Box, HStack, VStack, Text, Pressable, Modal, Image, ModalHeader, ModalBody, ModalContent, ModalCloseButton, Heading, CloseIcon, ModalBackdrop } from '@gluestack-ui/themed';
-import { StatusBar } from 'expo-status-bar';
 import { _adsConsentForm } from '../utils/adMob/consentForm'
 import { withTranslation } from 'react-i18next';
 import CardButton from '@components/buttons/CardButton';
@@ -178,7 +177,6 @@ class Accueil extends React.Component {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <StatusBar backgroundColor='#0594ae'/>
         <VStack flex={1} px={'$5'} bgColor='#0594ae' justifyContent='space-between'>
           <VStack alignItems='center'>
             <Image
@@ -240,7 +238,7 @@ class Accueil extends React.Component {
             </HStack>
             <HStack justifyContent='center'>
               <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.gcuWebsite)}>
-                <Text color='$white' fontSize={16}>{t("decouvrir_gcu")}</Text>
+                <Text color='$white' fontSize={'$md'}>{t("decouvrir_gcu")}</Text>
               </Pressable>
             </HStack>
             <VStack>
@@ -256,6 +254,7 @@ class Accueil extends React.Component {
   }
 }
 
+//TMP FIX bug size web gluestack
 const styles = StyleSheet.create({
   imageWeb: {
     ...Platform.select({

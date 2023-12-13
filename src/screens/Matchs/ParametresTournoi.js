@@ -1,5 +1,4 @@
 import { VStack, Button, Text, ButtonText, AlertDialog, AlertDialogBackdrop, AlertDialogContent, AlertDialogHeader, Heading, AlertDialogCloseButton, CloseIcon, AlertDialogFooter, ButtonGroup, AlertDialogBody } from '@gluestack-ui/themed';
-import { StatusBar } from 'expo-status-bar';
 import React from 'react'
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -75,7 +74,6 @@ class ParametresTournoi extends React.Component {
     }
     return (
       <SafeAreaView style={{flex: 1}}>
-        <StatusBar backgroundColor="#0594ae"/>
         <VStack flex={1} bgColor={"#0594ae"}>
           <TopBarBack title={t("parametres_tournoi_navigation_title")} navigation={this.props.navigation}/>
           <VStack flex={1} px={'$10'} justifyContent='space-around'>

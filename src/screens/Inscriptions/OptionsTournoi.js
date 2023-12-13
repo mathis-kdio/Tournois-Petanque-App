@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StatusBar } from 'expo-status-bar';
 import { Checkbox, VStack, Button, Text, Input, Select, CheckIcon, Slider, HStack, ScrollView, ButtonText, SliderTrack, SliderFilledTrack, SliderThumb, SelectItem, CheckboxIndicator, SelectTrigger, SelectInput, SelectIcon, SelectPortal, SelectBackdrop, SelectContent, SelectDragIndicatorWrapper, SelectDragIndicator, ChevronDownIcon, InputField, CheckboxLabel } from '@gluestack-ui/themed';
 import TopBarBack from '@components/TopBarBack';
 import { withTranslation } from 'react-i18next';
@@ -67,7 +66,7 @@ class OptionsTournoi extends React.Component {
     }
     return (
       <Button
-        bg='#1c3969'
+        action='primary'
         isDisabled={btnDisabled}
         onPress={() => this._nextStep()}
         size='md'
@@ -83,17 +82,15 @@ class OptionsTournoi extends React.Component {
       <KeyboardAwareScrollView contentContainerStyle={{flex: 1}}>
         <SafeAreaView style={{flex: 1}}>
           <ScrollView bgColor='#0594ae'>
-            <StatusBar backgroundColor='#0594ae'/>
             <VStack flex={1}>
               <TopBarBack title={t("options_tournoi_title")} navigation={this.props.navigation}/>
               <VStack px={'$10'} space='4xl'>
                 <VStack space='md'>
                   <VStack>
                     <Text color='$white' fontSize={'$md'}>{t("indiquer_nombre_tours")} </Text>
-                    <Input size='md' borderColor='$white'>
+                    <Input size='md'>
                       <InputField
-                        placeholder={t("indiquer_nombre")}
-                        placeholderTextColor='$white'
+                        placeholder={t("nombre_placeholder")}
                         keyboardType="numeric"
                         defaultValue={this.nbToursTxt}
                         onChangeText={(text) => this._nbToursTxtInputChanged(text)}
@@ -102,10 +99,9 @@ class OptionsTournoi extends React.Component {
                   </VStack>
                   <VStack>
                     <Text color='$white' fontSize={'$md'}>{t("indiquer_nombre_points_victoire")} </Text>
-                    <Input size='md' borderColor='$white'>
+                    <Input size='md'>
                       <InputField
-                        placeholder={t("indiquer_nombre")}
-                        placeholderTextColor='$white'
+                        placeholder={t("nombre_placeholder")}
                         keyboardType="numeric"
                         defaultValue={this.nbPtVictoireTxt}
                         onChangeText={(text) => this._nbPtVictoireTxtInputChanged(text)}
@@ -120,10 +116,10 @@ class OptionsTournoi extends React.Component {
                     defaultIsChecked
                     size='md'
                   >
-                    <CheckboxIndicator mr='$2' sx={{bgColor: '$cyan600'}} borderColor='$white'>
+                    <CheckboxIndicator mr={'$2'}>
                       <CheckIcon color={this.state.speciauxIncompatibles ? '$white' : '$cyan600'}/>
                     </CheckboxIndicator>
-                    <CheckboxLabel color='$white'>{t("options_regle_enfants")}</CheckboxLabel>
+                    <CheckboxLabel>{t("options_regle_enfants")}</CheckboxLabel>
                   </Checkbox>
                   <Checkbox
                     onChange={() => this.setState({memesEquipes: !this.state.memesEquipes})}
@@ -131,10 +127,10 @@ class OptionsTournoi extends React.Component {
                     defaultIsChecked
                     size='md'
                   >
-                    <CheckboxIndicator mr='$2' sx={{bgColor: '$cyan600'}} borderColor='$white'>
+                    <CheckboxIndicator mr={'$2'}>
                       <CheckIcon color={this.state.memesEquipes ? '$white' : '$cyan600'}/>
                     </CheckboxIndicator>
-                    <CheckboxLabel color='$white'>{t("options_regle_equipes")}</CheckboxLabel>
+                    <CheckboxLabel>{t("options_regle_equipes")}</CheckboxLabel>
                   </Checkbox>
                 </VStack>
                 <VStack>
@@ -192,10 +188,10 @@ class OptionsTournoi extends React.Component {
                     aria-label={t("choix_option_terrains")}
                     size='md'
                   >
-                    <CheckboxIndicator mr={'$2'} sx={{bgColor: '$cyan600'}} borderColor='$white'>
+                    <CheckboxIndicator mr={'$2'}>
                       <CheckIcon color={this.state.avecTerrains ? '$white' : '$cyan600'}/>
                     </CheckboxIndicator>
-                    <CheckboxLabel color='$white'>{t("options_terrains_explications")}</CheckboxLabel>
+                    <CheckboxLabel>{t("options_terrains_explications")}</CheckboxLabel>
                   </Checkbox>
                 </VStack>
                 <VStack>

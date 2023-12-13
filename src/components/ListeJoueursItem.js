@@ -71,15 +71,15 @@ class ListeJoueursItem extends React.Component {
     let action;
     if (!this.state.renommerOn) {
       name = 'edit';
-      bgColor = '#1976d2';
+      bgColor = '#004282';
       action = () => this.setState({renommerOn: true});
     } else if (this.listNameText == '') {
       name = 'times';
-      bgColor = 'gray';
+      bgColor = '#5F5F5F';
       action = () => this.setState({renommerOn: false});
     } else {
       name = 'check';
-      bgColor = 'green';
+      bgColor = '#348352';
       action = () => this._renameList(list);
     }
 
@@ -119,7 +119,7 @@ class ListeJoueursItem extends React.Component {
           <Button action='primary' onPress={() => this._modifyList(list)}>
             <ButtonText>{t("modifier")}</ButtonText>
           </Button>
-          <FontAwesome5.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this.setState({modalDeleteIsOpen: true})}/>
+          <FontAwesome5.Button name="times" backgroundColor="#E63535" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this.setState({modalDeleteIsOpen: true})}/>
         </HStack>
       )
     }
@@ -132,13 +132,13 @@ class ListeJoueursItem extends React.Component {
   }
 
   _listName(list) {
-    let listName = 'List ' + (list[list.length - 1].name ? list[list.length - 1].name : 'n°' + list[list.length - 1].listId);
+    const { t } = this.props;
+    let listName = list[list.length - 1].name ? list[list.length - 1].name : 'n°' + list[list.length - 1].listId;
     if (this.state.renommerOn) {
       return (
         <Input>
           <InputField
             placeholder={listName}
-            placeholderTextColor='$white'
             autoFocus={true}
             onChangeText={(text) => this._listTextInputChanged(text)}
             onSubmitEditing={() => this._renameList(list)}
@@ -148,7 +148,7 @@ class ListeJoueursItem extends React.Component {
     }
     else {
       return (
-        <Text color='$white'>{listName}</Text>
+        <Text color='$white'>{t("liste")} {listName}</Text>
       )
     }
   }
