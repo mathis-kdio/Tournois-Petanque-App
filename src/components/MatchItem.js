@@ -72,7 +72,7 @@ class MatchItem extends React.Component {
     let { match, displayDetailForMatch, manche, nbPtVictoire } = this.props;
     if (match.manche == manche) {
       return (
-        <TouchableOpacity onPress={() => displayDetailForMatch(match.id, match)}>
+        <TouchableOpacity onPress={() => displayDetailForMatch(match.id, match, nbPtVictoire)}>
           <VStack m={'$2'}>
             {this._displayTitle(match)}
             <HStack justifyContent='space-between' alignItems='center'>

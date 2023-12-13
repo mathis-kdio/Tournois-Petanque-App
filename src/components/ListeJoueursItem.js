@@ -132,7 +132,8 @@ class ListeJoueursItem extends React.Component {
   }
 
   _listName(list) {
-    let listName = 'List ' + (list[list.length - 1].name ? list[list.length - 1].name : 'n°' + list[list.length - 1].listId);
+    const { t } = this.props;
+    let listName = list[list.length - 1].name ? list[list.length - 1].name : 'n°' + list[list.length - 1].listId;
     if (this.state.renommerOn) {
       return (
         <Input>
@@ -147,7 +148,7 @@ class ListeJoueursItem extends React.Component {
     }
     else {
       return (
-        <Text color='$white'>{listName}</Text>
+        <Text color='$white'>{t("liste")} {listName}</Text>
       )
     }
   }

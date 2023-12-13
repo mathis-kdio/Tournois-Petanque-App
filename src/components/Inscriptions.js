@@ -263,7 +263,7 @@ class Inscription extends React.Component {
           <Box flex={1}>
             <Input size='md'>
               <InputField
-                placeholder={t("nom_joueur")}
+                placeholder={t("nom_inscription")}
                 autoFocus={true}
                 defaultValue={this.nbToursTxt}
                 keyboardType="default"

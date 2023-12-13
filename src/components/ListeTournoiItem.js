@@ -111,7 +111,8 @@ class ListeTournoiItem extends React.Component {
   }
 
   _tournoiName(tournoi) {
-    let tournoiName = 'Tournoi ' + (tournoi.name ? tournoi.name : 'n°' + tournoi.tournoiId);
+    const { t } = this.props;
+    let tournoiName = tournoi.name ? tournoi.name : 'n°' + tournoi.tournoiId;
     if (this.state.renommerOn) {
       return (
         <Input>
@@ -126,7 +127,7 @@ class ListeTournoiItem extends React.Component {
     }
     else {
       return (
-        <Text color='$white'>{tournoiName}</Text>
+        <Text color='$white'>{t("tournoi")} {tournoiName}</Text>
       )
     }
   }

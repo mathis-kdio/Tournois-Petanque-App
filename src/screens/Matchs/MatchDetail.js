@@ -142,7 +142,7 @@ class MatchDetail extends React.Component {
 
   render() {
     const { t } = this.props;
-    let match = this.props.route.params.match;
+    let { match, nbPtVictoire } = this.props.route.params;
     return (
       <KeyboardAwareScrollView contentContainerStyle={{flex: 1}}>
         <SafeAreaView style={{flex: 1}}>
@@ -164,9 +164,10 @@ class MatchDetail extends React.Component {
                 </HStack>
                 <HStack space='lg'>
                   <Box flex={1}>
+                  <Text color='$white' fontSize={'$md'}>{t("score_equipe_1")} </Text>
                     <Input size='md'>
                       <InputField
-                        placeholder={t("score_equipe_1")}
+                        placeholder={t("score_placeholder", {scoreVictoire: nbPtVictoire})}
                         autoFocus={true}
                         defaultValue={this.nbToursTxt}
                         keyboardType='decimal-pad'
@@ -178,9 +179,10 @@ class MatchDetail extends React.Component {
                     </Input>
                   </Box>
                   <Box flex={1}>
+                  <Text color='$white' fontSize={'$md'}>{t("score_equipe_2")} </Text>
                     <Input size='md'>
                       <InputField
-                        placeholder={t("score_equipe_2")}
+                        placeholder={t("score_placeholder", {scoreVictoire: nbPtVictoire})}
                         autoFocus={true}
                         defaultValue={this.nbToursTxt}
                         keyboardType='decimal-pad'

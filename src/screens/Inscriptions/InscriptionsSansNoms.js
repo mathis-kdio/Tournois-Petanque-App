@@ -115,7 +115,7 @@ class InscriptionsSansNoms extends React.Component {
               <Text color='$white' fontSize={'$md'}>{t("nombre_joueurs_adultes")} </Text>
               <Input size='md'>
                 <InputField
-                  placeholder={t("nombre_joueurs_adultes")}
+                  placeholder={t("nombre_placeholder")}
                   keyboardType='number-pad'
                   returnKeyType='next'
                   autoFocus={true}
@@ -129,7 +129,7 @@ class InscriptionsSansNoms extends React.Component {
               <Text color='$white' fontSize={'$md'}>{t("nombre_joueurs_enfants")} </Text>
               <Input size='md'>
                 <InputField
-                  placeholder={t("nombre_joueurs_enfants")}
+                  placeholder={t("nombre_placeholder")}
                   keyboardType='number-pad'
                   onChangeText={(text) => this._textInputJoueursEnfants(text)}
                   ref={ref => {this.secondInput = ref}}
