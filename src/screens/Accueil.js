@@ -249,6 +249,7 @@ class Accueil extends React.Component {
   }
 }
 
+//TMP FIX bug size web gluestack
 const styles = StyleSheet.create({
   imageWeb: {
     ...Platform.select({

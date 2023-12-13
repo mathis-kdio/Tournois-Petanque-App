@@ -9,6 +9,7 @@ import { _adsConsentShowForm } from '../utils/adMob/consentForm'
 import { withTranslation } from "react-i18next";
 import TopBarBack from '@components/TopBarBack'
 import ChangelogData from '@assets/ChangelogData.json'
+import { StyleSheet } from 'react-native'
 
 class Parametres extends React.Component {
   constructor(props) {
@@ -154,7 +155,7 @@ class Parametres extends React.Component {
             {drapeau == undefined ?
               <FontAwesome5 name={icon} size={16} color={btnColor} style={{marginRight: 5}}/>
               :
-              <Image source={drapeau} alt="drapeau" size='xs'/>
+              <Image source={drapeau} alt="drapeau" size='xs' style={styles.imageWeb} />//TMP FIX bug size web gluestack  
             }
             <Text fontSize={'$md'} color={colorTxt}>{text}</Text>
           </HStack>
@@ -221,6 +222,18 @@ class Parametres extends React.Component {
     )
   }
 }
+
+//TMP FIX bug size web gluestack
+const styles = StyleSheet.create({
+  imageWeb: {
+    ...Platform.select({
+      web: {
+        height: '124px',
+        width: '124px'
+      }
+    })
+  }
+});
 
 const mapStateToProps = (state) => {
   return {
