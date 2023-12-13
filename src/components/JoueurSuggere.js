@@ -78,10 +78,10 @@ class JoueurSuggere extends React.Component {
           />
         </Box>
         <Box ml={'$2'}>
-          <FontAwesome5.Button name="times" backgroundColor="red" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this.setState({modalRemoveIsOpen: true})}/>
+          <FontAwesome5.Button name="times" backgroundColor="#E63535" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this.setState({modalRemoveIsOpen: true})}/>
         </Box>
         <Box ml={'$2'}>
-          <FontAwesome5.Button name="plus" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._addPlayer(joueur.name)}/>
+          <FontAwesome5.Button name="plus" backgroundColor="#348352" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._addPlayer(joueur.name)}/>
         </Box>
         {this._modalRemovePlayer(joueur.id)}
       </HStack>

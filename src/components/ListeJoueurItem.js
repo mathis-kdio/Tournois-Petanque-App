@@ -19,7 +19,7 @@ class ListeJoueurItem extends React.Component {
     if (isInscription === true) {
       return (
         <Box ml={'$2'}>
-          <FontAwesome5.Button name="times" backgroundColor='red' iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._supprimerJoueur(joueur.id)}/>
+          <FontAwesome5.Button name="times" backgroundColor='#E63535' iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._supprimerJoueur(joueur.id)}/>
         </Box>
       )
     }
@@ -43,15 +43,15 @@ class ListeJoueurItem extends React.Component {
     let action;
     if (!this.state.renommerOn) {
       name = 'edit';
-      bgColor = '#1976d2';
+      bgColor = '#004282';
       action = () => this.setState({renommerOn: true});
     } else if (this.joueurText == '') {
       name = 'times';
-      bgColor = 'gray';
+      bgColor = '#5F5F5F';
       action = () => this.setState({renommerOn: false});
     } else {
       name = 'check';
-      bgColor = 'green';
+      bgColor = '#348352';
       action = () => this._renommerJoueur(joueur, isInscription, avecEquipes);
     }
 
