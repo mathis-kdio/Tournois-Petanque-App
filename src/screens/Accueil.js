@@ -25,7 +25,8 @@ class Accueil extends React.Component {
     this.githubSponsor =        "https://github.com/sponsors/mathis-kdio";
     this.patreon =              "https://patreon.com/tournoipetanque";
     this.buymeacoffee =         "https://www.buymeacoffee.com/tournoipetanque";
-    this.facebook =             "https://www.facebook.com/groups/tournoisptanqueapp";
+    this.facebook =             "https://www.facebook.com/groups/tournoispetanqueapp";
+    this.website =              "https://tournoispetanqueapp.fr/";
     this.state = {
       modalDonsVisible: false,
       modalVisible: false,
@@ -209,13 +210,17 @@ class Accueil extends React.Component {
             </HStack> 
           </VStack>
           <VStack space='sm'>
-            <HStack justifyContent='center'>
+            <HStack space='sm' justifyContent='center'>
               <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.facebook)}>
                 <FontAwesome5 name="facebook" color='white' size={20}/>
                 <Text color='$white'>{t("rejoindre_page_fb")}</Text>
               </Pressable>
+              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.website)}>
+                <FontAwesome5 name="globe" color='white' size={20}/>
+                <Text color='$white'>{t("voir_website")}</Text>
+              </Pressable>
             </HStack>
-            <HStack space='sm'>
+            <HStack space='sm' justifyContent='center'>
               {Platform.OS !== 'ios' && <>
                 <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => this.setState({ modalDonsVisible: true })}>
                   <FontAwesome5 name="euro-sign" color='white' size={20}/>
