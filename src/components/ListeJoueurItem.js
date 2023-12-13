@@ -11,7 +11,6 @@ class ListeJoueurItem extends React.Component {
     this.joueurText = ""
     this.state = {
       renommerOn: false,
-      disabledBoutonRenommer: true,
       modalConfirmUncheckIsOpen: false
     }
   }
@@ -39,29 +38,28 @@ class ListeJoueurItem extends React.Component {
   }
 
   _showRenommerJoueur(joueur, isInscription, avecEquipes) {
-    if (this.state.renommerOn == false) {
-      return (
-        <Box>
-          <FontAwesome5.Button name="edit" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renommerJoueurInput(joueur)}/>
-        </Box>
-      )
+    let name;
+    let bgColor;
+    let action;
+    if (!this.state.renommerOn) {
+      name = 'edit';
+      bgColor = '#1976d2';
+      action = () => this.setState({renommerOn: true});
+    } else if (this.joueurText == '') {
+      name = 'times';
+      bgColor = 'gray';
+      action = () => this.setState({renommerOn: false});
+    } else {
+      name = 'check';
+      bgColor = 'green';
+      action = () => this._renommerJoueur(joueur, isInscription, avecEquipes);
     }
-    else {
-      if (this.state.disabledBoutonRenommer == true) {
-        return (
-          <Box>
-            <FontAwesome5.Button name="edit" backgroundColor="gray" iconStyle={{paddingHorizontal: 2, marginRight: 0}}/>
-          </Box>
-        )
-      }
-      else {
-        return (
-          <Box>
-            <FontAwesome5.Button name="check" backgroundColor="green" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._renommerJoueur(joueur, isInscription, avecEquipes)}/>
-          </Box>
-        )
-      }
-    }
+
+    return (
+      <Box>
+        <FontAwesome5.Button name={name} backgroundColor={bgColor} iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={action}/>
+      </Box>
+    )
   }
 
   _renommerJoueurInput(joueur) {
@@ -73,10 +71,7 @@ class ListeJoueurItem extends React.Component {
 
   _renommerJoueur(joueur, isInscription, avecEquipes) {
     if (this.joueurText != "") {
-      this.setState({
-        renommerOn: false,
-        disabledBoutonRenommer: true
-      })
+      this.setState({renommerOn: false})
       if (isInscription === true) {
         let typeInscription = "";
         if (this.props.optionsTournoi.mode == "sauvegarde") {
@@ -104,13 +99,7 @@ class ListeJoueurItem extends React.Component {
 
   _joueurTxtInputChanged = (text) => {
     this.joueurText = text
-    //Le bouton valider est désactivé si aucune lettre
-    if (this.joueurText == '') {
-      this.setState({disabledBoutonRenommer: true});
-    }
-    else {
-      this.setState({disabledBoutonRenommer: false});
-    }
+    this.setState({renommerOn: true});
   }
 
   _joueurName(joueur, isInscription, avecEquipes) {
