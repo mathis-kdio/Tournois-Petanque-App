@@ -1,4 +1,4 @@
-import { VStack, Text, Input, Button, HStack, Box, ButtonText } from '@gluestack-ui/themed';
+import { VStack, Text, Input, Button, HStack, Box, ButtonText, ScrollView } from '@gluestack-ui/themed';
 import React from 'react'
 import { withTranslation } from 'react-i18next';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -6,7 +6,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux'
 import TopBarBack from '../../components/TopBarBack';
 import { InputField } from '@gluestack-ui/themed';
-import { Keyboard } from 'react-native';
 import AdMobMatchDetailBanner from '../../components/adMob/AdMobMatchDetailBanner';
 
 class MatchDetail extends React.Component {
@@ -15,8 +14,7 @@ class MatchDetail extends React.Component {
     this.state = {
       match: undefined,
       score1: undefined,
-      score2: undefined,
-      keyboardOpen: false
+      score2: undefined
     }
   }
 
@@ -25,16 +23,6 @@ class MatchDetail extends React.Component {
     this.setState({
       match: idMatch,
     });
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
-  }
-
-  _keyboardDidShow = () => {
-    this.setState({keyboardOpen: true});
-  }
-
-  _keyboardDidHide = () => {
-    this.setState({keyboardOpen: false});
   }
 
   _ajoutScoreTextInputChanged = (score, equipe) => {
@@ -120,7 +108,6 @@ class MatchDetail extends React.Component {
     }
   }
 
-
   _supprimerResultat() {
     let info = {idMatch: this.state.match, score1: undefined, score2: undefined};
     const actionAjoutScore = { type: "AJOUT_SCORE", value: info};
@@ -146,68 +133,68 @@ class MatchDetail extends React.Component {
     return (
       <KeyboardAwareScrollView contentContainerStyle={{flex: 1}}>
         <SafeAreaView style={{flex: 1}}>
-          <VStack flex={1} bgColor={"#0594ae"}>
-            <TopBarBack title={t("detail_match_navigation_title")} navigation={this.props.navigation}/>
-            <VStack flex={1} px={'$10'} justifyContent='space-between'>
-              <VStack space='xl'>
-                {this._displayTitle(match)}
-                <HStack justifyContent='space-between'>
-                  <Box>
-                    {this._displayEquipe(1, match)}
-                  </Box>
-                  <VStack justifyContent='center'>
-                    <Text color='$white' fontSize={'$xl'}>VS</Text>
-                  </VStack>
-                  <Box>
-                    {this._displayEquipe(2, match)}
-                  </Box>
-                </HStack>
-                <HStack space='lg'>
-                  <Box flex={1}>
-                  <Text color='$white' fontSize={'$md'}>{t("score_equipe_1")} </Text>
-                    <Input size='md'>
-                      <InputField
-                        placeholder={t("score_placeholder", {scoreVictoire: nbPtVictoire})}
-                        autoFocus={true}
-                        defaultValue={this.nbToursTxt}
-                        keyboardType='decimal-pad'
-                        returnKeyType='next'
-                        maxLength={2}
-                        onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 1)}
-                        onSubmitEditing={() => this.secondInput.focus()}
-                      />
-                    </Input>
-                  </Box>
-                  <Box flex={1}>
-                  <Text color='$white' fontSize={'$md'}>{t("score_equipe_2")} </Text>
-                    <Input size='md'>
-                      <InputField
-                        placeholder={t("score_placeholder", {scoreVictoire: nbPtVictoire})}
-                        autoFocus={true}
-                        defaultValue={this.nbToursTxt}
-                        keyboardType='decimal-pad'
-                        maxLength={2}
-                        onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 2)}
-                        onSubmitEditing={() => this._envoyerResultat(match)}
-                        ref={ref => {this.secondInput = ref}}
-                      />
-                    </Input>
-                  </Box>
-                </HStack>
-              </VStack>
-              {!this.state.keyboardOpen &&
-                <Box>
+          <ScrollView bgColor='#0594ae'>
+            <VStack>
+              <TopBarBack title={t("detail_match_navigation_title")} navigation={this.props.navigation}/>
+              <VStack px={'$10'} justifyContent='space-between'>
+                <VStack space='xl'>
+                  {this._displayTitle(match)}
+                  <HStack justifyContent='space-between'>
+                    <Box>
+                      {this._displayEquipe(1, match)}
+                    </Box>
+                    <VStack justifyContent='center'>
+                      <Text color='$white' fontSize={'$xl'}>VS</Text>
+                    </VStack>
+                    <Box>
+                      {this._displayEquipe(2, match)}
+                    </Box>
+                  </HStack>
+                  <HStack space='lg'>
+                    <Box flex={1}>
+                    <Text color='$white' fontSize={'$md'}>{t("score_equipe_1")} </Text>
+                      <Input size='md'>
+                        <InputField
+                          placeholder={t("score_placeholder", {scoreVictoire: nbPtVictoire})}
+                          autoFocus={true}
+                          defaultValue={this.nbToursTxt}
+                          keyboardType='decimal-pad'
+                          returnKeyType='next'
+                          maxLength={2}
+                          onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 1)}
+                          onSubmitEditing={() => this.secondInput.focus()}
+                        />
+                      </Input>
+                    </Box>
+                    <Box flex={1}>
+                    <Text color='$white' fontSize={'$md'} alignSelf='flex-end'>{t("score_equipe_2")} </Text>
+                      <Input size='md'>
+                        <InputField
+                          placeholder={t("score_placeholder", {scoreVictoire: nbPtVictoire})}
+                          autoFocus={true}
+                          defaultValue={this.nbToursTxt}
+                          keyboardType='decimal-pad'
+                          maxLength={2}
+                          onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 2)}
+                          onSubmitEditing={() => this._envoyerResultat(match)}
+                          ref={ref => {this.secondInput = ref}}
+                        />
+                      </Input>
+                    </Box>
+                  </HStack>
+                </VStack>
+                <VStack space='lg' my={'$5'}>
+                  <Button action='negative' onPress={() => this._supprimerResultat()}>
+                    <ButtonText>{t("supprimer_score")}</ButtonText>
+                  </Button>
+                  {this._boutonValider(match)}
+                </VStack>
+                <VStack mb={'$5'}>
                   <AdMobMatchDetailBanner/>
-                </Box>
-              }
-              <VStack space='lg' mb={'$5'}>
-                <Button action='negative' onPress={() => this._supprimerResultat()}>
-                  <ButtonText>{t("supprimer_score")}</ButtonText>
-                </Button>
-                {this._boutonValider(match)}
+                </VStack>
               </VStack>
             </VStack>
-          </VStack>
+          </ScrollView>
         </SafeAreaView>
       </KeyboardAwareScrollView>
     )
