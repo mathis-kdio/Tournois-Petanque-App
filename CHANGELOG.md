@@ -1,5 +1,16 @@
 # Change Log
 
+## [1.15.0] - 17-12-2023
+
+### Ajouté
+- L'ensemble de l'application dispose du nouveau design.
+- Traduction de l'application en polonais.
+
+### Changement
+
+### Corrigé
+- Corrections de bugs.
+
 ## [1.14.0] - 25-09-2023
 
 ### Ajouté
