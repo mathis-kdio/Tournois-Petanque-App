@@ -92,9 +92,23 @@ function ManchesTopTabNavigator() {
   );
 }
 
+function getTournoiName() {
+  const listeTournois = useSelector(state => state.listeTournois.listeTournois);
+  const listeMatchs = useSelector(state => state.gestionMatchs.listematchs);
+
+  let tournoiName = '';
+  if (listeTournois != undefined && listeMatchs != undefined) {
+    let tournoiId = listeMatchs[listeMatchs.length - 1].tournoiID;
+    let tournoi = listeTournois.find((element) => element.tournoiId == tournoiId);
+    tournoiName = tournoi.name ? tournoi.name : 'n°' + tournoi.tournoiId;
+  }
+  return tournoiName;
+}
+
 function MatchsStack() {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  let tournoiName = getTournoiName();
   return (
     <Stack.Navigator screenOptions={{headerStyle: {backgroundColor: '#ffda00'}}}>
       <Stack.Screen
@@ -103,7 +117,7 @@ function MatchsStack() {
         options={{
           title: '',
           headerStyle: {backgroundColor: '#0594ae', elevation: 0},
-          headerLeft: () => <Text color='$white' fontSize={'$xl'} ml={'$2'}>Tournoi #</Text>,
+          headerLeft: () => <Text color='$white' fontSize={'$xl'} ml={'$2'}>{t("tournoi")} {tournoiName}</Text>,
           headerRight: () => <BoutonMenuHeaderNav navigation={navigation}/>
         }}
       />
@@ -118,6 +132,7 @@ function MatchsStack() {
 function ResultatsStack() {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  let tournoiName = getTournoiName();
   return (
     <Stack.Navigator screenOptions={{title: t("resultats_classement_navigation_title")}}>
       <Stack.Screen
@@ -126,7 +141,7 @@ function ResultatsStack() {
         options={{
           headerTitle: '',
           headerStyle: {backgroundColor: '#0594ae', elevation: 0},
-          headerLeft: () => <Text color='$white' fontSize={'$xl'} ml={'$2'}>Tournoi #</Text>,
+          headerLeft: () => <Text color='$white' fontSize={'$xl'} ml={'$2'}>{t("tournoi")} {tournoiName}</Text>,
           headerRight: () => <BoutonMenuHeaderNav navigation={navigation}/>
         }}
       />
