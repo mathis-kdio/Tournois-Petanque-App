@@ -46,11 +46,15 @@ class MatchDetail extends React.Component {
     )
   }
 
-  _displayName = (joueurNumber) => {
+  _displayName(joueurNumber, equipe) {
     let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs;
     let joueur = listeJoueurs.find(item => item.id === joueurNumber);
     if (joueur) {
-      return <Text color='$white' fontSize={'$md'} key={joueur.id}>{joueur.id+1} {joueur.name}</Text>
+      if (equipe === 1) {
+        return <Text key={joueur.id} color='$white' fontSize={'$md'} textAlign='left'>{(joueur.id + 1) + ' ' + joueur.name}</Text>
+      } else {
+        return <Text key={joueur.id} color='$white' fontSize={'$md'} textAlign='right'>{joueur.name + ' ' + (joueur.id + 1)}</Text>
+      }
     }
   }
 
@@ -139,14 +143,14 @@ class MatchDetail extends React.Component {
               <VStack px={'$10'} justifyContent='space-between'>
                 <VStack space='xl'>
                   {this._displayTitle(match)}
-                  <HStack justifyContent='space-between'>
-                    <Box>
+                  <HStack alignItems='center'>
+                    <Box flex={2}>
                       {this._displayEquipe(1, match)}
                     </Box>
-                    <VStack justifyContent='center'>
+                    <Box flex={1} alignItems='center'>
                       <Text color='$white' fontSize={'$xl'}>VS</Text>
-                    </VStack>
-                    <Box>
+                    </Box>
+                    <Box flex={2}>
                       {this._displayEquipe(2, match)}
                     </Box>
                   </HStack>
