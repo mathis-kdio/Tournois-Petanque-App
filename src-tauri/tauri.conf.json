@@ -14,6 +14,7 @@
       "active": true,
       "targets": "all",
       "identifier": "com.MK.PetanqueGCU",
+      "publisher": "Mathis Cadio",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
@@ -24,8 +25,8 @@
       "externalBin": [],
       "copyright": "Mathis Cadio",
       "category": "Sports",
-      "shortDescription": "RNE is a Expo + Tauri Template",
-      "longDescription": "RNE is a template I (Sarthak Pranesh) made to help me build Beautiful, Efficient, and write once run everywhere apps with Expo (React Native) building to Android, iOS and Web along with Desktop support using Tauri. This template includes some common libraries and configurations that I find myself using in almost all React Native project.",
+      "shortDescription": "Créer un tournoi de pétanque et ajouter les scores n'a jamais été aussi simple !",
+      "longDescription": "Avec Tournois de Pétanque GCU, vous pouvez créer rapidement et gérer facilement un tournoi de pétanque sans internet ! Plusieurs types de tournois sont disponibles : mêlé-démêlé, championnat et coupe.",
       "deb": {
         "depends": []
       },
@@ -39,7 +40,16 @@
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
-        "timestampUrl": ""
+        "timestampUrl": "",
+        "wix": {
+          "bannerPath": "icons/wix_banner.bmp",
+          "dialogImagePath": "icons/wix_dialog.bmp"
+        },
+        "nsis": {
+          "headerImage": "icons/nsis_header.bmp",
+          "sidebarImage": "icons/nsis_sidebar.bmp",
+          "installerIcon": "icons/icon.ico"
+        }
       }
     },
     "updater": {
