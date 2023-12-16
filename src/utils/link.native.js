@@ -1,7 +1,7 @@
-import { Linking } from 'react-native';
+import * as Linking from 'expo-linking'
 
 export const _openPlateformLink = (androidLink, iosLink) => {
-  _openURL("https://tournoispetanqueapp.fr/");
+  Platform.OS === 'android' ? _openURL(androidLink) : _openURL(iosLink);
 }
 
 export const _openURL = (url) => {
