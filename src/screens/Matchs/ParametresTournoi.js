@@ -81,7 +81,7 @@ class ParametresTournoi extends React.Component {
               <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("options_tournoi")}</Text>
               <Text color='$white'>{t("nombre_tours")} {parametresTournoi.nbTours.toString()}</Text>
               <Text color='$white'>{t("nombre_points_victoire")} {parametresTournoi.nbPtVictoire.toString()}</Text>
-              <Text color='$white'>{t("regle_enfants")} {parametresTournoi.speciauxIncompatibles ? "Activé" : "Désactivé"}</Text>
+              <Text color='$white'>{t("regle_speciaux")} {parametresTournoi.speciauxIncompatibles ? "Activé" : "Désactivé"}</Text>
               <Text color='$white'>{t("regle_equipes_differentes")} {parametresTournoi.memesEquipes ? "Activé" : "Désactivé"}</Text>
               <Text color='$white'>{t("regle_adversaires")} {parametresTournoi.memesAdversaires === 0 ? "1 match" : parametresTournoi.memesAdversaires+"% des matchs"}</Text>
             </VStack>

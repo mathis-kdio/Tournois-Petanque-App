@@ -34,16 +34,10 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
 
   //Initialisation des matchs dans un tableau
   let nbMatchsParTour;
-  if (typeEquipes == "teteatete") {
-    nbMatchsParTour = nbjoueurs / 2;
-  }
-  else if (typeEquipes == "doublette") {
-    if (complement == "1") {
-      nbMatchsParTour = Math.ceil(nbjoueurs / 4);
-    }
-    else {
-      nbMatchsParTour = Math.floor(nbjoueurs / 4);
-    }
+  if (complement == "1") {
+    nbMatchsParTour = Math.ceil(nbjoueurs / 4);
+  } else {
+    nbMatchsParTour = Math.floor(nbjoueurs / 4);
   }
   let nbMatchs = nbTours * nbMatchsParTour;
   idMatch = 0;
@@ -87,9 +81,9 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
     joueurs.push(joueur);
   }
   let nbJoueursSpe = joueursEnfants.length;
-  //Test si mode doublette et qu'il faut compléter
+  //Test s'il faut compléter des équipes
   //Si c'est le cas, alors on remplie de joueurs invisible pour le complément en mode tête à tête
-  if (typeEquipes == "doublette" && nbjoueurs % 4 != 0) {
+  if (nbjoueurs % 4 != 0) {
     if (complement == "1" && nbjoueurs % 2 == 0) {
       joueurs.push({name: "Complément 1", type: "enfant", id: (nbjoueurs)});
       joueurs[nbjoueurs].equipe = [];
@@ -104,7 +98,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
   }
 
   //Test des règles speciauxIncompatibles et jamaisMemeCoequipier
-  if (speciauxIncompatibles == true && typeEquipes == "doublette") {
+  if (speciauxIncompatibles == true) {
     if (nbjoueurs % 4 == 0) { //Cas de non complément
       let moitieNbJoueurs = nbjoueurs / 2;
       //Test si trop de joueurs de type pointeurs ou tireurs ou enfants
@@ -148,7 +142,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
       }
     }
   }
-  else if (speciauxIncompatibles == false && typeEquipes == "doublette") {
+  else if (speciauxIncompatibles == false) {
     //Test si possible d'appliquer la règle jamaisMemeCoequipier
     if (jamaisMemeCoequipier == true) {
       let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, 0, 0, 0, nbjoueurs);
@@ -159,7 +153,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
   }
 
   //Assignation des joueurs enfants
-  if (speciauxIncompatibles == true && typeEquipes == "doublette") {
+  if (speciauxIncompatibles == true) {
     //Joueurs enfants seront toujours joueur 2 ou joueur 4
     for (let i = 0; i < nbTours; i++) {
       let idMatch = i * nbMatchsParTour;
@@ -208,15 +202,18 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
       joueursNonTypeId.push(joueursNonType[i].id);
     }
 
-    if (joueursPointeurs.length > joueursTireurs.length) {
-      arrayIds.push(...shuffle(joueursPointeursId));
-      joueursNonTypeId.push(...joueursTireursId);
-    }
-    else {
-      arrayIds.push(...shuffle(joueursTireursId));
-      joueursNonTypeId.push(...joueursPointeursId);
+    if (speciauxIncompatibles == true) {
+      if (joueursPointeurs.length > joueursTireurs.length) {
+        arrayIds.push(...shuffle(joueursPointeursId));
+        joueursNonTypeId.push(...joueursTireursId);
+      }
+      else {
+        arrayIds.push(...shuffle(joueursTireursId));
+        joueursNonTypeId.push(...joueursPointeursId);
+      }
     }
     arrayIds.push(...shuffle(joueursNonTypeId));
+
     return arrayIds;
   };
 
@@ -388,9 +385,9 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
           breaker++;
         }
       }
-      //Affectation joueur(s) complémentaire(s) du tour si tournoi doublette avec complément en triplette
+      //Affectation joueur(s) complémentaire(s) du tour si tournoi avec complément en triplette
       if (random[j] != undefined && (idMatch + 1) % nbMatchsParTour == 0) {
-        if (typeEquipes == "doublette" && nbjoueurs % 4 != 0 && complement == "3" && matchs[idMatch].equipe[0][2] == -1) {
+        if (nbjoueurs % 4 != 0 && complement == "3" && matchs[idMatch].equipe[0][2] == -1) {
           let joueursEnTrop = nbjoueurs % 4;
           matchs[idMatch].equipe[0][2] = random[j];
           if (joueursEnTrop == 2) {

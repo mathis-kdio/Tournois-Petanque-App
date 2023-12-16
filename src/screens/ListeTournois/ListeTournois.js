@@ -66,7 +66,7 @@ class ListeTournois extends React.Component {
               <Text>{t("complement_modal_informations_tournoi")}{tournoiOptions.complement}</Text>
               <Text>{t("regle_equipes_differentes_modal_informations_tournoi")} {tournoiOptions.memesEquipes ? t("oui") : t("non")}</Text>
               <Text>{t("regle_adversaires_modal_informations_tournoi")} {tournoiOptions.memesAdversaires === 0 ? t("1_match") : t("pourcent_matchs", {pourcent: tournoiOptions.memesAdversaires})}</Text>
-              <Text>{t("regle_enfants_modal_informations_tournoi")} {tournoiOptions.speciauxIncompatibles ? t("oui") : t("non")}</Text>
+              <Text>{t("regle_speciaux_modal_informations_tournoi")} {tournoiOptions.speciauxIncompatibles ? t("oui") : t("non")}</Text>
             </ModalBody>
           </ModalContent>
         </Modal>

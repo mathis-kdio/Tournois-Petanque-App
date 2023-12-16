@@ -112,14 +112,14 @@ class OptionsTournoi extends React.Component {
                 <VStack space='md'>
                   <Checkbox
                     onChange={() => this.setState({speciauxIncompatibles: !this.state.speciauxIncompatibles})}
-                    aria-label={t("choix_regle_enfants")}
+                    aria-label={t("choix_regle_speciaux")}
                     defaultIsChecked
                     size='md'
                   >
                     <CheckboxIndicator mr={'$2'}>
                       <CheckIcon color={this.state.speciauxIncompatibles ? '$white' : '$cyan600'}/>
                     </CheckboxIndicator>
-                    <CheckboxLabel>{t("options_regle_enfants")}</CheckboxLabel>
+                    <CheckboxLabel>{t("options_regle_speciaux")}</CheckboxLabel>
                   </Checkbox>
                   <Checkbox
                     onChange={() => this.setState({memesEquipes: !this.state.memesEquipes})}
