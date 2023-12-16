@@ -1,1 +1,8 @@
 src-tauri
+.vscode
+.expo
+.expo
+node_modules
+dist
+.extra
+serviceAccountKeyPath.json
