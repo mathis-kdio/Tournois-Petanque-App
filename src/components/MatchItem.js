@@ -31,7 +31,7 @@ class MatchItem extends React.Component {
     return nomsJoueurs;
   }
 
-  _displayName = (joueurNumber, equipe, matchID, nbPtVictoire) => {
+  _displayName(joueurNumber, equipe, matchID, nbPtVictoire) {
     let colorEquipe1 = '$white';
     let colorEquipe2 = '$white';
     if (this.props.listeMatchs[matchID].score1 == nbPtVictoire) {
@@ -43,14 +43,17 @@ class MatchItem extends React.Component {
     }
 
     let styleColor = (equipe === 1) ? colorEquipe1 : colorEquipe2;
-
     let joueur = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs.find(item => item.id === joueurNumber);
     if (joueur) {
-      return <Text key={joueur.id} color={styleColor} fontSize={'$xl'}>{joueur.id+1} {joueur.name}</Text>
+      if (equipe === 1) {
+        return <Text key={joueur.id} color={styleColor} fontSize={'$xl'} textAlign='left'>{(joueur.id + 1) + ' ' + joueur.name}</Text>
+      } else {
+        return <Text key={joueur.id} color={styleColor} fontSize={'$xl'} textAlign='right'>{joueur.name + ' ' + (joueur.id + 1)}</Text>
+      }
     }
   }
 
-  _displayScore = (matchID) => {
+  _displayScore(matchID) {
     let score1 = this.props.listeMatchs[matchID].score1;
     let score2 = this.props.listeMatchs[matchID].score2;
     if (score1 == undefined) {
@@ -60,7 +63,7 @@ class MatchItem extends React.Component {
       score2 = '?'
     }
     return (
-      <HStack>
+      <HStack justifyContent='center'>
         <Text color='$white' fontSize={'$2xl'} p={'$2'}>{score1}</Text>
         <Text color='$white' fontSize={'$2xl'} p={'$2'}> VS </Text>
         <Text color='$white' fontSize={'$2xl'} p={'$2'}>{score2}</Text>
@@ -75,12 +78,14 @@ class MatchItem extends React.Component {
         <TouchableOpacity onPress={() => displayDetailForMatch(match.id, match, nbPtVictoire)}>
           <VStack m={'$2'}>
             {this._displayTitle(match)}
-            <HStack justifyContent='space-between' alignItems='center'>
-              <Box>
+            <HStack alignItems='center'>
+              <Box flex={1}>
                 {this._displayEquipe(1, match, nbPtVictoire)}
               </Box>
-              {this._displayScore(match.id)}
-              <Box>
+              <Box flex={1}>
+                {this._displayScore(match.id)}
+              </Box>
+              <Box flex={1}>
                 {this._displayEquipe(2, match, nbPtVictoire)}
               </Box>
             </HStack>
@@ -94,9 +99,9 @@ class MatchItem extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    return {
-      listeMatchs: state.gestionMatchs.listematchs
-    }
+  return {
+    listeMatchs: state.gestionMatchs.listematchs
+  }
 }
 
 export default connect(mapStateToProps)(withTranslation()(MatchItem))
