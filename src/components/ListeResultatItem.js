@@ -44,7 +44,7 @@ class ListeResultatItem extends React.Component {
     if (fanny == true) {
       return (
         <HStack>
-          <Image size='2xs' alt='Fanny' source={require('@assets/images/fanny.png')} style={styles.imageWeb} /> {/*TMP FIX bug size web gluestack*/}
+          <Image size='2xs' alt='Fanny' source={require('@assets/images/fanny.png')} style={styles.imageWeb} /* TMP FIX bug size web gluestack */ /> 
           <Text color='$white' fontSize={'$lg'}>X{nbFanny}</Text>
         </HStack>
       )
