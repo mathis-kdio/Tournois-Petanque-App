@@ -27,7 +27,7 @@
     ],
     "ios": {
       "bundleIdentifier": "TournoisPetanqueApp",
-      "buildNumber": "1.15.1",
+      "buildNumber": "1.15.2",
       "supportsTablet": true,
       "userInterfaceStyle": "light",
       "infoPlist": {
@@ -42,7 +42,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.MK.PetanqueGCU",
-      "versionCode": 93,
+      "versionCode": 94,
       "permissions": [
         "com.google.android.gms.permission.AD_ID"
       ],
