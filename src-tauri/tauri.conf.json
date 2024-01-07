@@ -43,7 +43,15 @@
       }
     },
     "updater": {
-      "active": false
+      "active": true,
+      "endpoints": [
+        "https://tournoispetanqueapp.fr/update.json"
+      ],
+      "dialog": true,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDI3RDBDRkE1QjYyMkQ2Q0UKUldUTzFpSzJwYy9RSjM2di9KTEhBQk9BTGtYb2Fxd1Y0TXNkUzcvNzJ6M2NZd1BVUVNkUGYvV1UK",
+      "windows": {
+        "installMode": "basicUi"
+      }
     },
     "allowlist": {
       "all": true
