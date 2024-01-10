@@ -25,7 +25,7 @@ class ChoixModeTournoi extends React.Component {
     const updateOptionModeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['mode', modeTournoi]};
     this.props.dispatch(updateOptionModeTournoi);
 
-    if (this.props.optionsTournoi.type != 'championnat' && this.props.optionsTournoi.type != 'coupe') {
+    if (this.props.optionsTournoi.type != 'championnat' && this.props.optionsTournoi.type != 'coupe' && this.props.optionsTournoi.type != 'multi-chances') {
       let screenName = this.state.modeTournoi == "sansNoms" ? "InscriptionsSansNoms" : "InscriptionsAvecNoms";
       this.props.navigation.navigate({
         name: 'OptionsTournoi',
@@ -43,7 +43,7 @@ class ChoixModeTournoi extends React.Component {
     const { t } = this.props;
     let buttonDisabled = false;
     let title = t("valider_et_options");
-    if (this.props.optionsTournoi.type === "championnat" || this.props.optionsTournoi.type === "coupe") {
+    if (this.props.optionsTournoi.type === "championnat" || this.props.optionsTournoi.type === "coupe" || this.props.optionsTournoi.type === "multi-chances") {
       title = t("valider_et_inscriptions");
     }
     if (this.state.modeTournoi == "avecEquipes" && this.state.typeEquipes == "teteatete") {
