@@ -37,7 +37,7 @@ function gestionMatchs(state = initialState, action) {
       return nextState || state
     case 'COUPE_AJOUT_ADVERSAIRE'://action: 0: gagnants  1: id du match  2: id de l'équipe
       if (action.value.gagnant != "" || action.value.matchId != "" || action.value.equipeId != "") {
-        const matchs = { ...state.listematchs };
+        const matchs = [ ...state.listematchs ];
         matchs[action.value.matchId].equipe[action.value.equipeId] = action.value.gagnant;
         nextState = {
           ...state,

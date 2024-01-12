@@ -149,7 +149,6 @@ class MatchDetail extends React.Component {
                       <Input size='md'>
                         <InputField
                           placeholder={t("score_placeholder", {scoreVictoire: nbPtVictoire})}
-                          autoFocus={true}
                           defaultValue={this.nbToursTxt}
                           keyboardType='decimal-pad'
                           maxLength={2}
