@@ -10,15 +10,11 @@ export const nextMatchMultiChances = (match, nbMatchs, nbTours) => {
   let perdantMatchId = null;
 
   if (match.id % 2 == 0) {
-    gagnantMatchId = match.id + nbMatchsTour - Math.floor(match.id % nbMatchsTour / 2);
+    gagnantMatchId = match.id + nbMatchsTour - ((match.id % (nbMatchsTour / 2 ** (match.manche - 1))) / 2);
+    perdantMatchId = match.id + nbMatchsTour + ((nbMatchsTour / 2 ** match.manche) - (match.id % (nbMatchsTour / 2 ** (match.manche - 1))) / 2);
   } else {
-    gagnantMatchId = match.id + nbMatchsTour - Math.ceil(match.id % nbMatchsTour / 2);
-  }
-
-  if (match.id % 2 == 0) {
-    perdantMatchId = match.id + nbMatchsTour + Math.ceil((nbMatchsTour - match.id % nbMatchsTour) / 2);
-  } else {
-    perdantMatchId = match.id + nbMatchsTour + Math.floor((nbMatchsTour - match.id % nbMatchsTour) / 2);
+    gagnantMatchId = match.id + nbMatchsTour - (Math.ceil((match.id % (nbMatchsTour / 2 ** (match.manche - 1))) / 2));
+    perdantMatchId = match.id + nbMatchsTour + ((nbMatchsTour / 2 ** match.manche) - Math.ceil((match.id % (nbMatchsTour / 2 ** (match.manche - 1))) / 2));
   }
 
   let equipeId = match.id % 2;
