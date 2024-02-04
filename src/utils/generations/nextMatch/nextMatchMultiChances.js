@@ -5,19 +5,13 @@ export const nextMatchMultiChances = (match, nbMatchs, nbTours) => {
     gagnant = match.equipe[1];
     perdant = match.equipe[0];
   }
-  let nbMatchsTour = nbMatchs / nbTours;
-  let gagnantMatchId = null;
-  let perdantMatchId = null;
+  const nbMatchsTour = nbMatchs / nbTours;
 
-  if (match.id % 2 == 0) {
-    gagnantMatchId = match.id + nbMatchsTour - ((match.id % (nbMatchsTour / 2 ** (match.manche - 1))) / 2);
-    perdantMatchId = match.id + nbMatchsTour + ((nbMatchsTour / 2 ** match.manche) - (match.id % (nbMatchsTour / 2 ** (match.manche - 1))) / 2);
-  } else {
-    gagnantMatchId = match.id + nbMatchsTour - (Math.ceil((match.id % (nbMatchsTour / 2 ** (match.manche - 1))) / 2));
-    perdantMatchId = match.id + nbMatchsTour + ((nbMatchsTour / 2 ** match.manche) - Math.ceil((match.id % (nbMatchsTour / 2 ** (match.manche - 1))) / 2));
-  }
+  const offset = Math.ceil((match.id % (nbMatchsTour / 2 ** (match.manche - 1))) / 2);
+  const gagnantMatchId = match.id + nbMatchsTour - offset;
+  const perdantMatchId = match.id + nbMatchsTour + (nbMatchsTour / 2 ** match.manche) - offset;
 
-  let equipeId = match.id % 2;
+  const equipeId = match.id % 2;
   const actionMultichancesAddNextMatch = { type: "MULTICHANCES_ADD_NEXT_MATCH", value: {gagnant: gagnant, gagnantMatchId: gagnantMatchId, perdant: perdant, perdantMatchId: perdantMatchId, equipeId: equipeId}};
   return actionMultichancesAddNextMatch;
 }
