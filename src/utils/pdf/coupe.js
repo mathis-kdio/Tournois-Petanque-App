@@ -1,4 +1,4 @@
-import { rankingCalc } from "utils/ranking";
+import { ranking } from "utils/ranking";
 
 export const generationPDFCoupe = (affichageScore, affichageClassement, listeJoueurs, listeMatchs, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables) => {
   let html = `<!DOCTYPE html><html><head><style>@page{margin: 10px;} table{width: 100%;} table,th,td{border: 1px solid black;border-collapse: collapse;} td{min-width: 50px; word-break:break-all;} .td-score{min-width: 20px;} .text-right{text-align: right;} .text-center{text-align: center;} .no-border-top{border-top: none;} .no-border-bottom{border-bottom: none;} .border-top{border-top: 1px solid;}</style></head><body>
@@ -111,7 +111,7 @@ export const generationPDFCoupe = (affichageScore, affichageClassement, listeJou
   if (affichageClassement == true) {
     html += '<br><table><tr>';
     html += '<th>Place</th><th>Victoires</th><th>Matchs Joués</th><th>Points</th>';
-    let classement = rankingCalc(listeMatchs);
+    let classement = ranking(listeMatchs);
     for (let i = 0; i < listeJoueurs.length; i++) {
       html += '<tr>';
       html += '<td>' + classement[i].position + ' - ';
