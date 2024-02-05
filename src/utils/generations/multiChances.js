@@ -19,7 +19,7 @@ export const generationMultiChances = (listeJoueurs, typeEquipes) => {
   }
   nbMatchsParTour = nbEquipes / 2;
   nbTours = Math.log2(nbEquipes);
-  nbMatchs = nbjoueurs / 2 * nbTours;
+  nbMatchs = nbMatchsParTour  * nbTours;
 
   idMatch = 0;
   for (let i = 1; i < nbTours + 1; i++) {
