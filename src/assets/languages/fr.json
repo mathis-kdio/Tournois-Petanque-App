@@ -136,6 +136,7 @@
     "nombre_equipe_multiple_2": "Le nombre d'equipe doit être un multiple de 2",
     "joueurs_sans_equipe": "Des joueurs n'ont pas d'équipe",
     "configuration_impossible_coupe": "En coupe, le nombre d'équipes doit être de 4, 8, 16, ...",
+    "configuration_impossible_multichances": "En multi-chances, le nombre d'équipes doit un multiple de 8",
     "equipe_doublette_multiple_4": "Avec des équipes en doublette, le nombre de joueurs doit être un multiple de 4",
     "equipe_triplette_multiple_6": "Avec des équipes en triplette, le nombre de joueurs doit être un multiple de 6",
     "tete_a_tete_multiple_2": "En tête-à-tête, le nombre de joueurs doit être un multiple de 2",

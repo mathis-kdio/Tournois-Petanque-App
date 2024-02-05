@@ -50,9 +50,11 @@ class InscriptionsAvecNoms extends React.Component {
     if (optionsTournoi.type == 'coupe' && (nbEquipes < 4 || Math.log2(nbEquipes) % 1 !== 0)) {
       title = t("configuration_impossible_coupe");
       btnDisabled = true;
-    }
-    else if (optionsTournoi.mode == 'avecEquipes') {
-      if (listesJoueurs.avecEquipes.find(el => el.equipe == undefined) != undefined || listesJoueurs.avecEquipes.find(el => el.equipe > nbEquipes) != undefined) {
+    } else if (optionsTournoi.type == 'multi-chances' && (nbEquipes == 0 || nbEquipes % 8 != 0)) {
+      title = t("configuration_impossible_multichances");
+      btnDisabled = true;
+    } else if (optionsTournoi.mode == 'avecEquipes') {
+      if (listesJoueurs.avecEquipes.find(el => el.equipe == undefined || el.equipe == 0 || el.equipe > nbEquipes) != undefined) {
         title = t("joueurs_sans_equipe");
         btnDisabled = true;
       }
