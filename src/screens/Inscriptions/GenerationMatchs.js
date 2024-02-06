@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { generationChampionnat } from '@utils/generations/championnat'
 import { generationCoupe } from '@utils/generations/coupe'
+import { generationMultiChances } from '@utils/generations/multiChances'
 import { generationAvecEquipes } from '@utils/generations/tournoiAvecEquipes'
 import { generationDoublettes } from '@utils/generations/tournoiDoublettes'
 import { generationTeteATete } from '@utils/generations/tournoiTeteATete'
@@ -130,6 +131,9 @@ class GenerationMatchs extends React.Component {
     }
     else if (this.typeTournoi == "championnat") {
       ({matchs, nbTours, nbMatchs} = generationChampionnat(this.props.optionsTournoi, this.props.listesJoueurs.avecEquipes));
+    }
+    else if (this.typeTournoi == "multi-chances") {
+      ({matchs, nbTours, nbMatchs} = generationMultiChances(this.props.listesJoueurs[this.typeInscription], this.typeEquipes));
     }
     else {
       echecGeneration = true;

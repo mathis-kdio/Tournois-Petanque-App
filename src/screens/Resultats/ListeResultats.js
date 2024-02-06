@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import ListeResultatItem from '@components/ListeResultatItem'
-import { rankingCalc } from '@utils/ranking'
+import { ranking } from '@utils/ranking'
 import { withTranslation } from 'react-i18next'
 import { HStack, FlatList, Text, VStack, Divider } from '@gluestack-ui/themed'
 
@@ -20,7 +20,7 @@ class ListeResultats extends React.Component {
           </HStack>
           <Divider my={'$0.5'} />
           <FlatList
-            data={rankingCalc(this.props.listeMatchs)}
+            data={ranking(this.props.listeMatchs)}
             keyExtractor={(item) => item.joueurId.toString()}
             renderItem={({item}) => (
               <ListeResultatItem
