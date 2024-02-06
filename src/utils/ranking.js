@@ -29,26 +29,33 @@ const rankingClassic = (victoires) => {
   return victoires;
 }
 
+const factorial = n => {
+  let result = 1;
+  for (let i = 2; i <= n; i++) {
+    result *= i;
+  }
+  return result;
+}
+
 const rankingMuliChances = (listeMatchs, optionsTournoi, nbPtVictoire, victoires) => {
-  let nbMatchsParTour = optionsTournoi.nbMatchs / optionsTournoi.nbTours;
   for (let i = 0; i < victoires.length; i++) {
     let position = 1;
     for (let j = 0; j < optionsTournoi.nbMatchs; j++) {
       if (listeMatchs[j].equipe[0].includes(i) && listeMatchs[j].score1) {
-        if (listeMatchs[j].score1 < nbPtVictoire) {
-          position += Math.floor(nbMatchsParTour / listeMatchs[j].manche);
+        if (listeMatchs[j].score1 >= nbPtVictoire) {
+          position += factorial(optionsTournoi.nbTours + 1 - listeMatchs[j].manche); 
         }
       }
       if (listeMatchs[j].equipe[1].includes(i) && listeMatchs[j].score2) {
-        if (listeMatchs[j].score2 < nbPtVictoire) {
-          position += Math.floor(nbMatchsParTour / listeMatchs[j].manche);
+        if (listeMatchs[j].score2 >= nbPtVictoire) {
+          position += factorial(listeMatchs[j].manche); 
         }
       }
     }
     victoires[i].position = position;
   }
 
-  victoires.sort((a, b) => a.position - b.position);
+  victoires.sort((a, b) => b.position - a.position).forEach((value, index) => victoires[index].position = index + 1);
 
   return victoires;
 }
