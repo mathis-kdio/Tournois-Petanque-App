@@ -11,7 +11,7 @@ import { _adsConsentForm } from '../utils/adMob/consentForm'
 import { withTranslation } from 'react-i18next';
 import CardButton from '@components/buttons/CardButton';
 //import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
-import { AppState, StyleSheet, Platform } from 'react-native';
+import { AppState, Platform } from 'react-native';
 
 class Accueil extends React.Component {
   constructor(props) {
@@ -181,7 +181,6 @@ class Accueil extends React.Component {
           <VStack alignItems='center'>
             <Image
               size='xl'
-              style={styles.imageWeb} //TMP FIX bug size web gluestack
               alt="Logo de l'application"
               source={require('@assets/icon.png')}/>
           </VStack>
@@ -253,18 +252,6 @@ class Accueil extends React.Component {
     )
   }
 }
-
-//TMP FIX bug size web gluestack
-const styles = StyleSheet.create({
-  imageWeb: {
-    ...Platform.select({
-      web: {
-        height: '124px',
-        width: '124px'
-      }
-    })
-  }
-});
 
 const mapStateToProps = (state) => {
   return {

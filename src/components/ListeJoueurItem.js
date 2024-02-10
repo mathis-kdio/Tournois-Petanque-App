@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AlertDialog, AlertDialogBackdrop, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, Box, Button, ButtonGroup, ButtonText, CheckIcon, Checkbox, CheckboxIndicator, CheckboxLabel, ChevronDownIcon, CloseIcon, HStack, Heading, Image, Input, InputField, Select, SelectBackdrop, SelectContent, SelectDragIndicator, SelectDragIndicatorWrapper, SelectIcon, SelectInput, SelectItem, SelectPortal, SelectTrigger, Text } from '@gluestack-ui/themed';
 import { withTranslation } from 'react-i18next';
-import { StyleSheet, Platform } from 'react-native';
 
 class ListeJoueurItem extends React.Component {
   constructor(props) {
@@ -197,8 +196,8 @@ class ListeJoueurItem extends React.Component {
       return (
         <Box>
           {joueurType == "enfant" && <FontAwesome5 name="child" color="darkgray" size={24}/>}
-          {joueurType == "tireur" && <Image source={require('@assets/images/tireur.png')} alt={type} width={30} height={30} style={styles.imageWeb} /> /*TMP FIX bug size web gluestack*/}
-          {joueurType == "pointeur" && <Image source={require('@assets/images/pointeur.png')} alt={type} width={30} height={30} style={styles.imageWeb} /> /*TMP FIX bug size web gluestack*/}
+          {joueurType == "tireur" && <Image source={require('@assets/images/tireur.png')} alt={type} width={30} height={30} />}
+          {joueurType == "pointeur" && <Image source={require('@assets/images/pointeur.png')} alt={type} width={30} height={30} />}
         </Box>
       )
     }
@@ -299,18 +298,6 @@ class ListeJoueurItem extends React.Component {
     )
   }
 }
-
-//TMP FIX bug size web gluestack
-const styles = StyleSheet.create({
-  imageWeb: {
-    ...Platform.select({
-      web: {
-        height: '48px',
-        width: '48px'
-      }
-    })
-  }
-});
 
 const mapStateToProps = (state) => {
   return {

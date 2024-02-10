@@ -1,7 +1,6 @@
 import { HStack, Text, Image, Divider, VStack } from '@gluestack-ui/themed';
 import React from 'react'
 import { withTranslation } from 'react-i18next'
-import { StyleSheet, Platform } from 'react-native';
 import { connect } from 'react-redux'
 
 class ListeResultatItem extends React.Component {
@@ -44,7 +43,7 @@ class ListeResultatItem extends React.Component {
     if (fanny == true) {
       return (
         <HStack>
-          <Image size='2xs' alt='Fanny' source={require('@assets/images/fanny.png')} style={styles.imageWeb} /* TMP FIX bug size web gluestack */ /> 
+          <Image size='2xs' alt='Fanny' source={require('@assets/images/fanny.png')} /> 
           <Text color='$white' fontSize={'$lg'}>X{nbFanny}</Text>
         </HStack>
       )
@@ -72,18 +71,6 @@ class ListeResultatItem extends React.Component {
     )
   }
 }
-
-//TMP FIX bug size web gluestack
-const styles = StyleSheet.create({
-  imageWeb: {
-    ...Platform.select({
-      web: {
-        height: '24px',
-        width: '24px'
-      }
-    })
-  }
-});
 
 const mapStateToProps = (state) => {
   return {
