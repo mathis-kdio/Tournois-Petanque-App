@@ -161,6 +161,7 @@ class Accueil extends React.Component {
             text={t("reprendre_tournoi")}
             icon="play"
             navigate={() => this._showMatchs()}
+            newBadge={false}
           />
         ) 
       }
@@ -193,6 +194,7 @@ class Accueil extends React.Component {
                 text={t("nouveau_tournoi")}
                 icon="plus"
                 navigate={() => this._navigate('InscriptionStack')}
+                newBadge={false}
               />
             </HStack>
             <HStack space='sm'>
@@ -200,11 +202,13 @@ class Accueil extends React.Component {
                 text={t("mes_anciens_tournois")}
                 icon="list"
                 navigate={() => this._navigate('ListeTournois')}
+                newBadge={false}
               />
               <CardButton
                 text={t("mes_listes_joueurs")}
                 icon="users"
                 navigate={() => this._navigate('ListesJoueurs')}
+                newBadge={false}
               />
             </HStack> 
           </VStack>
