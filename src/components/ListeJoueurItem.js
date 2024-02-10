@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AlertDialog, AlertDialogBackdrop, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, Box, Button, ButtonGroup, ButtonText, CheckIcon, Checkbox, CheckboxIndicator, CheckboxLabel, ChevronDownIcon, CloseIcon, HStack, Heading, Image, Input, InputField, Select, SelectBackdrop, SelectContent, SelectDragIndicator, SelectDragIndicatorWrapper, SelectIcon, SelectInput, SelectItem, SelectPortal, SelectTrigger, Text } from '@gluestack-ui/themed';
 import { withTranslation } from 'react-i18next';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 class ListeJoueurItem extends React.Component {
   constructor(props) {

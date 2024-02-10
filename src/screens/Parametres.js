@@ -9,7 +9,7 @@ import { _adsConsentShowForm } from '../utils/adMob/consentForm'
 import { withTranslation } from "react-i18next";
 import TopBarBack from '@components/TopBarBack'
 import ChangelogData from '@assets/ChangelogData.json'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 
 class Parametres extends React.Component {
   constructor(props) {

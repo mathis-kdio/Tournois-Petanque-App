@@ -1,7 +1,7 @@
 import { HStack, Text, Image, Divider, VStack } from '@gluestack-ui/themed';
 import React from 'react'
 import { withTranslation } from 'react-i18next'
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { connect } from 'react-redux'
 
 class ListeResultatItem extends React.Component {

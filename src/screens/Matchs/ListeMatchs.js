@@ -4,6 +4,7 @@ import MatchItem from '@components/MatchItem'
 import * as NavigationBar from 'expo-navigation-bar';
 import { VStack } from '@gluestack-ui/themed';
 import { FlatList } from '@gluestack-ui/themed';
+import { Platform } from 'react-native';
 
 class ListeMatchs extends React.Component {
   constructor(props) {
