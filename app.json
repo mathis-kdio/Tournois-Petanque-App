@@ -84,6 +84,12 @@
       [
         "./src/plugins/withDisableForcedDarkModeAndroid.js",
         {}
+      ],
+      [
+        "expo-dev-launcher",
+        {
+          "launchModeExperimental": "most-recent"
+        }
       ]
     ],
     "extra": {
