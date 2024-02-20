@@ -10,7 +10,7 @@ import { Box, HStack, VStack, Text, Pressable, Modal, Image, ModalHeader, ModalB
 import { _adsConsentForm } from '../utils/adMob/consentForm'
 import { withTranslation } from 'react-i18next';
 import CardButton from '@components/buttons/CardButton';
-//import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
+import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
 import { AppState, Platform } from 'react-native';
 
 class Accueil extends React.Component {
@@ -52,11 +52,11 @@ class Accueil extends React.Component {
     }
     else if (Platform.OS === 'ios') {
       setTimeout(async () => {
-        /*requestTrackingPermissionsAsync().then(status => {
+        requestTrackingPermissionsAsync().then(status => {
           if (status === 'granted') {
             _adsConsentForm(this.state.appState);
           }
-        });*/
+        });
       }, 1000);
     }
   }
