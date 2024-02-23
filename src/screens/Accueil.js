@@ -3,7 +3,6 @@ import { expo } from '../../app.json';
 import { connect } from 'react-redux';
 import * as NavigationBar from 'expo-navigation-bar';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { _versionCheck } from '../utils/versionCheck/versionCheck'
 import { _openPlateformLink, _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Box, HStack, VStack, Text, Pressable, Modal, Image, ModalHeader, ModalBody, ModalContent, ModalCloseButton, Heading, CloseIcon, ModalBackdrop } from '@gluestack-ui/themed';
@@ -29,7 +28,6 @@ class Accueil extends React.Component {
     this.website =              "https://tournoispetanqueapp.fr/";
     this.state = {
       modalDonsVisible: false,
-      modalVisible: false,
       appState: "active"
     }
   }
@@ -39,11 +37,6 @@ class Accueil extends React.Component {
 
     if (Platform.OS === 'android') {
       NavigationBar.setBackgroundColorAsync("#0594ae");
-    }
-
-    //MODAL UPDATE
-    if (Platform.OS === 'android') { //TEMP car bug sur iOS
-      _versionCheck().then(res => this.setState({modalVisible: res}));
     }
 
     //GOOGLE ADMOB
@@ -65,36 +58,6 @@ class Accueil extends React.Component {
     if (Platform.OS === 'android') {
       NavigationBar.setBackgroundColorAsync("#0594ae");
     }
-  }
-
-  _showUpdateModal() {
-    const { t } = this.props;
-    return (
-      <Modal
-        isOpen={this.state.modalVisible}
-        onClose={() => this.setState({ modalVisible: false })}
-      >
-        <ModalBackdrop/>
-        <ModalContent>
-          <ModalHeader>
-            <Heading size='lg'>{t("mise_a_jour")}</Heading>
-            <ModalCloseButton>
-              <CloseIcon/>
-            </ModalCloseButton>
-          </ModalHeader>
-          <ModalBody>
-            <Text textAlign='center'>{t("mise_a_jour_modal_texte_1")}</Text>
-            <Text textAlign='center'>{t("mise_a_jour_modal_texte_2")}</Text>
-            <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openPlateformLink(this.googleMarket, this.appleMarket)}>
-              <HStack>
-                <FontAwesome5 name="download" color='$white' size={20}/>
-                <Text color='$white'> {t("mettre_a_jour")}</Text>
-              </HStack>
-            </Pressable>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    )
   }
 
   _showDonsModal() {
@@ -250,7 +213,6 @@ class Accueil extends React.Component {
             </VStack>
           </VStack>
           {this._showDonsModal()}
-          {this._showUpdateModal()}
         </VStack>
       </SafeAreaView>
     )
