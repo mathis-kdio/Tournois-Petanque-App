@@ -1,9 +1,7 @@
 import React from 'react';
 import { expo } from '../../app.json';
 import { connect } from 'react-redux';
-import * as NavigationBar from 'expo-navigation-bar';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { _versionCheck } from '../utils/versionCheck/versionCheck'
 import { _openPlateformLink, _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Box, HStack, VStack, Text, Pressable, Modal, Image, ModalHeader, ModalBody, ModalContent, ModalCloseButton, Heading, CloseIcon, ModalBackdrop } from '@gluestack-ui/themed';
@@ -11,7 +9,7 @@ import { _adsConsentForm } from '../utils/adMob/consentForm'
 import { withTranslation } from 'react-i18next';
 import CardButton from '@components/buttons/CardButton';
 import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
-import { AppState, StyleSheet } from 'react-native';
+import { AppState, Platform } from 'react-native';
 
 class Accueil extends React.Component {
   constructor(props) {
@@ -29,22 +27,12 @@ class Accueil extends React.Component {
     this.website =              "https://tournoispetanqueapp.fr/";
     this.state = {
       modalDonsVisible: false,
-      modalVisible: false,
       appState: "active"
     }
   }
 
   componentDidMount() {
     AppState.addEventListener("change", nextAppState => this.setState({ appState: nextAppState }));
-
-    if (Platform.OS === 'android') {
-      NavigationBar.setBackgroundColorAsync("#0594ae");
-    }
-
-    //MODAL UPDATE
-    if (Platform.OS === 'android') { //TEMP car bug sur iOS
-      _versionCheck().then(res => this.setState({modalVisible: res}));
-    }
 
     //GOOGLE ADMOB
     if (Platform.OS === 'android') {
@@ -59,42 +47,6 @@ class Accueil extends React.Component {
         });
       }, 1000);
     }
-  }
-
-  componentDidUpdate() {
-    if (Platform.OS === 'android') {
-      NavigationBar.setBackgroundColorAsync("#0594ae");
-    }
-  }
-
-  _showUpdateModal() {
-    const { t } = this.props;
-    return (
-      <Modal
-        isOpen={this.state.modalVisible}
-        onClose={() => this.setState({ modalVisible: false })}
-      >
-        <ModalBackdrop/>
-        <ModalContent>
-          <ModalHeader>
-            <Heading size='lg'>{t("mise_a_jour")}</Heading>
-            <ModalCloseButton>
-              <CloseIcon/>
-            </ModalCloseButton>
-          </ModalHeader>
-          <ModalBody>
-            <Text textAlign='center'>{t("mise_a_jour_modal_texte_1")}</Text>
-            <Text textAlign='center'>{t("mise_a_jour_modal_texte_2")}</Text>
-            <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openPlateformLink(this.googleMarket, this.appleMarket)}>
-              <HStack>
-                <FontAwesome5 name="download" color='$white' size={20}/>
-                <Text color='$white'> {t("mettre_a_jour")}</Text>
-              </HStack>
-            </Pressable>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    )
   }
 
   _showDonsModal() {
@@ -182,7 +134,6 @@ class Accueil extends React.Component {
           <VStack alignItems='center'>
             <Image
               size='xl'
-              style={styles.imageWeb} //TMP FIX bug size web gluestack
               alt="Logo de l'application"
               source={require('@assets/icon.png')}/>
           </VStack>
@@ -251,24 +202,11 @@ class Accueil extends React.Component {
             </VStack>
           </VStack>
           {this._showDonsModal()}
-          {this._showUpdateModal()}
         </VStack>
       </SafeAreaView>
     )
   }
 }
-
-//TMP FIX bug size web gluestack
-const styles = StyleSheet.create({
-  imageWeb: {
-    ...Platform.select({
-      web: {
-        height: '124px',
-        width: '124px'
-      }
-    })
-  }
-});
 
 const mapStateToProps = (state) => {
   return {

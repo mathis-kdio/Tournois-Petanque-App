@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Checkbox, VStack, Button, Text, Input, Select, CheckIcon, Slider, HStack, ScrollView, ButtonText, SliderTrack, SliderFilledTrack, SliderThumb, SelectItem, CheckboxIndicator, SelectTrigger, SelectInput, SelectIcon, SelectPortal, SelectBackdrop, SelectContent, SelectDragIndicatorWrapper, SelectDragIndicator, ChevronDownIcon, InputField, CheckboxLabel } from '@gluestack-ui/themed';
+import { Checkbox, VStack, Button, Text, Input, Select, CheckIcon, Slider, HStack, ScrollView, ButtonText, SliderTrack, SliderFilledTrack, SliderThumb, SelectItem, CheckboxIndicator, SelectTrigger, SelectInput, SelectIcon, SelectPortal, SelectBackdrop, SelectContent, SelectDragIndicatorWrapper, SelectDragIndicator, ChevronDownIcon, InputField, CheckboxLabel, KeyboardAvoidingView } from '@gluestack-ui/themed';
 import TopBarBack from '@components/TopBarBack';
 import { withTranslation } from 'react-i18next';
+import { Platform } from 'react-native';
 
 class OptionsTournoi extends React.Component {
 
@@ -79,7 +79,10 @@ class OptionsTournoi extends React.Component {
   render() {
     const { t } = this.props;
     return (
-      <KeyboardAwareScrollView contentContainerStyle={{flex: 1}}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "height" : "height"}
+        style={{ flex: 1, zIndex: 999 }}
+      >
         <SafeAreaView style={{flex: 1}}>
           <ScrollView bgColor='#0594ae'>
             <VStack flex={1}>
@@ -201,7 +204,7 @@ class OptionsTournoi extends React.Component {
             </VStack>
           </ScrollView>
         </SafeAreaView>
-      </KeyboardAwareScrollView>
+        </KeyboardAvoidingView>
     )
   }
 }

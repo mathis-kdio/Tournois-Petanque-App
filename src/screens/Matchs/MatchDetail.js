@@ -1,13 +1,13 @@
-import { VStack, Text, Input, Button, HStack, Box, ButtonText, ScrollView } from '@gluestack-ui/themed';
+import { VStack, Text, Input, Button, HStack, Box, ButtonText, ScrollView, KeyboardAvoidingView } from '@gluestack-ui/themed';
 import React from 'react'
 import { withTranslation } from 'react-i18next';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux'
 import TopBarBack from '../../components/TopBarBack';
 import { InputField } from '@gluestack-ui/themed';
 import AdMobMatchDetailBanner from '../../components/adMob/AdMobMatchDetailBanner';
 import { nextMatch } from '../../utils/generations/nextMatch/nextMatch';
+import { Platform } from 'react-native';
 
 class MatchDetail extends React.Component {
   constructor(props) {
@@ -109,7 +109,10 @@ class MatchDetail extends React.Component {
     const { t } = this.props;
     let { match, nbPtVictoire } = this.props.route.params;
     return (
-      <KeyboardAwareScrollView contentContainerStyle={{flex: 1}}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "height" : "height"}
+        style={{ flex: 1, zIndex: 999 }}
+      >
         <SafeAreaView style={{flex: 1}}>
           <ScrollView bgColor='#0594ae'>
             <VStack>
@@ -173,7 +176,7 @@ class MatchDetail extends React.Component {
             </VStack>
           </ScrollView>
         </SafeAreaView>
-      </KeyboardAwareScrollView>
+      </KeyboardAvoidingView>
     )
   }
 }

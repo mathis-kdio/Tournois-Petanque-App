@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import MatchItem from '@components/MatchItem'
-import * as NavigationBar from 'expo-navigation-bar';
 import { VStack } from '@gluestack-ui/themed';
 import { FlatList } from '@gluestack-ui/themed';
 
@@ -50,9 +49,6 @@ class ListeMatchs extends React.Component {
   }
 
   render() {
-    if (Platform.OS === 'android') {
-      NavigationBar.setBackgroundColorAsync("#0594ae");
-    }
     return (
       <VStack flex={1} bgColor='#0594ae'>
         {this._displayListeMatch()}

@@ -1,4 +1,5 @@
 import * as Linking from 'expo-linking'
+import { Platform } from 'react-native';
 
 export const _openPlateformLink = (androidLink, iosLink) => {
   Platform.OS === 'android' ? _openURL(androidLink) : _openURL(iosLink);
