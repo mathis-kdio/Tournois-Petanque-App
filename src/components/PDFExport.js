@@ -8,6 +8,7 @@ import { generationPDFCoupe } from 'utils/pdf/coupe';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { VStack, Button, ButtonSpinner, ButtonText } from '@gluestack-ui/themed';
 import TopBarBack from './TopBarBack';
+import { Platform } from 'react-native';
 
 class PDFExport extends React.Component {
   constructor(props) {
@@ -38,11 +39,21 @@ class PDFExport extends React.Component {
     } else {
       html = generationPDFTournoi(affichageScore, affichageClassement, listeJoueurs, listeMatchs, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables);
     }
-    const { uri } = await Print.printToFileAsync({ html });
-    if (await Sharing.isAvailableAsync()) {
-      Sharing.shareAsync(uri).then(this._toggleLoading(buttonId));
-    } else {
+    if (Platform.OS == 'web') {
+      const pW = window.open('', '', `width=${screen.availWidth},height=${screen.availHeight}`)
+      pW.document.write(html);
+      pW.onafterprint = () => {
+        pW.close();
+      };
+      pW.print();
       this._toggleLoading(buttonId)
+    } else {
+      const { uri } = await Print.printToFileAsync({ html });
+      if (await Sharing.isAvailableAsync() && uri != undefined) {
+        Sharing.shareAsync(uri).then(this._toggleLoading(buttonId));
+      } else {
+        this._toggleLoading(buttonId)
+      }
     }
   }
 
