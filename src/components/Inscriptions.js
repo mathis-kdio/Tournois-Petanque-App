@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { FlatList } from 'react-native-gesture-handler'
 import ListeJoueurItem from '@components/ListeJoueurItem'
 import JoueurSuggere from '@components/JoueurSuggere'
 import JoueurType from '@components/JoueurType'

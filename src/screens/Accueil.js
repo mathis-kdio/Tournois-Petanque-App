@@ -1,7 +1,6 @@
 import React from 'react';
 import { expo } from '../../app.json';
 import { connect } from 'react-redux';
-import * as NavigationBar from 'expo-navigation-bar';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { _openPlateformLink, _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -35,10 +34,6 @@ class Accueil extends React.Component {
   componentDidMount() {
     AppState.addEventListener("change", nextAppState => this.setState({ appState: nextAppState }));
 
-    if (Platform.OS === 'android') {
-      NavigationBar.setBackgroundColorAsync("#0594ae");
-    }
-
     //GOOGLE ADMOB
     if (Platform.OS === 'android') {
       _adsConsentForm(this.state.appState);
@@ -51,12 +46,6 @@ class Accueil extends React.Component {
           }
         });
       }, 1000);
-    }
-  }
-
-  componentDidUpdate() {
-    if (Platform.OS === 'android') {
-      NavigationBar.setBackgroundColorAsync("#0594ae");
     }
   }
 

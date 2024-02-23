@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler'; //https://reactnavigation.org/docs/stack-navigator/
 import 'expo-dev-client';
 import React from 'react';
 import Navigation from '@navigation/Navigation';
