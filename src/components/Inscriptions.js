@@ -135,7 +135,7 @@ class Inscription extends React.Component {
         avecEquipes = true;
       }
       return (
-        <FlatLis
+        <FlatList
           removeClippedSubviews={false}
           persistentScrollbar={true}
           data={this.props.listesJoueurs[this.props.optionsTournoi.mode]}
