@@ -1,6 +1,7 @@
 import { VStack } from '@gluestack-ui/themed';
 import * as React from 'react';
 import { BannerAd, BannerAdSize, TestIds, AdsConsent } from 'react-native-google-mobile-ads';
+import { Platform } from 'react-native';
 
 class AdMobMatchDetailBanner extends React.Component {
   constructor(props) {
