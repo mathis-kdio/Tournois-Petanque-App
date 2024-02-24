@@ -1,7 +1,7 @@
 {
   "package": {
-    "productName": "Tournois de Petanque GCU",
-    "version": "1.15.0"
+    "productName": "Tournois Petanque App",
+    "version": "1.15.1"
   },
   "build": {
     "distDir": "../dist",
@@ -13,7 +13,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.MK.PetanqueGCU",
+      "identifier": "fr.tournoispetanqueapp.desktop",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
@@ -24,8 +24,8 @@
       "externalBin": [],
       "copyright": "Mathis Cadio",
       "category": "Sports",
-      "shortDescription": "RNE is a Expo + Tauri Template",
-      "longDescription": "RNE is a template I (Sarthak Pranesh) made to help me build Beautiful, Efficient, and write once run everywhere apps with Expo (React Native) building to Android, iOS and Web along with Desktop support using Tauri. This template includes some common libraries and configurations that I find myself using in almost all React Native project.",
+      "shortDescription": "Créer un tournoi de pétanque et ajouter les scores n'a jamais été aussi simple !",
+      "longDescription": "Avec Tournois Pétanque App, vous pouvez créer rapidement et gérer facilement un tournoi de pétanque sans internet ! Plusieurs types de tournois sont disponibles : mêlé-démêlé, championnat et coupe. Chaque type de tournois peut être réalisé en tête-à-tête, doublette ou triplette. Si vous choisissez la doublette et que vous êtes un nombre impair, alors les matchs seront complétés par une triplette ou tête-à-tête. Vous pouvez également enregistrer les joueurs par leur nom ou par un numéro. Il est aussi possible d'indiquer si un joueur est un enfant afin d'équilibrer les équipes. Le nombre de tours du tournoi et de points par matchs sont configurables. Une fois que votre tournoi est paramétré, l'application va automatiquement créer les matchs et répartir les joueurs de la manière la plus optimisée. Vous pourrez alors ajouter les scores au fur et à mesure du tournoi. Le classement est calculé à chaque fois que le score d'une partie est ajouté. Enfin, vous pouvez exporter en PDF vos scores et le classement.",
       "deb": {
         "depends": []
       },
@@ -39,7 +39,10 @@
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
-        "timestampUrl": ""
+        "timestampUrl": "",
+        "webviewInstallMode": {
+          "type": "embedBootstrapper"
+        }
       }
     },
     "updater": {
@@ -58,11 +61,12 @@
     },
     "windows": [
       {
-        "title": "Tournois de Pétanque GCU",
-        "width": 800,
-        "height": 600,
+        "title": "Tournois Pétanque App",
         "resizable": true,
-        "fullscreen": false
+        "fullscreen": false,
+        "center": true,
+        "minWidth": 600,
+        "minHeight": 450
       }
     ],
     "security": {

@@ -1,12 +1,13 @@
-import { VStack, Text, Input, Button, HStack, Box, ButtonText, ScrollView } from '@gluestack-ui/themed';
+import { VStack, Text, Input, Button, HStack, Box, ButtonText, ScrollView, KeyboardAvoidingView } from '@gluestack-ui/themed';
 import React from 'react'
 import { withTranslation } from 'react-i18next';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux'
 import TopBarBack from '../../components/TopBarBack';
 import { InputField } from '@gluestack-ui/themed';
 import AdMobMatchDetailBanner from '../../components/adMob/AdMobMatchDetailBanner';
+import { nextMatch } from '../../utils/generations/nextMatch/nextMatch';
+import { Platform } from 'react-native';
 
 class MatchDetail extends React.Component {
   constructor(props) {
@@ -73,38 +74,11 @@ class MatchDetail extends React.Component {
       this.props.dispatch(actionAjoutScore);
       //Si tournoi type coupe et pas le dernier match, alors on ajoute les gagnants au match suivant
       let nbMatchs = this.props.listeMatchs[this.props.listeMatchs.length - 1].nbMatchs;
-      if (this.props.listeMatchs[this.props.listeMatchs.length - 1].typeTournoi == 'coupe' && match.id + 1 < nbMatchs) {
-        let gagnant = match.equipe[0];
-        if (parseInt(match.score2) > parseInt(match.score1)) {
-          gagnant = match.equipe[1];
-        }
-        let matchId = null;
-
-        let div = 2;
-        for (let i = 2; i <= match.manche; i++) {
-          div = div * 2;
-        }
-        let nbMatchsManche = Math.floor((nbMatchs + 1) / div);
-
-        if (match.manche == 1) {
-          if (match.id % 2 != 0) {
-            matchId = match.id + (nbMatchsManche - ((match.id + 1) / 2));
-          }
-          else {
-            matchId = match.id + (nbMatchsManche - (match.id / 2));
-          }
-        }
-        else {
-          let nbMatchsAvantManche = (nbMatchs + 1) / 2;
-          for (let i = 1; i < match.manche - 1; i++) {
-            nbMatchsAvantManche += nbMatchsAvantManche / 2;
-          }
-          matchId = match.id + (nbMatchsManche - (Math.ceil((match.id % nbMatchsAvantManche) / 2)));
-        }
-
-        let equipeId = match.id % 2;
-        const actionAjoutAdversaire = { type: "COUPE_AJOUT_ADVERSAIRE", value: {gagnant: gagnant, matchId: matchId, equipeId: equipeId}};
-        this.props.dispatch(actionAjoutAdversaire);
+      let typeTournoi = this.props.listeMatchs[this.props.listeMatchs.length - 1].typeTournoi;
+      let nbTours = this.props.listeMatchs[this.props.listeMatchs.length - 1].nbTours;
+      let actionNextMatch = nextMatch(match, nbMatchs, typeTournoi, nbTours);
+      if (actionNextMatch != undefined) {
+        this.props.dispatch(actionNextMatch);
       }
       const actionUpdateTournoi = { type: "UPDATE_TOURNOI", value: {tournoi: this.props.listeMatchs, tournoiId: this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID}};
       this.props.dispatch(actionUpdateTournoi);
@@ -135,7 +109,10 @@ class MatchDetail extends React.Component {
     const { t } = this.props;
     let { match, nbPtVictoire } = this.props.route.params;
     return (
-      <KeyboardAwareScrollView contentContainerStyle={{flex: 1}}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "height" : "height"}
+        style={{ flex: 1, zIndex: 999 }}
+      >
         <SafeAreaView style={{flex: 1}}>
           <ScrollView bgColor='#0594ae'>
             <VStack>
@@ -199,7 +176,7 @@ class MatchDetail extends React.Component {
             </VStack>
           </ScrollView>
         </SafeAreaView>
-      </KeyboardAwareScrollView>
+      </KeyboardAvoidingView>
     )
   }
 }

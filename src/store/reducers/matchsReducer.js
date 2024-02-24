@@ -44,7 +44,18 @@ function gestionMatchs(state = initialState, action) {
           listesJoueurs: matchs
         }
       }
-      return nextState || state    
+      return nextState || state
+    case 'MULTICHANCES_ADD_NEXT_MATCH'://action: 0: gagnant  1: id du match du gagnant  2: perdant  3: id du match du perdant  4: id de l'équipe
+      if (action.value.gagnant != "" || action.value.perdant != "" || action.value.gagnantMatchId != "" || action.value.perdantMatchId != "" || action.value.equipeId != "") {
+        const matchs = [ ...state.listematchs ];
+        matchs[action.value.gagnantMatchId].equipe[action.value.equipeId] = action.value.gagnant;
+        matchs[action.value.perdantMatchId].equipe[action.value.equipeId] = action.value.perdant;
+        nextState = {
+          ...state,
+          listematchs: matchs
+        }
+      }
+      return nextState || state   
     case 'REMOVE_ALL_MATCHS':
       nextState = {
         ...state,

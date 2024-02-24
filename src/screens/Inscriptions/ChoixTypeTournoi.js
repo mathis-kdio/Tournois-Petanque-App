@@ -32,6 +32,10 @@ class ChoixTypeTournoi extends React.Component {
       "coupe": {
         title: t("coupe"),
         text: t("description_coupe")
+      },
+      "multi-chances": {
+        title: t("multi_chances"),
+        text: t("description_multi_chances")
       }
     };
     let infos = infosModal[this.state.modalType];
@@ -72,6 +76,7 @@ class ChoixTypeTournoi extends React.Component {
                 text={t("type_melee_demelee")}
                 icon="random"
                 navigate={() => this._navigate('mele-demele')}
+                newBadge={false}
               />
               <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: "melee-demelee"})}>
                 <FontAwesome5 name="info-circle" color='white' size={24}/>
@@ -83,6 +88,7 @@ class ChoixTypeTournoi extends React.Component {
                 text={t("type_championnat")}
                 icon="table"
                 navigate={() => this._navigate('championnat')}
+                newBadge={false}
               />
               <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: "championnat"})}>
                 <FontAwesome5 name="info-circle" color='white' size={24}/>
@@ -94,13 +100,26 @@ class ChoixTypeTournoi extends React.Component {
                 text={t("type_coupe")}
                 icon="trophy"
                 navigate={() => this._navigate('coupe')}
+                newBadge={false}
               />
               <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: "coupe"})}>
                 <FontAwesome5 name="info-circle" color='white' size={24}/>
                 <Text color='$white'> {t("savoir_plus")}</Text>
               </Pressable>
             </VStack>
-            <VStack flat={4} m={'$10'}>
+            <VStack flex={1}>
+              <CardButton
+                text={t("type_multi_chances")}
+                icon="code-branch"
+                navigate={() => this._navigate('multi-chances')}
+                newBadge={true}
+              />
+              <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: "multi-chances"})}>
+                <FontAwesome5 name="info-circle" color='white' size={24}/>
+                <Text color='$white'> {t("savoir_plus")}</Text>
+              </Pressable>
+            </VStack>
+            <VStack m={'$10'}>
               <AdMobInscriptionsBanner/>
             </VStack>
           </VStack>
