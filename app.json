@@ -2,7 +2,7 @@
   "expo": {
     "name": "Tournois de Pétanque GCU",
     "slug": "PetanqueGCU",
-    "version": "1.16.0-beta-1",
+    "version": "1.16.0-beta-2",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "light",
@@ -42,7 +42,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.MK.PetanqueGCU",
-      "versionCode": 95,
+      "versionCode": 96,
       "permissions": [
         "com.google.android.gms.permission.AD_ID"
       ],
