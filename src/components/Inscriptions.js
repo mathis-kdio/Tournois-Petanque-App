@@ -4,7 +4,7 @@ import ListeJoueurItem from '@components/ListeJoueurItem'
 import JoueurSuggere from '@components/JoueurSuggere'
 import JoueurType from '@components/JoueurType'
 import { FontAwesome5 } from '@expo/vector-icons';
-import { Box, HStack, Input, VStack, Button, Text, Icon, Divider, AlertDialog, ButtonGroup, AlertDialogHeader, AlertDialogContent, AlertDialogBody, ButtonText, AlertDialogFooter, InputField, AlertDialogBackdrop, AlertDialogCloseButton, CloseIcon, Heading } from '@gluestack-ui/themed';
+import { Box, HStack, Input, VStack, Button, Text, Icon, Divider, AlertDialog, ButtonGroup, AlertDialogHeader, AlertDialogContent, AlertDialogBody, ButtonText, AlertDialogFooter, InputField, AlertDialogBackdrop, AlertDialogCloseButton, CloseIcon, Heading, FlatList } from '@gluestack-ui/themed';
 import { withTranslation } from 'react-i18next'
 
 class Inscription extends React.Component {
@@ -135,7 +135,7 @@ class Inscription extends React.Component {
         avecEquipes = true;
       }
       return (
-        <FlatList
+        <FlatLis
           removeClippedSubviews={false}
           persistentScrollbar={true}
           data={this.props.listesJoueurs[this.props.optionsTournoi.mode]}
