@@ -13,31 +13,21 @@ import * as Sentry from '@sentry/react-native';
 import i18n from "./i18n";
 import { GluestackUIProvider } from "@gluestack-ui/themed"
 import { config } from './config/gluestack-ui.config';
-import { Platform } from 'react-native';
 import "@expo/metro-runtime"; //Fast-refresh web
 
-let routingInstrumentation = undefined;
-if (Platform.OS == "android" || Platform.OS == "ios") {
-  routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
-  Sentry.init({
-    dsn: 'https://ca59ddcb4fb74f3bb4f82a10a1378747@o1284678.ingest.sentry.io/6495554',
-    enableInExpoDevelopment: false,
-    debug: false, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
-    tracesSampleRate: 0.3,
-    integrations: [
-      new Sentry.ReactNativeTracing({
-        routingInstrumentation,
-      }),
-    ],
-    attachStacktrace: true,
-  });
-}
-
-function onNavigationContainerReady(navigation) {
-  if (Platform.OS == "android" || Platform.OS == "ios") {
-    routingInstrumentation.registerNavigationContainer(navigation);
-  }
-}
+const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
+Sentry.init({
+  dsn: 'https://ca59ddcb4fb74f3bb4f82a10a1378747@o1284678.ingest.sentry.io/6495554',
+  enabled: !__DEV__,
+  debug: false, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
+  tracesSampleRate: 0.3,
+  integrations: [
+    new Sentry.ReactNativeTracing({
+      routingInstrumentation,
+    }),
+  ],
+  attachStacktrace: true,
+});
 
 class App extends React.Component {
   navigation = React.createRef();
@@ -47,7 +37,7 @@ class App extends React.Component {
       <Provider store={Store}>
         <PersistGate persistor={persistor}>
           <GluestackUIProvider config={config}>
-            <NavigationContainer ref={this.navigation} onReady={() => onNavigationContainerReady(this.navigation)}>
+            <NavigationContainer ref={this.navigation} onReady={() => routingInstrumentation.registerNavigationContainer(this.navigation)}>
               <I18nextProvider i18n={i18n} defaultNS={'translation'}>
                 <Navigation/>
                 <StatusBar style="light" backgroundColor="#0594ae"/>
@@ -60,8 +50,4 @@ class App extends React.Component {
   }
 }
 
-let main = App;
-if (Platform.OS == "android" || Platform.OS == "ios") {
-  main = Sentry.wrap(App, {touchEventBoundaryProps: { labelName: "accessibilityLabel" }});
-}
-export default main;
+export default Sentry.wrap(App, {touchEventBoundaryProps: { labelName: "accessibilityLabel" }});
