@@ -8,8 +8,8 @@ import { Box, HStack, VStack, Text, Pressable, Modal, Image, ModalHeader, ModalB
 import { _adsConsentForm } from '../utils/adMob/consentForm'
 import { withTranslation } from 'react-i18next';
 import CardButton from '@components/buttons/CardButton';
-import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
 import { AppState, Platform } from 'react-native';
+import { _requestTrackingPermissions } from '../utils/expoTrackingTransparency/requestTrackingPermission';
 
 class Accueil extends React.Component {
   constructor(props) {
@@ -37,14 +37,9 @@ class Accueil extends React.Component {
     //GOOGLE ADMOB
     if (Platform.OS === 'android') {
       _adsConsentForm(this.state.appState);
-    }
-    else if (Platform.OS === 'ios') {
+    } else if (Platform.OS === 'ios') {
       setTimeout(async () => {
-        requestTrackingPermissionsAsync().then(status => {
-          if (status === 'granted') {
-            _adsConsentForm(this.state.appState);
-          }
-        });
+        _requestTrackingPermissions(this.state.appState);
       }, 1000);
     }
   }
