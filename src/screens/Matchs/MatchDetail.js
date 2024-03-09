@@ -138,7 +138,7 @@ class MatchDetail extends React.Component {
                         <InputField
                           placeholder={t("score_placeholder", {scoreVictoire: nbPtVictoire})}
                           autoFocus={true}
-                          defaultValue={this.nbToursTxt}
+                          defaultValue={match.score1}
                           keyboardType='decimal-pad'
                           returnKeyType='next'
                           maxLength={2}
@@ -152,7 +152,7 @@ class MatchDetail extends React.Component {
                       <Input size='md'>
                         <InputField
                           placeholder={t("score_placeholder", {scoreVictoire: nbPtVictoire})}
-                          defaultValue={this.nbToursTxt}
+                          defaultValue={match.score2}
                           keyboardType='decimal-pad'
                           maxLength={2}
                           onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 2)}
