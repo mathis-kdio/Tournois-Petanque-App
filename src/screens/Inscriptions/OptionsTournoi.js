@@ -163,6 +163,8 @@ class OptionsTournoi extends React.Component {
                   <Text color='$white' fontSize={'$md'}>{t("options_regle_complement")}</Text>
                   <Select
                     selectedValue={this.state.complement}
+                    defaultValue={"3"}
+                    initialLabel={t("triplettes")}
                     aria-label={t("choix_complement")}
                     placeholder={t("choix_complement")}
                     onValueChange={itemValue => this.setState({complement: itemValue})}
