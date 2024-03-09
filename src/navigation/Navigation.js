@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text } from '@gluestack-ui/themed';
-import { connect, useSelector } from 'react-redux';
+import { HStack, Text } from '@gluestack-ui/themed';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import { useNavigation } from '@react-navigation/native';
@@ -35,44 +35,52 @@ const BottomTab = createBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
 
 function topTabScreens() {
-  const counter = useSelector(state => state.gestionMatchs.listematchs);
+  const gestionListeMatchs = useSelector(state => state.gestionMatchs.listematchs);
   let nbTours = 5;
-  if (counter != undefined) {
-    nbTours = counter[counter.length - 1].nbTours;
+  if (gestionListeMatchs != undefined) {
+    nbTours = gestionListeMatchs[gestionListeMatchs.length - 1].nbTours;
   }
   let topTabScreenListe = [];
   for (let i = 0; i < nbTours; i++) {
     const name = "Screen"+ (i + 1) +"Manche";
-    let titleTour = {tabBarLabel: () => <TitleTopTabContainer numero={i + 1} />};
     topTabScreenListe.push(
-      <TopTab.Screen key={i} name={name} options={titleTour}>
+      <TopTab.Screen key={i} name={name} options={{tabBarLabel: () => topTabItemLabel(i + 1, gestionListeMatchs)}}>
         {props => <ListeMatchs {...props} extraData={i + 1} />}
       </TopTab.Screen>
-    )
+    );
   }
   return topTabScreenListe;
 }
 
-const TitleTopTabContainer = connect((state, numero) => ({ listeMatchs: state.gestionMatchs.listematchs}))(texteTitleTopTab);
-
-function texteTitleTopTab({ listeMatchs, numero }) {
-  let titleColor = '#ffda00';
-  let TabTitle = 'Tour '+numero;
-  if (listeMatchs) {
-    let testTourFiltre = listeMatchs.filter(el => el.manche === numero)
-    //Test si tous les matchs d'un tour sont finis si oui alors vert
-    if (testTourFiltre.every(e => e.score1 != undefined && e.score2 != undefined) == true) {
-      titleColor = 'green'
-    } //Test si tous les matchs d'un tour ne sont pas commencé si oui alors rouge
-    else if (testTourFiltre.every(e => e.score1 == undefined && e.score2 == undefined) == true) {
-      titleColor = 'red'
-    }
-
-    if (listeMatchs[listeMatchs.length - 1].typeTournoi == 'coupe') {
-      TabTitle = listeMatchs.find(el => el.manche == numero).mancheName;
-    }
+function topTabItemLabel(numero, listeMatchs) {
+  let title = 'Tour ' + numero;
+  if (listeMatchs && listeMatchs[listeMatchs.length - 1].typeTournoi == 'coupe') {
+    title = listeMatchs.find(el => el.manche == numero).mancheName;
   }
-  return <Text style={{color:titleColor, fontSize: 20}}>{TabTitle}</Text>
+
+  let iconColor = '#ffda00';
+  let iconName = 'battery-half';
+  let matchs = listeMatchs.filter(el => el.manche === numero);
+  let matchsRestant = matchs.length;
+  if (matchs) {
+    let count = matchs.reduce((acc, obj) => obj.score1 != undefined && obj.score2 != undefined ? acc+=1 : acc, 0);
+    if (count == matchs.length) {
+      iconColor = 'green';
+      iconName = 'battery-full';
+    } else if (count == 0) {
+      iconColor = 'red';
+      iconName = 'battery-empty';
+    } 
+    matchsRestant -= count;
+  }
+
+  return (
+    <HStack>
+      <Text color='$white' fontSize={'$lg'} mr={'$2'}>{title}</Text>
+      <FontAwesome5 name={iconName} size={20} color={iconColor}/>
+      <Text color={iconColor} fontSize={'$md'} ml={'$0.5'}>{matchsRestant}</Text>
+    </HStack>
+  )
 }
 
 function ManchesTopTabNavigator() {
