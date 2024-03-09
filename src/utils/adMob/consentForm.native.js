@@ -1,26 +1,24 @@
 import { AdsConsent, AdsConsentStatus } from 'react-native-google-mobile-ads';
 import mobileAds from 'react-native-google-mobile-ads';
 
-export const _adsConsentForm = (appState) => {
+export const _adsConsentForm = async (appState) => {
   if (appState == "active") {
-    AdsConsent.requestInfoUpdate().then(async consentInfo => {
-      if (consentInfo.isConsentFormAvailable && (consentInfo.status === AdsConsentStatus.UNKNOWN || consentInfo.status === AdsConsentStatus.REQUIRED)) {
-        if (appState == "active") {
-          AdsConsent.showForm().then(async res => {
-            if (res.status === AdsConsentStatus.OBTAINED) {
-              mobileAds().initialize().then(async adapterStatuses => {console.log(adapterStatuses)});
-            }
-          });
-        }
+    const consentInfo = await AdsConsent.requestInfoUpdate();
+    if (consentInfo.isConsentFormAvailable && [AdsConsentStatus.UNKNOWN, AdsConsentStatus.REQUIRED].includes(consentInfo.status)) {
+      const res = await AdsConsent.showForm();
+      if (res.status === AdsConsentStatus.OBTAINED) {
+        const adapterStatuses = await mobileAds().initialize();
+        console.log(adapterStatuses);
       }
-    });
+    
+    }
   }
 }
 
-export const _adsConsentShowForm = () => {
-  AdsConsent.requestInfoUpdate().then(async consentInfo => {
-    if (consentInfo.isConsentFormAvailable) {
-      AdsConsent.showForm().then(async status => {console.log(status)});
-    }
-  });
+export const _adsConsentShowForm = async () => {
+  const consentInfo = await AdsConsent.requestInfoUpdate();
+  if (consentInfo.isConsentFormAvailable) {
+    const status = await AdsConsent.showForm();
+    console.log(status);
+  }
 }
