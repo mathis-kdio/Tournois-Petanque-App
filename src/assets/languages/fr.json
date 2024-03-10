@@ -211,6 +211,7 @@
     "cacher": "Cacher",
     "case_a_cocher" : "les cases à cocher",
     "confirmer_uncheck_modal_titre" : "Confirmation décochage",
-    "confirmer_uncheck_modal_texte" : "Êtes-vous sûr de vouloir décocher la case ?"
+    "confirmer_uncheck_modal_texte" : "Êtes-vous sûr de vouloir décocher la case ?",
+    "chargement_publicite" : "Veuillez patienter, une publicité va apparaitre. Elle permet de couvrir les frais de l'application."
   }
 }
