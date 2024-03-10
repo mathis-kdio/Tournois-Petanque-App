@@ -211,6 +211,7 @@
     "cacher": "Ukryj",
     "case_a_cocher": "pola wyboru",
     "confirmer_uncheck_modal_titre": "Potwierdzenie anulowania wyboru pola",
-    "confirmer_uncheck_modal_texte": "Czy na pewno chcesz anulować to pole?"
+    "confirmer_uncheck_modal_texte": "Czy na pewno chcesz anulować to pole?",
+    "chargement_publicite": "Veuillez patienter, une publicité va apparaitre. Elle permet de couvrir les frais de l'application."
   }
 }
