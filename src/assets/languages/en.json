@@ -211,6 +211,7 @@
     "cacher": "Hide",
     "case_a_cocher": "checkboxes",
     "confirmer_uncheck_modal_titre": "Confirm unchecking",
-    "confirmer_uncheck_modal_texte": "Are you sure you want to uncheck the box?"
+    "confirmer_uncheck_modal_texte": "Are you sure you want to uncheck the box?",
+    "chargement_publicite": "Veuillez patienter, une publicité va apparaitre. Elle permet de couvrir les frais de l'application."
   }
 }
