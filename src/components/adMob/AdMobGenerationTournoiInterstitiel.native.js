@@ -1,10 +1,10 @@
-import { InterstitialAd, TestIds, AdsConsent } from 'react-native-google-mobile-ads';
+import { InterstitialAd, TestIds, AdsConsent, AdEventType } from 'react-native-google-mobile-ads';
 import { Platform } from 'react-native';
+import { EventRegister } from 'react-native-event-listeners'
 
 export const _adMobGenerationTournoiInterstitiel = async () => {
-  this.nonPersonalizedAdsOnly= false;
-  this.unitId = "";
-  this.interstitial;
+  let nonPersonalizedAdsOnly= false;
+  let unitId = "";
 
   const {
     createAPersonalisedAdsProfile,
@@ -12,19 +12,24 @@ export const _adMobGenerationTournoiInterstitiel = async () => {
   } = await AdsConsent.getUserChoices();
 
   if (selectPersonalisedAds === false || createAPersonalisedAdsProfile == false) {
-    this.nonPersonalizedAdsOnly = true;
+    nonPersonalizedAdsOnly = true;
   }
 
   if (__DEV__) {
-    this.unitId = TestIds.INTERSTITIAL;
+    unitId = TestIds.INTERSTITIAL;
   } else if (Platform.OS === 'android') {
-    this.unitId = "ca-app-pub-4863676282747598/6377550900";
+    unitId = "ca-app-pub-4863676282747598/6377550900";
   } else if (Platform.OS === 'ios') {
-    this.unitId = "ca-app-pub-4863676282747598/2014213186";
+    unitId = "ca-app-pub-4863676282747598/2014213186";
   } else {
     console.log("Plateforme non prise en charge pour admob banner");
     return;
   }
 
-  return InterstitialAd.createForAdRequest(this.unitId, {requestNonPersonalizedAdsOnly: this.nonPersonalizedAdsOnly});
+  const interstitialAd = InterstitialAd.createForAdRequest(unitId, { requestNonPersonalizedAdsOnly: nonPersonalizedAdsOnly });
+  interstitialAd.addAdEventListener(AdEventType.LOADED, () => EventRegister.emit('interstitialAdEvent', { adClosed: false, adLoaded: true }));
+  interstitialAd.addAdEventListener(AdEventType.ERROR, () => EventRegister.emit('interstitialAdEvent', { adClosed: true, adLoaded: false }));
+  interstitialAd.addAdEventListener(AdEventType.CLOSED, () => EventRegister.emit('interstitialAdEvent', { adClosed: true, adLoaded: false }));
+  interstitialAd.load();
+  return interstitialAd;
 }

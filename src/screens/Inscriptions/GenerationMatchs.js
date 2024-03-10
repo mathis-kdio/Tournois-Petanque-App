@@ -13,7 +13,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { VStack, Text, Button, ButtonText, Spinner } from '@gluestack-ui/themed'
 import TopBarBack from '../../components/TopBarBack'
 import { _adMobGenerationTournoiInterstitiel } from '../../components/adMob/AdMobGenerationTournoiInterstitiel'
-import { AdEventType } from 'react-native-google-mobile-ads';
+import { Platform } from 'react-native'
+import { EventRegister } from 'react-native-event-listeners'
 
 class GenerationMatchs extends React.Component {
   constructor(props) {
@@ -29,6 +30,7 @@ class GenerationMatchs extends React.Component {
     this.typeTournoi = "mele-demele";
     this.avecTerrains = false;
     this.interstitial;
+    this.listener;
     this.state = {
       isLoading: true,
       isValid: false,
@@ -53,17 +55,16 @@ class GenerationMatchs extends React.Component {
     this.props.dispatch(action);
   }
 
-  componentDidMount() {
-    _adMobGenerationTournoiInterstitiel().then(interstitial => {
-      this.interstitial = interstitial;
-      this.interstitial.addAdEventListener(AdEventType.LOADED, () => this.setState({adLoaded: true}));
-      this.interstitial.addAdEventListener(AdEventType.ERROR, () => this.setState({adClosed: true, adLoaded: false}));
-      this.interstitial.addAdEventListener(AdEventType.CLOSED, () => this.setState({adClosed: true, adLoaded: false}));
-      this.interstitial.load();
-    });
+  async componentDidMount() {
+    this.interstitial = await _adMobGenerationTournoiInterstitiel();
+    this.listener = EventRegister.addEventListener('interstitialAdEvent', (data) => this.setState({ adLoaded: data.adLoaded, adClosed: data.adClosed }));
     setTimeout(() => {
       this._lanceurGeneration();
     }, 1000);
+  }
+
+  componentWillUnmount() {
+    EventRegister.removeEventListener(this.listener);
   }
 
   _displayListeMatch() {
@@ -246,10 +247,10 @@ class GenerationMatchs extends React.Component {
 
   render() {
     const { t } = this.props;
-    if (this.state.adLoaded && this.state.isValid) {
+    if (Platform.OS !== 'web' && this.state.adLoaded && this.state.isValid) {
       this.interstitial.show();
     }
-    if (this.state.adClosed) {
+    if (Platform.OS === 'web' && this.state.isValid || this.state.adClosed) {
       this._displayListeMatch();
     }
     return (
