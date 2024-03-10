@@ -12,6 +12,8 @@ import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { VStack, Text, Button, ButtonText, Spinner } from '@gluestack-ui/themed'
 import TopBarBack from '../../components/TopBarBack'
+import { _adMobGenerationTournoiInterstitiel } from '../../components/adMob/AdMobGenerationTournoiInterstitiel'
+import { AdEventType } from 'react-native-google-mobile-ads';
 
 class GenerationMatchs extends React.Component {
   constructor(props) {
@@ -26,12 +28,15 @@ class GenerationMatchs extends React.Component {
     this.complement = "3";
     this.typeTournoi = "mele-demele";
     this.avecTerrains = false;
+    this.interstitial;
     this.state = {
       isLoading: true,
-      isValid: true,
+      isValid: false,
       isGenerationSuccess: true,
       erreurSpeciaux: false,
-      erreurMemesEquipes: false
+      erreurMemesEquipes: false,
+      adLoaded: false,
+      adClosed: false
     }
   }
 
@@ -43,12 +48,19 @@ class GenerationMatchs extends React.Component {
     this.props.dispatch(actionAjoutTournoi);
   }
 
-  _supprimerMatchs () {
+  _supprimerMatchs() {
     const action = { type: "SUPPR_MATCHS" };
     this.props.dispatch(action);
   }
 
   componentDidMount() {
+    _adMobGenerationTournoiInterstitiel().then(interstitial => {
+      this.interstitial = interstitial;
+      this.interstitial.addAdEventListener(AdEventType.LOADED, () => this.setState({adLoaded: true}));
+      this.interstitial.addAdEventListener(AdEventType.ERROR, () => this.setState({adClosed: true, adLoaded: false}));
+      this.interstitial.addAdEventListener(AdEventType.CLOSED, () => this.setState({adClosed: true, adLoaded: false}));
+      this.interstitial.load();
+    });
     setTimeout(() => {
       this._lanceurGeneration();
     }, 1000);
@@ -191,9 +203,6 @@ class GenerationMatchs extends React.Component {
       isValid: true,
     });
 
-    //Affichage des matchs
-    this._displayListeMatch(matchs);
-
     //Si génération valide alors return 2
     return 2;
   }
@@ -207,46 +216,22 @@ class GenerationMatchs extends React.Component {
           <Text color='$white'>{t("attente_generation_matchs")}</Text>
         </VStack>
       )
-    }
-  }
-
-  _displayErrorGenerationFail() {
-    const { t } = this.props;
-    if (!this.state.isGenerationSuccess && !this.state.isLoading) {
+    } else {
+      let textInfo = t("erreur_generation_options");
+      let textError = '';
+      if (!this.state.isGenerationSuccess) {
+        textError = t("erreur_generation_options_regles");
+      } else if (this.state.erreurSpeciaux) {
+        textError = t("erreur_generation_joueurs_speciaux");
+      } else if (this.state.erreurMemesEquipes) {
+        textError = t("erreur_generation_regle_equipes");
+      } else {
+        textInfo = t("chargement_publicite")
+      }
       return (
         <VStack>
-          <Text color='$white'>{t("erreur_generation_options")}</Text>
-          <Text color='$white'>{t("erreur_generation_options_regles")}</Text>
-          <Button action='primary' onPress={() => this._retourInscription()}>
-            <ButtonText>{t("retour_inscription")}</ButtonText>
-          </Button>
-        </VStack>
-      )
-    }
-  }
-
-  _displayErreurSpeciaux() {
-    const { t } = this.props;
-    if (this.state.erreurSpeciaux && !this.state.isLoading) {
-      return (
-        <VStack>
-          <Text color='$white'>{t("erreur_generation_options")}</Text>
-          <Text color='$white'>{t("erreur_generation_joueurs_speciaux")}</Text>
-          <Button action='primary' onPress={() => this._retourInscription()}>
-            <ButtonText>{t("retour_inscription")}</ButtonText>
-          </Button>
-        </VStack>
-      )
-    }
-  }
-
-  _displayErreurMemesEquipes() {
-    const { t } = this.props;
-    if (this.state.erreurMemesEquipes && !this.state.isLoading) {
-      return (
-        <VStack>
-          <Text color='$white'>{t("erreur_generation_options")}</Text>
-          <Text color='$white'>{t("erreur_generation_regle_equipes")}</Text>
+          <Text color='$white'>{textInfo}</Text>
+          <Text color='$white'>{textError}</Text>
           <Button action='primary' onPress={() => this._retourInscription()}>
             <ButtonText>{t("retour_inscription")}</ButtonText>
           </Button>
@@ -261,15 +246,18 @@ class GenerationMatchs extends React.Component {
 
   render() {
     const { t } = this.props;
+    if (this.state.adLoaded && this.state.isValid) {
+      this.interstitial.show();
+    }
+    if (this.state.adClosed) {
+      this._displayListeMatch();
+    }
     return (
       <SafeAreaView style={{flex: 1}}>
         <VStack flex={1} bgColor='#0594ae'>
           <TopBarBack title={t("generation_matchs_navigation_title")} navigation={this.props.navigation}/>
           <VStack flex={1} px={'$10'} justifyContent='center' alignItems='center'>
             {this._displayLoading()}
-            {this._displayErreurSpeciaux()}
-            {this._displayErreurMemesEquipes()}
-            {this._displayErrorGenerationFail()}
           </VStack>
         </VStack>
       </SafeAreaView>
