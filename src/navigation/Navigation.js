@@ -60,18 +60,21 @@ function topTabItemLabel(numero, listeMatchs) {
 
   let iconColor = '#ffda00';
   let iconName = 'battery-half';
-  let matchs = listeMatchs.filter(el => el.manche === numero);
-  let matchsRestant = matchs.length;
-  if (matchs) {
-    let count = matchs.reduce((acc, obj) => obj.score1 != undefined && obj.score2 != undefined ? acc+=1 : acc, 0);
-    if (count == matchs.length) {
-      iconColor = 'green';
-      iconName = 'battery-full';
-    } else if (count == 0) {
-      iconColor = 'red';
-      iconName = 'battery-empty';
-    } 
-    matchsRestant -= count;
+  let matchsRestant = '';
+  if (listeMatchs) {
+    let matchs = listeMatchs.filter(el => el.manche === numero);
+    matchsRestant = matchs.length;
+    if (matchs) {
+      let count = matchs.reduce((acc, obj) => obj.score1 != undefined && obj.score2 != undefined ? acc+=1 : acc, 0);
+      if (count == matchs.length) {
+        iconColor = 'green';
+        iconName = 'battery-full';
+      } else if (count == 0) {
+        iconColor = 'red';
+        iconName = 'battery-empty';
+      } 
+      matchsRestant -= count;
+    }
   }
 
   return (
