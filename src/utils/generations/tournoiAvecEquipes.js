@@ -1,26 +1,24 @@
 
-export const generationAvecEquipes = (listeJoueurs, nbTours, typeEquipes) => {
+export const generationAvecEquipes = (listeJoueurs, nbTours, typeEquipes, eviterMemeAdversaire) => {
   let nbjoueurs = listeJoueurs.length;
   let matchs = [];
   let idMatch = 0;
-  let equipe = []
+  let equipe = [];
 
   //Initialisation des matchs dans un tableau
-  let nbEquipes
-  let nbMatchsParTour
+  let nbEquipes;
+  let nbMatchsParTour;
   if (typeEquipes == "teteatete") {
-    nbEquipes = nbjoueurs
-    nbMatchsParTour = nbjoueurs / 2
+    nbEquipes = nbjoueurs;
+    nbMatchsParTour = nbjoueurs / 2;
+  } else if (typeEquipes == "doublette") {
+    nbEquipes = nbjoueurs / 2;
+    nbMatchsParTour = Math.ceil(nbjoueurs / 4);
+  } else {
+    nbEquipes = nbjoueurs / 3;
+    nbMatchsParTour = Math.ceil(nbjoueurs / 6);
   }
-  else if (typeEquipes == "doublette") {
-    nbEquipes = nbjoueurs / 2
-    nbMatchsParTour = Math.ceil(nbjoueurs / 4)
-  }
-  else {
-    nbEquipes = nbjoueurs / 3
-    nbMatchsParTour = Math.ceil(nbjoueurs / 6)
-  }
-  let nbMatchs = nbTours * nbMatchsParTour
+  let nbMatchs = nbTours * nbMatchsParTour;
 
   idMatch = 0;
   for (let i = 1; i < nbTours + 1; i++) {
@@ -32,10 +30,10 @@ export const generationAvecEquipes = (listeJoueurs, nbTours, typeEquipes) => {
 
   //Création d'un tableau dans lequel les joueurs sont regroupés par équipes
   for (let i = 1; i <= nbEquipes; i++) {
-    equipe.push([])
+    equipe.push({joueurs: [], adversesId: []});
     for (let j = 0; j < nbjoueurs; j++) {
-      if(listeJoueurs[j].equipe == i) {
-        equipe[i - 1].push(listeJoueurs[j].id)
+      if (listeJoueurs[j].equipe == i) {
+        equipe[i - 1].joueurs.push(listeJoueurs[j].id);
       }
     }
   }
@@ -50,39 +48,52 @@ export const generationAvecEquipes = (listeJoueurs, nbTours, typeEquipes) => {
     return o;
   }
 
+  console.log(equipe)
+
   //FONCTIONNEMENT
   idMatch = 0;
   let breaker = 0 //permet de détecter quand boucle infinie
   for (let i = 0; i < nbTours; i++) {
-    breaker = 0
+    breaker = 0;
     let randomEquipesIds = shuffle(equipesIds)
     for (let j = 0; j < equipe.length;) {
       //Affectation equipe 1
       if (matchs[idMatch].equipe[0][0] == -1) {
-        matchs[idMatch].equipe[0][0] = equipe[randomEquipesIds[j]][0]
+        matchs[idMatch].equipe[0][0] = equipe[randomEquipesIds[j]].joueurs[0];
         if (typeEquipes == "doublette" || typeEquipes == "triplette") {
-          matchs[idMatch].equipe[0][1] = equipe[randomEquipesIds[j]][1]
+          matchs[idMatch].equipe[0][1] = equipe[randomEquipesIds[j]].joueurs[1];
         }
         if (typeEquipes == "triplette") {
-          matchs[idMatch].equipe[0][2] = equipe[randomEquipesIds[j]][2]
+          matchs[idMatch].equipe[0][2] = equipe[randomEquipesIds[j]].joueurs[2];
         }
-        j++
-        breaker = 0
+        j++;
+        breaker = 0;
       }
       //Affectation Equipe 2
-      if (matchs[idMatch].equipe[1][0] == -1) {
-        matchs[idMatch].equipe[1][0] = equipe[randomEquipesIds[j]][0]
+      let affectationPossible = true;
+      //Règle eviterMemeAdversaire
+      let equipe1Id = equipe.findIndex(el => el.joueurs.every((v,i)=> v === matchs[idMatch].equipe[0][i]));
+      let nbRencontres = equipe[equipe1Id].adversesId.filter(el => el == randomEquipesIds[j]).length
+      if (eviterMemeAdversaire == 0 && nbRencontres != 0) { //1 seul match possible
+        affectationPossible = false;
+      } else if (eviterMemeAdversaire == 50 && nbRencontres >= Math.floor(nbTours / 2)) { //La moitié des matchs possible
+        affectationPossible = false;
+      }
+      if (matchs[idMatch].equipe[1][0] == -1 && affectationPossible) {
+        matchs[idMatch].equipe[1][0] = equipe[randomEquipesIds[j]].joueurs[0];
         if (typeEquipes == "doublette" || typeEquipes == "triplette") {
-          matchs[idMatch].equipe[1][1] = equipe[randomEquipesIds[j]][1]
+          matchs[idMatch].equipe[1][1] = equipe[randomEquipesIds[j]].joueurs[1];
         }
         if (typeEquipes == "triplette") {
-          matchs[idMatch].equipe[1][2] = equipe[randomEquipesIds[j]][2]
+          matchs[idMatch].equipe[1][2] = equipe[randomEquipesIds[j]].joueurs[2];
         }
-        j++
-        breaker = 0
-      }
-      else {
-        breaker++
+        equipe[equipe1Id].adversesId.push(randomEquipesIds[j]);
+        equipe[randomEquipesIds[j]].adversesId.push(equipe1Id);
+
+        j++;
+        breaker = 0;
+      } else {
+        breaker++;
       }
 
       idMatch++;
@@ -96,18 +107,10 @@ export const generationAvecEquipes = (listeJoueurs, nbTours, typeEquipes) => {
       //TODO condition de break à affiner
       //nbMatchs devrait être assez car le + opti devrait être : nbMatchs / nbTours
       if (breaker > nbMatchs) {
-        return {echecGeneration: true}
+        return {echecGeneration: true};
       }
     }
 
-    //Permettra de retenir contre quelles équipes une équipe a joué
-    /*idMatch = i * nbMatchsParTour;
-    for (let j = 0; j < nbMatchsParTour; j++) {
-      joueurs[matchs[idMatch + j].equipe[0][0] - 1].equipe.push(matchs[idMatch + j].equipe[0][1]);
-      joueurs[matchs[idMatch + j].equipe[0][1] - 1].equipe.push(matchs[idMatch + j].equipe[0][0]);
-      joueurs[matchs[idMatch + j].equipe[1][0] - 1].equipe.push(matchs[idMatch + j].equipe[1][1]);
-      joueurs[matchs[idMatch + j].equipe[1][1] - 1].equipe.push(matchs[idMatch + j].equipe[1][0]);
-    }*/
     idMatch = nbMatchsParTour * (i + 1);
   }
 
