@@ -48,8 +48,6 @@ export const generationAvecEquipes = (listeJoueurs, nbTours, typeEquipes, eviter
     return o;
   }
 
-  console.log(equipe)
-
   //FONCTIONNEMENT
   idMatch = 0;
   let breaker = 0 //permet de détecter quand boucle infinie
