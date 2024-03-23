@@ -34,7 +34,9 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
 
   //Initialisation des matchs dans un tableau
   let nbMatchsParTour;
-  if (complement == "1") {
+  if (typeEquipes == "teteatete") {
+    nbMatchsParTour = nbjoueurs / 2;
+  }  else if (complement == "1") {
     nbMatchsParTour = Math.ceil(nbjoueurs / 4);
   } else {
     nbMatchsParTour = Math.floor(nbjoueurs / 4);
