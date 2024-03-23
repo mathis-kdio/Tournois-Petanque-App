@@ -1,5 +1,19 @@
 # Change Log
 
+## [1.16.0] - 23-03-2024
+
+### Ajouté
+- Tournoi Multi-Chances.
+- Remerciement pour la traduction.
+
+### Changement
+- Amélioration de l'affichage des onglets et des équipes gagnantes dans la liste des matchs.
+- Mise à jour des dépendances.
+
+### Corrigé
+- Corrections de problèmes d'affichage.
+- Corrections de bugs de générations.
+
 ## [1.15.0] - 17-12-2023
 
 ### Ajouté

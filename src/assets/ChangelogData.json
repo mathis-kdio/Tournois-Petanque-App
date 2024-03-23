@@ -1,5 +1,17 @@
 [
   {
+    "id":"24",
+    "version": "1.16.0",
+    "infos": [
+      "- Tournoi Multi-Chances.\n",
+      "- Amélioration de l'affichage des onglets et des équipes gagnantes dans la liste des matchs.\n",
+      "- Remerciement pour la traduction.\n",
+      "- Corrections de problèmes d'affichage.\n",
+      "- Corrections de bugs de générations.\n",
+      "- Mise à jour des dépendances.\n"
+    ]
+  },
+  {
     "id":"23",
     "version": "1.15.0",
     "infos": [
