@@ -124,6 +124,8 @@ class Parametres extends React.Component {
             <Divider/>
             <Text textAlign='center'>{t("envie_aider_traduction")}</Text>
             <Text textAlign='center' onPress={() => _openURL(this.crowdin)} color='$blue500'>{t("texte_lien_traduction")}</Text>
+            <Text textAlign='center'>{t("remerciements_traduction")}</Text>
+            <Text textAlign='center'>{`\u2022`} N. Mieczynska ({t("polonais_abreviation")})</Text>
           </ModalBody>
         </ModalContent>
       </Modal>
