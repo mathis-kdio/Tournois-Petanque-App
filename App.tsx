@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import Store from '@store/configureStore';
 import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/es/integration/react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { I18nextProvider } from "react-i18next";
 import * as Sentry from '@sentry/react-native';
@@ -30,14 +30,14 @@ Sentry.init({
 });
 
 class App extends React.Component {
-  navigation = React.createRef();
+  navigationRef = createNavigationContainerRef<any>(); //TODO tmp changer any
   render() {
     let persistor = persistStore(Store);
     return (
       <Provider store={Store}>
         <PersistGate persistor={persistor}>
           <GluestackUIProvider config={config}>
-            <NavigationContainer ref={this.navigation} onReady={() => routingInstrumentation.registerNavigationContainer(this.navigation)}>
+            <NavigationContainer onReady={() => routingInstrumentation.registerNavigationContainer(this.navigationRef)}>
               <I18nextProvider i18n={i18n} defaultNS={'translation'}>
                 <Navigation/>
                 <StatusBar style="light" backgroundColor="#0594ae"/>
