@@ -11,7 +11,8 @@
     "build-android": "npx eas-cli build --platform android",
     "build-android-development": "npx eas-cli build --profile development",
     "build-web": "npx expo export --platform web",
-    "build-desktop": "npx tauri build"
+    "build-desktop": "npx tauri build",
+    "ts:check": "tsc"
   },
   "dependencies": {
     "@gluestack-style/react": "^1.0.49",
