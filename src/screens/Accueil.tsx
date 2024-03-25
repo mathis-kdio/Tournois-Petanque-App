@@ -10,21 +10,46 @@ import { withTranslation } from 'react-i18next';
 import CardButton from '@components/buttons/CardButton';
 import { AppState, Platform } from 'react-native';
 import { _requestTrackingPermissions } from '../utils/expoTrackingTransparency/requestTrackingPermission';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { TFunction } from 'i18next';
 
-class Accueil extends React.Component {
-  constructor(props) {
+export interface Props {
+  navigation: StackNavigationProp<any,any>;
+  t: TFunction;
+  googleMarket: string;
+  appleMarket: string;
+  googleMarketReviews: string;
+  appleMarketReviews: string;
+  mail: string;
+  gcuWebsite: string;
+  githubSponsor: string;
+  patreon: string;
+  buymeacoffee: string;
+  facebook: string;
+  website: string;
+  listeMatchs: object[] | undefined;
+}
+
+interface State {
+  modalDonsVisible: boolean;
+  appState: string;
+}
+
+class Accueil extends React.Component<Props, State> {
+
+  constructor(props: Props) {
     super(props)
-    this.googleMarket =         "market://details?id=com.MK.PetanqueGCU'";
-    this.appleMarket =          "itms-apps://apps.apple.com/app/petanque-gcu/id1661710973";
-    this.googleMarketReviews =  "market://details?id=com.MK.PetanqueGCU&showAllReviews=true";
-    this.appleMarketReviews =   "itms-apps://apps.apple.com/app/petanque-gcu/id1661710973?mt=8&action=write-review"
-    this.mail =                 "mailto:tournoispetanqueapp@gmail.com";
-    this.gcuWebsite =           "https://www.gcu.asso.fr/";
-    this.githubSponsor =        "https://github.com/sponsors/mathis-kdio";
-    this.patreon =              "https://patreon.com/tournoipetanque";
-    this.buymeacoffee =         "https://www.buymeacoffee.com/tournoipetanque";
-    this.facebook =             "https://www.facebook.com/groups/tournoispetanqueapp";
-    this.website =              "https://tournoispetanqueapp.fr/";
+    props.googleMarket =         "market://details?id=com.MK.PetanqueGCU'";
+    props.appleMarket =          "itms-apps://apps.apple.com/app/petanque-gcu/id1661710973";
+    props.googleMarketReviews =  "market://details?id=com.MK.PetanqueGCU&showAllReviews=true";
+    props.appleMarketReviews =   "itms-apps://apps.apple.com/app/petanque-gcu/id1661710973?mt=8&action=write-review"
+    props.mail =                 "mailto:tournoispetanqueapp@gmail.com";
+    props.gcuWebsite =           "https://www.gcu.asso.fr/";
+    props.githubSponsor =        "https://github.com/sponsors/mathis-kdio";
+    props.patreon =              "https://patreon.com/tournoipetanque";
+    props.buymeacoffee =         "https://www.buymeacoffee.com/tournoipetanque";
+    props.facebook =             "https://www.facebook.com/groups/tournoispetanqueapp";
+    props.website =              "https://tournoispetanqueapp.fr/";
     this.state = {
       modalDonsVisible: false,
       appState: "active"
@@ -61,19 +86,19 @@ class Accueil extends React.Component {
           </ModalHeader>
           <ModalBody>
             <VStack space='md'>
-              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.githubSponsor)}>
+              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.props.githubSponsor)}>
                 <HStack>
                   <FontAwesome5 name="github" color='white' size={20}/>
                   <Text color='$white'> {t("githubsponsor")}</Text>
                 </HStack>
               </Pressable>
-              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.patreon)}>
+              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.props.patreon)}>
                 <HStack>
                   <FontAwesome5 name="patreon" color='white' size={20}/>
                   <Text color='$white'> {t("patreon")}</Text>
                 </HStack>
               </Pressable>
-              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.buymeacoffee)}>
+              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.props.buymeacoffee)}>
                 <HStack>
                   <FontAwesome5 name="coffee" color='white' size={20}/>
                   <Text color='$white'> {t("buymeacoffee")}</Text>
@@ -95,7 +120,7 @@ class Accueil extends React.Component {
     });
   }
 
-  _navigate(name) {
+  _navigate(name: string) {
     this.props.navigation.navigate(name);
   }
 
@@ -161,11 +186,11 @@ class Accueil extends React.Component {
           </VStack>
           <VStack space='sm'>
             <HStack space='sm' justifyContent='center'>
-              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.facebook)}>
+              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.props.facebook)}>
                 <FontAwesome5 name="facebook" color='white' size={20}/>
                 <Text color='$white'>{t("rejoindre_page_fb")}</Text>
               </Pressable>
-              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.website)}>
+              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.props.website)}>
                 <FontAwesome5 name="globe" color='white' size={20}/>
                 <Text color='$white'>{t("voir_website")}</Text>
               </Pressable>
@@ -176,10 +201,10 @@ class Accueil extends React.Component {
                   <FontAwesome5 name="euro-sign" color='white' size={20}/>
                 </Pressable>
               </>}
-              <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => _openPlateformLink(this.googleMarketReviews, this.appleMarketReviews)}>
+              <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => _openPlateformLink(this.props.googleMarketReviews, this.props.appleMarketReviews)}>
                 <FontAwesome5 name="star" color='white' size={20}/>
               </Pressable>
-              <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => _openURL(this.mail)}>
+              <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => _openURL(this.props.mail)}>
                 <FontAwesome5 name="envelope" color='white' size={20}/>
               </Pressable>
               <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => this.props.navigation.navigate('Parametres')}>
@@ -187,7 +212,7 @@ class Accueil extends React.Component {
               </Pressable>
             </HStack>
             <HStack justifyContent='center'>
-              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.gcuWebsite)}>
+              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.props.gcuWebsite)}>
                 <Text color='$white' fontSize={'$md'}>{t("decouvrir_gcu")}</Text>
               </Pressable>
             </HStack>
@@ -203,7 +228,7 @@ class Accueil extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any) => {
   return {
     listeMatchs: state.gestionMatchs.listematchs
   }
