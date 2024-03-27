@@ -9,21 +9,31 @@ import { _adsConsentShowForm } from '../utils/adMob/consentForm'
 import { withTranslation } from "react-i18next";
 import TopBarBack from '@components/TopBarBack'
 import ChangelogData from '@assets/ChangelogData.json'
-import { TFunction } from 'i18next'
+import { TFunction, i18n } from 'i18next'
 import { StackNavigationProp } from '@react-navigation/stack'
+import { AnyAction, Dispatch } from 'redux'
+import { ImageSourcePropType, ListRenderItemInfo } from 'react-native'
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
+  i18n: i18n;
+  dispatch: Dispatch<AnyAction>;
   githubRepository: string;
   mail: string;
   crowdin: string;
 }
 
+interface IChangelog {
+  id: string;
+  version: string;
+  infos: string[];
+}
+
 interface State {
   alertOpen: boolean;
   modalChangelogOpen: boolean;
-  modalChangelogItem: object | undefined;
+  modalChangelogItem: IChangelog;
   modalLanguagesOpen: boolean;
 }
 
@@ -149,13 +159,13 @@ class Parametres extends React.Component<Props, State> {
     )
   }
 
-  _changeLanguage(language) {
+  _changeLanguage(language: string) {
     const { i18n } = this.props;
     i18n.changeLanguage(language);
     this.setState({modalLanguagesOpen: false});
   }
 
-  _item(text, action, icon, type, drapeau) {
+  _item(text: string, action, icon: string, type: string, drapeau: ImageSourcePropType) {
     let colorTxt = '$white';
     let btnColor = 'white';
     if (type == "danger") {
@@ -183,7 +193,7 @@ class Parametres extends React.Component<Props, State> {
     )
   }
 
-  _changelogItem(item) {
+  _changelogItem(item: IChangelog) {
     return (
       <VStack>
         {this._item("Version "+item.version+" :", () => this.setState({modalChangelogOpen: true, modalChangelogItem: item}), undefined, undefined, undefined)}
@@ -221,8 +231,8 @@ class Parametres extends React.Component<Props, State> {
               <Text fontSize={'$xl'} color='$white'>{t("nouveautes")}</Text>
               <FlatList 
                 data={ChangelogData}
-                keyExtractor={(item) => item.id.toString() }
-                renderItem={({item}) => this._changelogItem(item)}
+                keyExtractor={(item: IChangelog) => item.id.toString() }
+                renderItem={({ item }: ListRenderItemInfo<IChangelog>) => this._changelogItem(item)}
                 borderWidth={'$1'}
                 borderColor='white'
                 borderRadius={'$lg'}
