@@ -5,9 +5,9 @@
         "infos": [
             "- Tournoi Multi-Chances.\n",
             "- Amélioration de l'affichage des onglets et des équipes gagnantes dans la liste des matchs.\n",
-            "- Remerciement pour la traduction.\n",
+            "-Podziękowania za tłumaczenie.\n",
             "- Corrections de problèmes d'affichage.\n",
-            "- Corrections de bugs de générations.\n",
+            "-Korekta błędów wczytywania.\n",
             "- Mise à jour des dépendances.\n"
         ]
     },
@@ -16,18 +16,18 @@
         "version": "1.15.0",
         "infos": [
             "- L'ensemble de l'application dispose du nouveau design.\n",
-            "- Traduction de l'application en polonais.\n",
-            "- Corrections de bugs.\n"
+            "-Tłumaczenie aplikacji na polski.\n",
+            "-Korekta błędów.\n"
         ]
     },
     {
         "id": "22",
         "version": "1.14.0",
         "infos": [
-            "- Traduction de l'application.\n",
-            "- Export en PDF des Coupes.\n",
-            "- Possibilité d'afficher des cases à cocher à l'inscription.\n",
-            "- Nouvelles pages d'inscription.\n",
+            "-Tłumaczenie aplikacji.\n",
+            "-Eksport Pucharów do PDF.\n",
+            "-Możliwość wyświetlania pól do zaznaczenia przy rejestracji.\n",
+            "-Nowa strona rejestracji.\n",
             "- Correction de libellés.\n",
             "- Corrections de bugs.\n"
         ]
