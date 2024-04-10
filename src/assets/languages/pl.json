@@ -178,10 +178,10 @@
     "nouveautes": "Nowości",
     "mes_anciens_tournois": "Moje poprzednie turnieje",
     "mes_listes_joueurs": "Listy graczy",
-    "rejoindre_page_fb": "Dołącz do strony",
+    "rejoindre_page_fb": "Dołącz",
     "voir_website": "Zobacz stronę",
     "decouvrir_gcu": "Odkryj GCU",
-    "developpe_par": "Stworzone przez",
+    "developpe_par": "Twórca:",
     "version": "Wersja:",
     "reprendre_tournoi": "Ponowne dołączenie do turnieju",
     "aucun_tournoi": "Brak trwającego turnieju",
@@ -214,6 +214,6 @@
     "case_a_cocher": "pola wyboru",
     "confirmer_uncheck_modal_titre": "Potwierdzenie anulowania wyboru pola",
     "confirmer_uncheck_modal_texte": "Czy na pewno chcesz anulować to pole?",
-    "chargement_publicite": "Veuillez patienter, une publicité va apparaitre. Elle permet de couvrir les frais de l'application."
+    "chargement_publicite": "Cierpliwości, oczekiwanie na reklamę. Pomoże to nam pokryć koszty aplikacji."
   }
 }
