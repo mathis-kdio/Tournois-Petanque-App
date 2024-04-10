@@ -3,19 +3,19 @@
         "id": "24",
         "version": "1.16.0",
         "infos": [
-            "- Tournoi Multi-Chances.\n",
-            "- Amélioration de l'affichage des onglets et des équipes gagnantes dans la liste des matchs.\n",
+            "-Turniej wielokrotnego prawdopodobieństwa.\n",
+            "-Poprawa wyświetlania zakładek oraz wygranych drużyn na liście meczów.\n",
             "-Podziękowania za tłumaczenie.\n",
-            "- Corrections de problèmes d'affichage.\n",
+            "-Korekta problemów wyświetlania.\n",
             "-Korekta błędów wczytywania.\n",
-            "- Mise à jour des dépendances.\n"
+            "- Aktualizacja zależnych.\n"
         ]
     },
     {
         "id": "23",
         "version": "1.15.0",
         "infos": [
-            "- L'ensemble de l'application dispose du nouveau design.\n",
+            "- Nowy projekt aplikacji.\n",
             "-Tłumaczenie aplikacji na polski.\n",
             "-Korekta błędów.\n"
         ]
@@ -28,43 +28,43 @@
             "-Eksport Pucharów do PDF.\n",
             "-Możliwość wyświetlania pól do zaznaczenia przy rejestracji.\n",
             "-Nowa strona rejestracji.\n",
-            "- Correction de libellés.\n",
-            "- Corrections de bugs.\n"
+            "- Korekta tekstu.\n",
+            "- Korekta błędów.\n"
         ]
     },
     {
         "id": "21",
         "version": "1.13.0",
         "infos": [
-            "- Options pour affecter les matchs à des terrains.\n",
-            "- Nouvelles pages de : Paramètres, Type de tournoi, Mode de tournoi, Options de tournoi.\n",
-            "- Amélioration de l'option « Sans mêmes adversaires ».\n",
-            "- Correction de la génération des tournois en mêlée-démêlée.\n",
-            "- Corrections de l'affichage du type de joueur.\n"
+            "- Opcje przypisania meczów do terenów.\n",
+            "-Nowa strona dla: Ustawienia, Typ turnieju, Tryb turnieju, Opcje turnieju.\n",
+            "-Ulepszenie opcji Bez tych samych przeciwników.\n",
+            "- Korekta wczytywania turniejów typu Solo/mieszany.\n",
+            "-Korekta wyświetlania typu graczy.\n"
         ]
     },
     {
         "id": "20",
         "version": "1.12.0",
         "infos": [
-            "- Possibilité d'attribuer aux joueurs les rôles Pointeur/Tireur/Milieu en doublette pour améliorer l'équilibrage des équipes.\n",
-            "- Nouvelle page d'accueil.\n",
-            "- Choix nombre de points pour victoire.\n",
-            "- Ecran de paramétrage déplacé.\n",
-            "- Amélioration du renommage des joueurs.\n"
+            "- Możliwość przypisania graczom w dubletach ról Puentera/ Strzelca/ Środka dla uzyskania lepszego zrównoważenia drużyn.\n",
+            "-Nowa strona główna.\n",
+            "-Wybór liczby punktów do wygranej.\n",
+            "- Przestawienie ekranu ustawień.\n",
+            "- Ulepszenie zmiany nazw graczy.\n"
         ]
     },
     {
         "id": "19",
         "version": "1.11.0",
         "infos": [
-            "- Application disponible sur iOS !\n",
-            "- Création d'une page Facebook communautaire et ajout d'un bouton sur la page d'accueil.\n",
-            "- Ajout de la date de création et de modification d'un tournoi.\n",
-            "- Amélioration de l'affichage des informations de tournoi.\n",
-            "- Possibilité de renommer une liste de joueurs.\n",
-            "- Correction de bugs liés aux listes de joueurs.\n",
-            "- Correction de l'affichage du mode clair de l'application.\n"
+            "-Aplikacja na iOS!\n",
+            "- Powstanie grupy społecznościowej na Facebooku i dodanie przycisku na stronie głównej.\n",
+            "- Dodanie daty utworzenia i zmiany turnieju.\n",
+            "- Ulepszenie wyświetlania szczegółów turnieju.\n",
+            "-Możliwość zmiany nazwy listy graczy.\n",
+            "-Korekta błędów z listami graczy.\n",
+            "- Korekta wyświetlania w trybie jasnym aplikacji.\n"
         ]
     },
     {
@@ -93,7 +93,7 @@
         "id": "16",
         "version": "1.9.0",
         "infos": [
-            "- Ajout du mode coupe.\n",
+            "-Dodanie trybu pucharowego.\n",
             "- Nouvelle page d'accueil.\n",
             "- Correction de bugs.\n"
         ]
