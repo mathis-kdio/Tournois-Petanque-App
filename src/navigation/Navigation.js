@@ -24,7 +24,7 @@ import ListeTerrains from '@screens/ListeTerrains/ListeTerrains'
 import MatchDetail from '@screens/Matchs/MatchDetail'
 import JoueursTournoi from '@screens/Matchs/JoueursTournoi'
 import ParametresTournoi from '@screens/Matchs/ParametresTournoi'
-import PDFExport from '@components/PDFExport'
+import PDFExport from '@screens/Matchs/PDFExport'
 
 import BoutonMenuHeaderNav from '@components/BoutonMenuHeaderNavigation'
 import ListesJoueurs from '@screens/ListesJoueurs/ListesJoueurs';

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { _openPlateformLink, _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Box, HStack, VStack, Text, Pressable, Modal, Image, ModalHeader, ModalBody, ModalContent, ModalCloseButton, Heading, CloseIcon, ModalBackdrop } from '@gluestack-ui/themed';
+import { Box, HStack, VStack, Text, Pressable, Modal, Image, ModalHeader, ModalBody, ModalContent, ModalCloseButton, Heading, CloseIcon, ModalBackdrop, ScrollView } from '@gluestack-ui/themed';
 import { _adsConsentForm } from '../utils/adMob/consentForm'
 import { withTranslation } from 'react-i18next';
 import CardButton from '@components/buttons/CardButton';
@@ -125,7 +125,7 @@ class Accueil extends React.Component {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} px={'$5'} bgColor='#0594ae' justifyContent='space-between'>
+        <ScrollView height={'$1'} bgColor='#0594ae' px={'$5'} justifyContent='space-between'>
           <VStack alignItems='center'>
             <Image
               size='xl'
@@ -197,7 +197,7 @@ class Accueil extends React.Component {
             </VStack>
           </VStack>
           {this._showDonsModal()}
-        </VStack>
+        </ScrollView>
       </SafeAreaView>
     )
   }

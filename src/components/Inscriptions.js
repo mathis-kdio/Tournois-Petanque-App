@@ -136,6 +136,7 @@ class Inscription extends React.Component {
       }
       return (
         <FlatList
+          height={'$1'}
           removeClippedSubviews={false}
           persistentScrollbar={true}
           data={this.props.listesJoueurs[this.props.optionsTournoi.mode]}
@@ -172,6 +173,7 @@ class Inscription extends React.Component {
         <VStack>
           <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("suggestions_joueurs")}</Text>
           <FlatList
+            height={'$1'}
             removeClippedSubviews={false}
             persistentScrollbar={true}
             data={partialSuggested}

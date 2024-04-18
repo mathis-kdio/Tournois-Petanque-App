@@ -3,7 +3,7 @@ import { expo } from '../../app.json'
 import { connect } from 'react-redux'
 import { _openURL } from '@utils/link'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { HStack, VStack, Text, FlatList, Divider, AlertDialogContent, AlertDialog, Pressable, Box, Center, Button, ButtonText, Modal, Image, ModalBackdrop, ModalContent, ModalCloseButton, ModalHeader, ModalBody, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, ButtonGroup, Heading, AlertDialogCloseButton, CloseIcon, AlertDialogBackdrop } from '@gluestack-ui/themed'
+import { HStack, VStack, Text, FlatList, Divider, AlertDialogContent, AlertDialog, Pressable, Box, Center, Button, ButtonText, Modal, Image, ModalBackdrop, ModalContent, ModalCloseButton, ModalHeader, ModalBody, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, ButtonGroup, Heading, AlertDialogCloseButton, CloseIcon, AlertDialogBackdrop, ScrollView } from '@gluestack-ui/themed'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { _adsConsentShowForm } from '../utils/adMob/consentForm'
 import { withTranslation } from "react-i18next";
@@ -179,7 +179,7 @@ class Parametres extends React.Component {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} bgColor='#0594ae'>
+        <ScrollView height={'$1'} bgColor='#0594ae'>
           <TopBarBack title={t("parametres")} navigation={this.props.navigation}/>
           <VStack flex={1} px={'$10'} space='lg'>
             <VStack>
@@ -203,6 +203,7 @@ class Parametres extends React.Component {
             <VStack flex={1}>
               <Text fontSize={'$xl'} color='$white'>{t("nouveautes")}</Text>
               <FlatList 
+                flex={1}
                 data={ChangelogData}
                 keyExtractor={(item) => item.id.toString() }
                 renderItem={({item}) => this._changelogItem(item)}
@@ -215,7 +216,7 @@ class Parametres extends React.Component {
               <Text textAlign='center' fontSize={'$md'} color='$white'>Version {expo.version}</Text>
             </Center>
           </VStack>
-        </VStack>
+        </ScrollView>
         {this._alertDialogClearData()}
         {this._modalChangelog()}
         {this._modalLanguages()}
