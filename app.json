@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Tournois de Pétanque GCU",
-    "slug": "PetanqueGCU",
+    "name": "Tournois Pétanque App",
+    "slug": "TournoisPetanqueApp",
     "version": "1.16.0",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
