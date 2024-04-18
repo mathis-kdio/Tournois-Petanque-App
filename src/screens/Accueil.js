@@ -20,13 +20,9 @@ class Accueil extends React.Component {
     this.appleMarketReviews =   "itms-apps://apps.apple.com/app/petanque-gcu/id1661710973?mt=8&action=write-review"
     this.mail =                 "mailto:tournoispetanqueapp@gmail.com";
     this.gcuWebsite =           "https://www.gcu.asso.fr/";
-    this.githubSponsor =        "https://github.com/sponsors/mathis-kdio";
-    this.patreon =              "https://patreon.com/tournoipetanque";
-    this.buymeacoffee =         "https://www.buymeacoffee.com/tournoipetanque";
     this.facebook =             "https://www.facebook.com/groups/tournoispetanqueapp";
     this.website =              "https://tournoispetanqueapp.fr/";
     this.state = {
-      modalDonsVisible: false,
       appState: "active"
     }
   }
@@ -42,48 +38,6 @@ class Accueil extends React.Component {
         _requestTrackingPermissions(this.state.appState);
       }, 1000);
     }
-  }
-
-  _showDonsModal() {
-    const { t } = this.props;
-    return (
-      <Modal
-        isOpen={this.state.modalDonsVisible}
-        onClose={() => this.setState({ modalDonsVisible: false })}
-      >
-        <ModalBackdrop/>
-        <ModalContent>
-          <ModalHeader>
-            <Heading size='lg'>{t("soutenir")}</Heading>
-            <ModalCloseButton>
-              <CloseIcon/>
-            </ModalCloseButton>
-          </ModalHeader>
-          <ModalBody>
-            <VStack space='md'>
-              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.githubSponsor)}>
-                <HStack>
-                  <FontAwesome5 name="github" color='white' size={20}/>
-                  <Text color='$white'> {t("githubsponsor")}</Text>
-                </HStack>
-              </Pressable>
-              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.patreon)}>
-                <HStack>
-                  <FontAwesome5 name="patreon" color='white' size={20}/>
-                  <Text color='$white'> {t("patreon")}</Text>
-                </HStack>
-              </Pressable>
-              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.buymeacoffee)}>
-                <HStack>
-                  <FontAwesome5 name="coffee" color='white' size={20}/>
-                  <Text color='$white'> {t("buymeacoffee")}</Text>
-                </HStack>
-              </Pressable>
-            </VStack>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    )
   }
 
   _showMatchs() {
@@ -171,11 +125,6 @@ class Accueil extends React.Component {
               </Pressable>
             </HStack>
             <HStack space='sm' justifyContent='center'>
-              {Platform.OS !== 'ios' && <>
-                <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => this.setState({ modalDonsVisible: true })}>
-                  <FontAwesome5 name="euro-sign" color='white' size={20}/>
-                </Pressable>
-              </>}
               <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => _openPlateformLink(this.googleMarketReviews, this.appleMarketReviews)}>
                 <FontAwesome5 name="star" color='white' size={20}/>
               </Pressable>
@@ -196,7 +145,6 @@ class Accueil extends React.Component {
               <Text textAlign='center' color='$white' fontSize={'$md'}>{t("version")} {expo.version}</Text>
             </VStack>
           </VStack>
-          {this._showDonsModal()}
         </ScrollView>
       </SafeAreaView>
     )
