@@ -1,4 +1,4 @@
-import { VStack, Button, Text, ButtonText, AlertDialog, AlertDialogBackdrop, AlertDialogContent, AlertDialogHeader, Heading, AlertDialogCloseButton, CloseIcon, AlertDialogFooter, ButtonGroup, AlertDialogBody } from '@gluestack-ui/themed';
+import { VStack, Button, Text, ButtonText, AlertDialog, AlertDialogBackdrop, AlertDialogContent, AlertDialogHeader, Heading, AlertDialogCloseButton, CloseIcon, AlertDialogFooter, ButtonGroup, AlertDialogBody, ScrollView } from '@gluestack-ui/themed';
 import React from 'react'
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -74,7 +74,7 @@ class ParametresTournoi extends React.Component {
     }
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} bgColor={"#0594ae"}>
+        <ScrollView height={'$1'} bgColor='#0594ae'>
           <TopBarBack title={t("parametres_tournoi_navigation_title")} navigation={this.props.navigation}/>
           <VStack flex={1} px={'$10'} justifyContent='space-around'>
             <VStack>
@@ -94,7 +94,7 @@ class ParametresTournoi extends React.Component {
               </Button>
             </VStack>
           </VStack>
-        </VStack>
+        </ScrollView>
         {this._modalSupprimerTournoi()}
       </SafeAreaView>
     )

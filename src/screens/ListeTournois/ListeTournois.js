@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import ListeTournoiItem from '@components/ListeTournoiItem'
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { VStack, Text, FlatList, Modal, CloseIcon, ModalBackdrop, ModalContent, ModalHeader, Heading, ModalCloseButton, ModalBody } from '@gluestack-ui/themed'
+import { VStack, Text, FlatList, Modal, CloseIcon, ModalBackdrop, ModalContent, ModalHeader, Heading, ModalCloseButton, ModalBody, ScrollView } from '@gluestack-ui/themed'
 import TopBarBack from '../../components/TopBarBack'
 
 class ListeTournois extends React.Component {
@@ -83,6 +83,7 @@ class ListeTournois extends React.Component {
           <Text color='$white' fontSize={'$xl'} textAlign='center' px={'$10'}>{t("nombre_tournois", {nb: this.props.listeTournois.length})}</Text>
           <VStack flex={1} my={'$2'}>
             <FlatList
+              height={'$1'}
               data={this.props.listeTournois}
               initialNumToRender={20}
               keyExtractor={(item) => item.tournoiId.toString() }

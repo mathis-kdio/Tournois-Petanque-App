@@ -84,7 +84,7 @@ class OptionsTournoi extends React.Component {
         style={{ flex: 1, zIndex: 999 }}
       >
         <SafeAreaView style={{flex: 1}}>
-          <ScrollView bgColor='#0594ae'>
+          <ScrollView height={'$1'} bgColor='#0594ae'>
             <VStack flex={1}>
               <TopBarBack title={t("options_tournoi_title")} navigation={this.props.navigation}/>
               <VStack px={'$10'} space='4xl'>

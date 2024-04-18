@@ -58,6 +58,7 @@ class ListesJoueurs extends React.Component {
           </Box>
           <VStack flex={1} my={'$2'}>
             <FlatList
+              height={'$1'}
               data={this.props.savedLists.avecNoms}
               initialNumToRender={20}
               keyExtractor={(item) => item[item.length - 1].listId.toString()}
