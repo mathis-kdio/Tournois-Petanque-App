@@ -152,7 +152,7 @@ class Inscription extends React.Component {
             />
           )}
           ListFooterComponent={
-            <VStack space='md'>
+            <VStack flex={1} space='md'>
               <VStack px={'$10'} space='sm'>
                 {this._buttonRemoveAllPlayers()}
                 {this._buttonLoadSavedList()}
@@ -173,7 +173,6 @@ class Inscription extends React.Component {
         <VStack>
           <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("suggestions_joueurs")}</Text>
           <FlatList
-            height={'$1'}
             removeClippedSubviews={false}
             persistentScrollbar={true}
             data={partialSuggested}
