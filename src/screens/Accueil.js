@@ -79,73 +79,77 @@ class Accueil extends React.Component {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <ScrollView height={'$1'} bgColor='#0594ae' px={'$5'} justifyContent='space-between'>
-          <VStack alignItems='center'>
-            <Image
-              size='xl'
-              alt="Logo de l'application"
-              source={require('@assets/icon.png')}/>
-          </VStack>
-          <VStack space='md'>
-            <HStack>
-              {this._buttonShowMatchs()}
-            </HStack>
-            <HStack>
-              <CardButton
-                text={t("nouveau_tournoi")}
-                icon="plus"
-                navigate={() => this._navigate('InscriptionStack')}
-                newBadge={false}
-              />
-            </HStack>
-            <HStack space='sm'>
-              <CardButton
-                text={t("mes_anciens_tournois")}
-                icon="list"
-                navigate={() => this._navigate('ListeTournois')}
-                newBadge={false}
-              />
-              <CardButton
-                text={t("mes_listes_joueurs")}
-                icon="users"
-                navigate={() => this._navigate('ListesJoueurs')}
-                newBadge={false}
-              />
-            </HStack> 
-          </VStack>
-          <VStack space='sm'>
-            <HStack space='sm' justifyContent='center'>
-              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.facebook)}>
-                <FontAwesome5 name="facebook" color='white' size={20}/>
-                <Text color='$white'>{t("rejoindre_page_fb")}</Text>
-              </Pressable>
-              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.website)}>
-                <FontAwesome5 name="globe" color='white' size={20}/>
-                <Text color='$white'>{t("voir_website")}</Text>
-              </Pressable>
-            </HStack>
-            <HStack space='sm' justifyContent='center'>
-              <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => _openPlateformLink(this.googleMarketReviews, this.appleMarketReviews)}>
-                <FontAwesome5 name="star" color='white' size={20}/>
-              </Pressable>
-              <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => _openURL(this.mail)}>
-                <FontAwesome5 name="envelope" color='white' size={20}/>
-              </Pressable>
-              <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => this.props.navigation.navigate('Parametres')}>
-                <FontAwesome5 name="wrench" color='white' size={20}/>
-              </Pressable>
-            </HStack>
-            <HStack justifyContent='center'>
-              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.gcuWebsite)}>
-                <Text color='$white' fontSize={'$md'}>{t("decouvrir_gcu")}</Text>
-              </Pressable>
-            </HStack>
-            <VStack>
-              <Text textAlign='center' color='$white' fontSize={'$md'}>{t("developpe_par")} Mathis Cadio</Text>
-              <Text textAlign='center' color='$white' fontSize={'$md'}>{t("version")} {expo.version}</Text>
+        <VStack flex={1} px={'$5'} bgColor='#0594ae'>
+          <ScrollView height={'$1'}>
+            <VStack space='4xl'>
+              <VStack alignItems='center'>
+                <Image
+                  size='xl'
+                  alt="Logo de l'application"
+                  source={require('@assets/icon.png')}/>
+              </VStack>
+              <VStack space='md'>
+                <HStack>
+                  {this._buttonShowMatchs()}
+                </HStack>
+                <HStack>
+                  <CardButton
+                    text={t("nouveau_tournoi")}
+                    icon="plus"
+                    navigate={() => this._navigate('InscriptionStack')}
+                    newBadge={false}
+                  />
+                </HStack>
+                <HStack space='sm'>
+                  <CardButton
+                    text={t("mes_anciens_tournois")}
+                    icon="list"
+                    navigate={() => this._navigate('ListeTournois')}
+                    newBadge={false}
+                  />
+                  <CardButton
+                    text={t("mes_listes_joueurs")}
+                    icon="users"
+                    navigate={() => this._navigate('ListesJoueurs')}
+                    newBadge={false}
+                  />
+                </HStack> 
+              </VStack>
+              <VStack space='sm'>
+                <HStack space='sm' justifyContent='center'>
+                  <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.facebook)}>
+                    <FontAwesome5 name="facebook" color='white' size={20}/>
+                    <Text color='$white'>{t("rejoindre_page_fb")}</Text>
+                  </Pressable>
+                  <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.website)}>
+                    <FontAwesome5 name="globe" color='white' size={20}/>
+                    <Text color='$white'>{t("voir_website")}</Text>
+                  </Pressable>
+                </HStack>
+                <HStack space='sm' justifyContent='center'>
+                  <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => _openPlateformLink(this.googleMarketReviews, this.appleMarketReviews)}>
+                    <FontAwesome5 name="star" color='white' size={20}/>
+                  </Pressable>
+                  <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => _openURL(this.mail)}>
+                    <FontAwesome5 name="envelope" color='white' size={20}/>
+                  </Pressable>
+                  <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => this.props.navigation.navigate('Parametres')}>
+                    <FontAwesome5 name="wrench" color='white' size={20}/>
+                  </Pressable>
+                </HStack>
+                <HStack justifyContent='center'>
+                  <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.gcuWebsite)}>
+                    <Text color='$white' fontSize={'$md'}>{t("decouvrir_gcu")}</Text>
+                  </Pressable>
+                </HStack>
+              </VStack>
             </VStack>
+          </ScrollView>
+          <VStack>
+            <Text textAlign='center' color='$white' fontSize={'$md'}>{t("developpe_par")} Mathis Cadio</Text>
+            <Text textAlign='center' color='$white' fontSize={'$md'}>{t("version")} {expo.version}</Text>
           </VStack>
-        </ScrollView>
+        </VStack>
       </SafeAreaView>
     )
   }
