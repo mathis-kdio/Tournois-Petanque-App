@@ -1,5 +1,16 @@
 # Change Log
 
+## [1.16.1] - 21-04-2024
+
+### Ajouté
+
+### Changement
+- Amélioration de l'affichage sur les petits écrans.
+- Suppression des pages de dons.
+
+### Corrigé
+- Corrections de bugs.
+
 ## [1.16.0] - 23-03-2024
 
 ### Ajouté
