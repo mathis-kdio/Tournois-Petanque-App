@@ -1,8 +1,10 @@
 import { ranking } from "utils/ranking";
+import { dateFormatDateCompact } from "../date";
 
-export const generationPDFTournoi = (affichageScore, affichageClassement, listeJoueurs, listeMatchs, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables) => {
-  let html = `<!DOCTYPE html><html><head><style>@page{margin: 10px;} table{width: 100%;} table,th,td{border: 1px solid black;border-collapse: collapse;} td{min-width: 50px; word-break:break-all;} .td-score{min-width: 20px;} .text-right{text-align: right;} .text-center{text-align: center;} .no-border-top{border-top: none;} .no-border-bottom{border-bottom: none;} .border-top{border-top: 1px solid;}</style></head><body>
-  <h1 class="text-center">Tournoi</h1>`;
+export const generationPDFTournoi = (affichageScore, affichageClassement, listeJoueurs, listeMatchs, infosTournoi, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables) => {
+  let date = dateFormatDateCompact(infosTournoi.updateDate)
+  let html = `<!DOCTYPE html><html><head><style>@page{margin: 10px;} table{width: 100%;} table,th,td{border: 1px solid black;border-collapse: collapse;} td{min-width: 50px; word-break:break-all;} .td-score{min-width: 20px;} .text-right{text-align: right;} .text-center{text-align: center;} .no-border-top{border-top: none;} .no-border-bottom{border-bottom: none;} .border-top{border-top: 1px solid;}</style></head><body>`;
+  html += '<h1 class="text-center">Tournoi '+ date +'</h1>';
   for (let tableIdx = 0; tableIdx < nbTables; tableIdx++) {
     let minTourTable = tableIdx * toursParLigne;
     html += '<table><tr>';
