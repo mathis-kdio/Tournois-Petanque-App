@@ -109,6 +109,7 @@ export const generationPDFCoupe = (affichageScore, affichageClassement, listeJou
     html += '</tr></table><br>';
   }
   if (affichageClassement == true) {
+    html += '<div class="pagebreak"></div>';
     html += '<br><table><tr>';
     html += '<th>Place</th><th>Victoires</th><th>Matchs Joués</th><th>Points</th>';
     let classement = ranking(listeMatchs);
@@ -133,6 +134,21 @@ export const generationPDFCoupe = (affichageScore, affichageClassement, listeJou
     }
     html += '</tr></table>';
   }
-  html += '</body></html>';
+  html += `</body>
+      <style>
+        @page print {
+          .pagebreak { break-before: page; }
+        }
+        @media print {
+          .pagebreak { break-before: page; }
+        }
+        @page print {
+          .pagebreak { page-break-before: always; }
+        }
+        @media print {
+          .pagebreak { break-before: always; }
+        }
+      </style>
+    </html>`;
   return html;
 }
