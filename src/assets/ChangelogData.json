@@ -1,5 +1,14 @@
 [
   {
+    "id":"25",
+    "version": "1.16.1",
+    "infos": [
+      "- Amélioration de l'affichage sur les petits écrans.\n",
+      "- Suppression des pages de dons.\n",
+      "- Corrections de bugs.\n"
+    ]
+  },
+  {
     "id":"24",
     "version": "1.16.0",
     "infos": [

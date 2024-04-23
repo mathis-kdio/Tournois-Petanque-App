@@ -12,7 +12,7 @@ class CardButton extends React.Component {
   render() {
     const { text, icon, navigate, newBadge } = this.props;
     return (
-      <Pressable bg='#1c3969' flex={1} py={'$5'} rounded={'$3xl'} onPress={() => navigate()}>
+      <Pressable bg='#1c3969' flex={1} py={'$5'} rounded={'$3xl'} onPress={() => navigate()} justifyContent='center'>
         {newBadge ?
           <HStack mt={-20}>
             <Badge size='xl' variant='outline' borderRadius='$full' action='error'>

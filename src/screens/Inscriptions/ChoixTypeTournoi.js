@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { VStack, Text, Modal, Pressable, ModalContent, ModalHeader, ModalBody, ModalBackdrop, ModalCloseButton, CloseIcon, Heading } from '@gluestack-ui/themed';
+import { VStack, Text, Modal, Pressable, ModalContent, ModalHeader, ModalBody, ModalBackdrop, ModalCloseButton, CloseIcon, Heading, ScrollView } from '@gluestack-ui/themed';
 import { FontAwesome5 } from '@expo/vector-icons';
 import TopBarBack from '@components/TopBarBack';
 import CardButton from '@components/buttons/CardButton';
@@ -68,7 +68,7 @@ class ChoixTypeTournoi extends React.Component {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} bgColor='#0594ae'>
+        <ScrollView height={'$1'} bgColor='#0594ae'>
           <TopBarBack title={t("type_tournoi")} navigation={this.props.navigation}/>
           <VStack flex={1} px={'$10'} space='2xl'>
             <VStack flex={1}>
@@ -123,7 +123,7 @@ class ChoixTypeTournoi extends React.Component {
               <AdMobInscriptionsBanner/>
             </VStack>
           </VStack>
-        </VStack>
+        </ScrollView>
         {this._modalInfos()}
       </SafeAreaView>
     )

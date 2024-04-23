@@ -124,7 +124,8 @@ function listesJoueurs(state = initialState, action) {
           listId = lastlist[lastlist.length - 1].listId + 1;
         }
         savedLists[action.value.typeInscription].push(action.value.savedList);
-        savedLists[action.value.typeInscription][savedLists[action.value.typeInscription].length - 1].push({listId: listId});
+        let listeInfo = {id: action.value.savedList.length, listId: listId};
+        savedLists[action.value.typeInscription][savedLists[action.value.typeInscription].length - 1].push(listeInfo);
         nextState = {
           ...state,
           listesSauvegarde: savedLists

@@ -49,6 +49,6 @@ jobs:
           distPath: '../dist'
           tagName: v__VERSION__
           releaseName: 'Version __VERSION__'
-          releaseBody: '[CHANGELOG](https://github.com/mathis-kdio/Petanque-GCU/blob/main/CHANGELOG.md)'
+          releaseBody: '[CHANGELOG](https://github.com/mathis-kdio/Tournois-Petanque-App/blob/main/CHANGELOG.md)'
           releaseDraft: true
           prerelease: false

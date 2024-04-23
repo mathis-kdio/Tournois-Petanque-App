@@ -136,6 +136,7 @@ class Inscription extends React.Component {
       }
       return (
         <FlatList
+          height={'$1'}
           removeClippedSubviews={false}
           persistentScrollbar={true}
           data={this.props.listesJoueurs[this.props.optionsTournoi.mode]}
@@ -151,7 +152,7 @@ class Inscription extends React.Component {
             />
           )}
           ListFooterComponent={
-            <VStack space='md'>
+            <VStack flex={1} space='md'>
               <VStack px={'$10'} space='sm'>
                 {this._buttonRemoveAllPlayers()}
                 {this._buttonLoadSavedList()}
