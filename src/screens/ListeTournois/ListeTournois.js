@@ -1,5 +1,3 @@
-import moment from 'moment/moment'
-import 'moment/locale/fr'
 import React from 'react'
 import { connect } from 'react-redux'
 import ListeTournoiItem from '@components/ListeTournoiItem'
@@ -7,6 +5,7 @@ import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { VStack, Text, FlatList, Modal, CloseIcon, ModalBackdrop, ModalContent, ModalHeader, Heading, ModalCloseButton, ModalBody, ScrollView } from '@gluestack-ui/themed'
 import TopBarBack from '../../components/TopBarBack'
+import { dateFormatDateHeure } from '../../utils/date'
 
 class ListeTournois extends React.Component {
   constructor(props) {
@@ -31,13 +30,11 @@ class ListeTournois extends React.Component {
       let tournoiOptions = tournoi.tournoi[tournoi.tournoi.length - 1];
       let creationDate = t("date_inconnue");
       let updateDate = t("date_inconnue");
-      moment.locale('fr');
-      let dateFormat = 'd MMMM YYYY à HH:mm:ss';
       if (tournoi.creationDate) {
-        creationDate = moment(tournoi.creationDate).format(dateFormat);
+        creationDate = dateFormatDateHeure(tournoi.creationDate);
       }
       if (tournoi.updateDate) {
-        updateDate = moment(tournoi.updateDate).format(dateFormat);
+        updateDate = dateFormatDateHeure(tournoi.updateDate);
       }
       let nbPtVictoire = tournoiOptions.nbPtVictoire ? tournoiOptions.nbPtVictoire : 13;
       return (

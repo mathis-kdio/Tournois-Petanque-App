@@ -20,12 +20,15 @@ class PDFExport extends React.Component {
 
   _generatePDF = async (affichageScore, affichageClassement, buttonId) => {
     let toursParLigne = 3;
-    let nbTours = this.props.listeMatchs[this.props.listeMatchs.length - 1].nbTours;
-    let nbMatchs = this.props.listeMatchs[this.props.listeMatchs.length - 1].nbMatchs;
     let listeMatchs = this.props.listeMatchs;
-    let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs;
+    let listeMatchsParams = listeMatchs[listeMatchs.length - 1];
+    let nbTours = listeMatchsParams.nbTours;
+    let nbMatchs = listeMatchsParams.nbMatchs;
+    let listeJoueurs = listeMatchsParams.listeJoueurs;
+    let typeTournoi = listeMatchsParams.typeTournoi;
+    let tournoiID = listeMatchsParams.tournoiID;
+    let infosTournoi = this.props.listeTournois.find((e) => e.tournoiId == tournoiID);
     let nbMatchsParTour = 0;
-    let typeTournoi = this.props.listeMatchs[this.props.listeMatchs.length - 1].typeTournoi;
     if (typeTournoi == "coupe") {
       nbMatchsParTour = (nbMatchs + 1) / 2;
     } else {
@@ -35,9 +38,9 @@ class PDFExport extends React.Component {
     let nbToursRestants = nbTours;
     let html = "";
     if (typeTournoi == "coupe") {
-      html = generationPDFCoupe(affichageScore, affichageClassement, listeJoueurs, listeMatchs, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables);
+      html = generationPDFCoupe(affichageScore, affichageClassement, listeJoueurs, listeMatchs, infosTournoi, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables);
     } else {
-      html = generationPDFTournoi(affichageScore, affichageClassement, listeJoueurs, listeMatchs, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables);
+      html = generationPDFTournoi(affichageScore, affichageClassement, listeJoueurs, listeMatchs, infosTournoi, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables);
     }
     if (Platform.OS == 'web') {
       const pW = window.open('', '', `width=${screen.availWidth},height=${screen.availHeight}`)
@@ -104,7 +107,8 @@ class PDFExport extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    listeMatchs: state.gestionMatchs.listematchs
+    listeMatchs: state.gestionMatchs.listematchs,
+    listeTournois: state.listeTournois.listeTournois
   }
 }
 
