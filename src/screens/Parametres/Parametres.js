@@ -80,6 +80,7 @@ class Parametres extends React.Component {
     let drapeauFrance = require('@assets/images/drapeau-france.png');
     let drapeauUSA = require('@assets/images/drapeau-usa.png');
     let drapeauPologne = require('@assets/images/drapeau-pologne.png');
+    let drapeauPaysBas = require('@assets/images/drapeau-pays-bas.png');
     return (
       <Modal isOpen={this.state.modalLanguagesOpen} onClose={() => this.setState({modalLanguagesOpen: false})}>
         <ModalBackdrop/>
@@ -96,6 +97,8 @@ class Parametres extends React.Component {
             <Item text={t("anglais")} action={() => this._changeLanguage("en-US")} icon={undefined} type="modal" drapeau={drapeauUSA}/>
             <Divider/>
             <Item text={t("polonais")} action={() => this._changeLanguage("pl-PL")} icon={undefined} type="modal" drapeau={drapeauPologne}/>
+            <Divider/>
+            <Item text={t("neerlandais")} action={() => this._changeLanguage("nl-NL")} icon={undefined} type="modal" drapeau={drapeauPaysBas}/>
             <Divider/>
             <Text textAlign='center'>{t("envie_aider_traduction")}</Text>
             <Text textAlign='center' onPress={() => _openURL(this.crowdin)} color='$blue500'>{t("texte_lien_traduction")}</Text>
