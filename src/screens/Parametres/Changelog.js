@@ -18,6 +18,7 @@ class Changelog extends React.Component {
   }
 
   _modalChangelog() {
+    const { t } = this.props;
     if (this.state.modalChangelogItem) {
       let title = "Version "+this.state.modalChangelogItem.version;
       return (
@@ -31,7 +32,7 @@ class Changelog extends React.Component {
               </ModalCloseButton>
             </ModalHeader>
             <ModalBody>
-              <Text>{this.state.modalChangelogItem.infos}</Text>
+              <Text>{t(`${this.state.modalChangelogItem.id}.infos`, { ns: 'changelog', returnObjects: true, joinArrays: '\n' })}</Text>
             </ModalBody>
           </ModalContent>
         </Modal>
@@ -58,7 +59,7 @@ class Changelog extends React.Component {
             <Text fontSize={'$xl'} color='$white' mb={'$1'}>{t("nouveautes")}</Text>
             <FlatList 
               height={'$1'}
-              data={ChangelogData}
+              data={Object.values(ChangelogData).reverse()}
               keyExtractor={(item) => item.id.toString() }
               renderItem={({item}) => this._changelogItem(item)}
               borderWidth={'$1'}
@@ -84,4 +85,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(withTranslation()(Changelog))
+export default connect(mapStateToProps)(withTranslation(['common', 'changelog'])(Changelog))
