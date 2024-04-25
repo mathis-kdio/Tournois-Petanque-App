@@ -7,6 +7,8 @@ import english from '@assets/languages/en.json';
 import changelogEN from '@assets/ChangelogData_en.json';
 import polonais from '@assets/languages/pl.json';
 import changelogPL from '@assets/ChangelogData_pl.json';
+import neerlandais from '@assets/languages/nl.json';
+import changelogNL from '@assets/ChangelogData_nl.json';
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
@@ -30,6 +32,10 @@ i18n
       'pl-PL': {
         'common': polonais.translation,
         'changelog': changelogPL
+      },
+      'nl-NL': {
+        'common': neerlandais.translation,
+        'changelog': changelogNL
       },
       ns: ['common', 'changelog'],
       supportedLngs: [
