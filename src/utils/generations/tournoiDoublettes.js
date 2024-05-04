@@ -34,9 +34,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
 
   //Initialisation des matchs dans un tableau
   let nbMatchsParTour;
-  if (typeEquipes == "teteatete") {
-    nbMatchsParTour = nbjoueurs / 2;
-  }  else if (complement == "1") {
+  if (complement == "1") {
     nbMatchsParTour = Math.ceil(nbjoueurs / 4);
   } else {
     nbMatchsParTour = Math.floor(nbjoueurs / 4);
@@ -267,7 +265,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
         }
       }
       //Affectation joueur 2
-      if (random[j] != undefined && typeEquipes != "teteatete" && matchs[idMatch].equipe[0][1] == -1) {
+      if (random[j] != undefined && matchs[idMatch].equipe[0][1] == -1) {
         //Empeche joueur 2 d'être du même type que joueur 1 si regle speciauxIncompatibles
         if (speciauxIncompatibles == false || joueurs[random[j]].type == undefined || (speciauxIncompatibles == true && joueurs[random[j]].type != joueurs[matchs[idMatch].equipe[0][0]].type)) {
 
@@ -301,7 +299,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
           if (matchs[idMatch].equipe[0][0] != -1) {
             let joueur1 = matchs[idMatch].equipe[0][0];
             let joueur2 = undefined;
-            if (typeEquipes != "teteatete" && matchs[idMatch].equipe[0][1] != -1) {
+            if (matchs[idMatch].equipe[0][1] != -1) {
               joueur2 = matchs[idMatch].equipe[0][1];
             }
             let totPartiesJ1 = 0;
@@ -357,7 +355,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
             }
           }
           //Affectation joueur 4
-          else if (typeEquipes != "teteatete" && matchs[idMatch].equipe[1][1] == -1) {
+          else if (matchs[idMatch].equipe[1][1] == -1) {
             //Empeche joueur 4 d'être du même type que joueur 3 si regle speciauxIncompatibles
             if (speciauxIncompatibles == false || joueurs[random[j]].type == undefined || (speciauxIncompatibles == true && joueurs[random[j]].type != joueurs[matchs[idMatch].equipe[1][0]].type)) {
               //Empeche que le joueur 4 joue plusieurs fois dans la même équipe avec le même joueur
@@ -422,20 +420,18 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
     }
 
     idMatch = i * nbMatchsParTour;
-    if (typeEquipes != "teteatete") {
-      for (let j = 0; j < nbMatchsParTour; j++) {
-        if (matchs[idMatch + j].equipe[0][0] != -1 && matchs[idMatch + j].equipe[0][1] != -1) {
-          joueurs[matchs[idMatch + j].equipe[0][0]].equipe.push(matchs[idMatch + j].equipe[0][1]);
-        }
-        if (matchs[idMatch + j].equipe[1][0] != -1 && matchs[idMatch + j].equipe[1][1] != -1) {
-          joueurs[matchs[idMatch + j].equipe[1][0]].equipe.push(matchs[idMatch + j].equipe[1][1]);
-        }
-        if (matchs[idMatch + j].equipe[0][1] != -1 && matchs[idMatch + j].equipe[0][0] != -1) {
-          joueurs[matchs[idMatch + j].equipe[0][1]].equipe.push(matchs[idMatch + j].equipe[0][0]);
-        }
-        if (matchs[idMatch + j].equipe[1][1] != -1 && matchs[idMatch + j].equipe[1][0] != -1) {
-          joueurs[matchs[idMatch + j].equipe[1][1]].equipe.push(matchs[idMatch + j].equipe[1][0]);
-        }
+    for (let j = 0; j < nbMatchsParTour; j++) {
+      if (matchs[idMatch + j].equipe[0][0] != -1 && matchs[idMatch + j].equipe[0][1] != -1) {
+        joueurs[matchs[idMatch + j].equipe[0][0]].equipe.push(matchs[idMatch + j].equipe[0][1]);
+      }
+      if (matchs[idMatch + j].equipe[1][0] != -1 && matchs[idMatch + j].equipe[1][1] != -1) {
+        joueurs[matchs[idMatch + j].equipe[1][0]].equipe.push(matchs[idMatch + j].equipe[1][1]);
+      }
+      if (matchs[idMatch + j].equipe[0][1] != -1 && matchs[idMatch + j].equipe[0][0] != -1) {
+        joueurs[matchs[idMatch + j].equipe[0][1]].equipe.push(matchs[idMatch + j].equipe[0][0]);
+      }
+      if (matchs[idMatch + j].equipe[1][1] != -1 && matchs[idMatch + j].equipe[1][0] != -1) {
+        joueurs[matchs[idMatch + j].equipe[1][1]].equipe.push(matchs[idMatch + j].equipe[1][0]);
       }
     }
     idMatch = nbMatchsParTour * (i + 1);
