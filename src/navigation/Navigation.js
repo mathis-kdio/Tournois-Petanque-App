@@ -112,7 +112,7 @@ function getTournoiName() {
   if (listeTournois != undefined && listeMatchs != undefined) {
     let tournoiId = listeMatchs[listeMatchs.length - 1].tournoiID;
     let tournoi = listeTournois.find((element) => element.tournoiId == tournoiId);
-    tournoiName = tournoi.name ? tournoi.name : 'n°' + tournoi.tournoiId;
+    tournoiName = tournoi.name != undefined ? tournoi.name : 'n°' + tournoi.tournoiId;
   }
   return tournoiName;
 }
