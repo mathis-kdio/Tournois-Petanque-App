@@ -3,20 +3,20 @@
     "id": "25",
     "version": "1.16.1",
     "infos": [
-      "- Amélioration de l'affichage sur les petits écrans.",
-      "- Suppression des pages de dons.",
-      "- Corrections de bugs."
+      "- Ulepszone wyświetlanie na małych ekranach.",
+      "- Usunięcie strony z dotacjami.",
+      "- Korekta błędów."
     ]
   },
   "24": {
     "id": "24",
     "version": "1.16.0",
     "infos": [
-      "- Tournoi Multi-Chances.",
-      "- Amélioration de l'affichage des onglets et des équipes gagnantes dans la liste des matchs.",
-      "- Remerciement pour la traduction.",
-      "- Corrections de problèmes d'affichage.",
-      "- Corrections de bugs de générations.",
+      "- Turniej wielokrotnych szans.",
+      "- Ulepszenie wyświetlania zakładek i wygranych drużyn na liście meczów.",
+      "- Podziękowania za tłumaczenie.",
+      "- Korekta problemów wyświetlania.",
+      "- Korekta błędów wczytywania.",
       "- Mise à jour des dépendances."
     ]
   },
