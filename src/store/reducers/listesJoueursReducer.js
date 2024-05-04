@@ -135,7 +135,7 @@ function listesJoueurs(state = initialState, action) {
     case 'UPDATE_SAVED_LIST'://typeInscription: avecNoms/sansNoms/AvecEquipes  listId: id   savedList: list
       if (action.value.typeInscription != "" && action.value.listId != undefined && action.value.savedList != "") {
         const savedLists = { ...state.listesSauvegarde };
-        action.value.savedList.push({listId: action.value.listId})
+        action.value.savedList.push({id: action.value.savedList.length, listId: action.value.listId})
         let typeSavedLists = savedLists[action.value.typeInscription]
         let listIndex = typeSavedLists.findIndex(e => e[e.length - 1].listId == action.value.listId);
         typeSavedLists[listIndex] = action.value.savedList;
