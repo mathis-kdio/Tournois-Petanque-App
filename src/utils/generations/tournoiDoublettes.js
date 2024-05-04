@@ -1,4 +1,4 @@
-import { uniqueValueArrayRandOrder } from "./generation";
+import { shuffle, uniqueValueArrayRandOrder } from "./generation";
 
 const testRegleMemeCoequipiersValide = (nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs) => {
   let nbCombinaisons = nbjoueurs;
@@ -215,11 +215,6 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
     arrayIds.push(...shuffle(joueursNonTypeId));
 
     return arrayIds;
-  };
-
-  function shuffle(o) {
-    for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-    return o;
   };
 
   //FONCTIONNEMENT

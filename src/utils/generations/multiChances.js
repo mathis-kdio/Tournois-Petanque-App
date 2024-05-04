@@ -1,3 +1,4 @@
+import { shuffle } from "./generation";
 
 export const generationMultiChances = (listeJoueurs, typeEquipes) => {
   let nbjoueurs = listeJoueurs.length;
@@ -43,10 +44,6 @@ export const generationMultiChances = (listeJoueurs, typeEquipes) => {
   let equipesIds = [];
   for (let i = 0; i < nbEquipes; i++) {
     equipesIds.push(i);
-  }
-  function shuffle(o) {
-    for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-    return o;
   }
 
   //FONCTIONNEMENT

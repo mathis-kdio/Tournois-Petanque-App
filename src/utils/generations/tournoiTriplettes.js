@@ -1,4 +1,4 @@
-import { uniqueValueArrayRandOrder } from "./generation";
+import { shuffle, uniqueValueArrayRandOrder } from "./generation";
 
 export const generationTriplettes = (listeJoueurs, nbTours) => {
   let nbjoueurs = listeJoueurs.length;
@@ -109,10 +109,6 @@ export const generationTriplettes = (listeJoueurs, nbTours) => {
   for (let i = 0; i < joueursNonSpe.length; i++) {
     joueursNonSpeId.push(joueursNonSpe[i].id);
   }
-  function shuffle(o) {
-    for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-    return o;
-  };
 
   //FONCTIONNEMENT
   //S'il y a eu des joueurs enfants avant alors ils ont déjà été affectés

@@ -1,3 +1,4 @@
+import { shuffle } from "./generation";
 
 export const generationAvecEquipes = (listeJoueurs, nbTours, typeEquipes, eviterMemeAdversaire) => {
   let nbjoueurs = listeJoueurs.length;
@@ -42,10 +43,6 @@ export const generationAvecEquipes = (listeJoueurs, nbTours, typeEquipes, eviter
   let equipesIds = [];
   for (let i = 0; i < nbEquipes; i++) {
     equipesIds.push(i);
-  }
-  function shuffle(o) {
-    for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-    return o;
   }
 
   //FONCTIONNEMENT
