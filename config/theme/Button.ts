@@ -601,7 +601,7 @@ export const Button = createStyle({
     size: {
       xs: {
         px: '$3.5',
-        h: '$8',
+        minHeight: '$8', //h -> minHeight
         _icon: {
           props: {
             size: '2xs',
@@ -615,7 +615,7 @@ export const Button = createStyle({
       },
       sm: {
         px: '$4',
-        h: '$9',
+        minHeight: '$9', //h -> minHeight
         _icon: {
           props: {
             size: 'sm',
@@ -629,7 +629,7 @@ export const Button = createStyle({
       },
       md: {
         px: '$5',
-        h: '$10',
+        minHeight: '$10', //h -> minHeight
         _icon: {
           props: {
             size: 'md',
@@ -643,7 +643,7 @@ export const Button = createStyle({
       },
       lg: {
         px: '$6',
-        h: '$11',
+        minHeight: '$11', //h -> minHeight
         _icon: {
           props: {
             size: 'md',
@@ -657,7 +657,7 @@ export const Button = createStyle({
       },
       xl: {
         px: '$7',
-        h: '$12',
+        minHeight: '$12', //h -> minHeight
         _icon: {
           props: {
             size: 'lg',
