@@ -4,12 +4,12 @@
     "version": "1.16.2",
     "infos": [
       "- Traduction en néerlandais.",
-      "- Date du tournoi dans les PDF.",
-      "- Amélioration mineure de l'affichage des PDF.",
-      "- Traduction des notes de mise à jour.",
+      "-Data turnieju w PDF.",
+      "-Małe poprawki w wyświetlaniu dokumentów w PDF.",
+      "-Tłumaczenie notatek dot. aktualizacji.",
       "- Correction génération des tournois en tête-à-tête.",
-      "- Correction affichages de boutons et modals.",
-      "- Corrections de bugs."
+      "-Korekta wyświetlania przycisków i modalnych.",
+      "-Korekta błędów."
     ]
   },
   "25": {
