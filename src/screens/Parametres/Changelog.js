@@ -20,7 +20,7 @@ class Changelog extends React.Component {
   _modalChangelog() {
     const { t } = this.props;
     if (this.state.modalChangelogItem) {
-      let title = "Version "+this.state.modalChangelogItem.version;
+      let title = t("version")+' '+this.state.modalChangelogItem.version;
       return (
         <Modal isOpen={this.state.modalChangelogOpen} onClose={() => this.setState({modalChangelogOpen: false})}>
           <ModalBackdrop/>
@@ -41,9 +41,10 @@ class Changelog extends React.Component {
   }
 
   _changelogItem(item) {
+    const { t } = this.props;
     return (
       <VStack>
-        <Item text={"Version "+item.version+" :"} action={() => this.setState({modalChangelogOpen: true, modalChangelogItem: item})} icon={undefined} type={undefined} drapeau={undefined}/>
+        <Item text={t("version")+" "+item.version+" :"} action={() => this.setState({modalChangelogOpen: true, modalChangelogItem: item})} icon={undefined} type={undefined} drapeau={undefined}/>
         <Divider/>
       </VStack>
     )

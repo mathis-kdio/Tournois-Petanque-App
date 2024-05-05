@@ -151,7 +151,7 @@ class Parametres extends React.Component {
             </VStack>
           </ScrollView>
           <Center>
-            <Text textAlign='center' fontSize={'$md'} color='$white'>Version {expo.version}</Text>
+            <Text textAlign='center' fontSize={'$md'} color='$white'>{t("version")} {expo.version}</Text>
           </Center>
           {this._alertDialogClearData()}
           {this._modalLanguages()}
