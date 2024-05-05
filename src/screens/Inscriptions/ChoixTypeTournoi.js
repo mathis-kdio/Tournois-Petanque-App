@@ -43,7 +43,7 @@ class ChoixTypeTournoi extends React.Component {
     return (
       <Modal isOpen={this.state.showModal} onClose={() => this.setState({showModal: false})}>
         <ModalBackdrop/>
-        <ModalContent>
+        <ModalContent maxHeight='$5/6'>
           <ModalHeader>
             <Heading>{infos.title}</Heading>
             <ModalCloseButton>

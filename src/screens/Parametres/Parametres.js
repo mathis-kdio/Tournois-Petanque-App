@@ -84,7 +84,7 @@ class Parametres extends React.Component {
     return (
       <Modal isOpen={this.state.modalLanguagesOpen} onClose={() => this.setState({modalLanguagesOpen: false})}>
         <ModalBackdrop/>
-        <ModalContent>
+        <ModalContent maxHeight='$5/6'>
           <ModalHeader>
             <Heading>{t("languages_disponibles")}</Heading>
             <ModalCloseButton>

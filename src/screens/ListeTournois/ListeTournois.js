@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import ListeTournoiItem from '@components/ListeTournoiItem'
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { VStack, Text, FlatList, Modal, CloseIcon, ModalBackdrop, ModalContent, ModalHeader, Heading, ModalCloseButton, ModalBody, ScrollView } from '@gluestack-ui/themed'
+import { VStack, Text, FlatList, Modal, CloseIcon, ModalBackdrop, ModalContent, ModalHeader, Heading, ModalCloseButton, ModalBody } from '@gluestack-ui/themed'
 import TopBarBack from '../../components/TopBarBack'
 import { dateFormatDateHeure } from '../../utils/date'
 
@@ -43,7 +43,7 @@ class ListeTournois extends React.Component {
           onClose={() => this.setState({modalTournoiInfosIsOpen: false})}
         >
           <ModalBackdrop/>
-          <ModalContent>
+          <ModalContent maxHeight='$5/6'>
             <ModalHeader>
               <Heading size='lg'>{t("informations_tournoi_modal_titre")}</Heading>
               <ModalCloseButton>

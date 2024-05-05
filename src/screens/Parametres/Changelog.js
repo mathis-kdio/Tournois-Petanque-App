@@ -24,7 +24,7 @@ class Changelog extends React.Component {
       return (
         <Modal isOpen={this.state.modalChangelogOpen} onClose={() => this.setState({modalChangelogOpen: false})}>
           <ModalBackdrop/>
-          <ModalContent>
+          <ModalContent maxHeight='$5/6'>
             <ModalHeader>
               <Heading>{title}</Heading>
               <ModalCloseButton>
