@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import { withTranslation } from 'react-i18next';
+import { generationPDFTournoi } from '@utils/pdf/tournoi';
+import { generationPDFCoupe } from '@utils/pdf/coupe';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { VStack, Button, ButtonSpinner, ButtonText } from '@gluestack-ui/themed';
 import TopBarBack from './TopBarBack';
