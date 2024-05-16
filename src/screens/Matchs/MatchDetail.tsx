@@ -1,10 +1,9 @@
-import { VStack, Text, Input, Button, HStack, Box, ButtonText, ScrollView, KeyboardAvoidingView } from '@gluestack-ui/themed';
+import { VStack, Text, Input, InputField, Button, HStack, Box, ButtonText, ScrollView, KeyboardAvoidingView } from '@gluestack-ui/themed';
 import React from 'react'
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux'
 import TopBarBack from '@components/TopBarBack';
-import { InputField } from '@gluestack-ui/themed';
 import AdMobMatchDetailBanner from '../../components/adMob/AdMobMatchDetailBanner';
 import { nextMatch } from '../../utils/generations/nextMatch/nextMatch';
 import { Platform } from 'react-native';

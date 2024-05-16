@@ -1,8 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import MatchItem from '@components/MatchItem'
-import { VStack } from '@gluestack-ui/themed';
-import { FlatList } from '@gluestack-ui/themed';
+import { VStack, FlatList} from '@gluestack-ui/themed';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 export interface Props {
