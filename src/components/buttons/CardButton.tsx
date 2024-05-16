@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, Pressable, VStack, HStack, Badge, BadgeText } from "@gluestack-ui/themed";
+import { Text, Pressable, VStack, HStack, Badge, BadgeText } from '@gluestack-ui/themed';
 import { FontAwesome5 } from '@expo/vector-icons';
 
 export interface Props {

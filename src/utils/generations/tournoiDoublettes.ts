@@ -1,4 +1,4 @@
-import { uniqueValueArrayRandOrder } from "./generation";
+import { uniqueValueArrayRandOrder } from './generation';
 
 const testRegleMemeCoequipiersValide = (nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs) => {
   let nbCombinaisons = nbjoueurs;

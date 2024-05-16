@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, HStack, Pressable } from "@gluestack-ui/themed";
+import { Text, HStack, Pressable } from '@gluestack-ui/themed';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
 

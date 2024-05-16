@@ -1,5 +1,5 @@
-import { nextMatchCoupe } from "./nextMatchCoupe"
-import { nextMatchMultiChances } from "./nextMatchMultiChances";
+import { nextMatchCoupe } from './nextMatchCoupe';
+import { nextMatchMultiChances } from './nextMatchMultiChances';
 
 export const nextMatch = (match, nbMatchs, typeTournoi, nbTours) => {
   if (typeTournoi == 'coupe' && match.id + 1 < nbMatchs) {

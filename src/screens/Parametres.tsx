@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { HStack, VStack, Text, FlatList, Divider, AlertDialogContent, AlertDialog, Pressable, Box, Center, Button, ButtonText, Modal, Image, ModalBackdrop, ModalContent, ModalCloseButton, ModalHeader, ModalBody, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, ButtonGroup, Heading, AlertDialogCloseButton, CloseIcon, AlertDialogBackdrop } from '@gluestack-ui/themed'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { _adsConsentShowForm } from '../utils/adMob/consentForm'
-import { withTranslation } from "react-i18next";
+import { withTranslation } from 'react-i18next';
 import TopBarBack from '@components/TopBarBack'
 import ChangelogData from '@assets/ChangelogData.json'
 import { TFunction, i18n } from 'i18next'

@@ -8,10 +8,10 @@ import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/es/integration/react';
 import { NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { I18nextProvider } from "react-i18next";
+import { I18nextProvider } from 'react-i18next';
 import * as Sentry from '@sentry/react-native';
-import i18n from "./i18n";
-import { GluestackUIProvider } from "@gluestack-ui/themed"
+import i18n from './i18n';
+import { GluestackUIProvider } from '@gluestack-ui/themed';
 import { config } from './config/gluestack-ui.config';
 import "@expo/metro-runtime"; //Fast-refresh web
 

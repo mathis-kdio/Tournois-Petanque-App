@@ -1,4 +1,4 @@
-import { uniqueValueArrayRandOrder } from "./generation";
+import { uniqueValueArrayRandOrder } from './generation';
 
 export const generationTriplettes = (listeJoueurs, nbTours) => {
   let nbjoueurs = listeJoueurs.length;
