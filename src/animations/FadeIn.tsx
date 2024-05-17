@@ -1,9 +1,15 @@
-// Animations/FadeIn.js
-
 import React from 'react'
 import { Animated, Dimensions } from 'react-native'
 
-class FadeIn extends React.Component {
+export interface Props {
+  children: any;
+}
+
+interface State {
+  positionLeft: Animated.Value;
+}
+
+class FadeIn extends React.Component<Props, State> {
 
   constructor(props) {
     super(props)
