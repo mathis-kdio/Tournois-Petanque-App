@@ -1,3 +1,4 @@
+import { JoueurType } from '@/types/enums/joueurType';
 import { uniqueValueArrayRandOrder } from './generation';
 
 export const generationTriplettes = (listeJoueurs, nbTours) => {
@@ -25,7 +26,7 @@ export const generationTriplettes = (listeJoueurs, nbTours) => {
   //Création d'un tableau contenant tous les joueurs, un autre les non enfants et un autre les enfants
   //Le tableau contenant les tous les joueurs permettra de connaitre dans quel équipe chaque joueur a été
   for (let i = 0; i < nbjoueurs; i++) {
-    if (listeJoueurs[i].type === "enfant") {
+    if (listeJoueurs[i].type === JoueurType.ENFANT) {
       joueursSpe.push({...listeJoueurs[i]});
       joueursSpe[joueursSpe.length - 1].equipe = []
     }
@@ -42,9 +43,9 @@ export const generationTriplettes = (listeJoueurs, nbTours) => {
   //Test si le nombre de joueurs est un multiple de 2 (test lors de l'inscription) mais pas de 4
   //Si c'est le cas il faut donc ajouter 2 joueurs (joueur 1 et joueur 3) au dernier match de chaque tour
   if (nbjoueurs % 4 != 0) {
-    joueurs.push({name: "Complément 1", type: "enfant", id: (nbjoueurs + 1)})
+    joueurs.push({name: "Complément 1", type: JoueurType.ENFANT, id: (nbjoueurs + 1)})
     joueurs[nbjoueurs].equipe = []
-    joueurs.push({name: "Complément 2", type: "enfant", id: (nbjoueurs + 2)})
+    joueurs.push({name: "Complément 2", type: JoueurType.ENFANT, id: (nbjoueurs + 2)})
     joueurs[nbjoueurs + 1].equipe = []
     nbJoueursSpe++
     

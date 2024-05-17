@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import TopBarBack from '@components/TopBarBack'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { TFunction } from 'i18next'
+import { JoueurType } from '@/types/enums/joueurType'
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -56,7 +57,7 @@ class InscriptionsSansNoms extends React.Component<Props, State> {
     }
 
     for (let i = 0; i < this.state.nbJoueurEnfants; i++) {
-      this._ajoutJoueur("enfant");
+      this._ajoutJoueur(JoueurType.ENFANT);
     }
 
     let screenName = this.props.optionsTournoi.avecTerrains ? "ListeTerrains" : "GenerationMatchs";

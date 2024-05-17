@@ -5,13 +5,15 @@ import JoueurType from '@components/JoueurType'
 import { withTranslation } from 'react-i18next';
 import { AlertDialog, AlertDialogBackdrop, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, Box, Button, ButtonGroup, ButtonText, CloseIcon, HStack, Heading, Text } from '@gluestack-ui/themed';
 import { TFunction } from 'i18next';
+import { JoueurType as JoueurTypeEnum} from '@/types/enums/joueurType';
 
 export interface Props {
   t: TFunction;
 }
 
 interface State {
-  //joueurType: ;
+  joueurType: JoueurTypeEnum;
+  //joueur: ;
   modalRemoveIsOpen: boolean;
 }
 

@@ -8,6 +8,7 @@ import { Box, HStack, Input, VStack, Button, Text, Icon, Divider, AlertDialog, B
 import { withTranslation } from 'react-i18next'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { TFunction } from 'i18next'
+import { JoueurType as JoueurTypeEnum} from '@/types/enums/joueurType'
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -15,8 +16,8 @@ export interface Props {
 }
 
 interface State {
-  /*joueur: ;
-  joueurType: ;*/
+  /*joueur: ;*/
+  joueurType: JoueurTypeEnum;
   etatBouton: boolean;
   suggestions: object[];
   nbSuggestions: number;

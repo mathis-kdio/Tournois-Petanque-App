@@ -1,3 +1,4 @@
+import { JoueurType } from '@/types/enums/joueurType';
 import { uniqueValueArrayRandOrder } from './generation';
 
 const testRegleMemeCoequipiersValide = (nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs) => {
@@ -62,7 +63,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
   for (let i = 0; i < nbjoueurs; i++) {
     const joueur = { ...listeJoueurs[i], equipe: [] };
 
-    if (listeJoueurs[i].type === "enfant") {
+    if (listeJoueurs[i].type === JoueurType.ENFANT) {
       if (speciauxIncompatibles) {
         joueursEnfants.push(joueur);
       } else {
@@ -70,9 +71,9 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
         joueursNonSpe.push(joueur);
       }
     } else {
-      if (listeJoueurs[i].type === "tireur") {
+      if (listeJoueurs[i].type === JoueurType.TIREUR) {
         joueursTireurs.push(joueur);
-      } else if (listeJoueurs[i].type === "pointeur") {
+      } else if (listeJoueurs[i].type === JoueurType.POINTEUR) {
         joueursPointeurs.push(joueur);
       } else {
         joueursNonType.push(joueur);
@@ -87,9 +88,9 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
   //Si c'est le cas, alors on remplie de joueurs invisible pour le complément en mode tête à tête
   if (nbjoueurs % 4 != 0) {
     if (complement == "1" && nbjoueurs % 2 == 0) {
-      joueurs.push({name: "Complément 1", type: "enfant", id: (nbjoueurs)});
+      joueurs.push({name: "Complément 1", type: JoueurType.ENFANT, id: (nbjoueurs)});
       joueurs[nbjoueurs].equipe = [];
-      joueurs.push({name: "Complément 2", type: "enfant", id: (nbjoueurs + 1)});
+      joueurs.push({name: "Complément 2", type: JoueurType.ENFANT, id: (nbjoueurs + 1)});
       joueurs[nbjoueurs + 1].equipe = [];
       
       for (let i = 1; i < nbTours + 1; i++) {

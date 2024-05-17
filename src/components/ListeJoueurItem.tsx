@@ -4,6 +4,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { AlertDialog, AlertDialogBackdrop, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, Box, Button, ButtonGroup, ButtonText, CheckIcon, Checkbox, CheckboxIndicator, CheckboxLabel, ChevronDownIcon, CloseIcon, HStack, Heading, Image, Input, InputField, Select, SelectBackdrop, SelectContent, SelectDragIndicator, SelectDragIndicatorWrapper, SelectIcon, SelectInput, SelectItem, SelectPortal, SelectTrigger, Text } from '@gluestack-ui/themed';
 import { withTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
+import { JoueurType } from '@/types/enums/joueurType';
 
 export interface Props {
   t: TFunction;
@@ -207,15 +208,15 @@ class ListeJoueurItem extends React.Component<Props, State> {
       return (
         <Box>
           {joueurType == "enfant" && <FontAwesome5 name="child" color="darkgray" size={24}/>}
-          {joueurType == "tireur" && <Image source={require('@assets/images/tireur.png')} alt={type} width={30} height={30} />}
-          {joueurType == "pointeur" && <Image source={require('@assets/images/pointeur.png')} alt={type} width={30} height={30} />}
+          {joueurType == JoueurType.ENFANT && <FontAwesome5 name="child" color="darkgray" size={24}/>}
+          {joueurType == JoueurType.TIREUR && <Image source={require('@assets/images/tireur.png')} alt={type} width={30} height={30} />}
         </Box>
       )
     }
     else {
       return (
         <Box>
-          {joueurType == "enfant" && <FontAwesome5 name="child" color="darkgray" size={24}/>}
+          {joueurType == JoueurType.ENFANT && <FontAwesome5 name="child" color="darkgray" size={24}/>}
         </Box>
       )
     }
