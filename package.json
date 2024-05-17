@@ -15,9 +15,9 @@
     "ts:check": "tsc"
   },
   "dependencies": {
-    "@gluestack-style/react": "^1.0.52",
+    "@gluestack-style/react": "^1.0.56",
     "@gluestack-ui/config": "^1.1.18",
-    "@gluestack-ui/themed": "^1.1.18",
+    "@gluestack-ui/themed": "^1.1.26",
     "@react-native-async-storage/async-storage": "1.21.0",
     "@react-navigation/bottom-tabs": "^6.5.12",
     "@react-navigation/material-top-tabs": "^6.6.6",
