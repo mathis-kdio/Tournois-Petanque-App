@@ -78,10 +78,10 @@ class JoueurSuggere extends React.Component<Props, State> {
     const { joueur } = this.props;
     return (
       <HStack borderWidth={'$1'} borderColor='$white' borderRadius={'$xl'} m={'$1'} px={'$1'} alignItems='center'>
-        <Box flex='1'>
+        <Box flex={1}>
           <Text color='$white' fontSize={'$xl'} fontWeight='$bold'>{joueur.name}</Text>
         </Box>
-        <Box flex='1'>
+        <Box flex={1}>
           <JoueurType
             joueurType={this.state.joueurType}
             _setJoueurType={(type) => this._setJoueurType(type)}

@@ -139,7 +139,7 @@ class Accueil extends React.Component<Props, State> {
       }
     }
     else {
-      <Box bg='$secondary500' flex='1' alignItems='center' rounded={'$3xl'} py={"$5"}>
+      <Box bg='$secondary500' flex={1} alignItems='center' rounded={'$3xl'} py={"$5"}>
         <FontAwesome5 name="play" color='white' size={24}/>
         <Text color='$white'>{t("aucun_tournoi")}</Text>
       </Box>
@@ -150,7 +150,7 @@ class Accueil extends React.Component<Props, State> {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex='1' px={'$5'} bgColor='#0594ae' justifyContent='space-between'>
+        <VStack flex={1} px={'$5'} bgColor='#0594ae' justifyContent='space-between'>
           <VStack alignItems='center'>
             <Image
               size='xl'
@@ -197,17 +197,17 @@ class Accueil extends React.Component<Props, State> {
             </HStack>
             <HStack space='sm' justifyContent='center'>
               {Platform.OS !== 'ios' && <>
-                <Pressable flex='1' alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => this.setState({ modalDonsVisible: true })}>
+                <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => this.setState({ modalDonsVisible: true })}>
                   <FontAwesome5 name="euro-sign" color='white' size={20}/>
                 </Pressable>
               </>}
-              <Pressable flex='1' alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => _openPlateformLink(this.props.googleMarketReviews, this.props.appleMarketReviews)}>
+              <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => _openPlateformLink(this.props.googleMarketReviews, this.props.appleMarketReviews)}>
                 <FontAwesome5 name="star" color='white' size={20}/>
               </Pressable>
-              <Pressable flex='1' alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => _openURL(this.props.mail)}>
+              <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => _openURL(this.props.mail)}>
                 <FontAwesome5 name="envelope" color='white' size={20}/>
               </Pressable>
-              <Pressable flex='1' alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => this.props.navigation.navigate('Parametres')}>
+              <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => this.props.navigation.navigate('Parametres')}>
                 <FontAwesome5 name="wrench" color='white' size={20}/>
               </Pressable>
             </HStack>

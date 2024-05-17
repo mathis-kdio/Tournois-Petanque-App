@@ -155,9 +155,9 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
     const nbJoueur = this.props.listesJoueurs[this.props.optionsTournoi.mode].length;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex='1' bgColor='#0594ae'>
+        <VStack flex={1} bgColor='#0594ae'>
           <TopBarBack title={t("inscription_avec_noms_navigation_title")} navigation={this.props.navigation}/>
-          <VStack flex='1'>
+          <VStack flex={1}>
             <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("nombre_joueurs", {nb: nbJoueur})}</Text>
             <Inscriptions 
               navigation={this.props.navigation}

@@ -83,9 +83,9 @@ class ParametresTournoi extends React.Component<Props, State> {
     }
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex='1' bgColor={"#0594ae"}>
+        <VStack flex={1} bgColor={"#0594ae"}>
           <TopBarBack title={t("parametres_tournoi_navigation_title")} navigation={this.props.navigation}/>
-          <VStack flex='1' px={'$10'} justifyContent='space-around'>
+          <VStack flex={1} px={'$10'} justifyContent='space-around'>
             <VStack>
               <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("options_tournoi")}</Text>
               <Text color='$white'>{t("nombre_tours")} {parametresTournoi.nbTours.toString()}</Text>

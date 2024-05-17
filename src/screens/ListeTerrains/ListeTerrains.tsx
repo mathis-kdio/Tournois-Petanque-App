@@ -65,10 +65,10 @@ class ListeTerrains extends React.Component<Props, State> {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex='1' bgColor={"#0594ae"}>
+        <VStack flex={1} bgColor={"#0594ae"}>
           <TopBarBack title={t("liste_terrains_navigation_title")} navigation={this.props.navigation}/>
           <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("nombre_terrains", {nb: this.props.listeTerrains.length})}</Text>
-          <VStack flex='1' my={'$2'}>
+          <VStack flex={1} my={'$2'}>
             <FlatList
               persistentScrollbar={true}
               data={this.props.listeTerrains}

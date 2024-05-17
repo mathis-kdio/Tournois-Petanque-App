@@ -90,10 +90,10 @@ class ListeTournois extends React.Component<Props, State> {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex='1' bgColor={"#0594ae"}>
+        <VStack flex={1} bgColor={"#0594ae"}>
           <TopBarBack title={t("choix_tournoi_navigation_title")} navigation={this.props.navigation}/>
           <Text color='$white' fontSize={'$xl'} textAlign='center' px={'$10'}>{t("nombre_tournois", {nb: this.props.listeTournois.length})}</Text>
-          <VStack flex='1' my={'$2'}>
+          <VStack flex={1} my={'$2'}>
             <FlatList
               data={this.props.listeTournois}
               initialNumToRender={20}

@@ -274,9 +274,9 @@ class Inscription extends React.Component<Props, State> {
   render() {
     const { t } = this.props;
     return (
-      <VStack flex='1'>
+      <VStack flex={1}>
         <HStack alignItems='center' mx={'$1'} space='md'>
-          <Box flex='1'>
+          <Box flex={1}>
             <Input size='md'>
               <InputField
                 placeholder={t("nom_inscription")}
@@ -289,7 +289,7 @@ class Inscription extends React.Component<Props, State> {
               />
             </Input>
           </Box>
-          <Box flex='1'>
+          <Box flex={1}>
             <JoueurType
               joueurType={this.state.joueurType}
               _setJoueurType={(type) => this.setState({joueurType: type})}
@@ -308,7 +308,7 @@ class Inscription extends React.Component<Props, State> {
         </HStack>
         {this._showCheckboxSection()}
         <Divider bg='$white' h={'$0.5'} my={'$2'}/>
-        <VStack flex='1'>
+        <VStack flex={1}>
           {this._displayListeJoueur()}
         </VStack>
         {this._modalRemoveAllPlayers()}

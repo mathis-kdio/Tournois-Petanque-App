@@ -57,7 +57,7 @@ class ListeMatchs extends React.Component<Props, State> {
 
   render() {
     return (
-      <VStack flex='1' bgColor='#0594ae'>
+      <VStack flex={1} bgColor='#0594ae'>
         {this._displayListeMatch()}
       </VStack>
     )

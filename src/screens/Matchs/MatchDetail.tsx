@@ -134,18 +134,18 @@ class MatchDetail extends React.Component<Props, State> {
                 <VStack space='xl'>
                   {this._displayTitle(match)}
                   <HStack alignItems='center'>
-                    <Box flex='2'>
+                    <Box flex={2}>
                       {this._displayEquipe(1, match)}
                     </Box>
-                    <Box flex='1' alignItems='center'>
+                    <Box flex={1} alignItems='center'>
                       <Text color='$white' fontSize={'$xl'}>VS</Text>
                     </Box>
-                    <Box flex='2'>
+                    <Box flex={2}>
                       {this._displayEquipe(2, match)}
                     </Box>
                   </HStack>
                   <HStack space='lg'>
-                    <Box flex='1'>
+                    <Box flex={1}>
                     <Text color='$white' fontSize={'$md'}>{t("score_equipe_1")} </Text>
                       <Input size='md'>
                         <InputField
@@ -160,7 +160,7 @@ class MatchDetail extends React.Component<Props, State> {
                         />
                       </Input>
                     </Box>
-                    <Box flex='1'>
+                    <Box flex={1}>
                     <Text color='$white' fontSize={'$md'} alignSelf='flex-end'>{t("score_equipe_2")} </Text>
                       <Input size='md'>
                         <InputField
