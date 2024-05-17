@@ -29,7 +29,7 @@ class PDFExport extends React.Component<Props, State> {
     }
   }
 
-  _generatePDF = async (affichageScore, affichageClassement, buttonId) => {
+  _generatePDF = async (affichageScore: boolean, affichageClassement: boolean, buttonId: number) => {
     let toursParLigne = 3;
     let nbTours = this.props.listeMatchs[this.props.listeMatchs.length - 1].nbTours;
     let nbMatchs = this.props.listeMatchs[this.props.listeMatchs.length - 1].nbMatchs;
@@ -61,14 +61,14 @@ class PDFExport extends React.Component<Props, State> {
     } else {
       const { uri } = await Print.printToFileAsync({ html });
       if (await Sharing.isAvailableAsync() && uri != undefined) {
-        Sharing.shareAsync(uri).then(this._toggleLoading(buttonId));
+        Sharing.shareAsync(uri).then(() => this._toggleLoading(buttonId));
       } else {
         this._toggleLoading(buttonId)
       }
     }
   }
 
-  _toggleLoading(buttonId) {
+  _toggleLoading(buttonId: number) {
     let newBtnIsLoading = this.state.btnIsLoading;
     newBtnIsLoading[buttonId] = !this.state.btnIsLoading[buttonId];
     this.setState({

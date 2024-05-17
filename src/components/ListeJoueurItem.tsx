@@ -9,6 +9,12 @@ import { JoueurType } from '@/types/enums/joueurType';
 export interface Props {
   t: TFunction;
   joueurText: string;
+  //joueur
+  isInscription: boolean;
+  avecEquipes: boolean;
+  //typeEquipes: ;
+  nbJoueurs: number;
+  showCheckbox: boolean;
 }
 
 interface State {
@@ -26,7 +32,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
     }
   }
 
-  _showSupprimerJoueur(joueur, isInscription) {
+  _showSupprimerJoueur(joueur, isInscription: boolean) {
     if (isInscription === true) {
       return (
         <Box ml={'$2'}>
@@ -36,7 +42,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
     }
   }
 
-  _supprimerJoueur(idJoueur) {
+  _supprimerJoueur(idJoueur: number) {
     this.setState({
       renommerOn: false
     })
@@ -48,7 +54,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
     }
   }
 
-  _showRenommerJoueur(joueur, isInscription, avecEquipes) {
+  _showRenommerJoueur(joueur, isInscription: boolean, avecEquipes: boolean) {
     let name;
     let bgColor;
     let action;
@@ -80,7 +86,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
     this.props.joueurText = joueur.name
   }
 
-  _renommerJoueur(joueur, isInscription, avecEquipes) {
+  _renommerJoueur(joueur, isInscription: boolean, avecEquipes: boolean) {
     if (this.props.joueurText != "") {
       this.setState({renommerOn: false})
       if (isInscription === true) {
@@ -108,19 +114,19 @@ class ListeJoueurItem extends React.Component<Props, State> {
     }
   }
 
-  _joueurTxtInputChanged = (text) => {
-    this.joueurText = text
+  _joueurTxtInputChanged = (text: string) => {
+    this.props.joueurText = text
     this.setState({renommerOn: true});
   }
 
-  _joueurName(joueur, isInscription, avecEquipes) {
+  _joueurName(joueur, isInscription: boolean, avecEquipes: boolean) {
     if (this.state.renommerOn == true) {
       return(
         <Input variant='underlined' size='md'>
           <InputField
             placeholder={joueur.name}
             autoFocus={true}
-            onChangeText={(text) => this._joueurTxtInputChanged(text)}
+            onChangeText={(text: string) => this._joueurTxtInputChanged(text)}
             onSubmitEditing={() => this._renommerJoueur(joueur, isInscription, avecEquipes)}
           />
         </Input>
@@ -133,12 +139,12 @@ class ListeJoueurItem extends React.Component<Props, State> {
     }
   }
 
-  _ajoutEquipe(joueurId, equipeId) {
+  _ajoutEquipe(joueurId, equipeId: number) {
     const action = { type: "AJOUT_EQUIPE_JOUEUR", value: ["avecEquipes", joueurId, equipeId] };
     this.props.dispatch(action);
   }
 
-  _equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs) {
+  _equipePicker(joueur, avecEquipes: boolean, typeEquipes, nbJoueurs: number) {
     const { t } = this.props;
     if (avecEquipes == true) {
       let selectedValue = "0";
@@ -202,14 +208,14 @@ class ListeJoueurItem extends React.Component<Props, State> {
     )
   }
 
-  _joueurTypeIcon(joueurType) {
+  _joueurTypeIcon(joueurType: string) {
     const { mode, type, typeEquipes } = this.props.optionsTournoi;
     if (mode == "sauvegarde" || (type == "mele-demele" && typeEquipes == "doublette")) {
       return (
         <Box>
-          {joueurType == "enfant" && <FontAwesome5 name="child" color="darkgray" size={24}/>}
           {joueurType == JoueurType.ENFANT && <FontAwesome5 name="child" color="darkgray" size={24}/>}
           {joueurType == JoueurType.TIREUR && <Image source={require('@assets/images/tireur.png')} alt={type} width={30} height={30} />}
+          {joueurType == JoueurType.POINTEUR && <Image source={require('@assets/images/pointeur.png')} alt={type} width={30} height={30} />}
         </Box>
       )
     }
@@ -222,7 +228,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
     }
   }
 
-  _joueurCheckbox(showCheckbox, joueur) {
+  _joueurCheckbox(showCheckbox: boolean, joueur) {
     const {t} = this.props;
     if (showCheckbox) {
       let isChecked = true;
@@ -247,7 +253,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
     }
   }
 
-  _onCheckboxChange(isChecked, joueurId) {
+  _onCheckboxChange(isChecked: boolean, joueurId: number) {
     if (!isChecked) {
       this._ajoutCheck(joueurId, true);
     } else {
@@ -285,7 +291,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
     )
   }
 
-  _ajoutCheck(joueurId, isChecked) {
+  _ajoutCheck(joueurId: number, isChecked: boolean) {
     const action = { type: "CHECK_JOUEUR", value: [this.props.optionsTournoi.mode, joueurId, isChecked] };
     this.props.dispatch(action);
     this.setState({modalConfirmUncheckIsOpen: false});

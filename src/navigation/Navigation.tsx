@@ -60,7 +60,7 @@ function topTabItemLabel(numero, listeMatchs) {
 
   let iconColor = '#ffda00';
   let iconName = 'battery-half';
-  let matchsRestant = '';
+  let matchsRestant = 0;
   if (listeMatchs) {
     let matchs = listeMatchs.filter(el => el.manche === numero);
     matchsRestant = matchs.length;
@@ -81,7 +81,7 @@ function topTabItemLabel(numero, listeMatchs) {
     <HStack>
       <Text color='$white' fontSize={'$lg'} mr={'$2'}>{title}</Text>
       <FontAwesome5 name={iconName} size={20} color={iconColor}/>
-      <Text color={iconColor} fontSize={'$md'} ml={'$0.5'}>{matchsRestant}</Text>
+      <Text color={iconColor} fontSize={'$md'} ml={'$0.5'}>{matchsRestant.toString()}</Text>
     </HStack>
   )
 }

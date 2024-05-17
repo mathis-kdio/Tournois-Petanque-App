@@ -25,7 +25,7 @@ class MatchItem extends React.Component<Props, State> {
     }
   }
 
-  _displayTitle(match, nbPtVictoire) {
+  _displayTitle(match, nbPtVictoire: number) {
     const { t } = this.props;
     let txt = t("match_numero") + (match.id + 1);
     if (match.terrain) {
@@ -58,7 +58,7 @@ class MatchItem extends React.Component<Props, State> {
     return nomsJoueurs;
   }
 
-  _displayName(joueurNumber, equipe) {
+  _displayName(joueurNumber: number, equipe) {
     let joueur = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs.find(item => item.id === joueurNumber);
     if (joueur) {
       if (equipe === 1) {
@@ -69,7 +69,7 @@ class MatchItem extends React.Component<Props, State> {
     }
   }
 
-  _displayScore(matchID) {
+  _displayScore(matchID: number) {
     let score1 = this.props.listeMatchs[matchID].score1 ?? '?';
     let score2 = this.props.listeMatchs[matchID].score2 ?? '?';
     return (

@@ -9,6 +9,7 @@ import { TFunction } from 'i18next';
 export interface Props {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
+  listNameText: string;
 }
 
 interface State {
@@ -19,7 +20,7 @@ interface State {
 class ListeJoueursItem extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
-    this.listNameText = ""
+    props.listNameText = "";
     this.state = {
       renommerOn: false,
       modalDeleteIsOpen: false
@@ -85,7 +86,7 @@ class ListeJoueursItem extends React.Component<Props, State> {
       name = 'edit';
       bgColor = '#004282';
       action = () => this.setState({renommerOn: true});
-    } else if (this.listNameText == '') {
+    } else if (this.props.listNameText == '') {
       name = 'times';
       bgColor = '#5F5F5F';
       action = () => this.setState({renommerOn: false});
@@ -103,16 +104,16 @@ class ListeJoueursItem extends React.Component<Props, State> {
   }
 
   _renameList(list) {
-    if (this.listNameText != "") {
+    if (this.props.listNameText != "") {
       this.setState({renommerOn: false});
       const actionRenameList = { type: "RENAME_SAVED_LIST", value: {typeInscription: 'avecNoms', listId: list[list.length - 1].listId, newName: this.listNameText} };
       this.props.dispatch(actionRenameList);
-      this.listNameText = "";
+      this.props.listNameText = "";
     }
   }
 
   _listTextInputChanged(text) {
-    this.listNameText = text;
+    this.props.listNameText = text;
     this.setState({renommerOn: true});
   }
 
@@ -166,7 +167,7 @@ class ListeJoueursItem extends React.Component<Props, State> {
   }
 
   render() {
-    const { list} = this.props;
+    const { list } = this.props;
     return (
       <HStack px={'$2'} my={'$2'} space='md' alignItems='center'>
         <Box flex={1}>

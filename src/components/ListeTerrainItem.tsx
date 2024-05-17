@@ -6,6 +6,7 @@ import { Box, HStack, Input, Text, InputField } from '@gluestack-ui/themed';
 
 export interface Props {
   terrainText: string;
+  //terrain: ;
 }
 
 interface State {
@@ -15,7 +16,7 @@ interface State {
 class ListeTerrainItem extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
-    this.props.terrainText = "";
+    props.terrainText = "";
     this.state = {
       renommerOn: false
     }

@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 
 export interface Props {
   t: TFunction;
+  //joueur: ;
 }
 
 interface State {
@@ -14,7 +15,7 @@ interface State {
 
 class ListeResultatItem extends React.Component<Props, State> {
 
-  _displayName(joueurId) {
+  _displayName(joueurId: number) {
     const { t } = this.props;
     let joueur = {};
     let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs;
@@ -35,7 +36,7 @@ class ListeResultatItem extends React.Component<Props, State> {
     )
   }
 
-  _fanny(joueurNumber) {
+  _fanny(joueurNumber: number) {
     let listeMatchs = this.props.listeMatchs;
     let fanny = false;
     let nbFanny = 0;

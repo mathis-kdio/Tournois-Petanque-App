@@ -13,6 +13,9 @@ import { JoueurType as JoueurTypeEnum} from '@/types/enums/joueurType'
 export interface Props {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
+  joueurText: string;
+  addPlayerTextInput: React.RefObject<unknown>;
+  loadListScreen: boolean;
 }
 
 interface State {
@@ -29,8 +32,8 @@ class Inscription extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
-    this.joueurText = "",
-    this.addPlayerTextInput = React.createRef()
+    props.joueurText = "",
+    props.addPlayerTextInput = React.createRef()
     this.state = {
       joueur: undefined,
       joueurType: undefined,
@@ -67,9 +70,9 @@ class Inscription extends React.Component<Props, State> {
   }
 
   _ajoutJoueurTextInputChanged(text) {
-    this.joueurText = text
+    this.props.joueurText = text
     //Possible d'utiliser le bouton sauf si pas de lettre
-    if (this.joueurText != '') {
+    if (this.props.joueurText != '') {
       this.setState({
         etatBouton: true
       })
@@ -83,21 +86,21 @@ class Inscription extends React.Component<Props, State> {
 
   _ajoutJoueur() {
     //Test si au moins 1 caractère
-    if (this.joueurText != '') {
+    if (this.props.joueurText != '') {
       let equipe = 1
       if (this.props.optionsTournoi.typeEquipes == "teteatete" && this.props.listesJoueurs[this.props.optionsTournoi.mode]) {
         equipe = this.props.listesJoueurs[this.props.optionsTournoi.mode].length + 1
       }
-      const action = { type: "AJOUT_JOUEUR", value: [this.props.optionsTournoi.mode, this.joueurText, this.state.joueurType, equipe] }
+      const action = { type: "AJOUT_JOUEUR", value: [this.props.optionsTournoi.mode, this.props.joueurText, this.state.joueurType, equipe] }
       this.props.dispatch(action);
-      this.addPlayerTextInput.current.clear();
-      this.joueurText = "";
+      this.props.addPlayerTextInput.current.clear();
+      this.props.joueurText = "";
       this.setState({
         joueurType: undefined,
         etatBouton: false
       })
-      //Ne fonctionne pas avec: "this.addPlayerTextInput.current.focus()" quand validation avec clavier donc "hack" ci-dessous
-      setTimeout(() => this.addPlayerTextInput.current.focus(), 0)
+      //Ne fonctionne pas avec: "this.props.addPlayerTextInput.current.focus()" quand validation avec clavier donc "hack" ci-dessous
+      setTimeout(() => this.props.addPlayerTextInput.current.focus(), 0)
     }
   }
 
