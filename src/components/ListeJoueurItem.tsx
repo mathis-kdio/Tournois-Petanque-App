@@ -296,10 +296,10 @@ class ListeJoueurItem extends React.Component<Props, State> {
       <HStack borderWidth={'$1'} borderColor='$white' borderRadius={'$xl'} m={'$1'} px={'$1'} alignItems='center'>
         {this._joueurCheckbox(showCheckbox, joueur)}
         {this._joueurTypeIcon(joueur.type)}
-        <Box flex={2}>
+        <Box flex='2'>
           {this._joueurName(joueur, isInscription, avecEquipes)}
         </Box>
-        {(avecEquipes == true && <Box flex={1}>
+        {(avecEquipes == true && <Box flex='1'>
           {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
         </Box>)}
         {this._showRenommerJoueur(joueur, isInscription, avecEquipes)}

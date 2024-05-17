@@ -33,15 +33,15 @@ class MatchItem extends React.Component<Props, State> {
     }
     return (
       <HStack>
-        <Box flex={1} alignItems='center'>
+        <Box flex='1' alignItems='center'>
           { match.score1 == nbPtVictoire &&
             <FontAwesome5 name='trophy' size={20} color='#ffda00'/>
           }
         </Box>
-        <Box flex={1}>
+        <Box flex='1'>
           <Text color='$white' fontSize={'$2xl'} p={'$0.5'} textAlign='center'>{txt}</Text>
         </Box>
-        <Box flex={1} alignItems='center'>
+        <Box flex='1' alignItems='center'>
           { match.score2 == nbPtVictoire &&
             <FontAwesome5 name='trophy' size={20} color='#ffda00'/>
           }
@@ -89,13 +89,13 @@ class MatchItem extends React.Component<Props, State> {
           <VStack m={'$2'}>
             {this._displayTitle(match, nbPtVictoire)}
             <HStack alignItems='center'>
-              <Box flex={1}>
+              <Box flex='1'>
                 {this._displayEquipe(1, match)}
               </Box>
-              <Box flex={1}>
+              <Box flex='1'>
                 {this._displayScore(match.id)}
               </Box>
-              <Box flex={1}>
+              <Box flex='1'>
                 {this._displayEquipe(2, match)}
               </Box>
             </HStack>

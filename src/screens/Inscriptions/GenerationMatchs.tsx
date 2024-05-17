@@ -284,9 +284,9 @@ class GenerationMatchs extends React.Component<Props, State> {
     }
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} bgColor='#0594ae'>
+        <VStack flex='1' bgColor='#0594ae'>
           <TopBarBack title={t("generation_matchs_navigation_title")} navigation={this.props.navigation}/>
-          <VStack flex={1} px={'$10'} justifyContent='center' alignItems='center'>
+          <VStack flex='1' px={'$10'} justifyContent='center' alignItems='center'>
             {this._displayLoading()}
           </VStack>
         </VStack>

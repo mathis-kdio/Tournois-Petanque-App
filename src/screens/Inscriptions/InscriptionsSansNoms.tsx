@@ -119,9 +119,9 @@ class InscriptionsSansNoms extends React.Component<Props, State> {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} bgColor='#0594ae'>
+        <VStack flex='1' bgColor='#0594ae'>
           <TopBarBack title={t("inscription_sans_noms_navigation_title")} navigation={this.props.navigation}/>
-          <VStack flex={1} px={'$10'} space='2xl'>
+          <VStack flex='1' px={'$10'} space='2xl'>
             <Text color='$white' textAlign='center' fontSize={'$xl'}>{t("nombre_joueurs", {nb: this._nbJoueurs()})}</Text>
             <VStack>
               <Text color='$white' fontSize={'$md'}>{t("nombre_joueurs_adultes")} </Text>

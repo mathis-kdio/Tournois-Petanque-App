@@ -50,10 +50,10 @@ class JoueursTournoi extends React.Component<Props, State> {
     let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} bgColor={"#0594ae"}>
+        <VStack flex='1' bgColor={"#0594ae"}>
           <TopBarBack title={t("liste_joueurs_inscrits_navigation_title")} navigation={this.props.navigation}/>
           <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("nombre_joueurs", {nb: listeJoueurs.length})}</Text>
-          <VStack flex={1} my={'$2'}>
+          <VStack flex='1' my={'$2'}>
             {this._displayListeJoueur(listeJoueurs)}
           </VStack>
           <Box px={'$10'} mb={'$2'}>

@@ -115,9 +115,9 @@ class ChoixModeTournoi extends React.Component<Props, State> {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} bgColor={"#0594ae"}>
+        <VStack flex='1' bgColor={"#0594ae"}>
           <TopBarBack title={t("mode_tournoi")} navigation={this.props.navigation}/>
-          <VStack flex={1} px={'$10'} justifyContent='space-between'>
+          <VStack flex='1' px={'$10'} justifyContent='space-between'>
             <VStack space='4xl'>
               <Text color='$white' fontSize={'$2xl'} textAlign='center'>{t("type_equipes")}</Text>
               <RadioGroup

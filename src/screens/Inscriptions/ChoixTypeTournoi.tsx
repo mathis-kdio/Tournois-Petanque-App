@@ -80,10 +80,10 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} bgColor='#0594ae'>
+        <VStack flex='1' bgColor='#0594ae'>
           <TopBarBack title={t("type_tournoi")} navigation={this.props.navigation}/>
-          <VStack flex={1} px={'$10'} space='2xl'>
-            <VStack flex={1}>
+          <VStack flex='1' px={'$10'} space='2xl'>
+            <VStack flex='1'>
               <CardButton
                 text={t("type_melee_demelee")}
                 icon="random"
@@ -95,7 +95,7 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
                 <Text color='$white'> {t("savoir_plus")}</Text>
               </Pressable>
             </VStack>
-            <VStack flex={1}>
+            <VStack flex='1'>
               <CardButton
                 text={t("type_championnat")}
                 icon="table"
@@ -107,7 +107,7 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
                 <Text color='$white'> {t("savoir_plus")}</Text>
               </Pressable>
             </VStack>
-            <VStack flex={1}>
+            <VStack flex='1'>
               <CardButton
                 text={t("type_coupe")}
                 icon="trophy"
@@ -119,7 +119,7 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
                 <Text color='$white'> {t("savoir_plus")}</Text>
               </Pressable>
             </VStack>
-            <VStack flex={1}>
+            <VStack flex='1'>
               <CardButton
                 text={t("type_multi_chances")}
                 icon="code-branch"

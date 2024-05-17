@@ -206,9 +206,9 @@ class Parametres extends React.Component<Props, State> {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} bgColor='#0594ae'>
+        <VStack flex='1' bgColor='#0594ae'>
           <TopBarBack title={t("parametres")} navigation={this.props.navigation}/>
-          <VStack flex={1} px={'$10'} space='lg'>
+          <VStack flex='1' px={'$10'} space='lg'>
             <VStack>
               <Text fontSize={'$xl'} color='$white'>{t("a_propos")}</Text>
               <Box borderWidth={'$1'} borderColor='$white' borderRadius={'$lg'}>
@@ -227,7 +227,7 @@ class Parametres extends React.Component<Props, State> {
                 {this._item(t("supprimer_donnees"), () => this.setState({alertOpen: true}), "trash-alt", "danger", undefined)}
               </Box>
             </VStack>
-            <VStack flex={1}>
+            <VStack flex='1'>
               <Text fontSize={'$xl'} color='$white'>{t("nouveautes")}</Text>
               <FlatList 
                 data={ChangelogData}

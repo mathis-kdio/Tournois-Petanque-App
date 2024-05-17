@@ -169,7 +169,7 @@ class ListeJoueursItem extends React.Component<Props, State> {
     const { list} = this.props;
     return (
       <HStack px={'$2'} my={'$2'} space='md' alignItems='center'>
-        <Box flex={1}>
+        <Box flex='1'>
           {this._listName(list)}
         </Box>
         <HStack space='md'>

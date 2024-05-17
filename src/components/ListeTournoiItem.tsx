@@ -153,7 +153,7 @@ class ListeTournoiItem extends React.Component<Props, State> {
     }
     return (
       <HStack px={'$2'} my={'$2'} space='md' alignItems='center'>
-        <Box flex={1}>
+        <Box flex='1'>
           {this._tournoiName(tournoi)}
         </Box>
         <HStack space='sm'>

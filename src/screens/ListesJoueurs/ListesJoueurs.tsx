@@ -58,13 +58,13 @@ class ListesJoueurs extends React.Component<Props, State> {
     }
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} bgColor={"#0594ae"}>
+        <VStack flex='1' bgColor={"#0594ae"}>
           <TopBarBack title={t("listes_joueurs_navigation_title")} navigation={this.props.navigation}/>
           <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("nombre_listes", {nb: nbLists})}</Text>
           <Box px={'$10'}>
             {this._addListButton()}
           </Box>
-          <VStack flex={1} my={'$2'}>
+          <VStack flex='1' my={'$2'}>
             <FlatList
               data={this.props.savedLists.avecNoms}
               initialNumToRender={20}
