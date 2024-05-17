@@ -4,8 +4,16 @@ import ListeResultatItem from '@components/ListeResultatItem'
 import { ranking } from '@utils/ranking'
 import { withTranslation } from 'react-i18next'
 import { HStack, FlatList, Text, VStack, Divider } from '@gluestack-ui/themed'
+import { TFunction } from 'i18next'
 
-class ListeResultats extends React.Component {
+export interface Props {
+  t: TFunction;
+}
+
+interface State {
+}
+
+class ListeResultats extends React.Component<Props, State> {
 
   render() {
     const { t } = this.props;
