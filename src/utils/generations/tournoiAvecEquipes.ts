@@ -44,7 +44,7 @@ export const generationAvecEquipes = (listeJoueurs, nbTours, typeEquipes, eviter
     equipesIds.push(i);
   }
   function shuffle(o) {
-    for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    for(var j, x, i = o.length; i; j = Math.random() * i, x = o[--i], o[i] = o[j], o[j] = x);
     return o;
   }
 
