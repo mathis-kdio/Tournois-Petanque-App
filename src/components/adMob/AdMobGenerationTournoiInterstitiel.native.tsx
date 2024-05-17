@@ -31,7 +31,7 @@ export const _adMobGenerationTournoiInterstitiel = async () => {
   interstitialAd.addAdEventListener(AdEventType.LOADED, () => EventRegister.emit('interstitialAdEvent', { adClosed: false, adLoaded: true }));
   interstitialAd.addAdEventListener(AdEventType.ERROR, (error) => {
     EventRegister.emit('interstitialAdEvent', { adClosed: true, adLoaded: false })
-    Sentry.captureMessage(error);
+    Sentry.captureMessage(error.message);
   });
   interstitialAd.addAdEventListener(AdEventType.CLOSED, () => EventRegister.emit('interstitialAdEvent', { adClosed: true, adLoaded: false }));
   interstitialAd.load();
