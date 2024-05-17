@@ -11,7 +11,7 @@ export interface Props {
 }
 
 interface State {
-  joueurType: ;
+  //joueurType: ;
   modalRemoveIsOpen: boolean;
 }
 

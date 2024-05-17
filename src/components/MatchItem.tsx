@@ -8,10 +8,10 @@ import { connect } from 'react-redux'
 
 export interface Props {
   t: TFunction;
-  match: ;
+  /*match: ;
   displayDetailForMatch: ;
   manche: ;
-  nbPtVictoire: ; 
+  nbPtVictoire: ; */
 }
 
 interface State {

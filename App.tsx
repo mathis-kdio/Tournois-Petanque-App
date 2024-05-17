@@ -12,7 +12,7 @@ import { I18nextProvider } from 'react-i18next';
 import * as Sentry from '@sentry/react-native';
 import i18n from './i18n';
 import { GluestackUIProvider } from '@gluestack-ui/themed';
-import { config } from './config/gluestack-ui.config';
+//import { config } from './config/gluestack-ui.config';
 import "@expo/metro-runtime"; //Fast-refresh web
 
 const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
@@ -36,7 +36,7 @@ class App extends React.Component {
     return (
       <Provider store={Store}>
         <PersistGate persistor={persistor}>
-          <GluestackUIProvider config={config}>
+          <GluestackUIProvider /*config={config}*/>
             <NavigationContainer onReady={() => routingInstrumentation.registerNavigationContainer(this.navigationRef)}>
               <I18nextProvider i18n={i18n} defaultNS={'translation'}>
                 <Navigation/>

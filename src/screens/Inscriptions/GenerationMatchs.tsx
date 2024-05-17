@@ -31,8 +31,8 @@ export interface Props {
   complement: string;
   typeTournoi: string;
   avecTerrains: boolean;
-  interstitial: ;
-  listener: ;
+  /*interstitial: ;
+  listener: ;*/
 }
 
 interface State {

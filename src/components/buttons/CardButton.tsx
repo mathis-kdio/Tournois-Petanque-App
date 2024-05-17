@@ -5,7 +5,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 export interface Props {
   text: string;
   icon: string;
-  navigate: ;
+  //navigate: ;
   newBadge: boolean;
 }
 

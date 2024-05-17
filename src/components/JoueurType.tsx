@@ -9,7 +9,7 @@ export interface Props {
 }
 
 interface State {
-  joueurType: ;
+  //joueurType: ;
 }
 
 class JoueurType extends React.Component<Props, State> {

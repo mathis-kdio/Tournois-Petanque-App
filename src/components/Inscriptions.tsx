@@ -15,8 +15,8 @@ export interface Props {
 }
 
 interface State {
-  joueur: ;
-  joueurType: ;
+  /*joueur: ;
+  joueurType: ;*/
   etatBouton: boolean;
   suggestions: object[];
   nbSuggestions: number;
