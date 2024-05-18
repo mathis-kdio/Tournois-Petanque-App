@@ -30,6 +30,7 @@ import BoutonMenuHeaderNav from '@components/BoutonMenuHeaderNavigation'
 import ListesJoueurs from '@screens/ListesJoueurs/ListesJoueurs';
 import CreateListeJoueurs from '@screens/ListesJoueurs/CreateListeJoueurs';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
+import { Match } from '@/types/interfaces/match';
 
 const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -116,6 +117,15 @@ function getTournoiName() {
   }
   return tournoiName;
 }
+
+
+export type MatchsStackParamList = {
+  ListeMatchsStack: null;
+  MatchDetailStack: { idMatch: number, match: Match, nbPtVictoire: number };
+  ListeJoueur: null;
+  ParametresTournoi: null;
+  PDFExport: null;
+};
 
 function MatchsStack() {
   const { t } = useTranslation();

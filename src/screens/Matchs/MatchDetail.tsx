@@ -11,14 +11,17 @@ import { TFunction } from 'i18next';
 import { Joueur } from '@/types/interfaces/joueur';
 import { Match } from '@/types/interfaces/match';
 import { PropsFromRedux, connector } from '@/store/connector';
+import { RouteProp } from '@react-navigation/native';
+import { MatchsStackParamList } from '@/navigation/Navigation';
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
+  route: RouteProp<MatchsStackParamList, 'MatchDetailStack'>;
 }
 
 interface State {
-  match: Match,
+  idMatch: number,
   score1: string,
   score2: string
 }
@@ -27,7 +30,7 @@ class MatchDetail extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {
-      match: undefined,
+      idMatch: undefined,
       score1: undefined,
       score2: undefined
     }
@@ -36,7 +39,7 @@ class MatchDetail extends React.Component<Props, State> {
   componentDidMount() {
     var idMatch = this.props.route.params.idMatch;
     this.setState({
-      match: idMatch,
+      idMatch: idMatch,
     });
   }
 
@@ -83,7 +86,7 @@ class MatchDetail extends React.Component<Props, State> {
 
   _envoyerResultat(match: Match) {
     if (this.state.score1 && this.state.score2) {
-      let info = {idMatch: this.state.match, score1: this.state.score1, score2: this.state.score2};
+      let info = {idMatch: this.state.idMatch, score1: this.state.score1, score2: this.state.score2};
       const actionAjoutScore = { type: "AJOUT_SCORE", value: info};
       this.props.dispatch(actionAjoutScore);
       //Si tournoi type coupe et pas le dernier match, alors on ajoute les gagnants au match suivant
@@ -101,7 +104,7 @@ class MatchDetail extends React.Component<Props, State> {
   }
 
   _supprimerResultat() {
-    let info = {idMatch: this.state.match, score1: undefined, score2: undefined};
+    let info = {idMatch: this.state.idMatch, score1: undefined, score2: undefined};
     const actionAjoutScore = { type: "AJOUT_SCORE", value: info};
     this.props.dispatch(actionAjoutScore);
     const actionUpdateTournoi = { type: "UPDATE_TOURNOI", value: {tournoi: this.props.listeMatchs, tournoiId: this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID}};
