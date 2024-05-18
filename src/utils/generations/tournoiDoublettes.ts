@@ -1,6 +1,7 @@
 import { JoueurType } from '@/types/enums/joueurType';
 import { uniqueValueArrayRandOrder } from './generation';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
+import { Complement } from '@/types/enums/complement';
 
 const testRegleMemeCoequipiersValide = (nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs) => {
   let nbCombinaisons = nbjoueurs;
@@ -23,7 +24,7 @@ const testRegleMemeCoequipiersValide = (nbTours, nbjoueurs, nbJoueursSpe, joueur
   return true;
 }
 
-export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complement, speciauxIncompatibles, jamaisMemeCoequipier, eviterMemeAdversaire) => {
+export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complement: Complement, speciauxIncompatibles, jamaisMemeCoequipier, eviterMemeAdversaire) => {
   let nbjoueurs = listeJoueurs.length;
   let matchs = [];
   let idMatch = 0;
@@ -38,7 +39,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
   let nbMatchsParTour;
   if (typeEquipes == TypeEquipes.TETEATETE) {
     nbMatchsParTour = nbjoueurs / 2;
-  }  else if (complement == "1") {
+  }  else if (complement == Complement.TETEATETE) {
     nbMatchsParTour = Math.ceil(nbjoueurs / 4);
   } else {
     nbMatchsParTour = Math.floor(nbjoueurs / 4);
@@ -88,7 +89,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
   //Test s'il faut compléter des équipes
   //Si c'est le cas, alors on remplie de joueurs invisible pour le complément en mode tête à tête
   if (nbjoueurs % 4 != 0) {
-    if (complement == "1" && nbjoueurs % 2 == 0) {
+    if (complement == Complement.TETEATETE && nbjoueurs % 2 == 0) {
       joueurs.push({name: "Complément 1", type: JoueurType.ENFANT, id: (nbjoueurs)});
       joueurs[nbjoueurs].equipe = [];
       joueurs.push({name: "Complément 2", type: JoueurType.ENFANT, id: (nbjoueurs + 1)});
@@ -116,7 +117,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
       }
     }
     else { //Cas de complément
-      if (complement == "1") { //Complément tête-à-tête
+      if (complement == Complement.TETEATETE) { //Complément tête-à-tête
         let moitieNbJoueurs = (nbjoueurs / 2) + 1;
         //Test si trop de joueurs de type pointeurs ou tireurs ou enfants
         if (joueursEnfants.length > moitieNbJoueurs || joueursTireurs.length > moitieNbJoueurs || joueursPointeurs.length > moitieNbJoueurs) {
@@ -130,7 +131,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
           }
         }
       }
-      if (complement == "3") { //Complément triplette
+      if (complement == Complement.TRIPLETTE) { //Complément triplette
         let moitieNbJoueurs = (nbjoueurs / 2) - 1;
         //Test si trop de joueurs de type pointeurs ou tireurs ou enfants
         if (joueursEnfants.length > moitieNbJoueurs || joueursTireurs.length > moitieNbJoueurs || joueursPointeurs.length > moitieNbJoueurs) {
@@ -391,7 +392,7 @@ export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complem
       }
       //Affectation joueur(s) complémentaire(s) du tour si tournoi avec complément en triplette
       if (random[j] != undefined && (idMatch + 1) % nbMatchsParTour == 0) {
-        if (nbjoueurs % 4 != 0 && complement == "3" && matchs[idMatch].equipe[0][2] == -1) {
+        if (nbjoueurs % 4 != 0 && complement == Complement.TRIPLETTE && matchs[idMatch].equipe[0][2] == -1) {
           let joueursEnTrop = nbjoueurs % 4;
           matchs[idMatch].equipe[0][2] = random[j];
           if (joueursEnTrop == 2) {

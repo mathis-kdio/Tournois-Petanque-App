@@ -20,6 +20,7 @@ import { TFunction } from 'i18next'
 import { TypeEquipes } from '@/types/enums/typeEquipes'
 import { ModeTournoi } from '@/types/enums/modeTournoi'
 import { TypeTournoi } from '@/types/enums/typeTournoi'
+import { Complement } from '@/types/enums/complement'
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -29,9 +30,9 @@ export interface Props {
   speciauxIncompatibles: boolean;
   jamaisMemeCoequipier: boolean;
   eviterMemeAdversaire: number;
-  typeEquipes: string;
-  typeInscription: string;
-  complement: string;
+  typeEquipes: TypeEquipes;
+  typeInscription: ModeTournoi;
+  complement: Complement;
   typeTournoi: TypeTournoi;
   avecTerrains: boolean;
   /*interstitial: ;
@@ -58,7 +59,7 @@ class GenerationMatchs extends React.Component<Props, State> {
     props.eviterMemeAdversaire = 50;
     props.typeEquipes = TypeEquipes.DOUBLETTE;
     props.typeInscription = ModeTournoi.AVECNOMS;
-    props.complement = "3";
+    props.complement = Complement.TRIPLETTE;
     props.typeTournoi = TypeTournoi.MELEDEMELE;
     props.avecTerrains = false;
     props.interstitial;

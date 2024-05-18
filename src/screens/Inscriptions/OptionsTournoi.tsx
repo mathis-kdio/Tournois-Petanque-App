@@ -7,6 +7,7 @@ import { withTranslation } from 'react-i18next';
 import { Platform } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
+import { Complement } from '@/types/enums/complement';
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -19,7 +20,7 @@ interface State {
   speciauxIncompatibles: boolean;
   memesEquipes: boolean;
   memesAdversaires: number;
-  complement: string;
+  complement: Complement;
   nbTours: number;
   nbPtVictoire: number;
   avecTerrains: boolean;
@@ -35,7 +36,7 @@ class OptionsTournoi extends React.Component<Props, State> {
       speciauxIncompatibles: true,
       memesEquipes: true,
       memesAdversaires: 50,
-      complement: "3",
+      complement: Complement.TRIPLETTE,
       nbTours: 5,
       nbPtVictoire: 13,
       avecTerrains: false
@@ -182,7 +183,7 @@ class OptionsTournoi extends React.Component<Props, State> {
                   <Text color='$white' fontSize={'$md'}>{t("options_regle_complement")}</Text>
                   <Select
                     selectedValue={this.state.complement}
-                    defaultValue={"3"}
+                    defaultValue={Complement.TRIPLETTE}
                     initialLabel={t("triplettes")}
                     aria-label={t("choix_complement")}
                     placeholder={t("choix_complement")}
@@ -200,8 +201,8 @@ class OptionsTournoi extends React.Component<Props, State> {
                         <SelectDragIndicatorWrapper>
                           <SelectDragIndicator/>
                         </SelectDragIndicatorWrapper>
-                        <SelectItem label={t("triplettes")} value="3"/>
-                        <SelectItem label={t("tete_a_tete")} value="1"/>
+                        <SelectItem label={t("triplettes")} value={Complement.TRIPLETTE} />
+                        <SelectItem label={t("tete_a_tete")} value={Complement.TETEATETE}/>
                       </SelectContent>
                     </SelectPortal>
                   </Select>

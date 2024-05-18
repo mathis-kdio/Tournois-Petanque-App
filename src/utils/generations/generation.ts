@@ -1,3 +1,4 @@
+import { Complement } from "@/types/enums/complement";
 import { ModeTournoi } from "@/types/enums/modeTournoi";
 import { TypeEquipes } from "@/types/enums/typeEquipes";
 import { TypeTournoi } from "@/types/enums/typeTournoi";
@@ -20,7 +21,7 @@ export const uniqueValueArrayRandOrder = (arrayLength) => {
   return res;
 }
 
-export const calcNbMatchsParTour = (nbjoueurs: number, typeEquipes: TypeEquipes, modeTournoi: ModeTournoi, typeTournoi: TypeTournoi, complement) => {
+export const calcNbMatchsParTour = (nbjoueurs: number, typeEquipes: TypeEquipes, modeTournoi: ModeTournoi, typeTournoi: TypeTournoi, complement: Complement) => {
   let nbMatchsParTour = undefined;
 
   if (modeTournoi == ModeTournoi.AVECEQUIPES || typeTournoi == TypeTournoi.CHAMPIONNAT) {
@@ -42,10 +43,10 @@ export const calcNbMatchsParTour = (nbjoueurs: number, typeEquipes: TypeEquipes,
       nbMatchsParTour = nbjoueurs / 2;
     }
     else if (typeEquipes == TypeEquipes.DOUBLETTE) {
-      if (complement == "1") {
+      if (complement == Complement.TETEATETE) {
         nbMatchsParTour = Math.ceil(nbjoueurs / 4);
       }
-      else if (complement == "3") {
+      else if (complement == Complement.TRIPLETTE) {
         nbMatchsParTour = Math.floor(nbjoueurs / 4);
       }
       else {

@@ -9,6 +9,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { TFunction } from 'i18next'
 import { TypeEquipes } from '@/types/enums/typeEquipes'
 import { TypeTournoi } from '@/types/enums/typeTournoi'
+import { Complement } from '@/types/enums/complement'
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -116,11 +117,11 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
         title = t("joueurs_insuffisants");
         btnDisabled = true;
       }
-      else if (listesJoueurs.avecNoms.length % 2 == 0 && optionsTournoi.complement == "1") {
+      else if (listesJoueurs.avecNoms.length % 2 == 0 && optionsTournoi.complement == Complement.TETEATETE) {
         title = t("complement_tete_a_tete");
         btnAction = 'warning';
       }
-      else if (optionsTournoi.complement == "3") {
+      else if (optionsTournoi.complement == Complement.TRIPLETTE) {
         if (listesJoueurs.avecNoms.length == 7) {
           title = t("configuration_impossible");
           btnDisabled = true;
@@ -130,7 +131,7 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
           btnAction = 'warning';
         }
       }
-      else if (optionsTournoi.complement != "3") {
+      else if (optionsTournoi.complement != Complement.TRIPLETTE) {
         title = t("blocage_complement");
         btnDisabled = true;
       }
