@@ -4,9 +4,11 @@ import { VStack, FlatList} from '@gluestack-ui/themed';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Match } from '@/types/interfaces/match';
 import { PropsFromRedux, connector } from '@/store/connector';
+import { ListRenderItem } from 'react-native';
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
+  extraData: number;
 }
 
 interface State {
@@ -38,20 +40,22 @@ class ListeMatchs extends React.Component<Props, State> {
       nbPtVictoire = tournoi[tournoi.length - 1].nbPtVictoire ? tournoi[tournoi.length - 1].nbPtVictoire : 13; //On récup le nb de pt pour la victoire sinon 13
       matchs = tournoi.slice(0, -1); //On retire la config et donc seulement la liste des matchs
     }
-    matchs = matchs.filter((match: Match) => match.manche == this.props.extraData);
+    matchs = matchs.filter((match: Match) => match.manche == this.props.extraData) as Match[];
+    const renderItem: ListRenderItem<Match> = ({item}) => (
+      <MatchItem
+        match={item}
+        displayDetailForMatch={this._displayDetailForMatch}
+        manche={this.props.extraData}
+        nbPtVictoire={nbPtVictoire}
+      />
+    );
+
     return (
       <FlatList
         data={matchs}
         initialNumToRender={nbMatchs}
-        keyExtractor={(item) => item.id.toString() }
-        renderItem={({item}) => (
-          <MatchItem
-            match={item}
-            displayDetailForMatch={this._displayDetailForMatch}
-            manche={this.props.extraData}
-            nbPtVictoire={nbPtVictoire}
-          />
-        )}
+        keyExtractor={(item: Match) => item.id.toString() }
+        renderItem={renderItem}
       />
     )
   }
