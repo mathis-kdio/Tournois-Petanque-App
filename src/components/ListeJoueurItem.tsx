@@ -16,7 +16,7 @@ export interface Props extends PropsFromRedux {
   joueur: Joueur;
   isInscription: boolean;
   avecEquipes: boolean;
-  //typeEquipes: ;
+  typeEquipes: TypeEquipes;
   nbJoueurs: number;
   showCheckbox: boolean;
 }
@@ -58,7 +58,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
     }
   }
 
-  _showRenommerJoueur(joueur, isInscription: boolean, avecEquipes: boolean) {
+  _showRenommerJoueur(joueur: Joueur, isInscription: boolean, avecEquipes: boolean) {
     let name: string;
     let bgColor: string;
     let action;
@@ -83,14 +83,14 @@ class ListeJoueurItem extends React.Component<Props, State> {
     )
   }
 
-  _renommerJoueurInput(joueur) {
+  _renommerJoueurInput(joueur: Joueur) {
     this.setState({
       renommerOn: true
     })
     this.props.joueurText = joueur.name
   }
 
-  _renommerJoueur(joueur, isInscription: boolean, avecEquipes: boolean) {
+  _renommerJoueur(joueur: Joueur, isInscription: boolean, avecEquipes: boolean) {
     if (this.props.joueurText != "") {
       this.setState({renommerOn: false})
       if (isInscription === true) {
@@ -123,7 +123,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
     this.setState({renommerOn: true});
   }
 
-  _joueurName(joueur, isInscription: boolean, avecEquipes: boolean) {
+  _joueurName(joueur: Joueur, isInscription: boolean, avecEquipes: boolean) {
     if (this.state.renommerOn == true) {
       return(
         <Input variant='underlined' size='md'>
@@ -148,7 +148,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
     this.props.dispatch(action);
   }
 
-  _equipePicker(joueur, avecEquipes: boolean, typeEquipes, nbJoueurs: number) {
+  _equipePicker(joueur: Joueur, avecEquipes: boolean, typeEquipes: TypeEquipes, nbJoueurs: number) {
     const { t } = this.props;
     if (avecEquipes == true) {
       let selectedValue = "0";
@@ -206,7 +206,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
     }
   }
 
-  _equipePickerItem(equipe) {
+  _equipePickerItem(equipe: number) {
     return (
       <SelectItem label={equipe.toString()} value={equipe.toString()} key={equipe}/>
     )
