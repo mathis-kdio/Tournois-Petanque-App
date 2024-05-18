@@ -6,6 +6,6 @@ export interface Match {
   score2: string;
   manche: number;
   mancheName: string;
-  equipe: ;
+  equipe: [[number, number, number], [number, number, number]];
   terrain: Terrain;
 }
