@@ -8,6 +8,7 @@ import { JoueurType as JoueurTypeEnum} from '@/types/enums/joueurType';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { Joueur } from '@/types/interfaces/joueur';
 import { PropsFromRedux, connector } from '@/store/connector';
+import { ModeTournoi } from '@/types/enums/modeTournoi';
 
 export interface Props extends PropsFromRedux {
   t: TFunction;
