@@ -12,7 +12,6 @@ import { PropsFromRedux, connector } from '@/store/connector';
 
 export interface Props extends PropsFromRedux {
   t: TFunction;
-  joueurText: string;
   joueur: Joueur;
   isInscription: boolean;
   avecEquipes: boolean;
@@ -27,9 +26,10 @@ interface State {
 }
 
 class ListeJoueurItem extends React.Component<Props, State> {
+  joueurText: string = "";
+
   constructor(props: Props) {
     super(props)
-    props.joueurText = ""
     this.state = {
       renommerOn: false,
       modalConfirmUncheckIsOpen: false
@@ -66,7 +66,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
       name = 'edit';
       bgColor = '#004282';
       action = () => this.setState({renommerOn: true});
-    } else if (this.props.joueurText == '') {
+    } else if (this.joueurText == '') {
       name = 'times';
       bgColor = '#5F5F5F';
       action = () => this.setState({renommerOn: false});
@@ -87,11 +87,11 @@ class ListeJoueurItem extends React.Component<Props, State> {
     this.setState({
       renommerOn: true
     })
-    this.props.joueurText = joueur.name
+    this.joueurText = joueur.name
   }
 
   _renommerJoueur(joueur: Joueur, isInscription: boolean, avecEquipes: boolean) {
-    if (this.props.joueurText != "") {
+    if (this.joueurText != "") {
       this.setState({renommerOn: false})
       if (isInscription === true) {
         let typeInscription = "";
@@ -104,22 +104,22 @@ class ListeJoueurItem extends React.Component<Props, State> {
         else {
           typeInscription = ModeTournoi.AVECNOMS
         }
-        const actionRenommer = { type: "RENOMMER_JOUEUR", value: [typeInscription, joueur.id, this.props.joueurText] }
+        const actionRenommer = { type: "RENOMMER_JOUEUR", value: [typeInscription, joueur.id, this.joueurText] }
         this.props.dispatch(actionRenommer)
       }
       else {
-        let data = { playerId: joueur.id, newName: this.props.joueurText };
+        let data = { playerId: joueur.id, newName: this.joueurText };
         const inGameRenamePlayer = { type: "INGAME_RENAME_PLAYER", value: data };
         this.props.dispatch(inGameRenamePlayer);
         const actionUpdateTournoi = { type: "UPDATE_TOURNOI", value: {tournoi: this.props.listeMatchs, tournoiId: this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID}};
         this.props.dispatch(actionUpdateTournoi);
       }
-      this.props.joueurText = ""
+      this.joueurText = ""
     }
   }
 
   _joueurTxtInputChanged = (text: string) => {
-    this.props.joueurText = text
+    this.joueurText = text
     this.setState({renommerOn: true});
   }
 
@@ -165,7 +165,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
 
       let pickerItem = [];
       for (let i = 1; i <= nbEquipes; i++) {
-        let count = this.props.listesJoueurs.avecEquipes.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0);
+        let count = this.props.listesJoueurs.avecEquipes.reduce((counter: number, obj: Joueur) => obj.equipe == i ? counter += 1 : counter, 0);
         if (typeEquipes == TypeEquipes.TETEATETE && count < 1) {
           pickerItem.push(this._equipePickerItem(i));
         }
@@ -183,7 +183,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
         <Select
           selectedValue={selectedValue}
           aria-label={t("choix_equipe")}
-          onValueChange={itemValue => this._ajoutEquipe(joueur.id, itemValue)}
+          onValueChange={itemValue => this._ajoutEquipe(joueur.id, parseInt(itemValue))}
         >
           <SelectTrigger>
             <SelectInput placeholder={t("choix_equipe")}/>
@@ -242,6 +242,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
       return (
         <Box mr={'$1'}>
           <Checkbox
+            value="joueurCheckbox"
             onChange={() => this._onCheckboxChange(isChecked, joueur.id)}
             aria-label={t("checkbox_inscription_joueuritem")}
             size='md'
