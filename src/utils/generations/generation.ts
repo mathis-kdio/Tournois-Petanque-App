@@ -9,7 +9,7 @@ const rand0ToMax = (max) => {
 
 const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
 
-export const uniqueValueArrayRandOrder = (arrayLength) => {
+export const uniqueValueArrayRandOrder = (arrayLength: number) => {
   const res = [];
   for (let i = 0; i < arrayLength; ) {
     const random = rand0ToMax(arrayLength - 1);

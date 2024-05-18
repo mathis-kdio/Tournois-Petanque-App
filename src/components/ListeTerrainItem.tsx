@@ -3,10 +3,11 @@ import { connect } from 'react-redux'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { withTranslation } from 'react-i18next';
 import { Box, HStack, Input, Text, InputField } from '@gluestack-ui/themed';
+import { Terrain } from '@/types/interfaces/terrain';
 
 export interface Props {
   terrainText: string;
-  //terrain: ;
+  terrain: Terrain;
 }
 
 interface State {
@@ -22,15 +23,15 @@ class ListeTerrainItem extends React.Component<Props, State> {
     }
   }
 
-  _supprimerTerrain(terrain) {
+  _supprimerTerrain(terrain: Terrain) {
     this.setState({renommerOn: false});
     const actionSuppr = {type: "SUPPR_TERRAIN", value: {terrainId: terrain.id}};
     this.props.dispatch(actionSuppr);
   }
 
-  _showRenommerTerrain(terrain) {
-    let name;
-    let bgColor;
+  _showRenommerTerrain(terrain: Terrain) {
+    let name: string;
+    let bgColor: string;
     let action;
     if (!this.state.renommerOn) {
       name = 'edit';
@@ -53,7 +54,7 @@ class ListeTerrainItem extends React.Component<Props, State> {
     )
   }
 
-  _renommerTerrain(terrain) {
+  _renommerTerrain(terrain: Terrain) {
     if (this.props.terrainText != "") {
       this.setState({renommerOn: false});
       const actionRenommer = { type: "RENOMMER_TERRAIN", value: {terrainId: terrain.id, newName: this.props.terrainText}};
@@ -62,12 +63,12 @@ class ListeTerrainItem extends React.Component<Props, State> {
     }
   }
 
-  _terrainTxtInputChanged(text) {
+  _terrainTxtInputChanged(text: string) {
     this.props.terrainText = text;
     this.setState({renommerOn: true});
   }
 
-  _terrainName(terrain) {
+  _terrainName(terrain: Terrain) {
     if (this.state.renommerOn) {
       return (
         <Input>

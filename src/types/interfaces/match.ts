@@ -1,3 +1,5 @@
+import { Terrain } from "./terrain";
+
 export interface Match {
   id: number;
   score1: string;
@@ -5,5 +7,5 @@ export interface Match {
   manche: number;
   mancheName: string;
   equipe: ;
-  terrain: ;
+  terrain: Terrain;
 }
