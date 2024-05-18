@@ -57,12 +57,12 @@ class JoueurSuggere extends React.Component<Props, State> {
     )
   }
 
-  _removePlayer(playerId) {
+  _removePlayer(playerId: number) {
     const actionSuppr = {type: "SUPPR_JOUEUR", value: ["historique", playerId]};
     this.props.dispatch(actionSuppr);
   }
 
-  _addPlayer(playerName) {
+  _addPlayer(playerName: string) {
     let equipe = undefined;
     if (this.props.optionsTournoi.typeEquipes == TypeEquipes.TETEATETE) {
       equipe = this.props.listesJoueurs.avecEquipes.length + 1;
@@ -71,7 +71,7 @@ class JoueurSuggere extends React.Component<Props, State> {
     this.props.dispatch(action);
   }
 
-  _setJoueurType(type) {
+  _setJoueurType(type: JoueurTypeEnum) {
     this.setState({
       joueurType: type
     })
@@ -87,7 +87,7 @@ class JoueurSuggere extends React.Component<Props, State> {
         <Box flex={1}>
           <JoueurType
             joueurType={this.state.joueurType}
-            _setJoueurType={(type) => this._setJoueurType(type)}
+            _setJoueurType={(type: JoueurTypeEnum) => this._setJoueurType(type)}
           />
         </Box>
         <Box ml={'$2'}>
