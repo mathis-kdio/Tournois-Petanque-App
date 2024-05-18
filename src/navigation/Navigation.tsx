@@ -29,6 +29,7 @@ import PDFExport from '@components/PDFExport'
 import BoutonMenuHeaderNav from '@components/BoutonMenuHeaderNavigation'
 import ListesJoueurs from '@screens/ListesJoueurs/ListesJoueurs';
 import CreateListeJoueurs from '@screens/ListesJoueurs/CreateListeJoueurs';
+import { TypeTournoi } from '@/types/enums/typeTournoi';
 
 const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -54,7 +55,7 @@ function topTabScreens() {
 
 function topTabItemLabel(numero, listeMatchs) {
   let title = 'Tour ' + numero;
-  if (listeMatchs && listeMatchs[listeMatchs.length - 1].typeTournoi == 'coupe') {
+  if (listeMatchs && listeMatchs[listeMatchs.length - 1].typeTournoi == TypeTournoi.COUPE) {
     title = listeMatchs.find(el => el.manche == numero).mancheName;
   }
 
@@ -202,7 +203,7 @@ function InscriptionStack() {
 
 function ListeMatchsStack() {
   const listeMatchs = useSelector(state => state.gestionMatchs.listematchs);
-  let typeTournoi = 'mele-demele'
+  let typeTournoi = TypeTournoi.MELEDEMELE;
   if (listeMatchs && listeMatchs.length > 0 && listeMatchs[listeMatchs.length - 1].typeTournoi) {
     typeTournoi = listeMatchs[listeMatchs.length - 1].typeTournoi;
   }
@@ -210,7 +211,7 @@ function ListeMatchsStack() {
     <Stack.Navigator>
       <Stack.Screen
         name="ListeMatchsScreen"
-        component={typeTournoi != 'Coupe' ? MatchsResultatsBottomNavigator : MatchsStack} 
+        component={typeTournoi != TypeTournoi.COUPE ? MatchsResultatsBottomNavigator : MatchsStack} 
         options={{headerShown: false}}
       />
     </Stack.Navigator>

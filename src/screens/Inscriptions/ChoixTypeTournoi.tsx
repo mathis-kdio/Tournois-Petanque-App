@@ -9,6 +9,7 @@ import { withTranslation } from 'react-i18next';
 import AdMobInscriptionsBanner from '../../components/adMob/AdMobInscriptionsBanner';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
+import { TypeTournoi } from '@/types/enums/typeTournoi';
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -70,7 +71,7 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
     )
   }
 
-  _navigate(typeTournoi) {
+  _navigate(typeTournoi: TypeTournoi) {
     const updateOptionTypeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['type', typeTournoi]}
     this.props.dispatch(updateOptionTypeTournoi);
     return this.props.navigation.navigate({name: 'ChoixModeTournoi'});
@@ -87,7 +88,7 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
               <CardButton
                 text={t("type_melee_demelee")}
                 icon="random"
-                navigate={() => this._navigate('mele-demele')}
+                navigate={() => this._navigate(TypeTournoi.MELEDEMELE)}
                 newBadge={false}
               />
               <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: "melee-demelee"})}>
@@ -99,10 +100,10 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
               <CardButton
                 text={t("type_championnat")}
                 icon="table"
-                navigate={() => this._navigate('championnat')}
+                navigate={() => this._navigate(TypeTournoi.CHAMPIONNAT)}
                 newBadge={false}
               />
-              <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: "championnat"})}>
+              <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: TypeTournoi.CHAMPIONNAT})}>
                 <FontAwesome5 name="info-circle" color='white' size={24}/>
                 <Text color='$white'> {t("savoir_plus")}</Text>
               </Pressable>
@@ -111,10 +112,10 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
               <CardButton
                 text={t("type_coupe")}
                 icon="trophy"
-                navigate={() => this._navigate('coupe')}
+                navigate={() => this._navigate(TypeTournoi.COUPE)}
                 newBadge={false}
               />
-              <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: "coupe"})}>
+              <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: TypeTournoi.COUPE})}>
                 <FontAwesome5 name="info-circle" color='white' size={24}/>
                 <Text color='$white'> {t("savoir_plus")}</Text>
               </Pressable>
@@ -123,7 +124,7 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
               <CardButton
                 text={t("type_multi_chances")}
                 icon="code-branch"
-                navigate={() => this._navigate('multi-chances')}
+                navigate={() => this._navigate(TypeTournoi.MULTICHANCES)}
                 newBadge={true}
               />
               <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: "multi-chances"})}>

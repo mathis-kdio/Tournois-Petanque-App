@@ -8,6 +8,7 @@ import { Box, Button, ButtonText, Text, VStack } from '@gluestack-ui/themed'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { TFunction } from 'i18next'
 import { TypeEquipes } from '@/types/enums/typeEquipes'
+import { TypeTournoi } from '@/types/enums/typeTournoi'
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -58,10 +59,10 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
       nbEquipes = Math.ceil(nbJoueurs / 3);
     }
 
-    if (optionsTournoi.type == 'coupe' && (nbEquipes < 4 || Math.log2(nbEquipes) % 1 !== 0)) {
+    if (optionsTournoi.type == TypeTournoi.COUPE && (nbEquipes < 4 || Math.log2(nbEquipes) % 1 !== 0)) {
       title = t("configuration_impossible_coupe");
       btnDisabled = true;
-    } else if (optionsTournoi.type == 'multi-chances' && (nbEquipes == 0 || nbEquipes % 8 != 0)) {
+    } else if (optionsTournoi.type == TypeTournoi.MULTICHANCES && (nbEquipes == 0 || nbEquipes % 8 != 0)) {
       title = t("configuration_impossible_multichances");
       btnDisabled = true;
     } else if (optionsTournoi.mode == 'avecEquipes') {

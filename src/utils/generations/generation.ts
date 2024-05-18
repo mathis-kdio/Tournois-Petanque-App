@@ -1,5 +1,6 @@
 import { ModeTournoi } from "@/types/enums/modeTournoi";
 import { TypeEquipes } from "@/types/enums/typeEquipes";
+import { TypeTournoi } from "@/types/enums/typeTournoi";
 
 const rand0ToMax = (max) => {
   return Math.floor(Math.random() * (max + 1));
@@ -19,10 +20,10 @@ export const uniqueValueArrayRandOrder = (arrayLength) => {
   return res;
 }
 
-export const calcNbMatchsParTour = (nbjoueurs, typeEquipes, modeTournoi, typeTournoi, complement) => {
+export const calcNbMatchsParTour = (nbjoueurs: number, typeEquipes: TypeEquipes, modeTournoi: ModeTournoi, typeTournoi: TypeTournoi, complement) => {
   let nbMatchsParTour = undefined;
 
-  if (modeTournoi == ModeTournoi.AVECEQUIPES || typeTournoi == "championnat") {
+  if (modeTournoi == ModeTournoi.AVECEQUIPES || typeTournoi == TypeTournoi.CHAMPIONNAT) {
     if (typeEquipes == TypeEquipes.TETEATETE) {
       nbMatchsParTour = nbjoueurs / 2;
     }
@@ -36,7 +37,7 @@ export const calcNbMatchsParTour = (nbjoueurs, typeEquipes, modeTournoi, typeTou
       console.log("calcNbMatchsParTour : typeEquipes inconnu pour avecEquipes/championnat");
     }
   }
-  else if (typeTournoi == "mele-demele") {
+  else if (typeTournoi == TypeTournoi.MELEDEMELE) {
     if (typeEquipes == TypeEquipes.TETEATETE) {
       nbMatchsParTour = nbjoueurs / 2;
     }
@@ -58,7 +59,7 @@ export const calcNbMatchsParTour = (nbjoueurs, typeEquipes, modeTournoi, typeTou
       console.log("calcNbMatchsParTour : typeEquipes inconnu pour mele-demele");
     }
   }
-  else if (typeTournoi == "coupe") {
+  else if (typeTournoi == TypeTournoi.COUPE) {
     console.log("calcNbMatchsParTour: coupe non prise en charge");
   }
   else {

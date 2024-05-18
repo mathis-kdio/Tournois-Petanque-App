@@ -1,4 +1,4 @@
-export const nextMatchCoupe = (match, nbMatchs) => {
+export const nextMatchCoupe = (match, nbMatchs: number) => {
   let gagnant = match.equipe[0];
   if (parseInt(match.score2) > parseInt(match.score1)) {
     gagnant = match.equipe[1];

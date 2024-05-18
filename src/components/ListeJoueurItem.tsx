@@ -8,6 +8,7 @@ import { JoueurType } from '@/types/enums/joueurType';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { Joueur } from '@/types/interfaces/joueur';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
+import { TypeTournoi } from '@/types/enums/typeTournoi';
 
 export interface Props {
   t: TFunction;
@@ -213,7 +214,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
 
   _joueurTypeIcon(joueurType: string) {
     const { mode, type, typeEquipes } = this.props.optionsTournoi;
-    if (mode == "sauvegarde" || (type == "mele-demele" && typeEquipes == TypeEquipes.DOUBLETTE)) {
+    if (mode == "sauvegarde" || (type == TypeTournoi.MELEDEMELE && typeEquipes == TypeEquipes.DOUBLETTE)) {
       return (
         <Box>
           {joueurType == JoueurType.ENFANT && <FontAwesome5 name="child" color="darkgray" size={24}/>}

@@ -6,6 +6,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { VStack, Text, Button, FlatList, ButtonText, Box } from '@gluestack-ui/themed';
 import TopBarBack from '@components/TopBarBack';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
+import { TypeTournoi } from '@/types/enums/typeTournoi';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { TFunction } from 'i18next';
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -25,7 +28,7 @@ class ListesJoueurs extends React.Component<Props, State> {
     const actionRemoveList = {type: "SUPPR_ALL_JOUEURS", value: ['sauvegarde']};
     this.props.dispatch(actionRemoveList);
     //Sera utilisé par le component inscription 
-    const updateOptionTypeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['type', 'mele-demele']};
+    const updateOptionTypeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['type', TypeTournoi.MELEDEMELE]};
     this.props.dispatch(updateOptionTypeTournoi);
     const updateOptionEquipesTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['typeEquipes', TypeEquipes.TETEATETE]};
     this.props.dispatch(updateOptionEquipesTournoi);

@@ -19,6 +19,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { TFunction } from 'i18next'
 import { TypeEquipes } from '@/types/enums/typeEquipes'
 import { ModeTournoi } from '@/types/enums/modeTournoi'
+import { TypeTournoi } from '@/types/enums/typeTournoi'
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -31,7 +32,7 @@ export interface Props {
   typeEquipes: string;
   typeInscription: string;
   complement: string;
-  typeTournoi: string;
+  typeTournoi: TypeTournoi;
   avecTerrains: boolean;
   /*interstitial: ;
   listener: ;*/
@@ -58,7 +59,7 @@ class GenerationMatchs extends React.Component<Props, State> {
     props.typeEquipes = TypeEquipes.DOUBLETTE;
     props.typeInscription = ModeTournoi.AVECNOMS;
     props.complement = "3";
-    props.typeTournoi = "mele-demele";
+    props.typeTournoi = TypeTournoi.MELEDEMELE;
     props.avecTerrains = false;
     props.interstitial;
     props.listener;
@@ -153,7 +154,7 @@ class GenerationMatchs extends React.Component<Props, State> {
     let erreurMemesEquipes = undefined;
     let erreurSpeciaux = undefined;
     let echecGeneration = undefined;
-    if (this.props.typeTournoi == "mele-demele") {
+    if (this.props.typeTournoi == TypeTournoi.MELEDEMELE) {
       if (this.props.typeInscription == 'avecEquipes') {
         ({matchs, nbMatchs, echecGeneration} = generationAvecEquipes(this.props.listesJoueurs.avecEquipes, this.nbTours, this.typeEquipes, this.eviterMemeAdversaire));
       }
@@ -170,13 +171,13 @@ class GenerationMatchs extends React.Component<Props, State> {
         echecGeneration = true;
       }
     }
-    else if (this.props.typeTournoi == "coupe") {
+    else if (this.props.typeTournoi == TypeTournoi.COUPE) {
       ({matchs, nbTours, nbMatchs} = generationCoupe(this.props.optionsTournoi, this.props.listesJoueurs.avecEquipes));
     }
-    else if (this.props.typeTournoi == "championnat") {
+    else if (this.props.typeTournoi == TypeTournoi.CHAMPIONNAT) {
       ({matchs, nbTours, nbMatchs} = generationChampionnat(this.props.optionsTournoi, this.props.listesJoueurs.avecEquipes));
     }
-    else if (this.props.typeTournoi == "multi-chances") {
+    else if (this.props.typeTournoi == TypeTournoi.MULTICHANCES) {
       ({matchs, nbTours, nbMatchs} = generationMultiChances(this.props.listesJoueurs[this.props.typeInscription], this.props.typeEquipes));
     }
     else {

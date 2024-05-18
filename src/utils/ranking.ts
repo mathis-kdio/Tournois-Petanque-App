@@ -1,10 +1,12 @@
+import { TypeTournoi } from "@/types/enums/typeTournoi";
+
 export const ranking = (listeMatchs) => {
   if (listeMatchs != undefined) {
     let optionsTournoi = listeMatchs[listeMatchs.length - 1];
     let nbPtVictoire = optionsTournoi.nbPtVictoire ? optionsTournoi.nbPtVictoire : 13;
     let victoires = victoiresPointsCalc(listeMatchs, optionsTournoi, nbPtVictoire);
 
-    if (optionsTournoi.typeTournoi == 'multi-chances') {
+    if (optionsTournoi.typeTournoi == TypeTournoi.MULTICHANCES) {
       //Classement pour les tournois de type Multi-Chances
       return rankingMuliChances(listeMatchs, optionsTournoi, nbPtVictoire, victoires);
     } else {

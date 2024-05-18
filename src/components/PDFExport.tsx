@@ -11,6 +11,7 @@ import TopBarBack from './TopBarBack';
 import { Platform } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
+import { TypeTournoi } from '@/types/enums/typeTournoi';
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -37,7 +38,7 @@ class PDFExport extends React.Component<Props, State> {
     let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs;
     let nbMatchsParTour = 0;
     let typeTournoi = this.props.listeMatchs[this.props.listeMatchs.length - 1].typeTournoi;
-    if (typeTournoi == "coupe") {
+    if (typeTournoi == TypeTournoi.COUPE) {
       nbMatchsParTour = (nbMatchs + 1) / 2;
     } else {
       nbMatchsParTour = nbMatchs / nbTours;
@@ -45,7 +46,7 @@ class PDFExport extends React.Component<Props, State> {
     let nbTables = Math.ceil(nbTours / toursParLigne);
     let nbToursRestants = nbTours;
     let html = "";
-    if (typeTournoi == "coupe") {
+    if (typeTournoi == TypeTournoi.COUPE) {
       html = generationPDFCoupe(affichageScore, affichageClassement, listeJoueurs, listeMatchs, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables);
     } else {
       html = generationPDFTournoi(affichageScore, affichageClassement, listeJoueurs, listeMatchs, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables);
