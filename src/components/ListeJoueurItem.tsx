@@ -5,6 +5,7 @@ import { AlertDialog, AlertDialogBackdrop, AlertDialogBody, AlertDialogCloseButt
 import { withTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
 import { JoueurType } from '@/types/enums/joueurType';
+import { TypeEquipes } from '@/types/enums/typeEquipes';
 
 export interface Props {
   t: TFunction;
@@ -48,7 +49,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
     })
     const actionSuppr = {type: "SUPPR_JOUEUR", value: [this.props.optionsTournoi.mode, idJoueur]};
     this.props.dispatch(actionSuppr);
-    if (this.props.optionsTournoi.typeEquipes == "teteatete") {
+    if (this.props.optionsTournoi.typeEquipes == TypeEquipes.TETEATETE) {
       const actionUpdateEquipe = {type: "UPDATE_ALL_JOUEURS_EQUIPE", value: [this.props.optionsTournoi.mode]};
       this.props.dispatch(actionUpdateEquipe);
     }
@@ -152,23 +153,23 @@ class ListeJoueurItem extends React.Component<Props, State> {
         selectedValue = joueur.equipe.toString();
       }
       let nbEquipes = nbJoueurs;
-      if (typeEquipes == "doublette") {
+      if (typeEquipes == TypeEquipes.DOUBLETTE) {
         nbEquipes = Math.ceil(nbJoueurs / 2);
       }
-      else if (typeEquipes == "triplette"){
+      else if (typeEquipes == TypeEquipes.TRIPLETTE){
         nbEquipes = Math.ceil(nbJoueurs / 3);
       }
 
       let pickerItem = [];
       for (let i = 1; i <= nbEquipes; i++) {
         let count = this.props.listesJoueurs.avecEquipes.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0);
-        if (typeEquipes == "teteatete" && count < 1) {
+        if (typeEquipes == TypeEquipes.TETEATETE && count < 1) {
           pickerItem.push(this._equipePickerItem(i));
         }
-        if (typeEquipes == "doublette" && count < 2) {
+        if (typeEquipes == TypeEquipes.DOUBLETTE && count < 2) {
           pickerItem.push(this._equipePickerItem(i));
         }
-        else if (typeEquipes == "triplette" && count < 3) {
+        else if (typeEquipes == TypeEquipes.TRIPLETTE && count < 3) {
           pickerItem.push(this._equipePickerItem(i));
         }
         else if (joueur.equipe == i) {
@@ -210,7 +211,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
 
   _joueurTypeIcon(joueurType: string) {
     const { mode, type, typeEquipes } = this.props.optionsTournoi;
-    if (mode == "sauvegarde" || (type == "mele-demele" && typeEquipes == "doublette")) {
+    if (mode == "sauvegarde" || (type == "mele-demele" && typeEquipes == TypeEquipes.DOUBLETTE)) {
       return (
         <Box>
           {joueurType == JoueurType.ENFANT && <FontAwesome5 name="child" color="darkgray" size={24}/>}

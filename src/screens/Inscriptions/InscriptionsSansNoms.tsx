@@ -7,6 +7,7 @@ import TopBarBack from '@components/TopBarBack'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { TFunction } from 'i18next'
 import { JoueurType } from '@/types/enums/joueurType'
+import { TypeEquipes } from '@/types/enums/typeEquipes'
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -85,7 +86,7 @@ class InscriptionsSansNoms extends React.Component<Props, State> {
     let boutonDesactive;
     let boutonTitle = '';
     let nbJoueurs = this._nbJoueurs();
-    if (this.props.optionsTournoi.typeEquipes == 'doublette' || this.props.optionsTournoi.typeEquipes == "teteatete") {
+    if (this.props.optionsTournoi.typeEquipes == TypeEquipes.DOUBLETTE || this.props.optionsTournoi.typeEquipes == TypeEquipes.TETEATETE) {
       if (nbJoueurs % 2 == 0 && nbJoueurs != 0) {
         boutonTitle = t("commencer_tournoi");
         boutonDesactive = false;

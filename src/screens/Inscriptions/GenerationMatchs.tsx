@@ -17,6 +17,7 @@ import { Platform } from 'react-native'
 import { EventRegister } from 'react-native-event-listeners'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { TFunction } from 'i18next'
+import { TypeEquipes } from '@/types/enums/typeEquipes'
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -53,7 +54,7 @@ class GenerationMatchs extends React.Component<Props, State> {
     props.speciauxIncompatibles = true;
     props.jamaisMemeCoequipier = true;
     props.eviterMemeAdversaire = 50;
-    props.typeEquipes = "doublette";
+    props.typeEquipes = TypeEquipes.DOUBLETTE;
     props.typeInscription = "avecNoms";
     props.complement = "3";
     props.typeTournoi = "mele-demele";
@@ -155,13 +156,13 @@ class GenerationMatchs extends React.Component<Props, State> {
       if (this.props.typeInscription == 'avecEquipes') {
         ({matchs, nbMatchs, echecGeneration} = generationAvecEquipes(this.props.listesJoueurs.avecEquipes, this.nbTours, this.typeEquipes, this.eviterMemeAdversaire));
       }
-      else if (this.props.typeEquipes == "teteatete") {
+      else if (this.props.typeEquipes == TypeEquipes.TETEATETE) {
         ({matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration} = generationDoublettes(this.props.listesJoueurs[this.props.typeInscription], this.props.nbTours, this.typeEquipes, this.complement, this.speciauxIncompatibles, this.jamaisMemeCoequipier, this.eviterMemeAdversaire));
       }
-      else if (this.props.typeEquipes == "doublette") {
+      else if (this.props.typeEquipes == TypeEquipes.DOUBLETTE) {
         ({matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration} = generationDoublettes(this.props.listesJoueurs[this.props.typeInscription], this.props.nbTours, this.typeEquipes, this.complement, this.speciauxIncompatibles, this.jamaisMemeCoequipier, this.eviterMemeAdversaire));
       }
-      else if (this.props.typeEquipes == "triplette") {
+      else if (this.props.typeEquipes == TypeEquipes.TRIPLETTE) {
         ({matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration} = generationTriplettes(this.props.listesJoueurs[this.props.typeInscription], this.props.nbTours));
       }
       else {

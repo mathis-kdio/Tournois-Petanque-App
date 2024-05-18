@@ -1,3 +1,5 @@
+import { TypeEquipes } from "@/types/enums/typeEquipes";
+
 const rand0ToMax = (max) => {
   return Math.floor(Math.random() * (max + 1));
 }
@@ -20,13 +22,13 @@ export const calcNbMatchsParTour = (nbjoueurs, typeEquipes, modeTournoi, typeTou
   let nbMatchsParTour = undefined;
 
   if (modeTournoi == "avecEquipes" || typeTournoi == "championnat") {
-    if (typeEquipes == "teteatete") {
+    if (typeEquipes == TypeEquipes.TETEATETE) {
       nbMatchsParTour = nbjoueurs / 2;
     }
-    else if (typeEquipes == "doublette") {
+    else if (typeEquipes == TypeEquipes.DOUBLETTE) {
       nbMatchsParTour = Math.ceil(nbjoueurs / 4);
     }
-    else if (typeEquipes == "triplette") {
+    else if (typeEquipes == TypeEquipes.TRIPLETTE) {
       nbMatchsParTour = Math.ceil(nbjoueurs / 6);
     }
     else {
@@ -34,10 +36,10 @@ export const calcNbMatchsParTour = (nbjoueurs, typeEquipes, modeTournoi, typeTou
     }
   }
   else if (typeTournoi == "mele-demele") {
-    if (typeEquipes == "tete-a-tete") {
+    if (typeEquipes == TypeEquipes.TETEATETE) {
       nbMatchsParTour = nbjoueurs / 2;
     }
-    else if (typeEquipes == "doublette") {
+    else if (typeEquipes == TypeEquipes.DOUBLETTE) {
       if (complement == "1") {
         nbMatchsParTour = Math.ceil(nbjoueurs / 4);
       }
@@ -48,7 +50,7 @@ export const calcNbMatchsParTour = (nbjoueurs, typeEquipes, modeTournoi, typeTou
         console.log("calcNbMatchsParTour : complement inconnu pour mele-demele");
       }
     }
-    else if (typeEquipes == "triplette") {
+    else if (typeEquipes == TypeEquipes.TRIPLETTE) {
       nbMatchsParTour = Math.ceil(nbjoueurs / 6);
     }
     else {

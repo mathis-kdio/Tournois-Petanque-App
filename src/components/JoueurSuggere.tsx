@@ -6,6 +6,7 @@ import { withTranslation } from 'react-i18next';
 import { AlertDialog, AlertDialogBackdrop, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, Box, Button, ButtonGroup, ButtonText, CloseIcon, HStack, Heading, Text } from '@gluestack-ui/themed';
 import { TFunction } from 'i18next';
 import { JoueurType as JoueurTypeEnum} from '@/types/enums/joueurType';
+import { TypeEquipes } from '@/types/enums/typeEquipes';
 
 export interface Props {
   t: TFunction;
@@ -63,7 +64,7 @@ class JoueurSuggere extends React.Component<Props, State> {
 
   _addPlayer(playerName) {
     let equipe = undefined;
-    if (this.props.optionsTournoi.typeEquipes == "teteatete") {
+    if (this.props.optionsTournoi.typeEquipes == TypeEquipes.TETEATETE) {
       equipe = this.props.listesJoueurs.avecEquipes.length + 1;
     }
     const action = { type: "AJOUT_JOUEUR", value: [this.props.optionsTournoi.mode, playerName, this.state.joueurType, equipe] };

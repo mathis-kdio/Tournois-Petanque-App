@@ -4,6 +4,7 @@ import { ChevronDownIcon, Select, SelectBackdrop, SelectContent, SelectDragIndic
 import { withTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
 import { JoueurType as JoueurTypeEnum} from '../types/enums/joueurType';
+import { TypeEquipes } from '@/types/enums/typeEquipes';
 
 export interface Props {
   t: TFunction;
@@ -31,7 +32,7 @@ class JoueurType extends React.Component<Props, State> {
         <SelectItem label={t("milieu")} value={JoueurTypeEnum.MILIEU} key={3}/>
       ]
     }
-    else if (type == "mele-demele" && typeEquipes == "doublette") {
+    else if (type == "mele-demele" && typeEquipes == TypeEquipes.DOUBLETTE) {
       /*TEMPORAIRE AFFICHAGE DES POSTES TIREURS ET POINTEURS SEULEMENT EN DOUBLETTE*/
       return [
         <SelectItem label={t("tireur")} value={JoueurTypeEnum.TIREUR} key={1}/>,

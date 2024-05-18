@@ -7,6 +7,7 @@ import TopBarBack from '@components/TopBarBack'
 import { Box, Button, ButtonText, Text, VStack } from '@gluestack-ui/themed'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { TFunction } from 'i18next'
+import { TypeEquipes } from '@/types/enums/typeEquipes'
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -47,10 +48,10 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
     const optionsTournoi = this.props.optionsTournoi;
     let nbEquipes = 0;
 
-    if (optionsTournoi.typeEquipes == "teteatete") {
+    if (optionsTournoi.typeEquipes == TypeEquipes.TETEATETE) {
       nbEquipes = nbJoueurs;
     }
-    else if (optionsTournoi.typeEquipes == "doublette") {
+    else if (optionsTournoi.typeEquipes == TypeEquipes.DOUBLETTE) {
       nbEquipes = Math.ceil(nbJoueurs / 2);
     }
     else {
@@ -68,7 +69,7 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
         title = t("joueurs_sans_equipe");
         btnDisabled = true;
       }
-      else if (optionsTournoi.typeEquipes == "teteatete") {
+      else if (optionsTournoi.typeEquipes == TypeEquipes.TETEATETE) {
         if (listesJoueurs.avecEquipes.length % 2 != 0 || listesJoueurs.avecEquipes.length < 2) {
           title = t("nombre_equipe_multiple_2");
           btnDisabled = true;
@@ -84,7 +85,7 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
           }
         }
       }
-      else if (optionsTournoi.typeEquipes == "doublette") {
+      else if (optionsTournoi.typeEquipes == TypeEquipes.DOUBLETTE) {
         if (listesJoueurs.avecEquipes.length % 4 != 0 || listesJoueurs.avecEquipes.length == 0) {
           title = t("equipe_doublette_multiple_4");
           btnDisabled = true;
@@ -100,16 +101,16 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
           }
         }
       }
-      else if (optionsTournoi.typeEquipes == "triplette" && (listesJoueurs.avecEquipes.length % 6 != 0 || listesJoueurs.avecEquipes.length == 0)) {
+      else if (optionsTournoi.typeEquipes == TypeEquipes.TRIPLETTE && (listesJoueurs.avecEquipes.length % 6 != 0 || listesJoueurs.avecEquipes.length == 0)) {
         title = t("equipe_triplette_multiple_6");
         btnDisabled = true;
       }
     }
-    else if (optionsTournoi.typeEquipes == "teteatete" && (listesJoueurs.avecNoms.length % 2 != 0 || listesJoueurs.avecNoms.length < 2)) {
+    else if (optionsTournoi.typeEquipes == TypeEquipes.TETEATETE && (listesJoueurs.avecNoms.length % 2 != 0 || listesJoueurs.avecNoms.length < 2)) {
       title = t("tete_a_tete_multiple_2");
       btnDisabled = true;
     }
-    else if (optionsTournoi.typeEquipes == "doublette" && (listesJoueurs.avecNoms.length % 4 != 0 || listesJoueurs.avecNoms.length < 4)) {
+    else if (optionsTournoi.typeEquipes == TypeEquipes.DOUBLETTE && (listesJoueurs.avecNoms.length % 4 != 0 || listesJoueurs.avecNoms.length < 4)) {
       if (listesJoueurs.avecNoms.length < 4) {
         title = t("joueurs_insuffisants");
         btnDisabled = true;
@@ -133,7 +134,7 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
         btnDisabled = true;
       }
     }
-    else if (optionsTournoi.typeEquipes == "triplette" && (listesJoueurs.avecNoms.length % 6 != 0 || listesJoueurs.avecNoms.length < 6)) {
+    else if (optionsTournoi.typeEquipes == TypeEquipes.TRIPLETTE && (listesJoueurs.avecNoms.length % 6 != 0 || listesJoueurs.avecNoms.length < 6)) {
       title = t("triplette_multiple_6");
       btnDisabled = true;
     }

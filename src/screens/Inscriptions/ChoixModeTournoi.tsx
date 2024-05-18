@@ -7,6 +7,7 @@ import { withTranslation } from 'react-i18next';
 import AdMobInscriptionsBanner from '../../components/adMob/AdMobInscriptionsBanner';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
+import { TypeEquipes } from '@/types/enums/typeEquipes';
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -22,7 +23,7 @@ class ChoixModeTournoi extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {
-      typeEquipes: "doublette",
+      typeEquipes: TypeEquipes.DOUBLETTE,
       modeTournoi: "avecNoms"
     }
   }
@@ -58,7 +59,7 @@ class ChoixModeTournoi extends React.Component<Props, State> {
     if (this.props.optionsTournoi.type === "championnat" || this.props.optionsTournoi.type === "coupe" || this.props.optionsTournoi.type === "multi-chances") {
       title = t("valider_et_inscriptions");
     }
-    if (this.state.modeTournoi == "avecEquipes" && this.state.typeEquipes == "teteatete") {
+    if (this.state.modeTournoi == "avecEquipes" && this.state.typeEquipes == TypeEquipes.TETEATETE) {
       buttonDisabled = true;
       title = t("erreur_tournoi_tete_a_tete_et_equipes");
     }
@@ -127,21 +128,21 @@ class ChoixModeTournoi extends React.Component<Props, State> {
                 onChange={nextValue => {this.setState({typeEquipes: nextValue})}}
               >
                 <VStack space='lg'>
-                  <Radio value="teteatete" size='lg'>
+                  <Radio value={TypeEquipes.TETEATETE} size='lg'>
                     <RadioIndicator mr={'$2'}>
-                      <CircleIcon stroke={this.state.typeEquipes == "teteatete" ? '$white' : '$secondary700'}/>
+                      <CircleIcon stroke={this.state.typeEquipes == TypeEquipes.TETEATETE ? '$white' : '$secondary700'}/>
                     </RadioIndicator>
                     <RadioLabel>{t("tete_a_tete")}</RadioLabel>
                   </Radio>
-                  <Radio value="doublette" size='lg'>
+                  <Radio value={TypeEquipes.DOUBLETTE} size='lg'>
                     <RadioIndicator mr={'$2'}>
-                      <CircleIcon stroke={this.state.typeEquipes == "doublette" ? '$white' : '$secondary700'}/>
+                      <CircleIcon stroke={this.state.typeEquipes == TypeEquipes.DOUBLETTE ? '$white' : '$secondary700'}/>
                     </RadioIndicator>
                     <RadioLabel>{t("doublettes")}</RadioLabel>
                   </Radio>
-                  <Radio value="triplette" size='lg'>
+                  <Radio value={TypeEquipes.TRIPLETTE} size='lg'>
                     <RadioIndicator mr={'$2'}>
-                      <CircleIcon stroke={this.state.typeEquipes == "triplette" ? '$white' : '$secondary700'}/>
+                      <CircleIcon stroke={this.state.typeEquipes == TypeEquipes.TRIPLETTE ? '$white' : '$secondary700'}/>
                     </RadioIndicator>
                     <RadioLabel>{t("triplettes")}</RadioLabel>
                   </Radio>

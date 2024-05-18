@@ -1,3 +1,4 @@
+import { TypeEquipes } from "@/types/enums/typeEquipes";
 
 export const generationAvecEquipes = (listeJoueurs, nbTours, typeEquipes, eviterMemeAdversaire) => {
   let nbjoueurs = listeJoueurs.length;
@@ -8,10 +9,10 @@ export const generationAvecEquipes = (listeJoueurs, nbTours, typeEquipes, eviter
   //Initialisation des matchs dans un tableau
   let nbEquipes;
   let nbMatchsParTour;
-  if (typeEquipes == "teteatete") {
+  if (typeEquipes == TypeEquipes.TETEATETE) {
     nbEquipes = nbjoueurs;
     nbMatchsParTour = nbjoueurs / 2;
-  } else if (typeEquipes == "doublette") {
+  } else if (typeEquipes == TypeEquipes.DOUBLETTE) {
     nbEquipes = nbjoueurs / 2;
     nbMatchsParTour = Math.ceil(nbjoueurs / 4);
   } else {
@@ -58,10 +59,10 @@ export const generationAvecEquipes = (listeJoueurs, nbTours, typeEquipes, eviter
       //Affectation equipe 1
       if (matchs[idMatch].equipe[0][0] == -1) {
         matchs[idMatch].equipe[0][0] = equipe[randomEquipesIds[j]].joueurs[0];
-        if (typeEquipes == "doublette" || typeEquipes == "triplette") {
+        if (typeEquipes == TypeEquipes.DOUBLETTE || typeEquipes == TypeEquipes.TRIPLETTE) {
           matchs[idMatch].equipe[0][1] = equipe[randomEquipesIds[j]].joueurs[1];
         }
-        if (typeEquipes == "triplette") {
+        if (typeEquipes == TypeEquipes.TRIPLETTE) {
           matchs[idMatch].equipe[0][2] = equipe[randomEquipesIds[j]].joueurs[2];
         }
         j++;
@@ -79,10 +80,10 @@ export const generationAvecEquipes = (listeJoueurs, nbTours, typeEquipes, eviter
       }
       if (matchs[idMatch].equipe[1][0] == -1 && affectationPossible) {
         matchs[idMatch].equipe[1][0] = equipe[randomEquipesIds[j]].joueurs[0];
-        if (typeEquipes == "doublette" || typeEquipes == "triplette") {
+        if (typeEquipes == TypeEquipes.DOUBLETTE || typeEquipes == TypeEquipes.TRIPLETTE) {
           matchs[idMatch].equipe[1][1] = equipe[randomEquipesIds[j]].joueurs[1];
         }
-        if (typeEquipes == "triplette") {
+        if (typeEquipes == TypeEquipes.TRIPLETTE) {
           matchs[idMatch].equipe[1][2] = equipe[randomEquipesIds[j]].joueurs[2];
         }
         equipe[equipe1Id].adversesId.push(randomEquipesIds[j]);

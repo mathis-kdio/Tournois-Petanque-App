@@ -1,11 +1,12 @@
 import { JoueurType } from '@/types/enums/joueurType';
 import { uniqueValueArrayRandOrder } from './generation';
+import { TypeEquipes } from '@/types/enums/typeEquipes';
 
 export const generationTriplettes = (listeJoueurs, nbTours) => {
   let nbjoueurs = listeJoueurs.length;
   let speciauxIncompatibles = true
   let jamaisMemeCoequipier = true;
-  let equipe = "triplette"
+  let equipe = TypeEquipes.TRIPLETTE
   let matchs = [];
   let idMatch = 0;
   let joueursSpe = [];

@@ -1,3 +1,4 @@
+import { TypeEquipes } from "@/types/enums/typeEquipes";
 
 export const generationCoupe = (optionsTournoi, listeJoueurs) => {
   let typeEquipes = optionsTournoi.typeEquipes;
@@ -9,11 +10,11 @@ export const generationCoupe = (optionsTournoi, listeJoueurs) => {
   //Initialisation des matchs dans un tableau
   let nbEquipes
   let nbMatchsPremierTour
-  if (typeEquipes == "teteatete") {
+  if (typeEquipes == TypeEquipes.TETEATETE) {
     nbEquipes = nbjoueurs;
     nbMatchsPremierTour = nbjoueurs / 2;
   }
-  else if (typeEquipes == "doublette") {
+  else if (typeEquipes == TypeEquipes.DOUBLETTE) {
     nbEquipes = nbjoueurs / 2;
     nbMatchsPremierTour = Math.ceil(nbjoueurs / 4);
   }
@@ -53,19 +54,19 @@ export const generationCoupe = (optionsTournoi, listeJoueurs) => {
   for (let j = 0; j < equipe.length / 2; j++) {
     //Affectation Equipe 1
     matchs[idMatch].equipe[0][0] = equipe[equipesIds[j]][0];
-    if (typeEquipes == "doublette" || typeEquipes == "triplette") {
+    if (typeEquipes == TypeEquipes.DOUBLETTE || typeEquipes == TypeEquipes.TRIPLETTE) {
       matchs[idMatch].equipe[0][1] = equipe[equipesIds[j]][1];
     }
-    if (typeEquipes == "triplette") {
+    if (typeEquipes == TypeEquipes.TRIPLETTE) {
       matchs[idMatch].equipe[0][2] = equipe[equipesIds[j]][2];
     }
 
     //Affectation Equipe 2
     matchs[idMatch].equipe[1][0] = equipe[equipesIds[nbEquipes - 1 - j]][0];
-    if (typeEquipes == "doublette" || typeEquipes == "triplette") {
+    if (typeEquipes == TypeEquipes.DOUBLETTE || typeEquipes == TypeEquipes.TRIPLETTE) {
       matchs[idMatch].equipe[1][1] = equipe[equipesIds[nbEquipes - 1 - j]][1];
     }
-    if (typeEquipes == "triplette") {
+    if (typeEquipes == TypeEquipes.TRIPLETTE) {
       matchs[idMatch].equipe[1][2] = equipe[equipesIds[nbEquipes - 1 - j]][2];
     }
     idMatch++;

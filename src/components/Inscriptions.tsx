@@ -9,6 +9,7 @@ import { withTranslation } from 'react-i18next'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { TFunction } from 'i18next'
 import { JoueurType as JoueurTypeEnum} from '@/types/enums/joueurType'
+import { TypeEquipes } from '@/types/enums/typeEquipes'
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -88,7 +89,7 @@ class Inscription extends React.Component<Props, State> {
     //Test si au moins 1 caractère
     if (this.props.joueurText != '') {
       let equipe = 1
-      if (this.props.optionsTournoi.typeEquipes == "teteatete" && this.props.listesJoueurs[this.props.optionsTournoi.mode]) {
+      if (this.props.optionsTournoi.typeEquipes == TypeEquipes.TETEATETE && this.props.listesJoueurs[this.props.optionsTournoi.mode]) {
         equipe = this.props.listesJoueurs[this.props.optionsTournoi.mode].length + 1
       }
       const action = { type: "AJOUT_JOUEUR", value: [this.props.optionsTournoi.mode, this.props.joueurText, this.state.joueurType, equipe] }
