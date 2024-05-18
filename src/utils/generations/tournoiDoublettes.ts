@@ -4,13 +4,13 @@ import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { Complement } from '@/types/enums/complement';
 import { Joueur } from '@/types/interfaces/joueur';
 
-const testRegleMemeCoequipiersValide = (nbTours: number, nbjoueurs: number, nbJoueursSpe: number, joueursTireurs: Joueur[], joueursPointeurs: Joueur[], moitieNbJoueurs: number) => {
+const testRegleMemeCoequipiersValide = (nbTours: number, nbjoueurs: number, nbJoueursSpe: number, nbJoueursTireurs: number, nbJoueursPointeurs: number, moitieNbJoueurs: number) => {
   let nbCombinaisons = nbjoueurs;
   nbCombinaisons -= nbJoueursSpe;
-  if (nbCombinaisons - joueursTireurs.length > moitieNbJoueurs) {
-    nbCombinaisons -= joueursTireurs.length;
-    if (nbCombinaisons - joueursPointeurs.length > moitieNbJoueurs) {
-      nbCombinaisons -= joueursPointeurs.length;
+  if (nbCombinaisons - nbJoueursTireurs > moitieNbJoueurs) {
+    nbCombinaisons -= nbJoueursTireurs;
+    if (nbCombinaisons - nbJoueursPointeurs > moitieNbJoueurs) {
+      nbCombinaisons -= nbJoueursPointeurs;
     }
     else {
       nbCombinaisons = moitieNbJoueurs;
@@ -112,7 +112,7 @@ export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, ty
         return {erreurSpeciaux: true};
       }
       //Test si possible d'appliquer la règle jamaisMemeCoequipier
-      let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs);
+      let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs.length, joueursPointeurs.length, moitieNbJoueurs);
       if (!regleValide) {
         return {erreurMemesEquipes: true};
       }
@@ -126,7 +126,7 @@ export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, ty
         }
         //Test si possible d'appliquer la règle jamaisMemeCoequipier
         if (jamaisMemeCoequipier == true) {
-          let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs);
+          let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs.length, joueursPointeurs.length, moitieNbJoueurs);
           if (!regleValide) {
             return {erreurMemesEquipes: true};
           }
@@ -140,7 +140,7 @@ export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, ty
         }
         //Test si possible d'appliquer la règle jamaisMemeCoequipier
         if (jamaisMemeCoequipier == true) {
-          let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs);
+          let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs.length, joueursPointeurs.length, moitieNbJoueurs);
           if (!regleValide) {
             return {erreurMemesEquipes: true};
           }
