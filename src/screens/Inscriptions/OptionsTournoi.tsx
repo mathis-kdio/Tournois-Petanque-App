@@ -8,12 +8,13 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { Complement } from '@/types/enums/complement';
 import { PropsFromRedux, connector } from '@/store/connector';
+import { RouteProp } from '@react-navigation/native';
+import { InscriptionStackParamList } from '@/navigation/Navigation';
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
-  nbToursTxt: string;
-  nbPtVictoireTxt: string;
+  route: RouteProp<InscriptionStackParamList, 'OptionsTournoi'>;
 }
 
 interface State {
@@ -27,11 +28,11 @@ interface State {
 }
 
 class OptionsTournoi extends React.Component<Props, State> {
+  nbToursTxt: string = "5";
+  nbPtVictoireTxt: string = "13";
 
   constructor(props: Props) {
     super(props)
-    props.nbToursTxt = "5";
-    props.nbPtVictoireTxt = "13";
     this.state = {
       speciauxIncompatibles: true,
       memesEquipes: true,
@@ -43,14 +44,14 @@ class OptionsTournoi extends React.Component<Props, State> {
     }
   }
 
-  _nbToursTxtInputChanged(text) {
+  _nbToursTxtInputChanged(text: string) {
     this.nbToursTxt = text;
     this.setState({
       nbTours: this.nbToursTxt ? parseInt(this.nbToursTxt) : undefined
     });
   }
 
-  _nbPtVictoireTxtInputChanged(text) {
+  _nbPtVictoireTxtInputChanged(text: string) {
     this.nbPtVictoireTxt = text;
     this.setState({
       nbPtVictoire: this.nbPtVictoireTxt ? parseInt(this.nbPtVictoireTxt) : undefined
@@ -134,6 +135,7 @@ class OptionsTournoi extends React.Component<Props, State> {
                 </VStack>
                 <VStack space='md'>
                   <Checkbox
+                    value="speciauxIncompatibles"
                     onChange={() => this.setState({speciauxIncompatibles: !this.state.speciauxIncompatibles})}
                     aria-label={t("choix_regle_speciaux")}
                     defaultIsChecked
@@ -145,6 +147,7 @@ class OptionsTournoi extends React.Component<Props, State> {
                     <CheckboxLabel>{t("options_regle_speciaux")}</CheckboxLabel>
                   </Checkbox>
                   <Checkbox
+                    value="memesEquipes"
                     onChange={() => this.setState({memesEquipes: !this.state.memesEquipes})}
                     aria-label={t("choix_regle_equipes")}
                     defaultIsChecked
@@ -187,7 +190,7 @@ class OptionsTournoi extends React.Component<Props, State> {
                     initialLabel={t("triplettes")}
                     aria-label={t("choix_complement")}
                     placeholder={t("choix_complement")}
-                    onValueChange={itemValue => this.setState({complement: itemValue})}
+                    onValueChange={(itemValue: Complement) => this.setState({complement: itemValue})}
                   >
                     <SelectTrigger variant='outline' size='md'>
                       <SelectInput/>
@@ -209,6 +212,7 @@ class OptionsTournoi extends React.Component<Props, State> {
                 </VStack>
                 <VStack>
                   <Checkbox
+                    value="avecTerrains"
                     onChange={() => this.setState({avecTerrains: !this.state.avecTerrains})}
                     aria-label={t("choix_option_terrains")}
                     size='md'
