@@ -74,7 +74,7 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
   _navigate(typeTournoi: TypeTournoi) {
     const updateOptionTypeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['type', typeTournoi]}
     this.props.dispatch(updateOptionTypeTournoi);
-    return this.props.navigation.navigate({name: 'ChoixModeTournoi'});
+    return this.props.navigation.navigate('ChoixModeTournoi');
   }
 
   render() {
@@ -127,7 +127,7 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
                 navigate={() => this._navigate(TypeTournoi.MULTICHANCES)}
                 newBadge={true}
               />
-              <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: "multi-chances"})}>
+              <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: TypeTournoi.MULTICHANCES})}>
                 <FontAwesome5 name="info-circle" color='white' size={24}/>
                 <Text color='$white'> {t("savoir_plus")}</Text>
               </Pressable>

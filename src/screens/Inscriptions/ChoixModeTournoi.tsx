@@ -84,7 +84,6 @@ class ChoixModeTournoi extends React.Component<Props, State> {
       <VStack>
         <Text color='$white' fontSize={'$2xl'} textAlign='center'>{t("mode_tournoi")}</Text>
         <RadioGroup
-          name="modeTournoiRadioGroup"
           aria-label={t("choix_mode_tournoi")}
           value={this.state.modeTournoi}
           onChange={nextValue => {this.setState({modeTournoi: nextValue})}}
@@ -124,7 +123,6 @@ class ChoixModeTournoi extends React.Component<Props, State> {
             <VStack space='4xl'>
               <Text color='$white' fontSize={'$2xl'} textAlign='center'>{t("type_equipes")}</Text>
               <RadioGroup
-                name="typeEquipesRadioGroup"
                 aria-label={t("choix_type_equipes")}
                 value={this.state.typeEquipes}
                 onChange={nextValue => {this.setState({typeEquipes: nextValue})}}
