@@ -195,6 +195,18 @@ function MatchsResultatsBottomNavigator() {
   );
 }
 
+
+export type InscriptionStackParamList = {
+  ChoixTypeTournoi: null;
+  ChoixModeTournoi: null;
+  OptionsTournoi: { screenStackName: string };
+  InscriptionsAvecNoms: null;
+  InscriptionsSansNoms: null;
+  ListeTerrains: { screenStackName: string };
+  GenerationMatchs: null;
+  ListeMatchsInscription: { tournoiId: number, tournoi: Tournoi };
+};
+
 function InscriptionStack() {
   const { t } = useTranslation();
   return (

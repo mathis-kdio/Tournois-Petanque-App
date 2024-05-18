@@ -8,10 +8,15 @@ import TopBarBack from '@components/TopBarBack';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { PropsFromRedux, connector } from '@/store/connector';
+import { Terrain } from '@/types/interfaces/terrain';
+import { ListRenderItem } from 'react-native';
+import { RouteProp } from '@react-navigation/native';
+import { InscriptionStackParamList } from '@/navigation/Navigation';
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
+  route: RouteProp<InscriptionStackParamList, 'ListeTerrains'>;
 }
 
 interface State {
@@ -63,6 +68,13 @@ class ListeTerrains extends React.Component<Props, State> {
 
   render() {
     const { t } = this.props;
+
+    const renderItem: ListRenderItem<Terrain> = ({item}) => (
+      <ListeTerrainItem
+        terrain={item}
+      />
+    );
+
     return (
       <SafeAreaView style={{flex: 1}}>
         <VStack flex={1} bgColor={"#0594ae"}>
@@ -73,12 +85,8 @@ class ListeTerrains extends React.Component<Props, State> {
               persistentScrollbar={true}
               data={this.props.listeTerrains}
               initialNumToRender={20}
-              keyExtractor={(item) => item.id.toString()}
-              renderItem={({item}) => (
-                <ListeTerrainItem
-                  terrain={item}
-                />
-              )}
+              keyExtractor={(item: Terrain) => item.id.toString()}
+              renderItem={renderItem}
             />
           </VStack>
           <VStack px={'$10'} space='lg'>
