@@ -6,6 +6,7 @@ import { Box, HStack, Text, Button, ButtonText, AlertDialog, AlertDialogBody, Al
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
+import { Tournoi } from '@/types/interfaces/tournoi';
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -29,7 +30,7 @@ class ListeTournoiItem extends React.Component<Props, State> {
     }
   }
 
-  _chargerTournoi(tournoi) {
+  _chargerTournoi(tournoi: Tournoi) {
     const actionUpdateListeMatchs = {type: "AJOUT_MATCHS", value: tournoi.tournoi};
     this.props.dispatch(actionUpdateListeMatchs);
     this.props.navigation.reset({

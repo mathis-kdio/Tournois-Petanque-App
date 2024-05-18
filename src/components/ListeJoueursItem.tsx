@@ -5,6 +5,7 @@ import { withTranslation } from 'react-i18next';
 import { Box, HStack, Text, Button, Input, InputField, ButtonText, AlertDialog, AlertDialogBackdrop, AlertDialogContent, AlertDialogHeader, Heading, AlertDialogCloseButton, CloseIcon, AlertDialogBody, AlertDialogFooter, ButtonGroup } from '@gluestack-ui/themed';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
+import { Joueur } from '@/types/interfaces/joueur';
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -27,7 +28,7 @@ class ListeJoueursItem extends React.Component<Props, State> {
     }
   }
 
-  _modifyList(list) {
+  _modifyList(list: Joueur[]) {
     const actionRemoveList = {type: "SUPPR_ALL_JOUEURS", value: ['sauvegarde']};
     this.props.dispatch(actionRemoveList);
     const actionLoadList = {type: "LOAD_SAVED_LIST", value: {typeInscriptionSrc: 'avecNoms', typeInscriptionDst: 'sauvegarde', listId: list[list.length - 1].listId}};
@@ -73,14 +74,14 @@ class ListeJoueursItem extends React.Component<Props, State> {
     )
   }
 
-  _removeList(listId) {
+  _removeList(listId: number) {
     const actionRemoveList = {type: "REMOVE_SAVED_LIST", value: {typeInscription: 'avecNoms', listId: listId}};
     this.props.dispatch(actionRemoveList);
   }
 
   _showRenameList(list) {
-    let name;
-    let bgColor;
+    let name: string;
+    let bgColor: string;
     let action;
     if (!this.state.renommerOn) {
       name = 'edit';
@@ -112,7 +113,7 @@ class ListeJoueursItem extends React.Component<Props, State> {
     }
   }
 
-  _listTextInputChanged(text) {
+  _listTextInputChanged(text: string) {
     this.props.listNameText = text;
     this.setState({renommerOn: true});
   }
@@ -138,7 +139,7 @@ class ListeJoueursItem extends React.Component<Props, State> {
     }
   }
 
-  _loadList(listId) {
+  _loadList(listId: number) {
     const actionLoadList = { type: "LOAD_SAVED_LIST", value: {typeInscriptionSrc: 'avecNoms', typeInscriptionDst: this.props.optionsTournoi.mode, listId: listId} }
     this.props.dispatch(actionLoadList);
     this.props.navigation.goBack();

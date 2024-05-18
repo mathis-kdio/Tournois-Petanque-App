@@ -10,6 +10,7 @@ import TopBarBack from '@components/TopBarBack'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { TFunction } from 'i18next'
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi'
+import { Tournoi } from '@/types/interfaces/tournoi'
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -18,7 +19,7 @@ export interface Props {
 
 interface State {
   modalTournoiInfosIsOpen: boolean;
-  infosTournoi: OptionsTournoi;
+  infosTournoi: Tournoi;
 }
 
 class ListeTournois extends React.Component<Props, State> {
@@ -30,7 +31,7 @@ class ListeTournois extends React.Component<Props, State> {
     }
   }
 
-  _showModalTournoiInfos(tournoi: OptionsTournoi) {
+  _showModalTournoiInfos(tournoi: Tournoi) {
     this.setState({
       modalTournoiInfosIsOpen: true,
       infosTournoi: tournoi
@@ -41,7 +42,7 @@ class ListeTournois extends React.Component<Props, State> {
     const { t } = this.props;
     let tournoi = this.state.infosTournoi;
     if (tournoi.tournoi) {
-      let tournoiOptions = tournoi.tournoi[tournoi.tournoi.length - 1];
+      let tournoiOptions = tournoi.tournoi.at(-1) as OptionsTournoi;
       let creationDate = t("date_inconnue");
       let updateDate = t("date_inconnue");
       moment.locale('fr');
