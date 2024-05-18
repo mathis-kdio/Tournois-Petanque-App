@@ -25,7 +25,7 @@ class CardButton extends React.Component<Props, State> {
       <Pressable bg='#1c3969' flex={1} py={'$5'} rounded={'$3xl'} onPress={() => navigate()}>
         {newBadge ?
           <HStack mt={-20}>
-            <Badge size='xl' variant='outline' borderRadius='$full' action='error'>
+            <Badge size='lg' variant='outline' borderRadius='$full' action='error'>
               <FontAwesome5 name='bolt' color='#EF4444' size={12}/>
               <BadgeText mx='$2'>Nouveau</BadgeText>
               <FontAwesome5 name='bolt' color='#EF4444' size={12}/>
