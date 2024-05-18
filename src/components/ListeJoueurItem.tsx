@@ -95,8 +95,8 @@ class ListeJoueurItem extends React.Component<Props, State> {
       this.setState({renommerOn: false})
       if (isInscription === true) {
         let typeInscription = "";
-        if (this.props.optionsTournoi.mode == "sauvegarde") {
-          typeInscription = "sauvegarde"
+        if (this.props.optionsTournoi.mode == ModeTournoi.SAUVEGARDE) {
+          typeInscription = ModeTournoi.SAUVEGARDE
         }
         else if (avecEquipes == true) {
           typeInscription = ModeTournoi.AVECEQUIPES
@@ -214,7 +214,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
 
   _joueurTypeIcon(joueurType: string) {
     const { mode, type, typeEquipes } = this.props.optionsTournoi;
-    if (mode == "sauvegarde" || (type == TypeTournoi.MELEDEMELE && typeEquipes == TypeEquipes.DOUBLETTE)) {
+    if (mode == ModeTournoi.SAUVEGARDE || (type == TypeTournoi.MELEDEMELE && typeEquipes == TypeEquipes.DOUBLETTE)) {
       return (
         <Box>
           {joueurType == JoueurType.ENFANT && <FontAwesome5 name="child" color="darkgray" size={24}/>}

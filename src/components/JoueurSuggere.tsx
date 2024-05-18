@@ -59,7 +59,7 @@ class JoueurSuggere extends React.Component<Props, State> {
   }
 
   _removePlayer(playerId: number) {
-    const actionSuppr = {type: "SUPPR_JOUEUR", value: ["historique", playerId]};
+    const actionSuppr = {type: "SUPPR_JOUEUR", value: [ModeTournoi.HISTORIQUE, playerId]};
     this.props.dispatch(actionSuppr);
   }
 

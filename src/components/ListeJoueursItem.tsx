@@ -29,11 +29,11 @@ class ListeJoueursItem extends React.Component<Props, State> {
   }
 
   _modifyList(list: Joueur[]) {
-    const actionRemoveList = {type: "SUPPR_ALL_JOUEURS", value: ['sauvegarde']};
+    const actionRemoveList = {type: "SUPPR_ALL_JOUEURS", value: [ModeTournoi.SAUVEGARDE]};
     this.props.dispatch(actionRemoveList);
-    const actionLoadList = {type: "LOAD_SAVED_LIST", value: {typeInscriptionSrc: 'avecNoms', typeInscriptionDst: 'sauvegarde', listId: list[list.length - 1].listId}};
+    const actionLoadList = {type: "LOAD_SAVED_LIST", value: {typeInscriptionSrc: 'avecNoms', typeInscriptionDst: ModeTournoi.SAUVEGARDE, listId: list[list.length - 1].listId}};
     this.props.dispatch(actionLoadList);
-    const updateOptionModeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['mode', 'sauvegarde']};
+    const updateOptionModeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['mode', ModeTournoi.SAUVEGARDE]};
     this.props.dispatch(updateOptionModeTournoi);
     this.props.navigation.navigate({
       name: 'CreateListeJoueurs',

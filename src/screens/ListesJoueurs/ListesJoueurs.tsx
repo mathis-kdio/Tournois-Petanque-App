@@ -25,14 +25,14 @@ class ListesJoueurs extends React.Component<Props, State> {
   }
 
   _addList() {
-    const actionRemoveList = {type: "SUPPR_ALL_JOUEURS", value: ['sauvegarde']};
+    const actionRemoveList = {type: "SUPPR_ALL_JOUEURS", value: [ModeTournoi.SAUVEGARDE]};
     this.props.dispatch(actionRemoveList);
     //Sera utilisé par le component inscription 
     const updateOptionTypeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['type', TypeTournoi.MELEDEMELE]};
     this.props.dispatch(updateOptionTypeTournoi);
     const updateOptionEquipesTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['typeEquipes', TypeEquipes.TETEATETE]};
     this.props.dispatch(updateOptionEquipesTournoi);
-    const updateOptionModeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['mode', 'sauvegarde']};
+    const updateOptionModeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['mode', ModeTournoi.SAUVEGARDE]};
     this.props.dispatch(updateOptionModeTournoi);
 
     this.props.navigation.navigate({

@@ -90,9 +90,9 @@ class Parametres extends React.Component<Props, State> {
     this.props.dispatch(actionRemoveAllPlayersSansNoms);
     const actionRemoveAllPlayersAvecEquipes = { type: "SUPPR_ALL_JOUEURS", value: [ModeTournoi.AVECEQUIPES] }
     this.props.dispatch(actionRemoveAllPlayersAvecEquipes);
-    const actionRemoveAllPlayersHistorique = { type: "SUPPR_ALL_JOUEURS", value: ["historique"] }
+    const actionRemoveAllPlayersHistorique = { type: "SUPPR_ALL_JOUEURS", value: [ModeTournoi.HISTORIQUE] }
     this.props.dispatch(actionRemoveAllPlayersHistorique);
-    const actionRemoveAllPlayersSauvegarde = { type: "SUPPR_ALL_JOUEURS", value: ["sauvegarde"] }
+    const actionRemoveAllPlayersSauvegarde = { type: "SUPPR_ALL_JOUEURS", value: [ModeTournoi.SAUVEGARDE] }
     this.props.dispatch(actionRemoveAllPlayersSauvegarde);
     const actionRemoveAllSavedList = { type: "REMOVE_ALL_SAVED_LIST"}
     this.props.dispatch(actionRemoveAllSavedList);
