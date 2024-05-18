@@ -4,11 +4,7 @@ import { TypeTournoi } from "../enums/typeTournoi";
 import { Joueur } from "./joueur";
 
 export interface OptionsTournoi {
-  tournoiId: number;
   tournoiID: number;
-  name: string;
-  creationDate: Date;
-  updateDate: Date;
   listeJoueurs: Joueur[];
   typeEquipes: TypeEquipes;
   typeTournoi: TypeTournoi;
