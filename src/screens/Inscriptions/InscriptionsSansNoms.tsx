@@ -84,7 +84,7 @@ class InscriptionsSansNoms extends React.Component<Props, State> {
 
   _boutonCommencer() {
     const { t } = this.props;
-    let boutonDesactive;
+    let boutonDesactive: boolean;
     let boutonTitle = '';
     let nbJoueurs = this._nbJoueurs();
     if (this.props.optionsTournoi.typeEquipes == TypeEquipes.DOUBLETTE || this.props.optionsTournoi.typeEquipes == TypeEquipes.TETEATETE) {
