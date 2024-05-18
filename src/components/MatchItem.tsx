@@ -1,3 +1,4 @@
+import { Joueur } from '@/types/interfaces/joueur';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Box, Divider, HStack, Text, VStack } from '@gluestack-ui/themed'
 import { TFunction } from 'i18next';
@@ -58,8 +59,8 @@ class MatchItem extends React.Component<Props, State> {
     return nomsJoueurs;
   }
 
-  _displayName(joueurNumber: number, equipe) {
-    let joueur = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs.find(item => item.id === joueurNumber);
+  _displayName(joueurNumber: number, equipe: number) {
+    let joueur = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs.find((item: Joueur) => item.id === joueurNumber);
     if (joueur) {
       if (equipe === 1) {
         return <Text key={joueur.id} color='$white' fontSize={'$xl'} textAlign='left'>{(joueur.id + 1) + ' ' + joueur.name}</Text>

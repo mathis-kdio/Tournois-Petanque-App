@@ -1,3 +1,5 @@
+import { Joueur } from "@/types/interfaces/joueur";
+
 const initialState = {listesJoueurs: { avecNoms: [], sansNoms: [], avecEquipes: [], historique: [], sauvegarde: [] }, listesSauvegarde: { avecNoms: [], sansNoms: [], avecEquipes: [] }}
 
 function listesJoueurs(state = initialState, action) {
@@ -28,7 +30,7 @@ function listesJoueurs(state = initialState, action) {
 
         //Historique
         if (action.value[0] != "sansNoms") {
-          let joueurIndex = listes.historique.findIndex(joueur => joueur.name == action.value[1])
+          let joueurIndex = listes.historique.findIndex((joueur: Joueur) => joueur.name == action.value[1])
           if (joueurIndex != -1) {
             listes.historique[joueurIndex].nbTournois++
           }
@@ -106,7 +108,7 @@ function listesJoueurs(state = initialState, action) {
     case 'UPDATE_ALL_JOUEURS_EQUIPE'://action: 0: type d'inscription
       if (action.value[0] != "") {
         const listes = { ...state.listesJoueurs };
-        listes[action.value[0]].forEach(joueur => {
+        listes[action.value[0]].forEach((joueur: Joueur) => {
           joueur.equipe = joueur.id + 1;
         });
         nextState = {

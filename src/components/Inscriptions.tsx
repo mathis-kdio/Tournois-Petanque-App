@@ -10,6 +10,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { TFunction } from 'i18next'
 import { JoueurType as JoueurTypeEnum} from '@/types/enums/joueurType'
 import { TypeEquipes } from '@/types/enums/typeEquipes'
+import { Joueur } from '@/types/interfaces/joueur'
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -20,7 +21,7 @@ export interface Props {
 }
 
 interface State {
-  /*joueur: ;*/
+  joueur: Joueur;
   joueurType: JoueurTypeEnum;
   etatBouton: boolean;
   suggestions: object[];

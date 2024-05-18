@@ -9,6 +9,7 @@ import { nextMatch } from '../../utils/generations/nextMatch/nextMatch';
 import { Platform } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
+import { Joueur } from '@/types/interfaces/joueur';
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -60,9 +61,9 @@ class MatchDetail extends React.Component<Props, State> {
     )
   }
 
-  _displayName(joueurNumber, equipe) {
+  _displayName(joueurNumber: number, equipe: number) {
     let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs;
-    let joueur = listeJoueurs.find(item => item.id === joueurNumber);
+    let joueur = listeJoueurs.find((item: Joueur) => item.id === joueurNumber);
     if (joueur) {
       if (equipe === 1) {
         return <Text key={joueur.id} color='$white' fontSize={'$md'} textAlign='left'>{(joueur.id + 1) + ' ' + joueur.name}</Text>

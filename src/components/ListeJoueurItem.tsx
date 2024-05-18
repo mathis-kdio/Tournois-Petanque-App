@@ -6,11 +6,12 @@ import { withTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
 import { JoueurType } from '@/types/enums/joueurType';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
+import { Joueur } from '@/types/interfaces/joueur';
 
 export interface Props {
   t: TFunction;
   joueurText: string;
-  //joueur
+  joueur: Joueur;
   isInscription: boolean;
   avecEquipes: boolean;
   //typeEquipes: ;
@@ -33,7 +34,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
     }
   }
 
-  _showSupprimerJoueur(joueur, isInscription: boolean) {
+  _showSupprimerJoueur(joueur: Joueur, isInscription: boolean) {
     if (isInscription === true) {
       return (
         <Box ml={'$2'}>
@@ -56,8 +57,8 @@ class ListeJoueurItem extends React.Component<Props, State> {
   }
 
   _showRenommerJoueur(joueur, isInscription: boolean, avecEquipes: boolean) {
-    let name;
-    let bgColor;
+    let name: string;
+    let bgColor: string;
     let action;
     if (!this.state.renommerOn) {
       name = 'edit';
@@ -140,7 +141,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
     }
   }
 
-  _ajoutEquipe(joueurId, equipeId: number) {
+  _ajoutEquipe(joueurId: number, equipeId: number) {
     const action = { type: "AJOUT_EQUIPE_JOUEUR", value: ["avecEquipes", joueurId, equipeId] };
     this.props.dispatch(action);
   }
@@ -229,7 +230,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
     }
   }
 
-  _joueurCheckbox(showCheckbox: boolean, joueur) {
+  _joueurCheckbox(showCheckbox: boolean, joueur: Joueur) {
     const {t} = this.props;
     if (showCheckbox) {
       let isChecked = true;

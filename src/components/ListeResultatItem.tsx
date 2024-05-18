@@ -1,3 +1,4 @@
+import { Joueur } from '@/types/interfaces/joueur';
 import { HStack, Text, Image, Divider, VStack } from '@gluestack-ui/themed';
 import { TFunction } from 'i18next';
 import React from 'react'
@@ -6,7 +7,7 @@ import { connect } from 'react-redux'
 
 export interface Props {
   t: TFunction;
-  //joueur: ;
+  joueur: Joueur;
 }
 
 interface State {
@@ -17,9 +18,8 @@ class ListeResultatItem extends React.Component<Props, State> {
 
   _displayName(joueurId: number) {
     const { t } = this.props;
-    let joueur = {};
     let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs;
-    joueur = listeJoueurs.find(item => item.id === joueurId);
+    let joueur = listeJoueurs.find((item: Joueur) => item.id === joueurId);
     let joueurName = "";
     if (joueur.name === undefined) {
       joueurName = t("sans_nom") + ' (' + (joueur.id+1) + ')';

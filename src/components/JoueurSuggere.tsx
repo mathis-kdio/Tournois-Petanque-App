@@ -7,14 +7,15 @@ import { AlertDialog, AlertDialogBackdrop, AlertDialogBody, AlertDialogCloseButt
 import { TFunction } from 'i18next';
 import { JoueurType as JoueurTypeEnum} from '@/types/enums/joueurType';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
+import { Joueur } from '@/types/interfaces/joueur';
 
 export interface Props {
   t: TFunction;
+  joueur: Joueur;
 }
 
 interface State {
   joueurType: JoueurTypeEnum;
-  //joueur: ;
   modalRemoveIsOpen: boolean;
 }
 
@@ -27,7 +28,7 @@ class JoueurSuggere extends React.Component<Props, State> {
     }
   }
 
-  _modalRemovePlayer(playerId) {
+  _modalRemovePlayer(playerId: number) {
     const { t } = this.props;
     return (
       <AlertDialog isOpen={this.state.modalRemoveIsOpen} onClose={() => this.setState({modalRemoveIsOpen: false})}>
