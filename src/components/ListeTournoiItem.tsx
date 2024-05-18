@@ -5,11 +5,13 @@ import { withTranslation } from 'react-i18next';
 import { Box, HStack, Text, Button, ButtonText, AlertDialog, AlertDialogBody, AlertDialogBackdrop, AlertDialogContent, AlertDialogHeader, Heading, CloseIcon, AlertDialogFooter, ButtonGroup, AlertDialogCloseButton, Input, InputField } from '@gluestack-ui/themed';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
+import { Tournoi } from '@/types/interfaces/tournoi';
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
   tournoiNameText: string;
+  tournoi: Tournoi;
 }
 
 interface State {
@@ -42,12 +44,12 @@ class ListeTournoiItem extends React.Component<Props, State> {
     });
   }
 
-  _supprimerTournoi(tournoiId) {
+  _supprimerTournoi(tournoiId: number) {
     const actionSupprimerTournoi = {type: "SUPPR_TOURNOI", value: {tournoiId: tournoiId}};
     this.props.dispatch(actionSupprimerTournoi);
   }
 
-  _modalSupprimerTournoi(tournoiId) {
+  _modalSupprimerTournoi(tournoiId: number) {
     const { t } = this.props;
     return (
       <AlertDialog isOpen={this.state.modalDeleteIsOpen} onClose={() => this.setState({modalDeleteIsOpen: false})}>
@@ -77,9 +79,9 @@ class ListeTournoiItem extends React.Component<Props, State> {
     )
   }
   
-  _showRenameTournoi(tournoi) {
-    let name;
-    let bgColor;
+  _showRenameTournoi(tournoi: Tournoi) {
+    let name: string;
+    let bgColor: string;
     let action;
     if (!this.state.renommerOn) {
       name = 'edit';
@@ -109,7 +111,7 @@ class ListeTournoiItem extends React.Component<Props, State> {
     this.props.tournoiNameText = tournoi.name;
   }
 
-  _renameTournoi(tournoi) {
+  _renameTournoi(tournoi: Tournoi) {
     if (this.props.tournoiNameText != "") {
       this.setState({renommerOn: false});
       const actionRenameTournoi = { type: "RENOMMER_TOURNOI", value: {tournoiId: tournoi.tournoiId, newName: this.props.tournoiNameText} };
@@ -118,12 +120,12 @@ class ListeTournoiItem extends React.Component<Props, State> {
     }
   }
 
-  _tournoiTextInputChanged(text) {
+  _tournoiTextInputChanged(text: string) {
     this.props.tournoiNameText = text;
     this.setState({renommerOn: true});
   }
 
-  _tournoiName(tournoi) {
+  _tournoiName(tournoi: Tournoi) {
     const { t } = this.props;
     let tournoiName = tournoi.name ? tournoi.name : 'n°' + tournoi.tournoiId;
     if (this.state.renommerOn) {
@@ -132,7 +134,7 @@ class ListeTournoiItem extends React.Component<Props, State> {
           <InputField
             placeholder={tournoiName}
             autoFocus={true}
-            onChangeText={(text) => this._tournoiTextInputChanged(text)}
+            onChangeText={(text: string) => this._tournoiTextInputChanged(text)}
             onSubmitEditing={() => this._renameTournoi(tournoi)}
           />
         </Input>
