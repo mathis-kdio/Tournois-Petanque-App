@@ -7,6 +7,7 @@ import { TFunction } from 'i18next';
 import { JoueurType } from '@/types/enums/joueurType';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { Joueur } from '@/types/interfaces/joueur';
+import { ModeTournoi } from '@/types/enums/modeTournoi';
 
 export interface Props {
   t: TFunction;
@@ -97,10 +98,10 @@ class ListeJoueurItem extends React.Component<Props, State> {
           typeInscription = "sauvegarde"
         }
         else if (avecEquipes == true) {
-          typeInscription = "avecEquipes"
+          typeInscription = ModeTournoi.AVECEQUIPES
         }
         else {
-          typeInscription = "avecNoms"
+          typeInscription = ModeTournoi.AVECNOMS
         }
         const actionRenommer = { type: "RENOMMER_JOUEUR", value: [typeInscription, joueur.id, this.props.joueurText] }
         this.props.dispatch(actionRenommer)
@@ -142,7 +143,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
   }
 
   _ajoutEquipe(joueurId: number, equipeId: number) {
-    const action = { type: "AJOUT_EQUIPE_JOUEUR", value: ["avecEquipes", joueurId, equipeId] };
+    const action = { type: "AJOUT_EQUIPE_JOUEUR", value: [ModeTournoi.AVECEQUIPES, joueurId, equipeId] };
     this.props.dispatch(action);
   }
 

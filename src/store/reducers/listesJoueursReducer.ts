@@ -1,3 +1,4 @@
+import { ModeTournoi } from "@/types/enums/modeTournoi";
 import { Joueur } from "@/types/interfaces/joueur";
 
 const initialState = {listesJoueurs: { avecNoms: [], sansNoms: [], avecEquipes: [], historique: [], sauvegarde: [] }, listesSauvegarde: { avecNoms: [], sansNoms: [], avecEquipes: [] }}
@@ -29,7 +30,7 @@ function listesJoueurs(state = initialState, action) {
         listes[action.value[0]].push(newJoueur)
 
         //Historique
-        if (action.value[0] != "sansNoms") {
+        if (action.value[0] != ModeTournoi.SANSNOMS) {
           let joueurIndex = listes.historique.findIndex((joueur: Joueur) => joueur.name == action.value[1])
           if (joueurIndex != -1) {
             listes.historique[joueurIndex].nbTournois++
@@ -189,9 +190,9 @@ function listesJoueurs(state = initialState, action) {
       return nextState || state;
     case 'REMOVE_ALL_SAVED_LIST':
       const listes = { ...state.listesSauvegarde };
-      listes["avecNoms"] = [];
-      listes["sansNoms"] = [];
-      listes["avecEquipes"] = [];
+      listes[ModeTournoi.AVECNOMS] = [];
+      listes[ModeTournoi.SANSNOMS] = [];
+      listes[ModeTournoi.AVECEQUIPES] = [];
       nextState = {
         ...state,
         listesSauvegarde: listes

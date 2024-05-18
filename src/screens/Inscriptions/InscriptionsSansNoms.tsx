@@ -8,6 +8,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { TFunction } from 'i18next'
 import { JoueurType } from '@/types/enums/joueurType'
 import { TypeEquipes } from '@/types/enums/typeEquipes'
+import { ModeTournoi } from '@/types/enums/modeTournoi'
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -41,12 +42,12 @@ class InscriptionsSansNoms extends React.Component<Props, State> {
   } 
 
   _ajoutJoueur(type) {
-    const action = { type: "AJOUT_JOUEUR", value: ["sansNoms","", type, undefined] };
+    const action = { type: "AJOUT_JOUEUR", value: [ModeTournoi.SANSNOMS,"", type, undefined] };
     this.props.dispatch(action);
   }
 
   _supprimerJoueurs() {
-    const suppressionAllJoueurs = { type: "SUPPR_ALL_JOUEURS", value: ["sansNoms"] };
+    const suppressionAllJoueurs = { type: "SUPPR_ALL_JOUEURS", value: [ModeTournoi.SANSNOMS] };
     this.props.dispatch(suppressionAllJoueurs);
   }
   

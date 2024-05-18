@@ -1,3 +1,4 @@
+import { ModeTournoi } from "@/types/enums/modeTournoi";
 import { TypeEquipes } from "@/types/enums/typeEquipes";
 
 const rand0ToMax = (max) => {
@@ -21,7 +22,7 @@ export const uniqueValueArrayRandOrder = (arrayLength) => {
 export const calcNbMatchsParTour = (nbjoueurs, typeEquipes, modeTournoi, typeTournoi, complement) => {
   let nbMatchsParTour = undefined;
 
-  if (modeTournoi == "avecEquipes" || typeTournoi == "championnat") {
+  if (modeTournoi == ModeTournoi.AVECEQUIPES || typeTournoi == "championnat") {
     if (typeEquipes == TypeEquipes.TETEATETE) {
       nbMatchsParTour = nbjoueurs / 2;
     }

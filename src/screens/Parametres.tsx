@@ -13,6 +13,7 @@ import { TFunction, i18n } from 'i18next'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { AnyAction, Dispatch } from 'redux'
 import { ImageSourcePropType, ListRenderItemInfo } from 'react-native'
+import { ModeTournoi } from '@/types/enums/modeTournoi'
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -83,11 +84,11 @@ class Parametres extends React.Component<Props, State> {
 
   _clearData() {
     this.setState({alertOpen: false})
-    const actionRemoveAllPlayersAvecNoms = { type: "SUPPR_ALL_JOUEURS", value: ["avecNoms"] }
+    const actionRemoveAllPlayersAvecNoms = { type: "SUPPR_ALL_JOUEURS", value: [ModeTournoi.AVECNOMS] }
     this.props.dispatch(actionRemoveAllPlayersAvecNoms);
-    const actionRemoveAllPlayersSansNoms = { type: "SUPPR_ALL_JOUEURS", value: ["sansNoms"] }
+    const actionRemoveAllPlayersSansNoms = { type: "SUPPR_ALL_JOUEURS", value: [ModeTournoi.SANSNOMS] }
     this.props.dispatch(actionRemoveAllPlayersSansNoms);
-    const actionRemoveAllPlayersAvecEquipes = { type: "SUPPR_ALL_JOUEURS", value: ["avecEquipes"] }
+    const actionRemoveAllPlayersAvecEquipes = { type: "SUPPR_ALL_JOUEURS", value: [ModeTournoi.AVECEQUIPES] }
     this.props.dispatch(actionRemoveAllPlayersAvecEquipes);
     const actionRemoveAllPlayersHistorique = { type: "SUPPR_ALL_JOUEURS", value: ["historique"] }
     this.props.dispatch(actionRemoveAllPlayersHistorique);

@@ -18,6 +18,7 @@ import { EventRegister } from 'react-native-event-listeners'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { TFunction } from 'i18next'
 import { TypeEquipes } from '@/types/enums/typeEquipes'
+import { ModeTournoi } from '@/types/enums/modeTournoi'
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -55,7 +56,7 @@ class GenerationMatchs extends React.Component<Props, State> {
     props.jamaisMemeCoequipier = true;
     props.eviterMemeAdversaire = 50;
     props.typeEquipes = TypeEquipes.DOUBLETTE;
-    props.typeInscription = "avecNoms";
+    props.typeInscription = ModeTournoi.AVECNOMS;
     props.complement = "3";
     props.typeTournoi = "mele-demele";
     props.avecTerrains = false;

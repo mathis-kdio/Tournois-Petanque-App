@@ -8,6 +8,7 @@ import AdMobInscriptionsBanner from '../../components/adMob/AdMobInscriptionsBan
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
+import { ModeTournoi } from '@/types/enums/modeTournoi';
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -24,14 +25,14 @@ class ChoixModeTournoi extends React.Component<Props, State> {
     super(props)
     this.state = {
       typeEquipes: TypeEquipes.DOUBLETTE,
-      modeTournoi: "avecNoms"
+      modeTournoi: ModeTournoi.AVECNOMS
     }
   }
 
   _nextStep() {
     let modeTournoi = this.state.modeTournoi;
     if (this.props.optionsTournoi.type != 'mele-demele') {
-      modeTournoi = "avecEquipes";
+      modeTournoi = ModeTournoi.AVECEQUIPES;
     }
     const updateOptionEquipesTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['typeEquipes', this.state.typeEquipes]};
     this.props.dispatch(updateOptionEquipesTournoi);
@@ -39,7 +40,7 @@ class ChoixModeTournoi extends React.Component<Props, State> {
     this.props.dispatch(updateOptionModeTournoi);
 
     if (this.props.optionsTournoi.type != 'championnat' && this.props.optionsTournoi.type != 'coupe' && this.props.optionsTournoi.type != 'multi-chances') {
-      let screenName = this.state.modeTournoi == "sansNoms" ? "InscriptionsSansNoms" : "InscriptionsAvecNoms";
+      let screenName = this.state.modeTournoi == ModeTournoi.SANSNOMS ? "InscriptionsSansNoms" : "InscriptionsAvecNoms";
       this.props.navigation.navigate({
         name: 'OptionsTournoi',
         params: {
@@ -59,7 +60,7 @@ class ChoixModeTournoi extends React.Component<Props, State> {
     if (this.props.optionsTournoi.type === "championnat" || this.props.optionsTournoi.type === "coupe" || this.props.optionsTournoi.type === "multi-chances") {
       title = t("valider_et_inscriptions");
     }
-    if (this.state.modeTournoi == "avecEquipes" && this.state.typeEquipes == TypeEquipes.TETEATETE) {
+    if (this.state.modeTournoi == ModeTournoi.AVECEQUIPES && this.state.typeEquipes == TypeEquipes.TETEATETE) {
       buttonDisabled = true;
       title = t("erreur_tournoi_tete_a_tete_et_equipes");
     }
@@ -88,21 +89,21 @@ class ChoixModeTournoi extends React.Component<Props, State> {
           onChange={nextValue => {this.setState({modeTournoi: nextValue})}}
         >
           <VStack space='lg'>
-            <Radio value="avecNoms" size='lg'>
+            <Radio value={ModeTournoi.AVECNOMS} size='lg'>
               <RadioIndicator mr={'$2'}>
-                <CircleIcon stroke={this.state.modeTournoi == "avecNoms" ? '$white' : '$secondary700'}/>
+                <CircleIcon stroke={this.state.modeTournoi == ModeTournoi.AVECNOMS ? '$white' : '$secondary700'}/>
               </RadioIndicator>
               <RadioLabel>{t("melee_demelee_avec_nom")}</RadioLabel>
             </Radio>
-            <Radio value="sansNoms" size='lg'>
+            <Radio value={ModeTournoi.SANSNOMS} size='lg'>
               <RadioIndicator mr={'$2'}>
-                <CircleIcon stroke={this.state.modeTournoi == "sansNoms" ? '$white' : '$secondary700'}/>
+                <CircleIcon stroke={this.state.modeTournoi == ModeTournoi.SANSNOMS ? '$white' : '$secondary700'}/>
               </RadioIndicator>
               <RadioLabel>{t("melee_demelee_sans_nom")}</RadioLabel>
             </Radio>
-            <Radio value="avecEquipes" size='lg'>
+            <Radio value={ModeTournoi.AVECEQUIPES} size='lg'>
               <RadioIndicator mr={'$2'}>
-                <CircleIcon stroke={this.state.modeTournoi == "avecEquipes" ? '$white' : '$secondary700'}/>
+                <CircleIcon stroke={this.state.modeTournoi == ModeTournoi.AVECEQUIPES ? '$white' : '$secondary700'}/>
               </RadioIndicator>
               <RadioLabel>{t("melee_avec_equipes_constituees")}</RadioLabel>
             </Radio>
