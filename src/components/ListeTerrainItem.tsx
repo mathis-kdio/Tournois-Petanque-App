@@ -6,7 +6,6 @@ import { Terrain } from '@/types/interfaces/terrain';
 import { PropsFromRedux, connector } from '@/store/connector';
 
 export interface Props extends PropsFromRedux {
-  terrainText: string;
   terrain: Terrain;
 }
 
@@ -15,9 +14,10 @@ interface State {
 }
 
 class ListeTerrainItem extends React.Component<Props, State> {
+  terrainText: string = "";
+
   constructor(props: Props) {
     super(props)
-    props.terrainText = "";
     this.state = {
       renommerOn: false
     }
@@ -37,7 +37,7 @@ class ListeTerrainItem extends React.Component<Props, State> {
       name = 'edit';
       bgColor = '#004282';
       action = () => this.setState({renommerOn: true});
-    } else if (this.props.terrainText == '') {
+    } else if (this.terrainText == '') {
       name = 'times';
       bgColor = '#5F5F5F';
       action = () => this.setState({renommerOn: false});
@@ -55,16 +55,16 @@ class ListeTerrainItem extends React.Component<Props, State> {
   }
 
   _renommerTerrain(terrain: Terrain) {
-    if (this.props.terrainText != "") {
+    if (this.terrainText != "") {
       this.setState({renommerOn: false});
-      const actionRenommer = { type: "RENOMMER_TERRAIN", value: {terrainId: terrain.id, newName: this.props.terrainText}};
+      const actionRenommer = { type: "RENOMMER_TERRAIN", value: {terrainId: terrain.id, newName: this.terrainText}};
       this.props.dispatch(actionRenommer);
-      this.props.terrainText = "";
+      this.terrainText = "";
     }
   }
 
   _terrainTxtInputChanged(text: string) {
-    this.props.terrainText = text;
+    this.terrainText = text;
     this.setState({renommerOn: true});
   }
 
