@@ -11,6 +11,7 @@ import { TFunction } from 'i18next'
 import { JoueurType as JoueurTypeEnum} from '@/types/enums/joueurType'
 import { TypeEquipes } from '@/types/enums/typeEquipes'
 import { Joueur } from '@/types/interfaces/joueur'
+import { ModeTournoi } from '@/types/enums/modeTournoi'
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -154,7 +155,7 @@ class Inscription extends React.Component<Props, State> {
   _displayListeJoueur() {
     if (this.props.listesJoueurs[this.props.optionsTournoi.mode] !== undefined) {
       let avecEquipes = false;
-      if (this.props.optionsTournoi.mode == 'avecEquipes') {
+      if (this.props.optionsTournoi.mode == ModeTournoi.AVECEQUIPES) {
         avecEquipes = true;
       }
       return (

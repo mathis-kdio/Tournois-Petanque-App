@@ -157,7 +157,7 @@ class GenerationMatchs extends React.Component<Props, State> {
     let erreurSpeciaux = undefined;
     let echecGeneration = undefined;
     if (this.props.typeTournoi == TypeTournoi.MELEDEMELE) {
-      if (this.props.typeInscription == 'avecEquipes') {
+      if (this.props.typeInscription == ModeTournoi.AVECEQUIPES) {
         ({matchs, nbMatchs, echecGeneration} = generationAvecEquipes(this.props.listesJoueurs.avecEquipes, this.nbTours, this.typeEquipes, this.eviterMemeAdversaire));
       }
       else if (this.props.typeEquipes == TypeEquipes.TETEATETE) {

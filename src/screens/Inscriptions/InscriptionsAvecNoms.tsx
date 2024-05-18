@@ -10,6 +10,7 @@ import { TFunction } from 'i18next'
 import { TypeEquipes } from '@/types/enums/typeEquipes'
 import { TypeTournoi } from '@/types/enums/typeTournoi'
 import { Complement } from '@/types/enums/complement'
+import { ModeTournoi } from '@/types/enums/modeTournoi'
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -66,7 +67,7 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
     } else if (optionsTournoi.type == TypeTournoi.MULTICHANCES && (nbEquipes == 0 || nbEquipes % 8 != 0)) {
       title = t("configuration_impossible_multichances");
       btnDisabled = true;
-    } else if (optionsTournoi.mode == 'avecEquipes') {
+    } else if (optionsTournoi.mode == ModeTournoi.AVECEQUIPES) {
       if (listesJoueurs.avecEquipes.find(el => el.equipe == undefined || el.equipe == 0 || el.equipe > nbEquipes) != undefined) {
         title = t("joueurs_sans_equipe");
         btnDisabled = true;
