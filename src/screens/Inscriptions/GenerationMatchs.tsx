@@ -21,6 +21,7 @@ import { TypeEquipes } from '@/types/enums/typeEquipes'
 import { ModeTournoi } from '@/types/enums/modeTournoi'
 import { TypeTournoi } from '@/types/enums/typeTournoi'
 import { Complement } from '@/types/enums/complement'
+import { Match } from '@/types/interfaces/match'
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -201,7 +202,7 @@ class GenerationMatchs extends React.Component<Props, State> {
       let manche = matchs[0].manche;
       let arrRandIdsTerrains = uniqueValueArrayRandOrder(this.props.listeTerrains.length);
       let i = 0;
-      matchs.forEach(match => {
+      matchs.forEach((match: Match) => {
         if (match.manche != manche) {
           manche = match.manche;
           arrRandIdsTerrains = uniqueValueArrayRandOrder(this.props.listeTerrains.length);

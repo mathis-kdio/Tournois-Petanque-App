@@ -1,4 +1,6 @@
-export const nextMatchCoupe = (match, nbMatchs: number) => {
+import { Match } from "@/types/interfaces/match";
+
+export const nextMatchCoupe = (match: Match, nbMatchs: number) => {
   let gagnant = match.equipe[0];
   if (parseInt(match.score2) > parseInt(match.score1)) {
     gagnant = match.equipe[1];

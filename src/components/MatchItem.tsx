@@ -1,4 +1,5 @@
 import { Joueur } from '@/types/interfaces/joueur';
+import { Match } from '@/types/interfaces/match';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Box, Divider, HStack, Text, VStack } from '@gluestack-ui/themed'
 import { TFunction } from 'i18next';
@@ -9,10 +10,10 @@ import { connect } from 'react-redux'
 
 export interface Props {
   t: TFunction;
-  /*match: ;
+  match: Match;
   displayDetailForMatch: ;
-  manche: ;
-  nbPtVictoire: ; */
+  manche: number;
+  nbPtVictoire: number;
 }
 
 interface State {
@@ -26,7 +27,7 @@ class MatchItem extends React.Component<Props, State> {
     }
   }
 
-  _displayTitle(match, nbPtVictoire: number) {
+  _displayTitle(match: Match, nbPtVictoire: number) {
     const { t } = this.props;
     let txt = t("match_numero") + (match.id + 1);
     if (match.terrain) {
@@ -35,7 +36,7 @@ class MatchItem extends React.Component<Props, State> {
     return (
       <HStack>
         <Box flex={1} alignItems='center'>
-          { match.score1 == nbPtVictoire &&
+          { parseInt(match.score1) == nbPtVictoire &&
             <FontAwesome5 name='trophy' size={20} color='#ffda00'/>
           }
         </Box>
@@ -43,7 +44,7 @@ class MatchItem extends React.Component<Props, State> {
           <Text color='$white' fontSize={'$2xl'} p={'$0.5'} textAlign='center'>{txt}</Text>
         </Box>
         <Box flex={1} alignItems='center'>
-          { match.score2 == nbPtVictoire &&
+          { parseInt(match.score2) == nbPtVictoire &&
             <FontAwesome5 name='trophy' size={20} color='#ffda00'/>
           }
         </Box>

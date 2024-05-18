@@ -10,6 +10,7 @@ import { Platform } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { Joueur } from '@/types/interfaces/joueur';
+import { Match } from '@/types/interfaces/match';
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -17,8 +18,7 @@ export interface Props {
 }
 
 interface State {
-  modalVisible: boolean;
-  match: object[],
+  match: Match,
   score1: string,
   score2: string
 }
@@ -53,7 +53,7 @@ class MatchDetail extends React.Component<Props, State> {
     }
   } 
 
-  _displayTitle(match) {
+  _displayTitle(match: Match) {
     const { t } = this.props;
     let title = match.terrain ? match.terrain.name : t("match_numero")+(match.id + 1);
     return (
@@ -73,7 +73,7 @@ class MatchDetail extends React.Component<Props, State> {
     }
   }
 
-  _displayEquipe(equipe, match) {
+  _displayEquipe(equipe: number, match: Match) {
     let nomsJoueurs = [];
     for (let i = 0; i < 3; i++) {
       nomsJoueurs.push(this._displayName(match.equipe[equipe - 1][i], equipe));

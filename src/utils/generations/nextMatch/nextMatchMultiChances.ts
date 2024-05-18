@@ -1,4 +1,6 @@
-export const nextMatchMultiChances = (match, nbMatchs, nbTours) => {
+import { Match } from "@/types/interfaces/match";
+
+export const nextMatchMultiChances = (match: Match, nbMatchs: number, nbTours: number) => {
   let gagnant = match.equipe[0];
   let perdant = match.equipe[1];
   if (parseInt(match.score2) > parseInt(match.score1)) {

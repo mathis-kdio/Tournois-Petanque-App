@@ -5,6 +5,8 @@ import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Box, Button, ButtonText, Text, VStack } from '@gluestack-ui/themed';
 import TopBarBack from '@components/TopBarBack';
+import { TFunction } from 'i18next';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;

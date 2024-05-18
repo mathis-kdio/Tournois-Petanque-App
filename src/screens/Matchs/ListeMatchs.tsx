@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import MatchItem from '@components/MatchItem'
 import { VStack, FlatList} from '@gluestack-ui/themed';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { Match } from '@/types/interfaces/match';
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -37,7 +38,7 @@ class ListeMatchs extends React.Component<Props, State> {
       nbPtVictoire = tournoi[tournoi.length - 1].nbPtVictoire ? tournoi[tournoi.length - 1].nbPtVictoire : 13; //On récup le nb de pt pour la victoire sinon 13
       matchs = tournoi.slice(0, -1); //On retire la config et donc seulement la liste des matchs
     }
-    matchs = matchs.filter(match => match.manche == this.props.extraData);
+    matchs = matchs.filter((match: Match) => match.manche == this.props.extraData);
     return (
       <FlatList
         data={matchs}
