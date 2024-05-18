@@ -8,6 +8,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { TFunction } from 'i18next'
 import { Joueur } from '@/types/interfaces/joueur'
 import { PropsFromRedux, connector } from '@/store/connector'
+import { ListRenderItem } from 'react-native'
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
@@ -29,18 +30,20 @@ class JoueursTournoi extends React.Component<Props, State> {
 
   _displayListeJoueur(listeJoueurs: Joueur[]) {
     if (listeJoueurs !== undefined) {
+      const renderItem: ListRenderItem<Joueur> = ({item}) => (
+        <ListeJoueurItem
+          joueur={item}
+          isInscription={false}
+          showCheckbox={true}
+        />
+      );
+
       return (
         <FlatList
           removeClippedSubviews={false}
           data={listeJoueurs}
-          keyExtractor={(item) => item.id.toString() }
-          renderItem={({item}) => (
-            <ListeJoueurItem
-              joueur={item}
-              isInscription={false}
-              showCheckbox={true}
-            />
-          )}
+          keyExtractor={(item: Joueur) => item.id.toString() }
+          renderItem={renderItem}
         />
       )
     }
