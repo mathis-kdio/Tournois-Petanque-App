@@ -12,12 +12,11 @@ import { TypeEquipes } from '@/types/enums/typeEquipes'
 import { Joueur } from '@/types/interfaces/joueur'
 import { ModeTournoi } from '@/types/enums/modeTournoi'
 import { PropsFromRedux, connector } from '@/store/connector';
+import { ListRenderItem } from 'react-native';
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
-  joueurText: string;
-  addPlayerTextInput: React.RefObject<unknown>;
   loadListScreen: boolean;
 }
 
@@ -25,18 +24,18 @@ interface State {
   joueur: Joueur;
   joueurType: JoueurTypeEnum;
   etatBouton: boolean;
-  suggestions: object[];
+  suggestions: Joueur[];
   nbSuggestions: number;
   modalRemoveIsOpen: boolean;
   showCheckbox: boolean;
 }
 
 class Inscription extends React.Component<Props, State> {
+  joueurText: string = "";
+  addPlayerTextInput: React.RefObject<unknown> = React.createRef();
 
   constructor(props: Props) {
     super(props)
-    props.joueurText = "",
-    props.addPlayerTextInput = React.createRef()
     this.state = {
       joueur: undefined,
       joueurType: undefined,
@@ -73,9 +72,9 @@ class Inscription extends React.Component<Props, State> {
   }
 
   _ajoutJoueurTextInputChanged(text: string) {
-    this.props.joueurText = text
+    this.joueurText = text
     //Possible d'utiliser le bouton sauf si pas de lettre
-    if (this.props.joueurText != '') {
+    if (this.joueurText != '') {
       this.setState({
         etatBouton: true
       })
@@ -89,21 +88,21 @@ class Inscription extends React.Component<Props, State> {
 
   _ajoutJoueur() {
     //Test si au moins 1 caractère
-    if (this.props.joueurText != '') {
+    if (this.joueurText != '') {
       let equipe = 1
       if (this.props.optionsTournoi.typeEquipes == TypeEquipes.TETEATETE && this.props.listesJoueurs[this.props.optionsTournoi.mode]) {
         equipe = this.props.listesJoueurs[this.props.optionsTournoi.mode].length + 1
       }
-      const action = { type: "AJOUT_JOUEUR", value: [this.props.optionsTournoi.mode, this.props.joueurText, this.state.joueurType, equipe] }
+      const action = { type: "AJOUT_JOUEUR", value: [this.props.optionsTournoi.mode, this.joueurText, this.state.joueurType, equipe] }
       this.props.dispatch(action);
-      this.props.addPlayerTextInput.current.clear();
-      this.props.joueurText = "";
+      this.addPlayerTextInput.current.clear();
+      this.joueurText = "";
       this.setState({
         joueurType: undefined,
         etatBouton: false
       })
-      //Ne fonctionne pas avec: "this.props.addPlayerTextInput.current.focus()" quand validation avec clavier donc "hack" ci-dessous
-      setTimeout(() => this.props.addPlayerTextInput.current.focus(), 0)
+      //Ne fonctionne pas avec: "this.addPlayerTextInput.current.focus()" quand validation avec clavier donc "hack" ci-dessous
+      setTimeout(() => this.addPlayerTextInput.current.focus(), 0)
     }
   }
 
@@ -158,22 +157,23 @@ class Inscription extends React.Component<Props, State> {
       if (this.props.optionsTournoi.mode == ModeTournoi.AVECEQUIPES) {
         avecEquipes = true;
       }
+      const renderItem: ListRenderItem<Joueur> = ({item}) => (
+        <ListeJoueurItem
+          joueur={item}
+          isInscription={true}
+          avecEquipes={avecEquipes}
+          typeEquipes={this.props.optionsTournoi.typeEquipes}
+          nbJoueurs={this.props.listesJoueurs[this.props.optionsTournoi.mode].length}
+          showCheckbox={this.state.showCheckbox}
+        />
+      );
       return (
         <FlatList
           removeClippedSubviews={false}
           persistentScrollbar={true}
           data={this.props.listesJoueurs[this.props.optionsTournoi.mode]}
-          keyExtractor={(item) => item.id.toString() }
-          renderItem={({item}) => (
-            <ListeJoueurItem
-              joueur={item}
-              isInscription={true}
-              avecEquipes={avecEquipes}
-              typeEquipes={this.props.optionsTournoi.typeEquipes}
-              nbJoueurs={this.props.listesJoueurs[this.props.optionsTournoi.mode].length}
-              showCheckbox={this.state.showCheckbox}
-            />
-          )}
+          keyExtractor={(item: Joueur) => item.id.toString() }
+          renderItem={renderItem}
           ListFooterComponent={
             <VStack space='md'>
               <VStack px={'$10'} space='sm'>
@@ -192,6 +192,11 @@ class Inscription extends React.Component<Props, State> {
     const { t } = this.props;
     if (this.state.suggestions.length > 0) {
       let partialSuggested = this.state.suggestions.slice(0, this.state.nbSuggestions);
+      const renderItem: ListRenderItem<Joueur> = ({item}) => (
+        <JoueurSuggere
+          joueur={item}
+        />
+      );
       return (
         <VStack>
           <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("suggestions_joueurs")}</Text>
@@ -199,12 +204,8 @@ class Inscription extends React.Component<Props, State> {
             removeClippedSubviews={false}
             persistentScrollbar={true}
             data={partialSuggested}
-            keyExtractor={(item) => item.id.toString() }
-            renderItem={({item}) => (
-              <JoueurSuggere
-                joueur={item}
-              />
-            )}
+            keyExtractor={(item: Joueur) => item.id.toString() }
+            renderItem={renderItem}
           />
           <Box px={'$10'} pb={'$2'}>
             {this._buttonMoreSuggestedPlayers()}
@@ -221,10 +222,10 @@ class Inscription extends React.Component<Props, State> {
         <Button
           action='primary'
           onPress={() => this._showMoreSuggestedPlayers()}
-          startIcon={<Icon as={FontAwesome5} name="chevron-down"/>}
-          endIcon={<Icon as={FontAwesome5} name="chevron-down"/>}
         >
+          <FontAwesome5 name="chevron-down"/>
           <ButtonText>{t("plus_suggestions_joueurs_bouton")}</ButtonText>
+          <FontAwesome5 name="chevron-down"/>
         </Button>
       )
     }
@@ -288,7 +289,6 @@ class Inscription extends React.Component<Props, State> {
               <InputField
                 placeholder={t("nom_inscription")}
                 autoFocus={true}
-                defaultValue={this.nbToursTxt}
                 keyboardType="default"
                 onChangeText={(text) => this._ajoutJoueurTextInputChanged(text)}
                 onSubmitEditing={() => this._ajoutJoueur()}
