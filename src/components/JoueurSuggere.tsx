@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { FontAwesome5 } from '@expo/vector-icons';
 import JoueurType from '@components/JoueurType'
 import { withTranslation } from 'react-i18next';
@@ -8,8 +7,9 @@ import { TFunction } from 'i18next';
 import { JoueurType as JoueurTypeEnum} from '@/types/enums/joueurType';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { Joueur } from '@/types/interfaces/joueur';
+import { PropsFromRedux, connector } from '@/store/connector';
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   t: TFunction;
   joueur: Joueur;
 }
@@ -103,11 +103,4 @@ class JoueurSuggere extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    listesJoueurs: state.listesJoueurs.listesJoueurs,
-    optionsTournoi: state.optionsTournoi.options
-  }
-}
-
-export default connect(mapStateToProps)(withTranslation()(JoueurSuggere))
+export default connector(withTranslation()(JoueurSuggere))

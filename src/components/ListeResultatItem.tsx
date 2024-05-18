@@ -1,11 +1,11 @@
+import { PropsFromRedux, connector } from '@/store/connector';
 import { Joueur } from '@/types/interfaces/joueur';
 import { HStack, Text, Image, Divider, VStack } from '@gluestack-ui/themed';
 import { TFunction } from 'i18next';
 import React from 'react'
 import { withTranslation } from 'react-i18next'
-import { connect } from 'react-redux'
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   t: TFunction;
   joueur: Joueur;
 }
@@ -82,10 +82,4 @@ class ListeResultatItem extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    listeMatchs: state.gestionMatchs.listematchs
-  }
-}
-
-export default connect(mapStateToProps)(withTranslation()(ListeResultatItem))
+export default connector(withTranslation()(ListeResultatItem))

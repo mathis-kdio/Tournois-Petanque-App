@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { withTranslation } from 'react-i18next';
 import { Box, HStack, Text, Button, ButtonText, AlertDialog, AlertDialogBody, AlertDialogBackdrop, AlertDialogContent, AlertDialogHeader, Heading, CloseIcon, AlertDialogFooter, ButtonGroup, AlertDialogCloseButton, Input, InputField } from '@gluestack-ui/themed';
@@ -7,8 +6,9 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { Tournoi } from '@/types/interfaces/tournoi';
+import { PropsFromRedux, connector } from '@/store/connector';
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
   tournoiNameText: string;
@@ -174,11 +174,4 @@ class ListeTournoiItem extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    listeMatchs: state.gestionMatchs.listematchs,
-    listeTournois: state.listeTournois.listeTournois
-  }
-}
-
-export default connect(mapStateToProps)(withTranslation()(ListeTournoiItem))
+export default connector(withTranslation()(ListeTournoiItem))

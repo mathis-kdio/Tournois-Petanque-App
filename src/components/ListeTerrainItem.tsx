@@ -1,11 +1,11 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { withTranslation } from 'react-i18next';
 import { Box, HStack, Input, Text, InputField } from '@gluestack-ui/themed';
 import { Terrain } from '@/types/interfaces/terrain';
+import { PropsFromRedux, connector } from '@/store/connector';
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   terrainText: string;
   terrain: Terrain;
 }
@@ -104,10 +104,4 @@ class ListeTerrainItem extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    listeTerrains: state.listeTerrains.listeTerrains
-  }
-}
-
-export default connect(mapStateToProps)(withTranslation()(ListeTerrainItem))
+export default connector(withTranslation()(ListeTerrainItem))

@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import ListeJoueursItem from '@components/ListeJoueursItem';
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,8 +8,9 @@ import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
+import { PropsFromRedux, connector } from '@/store/connector';
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
 }
@@ -88,10 +88,4 @@ class ListesJoueurs extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    savedLists: state.listesJoueurs.listesSauvegarde
-  }
-}
-
-export default connect(mapStateToProps)(withTranslation()(ListesJoueurs))
+export default connector(withTranslation()(ListesJoueurs))

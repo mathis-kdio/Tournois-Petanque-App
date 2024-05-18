@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Checkbox, VStack, Button, Text, Input, Select, CheckIcon, Slider, HStack, ScrollView, ButtonText, SliderTrack, SliderFilledTrack, SliderThumb, SelectItem, CheckboxIndicator, SelectTrigger, SelectInput, SelectIcon, SelectPortal, SelectBackdrop, SelectContent, SelectDragIndicatorWrapper, SelectDragIndicator, ChevronDownIcon, InputField, CheckboxLabel, KeyboardAvoidingView } from '@gluestack-ui/themed';
 import TopBarBack from '@components/TopBarBack';
@@ -8,8 +7,9 @@ import { Platform } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { Complement } from '@/types/enums/complement';
+import { PropsFromRedux, connector } from '@/store/connector';
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
   nbToursTxt: string;
@@ -231,4 +231,4 @@ class OptionsTournoi extends React.Component<Props, State> {
   }
 }
 
-export default connect()(withTranslation()(OptionsTournoi))
+export default connector(withTranslation()(OptionsTournoi))

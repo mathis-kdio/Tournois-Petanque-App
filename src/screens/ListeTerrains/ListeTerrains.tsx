@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import ListeTerrainItem from '@components/ListeTerrainItem';
 import { calcNbMatchsParTour } from '@utils/generations/generation';
 import { withTranslation } from 'react-i18next';
@@ -8,8 +7,9 @@ import { VStack, Text, Button, FlatList, ButtonText } from '@gluestack-ui/themed
 import TopBarBack from '@components/TopBarBack';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
+import { PropsFromRedux, connector } from '@/store/connector';
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
 }
@@ -91,12 +91,4 @@ class ListeTerrains extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    listeTerrains: state.listeTerrains.listeTerrains,
-    listesJoueurs: state.listesJoueurs.listesJoueurs,
-    optionsTournoi: state.optionsTournoi.options
-  }
-}
-
-export default connect(mapStateToProps)(withTranslation()(ListeTerrains))
+export default connector(withTranslation()(ListeTerrains))

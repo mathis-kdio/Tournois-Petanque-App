@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { generationChampionnat } from '@utils/generations/championnat'
 import { generationCoupe } from '@utils/generations/coupe'
 import { generationMultiChances } from '@utils/generations/multiChances'
@@ -23,8 +22,9 @@ import { TypeTournoi } from '@/types/enums/typeTournoi'
 import { Complement } from '@/types/enums/complement'
 import { Match } from '@/types/interfaces/match'
 import { InterstitialAd } from 'react-native-google-mobile-ads'
+import { PropsFromRedux, connector } from '@/store/connector'
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
   nbTours: number;
@@ -301,14 +301,4 @@ class GenerationMatchs extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    listesJoueurs: state.listesJoueurs.listesJoueurs,
-    listeMatchs: state.gestionMatchs.listematchs,
-    listeTournois: state.listeTournois.listeTournois,
-    optionsTournoi: state.optionsTournoi.options,
-    listeTerrains: state.listeTerrains.listeTerrains
-  }
-}
-
-export default connect(mapStateToProps)(withTranslation()(GenerationMatchs))
+export default connector(withTranslation()(GenerationMatchs))

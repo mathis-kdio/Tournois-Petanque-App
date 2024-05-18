@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux'
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import { withTranslation } from 'react-i18next';
@@ -12,8 +11,9 @@ import { Platform } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
+import { PropsFromRedux, connector } from '@/store/connector';
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
 }
@@ -114,10 +114,4 @@ class PDFExport extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    listeMatchs: state.gestionMatchs.listematchs
-  }
-}
-
-export default connect(mapStateToProps)(withTranslation()(PDFExport))
+export default connector(withTranslation()(PDFExport))

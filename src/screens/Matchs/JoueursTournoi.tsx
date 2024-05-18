@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import ListeJoueurItem from '@components/ListeJoueurItem'
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -8,8 +7,9 @@ import TopBarBack from '@components/TopBarBack'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { TFunction } from 'i18next'
 import { Joueur } from '@/types/interfaces/joueur'
+import { PropsFromRedux, connector } from '@/store/connector'
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
 }
@@ -68,10 +68,4 @@ class JoueursTournoi extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    listeMatchs: state.gestionMatchs.listematchs
-  }
-}
-
-export default connect(mapStateToProps)(withTranslation()(JoueursTournoi))
+export default connector(withTranslation()(JoueursTournoi))

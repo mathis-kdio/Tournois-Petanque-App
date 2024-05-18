@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import Inscriptions from '@components/Inscriptions'
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -12,8 +11,9 @@ import { TypeTournoi } from '@/types/enums/typeTournoi'
 import { Complement } from '@/types/enums/complement'
 import { ModeTournoi } from '@/types/enums/modeTournoi'
 import { Joueur } from '@/types/interfaces/joueur'
+import { PropsFromRedux, connector } from '@/store/connector'
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
 }
@@ -178,11 +178,4 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    listesJoueurs: state.listesJoueurs.listesJoueurs,
-    optionsTournoi: state.optionsTournoi.options
-  }
-}
-
-export default connect(mapStateToProps)(withTranslation()(InscriptionsAvecNoms))
+export default connector(withTranslation()(InscriptionsAvecNoms))

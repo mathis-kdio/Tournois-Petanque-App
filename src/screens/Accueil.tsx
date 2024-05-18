@@ -1,6 +1,5 @@
 import React from 'react';
 import { expo } from '../../app.json';
-import { connect } from 'react-redux';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { _openPlateformLink, _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -12,8 +11,9 @@ import { AppState, AppStateStatus, Platform } from 'react-native';
 import { _requestTrackingPermissions } from '../utils/expoTrackingTransparency/requestTrackingPermission';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
+import { PropsFromRedux, connector } from '@/store/connector';
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
   googleMarket: string;
@@ -227,10 +227,4 @@ class Accueil extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state: any) => {
-  return {
-    listeMatchs: state.gestionMatchs.listematchs
-  }
-}
-
-export default connect(mapStateToProps)(withTranslation()(Accueil))
+export default connector(withTranslation()(Accueil))

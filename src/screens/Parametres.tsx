@@ -1,6 +1,5 @@
 import React from 'react'
 import { expo } from '../../app.json'
-import { connect } from 'react-redux'
 import { _openURL } from '@utils/link'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { HStack, VStack, Text, FlatList, Divider, AlertDialogContent, AlertDialog, Pressable, Box, Center, Button, ButtonText, Modal, Image, ModalBackdrop, ModalContent, ModalCloseButton, ModalHeader, ModalBody, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, ButtonGroup, Heading, AlertDialogCloseButton, CloseIcon, AlertDialogBackdrop } from '@gluestack-ui/themed'
@@ -14,8 +13,9 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { AnyAction, Dispatch } from 'redux'
 import { ImageSourcePropType, ListRenderItemInfo } from 'react-native'
 import { ModeTournoi } from '@/types/enums/modeTournoi'
+import { PropsFromRedux, connector } from '@/store/connector'
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
   i18n: i18n;
@@ -252,15 +252,4 @@ class Parametres extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    listesJoueurs: state.listesJoueurs.listesJoueurs,
-    savedLists: state.listesJoueurs.listesSauvegarde,
-    listeMatchs: state.gestionMatchs.listematchs,
-    listeTournois: state.listeTournois.listeTournois,
-    listeTerrains: state.listeTournois.listeTerrains,
-    optionsTournoi: state.optionsTournoi.options,
-  }
-}
-
-export default connect(mapStateToProps)(withTranslation()(Parametres))
+export default connector(withTranslation()(Parametres))

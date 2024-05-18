@@ -1,11 +1,11 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import MatchItem from '@components/MatchItem'
 import { VStack, FlatList} from '@gluestack-ui/themed';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Match } from '@/types/interfaces/match';
+import { PropsFromRedux, connector } from '@/store/connector';
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
 }
 
@@ -65,10 +65,4 @@ class ListeMatchs extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    listeMatchs: state.gestionMatchs.listematchs
-  }
-}
-
-export default connect(mapStateToProps)(ListeMatchs)
+export default connector(ListeMatchs)

@@ -2,15 +2,15 @@ import { VStack, Text, Button, ButtonText, Input, InputField } from '@gluestack-
 import React from 'react'
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { connect } from 'react-redux'
 import TopBarBack from '@components/TopBarBack'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { TFunction } from 'i18next'
 import { JoueurType } from '@/types/enums/joueurType'
 import { TypeEquipes } from '@/types/enums/typeEquipes'
 import { ModeTournoi } from '@/types/enums/modeTournoi'
+import { PropsFromRedux, connector } from '@/store/connector'
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
 }
@@ -160,11 +160,4 @@ class InscriptionsSansNoms extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    listesJoueurs: state.listesJoueurs.listesJoueurs,
-    optionsTournoi: state.optionsTournoi.options
-  }
-}
-
-export default connect(mapStateToProps)(withTranslation()(InscriptionsSansNoms))
+export default connector(withTranslation()(InscriptionsSansNoms))

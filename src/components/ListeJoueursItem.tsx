@@ -1,13 +1,13 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { withTranslation } from 'react-i18next';
 import { Box, HStack, Text, Button, Input, InputField, ButtonText, AlertDialog, AlertDialogBackdrop, AlertDialogContent, AlertDialogHeader, Heading, AlertDialogCloseButton, CloseIcon, AlertDialogBody, AlertDialogFooter, ButtonGroup } from '@gluestack-ui/themed';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { Joueur } from '@/types/interfaces/joueur';
+import { PropsFromRedux, connector } from '@/store/connector';
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
   listNameText: string;
@@ -184,11 +184,4 @@ class ListeJoueursItem extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    listeMatchs: state.gestionMatchs.listematchs,
-    optionsTournoi: state.optionsTournoi.options
-  }
-}
-
-export default connect(mapStateToProps)(withTranslation()(ListeJoueursItem))
+export default connector(withTranslation()(ListeJoueursItem))

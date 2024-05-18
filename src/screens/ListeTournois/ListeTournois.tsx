@@ -1,7 +1,6 @@
 import moment from 'moment/moment'
 import 'moment/locale/fr'
 import React from 'react'
-import { connect } from 'react-redux'
 import ListeTournoiItem from '@components/ListeTournoiItem'
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -11,8 +10,9 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { TFunction } from 'i18next'
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi'
 import { Tournoi } from '@/types/interfaces/tournoi'
+import { PropsFromRedux, connector } from '@/store/connector'
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
 }
@@ -116,11 +116,4 @@ class ListeTournois extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    listeMatchs: state.gestionMatchs.listematchs,
-    listeTournois: state.listeTournois.listeTournois
-  }
-}
-
-export default connect(mapStateToProps)(withTranslation()(ListeTournois))
+export default connector(withTranslation()(ListeTournois))

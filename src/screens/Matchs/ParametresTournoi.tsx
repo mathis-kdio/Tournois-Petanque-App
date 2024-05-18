@@ -2,12 +2,12 @@ import { VStack, Button, Text, ButtonText, AlertDialog, AlertDialogBackdrop, Ale
 import React from 'react'
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux'
 import TopBarBack from '@components/TopBarBack';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
+import { PropsFromRedux, connector } from '@/store/connector';
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
 }
@@ -112,10 +112,4 @@ class ParametresTournoi extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    listeMatchs: state.gestionMatchs.listematchs
-  }
-}
-
-export default connect(mapStateToProps)(withTranslation()(ParametresTournoi))
+export default connector(withTranslation()(ParametresTournoi))

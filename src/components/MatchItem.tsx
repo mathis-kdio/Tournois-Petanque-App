@@ -1,3 +1,4 @@
+import { PropsFromRedux, connector } from '@/store/connector';
 import { Joueur } from '@/types/interfaces/joueur';
 import { Match } from '@/types/interfaces/match';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -6,9 +7,8 @@ import { TFunction } from 'i18next';
 import React from 'react'
 import { withTranslation } from 'react-i18next'
 import { TouchableOpacity } from 'react-native'
-import { connect } from 'react-redux'
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   t: TFunction;
   match: Match;
   displayDetailForMatch: (idMatch: number, match: Match, nbPtVictoire: number) => void;
@@ -110,10 +110,4 @@ class MatchItem extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    listeMatchs: state.gestionMatchs.listematchs
-  }
-}
-
-export default connect(mapStateToProps)(withTranslation()(MatchItem))
+export default connector(withTranslation()(MatchItem))

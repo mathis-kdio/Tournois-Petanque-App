@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { VStack, Text, Modal, Pressable, ModalContent, ModalHeader, ModalBody, ModalBackdrop, ModalCloseButton, CloseIcon, Heading } from '@gluestack-ui/themed';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -10,8 +9,9 @@ import AdMobInscriptionsBanner from '../../components/adMob/AdMobInscriptionsBan
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
+import { PropsFromRedux, connector } from '@/store/connector';
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
 }
@@ -143,10 +143,4 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    optionsTournoi: state.optionsTournoi.options
-  }
-}
-
-export default connect(mapStateToProps)(withTranslation()(ChoixTypeTournoi))
+export default connector(withTranslation()(ChoixTypeTournoi))

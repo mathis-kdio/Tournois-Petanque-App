@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import ListeJoueurItem from '@components/ListeJoueurItem'
 import JoueurSuggere from '@components/JoueurSuggere'
 import JoueurType from '@components/JoueurType'
@@ -12,8 +11,9 @@ import { JoueurType as JoueurTypeEnum} from '@/types/enums/joueurType'
 import { TypeEquipes } from '@/types/enums/typeEquipes'
 import { Joueur } from '@/types/interfaces/joueur'
 import { ModeTournoi } from '@/types/enums/modeTournoi'
+import { PropsFromRedux, connector } from '@/store/connector';
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
   joueurText: string;
@@ -324,11 +324,4 @@ class Inscription extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    listesJoueurs: state.listesJoueurs.listesJoueurs,
-    optionsTournoi: state.optionsTournoi.options
-  }
-}
-
-export default connect(mapStateToProps)(withTranslation()(Inscription))
+export default connector(withTranslation()(Inscription))
