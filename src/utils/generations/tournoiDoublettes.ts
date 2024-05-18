@@ -7,10 +7,10 @@ import { Joueur } from '@/types/interfaces/joueur';
 const testRegleMemeCoequipiersValide = (nbTours: number, nbjoueurs: number, nbJoueursSpe: number, joueursTireurs: Joueur[], joueursPointeurs: Joueur[], moitieNbJoueurs: number) => {
   let nbCombinaisons = nbjoueurs;
   nbCombinaisons -= nbJoueursSpe;
-  if (nbCombinaisons - joueursTireurs > moitieNbJoueurs) {
-    nbCombinaisons -= joueursTireurs;
-    if (nbCombinaisons - joueursPointeurs > moitieNbJoueurs) {
-      nbCombinaisons -= joueursPointeurs;
+  if (nbCombinaisons - joueursTireurs.length > moitieNbJoueurs) {
+    nbCombinaisons -= joueursTireurs.length;
+    if (nbCombinaisons - joueursPointeurs.length > moitieNbJoueurs) {
+      nbCombinaisons -= joueursPointeurs.length;
     }
     else {
       nbCombinaisons = moitieNbJoueurs;
