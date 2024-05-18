@@ -22,6 +22,7 @@ import { ModeTournoi } from '@/types/enums/modeTournoi'
 import { TypeTournoi } from '@/types/enums/typeTournoi'
 import { Complement } from '@/types/enums/complement'
 import { Match } from '@/types/interfaces/match'
+import { InterstitialAd } from 'react-native-google-mobile-ads'
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -36,8 +37,8 @@ export interface Props {
   complement: Complement;
   typeTournoi: TypeTournoi;
   avecTerrains: boolean;
-  /*interstitial: ;
-  listener: ;*/
+  interstitial: InterstitialAd;
+  listener: string;
 }
 
 interface State {

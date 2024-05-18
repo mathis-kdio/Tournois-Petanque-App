@@ -72,7 +72,7 @@ class Inscription extends React.Component<Props, State> {
     return [];
   }
 
-  _ajoutJoueurTextInputChanged(text) {
+  _ajoutJoueurTextInputChanged(text: string) {
     this.props.joueurText = text
     //Possible d'utiliser le bouton sauf si pas de lettre
     if (this.props.joueurText != '') {

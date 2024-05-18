@@ -13,6 +13,7 @@ export interface Props {
   t: TFunction;
   tournoiNameText: string;
   tournoi: OptionsTournoi;
+  _showModalTournoiInfos: (tournoi: Tournoi) => void;
 }
 
 interface State {
@@ -105,14 +106,14 @@ class ListeTournoiItem extends React.Component<Props, State> {
     )
   }
 
-  _renameTournoiInput(tournoi) {
+  _renameTournoiInput(tournoi: Tournoi) {
     this.setState({
       renommerOn: true
     });
     this.props.tournoiNameText = tournoi.name;
   }
 
-  _renameTournoi(tournoi: OptionsTournoi) {
+  _renameTournoi(tournoi: Tournoi) {
     if (this.props.tournoiNameText != "") {
       this.setState({renommerOn: false});
       const actionRenameTournoi = { type: "RENOMMER_TOURNOI", value: {tournoiId: tournoi.tournoiId, newName: this.props.tournoiNameText} };
@@ -126,7 +127,7 @@ class ListeTournoiItem extends React.Component<Props, State> {
     this.setState({renommerOn: true});
   }
 
-  _tournoiName(tournoi: OptionsTournoi) {
+  _tournoiName(tournoi: Tournoi) {
     const { t } = this.props;
     let tournoiName = tournoi.name ? tournoi.name : 'n°' + tournoi.tournoiId;
     if (this.state.renommerOn) {

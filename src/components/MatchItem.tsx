@@ -11,7 +11,7 @@ import { connect } from 'react-redux'
 export interface Props {
   t: TFunction;
   match: Match;
-  displayDetailForMatch: ;
+  displayDetailForMatch: (idMatch: number, match: Match, nbPtVictoire: number) => void;
   manche: number;
   nbPtVictoire: number;
 }
@@ -52,7 +52,7 @@ class MatchItem extends React.Component<Props, State> {
     )
   }
 
-  _displayEquipe(equipe, match) {
+  _displayEquipe(equipe: number, match: Match) {
     let nomsJoueurs = [];
     for (let i = 0; i < 3; i++) {
       nomsJoueurs.push(this._displayName(match.equipe[equipe - 1][i], equipe));

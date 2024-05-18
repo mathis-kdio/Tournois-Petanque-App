@@ -18,7 +18,7 @@ export interface Props {
 
 interface State {
   showModal: boolean;
-  modalType: string;
+  modalType: TypeTournoi;
 }
 
 class ChoixTypeTournoi extends React.Component<Props, State> {
@@ -91,7 +91,7 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
                 navigate={() => this._navigate(TypeTournoi.MELEDEMELE)}
                 newBadge={false}
               />
-              <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: "melee-demelee"})}>
+              <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: TypeTournoi.MELEDEMELE})}>
                 <FontAwesome5 name="info-circle" color='white' size={24}/>
                 <Text color='$white'> {t("savoir_plus")}</Text>
               </Pressable>

@@ -7,6 +7,7 @@ import { Box, Button, ButtonText, Text, VStack } from '@gluestack-ui/themed';
 import TopBarBack from '@components/TopBarBack';
 import { TFunction } from 'i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { ModeTournoi } from '@/types/enums/modeTournoi';
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -21,12 +22,12 @@ class CreateListeJoueur extends React.Component<Props, State> {
     super(props)
   }
 
-  _dispatch(type, listId) {
+  _dispatch(type: string, listId: number) {
     if (type == "create") {
-      const addSavedList = { type: "ADD_SAVED_LIST", value: {typeInscription: 'avecNoms', savedList: this.props.listesJoueurs.sauvegarde}};
+      const addSavedList = { type: "ADD_SAVED_LIST", value: {typeInscription: ModeTournoi.AVECNOMS, savedList: this.props.listesJoueurs.sauvegarde}};
       this.props.dispatch(addSavedList);
     } else if (type == "edit" && listId != undefined) {
-      const updateSavedList = { type: "UPDATE_SAVED_LIST", value: {typeInscription: 'avecNoms', listId: listId, savedList: this.props.listesJoueurs.sauvegarde}};
+      const updateSavedList = { type: "UPDATE_SAVED_LIST", value: {typeInscription: ModeTournoi.AVECNOMS, listId: listId, savedList: this.props.listesJoueurs.sauvegarde}};
       this.props.dispatch(updateSavedList);
     }
 

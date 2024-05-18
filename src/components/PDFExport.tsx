@@ -77,12 +77,12 @@ class PDFExport extends React.Component<Props, State> {
     });
   };
 
-  _onPressExportBtn(buttonId, affichageScore, affichageClassement) {
+  _onPressExportBtn(buttonId: number, affichageScore: boolean, affichageClassement: boolean) {
     this._toggleLoading(buttonId);
     this._generatePDF(affichageScore, affichageClassement, buttonId);
   };
 
-  _exportButton(buttonId, buttonText, affichageScore, affichageClassement) {
+  _exportButton(buttonId: number, buttonText: string, affichageScore: boolean, affichageClassement: boolean) {
     let pressableDisabled = false;
     let opacityStyle = 1;
     if (this.state.btnIsLoading[buttonId]) {

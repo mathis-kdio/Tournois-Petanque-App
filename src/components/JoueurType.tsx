@@ -10,6 +10,7 @@ import { TypeTournoi } from '@/types/enums/typeTournoi';
 export interface Props {
   t: TFunction;
   joueurType: JoueurTypeEnum;
+  _setJoueurType: (type: JoueurTypeEnum) => void;
 }
 
 interface State {

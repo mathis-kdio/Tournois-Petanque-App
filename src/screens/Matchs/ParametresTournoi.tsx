@@ -4,6 +4,8 @@ import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux'
 import TopBarBack from '@components/TopBarBack';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { TFunction } from 'i18next';
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -11,7 +13,7 @@ export interface Props {
 }
 
 interface State {
-  modalVisible: boolean;
+  modalDeleteIsOpen: boolean;
 }
 
 class ParametresTournoi extends React.Component<Props, State> {

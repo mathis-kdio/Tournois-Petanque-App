@@ -27,7 +27,6 @@ export interface Props {
   buymeacoffee: string;
   facebook: string;
   website: string;
-  listeMatchs: object[] | undefined;
 }
 
 interface State {

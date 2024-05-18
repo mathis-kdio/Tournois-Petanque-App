@@ -166,7 +166,7 @@ class Parametres extends React.Component<Props, State> {
     this.setState({modalLanguagesOpen: false});
   }
 
-  _item(text: string, action, icon: string, type: string, drapeau: ImageSourcePropType) {
+  _item(text: string, action: () => void, icon: string, type: string, drapeau: ImageSourcePropType) {
     let colorTxt = '$white';
     let btnColor = 'white';
     if (type == "danger") {

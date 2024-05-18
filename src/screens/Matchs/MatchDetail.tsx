@@ -40,7 +40,7 @@ class MatchDetail extends React.Component<Props, State> {
     });
   }
 
-  _ajoutScoreTextInputChanged = (score, equipe) => {
+  _ajoutScoreTextInputChanged = (score: string, equipe: number) => {
     if(equipe === 1) {
       this.setState({
         score1: score
@@ -81,7 +81,7 @@ class MatchDetail extends React.Component<Props, State> {
     return nomsJoueurs;
   }
 
-  _envoyerResultat(match) {
+  _envoyerResultat(match: Match) {
     if (this.state.score1 && this.state.score2) {
       let info = {idMatch: this.state.match, score1: this.state.score1, score2: this.state.score2};
       const actionAjoutScore = { type: "AJOUT_SCORE", value: info};
@@ -109,7 +109,7 @@ class MatchDetail extends React.Component<Props, State> {
     this.props.navigation.navigate('ListeMatchsStack');
   }
 
-  _boutonValider(match) {
+  _boutonValider(match: Match) {
     const { t } = this.props;
     let btnDisabled = !(this.state.score1 && this.state.score2);
     return (

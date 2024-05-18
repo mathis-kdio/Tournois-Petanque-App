@@ -7,6 +7,7 @@ import { ButtonText, VStack, Button, Text, Box, FlatList } from '@gluestack-ui/t
 import TopBarBack from '@components/TopBarBack'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { TFunction } from 'i18next'
+import { Joueur } from '@/types/interfaces/joueur'
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -26,7 +27,7 @@ class JoueursTournoi extends React.Component<Props, State> {
     this.props.navigation.navigate('ListeMatchsStack');   
   }
 
-  _displayListeJoueur(listeJoueurs) {
+  _displayListeJoueur(listeJoueurs: Joueur[]) {
     if (listeJoueurs !== undefined) {
       return (
         <FlatList

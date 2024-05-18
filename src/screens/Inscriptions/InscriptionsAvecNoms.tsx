@@ -11,6 +11,7 @@ import { TypeEquipes } from '@/types/enums/typeEquipes'
 import { TypeTournoi } from '@/types/enums/typeTournoi'
 import { Complement } from '@/types/enums/complement'
 import { ModeTournoi } from '@/types/enums/modeTournoi'
+import { Joueur } from '@/types/interfaces/joueur'
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -68,7 +69,7 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
       title = t("configuration_impossible_multichances");
       btnDisabled = true;
     } else if (optionsTournoi.mode == ModeTournoi.AVECEQUIPES) {
-      if (listesJoueurs.avecEquipes.find(el => el.equipe == undefined || el.equipe == 0 || el.equipe > nbEquipes) != undefined) {
+      if (listesJoueurs.avecEquipes.find((el: Joueur) => el.equipe == undefined || el.equipe == 0 || el.equipe > nbEquipes) != undefined) {
         title = t("joueurs_sans_equipe");
         btnDisabled = true;
       }
@@ -79,7 +80,7 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
         }
         else {
           for (let i = 0; i < nbEquipes; i++) {
-            let count = listesJoueurs.avecEquipes.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
+            let count = listesJoueurs.avecEquipes.reduce((counter: number, obj: Joueur) => obj.equipe == i ? counter += 1 : counter, 0)
             if (count > 1) {
               title = t("equipes_trop_joueurs");
               btnDisabled = true;
@@ -95,7 +96,7 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
         }
         else {
           for (let i = 0; i < nbEquipes; i++) {
-            let count = listesJoueurs.avecEquipes.reduce((counter, obj) => obj.equipe == i ? counter += 1 : counter, 0)
+            let count = listesJoueurs.avecEquipes.reduce((counter: number, obj: Joueur) => obj.equipe == i ? counter += 1 : counter, 0)
             if (count > 2) {
               title = t("equipes_trop_joueurs");
               btnDisabled = true;

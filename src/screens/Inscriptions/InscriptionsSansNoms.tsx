@@ -29,19 +29,19 @@ class InscriptionsSansNoms extends React.Component<Props, State> {
     }
   }
 
-  _textInputJoueursNormaux(text) {
+  _textInputJoueursNormaux(text: string) {
     this.setState({
       nbJoueurNormaux: parseInt(text)
     });
   }
 
-  _textInputJoueursEnfants(text) {
+  _textInputJoueursEnfants(text: string) {
     this.setState({
       nbJoueurEnfants: parseInt(text)
     });
   } 
 
-  _ajoutJoueur(type) {
+  _ajoutJoueur(type: JoueurType) {
     const action = { type: "AJOUT_JOUEUR", value: [ModeTournoi.SANSNOMS,"", type, undefined] };
     this.props.dispatch(action);
   }
