@@ -1,6 +1,7 @@
 import { TypeTournoi } from "@/types/enums/typeTournoi";
+import { Match } from "@/types/interfaces/match";
 
-export const ranking = (listeMatchs) => {
+export const ranking = (listeMatchs: Match[]) => {
   if (listeMatchs != undefined) {
     let optionsTournoi = listeMatchs[listeMatchs.length - 1];
     let nbPtVictoire = optionsTournoi.nbPtVictoire ? optionsTournoi.nbPtVictoire : 13;
@@ -39,7 +40,7 @@ const factorial = n => {
   return result;
 }
 
-const rankingMuliChances = (listeMatchs, optionsTournoi, nbPtVictoire, victoires) => {
+const rankingMuliChances = (listeMatchs: Match[], optionsTournoi, nbPtVictoire: number, victoires) => {
   for (let i = 0; i < victoires.length; i++) {
     let position = 1;
     for (let j = 0; j < optionsTournoi.nbMatchs; j++) {
@@ -62,7 +63,7 @@ const rankingMuliChances = (listeMatchs, optionsTournoi, nbPtVictoire, victoires
   return victoires;
 }
 
-const victoiresPointsCalc = (listeMatchs, optionsTournoi, nbPtVictoire) => {
+const victoiresPointsCalc = (listeMatchs: Match[], optionsTournoi, nbPtVictoire: number) => {
   let listeJoueurs = optionsTournoi.listeJoueurs;
   let victoires = [];
   for (let i = 0; i < listeJoueurs.length; i++) {

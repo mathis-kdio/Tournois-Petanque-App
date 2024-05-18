@@ -1,6 +1,7 @@
 import { TypeEquipes } from "@/types/enums/typeEquipes";
+import { Joueur } from "@/types/interfaces/joueur";
 
-export const generationCoupe = (optionsTournoi, listeJoueurs) => {
+export const generationCoupe = (optionsTournoi, listeJoueurs: Joueur[]) => {
   let typeEquipes = optionsTournoi.typeEquipes;
   let nbjoueurs = listeJoueurs.length;
   let nbTours = 0;

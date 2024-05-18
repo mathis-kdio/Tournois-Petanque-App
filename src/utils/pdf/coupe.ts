@@ -1,6 +1,8 @@
+import { Joueur } from '@/types/interfaces/joueur';
+import { Match } from '@/types/interfaces/match';
 import { ranking } from '@utils/ranking';
 
-export const generationPDFCoupe = (affichageScore, affichageClassement, listeJoueurs, listeMatchs, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables) => {
+export const generationPDFCoupe = (affichageScore: boolean, affichageClassement: boolean, listeJoueurs: Joueur[], listeMatchs: Match[], nbMatchsParTour: number, toursParLigne: number, nbToursRestants: number, nbTables: number) => {
   let html = `<!DOCTYPE html><html><head><style>@page{margin: 10px;} table{width: 100%;} table,th,td{border: 1px solid black;border-collapse: collapse;} td{min-width: 50px; word-break:break-all;} .td-score{min-width: 20px;} .text-right{text-align: right;} .text-center{text-align: center;} .no-border-top{border-top: none;} .no-border-bottom{border-bottom: none;} .border-top{border-top: 1px solid;}</style></head><body>
   <h1 class="text-center">Tournoi</h1>`;
   let idxFirstMatchsTable = 0;

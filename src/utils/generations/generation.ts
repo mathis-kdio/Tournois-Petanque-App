@@ -3,11 +3,11 @@ import { ModeTournoi } from "@/types/enums/modeTournoi";
 import { TypeEquipes } from "@/types/enums/typeEquipes";
 import { TypeTournoi } from "@/types/enums/typeTournoi";
 
-const rand0ToMax = (max) => {
+const rand0ToMax = (max: number) => {
   return Math.floor(Math.random() * (max + 1));
 }
 
-const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+const countOccurrences = (arr: number[], val: number) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
 
 export const uniqueValueArrayRandOrder = (arrayLength: number) => {
   const res = [];

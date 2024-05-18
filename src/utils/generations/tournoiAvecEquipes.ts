@@ -1,6 +1,7 @@
 import { TypeEquipes } from "@/types/enums/typeEquipes";
+import { Joueur } from "@/types/interfaces/joueur";
 
-export const generationAvecEquipes = (listeJoueurs, nbTours, typeEquipes, eviterMemeAdversaire) => {
+export const generationAvecEquipes = (listeJoueurs: Joueur[], nbTours: number, typeEquipes: TypeEquipes, eviterMemeAdversaire: number) => {
   let nbjoueurs = listeJoueurs.length;
   let matchs = [];
   let idMatch = 0;

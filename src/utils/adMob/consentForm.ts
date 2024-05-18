@@ -1,5 +1,7 @@
+import { AppStateStatus } from "react-native";
+
 //Cas web => voir consentForm.native.js pour android et ios
-export const _adsConsentForm = async (appState) => {
+export const _adsConsentForm = async (appState: AppStateStatus) => {
   return;
 }
 

@@ -1,8 +1,9 @@
 import { JoueurType } from '@/types/enums/joueurType';
 import { uniqueValueArrayRandOrder } from './generation';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
+import { Joueur } from '@/types/interfaces/joueur';
 
-export const generationTriplettes = (listeJoueurs, nbTours) => {
+export const generationTriplettes = (listeJoueurs: Joueur[], nbTours: number) => {
   let nbjoueurs = listeJoueurs.length;
   let speciauxIncompatibles = true
   let jamaisMemeCoequipier = true;

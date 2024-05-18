@@ -1,16 +1,17 @@
 import { TypeEquipes } from "@/types/enums/typeEquipes";
+import { Joueur } from "@/types/interfaces/joueur";
 
-export const generationMultiChances = (listeJoueurs, typeEquipes) => {
+export const generationMultiChances = (listeJoueurs: Joueur[], typeEquipes: TypeEquipes) => {
   let nbjoueurs = listeJoueurs.length;
   let matchs = [];
   let idMatch = 0;
   let equipe = [];
 
   //Initialisation des matchs dans un tableau
-  let nbEquipes;
-  let nbMatchsParTour;
-  let nbTours;
-  let nbMatchs;
+  let nbEquipes: number;
+  let nbMatchsParTour: number;
+  let nbTours: number;
+  let nbMatchs: number;
   if (typeEquipes == TypeEquipes.TETEATETE) {
     nbEquipes = nbjoueurs;
   } else if (typeEquipes == TypeEquipes.DOUBLETTE) {

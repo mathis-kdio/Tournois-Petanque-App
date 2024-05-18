@@ -161,10 +161,10 @@ class GenerationMatchs extends React.Component<Props, State> {
         ({matchs, nbMatchs, echecGeneration} = generationAvecEquipes(this.props.listesJoueurs.avecEquipes, this.nbTours, this.typeEquipes, this.eviterMemeAdversaire));
       }
       else if (this.props.typeEquipes == TypeEquipes.TETEATETE) {
-        ({matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration} = generationDoublettes(this.props.listesJoueurs[this.props.typeInscription], this.props.nbTours, this.typeEquipes, this.complement, this.speciauxIncompatibles, this.jamaisMemeCoequipier, this.eviterMemeAdversaire));
+        ({matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration} = generationDoublettes(this.props.listesJoueurs[this.props.typeInscription], this.props.nbTours, this.props.typeEquipes, this.props.complement, this.props.speciauxIncompatibles, this.props.jamaisMemeCoequipier, this.props.eviterMemeAdversaire));
       }
       else if (this.props.typeEquipes == TypeEquipes.DOUBLETTE) {
-        ({matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration} = generationDoublettes(this.props.listesJoueurs[this.props.typeInscription], this.props.nbTours, this.typeEquipes, this.complement, this.speciauxIncompatibles, this.jamaisMemeCoequipier, this.eviterMemeAdversaire));
+        ({matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration} = generationDoublettes(this.props.listesJoueurs[this.props.typeInscription], this.props.nbTours, this.props.typeEquipes, this.props.complement, this.props.speciauxIncompatibles, this.props.jamaisMemeCoequipier, this.props.eviterMemeAdversaire));
       }
       else if (this.props.typeEquipes == TypeEquipes.TRIPLETTE) {
         ({matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration} = generationTriplettes(this.props.listesJoueurs[this.props.typeInscription], this.props.nbTours));

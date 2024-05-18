@@ -2,8 +2,9 @@ import { JoueurType } from '@/types/enums/joueurType';
 import { uniqueValueArrayRandOrder } from './generation';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { Complement } from '@/types/enums/complement';
+import { Joueur } from '@/types/interfaces/joueur';
 
-const testRegleMemeCoequipiersValide = (nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs, joueursPointeurs, moitieNbJoueurs) => {
+const testRegleMemeCoequipiersValide = (nbTours: number, nbjoueurs: number, nbJoueursSpe: number, joueursTireurs: Joueur[], joueursPointeurs: Joueur[], moitieNbJoueurs: number) => {
   let nbCombinaisons = nbjoueurs;
   nbCombinaisons -= nbJoueursSpe;
   if (nbCombinaisons - joueursTireurs > moitieNbJoueurs) {
@@ -24,7 +25,7 @@ const testRegleMemeCoequipiersValide = (nbTours, nbjoueurs, nbJoueursSpe, joueur
   return true;
 }
 
-export const generationDoublettes = (listeJoueurs, nbTours, typeEquipes, complement: Complement, speciauxIncompatibles, jamaisMemeCoequipier, eviterMemeAdversaire) => {
+export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, typeEquipes: TypeEquipes, complement: Complement, speciauxIncompatibles: boolean, jamaisMemeCoequipier: boolean, eviterMemeAdversaire: number) => {
   let nbjoueurs = listeJoueurs.length;
   let matchs = [];
   let idMatch = 0;

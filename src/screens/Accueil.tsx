@@ -8,7 +8,7 @@ import { Box, HStack, VStack, Text, Pressable, Modal, Image, ModalHeader, ModalB
 import { _adsConsentForm } from '../utils/adMob/consentForm'
 import { withTranslation } from 'react-i18next';
 import CardButton from '@components/buttons/CardButton';
-import { AppState, Platform } from 'react-native';
+import { AppState, AppStateStatus, Platform } from 'react-native';
 import { _requestTrackingPermissions } from '../utils/expoTrackingTransparency/requestTrackingPermission';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
@@ -32,7 +32,7 @@ export interface Props {
 
 interface State {
   modalDonsVisible: boolean;
-  appState: string;
+  appState: AppStateStatus;
 }
 
 class Accueil extends React.Component<Props, State> {
