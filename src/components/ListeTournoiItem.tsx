@@ -5,13 +5,13 @@ import { withTranslation } from 'react-i18next';
 import { Box, HStack, Text, Button, ButtonText, AlertDialog, AlertDialogBody, AlertDialogBackdrop, AlertDialogContent, AlertDialogHeader, Heading, CloseIcon, AlertDialogFooter, ButtonGroup, AlertDialogCloseButton, Input, InputField } from '@gluestack-ui/themed';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
-import { Tournoi } from '@/types/interfaces/tournoi';
+import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
   tournoiNameText: string;
-  tournoi: Tournoi;
+  tournoi: OptionsTournoi;
 }
 
 interface State {
@@ -79,7 +79,7 @@ class ListeTournoiItem extends React.Component<Props, State> {
     )
   }
   
-  _showRenameTournoi(tournoi: Tournoi) {
+  _showRenameTournoi(tournoi: OptionsTournoi) {
     let name: string;
     let bgColor: string;
     let action;
@@ -111,7 +111,7 @@ class ListeTournoiItem extends React.Component<Props, State> {
     this.props.tournoiNameText = tournoi.name;
   }
 
-  _renameTournoi(tournoi: Tournoi) {
+  _renameTournoi(tournoi: OptionsTournoi) {
     if (this.props.tournoiNameText != "") {
       this.setState({renommerOn: false});
       const actionRenameTournoi = { type: "RENOMMER_TOURNOI", value: {tournoiId: tournoi.tournoiId, newName: this.props.tournoiNameText} };
@@ -125,7 +125,7 @@ class ListeTournoiItem extends React.Component<Props, State> {
     this.setState({renommerOn: true});
   }
 
-  _tournoiName(tournoi: Tournoi) {
+  _tournoiName(tournoi: OptionsTournoi) {
     const { t } = this.props;
     let tournoiName = tournoi.name ? tournoi.name : 'n°' + tournoi.tournoiId;
     if (this.state.renommerOn) {

@@ -9,7 +9,7 @@ import { VStack, Text, FlatList, Modal, CloseIcon, ModalBackdrop, ModalContent, 
 import TopBarBack from '@components/TopBarBack'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { TFunction } from 'i18next'
-import { Tournoi } from '@/types/interfaces/tournoi'
+import { OptionsTournoi } from '@/types/interfaces/optionsTournoi'
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -18,7 +18,7 @@ export interface Props {
 
 interface State {
   modalTournoiInfosIsOpen: boolean;
-  infosTournoi: Tournoi;
+  infosTournoi: OptionsTournoi;
 }
 
 class ListeTournois extends React.Component<Props, State> {
@@ -30,7 +30,7 @@ class ListeTournois extends React.Component<Props, State> {
     }
   }
 
-  _showModalTournoiInfos(tournoi: Tournoi) {
+  _showModalTournoiInfos(tournoi: OptionsTournoi) {
     this.setState({
       modalTournoiInfosIsOpen: true,
       infosTournoi: tournoi
@@ -103,7 +103,7 @@ class ListeTournois extends React.Component<Props, State> {
                 <ListeTournoiItem
                   tournoi={item}
                   navigation={this.props.navigation}
-                  _showModalTournoiInfos={(tournoi: Tournoi) => this._showModalTournoiInfos(tournoi)}
+                  _showModalTournoiInfos={(tournoi: OptionsTournoi) => this._showModalTournoiInfos(tournoi)}
                 />
               )}
             />
