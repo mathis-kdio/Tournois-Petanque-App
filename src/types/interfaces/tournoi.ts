@@ -1,12 +1,13 @@
 import { Complement } from "../enums/complement";
 import { TypeEquipes } from "../enums/typeEquipes";
+import { Joueur } from "./joueur";
 
 export interface Tournoi {
   tournoiId: number;
   name: string;
   creationDate: Date;
   updateDate: Date;
-  listeJoueurs: ;
+  listeJoueurs: Joueur[];
   typeEquipes: TypeEquipes;
   nbTours: number;
   nbMatchs: number;
