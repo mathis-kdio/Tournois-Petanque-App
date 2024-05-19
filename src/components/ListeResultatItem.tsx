@@ -1,5 +1,6 @@
 import { PropsFromRedux, connector } from '@/store/connector';
 import { Joueur } from '@/types/interfaces/joueur';
+import { Victoire } from '@/types/interfaces/victoire';
 import { HStack, Text, Image, Divider, VStack } from '@gluestack-ui/themed';
 import { TFunction } from 'i18next';
 import React from 'react'
@@ -7,7 +8,7 @@ import { withTranslation } from 'react-i18next'
 
 export interface Props extends PropsFromRedux {
   t: TFunction;
-  joueur: Joueur;
+  joueur: Victoire;
 }
 
 interface State {
