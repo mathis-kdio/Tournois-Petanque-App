@@ -2,11 +2,12 @@ import { Menu, MenuItem, MenuItemLabel, Button, ButtonText } from '@gluestack-ui
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
+import { NavigationProp } from '@react-navigation/native';
+import { MatchsStackParamList } from '@/navigation/Navigation';
 
 export interface Props {
-  navigation: StackNavigationProp<any,any>;
+  navigation: NavigationProp<ReactNavigation.RootParamList>;
   t: TFunction;
 }
 
