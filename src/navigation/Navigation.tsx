@@ -17,6 +17,7 @@ import Changelog from '@screens/Parametres/Changelog';
 import ListeTournois from '@screens/ListeTournois/ListeTournois';
 import ChoixTypeTournoi from '@screens/Inscriptions/ChoixTypeTournoi';
 import ChoixModeTournoi from '@screens/Inscriptions/ChoixModeTournoi'
+import Inscription from '@screens/Connexion/Inscription';
 import InscriptionsAvecNoms from '@screens/Inscriptions/InscriptionsAvecNoms'
 import InscriptionsSansNoms from '@screens/Inscriptions/InscriptionsSansNoms'
 import OptionsTournoi from '@screens/Inscriptions/OptionsTournoi'
@@ -241,8 +242,9 @@ function ConnexionStack() {
   const { t } = useTranslation();
   return (
     <Stack.Navigator initialRouteName='Authentification' screenOptions={{headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}}>
-      <Stack.Screen name="Authentification" component={Authentification} options={{title: t("parametres"), headerShown: false}} />
-      <Stack.Screen name="Compte" component={Compte} options={{title: t("Nouveautes"), headerShown: false}} />
+      <Stack.Screen name="Authentification" component={Authentification} options={{title: t("authentification"), headerShown: false}} />
+      <Stack.Screen name="Inscription" component={Inscription} options={{title: t("inscription"), headerShown: false}} />
+      <Stack.Screen name="Compte" component={Compte} options={{title: t("compte"), headerShown: false}} />
     </Stack.Navigator>
   )
 }
