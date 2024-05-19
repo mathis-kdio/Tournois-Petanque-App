@@ -1,9 +1,21 @@
 import * as React from 'react';
 import { Text, Pressable, HStack, Image } from "@gluestack-ui/themed";
 import { FontAwesome5 } from '@expo/vector-icons';
+import { ImageSourcePropType } from 'react-native';
 
-class Item extends React.Component {
-  constructor(props) {
+export interface Props {
+  text: string;
+  action: () => void; 
+  icon: string;
+  type: string;
+  drapeau: string | ImageSourcePropType;
+}
+
+interface State {
+}
+
+class Item extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
     };
