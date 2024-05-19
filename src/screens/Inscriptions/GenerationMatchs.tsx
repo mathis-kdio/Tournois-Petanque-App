@@ -155,7 +155,7 @@ class GenerationMatchs extends React.Component<Props, State> {
         ({matchs, nbMatchs, echecGeneration} = generationAvecEquipes(this.props.listesJoueurs.avecEquipes, this.nbTours, this.typeEquipes, this.eviterMemeAdversaire));
       }
       else if (this.typeEquipes == TypeEquipes.TETEATETE) {
-        ({matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration} = generationTeteATete(this.props.listesJoueurs[this.typeInscription], this.nbTours, this.eviterMemeAdversaire));
+        ({matchs, nbMatchs, echecGeneration} = generationTeteATete(this.props.listesJoueurs[this.typeInscription], this.nbTours, this.eviterMemeAdversaire));
       }
       else if (this.typeEquipes == TypeEquipes.DOUBLETTE) {
         ({matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration} = generationDoublettes(this.props.listesJoueurs[this.typeInscription], this.nbTours, this.typeEquipes, this.complement, this.speciauxIncompatibles, this.jamaisMemeCoequipier, this.eviterMemeAdversaire));
