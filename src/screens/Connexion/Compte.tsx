@@ -1,5 +1,5 @@
 import React from 'react';
-import { supabase } from '../../utils/supabase'
+import { supabase } from '@/utils/supabase';
 import { View, Alert } from 'react-native'
 import { Session } from '@supabase/supabase-js'
 import { withTranslation } from 'react-i18next';
