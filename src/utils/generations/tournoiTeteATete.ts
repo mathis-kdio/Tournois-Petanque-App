@@ -1,6 +1,7 @@
+import { Joueur } from "@/types/interfaces/joueur";
 import { shuffle } from "./generation";
 
-export const generationTeteATete = (listeJoueurs, nbTours, eviterMemeAdversaire) => {
+export const generationTeteATete = (listeJoueurs: Joueur[], nbTours: number, eviterMemeAdversaire: number) => {
   let nbjoueurs = listeJoueurs.length;
   let matchs = [];
   let idMatch = 0;
