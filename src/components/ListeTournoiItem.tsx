@@ -11,8 +11,7 @@ import { PropsFromRedux, connector } from '@/store/connector';
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
-  tournoiNameText: string;
-  tournoi: OptionsTournoi;
+  tournoi: Tournoi;
   _showModalTournoiInfos: (tournoi: Tournoi) => void;
 }
 
@@ -22,9 +21,10 @@ interface State {
 }
 
 class ListeTournoiItem extends React.Component<Props, State> {
+  tournoiNameText: string = "";
+
   constructor(props: Props) {
     super(props)
-    props.tournoiNameText = ""
     this.state = {
       renommerOn: false,
       modalDeleteIsOpen: false
@@ -81,7 +81,7 @@ class ListeTournoiItem extends React.Component<Props, State> {
     )
   }
   
-  _showRenameTournoi(tournoi: OptionsTournoi) {
+  _showRenameTournoi(tournoi: Tournoi) {
     let name: string;
     let bgColor: string;
     let action;
@@ -89,7 +89,7 @@ class ListeTournoiItem extends React.Component<Props, State> {
       name = 'edit';
       bgColor = '#004282';
       action = () => this.setState({renommerOn: true});
-    } else if (this.props.tournoiNameText == '') {
+    } else if (this.tournoiNameText == '') {
       name = 'times';
       bgColor = '#5F5F5F';
       action = () => this.setState({renommerOn: false});
@@ -110,20 +110,20 @@ class ListeTournoiItem extends React.Component<Props, State> {
     this.setState({
       renommerOn: true
     });
-    this.props.tournoiNameText = tournoi.name;
+    this.tournoiNameText = tournoi.name;
   }
 
   _renameTournoi(tournoi: Tournoi) {
-    if (this.props.tournoiNameText != "") {
+    if (this.tournoiNameText != "") {
       this.setState({renommerOn: false});
-      const actionRenameTournoi = { type: "RENOMMER_TOURNOI", value: {tournoiId: tournoi.tournoiId, newName: this.props.tournoiNameText} };
+      const actionRenameTournoi = { type: "RENOMMER_TOURNOI", value: {tournoiId: tournoi.tournoiId, newName: this.tournoiNameText} };
       this.props.dispatch(actionRenameTournoi);
-      this.props.tournoiNameText = "";
+      this.tournoiNameText = "";
     }
   }
 
   _tournoiTextInputChanged(text: string) {
-    this.props.tournoiNameText = text;
+    this.tournoiNameText = text;
     this.setState({renommerOn: true});
   }
 
