@@ -131,7 +131,7 @@ class MatchDetail extends React.Component<Props, State> {
         style={{ flex: 1, zIndex: 999 }}
       >
         <SafeAreaView style={{flex: 1}}>
-          <ScrollView bgColor='#0594ae'>
+          <ScrollView height={'$1'} bgColor='#0594ae'>
             <VStack>
               <TopBarBack title={t("detail_match_navigation_title")} navigation={this.props.navigation}/>
               <VStack px={'$10'} justifyContent='space-between'>

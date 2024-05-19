@@ -1,5 +1,3 @@
-import moment from 'moment/moment'
-import 'moment/locale/fr'
 import React from 'react'
 import ListeTournoiItem from '@components/ListeTournoiItem'
 import { withTranslation } from 'react-i18next'
@@ -12,6 +10,7 @@ import { OptionsTournoi } from '@/types/interfaces/optionsTournoi'
 import { Tournoi } from '@/types/interfaces/tournoi'
 import { PropsFromRedux, connector } from '@/store/connector'
 import { ListRenderItem } from 'react-native'
+import { dateFormatDateHeure } from '../../utils/date'
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
@@ -46,13 +45,11 @@ class ListeTournois extends React.Component<Props, State> {
       let tournoiOptions = tournoi.tournoi.at(-1) as OptionsTournoi;
       let creationDate = t("date_inconnue");
       let updateDate = t("date_inconnue");
-      moment.locale('fr');
-      let dateFormat = 'd MMMM YYYY à HH:mm:ss';
       if (tournoi.creationDate) {
-        creationDate = moment(tournoi.creationDate).format(dateFormat);
+        creationDate = dateFormatDateHeure(tournoi.creationDate);
       }
       if (tournoi.updateDate) {
-        updateDate = moment(tournoi.updateDate).format(dateFormat);
+        updateDate = dateFormatDateHeure(tournoi.updateDate);
       }
       let nbPtVictoire = tournoiOptions.nbPtVictoire ? tournoiOptions.nbPtVictoire : 13;
       return (
@@ -61,7 +58,7 @@ class ListeTournois extends React.Component<Props, State> {
           onClose={() => this.setState({modalTournoiInfosIsOpen: false})}
         >
           <ModalBackdrop/>
-          <ModalContent>
+          <ModalContent maxHeight='$5/6'>
             <ModalHeader>
               <Heading size='lg'>{t("informations_tournoi_modal_titre")}</Heading>
               <ModalCloseButton>
@@ -105,6 +102,7 @@ class ListeTournois extends React.Component<Props, State> {
           <Text color='$white' fontSize={'$xl'} textAlign='center' px={'$10'}>{t("nombre_tournois", {nb: this.props.listeTournois.length})}</Text>
           <VStack flex={1} my={'$2'}>
             <FlatList
+              height={'$1'}
               data={this.props.listeTournois}
               initialNumToRender={20}
               keyExtractor={(item: Tournoi) => item.tournoiId.toString() }

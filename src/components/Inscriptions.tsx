@@ -169,13 +169,14 @@ class Inscription extends React.Component<Props, State> {
       );
       return (
         <FlatList
+          height={'$1'}
           removeClippedSubviews={false}
           persistentScrollbar={true}
           data={this.props.listesJoueurs[this.props.optionsTournoi.mode]}
           keyExtractor={(item: Joueur) => item.id.toString() }
           renderItem={renderItem}
           ListFooterComponent={
-            <VStack space='md'>
+            <VStack flex={1} space='md'>
               <VStack px={'$10'} space='sm'>
                 {this._buttonRemoveAllPlayers()}
                 {this._buttonLoadSavedList()}

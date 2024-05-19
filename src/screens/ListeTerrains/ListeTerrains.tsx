@@ -82,6 +82,7 @@ class ListeTerrains extends React.Component<Props, State> {
           <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("nombre_terrains", {nb: this.props.listeTerrains.length})}</Text>
           <VStack flex={1} my={'$2'}>
             <FlatList
+              height={'$1'}
               persistentScrollbar={true}
               data={this.props.listeTerrains}
               initialNumToRender={20}

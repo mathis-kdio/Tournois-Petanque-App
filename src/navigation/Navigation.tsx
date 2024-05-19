@@ -10,7 +10,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { FontAwesome5 } from '@expo/vector-icons';
 
 import Accueil from '@screens/Accueil'
-import Parametres from '@screens/Parametres'
+import Parametres from '@screens/Parametres/Parametres';
+import Changelog from '@screens/Parametres/Changelog';
 import ListeTournois from '@screens/ListeTournois/ListeTournois';
 import ChoixTypeTournoi from '@screens/Inscriptions/ChoixTypeTournoi';
 import ChoixModeTournoi from '@screens/Inscriptions/ChoixModeTournoi'
@@ -24,7 +25,7 @@ import ListeTerrains from '@screens/ListeTerrains/ListeTerrains'
 import MatchDetail from '@screens/Matchs/MatchDetail'
 import JoueursTournoi from '@screens/Matchs/JoueursTournoi'
 import ParametresTournoi from '@screens/Matchs/ParametresTournoi'
-import PDFExport from '@components/PDFExport'
+import PDFExport from '@screens/Matchs/PDFExport'
 
 import BoutonMenuHeaderNav from '@components/BoutonMenuHeaderNavigation'
 import ListesJoueurs from '@screens/ListesJoueurs/ListesJoueurs';
@@ -114,7 +115,7 @@ function getTournoiName() {
   if (listeTournois != undefined && listeMatchs != undefined) {
     let tournoiId = listeMatchs[listeMatchs.length - 1].tournoiID;
     let tournoi = listeTournois.find((element) => element.tournoiId == tournoiId);
-    tournoiName = tournoi.name ? tournoi.name : 'n°' + tournoi.tournoiId;
+    tournoiName = tournoi.name != undefined ? tournoi.name : 'n°' + tournoi.tournoiId;
   }
   return tournoiName;
 }
@@ -224,6 +225,16 @@ function InscriptionStack() {
   )
 }
 
+function ParametresStack() {
+  const { t } = useTranslation();
+  return (
+    <Stack.Navigator initialRouteName='Parametres' screenOptions={{headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}}>
+      <Stack.Screen name="Parametres" component={Parametres} options={{title: t("parametres"), headerShown: false}} />
+      <Stack.Screen name="Changelog" component={Changelog} options={{title: t("Nouveautes"), headerShown: false}} />
+    </Stack.Navigator>
+  )
+}
+
 function ListeMatchsStack() {
   const listeMatchs = useSelector(state => state.gestionMatchs.listematchs);
   let typeTournoi = TypeTournoi.MELEDEMELE;
@@ -257,7 +268,7 @@ function General() {
   return (
     <Stack.Navigator initialRouteName='AccueilGeneral' screenOptions={{headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}}>
       <Stack.Screen name="AccueilGeneral" component={Accueil} options={{title: t("accueil"), headerShown: false}} />
-      <Stack.Screen name="Parametres" component={Parametres} options={{title: t("parametres"), headerShown: false}} />
+      <Stack.Screen name="ParametresStack" component={ParametresStack} options={{headerShown: false}} />
 
       <Stack.Screen name="ListeTournois" component={ListeTournois} options={{title: t("choix_tournoi_navigation_title"), headerShown: false}} />
 

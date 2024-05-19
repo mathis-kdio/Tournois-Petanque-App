@@ -1,5 +1,6 @@
 import { TypeEquipes } from "@/types/enums/typeEquipes";
 import { Joueur } from "@/types/interfaces/joueur";
+import { shuffle } from "./generation";
 
 export const generationMultiChances = (listeJoueurs: Joueur[], typeEquipes: TypeEquipes) => {
   let nbjoueurs = listeJoueurs.length;
@@ -45,10 +46,6 @@ export const generationMultiChances = (listeJoueurs: Joueur[], typeEquipes: Type
   let equipesIds = [];
   for (let i = 0; i < nbEquipes; i++) {
     equipesIds.push(i);
-  }
-  function shuffle(o) {
-    for(var j, x, i = o.length; i; j = Math.random() * i, x = o[--i], o[i] = o[j], o[j] = x);
-    return o;
   }
 
   //FONCTIONNEMENT

@@ -2,10 +2,13 @@ import { Joueur } from '@/types/interfaces/joueur';
 import { Match } from '@/types/interfaces/match';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { ranking } from '@utils/ranking';
+import { dateFormatDateCompact } from "../date";
+import { Tournoi } from '@/types/interfaces/tournoi';
 
-export const generationPDFTournoi = (affichageScore: boolean, affichageClassement: boolean, listeJoueurs: Joueur[], optionsTournoi: OptionsTournoi, listeMatchs: Match[], nbMatchsParTour: number, toursParLigne: number, nbToursRestants: number, nbTables: number) => {
-  let html = `<!DOCTYPE html><html><head><style>@page{margin: 10px;} table{width: 100%;} table,th,td{border: 1px solid black;border-collapse: collapse;} td{min-width: 50px; word-break:break-all;} .td-score{min-width: 20px;} .text-right{text-align: right;} .text-center{text-align: center;} .no-border-top{border-top: none;} .no-border-bottom{border-bottom: none;} .border-top{border-top: 1px solid;}</style></head><body>
-  <h1 class="text-center">Tournoi</h1>`;
+export const generationPDFTournoi = (affichageScore: boolean, affichageClassement: boolean, listeJoueurs: Joueur[], optionsTournoi: OptionsTournoi, listeMatchs: Match[], infosTournoi: Tournoi nbMatchsParTour: number, toursParLigne: number, nbToursRestants: number, nbTables: number) => {
+  let date = dateFormatDateCompact(infosTournoi.updateDate)
+  let html = `<!DOCTYPE html><html><head><style>@page{margin: 10px;} table{width: 100%;} table,th,td{border: 1px solid black;border-collapse: collapse;} td{min-width: 50px; word-break:break-all;} .td-score{min-width: 20px;} .text-right{text-align: right;} .text-center{text-align: center;} .no-border-top{border-top: none;} .no-border-bottom{border-bottom: none;} .border-top{border-top: 1px solid;}</style></head><body>`;
+  html += '<h1 class="text-center">Tournoi '+ date +'</h1>';
   for (let tableIdx = 0; tableIdx < nbTables; tableIdx++) {
     let minTourTable = tableIdx * toursParLigne;
     html += '<table><tr>';
@@ -89,6 +92,7 @@ export const generationPDFTournoi = (affichageScore: boolean, affichageClassemen
     html += '</tr></table><br>';
   }
   if (affichageClassement == true) {
+    html += '<div class="pagebreak"></div>';
     html += '<br><table><tr>';
     html += '<th>Place</th><th>Victoires</th><th>Matchs Joués</th><th>Points</th>';
     let classement = ranking(listeMatchs, optionsTournoi);
@@ -113,6 +117,21 @@ export const generationPDFTournoi = (affichageScore: boolean, affichageClassemen
     }
     html += '</tr></table>';
   }
-  html += '</body></html>';
+  html += `</body>
+      <style>
+        @page print {
+          .pagebreak { break-before: page; }
+        }
+        @media print {
+          .pagebreak { break-before: page; }
+        }
+        @page print {
+          .pagebreak { page-break-before: always; }
+        }
+        @media print {
+          .pagebreak { break-before: always; }
+        }
+      </style>
+    </html>`;
   return html;
 }

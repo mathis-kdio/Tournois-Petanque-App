@@ -69,3 +69,8 @@ export const calcNbMatchsParTour = (nbjoueurs: number, typeEquipes: TypeEquipes,
 
   return nbMatchsParTour;
 }
+
+export const shuffle = (o: number[]) => {
+  for(var j, x, i = o.length; i; j = Math.random() * i, x = o[--i], o[i] = o[j], o[j] = x);
+  return o;
+};

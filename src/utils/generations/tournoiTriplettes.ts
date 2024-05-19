@@ -1,5 +1,5 @@
 import { JoueurType } from '@/types/enums/joueurType';
-import { uniqueValueArrayRandOrder } from './generation';
+import { shuffle, uniqueValueArrayRandOrder } from './generation';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { Joueur } from '@/types/interfaces/joueur';
 
@@ -112,10 +112,6 @@ export const generationTriplettes = (listeJoueurs: Joueur[], nbTours: number) =>
   for (let i = 0; i < joueursNonSpe.length; i++) {
     joueursNonSpeId.push(joueursNonSpe[i].id);
   }
-  function shuffle(o) {
-    for(var j, x, i = o.length; i; j = Math.random() * i, x = o[--i], o[i] = o[j], o[j] = x);
-    return o;
-  };
 
   //FONCTIONNEMENT
   //S'il y a eu des joueurs enfants avant alors ils ont déjà été affectés

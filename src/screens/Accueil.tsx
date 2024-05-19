@@ -3,7 +3,7 @@ import { expo } from '../../app.json';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { _openPlateformLink, _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Box, HStack, VStack, Text, Pressable, Modal, Image, ModalHeader, ModalBody, ModalContent, ModalCloseButton, Heading, CloseIcon, ModalBackdrop } from '@gluestack-ui/themed';
+import { Box, HStack, VStack, Text, Pressable, Modal, Image, ModalHeader, ModalBody, ModalContent, ModalCloseButton, Heading, CloseIcon, ModalBackdrop, ScrollView } from '@gluestack-ui/themed';
 import { _adsConsentForm } from '../utils/adMob/consentForm'
 import { withTranslation } from 'react-i18next';
 import CardButton from '@components/buttons/CardButton';
@@ -22,15 +22,11 @@ export interface Props extends PropsFromRedux {
   appleMarketReviews: string;
   mail: string;
   gcuWebsite: string;
-  githubSponsor: string;
-  patreon: string;
-  buymeacoffee: string;
   facebook: string;
   website: string;
 }
 
 interface State {
-  modalDonsVisible: boolean;
   appState: AppStateStatus;
 }
 
@@ -44,13 +40,9 @@ class Accueil extends React.Component<Props, State> {
     props.appleMarketReviews =   "itms-apps://apps.apple.com/app/petanque-gcu/id1661710973?mt=8&action=write-review"
     props.mail =                 "mailto:tournoispetanqueapp@gmail.com";
     props.gcuWebsite =           "https://www.gcu.asso.fr/";
-    props.githubSponsor =        "https://github.com/sponsors/mathis-kdio";
-    props.patreon =              "https://patreon.com/tournoipetanque";
-    props.buymeacoffee =         "https://www.buymeacoffee.com/tournoipetanque";
     props.facebook =             "https://www.facebook.com/groups/tournoispetanqueapp";
     props.website =              "https://tournoispetanqueapp.fr/";
     this.state = {
-      modalDonsVisible: false,
       appState: "active"
     }
   }
@@ -66,48 +58,6 @@ class Accueil extends React.Component<Props, State> {
         _requestTrackingPermissions(this.state.appState);
       }, 1000);
     }
-  }
-
-  _showDonsModal() {
-    const { t } = this.props;
-    return (
-      <Modal
-        isOpen={this.state.modalDonsVisible}
-        onClose={() => this.setState({ modalDonsVisible: false })}
-      >
-        <ModalBackdrop/>
-        <ModalContent>
-          <ModalHeader>
-            <Heading size='lg'>{t("soutenir")}</Heading>
-            <ModalCloseButton>
-              <CloseIcon/>
-            </ModalCloseButton>
-          </ModalHeader>
-          <ModalBody>
-            <VStack space='md'>
-              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.props.githubSponsor)}>
-                <HStack>
-                  <FontAwesome5 name="github" color='white' size={20}/>
-                  <Text color='$white'> {t("githubsponsor")}</Text>
-                </HStack>
-              </Pressable>
-              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.props.patreon)}>
-                <HStack>
-                  <FontAwesome5 name="patreon" color='white' size={20}/>
-                  <Text color='$white'> {t("patreon")}</Text>
-                </HStack>
-              </Pressable>
-              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.props.buymeacoffee)}>
-                <HStack>
-                  <FontAwesome5 name="coffee" color='white' size={20}/>
-                  <Text color='$white'> {t("buymeacoffee")}</Text>
-                </HStack>
-              </Pressable>
-            </VStack>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    )
   }
 
   _showMatchs() {
@@ -149,78 +99,76 @@ class Accueil extends React.Component<Props, State> {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} px={'$5'} bgColor='#0594ae' justifyContent='space-between'>
-          <VStack alignItems='center'>
-            <Image
-              size='xl'
-              alt="Logo de l'application"
-              source={require('@assets/icon.png')}/>
-          </VStack>
-          <VStack space='md'>
-            <HStack>
-              {this._buttonShowMatchs()}
-            </HStack>
-            <HStack>
-              <CardButton
-                text={t("nouveau_tournoi")}
-                icon="plus"
-                navigate={() => this._navigate('InscriptionStack')}
-                newBadge={false}
-              />
-            </HStack>
-            <HStack space='sm'>
-              <CardButton
-                text={t("mes_anciens_tournois")}
-                icon="list"
-                navigate={() => this._navigate('ListeTournois')}
-                newBadge={false}
-              />
-              <CardButton
-                text={t("mes_listes_joueurs")}
-                icon="users"
-                navigate={() => this._navigate('ListesJoueurs')}
-                newBadge={false}
-              />
-            </HStack> 
-          </VStack>
-          <VStack space='sm'>
-            <HStack space='sm' justifyContent='center'>
-              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.props.facebook)}>
-                <FontAwesome5 name="facebook" color='white' size={20}/>
-                <Text color='$white'>{t("rejoindre_page_fb")}</Text>
-              </Pressable>
-              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.props.website)}>
-                <FontAwesome5 name="globe" color='white' size={20}/>
-                <Text color='$white'>{t("voir_website")}</Text>
-              </Pressable>
-            </HStack>
-            <HStack space='sm' justifyContent='center'>
-              {Platform.OS !== 'ios' && <>
-                <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => this.setState({ modalDonsVisible: true })}>
-                  <FontAwesome5 name="euro-sign" color='white' size={20}/>
-                </Pressable>
-              </>}
-              <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => _openPlateformLink(this.props.googleMarketReviews, this.props.appleMarketReviews)}>
-                <FontAwesome5 name="star" color='white' size={20}/>
-              </Pressable>
-              <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => _openURL(this.props.mail)}>
-                <FontAwesome5 name="envelope" color='white' size={20}/>
-              </Pressable>
-              <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => this.props.navigation.navigate('Parametres')}>
-                <FontAwesome5 name="wrench" color='white' size={20}/>
-              </Pressable>
-            </HStack>
-            <HStack justifyContent='center'>
-              <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.props.gcuWebsite)}>
-                <Text color='$white' fontSize={'$md'}>{t("decouvrir_gcu")}</Text>
-              </Pressable>
-            </HStack>
-            <VStack>
-              <Text textAlign='center' color='$white' fontSize={'$md'}>{t("developpe_par")} Mathis Cadio</Text>
-              <Text textAlign='center' color='$white' fontSize={'$md'}>{t("version")} {expo.version}</Text>
+        <VStack flex={1} px={'$5'} bgColor='#0594ae'>
+          <ScrollView height={'$1'}>
+            <VStack space='4xl'>
+              <VStack alignItems='center'>
+                <Image
+                  size='xl'
+                  alt="Logo de l'application"
+                  source={require('@assets/icon.png')}/>
+              </VStack>
+              <VStack space='md'>
+                <HStack>
+                  {this._buttonShowMatchs()}
+                </HStack>
+                <HStack>
+                  <CardButton
+                    text={t("nouveau_tournoi")}
+                    icon="plus"
+                    navigate={() => this._navigate('InscriptionStack')}
+                    newBadge={false}
+                  />
+                </HStack>
+                <HStack space='sm'>
+                  <CardButton
+                    text={t("mes_anciens_tournois")}
+                    icon="list"
+                    navigate={() => this._navigate('ListeTournois')}
+                    newBadge={false}
+                  />
+                  <CardButton
+                    text={t("mes_listes_joueurs")}
+                    icon="users"
+                    navigate={() => this._navigate('ListesJoueurs')}
+                    newBadge={false}
+                  />
+                </HStack> 
+              </VStack>
+              <VStack space='sm'>
+                <HStack space='sm' justifyContent='center'>
+                  <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.props.facebook)}>
+                    <FontAwesome5 name="facebook" color='white' size={20}/>
+                    <Text color='$white'>{t("rejoindre_page_fb")}</Text>
+                  </Pressable>
+                  <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.props.website)}>
+                    <FontAwesome5 name="globe" color='white' size={20}/>
+                    <Text color='$white'>{t("voir_website")}</Text>
+                  </Pressable>
+                </HStack>
+                <HStack space='sm' justifyContent='center'>
+                  <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => _openPlateformLink(this.props.googleMarketReviews, this.props.appleMarketReviews)}>
+                    <FontAwesome5 name="star" color='white' size={20}/>
+                  </Pressable>
+                  <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => _openURL(this.props.mail)}>
+                    <FontAwesome5 name="envelope" color='white' size={20}/>
+                  </Pressable>
+                  <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => this.props.navigation.navigate('ParametresStack')}>
+                    <FontAwesome5 name="wrench" color='white' size={20}/>
+                  </Pressable>
+                </HStack>
+                <HStack justifyContent='center'>
+                  <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.props.gcuWebsite)}>
+                    <Text color='$white' fontSize={'$md'}>{t("decouvrir_gcu")}</Text>
+                  </Pressable>
+                </HStack>
+              </VStack>
             </VStack>
+          </ScrollView>
+          <VStack>
+            <Text textAlign='center' color='$white' fontSize={'$md'}>{t("developpe_par")} Mathis Cadio</Text>
+            <Text textAlign='center' color='$white' fontSize={'$md'}>{t("version")} {expo.version}</Text>
           </VStack>
-          {this._showDonsModal()}
         </VStack>
       </SafeAreaView>
     )

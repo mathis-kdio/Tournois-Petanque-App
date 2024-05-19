@@ -1,5 +1,5 @@
 import { JoueurType } from '@/types/enums/joueurType';
-import { uniqueValueArrayRandOrder } from './generation';
+import { shuffle, uniqueValueArrayRandOrder } from './generation';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { Complement } from '@/types/enums/complement';
 import { Joueur } from '@/types/interfaces/joueur';
@@ -38,9 +38,7 @@ export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, ty
 
   //Initialisation des matchs dans un tableau
   let nbMatchsParTour;
-  if (typeEquipes == TypeEquipes.TETEATETE) {
-    nbMatchsParTour = nbjoueurs / 2;
-  }  else if (complement == Complement.TETEATETE) {
+  if (complement == Complement.TETEATETE) {
     nbMatchsParTour = Math.ceil(nbjoueurs / 4);
   } else {
     nbMatchsParTour = Math.floor(nbjoueurs / 4);
@@ -223,11 +221,6 @@ export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, ty
     return arrayIds;
   };
 
-  function shuffle(o) {
-    for(var j, x, i = o.length; i; j = Math.random() * i, x = o[--i], o[i] = o[j], o[j] = x);
-    return o;
-  };
-
   //FONCTIONNEMENT
   //S'il y a eu des joueurs enfants avant alors ils ont déjà été affectés
   //On complète avec tous les joueurs non enfants
@@ -271,7 +264,7 @@ export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, ty
         }
       }
       //Affectation joueur 2
-      if (random[j] != undefined && typeEquipes != TypeEquipes.TETEATETE && matchs[idMatch].equipe[0][1] == -1) {
+      if (random[j] != undefined && matchs[idMatch].equipe[0][1] == -1) {
         //Empeche joueur 2 d'être du même type que joueur 1 si regle speciauxIncompatibles
         if (speciauxIncompatibles == false || joueurs[random[j]].type == undefined || (speciauxIncompatibles == true && joueurs[random[j]].type != joueurs[matchs[idMatch].equipe[0][0]].type)) {
 
@@ -305,7 +298,7 @@ export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, ty
           if (matchs[idMatch].equipe[0][0] != -1) {
             let joueur1 = matchs[idMatch].equipe[0][0];
             let joueur2 = undefined;
-            if (typeEquipes != TypeEquipes.TETEATETE && matchs[idMatch].equipe[0][1] != -1) {
+            if (matchs[idMatch].equipe[0][1] != -1) {
               joueur2 = matchs[idMatch].equipe[0][1];
             }
             let totPartiesJ1 = 0;
@@ -361,7 +354,7 @@ export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, ty
             }
           }
           //Affectation joueur 4
-          else if (typeEquipes != TypeEquipes.TETEATETE && matchs[idMatch].equipe[1][1] == -1) {
+          else if (matchs[idMatch].equipe[1][1] == -1) {
             //Empeche joueur 4 d'être du même type que joueur 3 si regle speciauxIncompatibles
             if (speciauxIncompatibles == false || joueurs[random[j]].type == undefined || (speciauxIncompatibles == true && joueurs[random[j]].type != joueurs[matchs[idMatch].equipe[1][0]].type)) {
               //Empeche que le joueur 4 joue plusieurs fois dans la même équipe avec le même joueur
@@ -426,20 +419,18 @@ export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, ty
     }
 
     idMatch = i * nbMatchsParTour;
-    if (typeEquipes != TypeEquipes.TETEATETE) {
-      for (let j = 0; j < nbMatchsParTour; j++) {
-        if (matchs[idMatch + j].equipe[0][0] != -1 && matchs[idMatch + j].equipe[0][1] != -1) {
-          joueurs[matchs[idMatch + j].equipe[0][0]].equipe.push(matchs[idMatch + j].equipe[0][1]);
-        }
-        if (matchs[idMatch + j].equipe[1][0] != -1 && matchs[idMatch + j].equipe[1][1] != -1) {
-          joueurs[matchs[idMatch + j].equipe[1][0]].equipe.push(matchs[idMatch + j].equipe[1][1]);
-        }
-        if (matchs[idMatch + j].equipe[0][1] != -1 && matchs[idMatch + j].equipe[0][0] != -1) {
-          joueurs[matchs[idMatch + j].equipe[0][1]].equipe.push(matchs[idMatch + j].equipe[0][0]);
-        }
-        if (matchs[idMatch + j].equipe[1][1] != -1 && matchs[idMatch + j].equipe[1][0] != -1) {
-          joueurs[matchs[idMatch + j].equipe[1][1]].equipe.push(matchs[idMatch + j].equipe[1][0]);
-        }
+    for (let j = 0; j < nbMatchsParTour; j++) {
+      if (matchs[idMatch + j].equipe[0][0] != -1 && matchs[idMatch + j].equipe[0][1] != -1) {
+        joueurs[matchs[idMatch + j].equipe[0][0]].equipe.push(matchs[idMatch + j].equipe[0][1]);
+      }
+      if (matchs[idMatch + j].equipe[1][0] != -1 && matchs[idMatch + j].equipe[1][1] != -1) {
+        joueurs[matchs[idMatch + j].equipe[1][0]].equipe.push(matchs[idMatch + j].equipe[1][1]);
+      }
+      if (matchs[idMatch + j].equipe[0][1] != -1 && matchs[idMatch + j].equipe[0][0] != -1) {
+        joueurs[matchs[idMatch + j].equipe[0][1]].equipe.push(matchs[idMatch + j].equipe[0][0]);
+      }
+      if (matchs[idMatch + j].equipe[1][1] != -1 && matchs[idMatch + j].equipe[1][0] != -1) {
+        joueurs[matchs[idMatch + j].equipe[1][1]].equipe.push(matchs[idMatch + j].equipe[1][0]);
       }
     }
     idMatch = nbMatchsParTour * (i + 1);

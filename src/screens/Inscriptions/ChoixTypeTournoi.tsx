@@ -1,6 +1,6 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { VStack, Text, Modal, Pressable, ModalContent, ModalHeader, ModalBody, ModalBackdrop, ModalCloseButton, CloseIcon, Heading } from '@gluestack-ui/themed';
+import { VStack, Text, Modal, Pressable, ModalContent, ModalHeader, ModalBody, ModalBackdrop, ModalCloseButton, CloseIcon, Heading, ScrollView } from '@gluestack-ui/themed';
 import { FontAwesome5 } from '@expo/vector-icons';
 import TopBarBack from '@components/TopBarBack';
 import CardButton from '@components/buttons/CardButton';
@@ -56,7 +56,7 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
     return (
       <Modal isOpen={this.state.showModal} onClose={() => this.setState({showModal: false})}>
         <ModalBackdrop/>
-        <ModalContent>
+        <ModalContent maxHeight='$5/6'>
           <ModalHeader>
             <Heading>{infos.title}</Heading>
             <ModalCloseButton>
@@ -81,7 +81,7 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} bgColor='#0594ae'>
+        <ScrollView height={'$1'} bgColor='#0594ae'>
           <TopBarBack title={t("type_tournoi")} navigation={this.props.navigation}/>
           <VStack flex={1} px={'$10'} space='2xl'>
             <VStack flex={1}>
@@ -136,7 +136,7 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
               <AdMobInscriptionsBanner/>
             </VStack>
           </VStack>
-        </VStack>
+        </ScrollView>
         {this._modalInfos()}
       </SafeAreaView>
     )

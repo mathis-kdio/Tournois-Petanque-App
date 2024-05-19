@@ -1,6 +1,6 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { VStack, Button, Text, Radio, RadioLabel, RadioIcon, ButtonText, RadioGroup, RadioIndicator, CircleIcon, Box } from '@gluestack-ui/themed';
+import { VStack, Button, Text, Radio, RadioLabel, RadioIcon, ButtonText, RadioGroup, RadioIndicator, CircleIcon, Box, ScrollView } from '@gluestack-ui/themed';
 import TopBarBack from '@components/TopBarBack';
 import { withTranslation } from 'react-i18next';
 import AdMobInscriptionsBanner from '../../components/adMob/AdMobInscriptionsBanner';
@@ -117,7 +117,7 @@ class ChoixModeTournoi extends React.Component<Props, State> {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} bgColor={"#0594ae"}>
+        <ScrollView height={'$1'} bgColor='#0594ae'>
           <TopBarBack title={t("mode_tournoi")} navigation={this.props.navigation}/>
           <VStack flex={1} px={'$10'} justifyContent='space-between'>
             <VStack space='4xl'>
@@ -155,7 +155,7 @@ class ChoixModeTournoi extends React.Component<Props, State> {
               <AdMobInscriptionsBanner/>
             </Box>
           </VStack>
-        </VStack>
+        </ScrollView>
       </SafeAreaView>
     )
   }
