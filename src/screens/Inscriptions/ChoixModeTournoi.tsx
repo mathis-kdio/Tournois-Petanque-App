@@ -1,6 +1,6 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { VStack, Button, Text, Radio, RadioLabel, ButtonText, RadioGroup, RadioIndicator, CircleIcon, Box } from '@gluestack-ui/themed';
+import { VStack, Button, Text, Radio, RadioLabel, RadioIcon, ButtonText, RadioGroup, RadioIndicator, CircleIcon, Box } from '@gluestack-ui/themed';
 import TopBarBack from '@components/TopBarBack';
 import { withTranslation } from 'react-i18next';
 import AdMobInscriptionsBanner from '../../components/adMob/AdMobInscriptionsBanner';
@@ -91,19 +91,19 @@ class ChoixModeTournoi extends React.Component<Props, State> {
           <VStack space='lg'>
             <Radio value={ModeTournoi.AVECNOMS} size='lg'>
               <RadioIndicator mr={'$2'}>
-                <CircleIcon stroke={this.state.modeTournoi == ModeTournoi.AVECNOMS ? '$white' : '$secondary700'}/>
+                <RadioIcon as={CircleIcon}/>
               </RadioIndicator>
               <RadioLabel>{t("melee_demelee_avec_nom")}</RadioLabel>
             </Radio>
             <Radio value={ModeTournoi.SANSNOMS} size='lg'>
               <RadioIndicator mr={'$2'}>
-                <CircleIcon stroke={this.state.modeTournoi == ModeTournoi.SANSNOMS ? '$white' : '$secondary700'}/>
+                <RadioIcon as={CircleIcon}/>
               </RadioIndicator>
               <RadioLabel>{t("melee_demelee_sans_nom")}</RadioLabel>
             </Radio>
             <Radio value={ModeTournoi.AVECEQUIPES} size='lg'>
               <RadioIndicator mr={'$2'}>
-                <CircleIcon stroke={this.state.modeTournoi == ModeTournoi.AVECEQUIPES ? '$white' : '$secondary700'}/>
+                <RadioIcon as={CircleIcon}/>
               </RadioIndicator>
               <RadioLabel>{t("melee_avec_equipes_constituees")}</RadioLabel>
             </Radio>
@@ -130,19 +130,19 @@ class ChoixModeTournoi extends React.Component<Props, State> {
                 <VStack space='lg'>
                   <Radio value={TypeEquipes.TETEATETE} size='lg'>
                     <RadioIndicator mr={'$2'}>
-                      <CircleIcon stroke={this.state.typeEquipes == TypeEquipes.TETEATETE ? '$white' : '$secondary700'}/>
+                      <RadioIcon as={CircleIcon}/>
                     </RadioIndicator>
                     <RadioLabel>{t("tete_a_tete")}</RadioLabel>
                   </Radio>
                   <Radio value={TypeEquipes.DOUBLETTE} size='lg'>
                     <RadioIndicator mr={'$2'}>
-                      <CircleIcon stroke={this.state.typeEquipes == TypeEquipes.DOUBLETTE ? '$white' : '$secondary700'}/>
+                      <RadioIcon as={CircleIcon}/>
                     </RadioIndicator>
                     <RadioLabel>{t("doublettes")}</RadioLabel>
                   </Radio>
                   <Radio value={TypeEquipes.TRIPLETTE} size='lg'>
                     <RadioIndicator mr={'$2'}>
-                      <CircleIcon stroke={this.state.typeEquipes == TypeEquipes.TRIPLETTE ? '$white' : '$secondary700'}/>
+                      <RadioIcon as={CircleIcon}/>
                     </RadioIndicator>
                     <RadioLabel>{t("triplettes")}</RadioLabel>
                   </Radio>
