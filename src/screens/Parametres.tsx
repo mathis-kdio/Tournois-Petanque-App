@@ -11,7 +11,7 @@ import ChangelogData from '@assets/ChangelogData.json'
 import { TFunction, i18n } from 'i18next'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { AnyAction, Dispatch } from 'redux'
-import { ImageSourcePropType, ListRenderItemInfo } from 'react-native'
+import { ImageSourcePropType, ListRenderItem } from 'react-native'
 import { ModeTournoi } from '@/types/enums/modeTournoi'
 import { PropsFromRedux, connector } from '@/store/connector'
 
@@ -205,6 +205,9 @@ class Parametres extends React.Component<Props, State> {
 
   render() {
     const { t } = this.props;
+    const renderItem: ListRenderItem<IChangelog> = ({item}) => (
+      this._changelogItem(item)
+    );
     return (
       <SafeAreaView style={{flex: 1}}>
         <VStack flex={1} bgColor='#0594ae'>
@@ -233,7 +236,7 @@ class Parametres extends React.Component<Props, State> {
               <FlatList 
                 data={ChangelogData}
                 keyExtractor={(item: IChangelog) => item.id.toString() }
-                renderItem={({ item }: ListRenderItemInfo<IChangelog>) => this._changelogItem(item)}
+                renderItem={renderItem}
                 borderWidth={'$1'}
                 borderColor='white'
                 borderRadius={'$lg'}
