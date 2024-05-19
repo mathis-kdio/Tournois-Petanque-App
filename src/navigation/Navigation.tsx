@@ -10,6 +10,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { FontAwesome5 } from '@expo/vector-icons';
 
 import Accueil from '@screens/Accueil'
+import Authentification from '@screens/Connexion/Authentification';
+import Compte from '@screens/Connexion/Compte';
 import Parametres from '@screens/Parametres/Parametres';
 import Changelog from '@screens/Parametres/Changelog';
 import ListeTournois from '@screens/ListeTournois/ListeTournois';
@@ -235,6 +237,16 @@ function ParametresStack() {
   )
 }
 
+function ConnexionStack() {
+  const { t } = useTranslation();
+  return (
+    <Stack.Navigator initialRouteName='Authentification' screenOptions={{headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}}>
+      <Stack.Screen name="Authentification" component={Authentification} options={{title: t("parametres"), headerShown: false}} />
+      <Stack.Screen name="Compte" component={Compte} options={{title: t("Nouveautes"), headerShown: false}} />
+    </Stack.Navigator>
+  )
+}
+
 function ListeMatchsStack() {
   const listeMatchs = useSelector(state => state.gestionMatchs.listematchs);
   let typeTournoi = TypeTournoi.MELEDEMELE;
@@ -268,6 +280,7 @@ function General() {
   return (
     <Stack.Navigator initialRouteName='AccueilGeneral' screenOptions={{headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}}>
       <Stack.Screen name="AccueilGeneral" component={Accueil} options={{title: t("accueil"), headerShown: false}} />
+      <Stack.Screen name="ConnexionStack" component={ConnexionStack} options={{headerShown: false}} />
       <Stack.Screen name="ParametresStack" component={ParametresStack} options={{headerShown: false}} />
 
       <Stack.Screen name="ListeTournois" component={ListeTournois} options={{title: t("choix_tournoi_navigation_title"), headerShown: false}} />

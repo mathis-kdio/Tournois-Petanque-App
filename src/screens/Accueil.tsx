@@ -3,7 +3,7 @@ import { expo } from '../../app.json';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { _openPlateformLink, _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Box, HStack, VStack, Text, Pressable, Image, ScrollView } from '@gluestack-ui/themed';
+import { Box, HStack, VStack, Text, Pressable, Image, ScrollView, Button, ButtonText } from '@gluestack-ui/themed';
 import { _adsConsentForm } from '../utils/adMob/consentForm'
 import { withTranslation } from 'react-i18next';
 import CardButton from '@components/buttons/CardButton';
@@ -102,6 +102,9 @@ class Accueil extends React.Component<Props, State> {
         <VStack flex={1} px={'$5'} bgColor='#0594ae'>
           <ScrollView height={'$1'}>
             <VStack space='4xl'>
+              <VStack alignItems='flex-end'>
+                <Button onPress={() => this.props.navigation.navigate('ConnexionStack')}><ButtonText>test</ButtonText></Button>
+              </VStack>              
               <VStack alignItems='center'>
                 <Image
                   size='xl'
