@@ -62,13 +62,13 @@ export const generationPDFCoupe = (affichageScore: boolean, affichageClassement:
               //score equipe 1
               html += '<td rowspan="'+ matchNbJoueur +'" class="td-score text-center">';
               if (affichageScore == true && listeMatchs[matchId].score1) {
-                html += listeMatchs[matchId].score1;
+                html += listeMatchs[matchId].score1.toString();
               }
               html += '</td>';
               //score equipe 2
               html += '<td rowspan="'+ matchNbJoueur +'" class="td-score text-center">';
               if (affichageScore == true && listeMatchs[matchId].score2) {
-                html += listeMatchs[matchId].score2;
+                html += listeMatchs[matchId].score2.toString();
               }
               html += '</td>';
             }

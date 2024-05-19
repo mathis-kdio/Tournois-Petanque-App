@@ -36,7 +36,7 @@ class MatchItem extends React.Component<Props, State> {
     return (
       <HStack>
         <Box flex={1} alignItems='center'>
-          { parseInt(match.score1) == nbPtVictoire &&
+          { match.score1 == nbPtVictoire &&
             <FontAwesome5 name='trophy' size={20} color='#ffda00'/>
           }
         </Box>
@@ -44,7 +44,7 @@ class MatchItem extends React.Component<Props, State> {
           <Text color='$white' fontSize={'$2xl'} p={'$0.5'} textAlign='center'>{txt}</Text>
         </Box>
         <Box flex={1} alignItems='center'>
-          { parseInt(match.score2) == nbPtVictoire &&
+          { match.score2 == nbPtVictoire &&
             <FontAwesome5 name='trophy' size={20} color='#ffda00'/>
           }
         </Box>

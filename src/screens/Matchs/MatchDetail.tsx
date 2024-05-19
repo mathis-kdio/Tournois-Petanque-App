@@ -86,7 +86,7 @@ class MatchDetail extends React.Component<Props, State> {
 
   _envoyerResultat(match: Match) {
     if (this.state.score1 && this.state.score2) {
-      let info = {idMatch: this.state.idMatch, score1: this.state.score1, score2: this.state.score2};
+      let info = {idMatch: this.state.idMatch, score1: parseint(this.state.score1), score2: parseint(this.state.score2)};
       const actionAjoutScore = { type: "AJOUT_SCORE", value: info};
       this.props.dispatch(actionAjoutScore);
       //Si tournoi type coupe et pas le dernier match, alors on ajoute les gagnants au match suivant
@@ -155,7 +155,7 @@ class MatchDetail extends React.Component<Props, State> {
                         <InputField
                           placeholder={t("score_placeholder", {scoreVictoire: nbPtVictoire})}
                           autoFocus={true}
-                          defaultValue={match.score1}
+                          defaultValue={match.score1.toString()}
                           keyboardType='decimal-pad'
                           returnKeyType='next'
                           maxLength={2}
@@ -169,7 +169,7 @@ class MatchDetail extends React.Component<Props, State> {
                       <Input size='md'>
                         <InputField
                           placeholder={t("score_placeholder", {scoreVictoire: nbPtVictoire})}
-                          defaultValue={match.score2}
+                          defaultValue={match.score2.toString()}
                           keyboardType='decimal-pad'
                           maxLength={2}
                           onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 2)}
