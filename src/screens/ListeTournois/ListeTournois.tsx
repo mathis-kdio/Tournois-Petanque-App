@@ -11,6 +11,7 @@ import { TFunction } from 'i18next'
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi'
 import { Tournoi } from '@/types/interfaces/tournoi'
 import { PropsFromRedux, connector } from '@/store/connector'
+import { ListRenderItem } from 'react-native'
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
@@ -90,6 +91,13 @@ class ListeTournois extends React.Component<Props, State> {
 
   render() {
     const { t } = this.props;
+    const renderItem: ListRenderItem<Tournoi> = ({item}) => (
+      <ListeTournoiItem
+        tournoi={item}
+        navigation={this.props.navigation}
+        _showModalTournoiInfos={(tournoi: Tournoi) => this._showModalTournoiInfos(tournoi)}
+      />
+    );
     return (
       <SafeAreaView style={{flex: 1}}>
         <VStack flex={1} bgColor={"#0594ae"}>
@@ -99,14 +107,8 @@ class ListeTournois extends React.Component<Props, State> {
             <FlatList
               data={this.props.listeTournois}
               initialNumToRender={20}
-              keyExtractor={(item) => item.tournoiId.toString() }
-              renderItem={({item}) => (
-                <ListeTournoiItem
-                  tournoi={item}
-                  navigation={this.props.navigation}
-                  _showModalTournoiInfos={(tournoi: OptionsTournoi) => this._showModalTournoiInfos(tournoi)}
-                />
-              )}
+              keyExtractor={(item: Tournoi) => item.tournoiId.toString() }
+              renderItem={renderItem}
             />
           </VStack>
           {this._modalTournoiInfos()}
