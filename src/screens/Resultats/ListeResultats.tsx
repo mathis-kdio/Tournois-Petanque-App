@@ -5,6 +5,9 @@ import { withTranslation } from 'react-i18next'
 import { HStack, FlatList, Text, VStack, Divider } from '@gluestack-ui/themed'
 import { TFunction } from 'i18next'
 import { PropsFromRedux, connector } from '@/store/connector'
+import { ListRenderItem } from 'react-native'
+import { OptionsTournoi } from '@/types/interfaces/optionsTournoi'
+import { Victoire } from '@/types/interfaces/victoire'
 
 export interface Props extends PropsFromRedux {
   t: TFunction;
@@ -17,6 +20,13 @@ class ListeResultats extends React.Component<Props, State> {
 
   render() {
     const { t } = this.props;
+    let listeMatchs = this.props.listeMatchs.slice(0, -1);
+    let optionsTournois = this.props.listeMatchs.at(-1) as OptionsTournoi;
+    const renderItem: ListRenderItem<Victoire> = ({item}) => (
+      <ListeResultatItem
+        joueur={item}
+      />
+    );
     return (
       <VStack flex={1} bgColor={"#0594ae"}>
         <VStack flex={1} justifyContent='space-between'>
@@ -28,13 +38,9 @@ class ListeResultats extends React.Component<Props, State> {
           </HStack>
           <Divider my={'$0.5'} />
           <FlatList
-            data={ranking(this.props.listeMatchs)}
-            keyExtractor={(item) => item.joueurId.toString()}
-            renderItem={({item}) => (
-              <ListeResultatItem
-                joueur={item}
-              />
-            )}
+            data={ranking(listeMatchs, optionsTournois)}
+            keyExtractor={(item: Victoire) => item.joueurId.toString()}
+            renderItem={renderItem}
           />
         </VStack>
       </VStack>

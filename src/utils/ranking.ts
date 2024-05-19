@@ -1,9 +1,10 @@
 import { TypeTournoi } from "@/types/enums/typeTournoi";
 import { Match } from "@/types/interfaces/match";
+import { OptionsTournoi } from "@/types/interfaces/optionsTournoi";
+import { Victoire } from "@/types/interfaces/victoire";
 
-export const ranking = (listeMatchs: Match[]) => {
+export const ranking = (listeMatchs: Match[], optionsTournoi: OptionsTournoi) => {
   if (listeMatchs != undefined) {
-    let optionsTournoi = listeMatchs[listeMatchs.length - 1];
     let nbPtVictoire = optionsTournoi.nbPtVictoire ? optionsTournoi.nbPtVictoire : 13;
     let victoires = victoiresPointsCalc(listeMatchs, optionsTournoi, nbPtVictoire);
 
@@ -17,7 +18,7 @@ export const ranking = (listeMatchs: Match[]) => {
   }
 }
 
-const rankingClassic = (victoires) => {
+const rankingClassic = (victoires: Victoire[]) => {
   victoires.sort((a, b) => a.victoires === b.victoires ? b.points - a.points : b.victoires - a.victoires);
 
   let position = 1;
@@ -40,7 +41,7 @@ const factorial = n => {
   return result;
 }
 
-const rankingMuliChances = (listeMatchs: Match[], optionsTournoi, nbPtVictoire: number, victoires) => {
+const rankingMuliChances = (listeMatchs: Match[], optionsTournoi: OptionsTournoi, nbPtVictoire: number, victoires: Victoire[]): Victoire[] => {
   for (let i = 0; i < victoires.length; i++) {
     let position = 1;
     for (let j = 0; j < optionsTournoi.nbMatchs; j++) {
@@ -63,7 +64,7 @@ const rankingMuliChances = (listeMatchs: Match[], optionsTournoi, nbPtVictoire: 
   return victoires;
 }
 
-const victoiresPointsCalc = (listeMatchs: Match[], optionsTournoi, nbPtVictoire: number) => {
+const victoiresPointsCalc = (listeMatchs: Match[], optionsTournoi: OptionsTournoi, nbPtVictoire: number): Victoire[] => {
   let listeJoueurs = optionsTournoi.listeJoueurs;
   let victoires = [];
   for (let i = 0; i < listeJoueurs.length; i++) {
