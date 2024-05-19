@@ -9,6 +9,8 @@ import { TFunction } from 'i18next'
 import { Joueur } from '@/types/interfaces/joueur'
 import { PropsFromRedux, connector } from '@/store/connector'
 import { ListRenderItem } from 'react-native'
+import { ModeTournoi } from '@/types/enums/modeTournoi'
+import { OptionsTournoi } from '@/types/interfaces/optionsTournoi'
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
@@ -28,12 +30,15 @@ class JoueursTournoi extends React.Component<Props, State> {
     this.props.navigation.navigate('ListeMatchsStack');   
   }
 
-  _displayListeJoueur(listeJoueurs: Joueur[]) {
-    if (listeJoueurs !== undefined) {
+  _displayListeJoueur(optionsTournoi: OptionsTournoi) {
+    if (optionsTournoi.listeJoueurs !== undefined) {
       const renderItem: ListRenderItem<Joueur> = ({item}) => (
         <ListeJoueurItem
           joueur={item}
           isInscription={false}
+          avecEquipes={optionsTournoi.mode == ModeTournoi.AVECEQUIPES}
+          typeEquipes={optionsTournoi.typeEquipes}
+          nbJoueurs={optionsTournoi.listeJoueurs.length}
           showCheckbox={true}
         />
       );
@@ -41,7 +46,7 @@ class JoueursTournoi extends React.Component<Props, State> {
       return (
         <FlatList
           removeClippedSubviews={false}
-          data={listeJoueurs}
+          data={optionsTournoi.listeJoueurs}
           keyExtractor={(item: Joueur) => item.id.toString() }
           renderItem={renderItem}
         />
@@ -51,14 +56,14 @@ class JoueursTournoi extends React.Component<Props, State> {
 
   render() {
     const { t } = this.props;
-    let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs;
+    let optionsTournoi = this.props.listeMatchs.at(-1) as OptionsTournoi;
     return (
       <SafeAreaView style={{flex: 1}}>
         <VStack flex={1} bgColor={"#0594ae"}>
           <TopBarBack title={t("liste_joueurs_inscrits_navigation_title")} navigation={this.props.navigation}/>
-          <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("nombre_joueurs", {nb: listeJoueurs.length})}</Text>
+          <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("nombre_joueurs", {nb: optionsTournoi.listeJoueurs.length})}</Text>
           <VStack flex={1} my={'$2'}>
-            {this._displayListeJoueur(listeJoueurs)}
+            {this._displayListeJoueur(optionsTournoi)}
           </VStack>
           <Box px={'$10'} mb={'$2'}>
             <Button action='primary' onPress={() => this._retourMatchs()}>
