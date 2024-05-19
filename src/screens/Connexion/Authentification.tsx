@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
-import { Button, ButtonText, Input, InputField, ScrollView, VStack } from '@gluestack-ui/themed';
+import { Button, ButtonText, Input, InputField, ScrollView, Text, VStack } from '@gluestack-ui/themed';
 import TopBarBack from '@/components/TopBarBack';
 
 // Tells Supabase Auth to continuously refresh the session automatically if
@@ -53,42 +53,36 @@ class Authentification extends React.Component<Props, State> {
     this.setState({loading: false})
   }
 
+  inscription() {
+    this.props.navigation.navigate('Inscription');   
+  }
+
   render() {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
         <ScrollView height={'$1'} bgColor='#0594ae'>
-          <TopBarBack title={t("mode_tournoi")} navigation={this.props.navigation}/>
+          <TopBarBack title={t("authentification")} navigation={this.props.navigation}/>
           <VStack flex={1} px={'$10'} justifyContent='space-between'>
             <VStack>
               <VStack>
-                <Input
-                  /*label="Email"
-                  leftIcon={{ type: 'font-awesome', name: 'envelope' }}
-                  onChangeText={(text) => this.setEmail(text)}
-                  value={email}
-                  placeholder="email@address.com"
-                  autoCapitalize={'none'}*/
-                >
+                <Text color='$white' fontSize={'$md'}>{t("email")}</Text>
+                <Input>
                   <InputField
-                    placeholder={"email@address.com"}
+                    placeholder={t("email_adresse")}
+                    keyboardType='email-address'
+                    autoCapitalize='none'
                     onChangeText={(text) => this.setState({email: text})}
                   />
                 </Input>
               </VStack>
               <VStack>
-                <Input
-                  /*label="Password"
-                  leftIcon={{ type: 'font-awesome', name: 'lock' }}
-                  onChangeText={(text) => setPassword(text)}
-                  value={password}
-                  secureTextEntry={true}
-                  placeholder="Password"
-                  autoCapitalize={'none'}*/
-                />
+                <Text color='$white' fontSize={'$md'}>{t("mot_de_passe")}</Text>
                 <Input size='md'>
                   <InputField
-                    placeholder={"Password"}
+                    placeholder={t("mot_de_passe")}
+                    secureTextEntry={true}
+                    autoCapitalize={'none'}
                     onChangeText={(text) => this.setState({password: text})}
                   />
                 </Input>
@@ -100,7 +94,7 @@ class Authentification extends React.Component<Props, State> {
               </VStack>
             </VStack>
             <VStack>
-              <Button isDisabled={this.state.loading} onPress={() => this.signUpWithEmail()}>
+              <Button isDisabled={this.state.loading} onPress={() => this.inscription()}>
                 <ButtonText>Créer un compte</ButtonText>
               </Button>
             </VStack>
