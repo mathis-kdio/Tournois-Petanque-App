@@ -3,7 +3,7 @@ import { Match } from "@/types/interfaces/match";
 import { OptionsTournoi } from "@/types/interfaces/optionsTournoi";
 import { Victoire } from "@/types/interfaces/victoire";
 
-export const ranking = (listeMatchs: Match[], optionsTournoi: OptionsTournoi) => {
+export const ranking = (listeMatchs: Match[], optionsTournoi: OptionsTournoi): Victoire[] => {
   if (listeMatchs != undefined) {
     let nbPtVictoire = optionsTournoi.nbPtVictoire ? optionsTournoi.nbPtVictoire : 13;
     let victoires = victoiresPointsCalc(listeMatchs, optionsTournoi, nbPtVictoire);
@@ -33,7 +33,7 @@ const rankingClassic = (victoires: Victoire[]) => {
   return victoires;
 }
 
-const factorial = n => {
+const factorial = (n: number): number => {
   let result = 1;
   for (let i = 2; i <= n; i++) {
     result *= i;

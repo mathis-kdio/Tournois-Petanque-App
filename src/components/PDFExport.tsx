@@ -12,6 +12,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { PropsFromRedux, connector } from '@/store/connector';
+import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
@@ -32,12 +33,13 @@ class PDFExport extends React.Component<Props, State> {
 
   _generatePDF = async (affichageScore: boolean, affichageClassement: boolean, buttonId: number) => {
     let toursParLigne = 3;
-    let nbTours = this.props.listeMatchs[this.props.listeMatchs.length - 1].nbTours;
-    let nbMatchs = this.props.listeMatchs[this.props.listeMatchs.length - 1].nbMatchs;
+    let optionsTournoi = this.props.listeMatchs.at(-1) as OptionsTournoi;
+    let nbTours = optionsTournoi.nbTours;
+    let nbMatchs = optionsTournoi.nbMatchs;
     let listeMatchs = this.props.listeMatchs;
-    let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs;
+    let listeJoueurs = optionsTournoi.listeJoueurs;
     let nbMatchsParTour = 0;
-    let typeTournoi = this.props.listeMatchs[this.props.listeMatchs.length - 1].typeTournoi;
+    let typeTournoi = optionsTournoi.typeTournoi;
     if (typeTournoi == TypeTournoi.COUPE) {
       nbMatchsParTour = (nbMatchs + 1) / 2;
     } else {
@@ -47,9 +49,9 @@ class PDFExport extends React.Component<Props, State> {
     let nbToursRestants = nbTours;
     let html = "";
     if (typeTournoi == TypeTournoi.COUPE) {
-      html = generationPDFCoupe(affichageScore, affichageClassement, listeJoueurs, listeMatchs, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables);
+      html = generationPDFCoupe(affichageScore, affichageClassement, listeJoueurs, optionsTournoi, listeMatchs, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables);
     } else {
-      html = generationPDFTournoi(affichageScore, affichageClassement, listeJoueurs, listeMatchs, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables);
+      html = generationPDFTournoi(affichageScore, affichageClassement, listeJoueurs, optionsTournoi, listeMatchs, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables);
     }
     if (Platform.OS == 'web') {
       const pW = window.open('', '', `width=${screen.availWidth},height=${screen.availHeight}`)
