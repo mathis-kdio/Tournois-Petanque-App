@@ -8,10 +8,13 @@ import { TFunction } from 'i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { PropsFromRedux, connector } from '@/store/connector';
+import { RouteProp } from '@react-navigation/native';
+import { GeneralStackParamList } from '@/navigation/Navigation';
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
+  route: RouteProp<GeneralStackParamList, 'CreateListeJoueurs'>;
 }
 
 interface State {
