@@ -3,7 +3,7 @@ import { expo } from '../../app.json';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { _openPlateformLink, _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Box, HStack, VStack, Text, Pressable, Modal, Image, ModalHeader, ModalBody, ModalContent, ModalCloseButton, Heading, CloseIcon, ModalBackdrop, ScrollView } from '@gluestack-ui/themed';
+import { Box, HStack, VStack, Text, Pressable, Image, ScrollView } from '@gluestack-ui/themed';
 import { _adsConsentForm } from '../utils/adMob/consentForm'
 import { withTranslation } from 'react-i18next';
 import CardButton from '@components/buttons/CardButton';
