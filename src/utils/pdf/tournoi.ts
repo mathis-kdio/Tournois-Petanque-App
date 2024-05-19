@@ -5,7 +5,7 @@ import { ranking } from '@utils/ranking';
 import { dateFormatDateCompact } from "../date";
 import { Tournoi } from '@/types/interfaces/tournoi';
 
-export const generationPDFTournoi = (affichageScore: boolean, affichageClassement: boolean, listeJoueurs: Joueur[], optionsTournoi: OptionsTournoi, listeMatchs: Match[], infosTournoi: Tournoi nbMatchsParTour: number, toursParLigne: number, nbToursRestants: number, nbTables: number) => {
+export const generationPDFTournoi = (affichageScore: boolean, affichageClassement: boolean, listeJoueurs: Joueur[], optionsTournoi: OptionsTournoi, listeMatchs: Match[], infosTournoi: Tournoi, nbMatchsParTour: number, toursParLigne: number, nbToursRestants: number, nbTables: number) => {
   let date = dateFormatDateCompact(infosTournoi.updateDate)
   let html = `<!DOCTYPE html><html><head><style>@page{margin: 10px;} table{width: 100%;} table,th,td{border: 1px solid black;border-collapse: collapse;} td{min-width: 50px; word-break:break-all;} .td-score{min-width: 20px;} .text-right{text-align: right;} .text-center{text-align: center;} .no-border-top{border-top: none;} .no-border-bottom{border-bottom: none;} .border-top{border-top: 1px solid;}</style></head><body>`;
   html += '<h1 class="text-center">Tournoi '+ date +'</h1>';

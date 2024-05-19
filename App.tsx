@@ -38,7 +38,7 @@ class App extends React.Component {
         <PersistGate persistor={persistor}>
           <GluestackUIProvider config={config}>
             <NavigationContainer onReady={() => routingInstrumentation.registerNavigationContainer(this.navigationRef)}>
-              <I18nextProvider i18n={i18n} defaultNS={'translation'}>
+              <I18nextProvider i18n={i18n} defaultNS={'common'}>
                 <Navigation/>
                 <StatusBar style="light" backgroundColor="#0594ae"/>
               </I18nextProvider>
