@@ -31,6 +31,7 @@ import ListesJoueurs from '@screens/ListesJoueurs/ListesJoueurs';
 import CreateListeJoueurs from '@screens/ListesJoueurs/CreateListeJoueurs';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { Match } from '@/types/interfaces/match';
+import { Tournoi } from '@/types/interfaces/tournoi';
 
 const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -239,6 +240,17 @@ function ListeMatchsStack() {
     </Stack.Navigator>
   )
 }
+
+
+export type GeneralStackParamList = {
+  AccueilGeneral: null;
+  Parametres: null;
+  ListeTournois: null;
+  ListesJoueurs: { loadListScreen: boolean };
+  CreateListeJoueurs: { type: string, listId: number };
+  InscriptionStack: null;
+  ListeMatchsStack: null;
+};
 
 function General() {
   const { t } = useTranslation();
