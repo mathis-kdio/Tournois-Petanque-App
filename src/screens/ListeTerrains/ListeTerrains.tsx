@@ -44,10 +44,10 @@ class ListeTerrains extends React.Component<Props, State> {
 
   _commencerButton() {
     const { t } = this.props;
-    const { typeEquipes, mode, type, complement } = this.props.optionsTournoi;
+    const { typeEquipes, mode, typeTournoi, complement } = this.props.optionsTournoi;
     const { listesJoueurs, listeTerrains } = this.props;
     const nbJoueurs = listesJoueurs[mode].length;
-    const nbTerrainsNecessaires = calcNbMatchsParTour(nbJoueurs, typeEquipes, mode, type, complement);
+    const nbTerrainsNecessaires = calcNbMatchsParTour(nbJoueurs, typeEquipes, mode, typeTournoi, complement);
     const disabled = listeTerrains.length < nbTerrainsNecessaires;
     const title = disabled ? t("terrains_insuffisants") : t("commencer");
     return (

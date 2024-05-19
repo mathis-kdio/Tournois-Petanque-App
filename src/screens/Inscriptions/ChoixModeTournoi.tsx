@@ -32,7 +32,7 @@ class ChoixModeTournoi extends React.Component<Props, State> {
 
   _nextStep() {
     let modeTournoi = this.state.modeTournoi;
-    if (this.props.optionsTournoi.type != TypeTournoi.MELEDEMELE) {
+    if (this.props.optionsTournoi.typeTournoi != TypeTournoi.MELEDEMELE) {
       modeTournoi = ModeTournoi.AVECEQUIPES;
     }
     const updateOptionEquipesTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['typeEquipes', this.state.typeEquipes]};
@@ -40,7 +40,7 @@ class ChoixModeTournoi extends React.Component<Props, State> {
     const updateOptionModeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['mode', modeTournoi]};
     this.props.dispatch(updateOptionModeTournoi);
 
-    if (this.props.optionsTournoi.type != TypeTournoi.CHAMPIONNAT && this.props.optionsTournoi.type != TypeTournoi.COUPE && this.props.optionsTournoi.type != TypeTournoi.MULTICHANCES) {
+    if (this.props.optionsTournoi.typeTournoi != TypeTournoi.CHAMPIONNAT && this.props.optionsTournoi.typeTournoi != TypeTournoi.COUPE && this.props.optionsTournoi.typeTournoi != TypeTournoi.MULTICHANCES) {
       let screenName = this.state.modeTournoi == ModeTournoi.SANSNOMS ? "InscriptionsSansNoms" : "InscriptionsAvecNoms";
       this.props.navigation.navigate({
         name: 'OptionsTournoi',
@@ -58,7 +58,7 @@ class ChoixModeTournoi extends React.Component<Props, State> {
     const { t } = this.props;
     let buttonDisabled = false;
     let title = t("valider_et_options");
-    if (this.props.optionsTournoi.type === TypeTournoi.CHAMPIONNAT || this.props.optionsTournoi.type === TypeTournoi.COUPE || this.props.optionsTournoi.type === TypeTournoi.MULTICHANCES) {
+    if (this.props.optionsTournoi.typeTournoi === TypeTournoi.CHAMPIONNAT || this.props.optionsTournoi.typeTournoi === TypeTournoi.COUPE || this.props.optionsTournoi.typeTournoi === TypeTournoi.MULTICHANCES) {
       title = t("valider_et_inscriptions");
     }
     if (this.state.modeTournoi == ModeTournoi.AVECEQUIPES && this.state.typeEquipes == TypeEquipes.TETEATETE) {
@@ -79,7 +79,7 @@ class ChoixModeTournoi extends React.Component<Props, State> {
 
   _modeTournoi() {
     const { t } = this.props;
-    if (this.props.optionsTournoi.type !== TypeTournoi.MELEDEMELE) return;
+    if (this.props.optionsTournoi.typeTournoi !== TypeTournoi.MELEDEMELE) return;
     return (
       <VStack>
         <Text color='$white' fontSize={'$2xl'} textAlign='center'>{t("mode_tournoi")}</Text>

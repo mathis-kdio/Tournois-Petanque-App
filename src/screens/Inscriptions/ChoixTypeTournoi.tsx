@@ -72,7 +72,7 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
   }
 
   _navigate(typeTournoi: TypeTournoi) {
-    const updateOptionTypeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['type', typeTournoi]}
+    const updateOptionTypeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['typeTournoi', typeTournoi]}
     this.props.dispatch(updateOptionTypeTournoi);
     return this.props.navigation.navigate('ChoixModeTournoi');
   }

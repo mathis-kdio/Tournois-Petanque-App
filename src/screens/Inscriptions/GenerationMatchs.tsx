@@ -112,7 +112,7 @@ class GenerationMatchs extends React.Component<Props, State> {
     this.typeEquipes = this.props.optionsTournoi.typeEquipes;
     this.typeInscription = this.props.optionsTournoi.mode;
     this.complement = this.props.optionsTournoi.complement;
-    this.typeTournoi = this.props.optionsTournoi.type;
+    this.typeTournoi = this.props.optionsTournoi.typeTournoi;
     this.avecTerrains = this.props.optionsTournoi.avecTerrains;
 
     let listeJoueurs = this.props.listesJoueurs[this.typeInscription];

@@ -6,16 +6,16 @@ import { Joueur } from "./joueur";
 
 export interface OptionsTournoi {
   tournoiID: number;
-  listeJoueurs: Joueur[];
-  typeEquipes: TypeEquipes;
-  type: TypeTournoi;
-  mode: ModeTournoi;
   nbTours: number;
   nbMatchs: number;
   nbPtVictoire: number;
-  complement: Complement;
-  avecTerrains: boolean;
+  speciauxIncompatibles: boolean;
   memesEquipes: boolean;
   memesAdversaires: number;
-  speciauxIncompatibles: boolean;
+  typeEquipes: TypeEquipes;
+  complement: Complement;
+  typeTournoi: TypeTournoi;
+  listeJoueurs: Joueur[];
+  avecTerrains: boolean;
+  mode: ModeTournoi;
 }

@@ -62,10 +62,10 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
       nbEquipes = Math.ceil(nbJoueurs / 3);
     }
 
-    if (optionsTournoi.type == TypeTournoi.COUPE && (nbEquipes < 4 || Math.log2(nbEquipes) % 1 !== 0)) {
+    if (optionsTournoi.typeTournoi == TypeTournoi.COUPE && (nbEquipes < 4 || Math.log2(nbEquipes) % 1 !== 0)) {
       title = t("configuration_impossible_coupe");
       btnDisabled = true;
-    } else if (optionsTournoi.type == TypeTournoi.MULTICHANCES && (nbEquipes == 0 || nbEquipes % 8 != 0)) {
+    } else if (optionsTournoi.typeTournoi == TypeTournoi.MULTICHANCES && (nbEquipes == 0 || nbEquipes % 8 != 0)) {
       title = t("configuration_impossible_multichances");
       btnDisabled = true;
     } else if (optionsTournoi.mode == ModeTournoi.AVECEQUIPES) {
