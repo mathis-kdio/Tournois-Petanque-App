@@ -9,10 +9,16 @@ import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { PropsFromRedux, connector } from '@/store/connector';
+import { GeneralStackParamList } from '@/navigation/Navigation';
+import { RouteProp } from '@react-navigation/native';
+import { ModeTournoi } from '@/types/enums/modeTournoi';
+import { ListRenderItem } from 'react-native';
+import { ListeJoueursInfos, ListeJoueurs as ListeJoueursInterface } from '@/types/interfaces/listeJoueurs';
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
+  route: RouteProp<GeneralStackParamList, 'ListesJoueurs'>;
 }
 
 interface State {
@@ -60,6 +66,13 @@ class ListesJoueurs extends React.Component<Props, State> {
       nbLists += this.props.savedLists.avecNoms.length;
       nbLists += this.props.savedLists.sansNoms.length;
     }
+    const renderItem: ListRenderItem<ListeJoueursInterface> = ({item}) => (
+      <ListeJoueursItem
+        list={item}
+        navigation={this.props.navigation}
+        route={this.props.route}
+      />
+    );
     return (
       <SafeAreaView style={{flex: 1}}>
         <VStack flex={1} bgColor={"#0594ae"}>
@@ -72,14 +85,11 @@ class ListesJoueurs extends React.Component<Props, State> {
             <FlatList
               data={this.props.savedLists.avecNoms}
               initialNumToRender={20}
-              keyExtractor={(item) => item[item.length - 1].listId.toString()}
-              renderItem={({item}) => (
-                <ListeJoueursItem
-                  list={item}
-                  navigation={this.props.navigation}
-                  route={this.props.route}
-                />
-              )}
+              keyExtractor={(item: ListeJoueursInterface) => {
+                let listeJoueursInfos = item[item.length - 1] as ListeJoueursInfos;
+                return listeJoueursInfos.listId.toString()
+              }}
+              renderItem={renderItem}
             />
           </VStack>
         </VStack>
