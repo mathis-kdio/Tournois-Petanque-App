@@ -41,7 +41,7 @@ class ListeTournois extends React.Component<Props, State> {
   _modalTournoiInfos() {
     const { t } = this.props;
     let tournoi = this.state.infosTournoi;
-    if (tournoi.tournoi) {
+    if (tournoi && tournoi.tournoi) {
       let tournoiOptions = tournoi.tournoi.at(-1) as OptionsTournoi;
       let creationDate = t("date_inconnue");
       let updateDate = t("date_inconnue");
