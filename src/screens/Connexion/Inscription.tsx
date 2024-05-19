@@ -63,7 +63,7 @@ class Inscription extends React.Component<Props, State> {
     return (
       <SafeAreaView style={{flex: 1}}>
         <ScrollView height={'$1'} bgColor='#0594ae'>
-          <TopBarBack title={t("mode_tournoi")} navigation={this.props.navigation}/>
+          <TopBarBack title={t("inscription")} navigation={this.props.navigation}/>
           <VStack flex={1} px={'$10'} justifyContent='space-between'>
             <VStack>
               <Input
