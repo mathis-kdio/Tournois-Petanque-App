@@ -21,24 +21,14 @@ import { ModeTournoi } from '@/types/enums/modeTournoi'
 import { TypeTournoi } from '@/types/enums/typeTournoi'
 import { Complement } from '@/types/enums/complement'
 import { Match } from '@/types/interfaces/match'
-import { InterstitialAd } from 'react-native-google-mobile-ads'
 import { PropsFromRedux, connector } from '@/store/connector'
+import { RouteProp } from '@react-navigation/native'
+import { InscriptionStackParamList } from '@/navigation/Navigation'
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
-  nbTours: number;
-  nbPtVictoire: number;
-  speciauxIncompatibles: boolean;
-  jamaisMemeCoequipier: boolean;
-  eviterMemeAdversaire: number;
-  typeEquipes: TypeEquipes;
-  typeInscription: ModeTournoi;
-  complement: Complement;
-  typeTournoi: TypeTournoi;
-  avecTerrains: boolean;
-  interstitial: InterstitialAd;
-  listener: string;
+  route: RouteProp<InscriptionStackParamList, 'GenerationMatchs'>;
 }
 
 interface State {
@@ -52,20 +42,21 @@ interface State {
 }
 
 class GenerationMatchs extends React.Component<Props, State> {
+  nbTours: number = 5;
+  nbPtVictoire: number = 13;
+  speciauxIncompatibles: boolean = true;
+  jamaisMemeCoequipier: boolean = true;
+  eviterMemeAdversaire: number = 50;
+  typeEquipes: TypeEquipes = TypeEquipes.DOUBLETTE;
+  typeInscription: ModeTournoi = ModeTournoi.AVECNOMS;
+  complement: Complement = Complement.TRIPLETTE;
+  typeTournoi: TypeTournoi = TypeTournoi.MELEDEMELE;
+  avecTerrains: boolean = false;
+  interstitial: void | any;
+  listener: string | boolean;
+
   constructor(props: Props) {
     super(props)
-    props.nbTours = 5;
-    props.nbPtVictoire = 13;
-    props.speciauxIncompatibles = true;
-    props.jamaisMemeCoequipier = true;
-    props.eviterMemeAdversaire = 50;
-    props.typeEquipes = TypeEquipes.DOUBLETTE;
-    props.typeInscription = ModeTournoi.AVECNOMS;
-    props.complement = Complement.TRIPLETTE;
-    props.typeTournoi = TypeTournoi.MELEDEMELE;
-    props.avecTerrains = false;
-    props.interstitial;
-    props.listener;
     this.state = {
       isLoading: true,
       isValid: false,
@@ -91,15 +82,17 @@ class GenerationMatchs extends React.Component<Props, State> {
   }
 
   async componentDidMount() {
-    this.props.interstitial = await _adMobGenerationTournoiInterstitiel();
-    this.props.listener = EventRegister.addEventListener('interstitialAdEvent', (data) => this.setState({ adLoaded: data.adLoaded, adClosed: data.adClosed }));
+    this.interstitial = await _adMobGenerationTournoiInterstitiel();
+    this.listener = EventRegister.addEventListener('interstitialAdEvent', (data) => this.setState({ adLoaded: data.adLoaded, adClosed: data.adClosed }));
     setTimeout(() => {
       this._lanceurGeneration();
     }, 1000);
   }
 
   componentWillUnmount() {
-    EventRegister.removeEventListener(this.props.listener);
+    if (typeof this.listener === "string") {
+      EventRegister.removeEventListener(this.listener);
+    }
   }
 
   _displayListeMatch() {
@@ -111,16 +104,16 @@ class GenerationMatchs extends React.Component<Props, State> {
 
   _lanceurGeneration() {
     //Récupération des options que l'utilisateur a modifié ou laissé par défaut
-    this.props.nbTours = this.props.optionsTournoi.nbTours;
-    this.props.nbPtVictoire = this.props.optionsTournoi.nbPtVictoire;
-    this.props.speciauxIncompatibles = this.props.optionsTournoi.speciauxIncompatibles;
-    this.props.jamaisMemeCoequipier = this.props.optionsTournoi.memesEquipes;
-    this.props.eviterMemeAdversaire = this.props.optionsTournoi.memesAdversaires;
-    this.props.typeEquipes = this.props.optionsTournoi.typeEquipes;
-    this.props.typeInscription = this.props.optionsTournoi.mode;
-    this.props.complement = this.props.optionsTournoi.complement;
-    this.props.typeTournoi = this.props.optionsTournoi.type;
-    this.props.avecTerrains = this.props.optionsTournoi.avecTerrains;
+    this.nbTours = this.props.optionsTournoi.nbTours;
+    this.nbPtVictoire = this.props.optionsTournoi.nbPtVictoire;
+    this.speciauxIncompatibles = this.props.optionsTournoi.speciauxIncompatibles;
+    this.jamaisMemeCoequipier = this.props.optionsTournoi.memesEquipes;
+    this.eviterMemeAdversaire = this.props.optionsTournoi.memesAdversaires;
+    this.typeEquipes = this.props.optionsTournoi.typeEquipes;
+    this.typeInscription = this.props.optionsTournoi.mode;
+    this.complement = this.props.optionsTournoi.complement;
+    this.typeTournoi = this.props.optionsTournoi.type;
+    this.avecTerrains = this.props.optionsTournoi.avecTerrains;
 
     let listeJoueurs = this.props.listesJoueurs[this.typeInscription];
     let nbjoueurs = listeJoueurs.length;
@@ -153,35 +146,35 @@ class GenerationMatchs extends React.Component<Props, State> {
   _generation() {
     let matchs = [];
     let nbMatchs = undefined;
-    let nbTours = this.props.nbTours;
+    let nbTours = this.nbTours;
     let erreurMemesEquipes = undefined;
     let erreurSpeciaux = undefined;
     let echecGeneration = undefined;
-    if (this.props.typeTournoi == TypeTournoi.MELEDEMELE) {
-      if (this.props.typeInscription == ModeTournoi.AVECEQUIPES) {
+    if (this.typeTournoi == TypeTournoi.MELEDEMELE) {
+      if (this.typeInscription == ModeTournoi.AVECEQUIPES) {
         ({matchs, nbMatchs, echecGeneration} = generationAvecEquipes(this.props.listesJoueurs.avecEquipes, this.nbTours, this.typeEquipes, this.eviterMemeAdversaire));
       }
-      else if (this.props.typeEquipes == TypeEquipes.TETEATETE) {
-        ({matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration} = generationDoublettes(this.props.listesJoueurs[this.props.typeInscription], this.props.nbTours, this.props.typeEquipes, this.props.complement, this.props.speciauxIncompatibles, this.props.jamaisMemeCoequipier, this.props.eviterMemeAdversaire));
+      else if (this.typeEquipes == TypeEquipes.TETEATETE) {
+        ({matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration} = generationDoublettes(this.props.listesJoueurs[this.typeInscription], this.nbTours, this.typeEquipes, this.complement, this.speciauxIncompatibles, this.jamaisMemeCoequipier, this.eviterMemeAdversaire));
       }
-      else if (this.props.typeEquipes == TypeEquipes.DOUBLETTE) {
-        ({matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration} = generationDoublettes(this.props.listesJoueurs[this.props.typeInscription], this.props.nbTours, this.props.typeEquipes, this.props.complement, this.props.speciauxIncompatibles, this.props.jamaisMemeCoequipier, this.props.eviterMemeAdversaire));
+      else if (this.typeEquipes == TypeEquipes.DOUBLETTE) {
+        ({matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration} = generationDoublettes(this.props.listesJoueurs[this.typeInscription], this.nbTours, this.typeEquipes, this.complement, this.speciauxIncompatibles, this.jamaisMemeCoequipier, this.eviterMemeAdversaire));
       }
-      else if (this.props.typeEquipes == TypeEquipes.TRIPLETTE) {
-        ({matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration} = generationTriplettes(this.props.listesJoueurs[this.props.typeInscription], this.props.nbTours));
+      else if (this.typeEquipes == TypeEquipes.TRIPLETTE) {
+        ({matchs, nbMatchs, erreurMemesEquipes, erreurSpeciaux, echecGeneration} = generationTriplettes(this.props.listesJoueurs[this.typeInscription], this.nbTours));
       }
       else {
         echecGeneration = true;
       }
     }
-    else if (this.props.typeTournoi == TypeTournoi.COUPE) {
+    else if (this.typeTournoi == TypeTournoi.COUPE) {
       ({matchs, nbTours, nbMatchs} = generationCoupe(this.props.optionsTournoi, this.props.listesJoueurs.avecEquipes));
     }
-    else if (this.props.typeTournoi == TypeTournoi.CHAMPIONNAT) {
+    else if (this.typeTournoi == TypeTournoi.CHAMPIONNAT) {
       ({matchs, nbTours, nbMatchs} = generationChampionnat(this.props.optionsTournoi, this.props.listesJoueurs.avecEquipes));
     }
-    else if (this.props.typeTournoi == TypeTournoi.MULTICHANCES) {
-      ({matchs, nbTours, nbMatchs} = generationMultiChances(this.props.listesJoueurs[this.props.typeInscription], this.props.typeEquipes));
+    else if (this.typeTournoi == TypeTournoi.MULTICHANCES) {
+      ({matchs, nbTours, nbMatchs} = generationMultiChances(this.props.listesJoueurs[this.typeInscription], this.typeEquipes));
     }
     else {
       echecGeneration = true;
@@ -199,7 +192,7 @@ class GenerationMatchs extends React.Component<Props, State> {
     }
 
     //attributions des terrains
-    if (this.props.avecTerrains) {
+    if (this.avecTerrains) {
       let manche = matchs[0].manche;
       let arrRandIdsTerrains = uniqueValueArrayRandOrder(this.props.listeTerrains.length);
       let i = 0;
@@ -219,15 +212,15 @@ class GenerationMatchs extends React.Component<Props, State> {
       tournoiID: undefined,
       nbTours: nbTours,
       nbMatchs: nbMatchs,
-      nbPtVictoire: this.props.nbPtVictoire,
-      speciauxIncompatibles: this.props.speciauxIncompatibles,
-      memesEquipes: this.props.jamaisMemeCoequipier,
-      memesAdversaires: this.props.eviterMemeAdversaire,
-      typeEquipes: this.props.typeEquipes,
-      complement: this.props.complement,
-      typeTournoi: this.props.typeTournoi,
-      listeJoueurs: this.props.listesJoueurs[this.props.typeInscription].slice(),
-      avecTerrains: this.props.avecTerrains
+      nbPtVictoire: this.nbPtVictoire,
+      speciauxIncompatibles: this.speciauxIncompatibles,
+      memesEquipes: this.jamaisMemeCoequipier,
+      memesAdversaires: this.eviterMemeAdversaire,
+      typeEquipes: this.typeEquipes,
+      complement: this.complement,
+      typeTournoi: this.typeTournoi,
+      listeJoueurs: this.props.listesJoueurs[this.typeInscription].slice(),
+      avecTerrains: this.avecTerrains
     });
 
     //Ajout dans le store
@@ -283,7 +276,7 @@ class GenerationMatchs extends React.Component<Props, State> {
   render() {
     const { t } = this.props;
     if (Platform.OS !== 'web' && this.state.adLoaded && this.state.isValid) {
-      this.props.interstitial.show();
+      this.interstitial.show();
     }
     if (Platform.OS === 'web' && this.state.isValid || this.state.adClosed) {
       this._displayListeMatch();

@@ -204,7 +204,7 @@ export type InscriptionStackParamList = {
   InscriptionsAvecNoms: null;
   InscriptionsSansNoms: null;
   ListeTerrains: { screenStackName: string };
-  GenerationMatchs: null;
+  GenerationMatchs: { screenStackName: string };
   ListeMatchsInscription: { tournoiId: number, tournoi: Tournoi };
 };
 
