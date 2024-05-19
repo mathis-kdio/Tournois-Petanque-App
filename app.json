@@ -100,7 +100,7 @@
         }
       ],
       [
-        "./src/plugins/withDisableForcedDarkModeAndroid.js",
+        "./src/plugins/withDisableForcedDarkModeAndroid.ts",
         {}
       ],
       [
