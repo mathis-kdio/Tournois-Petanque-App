@@ -86,7 +86,7 @@ class MatchDetail extends React.Component<Props, State> {
 
   _envoyerResultat(match: Match) {
     if (this.state.score1 && this.state.score2) {
-      let info = {idMatch: this.state.idMatch, score1: parseint(this.state.score1), score2: parseint(this.state.score2)};
+      let info = {idMatch: this.state.idMatch, score1: parseInt(this.state.score1), score2: parseInt(this.state.score2)};
       const actionAjoutScore = { type: "AJOUT_SCORE", value: info};
       this.props.dispatch(actionAjoutScore);
       //Si tournoi type coupe et pas le dernier match, alors on ajoute les gagnants au match suivant

@@ -218,8 +218,8 @@ class ListeJoueurItem extends React.Component<Props, State> {
       return (
         <Box>
           {joueurType == JoueurType.ENFANT && <FontAwesome5 name="child" color="darkgray" size={24}/>}
-          {joueurType == JoueurType.TIREUR && <Image source={require('@assets/images/tireur.png')} alt={type} width={30} height={30} />}
-          {joueurType == JoueurType.POINTEUR && <Image source={require('@assets/images/pointeur.png')} alt={type} width={30} height={30} />}
+          {joueurType == JoueurType.TIREUR && <Image source={require('@assets/images/tireur.png')} alt="tireur" width={30} height={30} />}
+          {joueurType == JoueurType.POINTEUR && <Image source={require('@assets/images/pointeur.png')} alt="tireur" width={30} height={30} />}
         </Box>
       )
     }

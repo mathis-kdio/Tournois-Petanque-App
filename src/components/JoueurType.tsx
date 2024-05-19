@@ -27,7 +27,7 @@ class JoueurType extends React.Component<Props, State> {
 
   _selectItemList() {
     const { t } = this.props;
-    const { mode, type, typeEquipes } = this.props.optionsTournoi;
+    const { mode, typeTournoi, typeEquipes } = this.props.optionsTournoi;
     if (mode == ModeTournoi.SAUVEGARDE) {
       return [
         <SelectItem label={t("tireur")} value={JoueurTypeEnum.TIREUR} key={1}/>,
@@ -35,7 +35,7 @@ class JoueurType extends React.Component<Props, State> {
         <SelectItem label={t("milieu")} value={JoueurTypeEnum.MILIEU} key={3}/>
       ]
     }
-    else if (type == TypeTournoi.MELEDEMELE && typeEquipes == TypeEquipes.DOUBLETTE) {
+    else if (typeTournoi == TypeTournoi.MELEDEMELE && typeEquipes == TypeEquipes.DOUBLETTE) {
       /*TEMPORAIRE AFFICHAGE DES POSTES TIREURS ET POINTEURS SEULEMENT EN DOUBLETTE*/
       return [
         <SelectItem label={t("tireur")} value={JoueurTypeEnum.TIREUR} key={1}/>,
