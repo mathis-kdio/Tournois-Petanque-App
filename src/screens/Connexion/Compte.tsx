@@ -38,7 +38,9 @@ class Compte extends React.Component<Props, State> {
   componentDidMount() {
     supabase.auth.onAuthStateChange((event, session) => {
       this.setState({session: session});
-      this.getProfile();
+      if (session) {
+        this.getProfile();
+      }
     })
   }
 
@@ -74,7 +76,7 @@ class Compte extends React.Component<Props, State> {
     }
   }
 
-  async updateProfile({
+  /*async updateProfile({
     username,
     website,
     avatar_url,
@@ -107,6 +109,11 @@ class Compte extends React.Component<Props, State> {
     } finally {
       this.setState({loading: false})
     }
+  }*/
+
+  deconnexion() {
+    supabase.auth.signOut();
+    this.props.navigation.navigate('AccueilGeneral')
   }
 
   render() {
@@ -121,7 +128,7 @@ class Compte extends React.Component<Props, State> {
             </VStack>
 
             <VStack>
-              <Button onPress={() => supabase.auth.signOut()} >
+              <Button onPress={() => this.deconnexion()} >
                 <ButtonText>{t("se_deconnecter")}</ButtonText>
               </Button>
             </VStack>
