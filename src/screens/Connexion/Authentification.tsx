@@ -51,10 +51,14 @@ class Authentification extends React.Component<Props, State> {
       password: this.state.password,
     })
 
-    if (error) Alert.alert(error.message)
+    if (error) {
+      Alert.alert(error.message)
+    }
+
     this.setState({loading: false})
     console.log(data)
     console.log(error)
+    this.props.navigation.navigate('AccueilGeneral');   
   }
 
   inscription() {
