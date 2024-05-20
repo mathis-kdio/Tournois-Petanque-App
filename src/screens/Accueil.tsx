@@ -13,6 +13,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { PropsFromRedux, connector } from '@/store/connector';
 import { supabase } from '@/utils/supabase';
+import { Session } from '@supabase/supabase-js';
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
@@ -29,7 +30,7 @@ export interface Props extends PropsFromRedux {
 
 interface State {
   appState: AppStateStatus;
-  session: Session;
+  session: Session | null;
 }
 
 class Accueil extends React.Component<Props, State> {
@@ -45,7 +46,8 @@ class Accueil extends React.Component<Props, State> {
     props.facebook =             "https://www.facebook.com/groups/tournoispetanqueapp";
     props.website =              "https://tournoispetanqueapp.fr/";
     this.state = {
-      appState: "active"
+      appState: "active",
+      session: null
     }
   }
 
