@@ -12,6 +12,7 @@ import { _requestTrackingPermissions } from '../utils/expoTrackingTransparency/r
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { PropsFromRedux, connector } from '@/store/connector';
+import { supabase } from '@/utils/supabase';
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
@@ -28,6 +29,7 @@ export interface Props extends PropsFromRedux {
 
 interface State {
   appState: AppStateStatus;
+  session: Session;
 }
 
 class Accueil extends React.Component<Props, State> {
@@ -58,6 +60,10 @@ class Accueil extends React.Component<Props, State> {
         _requestTrackingPermissions(this.state.appState);
       }, 1000);
     }
+
+    supabase.auth.onAuthStateChange((event, session) => {
+      this.setState({session: session});
+    })
   }
 
   _showMatchs() {
@@ -95,6 +101,24 @@ class Accueil extends React.Component<Props, State> {
     }
   }
 
+  boutonConnexion() {
+    const { t } = this.props;
+    if (this.state.session) {
+      return (
+        <Button onPress={() => this.props.navigation.navigate('ConnexionStack', { screen: 'Compte' })}>
+          <ButtonText>{t("mon_compte")}</ButtonText>
+        </Button>
+      )
+    }
+    else {
+      return (
+        <Button onPress={() => this.props.navigation.navigate('ConnexionStack')}>
+          <ButtonText>{t("authentification")}</ButtonText>
+        </Button>
+      )
+    }
+  }
+
   render() {
     const { t } = this.props;
     return (
@@ -103,8 +127,7 @@ class Accueil extends React.Component<Props, State> {
           <ScrollView height={'$1'}>
             <VStack space='4xl'>
               <VStack alignItems='flex-end'>
-                <Button onPress={() => this.props.navigation.navigate('ConnexionStack')}><ButtonText>Authentification</ButtonText></Button>
-                <Button onPress={() => this.props.navigation.navigate('ConnexionStack', { screen: 'Compte' })}><ButtonText>Compte</ButtonText></Button>
+                {this.boutonConnexion()}
               </VStack>              
               <VStack alignItems='center'>
                 <Image
