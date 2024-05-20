@@ -46,13 +46,15 @@ class Authentification extends React.Component<Props, State> {
 
   async signInWithEmail() {
     this.setState({loading: true})
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error, data } = await supabase.auth.signInWithPassword({
       email: this.state.email,
       password: this.state.password,
     })
 
     if (error) Alert.alert(error.message)
     this.setState({loading: false})
+    console.log(data)
+    console.log(error)
   }
 
   inscription() {
