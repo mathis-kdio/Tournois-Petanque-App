@@ -1,13 +1,14 @@
 import React from 'react';
 import { supabase } from '@/utils/supabase';
-import { View, Alert } from 'react-native'
+import { Alert } from 'react-native'
 import { Session } from '@supabase/supabase-js'
 import { withTranslation } from 'react-i18next';
-import { Button, ButtonText, Input, InputField, VStack } from '@gluestack-ui/themed'
+import { Button, ButtonText, Input, InputField, ScrollView, Text, VStack } from '@gluestack-ui/themed'
 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import TopBarBack from '@/components/TopBarBack';
 
 export interface Props {
   navigation: StackNavigationProp<any,any>;
@@ -23,7 +24,7 @@ interface State {
 }
 
 class Compte extends React.Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       loading: true,
@@ -119,49 +120,53 @@ class Compte extends React.Component<Props, State> {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} bgColor='#0594ae'>
-          <VStack>
-            <Input /*value={session?.user?.email} isDisabled*/ />
-            <Input size='md'>
-              <InputField
-                placeholder={t("nombre_placeholder")}
-              />
-            </Input>
-          </VStack>
-          <VStack>
-            <Input /*value={username || ''}*/ />
-            <Input size='md'>
-              <InputField
-                placeholder={t("nombre_placeholder")}
-                onChangeText={(text) => this.setState({username: text})}
-              />
-            </Input>
-          </VStack>
-          <VStack>
-            <Input  /*value={website || ''}*/ />
-            <Input size='md'>
-              <InputField
-                placeholder={t("nombre_placeholder")}
-                onChangeText={(text) => this.setState({website: text})}
-              />
-            </Input>
-          </VStack>
+        <ScrollView height={'$1'} bgColor='#0594ae'>
+          <TopBarBack title={t("mon_compte")} navigation={this.props.navigation}/>
+          <VStack flex={1} px={'$10'} justifyContent='space-between'>
+            <VStack>
+              <Text>{this.state.session?.user?.email}</Text>
+              <Input /*value={session?.user?.email} isDisabled*/ />
+              <Input size='md'>
+                <InputField
+                  placeholder={t("nombre_placeholder")}
+                />
+              </Input>
+            </VStack>
+            <VStack>
+              <Input /*value={username || ''}*/ />
+              <Input size='md'>
+                <InputField
+                  placeholder={t("nombre_placeholder")}
+                  onChangeText={(text) => this.setState({username: text})}
+                />
+              </Input>
+            </VStack>
+            <VStack>
+              <Input  /*value={website || ''}*/ />
+              <Input size='md'>
+                <InputField
+                  placeholder={t("nombre_placeholder")}
+                  onChangeText={(text) => this.setState({website: text})}
+                />
+              </Input>
+            </VStack>
 
-          <VStack>
-            <Button
-              onPress={() => this.updateProfile({username: this.state.username, website: this.state.website, avatar_url: this.state.avatarUrl })}
-              isDisabled={this.state.loading}
-            >
-              <ButtonText>{this.state.loading ? 'Loading ...' : 'Update'}</ButtonText>
-            </Button>
-          </VStack>
+            <VStack>
+              <Button
+                onPress={() => this.updateProfile({username: this.state.username, website: this.state.website, avatar_url: this.state.avatarUrl })}
+                isDisabled={this.state.loading}
+              >
+                <ButtonText>{this.state.loading ? 'Loading ...' : 'Update'}</ButtonText>
+              </Button>
+            </VStack>
 
-          <VStack>
-            <Button onPress={() => supabase.auth.signOut()} >
-              <ButtonText>Sign Out</ButtonText>
-            </Button>
+            <VStack>
+              <Button onPress={() => supabase.auth.signOut()} >
+                <ButtonText>Sign Out</ButtonText>
+              </Button>
+            </VStack>
           </VStack>
-        </VStack>
+        </ScrollView>
       </SafeAreaView>
     )
   }
