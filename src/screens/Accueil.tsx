@@ -103,7 +103,8 @@ class Accueil extends React.Component<Props, State> {
           <ScrollView height={'$1'}>
             <VStack space='4xl'>
               <VStack alignItems='flex-end'>
-                <Button onPress={() => this.props.navigation.navigate('ConnexionStack')}><ButtonText>test</ButtonText></Button>
+                <Button onPress={() => this.props.navigation.navigate('ConnexionStack')}><ButtonText>Authentification</ButtonText></Button>
+                <Button onPress={() => this.props.navigation.navigate('ConnexionStack', { screen: 'Compte' })}><ButtonText>Compte</ButtonText></Button>
               </VStack>              
               <VStack alignItems='center'>
                 <Image

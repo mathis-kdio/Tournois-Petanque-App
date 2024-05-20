@@ -244,7 +244,7 @@ function ConnexionStack() {
     <Stack.Navigator initialRouteName='Authentification' screenOptions={{headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}}>
       <Stack.Screen name="Authentification" component={Authentification} options={{title: t("authentification"), headerShown: false}} />
       <Stack.Screen name="Inscription" component={Inscription} options={{title: t("inscription"), headerShown: false}} />
-      <Stack.Screen name="Compte" component={Compte} options={{title: t("compte"), headerShown: false}} />
+      <Stack.Screen name="Compte" component={Compte} options={{title: t("mon_compte"), headerShown: false}} />
     </Stack.Navigator>
   )
 }
