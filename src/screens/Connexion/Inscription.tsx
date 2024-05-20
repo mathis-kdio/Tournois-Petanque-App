@@ -33,6 +33,8 @@ interface State {
 }
 
 class Inscription extends React.Component<Props, State> {
+  mdpInput: React.ElementRef<typeof InputField> = null;
+
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -51,8 +53,7 @@ class Inscription extends React.Component<Props, State> {
       email: this.state.email,
       password: this.state.password,
     })
-    console.log(error)
-    console.log(session)
+
     if (error) Alert.alert(error.message)
     if (!session) Alert.alert('Please check your inbox for email verification!')
     this.setState({loading: false})
@@ -66,34 +67,25 @@ class Inscription extends React.Component<Props, State> {
           <TopBarBack title={t("inscription")} navigation={this.props.navigation}/>
           <VStack flex={1} px={'$10'} justifyContent='space-between'>
             <VStack>
-              <Input
-                /*label="Email"
-                leftIcon={{ type: 'font-awesome', name: 'envelope' }}
-                onChangeText={(text) => this.setEmail(text)}
-                value={email}
-                placeholder="email@address.com"
-                autoCapitalize={'none'}*/
-              >
+              <Input>
                 <InputField
-                  placeholder={"email@address.com"}
+                  placeholder={t("email_adresse")}
+                  keyboardType='email-address'
+                  returnKeyType='next'
+                  autoCapitalize='none'
                   onChangeText={(text) => this.setState({email: text})}
+                  onSubmitEditing={() => this.mdpInput.focus()}
                 />
               </Input>
             </VStack>
             <VStack>
-              <Input
-                /*label="Password"
-                leftIcon={{ type: 'font-awesome', name: 'lock' }}
-                onChangeText={(text) => setPassword(text)}
-                value={password}
-                secureTextEntry={true}
-                placeholder="Password"
-                autoCapitalize={'none'}*/
-              />
               <Input size='md'>
                 <InputField
-                  placeholder={"Password"}
+                  placeholder={t("mot_de_passe")}
+                  secureTextEntry={true}
+                  autoCapitalize={'none'}
                   onChangeText={(text) => this.setState({password: text})}
+                  ref={ref => {this.mdpInput = ref}}
                 />
               </Input>
             </VStack>
