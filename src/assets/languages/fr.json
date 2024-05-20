@@ -219,6 +219,7 @@
     "mon_compte": "Mon compte",
     "email": "E-mail",
     "mot_de_passe": "Mot de passe",
-    "email_adresse": "e-mail@adresse.fr"
+    "email_adresse": "e-mail@adresse.fr",
+    "se_deconnecter": "Se déconnecter"
   }
 }
