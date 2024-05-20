@@ -33,6 +33,8 @@ interface State {
 }
 
 class Authentification extends React.Component<Props, State> {
+  mdpInput: React.ElementRef<typeof InputField> = null;
+
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -71,8 +73,10 @@ class Authentification extends React.Component<Props, State> {
                   <InputField
                     placeholder={t("email_adresse")}
                     keyboardType='email-address'
+                    returnKeyType='next'
                     autoCapitalize='none'
                     onChangeText={(text) => this.setState({email: text})}
+                    onSubmitEditing={() => this.mdpInput.focus()}
                   />
                 </Input>
               </VStack>
@@ -84,6 +88,7 @@ class Authentification extends React.Component<Props, State> {
                     secureTextEntry={true}
                     autoCapitalize={'none'}
                     onChangeText={(text) => this.setState({password: text})}
+                    ref={ref => {this.mdpInput = ref}}
                   />
                 </Input>
               </VStack>
