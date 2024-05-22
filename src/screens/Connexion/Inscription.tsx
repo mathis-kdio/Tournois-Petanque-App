@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
-import { Button, ButtonText, Input, InputField, ScrollView, VStack } from '@gluestack-ui/themed';
+import { Button, ButtonText, Input, InputField, ScrollView, Text, VStack } from '@gluestack-ui/themed';
 import TopBarBack from '@/components/TopBarBack';
 
 // Tells Supabase Auth to continuously refresh the session automatically if
@@ -66,7 +66,8 @@ class Inscription extends React.Component<Props, State> {
         <ScrollView height={'$1'} bgColor='#0594ae'>
           <TopBarBack title={t("inscription")} navigation={this.props.navigation}/>
           <VStack flex={1} px={'$10'} justifyContent='space-between'>
-            <VStack>
+            <VStack mb='$5'>
+              <Text color='$white' fontSize={'$md'}>{t("email")}</Text>
               <Input>
                 <InputField
                   placeholder={t("email_adresse")}
@@ -78,7 +79,8 @@ class Inscription extends React.Component<Props, State> {
                 />
               </Input>
             </VStack>
-            <VStack>
+            <VStack mb='$5'>
+              <Text color='$white' fontSize={'$md'}>{t("mot_de_passe")}</Text>
               <Input size='md'>
                 <InputField
                   placeholder={t("mot_de_passe")}

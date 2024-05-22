@@ -72,8 +72,8 @@ class Authentification extends React.Component<Props, State> {
         <ScrollView height={'$1'} bgColor='#0594ae'>
           <TopBarBack title={t("authentification")} navigation={this.props.navigation}/>
           <VStack flex={1} px={'$10'} justifyContent='space-between'>
-            <VStack>
-              <VStack>
+            <VStack mb='$5'>
+              <VStack mb='$5'>
                 <Text color='$white' fontSize={'$md'}>{t("email")}</Text>
                 <Input>
                   <InputField
@@ -86,7 +86,7 @@ class Authentification extends React.Component<Props, State> {
                   />
                 </Input>
               </VStack>
-              <VStack>
+              <VStack mb='$5'>
                 <Text color='$white' fontSize={'$md'}>{t("mot_de_passe")}</Text>
                 <Input size='md'>
                   <InputField
@@ -98,7 +98,7 @@ class Authentification extends React.Component<Props, State> {
                   />
                 </Input>
               </VStack>
-              <VStack>
+              <VStack mb='$5'>
                 <Button isDisabled={this.state.loading} onPress={() => this.signInWithEmail()}>
                   <ButtonText>Se connecter</ButtonText>
                 </Button>
