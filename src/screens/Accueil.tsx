@@ -12,12 +12,13 @@ import { _requestTrackingPermissions } from '../utils/expoTrackingTransparency/r
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { PropsFromRedux, connector } from '@/store/connector';
-import { supabase } from '@/utils/supabase';
 import { Session } from '@supabase/supabase-js';
+import { withSession } from '@/components/supabase/withSession';
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
+  session: Session | null;
   googleMarket: string;
   appleMarket: string;
   googleMarketReviews: string;
@@ -30,7 +31,6 @@ export interface Props extends PropsFromRedux {
 
 interface State {
   appState: AppStateStatus;
-  session: Session | null;
 }
 
 class Accueil extends React.Component<Props, State> {
@@ -46,8 +46,7 @@ class Accueil extends React.Component<Props, State> {
     props.facebook =             "https://www.facebook.com/groups/tournoispetanqueapp";
     props.website =              "https://tournoispetanqueapp.fr/";
     this.state = {
-      appState: "active",
-      session: null
+      appState: "active"
     }
   }
 
@@ -63,9 +62,6 @@ class Accueil extends React.Component<Props, State> {
       }, 1000);
     }
 
-    supabase.auth.onAuthStateChange((event, session) => {
-      this.setState({session: session});
-    })
   }
 
   _showMatchs() {
@@ -104,8 +100,8 @@ class Accueil extends React.Component<Props, State> {
   }
 
   boutonConnexion() {
-    const { t } = this.props;
-    if (this.state.session) {
+    const { t, session } = this.props;
+    if (session) {
       return (
         <Button onPress={() => this.props.navigation.navigate('ConnexionStack', { screen: 'Compte' })}>
           <ButtonText>{t("mon_compte")}</ButtonText>
@@ -204,4 +200,4 @@ class Accueil extends React.Component<Props, State> {
   }
 }
 
-export default connector(withTranslation()(Accueil))
+export default connector(withSession(withTranslation()(Accueil)))
