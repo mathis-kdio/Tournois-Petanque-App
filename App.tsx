@@ -14,6 +14,7 @@ import i18n from './i18n';
 import { GluestackUIProvider } from '@gluestack-ui/themed';
 import { config } from './config/gluestack-ui.config';
 import "@expo/metro-runtime"; //Fast-refresh web
+import SessionProvider from '@/components/supabase/SessionProvider';
 
 const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
 Sentry.init({
@@ -36,14 +37,16 @@ class App extends React.Component {
     return (
       <Provider store={Store}>
         <PersistGate persistor={persistor}>
-          <GluestackUIProvider config={config}>
-            <NavigationContainer onReady={() => routingInstrumentation.registerNavigationContainer(this.navigationRef)}>
-              <I18nextProvider i18n={i18n} defaultNS={'common'}>
-                <Navigation/>
-                <StatusBar style="light" backgroundColor="#0594ae"/>
-              </I18nextProvider>
-            </NavigationContainer>
-          </GluestackUIProvider>
+          <SessionProvider>
+            <GluestackUIProvider config={config}>
+              <NavigationContainer onReady={() => routingInstrumentation.registerNavigationContainer(this.navigationRef)}>
+                <I18nextProvider i18n={i18n} defaultNS={'common'}>
+                  <Navigation/>
+                  <StatusBar style="light" backgroundColor="#0594ae"/>
+                </I18nextProvider>
+              </NavigationContainer>
+            </GluestackUIProvider>
+          </SessionProvider>
         </PersistGate>
       </Provider>
     )

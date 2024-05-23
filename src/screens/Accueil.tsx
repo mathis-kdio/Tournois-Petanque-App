@@ -3,7 +3,7 @@ import { expo } from '../../app.json';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { _openPlateformLink, _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Box, HStack, VStack, Text, Pressable, Image, ScrollView } from '@gluestack-ui/themed';
+import { Box, HStack, VStack, Text, Pressable, Image, ScrollView, Button, ButtonText } from '@gluestack-ui/themed';
 import { _adsConsentForm } from '../utils/adMob/consentForm'
 import { withTranslation } from 'react-i18next';
 import CardButton from '@components/buttons/CardButton';
@@ -12,10 +12,13 @@ import { _requestTrackingPermissions } from '../utils/expoTrackingTransparency/r
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { PropsFromRedux, connector } from '@/store/connector';
+import { Session } from '@supabase/supabase-js';
+import { withSession } from '@/components/supabase/withSession';
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
+  session: Session | null;
   googleMarket: string;
   appleMarket: string;
   googleMarketReviews: string;
@@ -58,6 +61,7 @@ class Accueil extends React.Component<Props, State> {
         _requestTrackingPermissions(this.state.appState);
       }, 1000);
     }
+
   }
 
   _showMatchs() {
@@ -95,6 +99,24 @@ class Accueil extends React.Component<Props, State> {
     }
   }
 
+  boutonConnexion() {
+    const { t, session } = this.props;
+    if (session) {
+      return (
+        <Button onPress={() => this.props.navigation.navigate('ConnexionStack', { screen: 'Compte' })}>
+          <ButtonText>{t("mon_compte")}</ButtonText>
+        </Button>
+      )
+    }
+    else {
+      return (
+        <Button onPress={() => this.props.navigation.navigate('ConnexionStack')}>
+          <ButtonText>{t("authentification")}</ButtonText>
+        </Button>
+      )
+    }
+  }
+
   render() {
     const { t } = this.props;
     return (
@@ -102,6 +124,9 @@ class Accueil extends React.Component<Props, State> {
         <VStack flex={1} px={'$5'} bgColor='#0594ae'>
           <ScrollView height={'$1'}>
             <VStack space='4xl'>
+              <VStack alignItems='flex-end'>
+                {this.boutonConnexion()}
+              </VStack>              
               <VStack alignItems='center'>
                 <Image
                   size='xl'
@@ -175,4 +200,4 @@ class Accueil extends React.Component<Props, State> {
   }
 }
 
-export default connector(withTranslation()(Accueil))
+export default connector(withSession(withTranslation()(Accueil)))

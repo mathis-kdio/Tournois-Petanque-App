@@ -10,11 +10,14 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { FontAwesome5 } from '@expo/vector-icons';
 
 import Accueil from '@screens/Accueil'
+import Authentification from '@screens/Connexion/Authentification';
+import Compte from '@screens/Connexion/Compte';
 import Parametres from '@screens/Parametres/Parametres';
 import Changelog from '@screens/Parametres/Changelog';
 import ListeTournois from '@screens/ListeTournois/ListeTournois';
 import ChoixTypeTournoi from '@screens/Inscriptions/ChoixTypeTournoi';
 import ChoixModeTournoi from '@screens/Inscriptions/ChoixModeTournoi'
+import Inscription from '@screens/Connexion/Inscription';
 import InscriptionsAvecNoms from '@screens/Inscriptions/InscriptionsAvecNoms'
 import InscriptionsSansNoms from '@screens/Inscriptions/InscriptionsSansNoms'
 import OptionsTournoi from '@screens/Inscriptions/OptionsTournoi'
@@ -235,6 +238,17 @@ function ParametresStack() {
   )
 }
 
+function ConnexionStack() {
+  const { t } = useTranslation();
+  return (
+    <Stack.Navigator initialRouteName='Authentification' screenOptions={{headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}}>
+      <Stack.Screen name="Authentification" component={Authentification} options={{title: t("authentification"), headerShown: false}} />
+      <Stack.Screen name="Inscription" component={Inscription} options={{title: t("inscription"), headerShown: false}} />
+      <Stack.Screen name="Compte" component={Compte} options={{title: t("mon_compte"), headerShown: false}} />
+    </Stack.Navigator>
+  )
+}
+
 function ListeMatchsStack() {
   const listeMatchs = useSelector(state => state.gestionMatchs.listematchs);
   let typeTournoi = TypeTournoi.MELEDEMELE;
@@ -268,6 +282,7 @@ function General() {
   return (
     <Stack.Navigator initialRouteName='AccueilGeneral' screenOptions={{headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}}>
       <Stack.Screen name="AccueilGeneral" component={Accueil} options={{title: t("accueil"), headerShown: false}} />
+      <Stack.Screen name="ConnexionStack" component={ConnexionStack} options={{headerShown: false}} />
       <Stack.Screen name="ParametresStack" component={ParametresStack} options={{headerShown: false}} />
 
       <Stack.Screen name="ListeTournois" component={ListeTournois} options={{title: t("choix_tournoi_navigation_title"), headerShown: false}} />
