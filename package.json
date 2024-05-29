@@ -11,10 +11,11 @@
     "build-android": "npx eas-cli build --platform android",
     "build-android-development": "npx eas-cli build --profile development",
     "build-web": "npx expo export --platform web",
-    "build-desktop": "npx tauri build",
+    "build-desktop": "npx expo export --platform web && npx tauri build",
     "ts:check": "tsc"
   },
   "dependencies": {
+    "@ctrl/react-adsense": "^1.7.0",
     "@gluestack-style/react": "^1.0.56",
     "@gluestack-ui/config": "^1.1.18",
     "@gluestack-ui/themed": "^1.1.26",

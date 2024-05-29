@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Adsense } from '@ctrl/react-adsense';
 
 export interface Props {
 }
@@ -13,7 +14,13 @@ class AdMobInscriptionsBanner extends React.Component<Props, State> {
   }
   
   render() {
-    return (<></>)
+    return (
+      <Adsense
+        client="ca-pub-4863676282747598"
+        slot="4936658878"
+        adTest={__DEV__ ? "on" : "off"}
+      />
+    )
   }
 }
 
