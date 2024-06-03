@@ -213,6 +213,13 @@
     "case_a_cocher": "pola wyboru",
     "confirmer_uncheck_modal_titre": "Potwierdzenie anulowania wyboru pola",
     "confirmer_uncheck_modal_texte": "Czy na pewno chcesz anulować to pole?",
-    "chargement_publicite": "Cierpliwości, oczekiwanie na reklamę. Pomoże to nam pokryć koszty aplikacji."
+    "chargement_publicite": "Cierpliwości, oczekiwanie na reklamę. Pomoże to nam pokryć koszty aplikacji.",
+    "inscription": "Inscription",
+    "authentification": "Authentification",
+    "mon_compte": "Mon compte",
+    "email": "E-mail",
+    "mot_de_passe": "Mot de passe",
+    "email_adresse": "e-mail@adresse.fr",
+    "se_deconnecter": "Se déconnecter"
   }
 }
