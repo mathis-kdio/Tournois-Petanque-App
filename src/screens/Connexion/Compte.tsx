@@ -10,8 +10,11 @@ import { TFunction } from 'i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/TopBarBack';
 import { withSession } from '@/components/supabase/withSession';
+import { synchroniserTournois } from '@/services/tournois/tournoisService';
+import { Tournoi } from '@/types/interfaces/tournoi';
+import { PropsFromRedux, connector } from '@/store/connector';
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
   t: TFunction;
   session: Session | null;
@@ -35,7 +38,7 @@ class Compte extends React.Component<Props, State> {
     }
   }
 
-  async getProfile() {
+  async getProfile(): Promise<void> {
     const { session } = this.props;
     try {
       this.setState({loading: true})
@@ -68,42 +71,13 @@ class Compte extends React.Component<Props, State> {
     }
   }
 
-  /*async updateProfile({
-    username,
-    website,
-    avatar_url,
-  }: {
-    username: string
-    website: string
-    avatar_url: string
-  }) {
-    try {
-      this.setState({loading: true})
-      if (!session?.user) throw new Error('No user on the session!')
+  synchronisation(): void {
+    let tournois: Tournoi[] = this.props.listeTournois;
+    console.log(tournois.slice(0, 2))
+    synchroniserTournois(tournois.slice(0, 2));
+  }
 
-      const updates = {
-        id: session?.user.id,
-        username,
-        website,
-        avatar_url,
-        updated_at: new Date(),
-      }
-
-      const { error } = await supabase.from('profiles').upsert(updates)
-
-      if (error) {
-        throw error
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        Alert.alert(error.message)
-      }
-    } finally {
-      this.setState({loading: false})
-    }
-  }*/
-
-  deconnexion() {
+  deconnexion(): void {
     supabase.auth.signOut();
     this.props.navigation.navigate('AccueilGeneral')
   }
@@ -118,7 +92,11 @@ class Compte extends React.Component<Props, State> {
             <VStack>
               <Text color='$white'>{session?.user?.email}</Text>
             </VStack>
-
+            <VStack>
+              <Button onPress={() => this.synchronisation()} >
+                <ButtonText>Forcer la synchronisation</ButtonText>
+              </Button>
+            </VStack>
             <VStack>
               <Button onPress={() => this.deconnexion()} >
                 <ButtonText>{t("se_deconnecter")}</ButtonText>
@@ -131,4 +109,4 @@ class Compte extends React.Component<Props, State> {
   }
 }
 
-export default withSession(withTranslation()(Compte))
+export default connector(withSession(withTranslation()(Compte)))
