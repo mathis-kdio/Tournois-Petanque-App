@@ -213,6 +213,13 @@
     "case_a_cocher": "selectievakjes",
     "confirmer_uncheck_modal_titre": "Zet de bevestiging uit",
     "confirmer_uncheck_modal_texte": "Weet u zeker dat u het selectievakje uit wilt zetten?",
-    "chargement_publicite": "Even geduld, er verschijnt een advertentie. Het helpt de kosten te dekken."
+    "chargement_publicite": "Even geduld, er verschijnt een advertentie. Het helpt de kosten te dekken.",
+    "inscription": "Inscription",
+    "authentification": "Authentification",
+    "mon_compte": "Mon compte",
+    "email": "E-mail",
+    "mot_de_passe": "Mot de passe",
+    "email_adresse": "e-mail@adresse.fr",
+    "se_deconnecter": "Se déconnecter"
   }
 }
