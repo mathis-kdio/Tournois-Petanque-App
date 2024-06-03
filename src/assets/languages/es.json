@@ -213,6 +213,13 @@
     "case_a_cocher": "les cases à cocher",
     "confirmer_uncheck_modal_titre": "Confirmation décochage",
     "confirmer_uncheck_modal_texte": "Êtes-vous sûr de vouloir décocher la case ?",
-    "chargement_publicite": "Veuillez patienter, une publicité va apparaitre. Elle permet de couvrir les frais de l'application."
+    "chargement_publicite": "Veuillez patienter, une publicité va apparaitre. Elle permet de couvrir les frais de l'application.",
+    "inscription": "Inscription",
+    "authentification": "Authentification",
+    "mon_compte": "Mon compte",
+    "email": "E-mail",
+    "mot_de_passe": "Mot de passe",
+    "email_adresse": "e-mail@adresse.fr",
+    "se_deconnecter": "Se déconnecter"
   }
 }
