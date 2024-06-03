@@ -213,6 +213,13 @@
     "case_a_cocher": "checkboxes",
     "confirmer_uncheck_modal_titre": "Confirm unchecking",
     "confirmer_uncheck_modal_texte": "Are you sure you want to uncheck the box?",
-    "chargement_publicite": "Please wait, an advertisement will appear. It covers the costs of the application."
+    "chargement_publicite": "Please wait, an advertisement will appear. It covers the costs of the application.",
+    "inscription": "Inscription",
+    "authentification": "Authentification",
+    "mon_compte": "Mon compte",
+    "email": "E-mail",
+    "mot_de_passe": "Mot de passe",
+    "email_adresse": "e-mail@adresse.fr",
+    "se_deconnecter": "Se déconnecter"
   }
 }
