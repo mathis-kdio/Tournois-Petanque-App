@@ -216,10 +216,10 @@
     "chargement_publicite": "Cierpliwości, oczekiwanie na reklamę. Pomoże to nam pokryć koszty aplikacji.",
     "inscription": "Rejestracja",
     "authentification": "Uwierzytelnienie",
-    "mon_compte": "Mon compte",
+    "mon_compte": "Moje konto",
     "email": "E-mail",
-    "mot_de_passe": "Mot de passe",
+    "mot_de_passe": "Hasło",
     "email_adresse": "e-mail@adresse.fr",
-    "se_deconnecter": "Se déconnecter"
+    "se_deconnecter": "Wyloguj"
   }
 }
