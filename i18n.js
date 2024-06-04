@@ -1,6 +1,6 @@
 import i18n from 'i18next';
 import * as Localization from 'expo-localization';
-import { initReactI18next } from "react-i18next";
+import { initReactI18next } from 'react-i18next';
 import francais from '@assets/languages/fr.json';
 import changelogFR from '@assets/ChangelogData.json';
 import english from '@assets/languages/en.json';

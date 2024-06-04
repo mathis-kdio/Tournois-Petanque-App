@@ -3,7 +3,7 @@ import { createStyle } from '@gluestack-style/react';
 export const RadioIcon = createStyle({
   'borderRadius': '$full',
   ':checked': {
-    'color': '$primary600',
+    'color': '$white',
     ':hover': {
       'color': '$primary700',
       ':disabled': {
