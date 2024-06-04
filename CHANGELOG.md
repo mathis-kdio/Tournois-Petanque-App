@@ -1,5 +1,20 @@
 # Change Log
 
+## [1.16.2] - 05-05-2024
+
+### Ajouté
+- Traduction en néerlandais.
+- Date du tournoi dans les PDF.
+
+### Changement
+- Amélioration mineure de l'affichage des PDF.
+- Traduction des notes de mise à jour.
+
+### Corrigé
+- Correction génération des tournois en tête-à-tête.
+- Correction affichages de boutons et modals.
+- Corrections de bugs.
+
 ## [1.16.1] - 21-04-2024
 
 ### Ajouté

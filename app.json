@@ -2,7 +2,7 @@
   "expo": {
     "name": "Tournois Pétanque App",
     "slug": "PetanqueGCU",
-    "version": "1.16.1",
+    "version": "1.16.2",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "light",
@@ -27,7 +27,7 @@
     ],
     "ios": {
       "bundleIdentifier": "TournoisPetanqueApp",
-      "buildNumber": "1.16.2",
+      "buildNumber": "1.16.3",
       "supportsTablet": true,
       "userInterfaceStyle": "light",
       "infoPlist": {
@@ -39,11 +39,17 @@
         "NSPrivacyAccessedAPITypes": [
           {
             "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp", 
-            "NSPrivacyAccessedAPITypeReasons": ["0A2A.1", "3B52.1"]
+            "NSPrivacyAccessedAPITypeReasons": [
+              "0A2A.1",
+              "3B52.1"
+            ]
           },
           {
             "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryDiskSpace",
-            "NSPrivacyAccessedAPITypeReasons": ["E174.1", "85F4.1"]
+            "NSPrivacyAccessedAPITypeReasons": [
+              "E174.1",
+              "85F4.1"
+            ]
           }
         ]
       }
@@ -54,7 +60,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.MK.PetanqueGCU",
-      "versionCode": 102,
+      "versionCode": 103,
       "permissions": [
         "com.google.android.gms.permission.AD_ID"
       ],
