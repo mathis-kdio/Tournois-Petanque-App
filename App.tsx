@@ -12,6 +12,7 @@ import { I18nextProvider } from 'react-i18next';
 import * as Sentry from '@sentry/react-native';
 import i18n from './i18n';
 import { GluestackUIProvider } from '@gluestack-ui/themed';
+import "@/global.css"
 import { config } from './config/gluestack-ui.config';
 import "@expo/metro-runtime"; //Fast-refresh web
 import SessionProvider from '@/components/supabase/SessionProvider';
