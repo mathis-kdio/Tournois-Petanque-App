@@ -29,13 +29,5 @@
       ]
     }
   },
-  "include": [
-    "App.tsx",
-    "src/**/*.ts",
-    "src/**/*.tsx",
-  ],
-  "exclude": [
-    "config"
-  ],
   "strict": true
 }
