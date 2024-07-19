@@ -1,7 +1,24 @@
+import { Input, InputField } from "@/components/ui/input";
+import { CloseIcon } from "@/components/ui/icon";
+import { Heading } from "@/components/ui/heading";
+
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogBackdrop,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogCloseButton,
+} from "@/components/ui/alert-dialog";
+
+import { Button, ButtonText, ButtonGroup } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
+import { HStack } from "@/components/ui/hstack";
+import { Box } from "@/components/ui/box";
 import React from 'react'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { withTranslation } from 'react-i18next';
-import { Box, HStack, Text, Button, ButtonText, AlertDialog, AlertDialogBody, AlertDialogBackdrop, AlertDialogContent, AlertDialogHeader, Heading, CloseIcon, AlertDialogFooter, ButtonGroup, AlertDialogCloseButton, Input, InputField } from '@gluestack-ui/themed';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
@@ -55,30 +72,30 @@ class ListeTournoiItem extends React.Component<Props, State> {
     const { t } = this.props;
     return (
       <AlertDialog isOpen={this.state.modalDeleteIsOpen} onClose={() => this.setState({modalDeleteIsOpen: false})}>
-      <AlertDialogBackdrop/>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <Heading>{t("supprimer_tournoi_modal_titre")}</Heading>
-          <AlertDialogCloseButton>
-            <CloseIcon/>
-          </AlertDialogCloseButton>
-        </AlertDialogHeader>
-        <AlertDialogBody>
-          <Text>{t("supprimer_tournoi_modal_texte", {id: tournoiId + 1})}</Text>
-        </AlertDialogBody>
-        <AlertDialogFooter>
-          <ButtonGroup>
-            <Button variant='outline' action='secondary' onPress={() => this.setState({modalDeleteIsOpen: false})}>
-              <ButtonText>{t("annuler")}</ButtonText>
-            </Button>
-            <Button action='negative' onPress={() => this._supprimerTournoi(tournoiId)}>
-              <ButtonText>{t("oui")}</ButtonText>
-            </Button>
-          </ButtonGroup>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog> 
-    )
+        <AlertDialogBackdrop/>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <Heading>{t("supprimer_tournoi_modal_titre")}</Heading>
+            <AlertDialogCloseButton>
+              <CloseIcon/>
+            </AlertDialogCloseButton>
+          </AlertDialogHeader>
+          <AlertDialogBody>
+            <Text>{t("supprimer_tournoi_modal_texte", {id: tournoiId + 1})}</Text>
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <ButtonGroup>
+              <Button variant='outline' action='secondary' onPress={() => this.setState({modalDeleteIsOpen: false})}>
+                <ButtonText>{t("annuler")}</ButtonText>
+              </Button>
+              <Button action='negative' onPress={() => this._supprimerTournoi(tournoiId)}>
+                <ButtonText>{t("oui")}</ButtonText>
+              </Button>
+            </ButtonGroup>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    );
   }
   
   _showRenameTournoi(tournoi: Tournoi) {
@@ -103,7 +120,7 @@ class ListeTournoiItem extends React.Component<Props, State> {
       <Box>
         <FontAwesome5.Button name={name} backgroundColor={bgColor} iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={action}/>
       </Box>
-    )
+    );
   }
 
   _renameTournoiInput(tournoi: Tournoi) {
@@ -140,12 +157,10 @@ class ListeTournoiItem extends React.Component<Props, State> {
             onSubmitEditing={() => this._renameTournoi(tournoi)}
           />
         </Input>
-      )
+      );
     }
     else {
-      return (
-        <Text color='$white'>{t("tournoi")} {tournoiName}</Text>
-      )
+      return <Text className="text-white">{t("tournoi")} {tournoiName}</Text>;
     }
   }
 
@@ -156,8 +171,8 @@ class ListeTournoiItem extends React.Component<Props, State> {
       btnDisabled = true;
     }
     return (
-      <HStack px={'$2'} my={'$2'} space='md' alignItems='center'>
-        <Box flex={1}>
+      <HStack space='md' className="px-2 my-2 items-center">
+        <Box className="flex-1">
           {this._tournoiName(tournoi)}
         </Box>
         <HStack space='sm'>
@@ -170,7 +185,7 @@ class ListeTournoiItem extends React.Component<Props, State> {
         </HStack>
         {this._modalSupprimerTournoi(tournoi.tournoiId)}
       </HStack>
-    )
+    );
   }
 }
 

@@ -1,8 +1,22 @@
+import { Heading } from "@/components/ui/heading";
+import { CloseIcon } from "@/components/ui/icon";
+
+import {
+  Modal,
+  ModalBackdrop,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+} from "@/components/ui/modal";
+
+import { FlatList } from "@/components/ui/flat-list";
+import { Text } from "@/components/ui/text";
+import { VStack } from "@/components/ui/vstack";
 import React from 'react'
 import ListeTournoiItem from '@components/ListeTournoiItem'
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { VStack, Text, FlatList, Modal, CloseIcon, ModalBackdrop, ModalContent, ModalHeader, Heading, ModalCloseButton, ModalBody } from '@gluestack-ui/themed'
 import TopBarBack from '@components/TopBarBack'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { TFunction } from 'i18next'
@@ -58,7 +72,7 @@ class ListeTournois extends React.Component<Props, State> {
           onClose={() => this.setState({modalTournoiInfosIsOpen: false})}
         >
           <ModalBackdrop/>
-          <ModalContent maxHeight='$5/6'>
+          <ModalContent className="max-h-5/6">
             <ModalHeader>
               <Heading size='lg'>{t("informations_tournoi_modal_titre")}</Heading>
               <ModalCloseButton>
@@ -82,7 +96,7 @@ class ListeTournois extends React.Component<Props, State> {
             </ModalBody>
           </ModalContent>
         </Modal>
-      )
+      );
     }
   }
 
@@ -97,22 +111,22 @@ class ListeTournois extends React.Component<Props, State> {
     );
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} bgColor={"#0594ae"}>
+        <VStack className="flex-1 bg-[#0594ae]">
           <TopBarBack title={t("choix_tournoi_navigation_title")} navigation={this.props.navigation}/>
-          <Text color='$white' fontSize={'$xl'} textAlign='center' px={'$10'}>{t("nombre_tournois", {nb: this.props.listeTournois.length})}</Text>
-          <VStack flex={1} my={'$2'}>
+          <Text className="text-white text-xl text-center px-10">{t("nombre_tournois", {nb: this.props.listeTournois.length})}</Text>
+          <VStack className="flex-1 my-2">
             <FlatList
-              height={'$1'}
               data={this.props.listeTournois}
               initialNumToRender={20}
               keyExtractor={(item: Tournoi) => item.tournoiId.toString() }
               renderItem={renderItem}
+              className="h-1"
             />
           </VStack>
           {this._modalTournoiInfos()}
         </VStack>
       </SafeAreaView>
-    )
+    );
   }
 }
 

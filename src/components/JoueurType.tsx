@@ -1,5 +1,18 @@
+import {
+  Select,
+  SelectBackdrop,
+  SelectContent,
+  SelectDragIndicator,
+  SelectDragIndicatorWrapper,
+  SelectIcon,
+  SelectInput,
+  SelectItem,
+  SelectPortal,
+  SelectTrigger,
+} from "@/components/ui/select";
+
+import { ChevronDownIcon } from "@/components/ui/icon";
 import React from 'react'
-import { ChevronDownIcon, Select, SelectBackdrop, SelectContent, SelectDragIndicator, SelectDragIndicatorWrapper, SelectIcon, SelectInput, SelectItem, SelectPortal, SelectTrigger } from '@gluestack-ui/themed';
 import { withTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
 import { JoueurType as JoueurTypeEnum} from '../types/enums/joueurType';
@@ -57,8 +70,8 @@ class JoueurType extends React.Component<Props, State> {
       >
         <SelectTrigger variant='rounded'>
           <SelectInput placeholder={t("choisir_poste")}/>
-          <SelectIcon mr={'$3'}>
-            <ChevronDownIcon color='$white'/>
+          <SelectIcon className="mr-3">
+            <ChevronDownIcon className="text-white"/>
           </SelectIcon>
         </SelectTrigger>
         <SelectPortal>
@@ -72,7 +85,7 @@ class JoueurType extends React.Component<Props, State> {
           </SelectContent>
         </SelectPortal>
       </Select>
-    )
+    );
   }
 }
 

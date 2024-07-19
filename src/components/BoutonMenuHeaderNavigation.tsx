@@ -1,4 +1,5 @@
-import { Menu, MenuItem, MenuItemLabel, Button, ButtonText } from '@gluestack-ui/themed';
+import { Button, ButtonText } from "@/components/ui/button";
+import { Menu, MenuItem, MenuItemLabel } from "@/components/ui/menu";
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -49,10 +50,10 @@ class BoutonMenuHeaderNav extends React.Component<Props, State> {
         placement='bottom left'
         trigger={({ ...triggerProps }) => {
           return (
-            <Button {...triggerProps} bgColor='#0594ae'>
+            <Button {...triggerProps} className="bg-[#0594ae]">
               <FontAwesome5 name="bars" size={28} color="white"/>
             </Button>
-          )
+          );
         }}
       >
         <MenuItem key="Joueurs" textValue={t("liste_joueurs")} onPress={() => this._showJoueurs()}>

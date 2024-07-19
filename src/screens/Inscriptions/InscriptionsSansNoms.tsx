@@ -1,4 +1,8 @@
-import { VStack, Text, Button, ButtonText, Input, InputField, ScrollView } from '@gluestack-ui/themed'
+import { ScrollView } from "@/components/ui/scroll-view";
+import { Input, InputField } from "@/components/ui/input";
+import { Button, ButtonText } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
+import { VStack } from "@/components/ui/vstack";
 import React from 'react'
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -115,19 +119,19 @@ class InscriptionsSansNoms extends React.Component<Props, State> {
       >
         <ButtonText>{boutonTitle}</ButtonText>
       </Button>
-    )
+    );
   }
 
   render() {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <ScrollView height={'$1'} bgColor='#0594ae'>
+        <ScrollView className="h-1 bg-[#0594ae]">
           <TopBarBack title={t("inscription_sans_noms_navigation_title")} navigation={this.props.navigation}/>
-          <VStack flex={1} px={'$10'} space='2xl'>
-            <Text color='$white' textAlign='center' fontSize={'$xl'}>{t("nombre_joueurs", {nb: this._nbJoueurs()})}</Text>
+          <VStack space='2xl' className="flex-1 px-10">
+            <Text className="text-white text-center text-xl">{t("nombre_joueurs", {nb: this._nbJoueurs()})}</Text>
             <VStack>
-              <Text color='$white' fontSize={'$md'}>{t("nombre_joueurs_adultes")} </Text>
+              <Text className="text-white text-md">{t("nombre_joueurs_adultes")} </Text>
               <Input size='md'>
                 <InputField
                   placeholder={t("nombre_placeholder")}
@@ -141,7 +145,7 @@ class InscriptionsSansNoms extends React.Component<Props, State> {
               </Input>
             </VStack>
             <VStack>
-              <Text color='$white' fontSize={'$md'}>{t("nombre_joueurs_enfants")} </Text>
+              <Text className="text-white text-md">{t("nombre_joueurs_enfants")} </Text>
               <Input size='md'>
                 <InputField
                   placeholder={t("nombre_placeholder")}
@@ -151,12 +155,12 @@ class InscriptionsSansNoms extends React.Component<Props, State> {
                 />
               </Input>
             </VStack>
-            <Text color='$white'>{t("joueurs_enfants_explication")}</Text>
+            <Text className="text-white">{t("joueurs_enfants_explication")}</Text>
             {this._boutonCommencer()}
           </VStack>
         </ScrollView>
       </SafeAreaView>
-    )
+    );
   }
 }
 

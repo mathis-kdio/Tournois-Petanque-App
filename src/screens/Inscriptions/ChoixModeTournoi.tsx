@@ -1,6 +1,12 @@
+import { ScrollView } from "@/components/ui/scroll-view";
+import { Box } from "@/components/ui/box";
+import { CircleIcon } from "@/components/ui/icon";
+import { Radio, RadioLabel, RadioIcon, RadioGroup, RadioIndicator } from "@/components/ui/radio";
+import { Text } from "@/components/ui/text";
+import { Button, ButtonText } from "@/components/ui/button";
+import { VStack } from "@/components/ui/vstack";
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { VStack, Button, Text, Radio, RadioLabel, RadioIcon, ButtonText, RadioGroup, RadioIndicator, CircleIcon, Box, ScrollView } from '@gluestack-ui/themed';
 import TopBarBack from '@components/TopBarBack';
 import { withTranslation } from 'react-i18next';
 import AdMobInscriptionsBanner from '../../components/adMob/AdMobInscriptionsBanner';
@@ -74,7 +80,7 @@ class ChoixModeTournoi extends React.Component<Props, State> {
       >
         <ButtonText>{title}</ButtonText>
       </Button>
-    )
+    );
   }
 
   _modeTournoi() {
@@ -82,7 +88,7 @@ class ChoixModeTournoi extends React.Component<Props, State> {
     if (this.props.optionsTournoi.typeTournoi !== TypeTournoi.MELEDEMELE) return;
     return (
       <VStack>
-        <Text color='$white' fontSize={'$2xl'} textAlign='center'>{t("mode_tournoi")}</Text>
+        <Text className="text-white text-2xl text-center">{t("mode_tournoi")}</Text>
         <RadioGroup
           aria-label={t("choix_mode_tournoi")}
           value={this.state.modeTournoi}
@@ -90,19 +96,19 @@ class ChoixModeTournoi extends React.Component<Props, State> {
         >
           <VStack space='lg'>
             <Radio value={ModeTournoi.AVECNOMS} size='lg'>
-              <RadioIndicator mr={'$2'}>
+              <RadioIndicator className="mr-2">
                 <RadioIcon as={CircleIcon}/>
               </RadioIndicator>
               <RadioLabel>{t("melee_demelee_avec_nom")}</RadioLabel>
             </Radio>
             <Radio value={ModeTournoi.SANSNOMS} size='lg'>
-              <RadioIndicator mr={'$2'}>
+              <RadioIndicator className="mr-2">
                 <RadioIcon as={CircleIcon}/>
               </RadioIndicator>
               <RadioLabel>{t("melee_demelee_sans_nom")}</RadioLabel>
             </Radio>
             <Radio value={ModeTournoi.AVECEQUIPES} size='lg'>
-              <RadioIndicator mr={'$2'}>
+              <RadioIndicator className="mr-2">
                 <RadioIcon as={CircleIcon}/>
               </RadioIndicator>
               <RadioLabel>{t("melee_avec_equipes_constituees")}</RadioLabel>
@@ -110,18 +116,18 @@ class ChoixModeTournoi extends React.Component<Props, State> {
           </VStack>
         </RadioGroup>
       </VStack>
-    )
+    );
   }
 
   render() {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <ScrollView height={'$1'} bgColor='#0594ae'>
+        <ScrollView className="h-1 bg-[#0594ae]">
           <TopBarBack title={t("mode_tournoi")} navigation={this.props.navigation}/>
-          <VStack flex={1} px={'$10'} justifyContent='space-between'>
+          <VStack className="flex-1 px-10 justify-between">
             <VStack space='4xl'>
-              <Text color='$white' fontSize={'$2xl'} textAlign='center'>{t("type_equipes")}</Text>
+              <Text className="text-white text-2xl text-center">{t("type_equipes")}</Text>
               <RadioGroup
                 aria-label={t("choix_type_equipes")}
                 value={this.state.typeEquipes}
@@ -129,19 +135,19 @@ class ChoixModeTournoi extends React.Component<Props, State> {
               >
                 <VStack space='lg'>
                   <Radio value={TypeEquipes.TETEATETE} size='lg'>
-                    <RadioIndicator mr={'$2'}>
+                    <RadioIndicator className="mr-2">
                       <RadioIcon as={CircleIcon}/>
                     </RadioIndicator>
                     <RadioLabel>{t("tete_a_tete")}</RadioLabel>
                   </Radio>
                   <Radio value={TypeEquipes.DOUBLETTE} size='lg'>
-                    <RadioIndicator mr={'$2'}>
+                    <RadioIndicator className="mr-2">
                       <RadioIcon as={CircleIcon}/>
                     </RadioIndicator>
                     <RadioLabel>{t("doublettes")}</RadioLabel>
                   </Radio>
                   <Radio value={TypeEquipes.TRIPLETTE} size='lg'>
-                    <RadioIndicator mr={'$2'}>
+                    <RadioIndicator className="mr-2">
                       <RadioIcon as={CircleIcon}/>
                     </RadioIndicator>
                     <RadioLabel>{t("triplettes")}</RadioLabel>
@@ -151,13 +157,13 @@ class ChoixModeTournoi extends React.Component<Props, State> {
               {this._modeTournoi()}
               {this._validButton()}
             </VStack>
-            <Box my={'$10'}>
+            <Box className="my-10">
               <AdMobInscriptionsBanner/>
             </Box>
           </VStack>
         </ScrollView>
       </SafeAreaView>
-    )
+    );
   }
 }
 

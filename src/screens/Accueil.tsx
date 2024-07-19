@@ -1,9 +1,16 @@
+import { Button, ButtonText } from "@/components/ui/button";
+import { ScrollView } from "@/components/ui/scroll-view";
+import { Image } from "@/components/ui/image";
+import { Pressable } from "@/components/ui/pressable";
+import { Text } from "@/components/ui/text";
+import { VStack } from "@/components/ui/vstack";
+import { HStack } from "@/components/ui/hstack";
+import { Box } from "@/components/ui/box";
 import React from 'react';
 import { expo } from '../../app.json';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { _openPlateformLink, _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Box, HStack, VStack, Text, Pressable, Image, ScrollView, Button, ButtonText } from '@gluestack-ui/themed';
 import { _adsConsentForm } from '../utils/adMob/consentForm'
 import { withTranslation } from 'react-i18next';
 import CardButton from '@components/buttons/CardButton';
@@ -88,13 +95,13 @@ class Accueil extends React.Component<Props, State> {
             navigate={() => this._showMatchs()}
             newBadge={false}
           />
-        ) 
+        ); 
       }
     }
     else {
-      <Box bg='$secondary500' flex={1} alignItems='center' rounded={'$3xl'} py={"$5"}>
+      <Box className="bg-secondary-500 flex-1 items-center rounded-3xl py-5">
         <FontAwesome5 name="play" color='white' size={24}/>
-        <Text color='$white'>{t("aucun_tournoi")}</Text>
+        <Text className="text-white">{t("aucun_tournoi")}</Text>
       </Box>
     }
   }
@@ -106,14 +113,14 @@ class Accueil extends React.Component<Props, State> {
         <Button onPress={() => this.props.navigation.navigate('ConnexionStack', { screen: 'Compte' })}>
           <ButtonText>{t("mon_compte")}</ButtonText>
         </Button>
-      )
+      );
     }
     else {
       return (
         <Button onPress={() => this.props.navigation.navigate('ConnexionStack')}>
           <ButtonText>{t("authentification")}</ButtonText>
         </Button>
-      )
+      );
     }
   }
 
@@ -121,13 +128,13 @@ class Accueil extends React.Component<Props, State> {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} px={'$5'} bgColor='#0594ae'>
-          <ScrollView height={'$1'}>
+        <VStack className="flex-1 px-5 bg-[#0594ae]">
+          <ScrollView className="h-1">
             <VStack space='4xl'>
-              <VStack alignItems='flex-end'>
+              <VStack className="items-end">
                 {this.boutonConnexion()}
               </VStack>              
-              <VStack alignItems='center'>
+              <VStack className="items-center">
                 <Image
                   size='xl'
                   alt="Logo de l'application"
@@ -161,42 +168,54 @@ class Accueil extends React.Component<Props, State> {
                 </HStack> 
               </VStack>
               <VStack space='sm'>
-                <HStack space='sm' justifyContent='center'>
-                  <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.props.facebook)}>
+                <HStack space='sm' className="justify-center">
+                  <Pressable
+                    onPress={() => _openURL(this.props.facebook)}
+                    className="items-center bg-[#1c3969] rounded-3xl p-3">
                     <FontAwesome5 name="facebook" color='white' size={20}/>
-                    <Text color='$white'>{t("rejoindre_page_fb")}</Text>
+                    <Text className="text-white">{t("rejoindre_page_fb")}</Text>
                   </Pressable>
-                  <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.props.website)}>
+                  <Pressable
+                    onPress={() => _openURL(this.props.website)}
+                    className="items-center bg-[#1c3969] rounded-3xl p-3">
                     <FontAwesome5 name="globe" color='white' size={20}/>
-                    <Text color='$white'>{t("voir_website")}</Text>
+                    <Text className="text-white">{t("voir_website")}</Text>
                   </Pressable>
                 </HStack>
-                <HStack space='sm' justifyContent='center'>
-                  <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => _openPlateformLink(this.props.googleMarketReviews, this.props.appleMarketReviews)}>
+                <HStack space='sm' className="justify-center">
+                  <Pressable
+                    onPress={() => _openPlateformLink(this.props.googleMarketReviews, this.props.appleMarketReviews)}
+                    className="flex-1 items-center bg-[#1c3969] rounded-3xl p-2">
                     <FontAwesome5 name="star" color='white' size={20}/>
                   </Pressable>
-                  <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => _openURL(this.props.mail)}>
+                  <Pressable
+                    onPress={() => _openURL(this.props.mail)}
+                    className="flex-1 items-center bg-[#1c3969] rounded-3xl p-2">
                     <FontAwesome5 name="envelope" color='white' size={20}/>
                   </Pressable>
-                  <Pressable flex={1} alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$2'} onPress={() => this.props.navigation.navigate('ParametresStack')}>
+                  <Pressable
+                    onPress={() => this.props.navigation.navigate('ParametresStack')}
+                    className="flex-1 items-center bg-[#1c3969] rounded-3xl p-2">
                     <FontAwesome5 name="wrench" color='white' size={20}/>
                   </Pressable>
                 </HStack>
-                <HStack justifyContent='center'>
-                  <Pressable alignItems='center' bg='#1c3969' rounded={'$3xl'} p={'$3'} onPress={() => _openURL(this.props.gcuWebsite)}>
-                    <Text color='$white' fontSize={'$md'}>{t("decouvrir_gcu")}</Text>
+                <HStack className="justify-center">
+                  <Pressable
+                    onPress={() => _openURL(this.props.gcuWebsite)}
+                    className="items-center bg-[#1c3969] rounded-3xl p-3">
+                    <Text className="text-white text-md">{t("decouvrir_gcu")}</Text>
                   </Pressable>
                 </HStack>
               </VStack>
             </VStack>
           </ScrollView>
           <VStack>
-            <Text textAlign='center' color='$white' fontSize={'$md'}>{t("developpe_par")} Mathis Cadio</Text>
-            <Text textAlign='center' color='$white' fontSize={'$md'}>{t("version")} {expo.version}</Text>
+            <Text className="text-center text-white text-md">{t("developpe_par")} Mathis Cadio</Text>
+            <Text className="text-center text-white text-md">{t("version")} {expo.version}</Text>
           </VStack>
         </VStack>
       </SafeAreaView>
-    )
+    );
   }
 }
 

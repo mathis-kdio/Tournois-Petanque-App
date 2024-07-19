@@ -1,3 +1,6 @@
+import { ScrollView } from "@/components/ui/scroll-view";
+import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
+import { VStack } from "@/components/ui/vstack";
 import React from 'react';
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
@@ -5,7 +8,6 @@ import { withTranslation } from 'react-i18next';
 import { generationPDFTournoi } from '@utils/pdf/tournoi';
 import { generationPDFCoupe } from '@utils/pdf/coupe';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { VStack, Button, ButtonSpinner, ButtonText, ScrollView } from '@gluestack-ui/themed';
 import TopBarBack from '../../components/TopBarBack';
 import { Platform } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -65,7 +67,7 @@ class PDFExport extends React.Component<Props, State> {
       this._toggleLoading(buttonId)
     } else {
       const { uri } = await Print.printToFileAsync({ html });
-      if (await Sharing.isAvailableAsync() && uri != undefined) {
+      if ((await Sharing.isAvailableAsync()) && uri != undefined) {
         Sharing.shareAsync(uri).then(() => this._toggleLoading(buttonId));
       } else {
         this._toggleLoading(buttonId)
@@ -95,19 +97,19 @@ class PDFExport extends React.Component<Props, State> {
     }
     return (
       <Button isDisabled={pressableDisabled} onPress={() => this._onPressExportBtn(buttonId, affichageScore, affichageClassement)}>
-        {this.state.btnIsLoading[buttonId] && <ButtonSpinner mr={'$1'} />}
+        {this.state.btnIsLoading[buttonId] && <ButtonSpinner className="mr-1" />}
         <ButtonText>{buttonText}</ButtonText>
       </Button>
-    )
+    );
   }
 
   render() {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <ScrollView height={'$1'} bgColor='#0594ae'>
+        <ScrollView className="h-1 bg-[#0594ae]">
           <TopBarBack title={t("exporter_pdf_navigation_title")} navigation={this.props.navigation}/>
-          <VStack flex={1} px={'$10'} justifyContent='center' space='3xl'>
+          <VStack space='3xl' className="flex-1 px-10 justify-center">
             {this._exportButton(0, t("export_pdf_sans_scores"), false, false)}
             {this._exportButton(1, t("export_pdf_avec_scores"), true, false)}
             {this._exportButton(2, t("export_pdf_avec_scores_classement"), true, true)}

@@ -1,6 +1,7 @@
+import { FlatList } from "@/components/ui/flat-list";
+import { VStack } from "@/components/ui/vstack";
 import React from 'react'
 import MatchItem from '@components/MatchItem'
-import { VStack, FlatList} from '@gluestack-ui/themed';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Match } from '@/types/interfaces/match';
 import { PropsFromRedux, connector } from '@/store/connector';
@@ -57,15 +58,15 @@ class ListeMatchs extends React.Component<Props, State> {
         keyExtractor={(item: Match) => item.id.toString() }
         renderItem={renderItem}
       />
-    )
+    );
   }
 
   render() {
     return (
-      <VStack flex={1} bgColor='#0594ae'>
+      <VStack className="flex-1 bg-[#0594ae]">
         {this._displayListeMatch()}
       </VStack>
-    )
+    );
   }
 }
 

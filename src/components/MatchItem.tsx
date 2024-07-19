@@ -1,8 +1,12 @@
+import { VStack } from "@/components/ui/vstack";
+import { Text } from "@/components/ui/text";
+import { HStack } from "@/components/ui/hstack";
+import { Divider } from "@/components/ui/divider";
+import { Box } from "@/components/ui/box";
 import { PropsFromRedux, connector } from '@/store/connector';
 import { Joueur } from '@/types/interfaces/joueur';
 import { Match } from '@/types/interfaces/match';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { Box, Divider, HStack, Text, VStack } from '@gluestack-ui/themed'
 import { TFunction } from 'i18next';
 import React from 'react'
 import { withTranslation } from 'react-i18next'
@@ -35,21 +39,21 @@ class MatchItem extends React.Component<Props, State> {
     }
     return (
       <HStack>
-        <Box flex={1} alignItems='center'>
+        <Box className="flex-1 items-center">
           { match.score1 == nbPtVictoire &&
             <FontAwesome5 name='trophy' size={20} color='#ffda00'/>
           }
         </Box>
-        <Box flex={1}>
-          <Text color='$white' fontSize={'$2xl'} p={'$0.5'} textAlign='center'>{txt}</Text>
+        <Box className="flex-1">
+          <Text className="text-white text-2xl p-0.5 text-center">{txt}</Text>
         </Box>
-        <Box flex={1} alignItems='center'>
+        <Box className="flex-1 items-center">
           { match.score2 == nbPtVictoire &&
             <FontAwesome5 name='trophy' size={20} color='#ffda00'/>
           }
         </Box>
       </HStack>
-    )
+    );
   }
 
   _displayEquipe(equipe: number, match: Match) {
@@ -64,9 +68,9 @@ class MatchItem extends React.Component<Props, State> {
     let joueur = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs.find((item: Joueur) => item.id === joueurNumber);
     if (joueur) {
       if (equipe === 1) {
-        return <Text key={joueur.id} color='$white' fontSize={'$xl'} textAlign='left'>{(joueur.id + 1) + ' ' + joueur.name}</Text>
+        return <Text key={joueur.id} className="text-white text-xl text-[left]">{(joueur.id + 1) + ' ' + joueur.name}</Text>;
       } else {
-        return <Text key={joueur.id} color='$white' fontSize={'$xl'} textAlign='right'>{joueur.name + ' ' + (joueur.id + 1)}</Text>
+        return <Text key={joueur.id} className="text-white text-xl text-[right]">{joueur.name + ' ' + (joueur.id + 1)}</Text>;
       }
     }
   }
@@ -75,12 +79,12 @@ class MatchItem extends React.Component<Props, State> {
     let score1 = this.props.listeMatchs[matchID].score1 ?? '?';
     let score2 = this.props.listeMatchs[matchID].score2 ?? '?';
     return (
-      <HStack justifyContent='center'>
-        <Text color='$white' fontSize={'$2xl'} p={'$2'}>{score1}</Text>
-        <Text color='$white' fontSize={'$2xl'} p={'$2'}> VS </Text>
-        <Text color='$white' fontSize={'$2xl'} p={'$2'}>{score2}</Text>
+      <HStack className="justify-center">
+        <Text className="text-white text-2xl p-2">{score1}</Text>
+        <Text className="text-white text-2xl p-2"> VS </Text>
+        <Text className="text-white text-2xl p-2">{score2}</Text>
       </HStack>
-    )
+    );
   }
 
   render() {
@@ -88,23 +92,23 @@ class MatchItem extends React.Component<Props, State> {
     if (match.manche == manche) {
       return (
         <TouchableOpacity onPress={() => displayDetailForMatch(match.id, match, nbPtVictoire)}>
-          <VStack m={'$2'}>
+          <VStack className="m-2">
             {this._displayTitle(match, nbPtVictoire)}
-            <HStack alignItems='center'>
-              <Box flex={1}>
+            <HStack className="items-center">
+              <Box className="flex-1">
                 {this._displayEquipe(1, match)}
               </Box>
-              <Box flex={1}>
+              <Box className="flex-1">
                 {this._displayScore(match.id)}
               </Box>
-              <Box flex={1}>
+              <Box className="flex-1">
                 {this._displayEquipe(2, match)}
               </Box>
             </HStack>
           </VStack>
           <Divider/>
         </TouchableOpacity>
-      )
+      );
     }
     return (null);
   }

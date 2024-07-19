@@ -1,9 +1,13 @@
+import { VStack } from "@/components/ui/vstack";
+import { Text } from "@/components/ui/text";
+import { ScrollView } from "@/components/ui/scroll-view";
+import { Input, InputField } from "@/components/ui/input";
+import { Button, ButtonText } from "@/components/ui/button";
 import React from 'react';
 import { supabase } from '@/utils/supabase';
 import { Alert } from 'react-native'
 import { Session } from '@supabase/supabase-js'
 import { withTranslation } from 'react-i18next';
-import { Button, ButtonText, Input, InputField, ScrollView, Text, VStack } from '@gluestack-ui/themed'
 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
@@ -112,11 +116,11 @@ class Compte extends React.Component<Props, State> {
     const { t, session } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <ScrollView height={'$1'} bgColor='#0594ae'>
+        <ScrollView className="h-1 bg-[#0594ae]">
           <TopBarBack title={t("mon_compte")} navigation={this.props.navigation}/>
-          <VStack flex={1} px={'$10'} justifyContent='space-between'>
+          <VStack className="flex-1 px-10 justify-between">
             <VStack>
-              <Text color='$white'>{session?.user?.email}</Text>
+              <Text className="text-white">{session?.user?.email}</Text>
             </VStack>
 
             <VStack>
@@ -127,7 +131,7 @@ class Compte extends React.Component<Props, State> {
           </VStack>
         </ScrollView>
       </SafeAreaView>
-    )
+    );
   }
 }
 

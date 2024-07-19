@@ -1,5 +1,8 @@
+import { Image } from "@/components/ui/image";
+import { HStack } from "@/components/ui/hstack";
+import { Pressable } from "@/components/ui/pressable";
+import { Text } from "@/components/ui/text";
 import * as React from 'react';
-import { Text, Pressable, HStack, Image } from "@gluestack-ui/themed";
 import { FontAwesome5 } from '@expo/vector-icons';
 import { ImageSourcePropType } from 'react-native';
 
@@ -36,19 +39,19 @@ class Item extends React.Component<Props, State> {
     }
     return (
       <Pressable onPress={() => action()}>
-        <HStack m={'$2'} alignItems='center' justifyContent='space-between'>
-          <HStack alignItems='center'>
+        <HStack className="m-2 items-center justify-between">
+          <HStack className="items-center">
             {drapeau == undefined ?
               <FontAwesome5 name={icon} size={16} color={btnColor} style={{marginRight: 5}}/>
               :
               <Image source={drapeau} alt="drapeau" size='xs'/>
             }
-            <Text fontSize={'$md'} color={colorTxt}>{text}</Text>
+            <Text className={` color-${colorTxt} text-md `}>{text}</Text>
           </HStack>
           <FontAwesome5 name="arrow-right" size={20} color={btnColor}/>
         </HStack>
       </Pressable>
-    )
+    );
   }
 }
 

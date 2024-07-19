@@ -1,9 +1,12 @@
+import { VStack } from "@/components/ui/vstack";
+import { Text } from "@/components/ui/text";
+import { Button, ButtonText } from "@/components/ui/button";
+import { Box } from "@/components/ui/box";
 import React from 'react'
 import Inscriptions from '@components/Inscriptions'
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import TopBarBack from '@components/TopBarBack'
-import { Box, Button, ButtonText, Text, VStack } from '@gluestack-ui/themed'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { TFunction } from 'i18next'
 import { TypeEquipes } from '@/types/enums/typeEquipes'
@@ -152,7 +155,7 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
       >
         <ButtonText>{title}</ButtonText>
       </Button>
-    )
+    );
   }
 
   render() {
@@ -160,21 +163,21 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
     const nbJoueur = this.props.listesJoueurs[this.props.optionsTournoi.mode].length;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} bgColor='#0594ae'>
+        <VStack className="flex-1 bg-[#0594ae]">
           <TopBarBack title={t("inscription_avec_noms_navigation_title")} navigation={this.props.navigation}/>
-          <VStack flex={1}>
-            <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("nombre_joueurs", {nb: nbJoueur})}</Text>
+          <VStack className="flex-1">
+            <Text className="text-white text-xl text-center">{t("nombre_joueurs", {nb: nbJoueur})}</Text>
             <Inscriptions 
               navigation={this.props.navigation}
               loadListScreen={false}
             />
-            <Box px={'$10'}>
+            <Box className="px-10">
               {this._boutonCommencer()}
             </Box>
           </VStack>
         </VStack>
       </SafeAreaView>
-    )
+    );
   }
 }
 

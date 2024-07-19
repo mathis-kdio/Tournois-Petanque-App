@@ -1,8 +1,12 @@
+import { Box } from "@/components/ui/box";
+import { FlatList } from "@/components/ui/flat-list";
+import { Button, ButtonText } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
+import { VStack } from "@/components/ui/vstack";
 import React from 'react'
 import ListeJoueursItem from '@components/ListeJoueursItem';
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { VStack, Text, Button, FlatList, ButtonText, Box } from '@gluestack-ui/themed';
 import TopBarBack from '@components/TopBarBack';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
@@ -50,11 +54,11 @@ class ListesJoueurs extends React.Component<Props, State> {
   _addListButton() {
     const { t } = this.props;
     if (this.props.route.params == undefined || this.props.route.params.loadListScreen != true) {
-      return(
+      return (
         <Button action='positive' onPress={() => this._addList()}>
           <ButtonText>{t("creer_liste")}</ButtonText>
         </Button>
-      )
+      );
     }
   }
 
@@ -75,15 +79,14 @@ class ListesJoueurs extends React.Component<Props, State> {
     );
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} bgColor={"#0594ae"}>
+        <VStack className="flex-1 bg-[#0594ae]">
           <TopBarBack title={t("listes_joueurs_navigation_title")} navigation={this.props.navigation}/>
-          <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("nombre_listes", {nb: nbLists})}</Text>
-          <Box px={'$10'}>
+          <Text className="text-white text-xl text-center">{t("nombre_listes", {nb: nbLists})}</Text>
+          <Box className="px-10">
             {this._addListButton()}
           </Box>
-          <VStack flex={1} my={'$2'}>
+          <VStack className="flex-1 my-2">
             <FlatList
-              height={'$1'}
               data={this.props.savedLists.avecNoms}
               initialNumToRender={20}
               keyExtractor={(item: ListeJoueursInterface) => {
@@ -91,11 +94,12 @@ class ListesJoueurs extends React.Component<Props, State> {
                 return listeJoueursInfos.listId.toString()
               }}
               renderItem={renderItem}
+              className="h-1"
             />
           </VStack>
         </VStack>
       </SafeAreaView>
-    )
+    );
   }
 }
 

@@ -1,9 +1,12 @@
+import { FlatList } from "@/components/ui/flat-list";
+import { Button, ButtonText } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
+import { VStack } from "@/components/ui/vstack";
 import React from 'react'
 import ListeTerrainItem from '@components/ListeTerrainItem';
 import { calcNbMatchsParTour } from '@utils/generations/generation';
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { VStack, Text, Button, FlatList, ButtonText } from '@gluestack-ui/themed';
 import TopBarBack from '@components/TopBarBack';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
@@ -39,7 +42,7 @@ class ListeTerrains extends React.Component<Props, State> {
       <Button action='primary' onPress={() => this._ajoutTerrains()}>
         <ButtonText>{t("ajouter_terrain")}</ButtonText>
       </Button>
-    )
+    );
   }
 
   _commencerButton() {
@@ -54,7 +57,7 @@ class ListeTerrains extends React.Component<Props, State> {
       <Button isDisabled={disabled} action='positive' onPress={() => this._commencer()}>
         <ButtonText>{title}</ButtonText>
       </Button>
-    )
+    );
   }
 
   _commencer() {
@@ -77,26 +80,26 @@ class ListeTerrains extends React.Component<Props, State> {
 
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} bgColor={"#0594ae"}>
+        <VStack className="flex-1 bg-[#0594ae]">
           <TopBarBack title={t("liste_terrains_navigation_title")} navigation={this.props.navigation}/>
-          <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("nombre_terrains", {nb: this.props.listeTerrains.length})}</Text>
-          <VStack flex={1} my={'$2'}>
+          <Text className="text-white text-xl text-center">{t("nombre_terrains", {nb: this.props.listeTerrains.length})}</Text>
+          <VStack className="flex-1 my-2">
             <FlatList
-              height={'$1'}
               persistentScrollbar={true}
               data={this.props.listeTerrains}
               initialNumToRender={20}
               keyExtractor={(item: Terrain) => item.id.toString()}
               renderItem={renderItem}
+              className="h-1"
             />
           </VStack>
-          <VStack px={'$10'} space='lg'>
+          <VStack space='lg' className="px-10">
             {this._ajoutTerrainButton()}
             {this._commencerButton()}
           </VStack>
         </VStack>
       </SafeAreaView>
-    )
+    );
   }
 }
 

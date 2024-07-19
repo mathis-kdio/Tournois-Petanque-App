@@ -1,8 +1,24 @@
+import { Text } from "@/components/ui/text";
+import { Heading } from "@/components/ui/heading";
+import { HStack } from "@/components/ui/hstack";
+import { CloseIcon } from "@/components/ui/icon";
+import { Button, ButtonGroup, ButtonText } from "@/components/ui/button";
+import { Box } from "@/components/ui/box";
+
+import {
+  AlertDialog,
+  AlertDialogBackdrop,
+  AlertDialogBody,
+  AlertDialogCloseButton,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+} from "@/components/ui/alert-dialog";
+
 import React from 'react'
 import { FontAwesome5 } from '@expo/vector-icons';
 import JoueurType from '@components/JoueurType'
 import { withTranslation } from 'react-i18next';
-import { AlertDialog, AlertDialogBackdrop, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, Box, Button, ButtonGroup, ButtonText, CloseIcon, HStack, Heading, Text } from '@gluestack-ui/themed';
 import { TFunction } from 'i18next';
 import { JoueurType as JoueurTypeEnum} from '@/types/enums/joueurType';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
@@ -56,7 +72,7 @@ class JoueurSuggere extends React.Component<Props, State> {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    )
+    );
   }
 
   _removePlayer(playerId: number) {
@@ -82,25 +98,25 @@ class JoueurSuggere extends React.Component<Props, State> {
   render() {
     const { joueur } = this.props;
     return (
-      <HStack borderWidth={'$1'} borderColor='$white' borderRadius={'$xl'} m={'$1'} px={'$1'} alignItems='center'>
-        <Box flex={1}>
-          <Text color='$white' fontSize={'$xl'} fontWeight='$bold'>{joueur.name}</Text>
+      <HStack className="border border-white rounded-xl m-1 px-1 items-center">
+        <Box className="flex-1">
+          <Text className="text-white text-xl font-bold">{joueur.name}</Text>
         </Box>
-        <Box flex={1}>
+        <Box className="flex-1">
           <JoueurType
             joueurType={this.state.joueurType}
             _setJoueurType={(type: JoueurTypeEnum) => this._setJoueurType(type)}
           />
         </Box>
-        <Box ml={'$2'}>
+        <Box className="ml-2">
           <FontAwesome5.Button name="times" backgroundColor="#E63535" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this.setState({modalRemoveIsOpen: true})}/>
         </Box>
-        <Box ml={'$2'}>
+        <Box className="ml-2">
           <FontAwesome5.Button name="plus" backgroundColor="#348352" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._addPlayer(joueur.name)}/>
         </Box>
         {this._modalRemovePlayer(joueur.id)}
       </HStack>
-    )
+    );
   }
 }
 

@@ -1,3 +1,7 @@
+import { Spinner } from "@/components/ui/spinner";
+import { Button, ButtonText } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
+import { VStack } from "@/components/ui/vstack";
 import React from 'react'
 import { generationChampionnat } from '@utils/generations/championnat'
 import { generationCoupe } from '@utils/generations/coupe'
@@ -9,7 +13,6 @@ import { generationTriplettes } from '@utils/generations/tournoiTriplettes'
 import { uniqueValueArrayRandOrder } from '@utils/generations/generation';
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { VStack, Text, Button, ButtonText, Spinner } from '@gluestack-ui/themed'
 import TopBarBack from '@components/TopBarBack'
 import { _adMobGenerationTournoiInterstitiel } from '../../components/adMob/AdMobGenerationTournoiInterstitiel'
 import { Platform } from 'react-native'
@@ -241,10 +244,10 @@ class GenerationMatchs extends React.Component<Props, State> {
     if (this.state.isLoading) {
       return (
         <VStack>
-          <Spinner size={'large'} color="#ffda00"/>
-          <Text color='$white'>{t("attente_generation_matchs")}</Text>
+          <Spinner size={'large'} className="text-[#ffda00]"/>
+          <Text className="text-white">{t("attente_generation_matchs")}</Text>
         </VStack>
-      )
+      );
     } else {
       let textInfo = t("erreur_generation_options");
       let textError = '';
@@ -259,13 +262,13 @@ class GenerationMatchs extends React.Component<Props, State> {
       }
       return (
         <VStack>
-          <Text color='$white'>{textInfo}</Text>
-          <Text color='$white'>{textError}</Text>
+          <Text className="text-white">{textInfo}</Text>
+          <Text className="text-white">{textError}</Text>
           <Button action='primary' onPress={() => this._retourInscription()}>
             <ButtonText>{t("retour_inscription")}</ButtonText>
           </Button>
         </VStack>
-      )
+      );
     }
   }
 
@@ -283,14 +286,14 @@ class GenerationMatchs extends React.Component<Props, State> {
     }
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} bgColor='#0594ae'>
+        <VStack className="flex-1 bg-[#0594ae]">
           <TopBarBack title={t("generation_matchs_navigation_title")} navigation={this.props.navigation}/>
-          <VStack flex={1} px={'$10'} justifyContent='center' alignItems='center'>
+          <VStack className="flex-1 px-10 justify-center items-center">
             {this._displayLoading()}
           </VStack>
         </VStack>
       </SafeAreaView>
-    )
+    );
   }
 }
 
