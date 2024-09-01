@@ -21,6 +21,7 @@ import { TFunction } from 'i18next';
 import { PropsFromRedux, connector } from '@/store/connector';
 import { Session } from '@supabase/supabase-js';
 import { withSession } from '@/components/supabase/withSession';
+import { verifyInstallation } from "nativewind";
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
@@ -118,6 +119,7 @@ class Accueil extends React.Component<Props, State> {
   }
 
   render() {
+    verifyInstallation();
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
