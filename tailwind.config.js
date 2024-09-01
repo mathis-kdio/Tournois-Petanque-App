@@ -1,10 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: process.env.DARK_MODE ? process.env.DARK_MODE : 'media',
+  important: "html",
   content: [
+    './*.{js,jsx,ts,tsx}',
     './App.{js,jsx,ts,tsx}',
+    './src/screens/**/*.{html,js,jsx,ts,tsx}',
     './src/**/*.{html,js,jsx,ts,tsx}',
-    './src/**/**/*.{html,js,jsx,ts,tsx}',
   ],
   presets: [require('nativewind/preset')],
   safelist: [

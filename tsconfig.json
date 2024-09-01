@@ -2,6 +2,9 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "baseUrl": ".",
+    //"strict": true,
+    "jsxImportSource": "nativewind",
+    "types": ["nativewind/types"],
     "paths": {
       "@/*": [
         "./src/*"
@@ -29,5 +32,4 @@
       ]
     }
   },
-  "strict": true
 }
