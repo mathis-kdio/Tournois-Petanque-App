@@ -3,7 +3,7 @@ module.exports = function(api) {
   return {
     presets: [
       ["babel-preset-expo", { jsxImportSource: "nativewind" }],
-      "nativewind/babel",
+      "nativewind/babel"
     ],
     plugins: [
       ["module-resolver", {
@@ -18,7 +18,8 @@ module.exports = function(api) {
           "@store": "./src/store",
           "@utils": "./src/utils",
         }
-      }]
+      }],
+      'react-native-reanimated/plugin',
     ]
   }
 };

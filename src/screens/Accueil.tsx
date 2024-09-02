@@ -119,7 +119,6 @@ class Accueil extends React.Component<Props, State> {
   }
 
   render() {
-    verifyInstallation();
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>

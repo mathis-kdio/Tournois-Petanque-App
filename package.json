@@ -1,10 +1,10 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "set DARK_MODE=media && npx expo start",
-    "android": "set DARK_MODE=media && npx expo start --android",
-    "ios": "set DARK_MODE=media && npx expo start --ios",
-    "web": "set DARK_MODE=media && npx expo start --web",
+    "start": "npx expo start",
+    "android": "npx expo start --android",
+    "ios": "npx expo start --ios",
+    "web": "npx expo start --web",
     "tauri": "npx tauri dev",
     "eject": "npx expo prebuild",
     "build": "npx eas-cli build",
