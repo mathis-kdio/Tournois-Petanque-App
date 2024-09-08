@@ -312,8 +312,9 @@ class Inscription extends React.Component<Props, State> {
       <VStack className="flex-1">
         <HStack space='md' className="items-center mx-1">
           <Box className="flex-1">
-            <Input size='md'>
+            <Input size='md' className='border-white'>
               <InputField
+                className='text-white placeholder:text-white'
                 placeholder={t("nom_inscription")}
                 autoFocus={true}
                 keyboardType="default"

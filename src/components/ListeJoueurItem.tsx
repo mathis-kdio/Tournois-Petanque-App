@@ -344,13 +344,13 @@ class ListeJoueurItem extends React.Component<Props, State> {
   render() {
     const { joueur, isInscription, avecEquipes, typeEquipes, nbJoueurs, showCheckbox } = this.props;
     return (
-      <HStack className="border border-white rounded-xl m-1 px-1 items-center">
+      <HStack className="flex border border-white rounded-xl m-1 px-1 items-center">
         {this._joueurCheckbox(showCheckbox, joueur)}
         {this._joueurTypeIcon(joueur.type)}
-        <Box className="flex-2">
+        <Box className="basis-1/2">
           {this._joueurName(joueur, isInscription, avecEquipes)}
         </Box>
-        {(avecEquipes == true && <Box className="flex-1">
+        {(avecEquipes == true && <Box className="basis-1/4">
           {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
         </Box>)}
         {this._showRenommerJoueur(joueur, isInscription, avecEquipes)}

@@ -68,8 +68,8 @@ class JoueurType extends React.Component<Props, State> {
         aria-label={t("choisir_poste")}
         onValueChange={(itemValue: JoueurTypeEnum) => _setJoueurType(itemValue)}
       >
-        <SelectTrigger variant='rounded'>
-          <SelectInput placeholder={t("choisir_poste")}/>
+        <SelectTrigger variant='rounded' className='border-white'>
+          <SelectInput className='placeholder:text-white' placeholder={t("choisir_poste")}/>
           <SelectIcon className="mr-3">
             <ChevronDownIcon className="text-white"/>
           </SelectIcon>
