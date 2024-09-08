@@ -1,7 +1,7 @@
 import { Text } from "@/components/ui/text";
 import { Heading } from "@/components/ui/heading";
 import { HStack } from "@/components/ui/hstack";
-import { CloseIcon } from "@/components/ui/icon";
+import { CloseIcon, Icon } from "@/components/ui/icon";
 import { Button, ButtonGroup, ButtonText } from "@/components/ui/button";
 import { Box } from "@/components/ui/box";
 
@@ -54,7 +54,11 @@ class JoueurSuggere extends React.Component<Props, State> {
           <AlertDialogHeader>
             <Heading>{t("supprimer_joueur_suggestions_modal_titre")}</Heading>
             <AlertDialogCloseButton>
-              <CloseIcon/>
+              <Icon
+                as={CloseIcon}
+                size="md"
+                className="stroke-background-400 group-[:hover]/modal-close-button:stroke-background-700 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900"
+              />
             </AlertDialogCloseButton>
           </AlertDialogHeader>
           <AlertDialogBody>

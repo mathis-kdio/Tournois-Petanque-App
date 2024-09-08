@@ -1,5 +1,5 @@
 import { ScrollView } from "@/components/ui/scroll-view";
-import { CloseIcon } from "@/components/ui/icon";
+import { CloseIcon, Icon } from "@/components/ui/icon";
 import { Heading } from "@/components/ui/heading";
 
 import {
@@ -71,7 +71,11 @@ class ParametresTournoi extends React.Component<Props, State> {
           <AlertDialogHeader>
             <Heading>{t("supprimer_tournoi_actuel_modal_titre")}</Heading>
             <AlertDialogCloseButton>
-              <CloseIcon/>
+              <Icon
+                as={CloseIcon}
+                size="md"
+                className="stroke-background-400 group-[:hover]/modal-close-button:stroke-background-700 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900"
+              />
             </AlertDialogCloseButton>
           </AlertDialogHeader>
           <AlertDialogBody>

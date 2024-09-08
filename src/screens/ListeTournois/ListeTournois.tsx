@@ -1,5 +1,5 @@
 import { Heading } from "@/components/ui/heading";
-import { CloseIcon } from "@/components/ui/icon";
+import { CloseIcon, Icon } from "@/components/ui/icon";
 
 import {
   Modal,
@@ -76,7 +76,11 @@ class ListeTournois extends React.Component<Props, State> {
             <ModalHeader>
               <Heading size='lg'>{t("informations_tournoi_modal_titre")}</Heading>
               <ModalCloseButton>
-                <CloseIcon/>
+                <Icon
+                  as={CloseIcon}
+                  size="md"
+                  className="stroke-background-400 group-[:hover]/modal-close-button:stroke-background-700 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900"
+                />
               </ModalCloseButton>
             </ModalHeader>
             <ModalBody>
