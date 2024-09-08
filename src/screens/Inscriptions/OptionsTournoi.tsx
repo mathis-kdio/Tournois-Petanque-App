@@ -137,6 +137,7 @@ class OptionsTournoi extends React.Component<Props, State> {
                     <Text className="text-white text-md">{t("indiquer_nombre_tours")} </Text>
                     <Input size='md'>
                       <InputField
+                        className='text-white'
                         placeholder={t("nombre_placeholder")}
                         keyboardType="numeric"
                         defaultValue={this.nbToursTxt}
@@ -148,6 +149,7 @@ class OptionsTournoi extends React.Component<Props, State> {
                     <Text className="text-white text-md">{t("indiquer_nombre_points_victoire")} </Text>
                     <Input size='md'>
                       <InputField
+                        className='text-white'
                         placeholder={t("nombre_placeholder")}
                         keyboardType="numeric"
                         defaultValue={this.nbPtVictoireTxt}
@@ -167,7 +169,7 @@ class OptionsTournoi extends React.Component<Props, State> {
                     <CheckboxIndicator className="mr-2">
                       <CheckIcon className={` ${this.state.speciauxIncompatibles ? "text-white" : "text-cyan-600"} `}/>
                     </CheckboxIndicator>
-                    <CheckboxLabel>{t("options_regle_speciaux")}</CheckboxLabel>
+                    <CheckboxLabel className="text-white">{t("options_regle_speciaux")}</CheckboxLabel>
                   </Checkbox>
                   <Checkbox
                     value="memesEquipes"
@@ -179,7 +181,7 @@ class OptionsTournoi extends React.Component<Props, State> {
                     <CheckboxIndicator className="mr-2">
                       <CheckIcon className={` ${this.state.memesEquipes ? "text-white" : "text-cyan-600"} `}/>
                     </CheckboxIndicator>
-                    <CheckboxLabel>{t("options_regle_equipes")}</CheckboxLabel>
+                    <CheckboxLabel className="text-white">{t("options_regle_equipes")}</CheckboxLabel>
                   </Checkbox>
                 </VStack>
                 <VStack>
@@ -243,7 +245,7 @@ class OptionsTournoi extends React.Component<Props, State> {
                     <CheckboxIndicator className="mr-2">
                       <CheckIcon className={` ${this.state.avecTerrains ? "text-white" : "text-cyan-600"} `}/>
                     </CheckboxIndicator>
-                    <CheckboxLabel>{t("options_terrains_explications")}</CheckboxLabel>
+                    <CheckboxLabel className="text-white">{t("options_terrains_explications")}</CheckboxLabel>
                   </Checkbox>
                 </VStack>
                 <VStack>
