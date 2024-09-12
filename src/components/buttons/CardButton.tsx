@@ -28,7 +28,7 @@ class CardButton extends React.Component<Props, State> {
     return (
       <Pressable
         onPress={() => navigate()}
-        className="bg-[#1c3969] flex-1 py-5 rounded-3xl justify-center">
+        className="bg-primary-500 flex-1 py-5 rounded-3xl justify-center">
         {newBadge ?
           <HStack className={` mt-${-20} `}>
             <Badge size='lg' variant='outline' action='error' className="rounded-full">
