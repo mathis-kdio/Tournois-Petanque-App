@@ -21,7 +21,7 @@ import { Input, InputField } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { Button, ButtonText } from "@/components/ui/button";
 import { VStack } from "@/components/ui/vstack";
-import { Checkbox, CheckboxIndicator, CheckboxLabel } from "@/components/ui/checkbox";
+import { Checkbox, CheckboxIcon, CheckboxIndicator, CheckboxLabel } from "@/components/ui/checkbox";
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@components/TopBarBack';
@@ -135,7 +135,7 @@ class OptionsTournoi extends React.Component<Props, State> {
                 <VStack space='md'>
                   <VStack>
                     <Text className="text-white text-md">{t("indiquer_nombre_tours")} </Text>
-                    <Input size='md'>
+                    <Input size='md' className="border-white">
                       <InputField
                         className='text-white'
                         placeholder={t("nombre_placeholder")}
@@ -147,7 +147,7 @@ class OptionsTournoi extends React.Component<Props, State> {
                   </VStack>
                   <VStack>
                     <Text className="text-white text-md">{t("indiquer_nombre_points_victoire")} </Text>
-                    <Input size='md'>
+                    <Input size='md' className="border-white">
                       <InputField
                         className='text-white'
                         placeholder={t("nombre_placeholder")}
@@ -166,8 +166,8 @@ class OptionsTournoi extends React.Component<Props, State> {
                     defaultIsChecked
                     size='md'
                   >
-                    <CheckboxIndicator className="mr-2">
-                      <CheckIcon className={` ${this.state.speciauxIncompatibles ? "text-white" : "text-cyan-600"} `}/>
+                    <CheckboxIndicator className="mr-2 border-white">
+                      <CheckboxIcon as={CheckIcon} className="text-white bg-[#0594ae]"/>
                     </CheckboxIndicator>
                     <CheckboxLabel className="text-white">{t("options_regle_speciaux")}</CheckboxLabel>
                   </Checkbox>
@@ -178,8 +178,8 @@ class OptionsTournoi extends React.Component<Props, State> {
                     defaultIsChecked
                     size='md'
                   >
-                    <CheckboxIndicator className="mr-2">
-                      <CheckIcon className={` ${this.state.memesEquipes ? "text-white" : "text-cyan-600"} `}/>
+                    <CheckboxIndicator className="mr-2 border-white">
+                      <CheckboxIcon as={CheckIcon} className="text-white bg-[#0594ae]"/>
                     </CheckboxIndicator>
                     <CheckboxLabel className="text-white">{t("options_regle_equipes")}</CheckboxLabel>
                   </Checkbox>
@@ -217,11 +217,9 @@ class OptionsTournoi extends React.Component<Props, State> {
                     placeholder={t("choix_complement")}
                     onValueChange={(itemValue: Complement) => this.setState({complement: itemValue})}
                   >
-                    <SelectTrigger variant='outline' size='md'>
-                      <SelectInput/>
-                      <SelectIcon className="mr-3">
-                        <ChevronDownIcon className="text-white"/>
-                      </SelectIcon>
+                    <SelectTrigger variant='outline' size='md' className='border-white'>
+                      <SelectInput className='flex-1 text-white placeholder:text-white' placeholder={t("choix_complement")}/>
+                      <SelectIcon className="mr-3 text-white" as={ChevronDownIcon}/>
                     </SelectTrigger>
                     <SelectPortal>
                       <SelectBackdrop/>
@@ -242,8 +240,8 @@ class OptionsTournoi extends React.Component<Props, State> {
                     aria-label={t("choix_option_terrains")}
                     size='md'
                   >
-                    <CheckboxIndicator className="mr-2">
-                      <CheckIcon className={` ${this.state.avecTerrains ? "text-white" : "text-cyan-600"} `}/>
+                    <CheckboxIndicator className="mr-2 border-white">
+                      <CheckboxIcon as={CheckIcon} className="text-white bg-[#0594ae]"/>
                     </CheckboxIndicator>
                     <CheckboxLabel className="text-white">{t("options_terrains_explications")}</CheckboxLabel>
                   </Checkbox>
