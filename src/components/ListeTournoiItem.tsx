@@ -153,8 +153,9 @@ class ListeTournoiItem extends React.Component<Props, State> {
     let tournoiName = tournoi.name ? tournoi.name : 'n°' + tournoi.tournoiId;
     if (this.state.renommerOn) {
       return (
-        <Input>
+        <Input className="border-white">
           <InputField
+            className='text-white placeholder:text-black'
             placeholder={tournoiName}
             autoFocus={true}
             onChangeText={(text: string) => this._tournoiTextInputChanged(text)}
