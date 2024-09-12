@@ -96,19 +96,19 @@ class ChoixModeTournoi extends React.Component<Props, State> {
         >
           <VStack space='lg'>
             <Radio value={ModeTournoi.AVECNOMS} size='lg'>
-              <RadioIndicator className="mr-2">
+              <RadioIndicator className="mr-2 border-white">
                 <RadioIcon as={CircleIcon}/>
               </RadioIndicator>
               <RadioLabel className="text-white">{t("melee_demelee_avec_nom")}</RadioLabel>
             </Radio>
             <Radio value={ModeTournoi.SANSNOMS} size='lg'>
-              <RadioIndicator className="mr-2">
+              <RadioIndicator className="mr-2 border-white">
                 <RadioIcon as={CircleIcon}/>
               </RadioIndicator>
               <RadioLabel className="text-white">{t("melee_demelee_sans_nom")}</RadioLabel>
             </Radio>
             <Radio value={ModeTournoi.AVECEQUIPES} size='lg'>
-              <RadioIndicator className="mr-2">
+              <RadioIndicator className="mr-2 border-white">
                 <RadioIcon as={CircleIcon}/>
               </RadioIndicator>
               <RadioLabel className="text-white">{t("melee_avec_equipes_constituees")}</RadioLabel>
@@ -135,19 +135,19 @@ class ChoixModeTournoi extends React.Component<Props, State> {
               >
                 <VStack space='lg'>
                   <Radio value={TypeEquipes.TETEATETE} size='lg'>
-                    <RadioIndicator className="mr-2">
+                    <RadioIndicator className="mr-2 border-white">
                       <RadioIcon as={CircleIcon}/>
                     </RadioIndicator>
                     <RadioLabel className="text-white">{t("tete_a_tete")}</RadioLabel>
                   </Radio>
                   <Radio value={TypeEquipes.DOUBLETTE} size='lg'>
-                    <RadioIndicator className="mr-2">
+                    <RadioIndicator className="mr-2 border-white">
                       <RadioIcon as={CircleIcon}/>
                     </RadioIndicator>
                     <RadioLabel className="text-white">{t("doublettes")}</RadioLabel>
                   </Radio>
                   <Radio value={TypeEquipes.TRIPLETTE} size='lg'>
-                    <RadioIndicator className="mr-2">
+                    <RadioIndicator className="mr-2 border-white">
                       <RadioIcon as={CircleIcon}/>
                     </RadioIndicator>
                     <RadioLabel className="text-white">{t("triplettes")}</RadioLabel>
