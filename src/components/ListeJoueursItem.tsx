@@ -176,8 +176,9 @@ class ListeJoueursItem extends React.Component<Props, State> {
     let listName = listeJoueursInfos.name ? listeJoueursInfos.name : 'n°' + listeJoueursInfos.listId;
     if (this.state.renommerOn) {
       return (
-        <Input>
+        <Input className="border-white">
           <InputField
+            className='text-white placeholder:text-black'
             placeholder={listName}
             autoFocus={true}
             onChangeText={(text) => this._listTextInputChanged(text)}
