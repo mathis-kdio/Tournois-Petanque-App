@@ -70,9 +70,7 @@ class JoueurType extends React.Component<Props, State> {
       >
         <SelectTrigger variant='rounded' className='border-white'>
           <SelectInput className='placeholder:text-white' placeholder={t("choisir_poste")}/>
-          <SelectIcon className="mr-3">
-            <ChevronDownIcon className="text-white"/>
-          </SelectIcon>
+          <SelectIcon className="mr-3 text-white" as={ChevronDownIcon}/>
         </SelectTrigger>
         <SelectPortal>
           <SelectBackdrop/>

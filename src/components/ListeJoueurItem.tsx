@@ -17,7 +17,7 @@ import { Input, InputField } from "@/components/ui/input";
 import { Image } from "@/components/ui/image";
 import { Heading } from "@/components/ui/heading";
 import { HStack } from "@/components/ui/hstack";
-import { Checkbox, CheckboxIndicator, CheckboxLabel } from "@/components/ui/checkbox";
+import { Checkbox, CheckboxIcon, CheckboxIndicator, CheckboxLabel } from "@/components/ui/checkbox";
 import { CheckIcon, ChevronDownIcon, CloseIcon, Icon } from "@/components/ui/icon";
 import { Button, ButtonGroup, ButtonText } from "@/components/ui/button";
 import { Box } from "@/components/ui/box";
@@ -218,9 +218,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
         >
           <SelectTrigger>
             <SelectInput placeholder={t("choix_equipe")}/>
-            <SelectIcon className="mr-3">
-              <ChevronDownIcon className="text-white"/>
-            </SelectIcon>
+            <SelectIcon className="mr-3 text-white" as={ChevronDownIcon}/>
           </SelectTrigger>
           <SelectPortal>
             <SelectBackdrop/>
@@ -283,8 +281,8 @@ class ListeJoueurItem extends React.Component<Props, State> {
             size='md'
             isChecked={isChecked}
           >
-            <CheckboxIndicator className="mr-2">
-              <CheckIcon className={` ${isChecked ? "text-white" : "text-cyan-600"} `}/>
+            <CheckboxIndicator className="mr-2 border-white">
+              <CheckboxIcon as={CheckIcon} className="text-white bg-[#0594ae]"/>
             </CheckboxIndicator>
             <CheckboxLabel/>
           </Checkbox>
