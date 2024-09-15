@@ -34,11 +34,11 @@ class ListeResultats extends React.Component<Props, State> {
     return (
       <VStack className="flex-1 bg-[#0594ae]">
         <VStack className="flex-1 justify-between">
-          <HStack className="px-2">
-            <Text className="flex-2 text-white text-lg">{t("place")}</Text>
-            <Text className="flex-1 text-center text-white text-lg">{t("victoire")}</Text>
-            <Text className="flex-1 text-center text-white text-lg">{t("m_j")}</Text>
-            <Text className="flex-1 text-right text-white text-lg">{t("point")}</Text>
+          <HStack className="flex px-2">
+            <Text className="basis-2/5 text-white text-lg">{t("place")}</Text>
+            <Text className="basis-1/5 text-center text-white text-lg">{t("victoire")}</Text>
+            <Text className="basis-1/5 text-center text-white text-lg">{t("m_j")}</Text>
+            <Text className="basis-1/5 text-right text-white text-lg">{t("point")}</Text>
           </HStack>
           <Divider className="my-0.5" />
           <FlatList

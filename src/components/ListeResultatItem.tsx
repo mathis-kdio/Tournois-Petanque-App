@@ -67,14 +67,14 @@ class ListeResultatItem extends React.Component<Props, State> {
     const { joueur } = this.props;
     return (
       <VStack>
-        <HStack className="px-2 py-0.5">
-          <HStack className="flex-2">
+        <HStack className="flex px-2 py-0.5">
+          <HStack className="basis-2/5">
             <Text className="text-white text-lg">{joueur.position} - </Text>
             {this._displayName(joueur.joueurId)}
           </HStack>
-          <Text className="flex-1 text-center text-white text-lg">{joueur.victoires}</Text>
-          <Text className="flex-1 text-center text-white text-lg">{joueur.nbMatchs}</Text>
-          <HStack className="flex-1 justify-end">
+          <Text className="basis-1/5 text-center text-white text-lg">{joueur.victoires}</Text>
+          <Text className="basis-1/5 text-center text-white text-lg">{joueur.nbMatchs}</Text>
+          <HStack className="basis-1/5 justify-end">
             {this._fanny(joueur.joueurId)}
             <Text className="text-white text-lg"> {joueur.points}</Text>
           </HStack>
