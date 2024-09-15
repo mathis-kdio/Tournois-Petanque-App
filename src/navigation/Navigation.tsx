@@ -103,7 +103,12 @@ function ManchesTopTabNavigator() {
         title: t("liste_matchs_navigation_title"),
         tabBarScrollEnabled: true,
         tabBarStyle: {backgroundColor: '#0594ae'},
-        tabBarIndicatorStyle: {backgroundColor: 'white'}
+        tabBarIndicatorStyle: {backgroundColor: 'white'},
+        //Code temporaire lié au BUG : https://github.com/nativewind/nativewind/issues/1039
+        tabBarContentContainerStyle: {
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+        },
       }}
     >
       {topTabScreens()}
