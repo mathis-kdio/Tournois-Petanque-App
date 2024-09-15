@@ -49,7 +49,7 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
     const { t } = this.props;
     if (!this.state.modalType) return;
     const infosModal = {
-      "melee-demelee": {
+      "mele-demele": {
         title: t("melee_demelee"),
         text:  t("description_melee_demelee")
       },
