@@ -68,9 +68,9 @@ class MatchItem extends React.Component<Props, State> {
     let joueur = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs.find((item: Joueur) => item.id === joueurNumber);
     if (joueur) {
       if (equipe === 1) {
-        return <Text key={joueur.id} className="text-white text-xl text-[left]">{(joueur.id + 1) + ' ' + joueur.name}</Text>;
+        return <Text key={joueur.id} className="text-white text-left" size="xl">{(joueur.id + 1) + ' ' + joueur.name}</Text>;
       } else {
-        return <Text key={joueur.id} className="text-white text-xl text-[right]">{joueur.name + ' ' + (joueur.id + 1)}</Text>;
+        return <Text key={joueur.id} className="text-white text-right" size="xl">{joueur.name + ' ' + (joueur.id + 1)}</Text>;
       }
     }
   }
