@@ -156,8 +156,9 @@ class MatchDetail extends React.Component<Props, State> {
                   <HStack space='lg'>
                     <Box className="flex-1">
                     <Text className="text-white text-md">{t("score_equipe_1")} </Text>
-                      <Input size='md'>
+                      <Input size='md' className="border-white">
                         <InputField
+                          className='text-white'
                           placeholder={t("score_placeholder", {scoreVictoire: nbPtVictoire})}
                           autoFocus={true}
                           defaultValue={match.score1.toString()}
@@ -171,8 +172,9 @@ class MatchDetail extends React.Component<Props, State> {
                     </Box>
                     <Box className="flex-1">
                     <Text className="text-white text-md self-end">{t("score_equipe_2")} </Text>
-                      <Input size='md'>
+                      <Input size='md' className="border-white">
                         <InputField
+                          className='text-white'
                           placeholder={t("score_placeholder", {scoreVictoire: nbPtVictoire})}
                           defaultValue={match.score2.toString()}
                           keyboardType='decimal-pad'
