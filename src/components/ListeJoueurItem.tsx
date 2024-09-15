@@ -343,17 +343,21 @@ class ListeJoueurItem extends React.Component<Props, State> {
     const { joueur, isInscription, avecEquipes, typeEquipes, nbJoueurs, showCheckbox } = this.props;
     return (
       <HStack className="flex border border-white rounded-xl m-1 px-1 items-center">
-        {this._joueurCheckbox(showCheckbox, joueur)}
-        {this._joueurTypeIcon(joueur.type)}
-        <Box className="basis-1/2">
-          {this._joueurName(joueur, isInscription, avecEquipes)}
-        </Box>
-        {(avecEquipes == true && <Box className="basis-1/4">
-          {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
-        </Box>)}
-        {this._showRenommerJoueur(joueur, isInscription, avecEquipes)}
-        {this._showSupprimerJoueur(joueur, isInscription)}
-        {this._modalConfirmUncheck()}
+        <HStack className="basis-3/5">
+          {this._joueurCheckbox(showCheckbox, joueur)}
+          {this._joueurTypeIcon(joueur.type)}
+          <Box>
+            {this._joueurName(joueur, isInscription, avecEquipes)}
+          </Box>
+        </HStack>
+        <HStack className="basis-2/5 justify-end">
+          {(avecEquipes == true && <Box>
+            {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
+          </Box>)}
+          {this._showRenommerJoueur(joueur, isInscription, avecEquipes)}
+          {this._showSupprimerJoueur(joueur, isInscription)}
+          {this._modalConfirmUncheck()}
+        </HStack>
       </HStack>
     );
   }
