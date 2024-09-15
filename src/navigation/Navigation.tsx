@@ -75,10 +75,10 @@ function topTabItemLabel(numero, listeMatchs) {
     if (matchs) {
       let count = matchs.reduce((acc, obj) => obj.score1 != undefined && obj.score2 != undefined ? acc+=1 : acc, 0);
       if (count == matchs.length) {
-        iconColor = 'green';
+        iconColor = 'success-500';
         iconName = 'battery-full';
       } else if (count == 0) {
-        iconColor = 'red';
+        iconColor = 'error-500';
         iconName = 'battery-empty';
       } 
       matchsRestant -= count;
@@ -86,10 +86,10 @@ function topTabItemLabel(numero, listeMatchs) {
   }
 
   return (
-    <HStack>
+    <HStack className="items-center">
       <Text className="text-white text-lg mr-2">{title}</Text>
       <FontAwesome5 name={iconName} size={20} color={iconColor}/>
-      <Text className={` color-${iconColor} text-md ml-0.5 `}>{matchsRestant.toString()}</Text>
+      <Text className={`text-${iconColor} ml-0.5`} size="lg">{matchsRestant.toString()}</Text>
     </HStack>
   );
 }
