@@ -157,6 +157,7 @@ class Parametres extends React.Component<Props, State> {
               className="text-center text-blue-500">{t("texte_lien_traduction")}</Text>
             <Text className="text-center">{t("remerciements_traduction")}</Text>
             <Text className="text-center">{`\u2022`} N. Mieczynska ({t("polonais_abreviation")})</Text>
+            <Text className="text-center">{`\u2022`} GerKos653 ({t("neerlandais_abreviation")})</Text>
           </ModalBody>
         </ModalContent>
       </Modal>
