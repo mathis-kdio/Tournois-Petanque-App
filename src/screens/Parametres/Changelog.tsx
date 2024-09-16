@@ -1,6 +1,21 @@
+import { CloseIcon, Icon } from "@/components/ui/icon";
+import { Heading } from "@/components/ui/heading";
+
+import {
+  Modal,
+  ModalBackdrop,
+  ModalContent,
+  ModalCloseButton,
+  ModalHeader,
+  ModalBody,
+} from "@/components/ui/modal";
+
+import { Divider } from "@/components/ui/divider";
+import { FlatList } from "@/components/ui/flat-list";
+import { Text } from "@/components/ui/text";
+import { VStack } from "@/components/ui/vstack";
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { VStack, Text, FlatList, Divider, Modal, ModalBackdrop, ModalContent, ModalCloseButton, ModalHeader, ModalBody, Heading, CloseIcon } from '@gluestack-ui/themed'
 import { withTranslation } from "react-i18next";
 import TopBarBack from '@components/TopBarBack'
 import ChangelogData from '@assets/ChangelogData.json'
@@ -39,11 +54,15 @@ class Changelog extends React.Component<Props, State> {
       return (
         <Modal isOpen={this.state.modalChangelogOpen} onClose={() => this.setState({modalChangelogOpen: false})}>
           <ModalBackdrop/>
-          <ModalContent maxHeight='$5/6'>
+          <ModalContent className="max-h-5/6">
             <ModalHeader>
               <Heading>{title}</Heading>
               <ModalCloseButton>
-                <CloseIcon/>
+                <Icon
+                  as={CloseIcon}
+                  size="md"
+                  className="stroke-background-400 group-[:hover]/modal-close-button:stroke-background-700 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900"
+                />
               </ModalCloseButton>
             </ModalHeader>
             <ModalBody>
@@ -51,7 +70,7 @@ class Changelog extends React.Component<Props, State> {
             </ModalBody>
           </ModalContent>
         </Modal>
-      )
+      );
     }
   }
 
@@ -62,7 +81,7 @@ class Changelog extends React.Component<Props, State> {
         <Item text={t("version")+" "+item.version+" :"} action={() => this.setState({modalChangelogOpen: true, modalChangelogItem: item})} icon={undefined} type={undefined} drapeau={undefined}/>
         <Divider/>
       </VStack>
-    )
+    );
   }
 
   render() {
@@ -72,24 +91,20 @@ class Changelog extends React.Component<Props, State> {
     );
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} bgColor='#0594ae'>
+        <VStack className="flex-1 bg-[#0594ae]">
           <TopBarBack title={t("nouveautes")} navigation={this.props.navigation}/>
-          <VStack flex={1} px={'$10'}>
-            <Text fontSize={'$xl'} color='$white' mb={'$1'}>{t("nouveautes")}</Text>
-            <FlatList 
-              height={'$1'}
+          <VStack className="flex-1 px-10">
+            <Text className="text-xl text-white mb-1">{t("nouveautes")}</Text>
+            <FlatList
               data={Object.values(ChangelogData).reverse()}
               keyExtractor={(item: ChangelogInterface) => item.id.toString() }
               renderItem={renderItem}
-              borderWidth={'$1'}
-              borderColor='white'
-              borderRadius={'$lg'}
-            />
+              className="h-1 border border-white rounded-lg" />
           </VStack>
         </VStack>
         {this._modalChangelog()}
       </SafeAreaView>
-    )
+    );
   }
 }
 

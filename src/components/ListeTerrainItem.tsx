@@ -1,7 +1,10 @@
+import { Text } from "@/components/ui/text";
+import { Input, InputField } from "@/components/ui/input";
+import { HStack } from "@/components/ui/hstack";
+import { Box } from "@/components/ui/box";
 import React from 'react'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { withTranslation } from 'react-i18next';
-import { Box, HStack, Input, Text, InputField } from '@gluestack-ui/themed';
 import { Terrain } from '@/types/interfaces/terrain';
 import { PropsFromRedux, connector } from '@/store/connector';
 
@@ -51,7 +54,7 @@ class ListeTerrainItem extends React.Component<Props, State> {
       <Box>
         <FontAwesome5.Button name={name} backgroundColor={bgColor} iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={action}/>
       </Box>
-    )
+    );
   }
 
   _renommerTerrain(terrain: Terrain) {
@@ -79,20 +82,18 @@ class ListeTerrainItem extends React.Component<Props, State> {
             onSubmitEditing={() => this._renommerTerrain(terrain)}
           />
         </Input>
-      )
+      );
     }
     else {
-      return (
-        <Text color='$white'>{(terrain.id+1)} - {terrain.name}</Text>
-      )
+      return <Text className="text-white">{(terrain.id+1)}- {terrain.name}</Text>;
     }
   }
 
   render() {
     const { terrain } = this.props;
     return (
-      <HStack px={'$2'} my={'$2'} space='md' alignItems='center'>
-        <Box flex={1}>
+      <HStack space='md' className="px-2 my-2 items-center">
+        <Box className="flex-1">
           {this._terrainName(terrain)}
         </Box>
         <HStack space='md'>
@@ -100,7 +101,7 @@ class ListeTerrainItem extends React.Component<Props, State> {
           <FontAwesome5.Button name="times" backgroundColor="#E63535" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._supprimerTerrain(terrain)}/>
         </HStack>
       </HStack>
-    )
+    );
   }
 }
 

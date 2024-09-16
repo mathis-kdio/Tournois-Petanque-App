@@ -1,9 +1,29 @@
+import { FlatList } from "@/components/ui/flat-list";
+import { Heading } from "@/components/ui/heading";
+
+import {
+  AlertDialog,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogBackdrop,
+  AlertDialogCloseButton,
+} from "@/components/ui/alert-dialog";
+
+import { Divider } from "@/components/ui/divider";
+import { Icon, CloseIcon } from "@/components/ui/icon";
+import { Text } from "@/components/ui/text";
+import { Button, ButtonGroup, ButtonText } from "@/components/ui/button";
+import { VStack } from "@/components/ui/vstack";
+import { Input, InputField } from "@/components/ui/input";
+import { HStack } from "@/components/ui/hstack";
+import { Box } from "@/components/ui/box";
 import React from 'react'
 import ListeJoueurItem from '@components/ListeJoueurItem'
 import JoueurSuggere from '@components/JoueurSuggere'
 import JoueurType from '@components/JoueurType'
 import { FontAwesome5 } from '@expo/vector-icons';
-import { Box, HStack, Input, VStack, Button, Text, Icon, Divider, AlertDialog, ButtonGroup, AlertDialogHeader, AlertDialogContent, AlertDialogBody, ButtonText, AlertDialogFooter, InputField, AlertDialogBackdrop, AlertDialogCloseButton, CloseIcon, Heading, FlatList } from '@gluestack-ui/themed';
 import { withTranslation } from 'react-i18next'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { TFunction } from 'i18next'
@@ -115,7 +135,11 @@ class Inscription extends React.Component<Props, State> {
           <AlertDialogHeader>
             <Heading>{t("supprimer_joueurs_modal_titre")}</Heading>
             <AlertDialogCloseButton>
-              <CloseIcon/>
+              <Icon
+                as={CloseIcon}
+                size="md"
+                className="stroke-background-400 group-[:hover]/modal-close-button:stroke-background-700 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900"
+              />
             </AlertDialogCloseButton>
           </AlertDialogHeader>
           <AlertDialogBody>
@@ -133,7 +157,7 @@ class Inscription extends React.Component<Props, State> {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    )
+    );
   }
 
   _removeAllPlayers() {
@@ -169,23 +193,23 @@ class Inscription extends React.Component<Props, State> {
       );
       return (
         <FlatList
-          height={'$1'}
           removeClippedSubviews={false}
           persistentScrollbar={true}
           data={this.props.listesJoueurs[this.props.optionsTournoi.mode]}
           keyExtractor={(item: Joueur) => item.id.toString() }
           renderItem={renderItem}
           ListFooterComponent={
-            <VStack flex={1} space='md'>
-              <VStack px={'$10'} space='sm'>
+            <VStack space='md' className="flex-1">
+              <VStack space='sm' className="px-10">
                 {this._buttonRemoveAllPlayers()}
                 {this._buttonLoadSavedList()}
               </VStack>
               {this._displayListeJoueursSuggeres()}
             </VStack>
           }
+          className="h-1"
         />
-      )
+      );
     }
   }
 
@@ -200,7 +224,7 @@ class Inscription extends React.Component<Props, State> {
       );
       return (
         <VStack>
-          <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("suggestions_joueurs")}</Text>
+          <Text className="text-white text-xl text-center">{t("suggestions_joueurs")}</Text>
           <FlatList
             removeClippedSubviews={false}
             persistentScrollbar={true}
@@ -208,11 +232,11 @@ class Inscription extends React.Component<Props, State> {
             keyExtractor={(item: Joueur) => item.id.toString() }
             renderItem={renderItem}
           />
-          <Box px={'$10'} pb={'$2'}>
+          <Box className="px-10 pb-2">
             {this._buttonMoreSuggestedPlayers()}
           </Box>
         </VStack>
-      )
+      );
     }
   }
 
@@ -228,7 +252,7 @@ class Inscription extends React.Component<Props, State> {
           <ButtonText>{t("plus_suggestions_joueurs_bouton")}</ButtonText>
           <FontAwesome5 name="chevron-down"/>
         </Button>
-      )
+      );
     }
   }
 
@@ -246,7 +270,7 @@ class Inscription extends React.Component<Props, State> {
         >
           <ButtonText>{t("supprimer_joueurs_bouton")}</ButtonText>
         </Button>
-      )
+      );
     }
   }
 
@@ -260,7 +284,7 @@ class Inscription extends React.Component<Props, State> {
         >
           <ButtonText>{t("charger_liste_joueurs_bouton")}</ButtonText>
         </Button>
-      )
+      );
     }
   }
 
@@ -273,21 +297,24 @@ class Inscription extends React.Component<Props, State> {
       text = t("cacher");
     }
     return (
-      <HStack my={'$1'} alignItems='center'>
+      <HStack className="my-1 items-center">
         <FontAwesome5 name={icon} size={15} color='white'/>
-        <Text color='$white' fontSize={'$md'} onPress={() => this.setState({showCheckbox: !this.state.showCheckbox})}>{text} {t("case_a_cocher")}</Text>
+        <Text
+          onPress={() => this.setState({showCheckbox: !this.state.showCheckbox})}
+          className="text-white text-md">{text} {t("case_a_cocher")}</Text>
       </HStack>
-    )
+    );
   }
 
   render() {
     const { t } = this.props;
     return (
-      <VStack flex={1}>
-        <HStack alignItems='center' mx={'$1'} space='md'>
-          <Box flex={1}>
-            <Input size='md'>
+      <VStack className="flex-1">
+        <HStack space='md' className="items-center mx-1">
+          <Box className="flex-1">
+            <Input size='md' className='border-white'>
               <InputField
+                className='text-white placeholder:text-white'
                 placeholder={t("nom_inscription")}
                 autoFocus={true}
                 keyboardType="default"
@@ -297,7 +324,7 @@ class Inscription extends React.Component<Props, State> {
               />
             </Input>
           </Box>
-          <Box flex={1}>
+          <Box className="flex-1">
             <JoueurType
               joueurType={this.state.joueurType}
               _setJoueurType={(type) => this.setState({joueurType: type})}
@@ -315,13 +342,13 @@ class Inscription extends React.Component<Props, State> {
           </Box>
         </HStack>
         {this._showCheckboxSection()}
-        <Divider bg='$white' h={'$0.5'} my={'$2'}/>
-        <VStack flex={1}>
+        <Divider className="bg-white h-0.5 my-2" />
+        <VStack className="flex-1">
           {this._displayListeJoueur()}
         </VStack>
         {this._modalRemoveAllPlayers()}
       </VStack>
-    )
+    );
   }
 }
 

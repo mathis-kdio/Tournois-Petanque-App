@@ -1,5 +1,6 @@
+import { Text } from "@/components/ui/text";
+import { HStack } from "@/components/ui/hstack";
 import React from 'react';
-import { HStack, Text } from '@gluestack-ui/themed';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
@@ -74,10 +75,10 @@ function topTabItemLabel(numero, listeMatchs) {
     if (matchs) {
       let count = matchs.reduce((acc, obj) => obj.score1 != undefined && obj.score2 != undefined ? acc+=1 : acc, 0);
       if (count == matchs.length) {
-        iconColor = 'green';
+        iconColor = 'success-500';
         iconName = 'battery-full';
       } else if (count == 0) {
-        iconColor = 'red';
+        iconColor = 'error-500';
         iconName = 'battery-empty';
       } 
       matchsRestant -= count;
@@ -85,12 +86,12 @@ function topTabItemLabel(numero, listeMatchs) {
   }
 
   return (
-    <HStack>
-      <Text color='$white' fontSize={'$lg'} mr={'$2'}>{title}</Text>
+    <HStack className="items-center">
+      <Text className="text-white text-lg mr-2">{title}</Text>
       <FontAwesome5 name={iconName} size={20} color={iconColor}/>
-      <Text color={iconColor} fontSize={'$md'} ml={'$0.5'}>{matchsRestant.toString()}</Text>
+      <Text className={`text-${iconColor} ml-0.5`} size="lg">{matchsRestant.toString()}</Text>
     </HStack>
-  )
+  );
 }
 
 function ManchesTopTabNavigator() {
@@ -102,7 +103,12 @@ function ManchesTopTabNavigator() {
         title: t("liste_matchs_navigation_title"),
         tabBarScrollEnabled: true,
         tabBarStyle: {backgroundColor: '#0594ae'},
-        tabBarIndicatorStyle: {backgroundColor: 'white'}
+        tabBarIndicatorStyle: {backgroundColor: 'white'},
+        //Code temporaire lié au BUG : https://github.com/nativewind/nativewind/issues/1039
+        tabBarContentContainerStyle: {
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+        },
       }}
     >
       {topTabScreens()}
@@ -144,7 +150,7 @@ function MatchsStack() {
         options={{
           title: '',
           headerStyle: {backgroundColor: '#0594ae', elevation: 0},
-          headerLeft: () => <Text color='$white' fontSize={'$xl'} ml={'$2'}>{t("tournoi")} {tournoiName}</Text>,
+          headerLeft: () => <Text className="text-white text-xl ml-2">{t("tournoi")} {tournoiName}</Text>,
           headerRight: () => <BoutonMenuHeaderNav navigation={navigation}/>
         }}
       />
@@ -168,7 +174,7 @@ function ResultatsStack() {
         options={{
           headerTitle: '',
           headerStyle: {backgroundColor: '#0594ae', elevation: 0},
-          headerLeft: () => <Text color='$white' fontSize={'$xl'} ml={'$2'}>{t("tournoi")} {tournoiName}</Text>,
+          headerLeft: () => <Text className="text-white text-xl ml-2">{t("tournoi")} {tournoiName}</Text>,
           headerRight: () => <BoutonMenuHeaderNav navigation={navigation}/>
         }}
       />
@@ -221,11 +227,11 @@ function InscriptionStack() {
       <Stack.Screen name="OptionsTournoi" component={OptionsTournoi} options={{title:  t("choix_options_tournoi"), headerShown: false}} />
       <Stack.Screen name="InscriptionsAvecNoms" component={InscriptionsAvecNoms} options={{title: t("inscription_avec_noms_navigation_title"), headerShown: false}} />
       <Stack.Screen name="InscriptionsSansNoms" component={InscriptionsSansNoms} options={{title: t("inscription_sans_noms_navigation_title"), headerShown: false}} />
-      <Stack.Screen name="ListeTerrains" component={ListeTerrains} options={{title: t("liste_terrains_navigation_title"), headerShown: false}} />     
+      <Stack.Screen name="ListeTerrains" component={ListeTerrains} options={{title: t("liste_terrains_navigation_title"), headerShown: false}} />
       <Stack.Screen name="GenerationMatchs" component={GenerationMatchs} options={{title: t("generation_matchs_navigation_title"), headerShown: false}} />
       <Stack.Screen name="ListeMatchsInscription" component={ListeMatchsStack} options={{title: '', headerShown: false}}/>
     </Stack.Navigator>
-  )
+  );
 }
 
 function ParametresStack() {
@@ -235,7 +241,7 @@ function ParametresStack() {
       <Stack.Screen name="Parametres" component={Parametres} options={{title: t("parametres"), headerShown: false}} />
       <Stack.Screen name="Changelog" component={Changelog} options={{title: t("Nouveautes"), headerShown: false}} />
     </Stack.Navigator>
-  )
+  );
 }
 
 function ConnexionStack() {
@@ -246,7 +252,7 @@ function ConnexionStack() {
       <Stack.Screen name="Inscription" component={Inscription} options={{title: t("inscription"), headerShown: false}} />
       <Stack.Screen name="Compte" component={Compte} options={{title: t("mon_compte"), headerShown: false}} />
     </Stack.Navigator>
-  )
+  );
 }
 
 function ListeMatchsStack() {
@@ -263,7 +269,7 @@ function ListeMatchsStack() {
         options={{headerShown: false}}
       />
     </Stack.Navigator>
-  )
+  );
 }
 
 
@@ -284,12 +290,9 @@ function General() {
       <Stack.Screen name="AccueilGeneral" component={Accueil} options={{title: t("accueil"), headerShown: false}} />
       <Stack.Screen name="ConnexionStack" component={ConnexionStack} options={{headerShown: false}} />
       <Stack.Screen name="ParametresStack" component={ParametresStack} options={{headerShown: false}} />
-
       <Stack.Screen name="ListeTournois" component={ListeTournois} options={{title: t("choix_tournoi_navigation_title"), headerShown: false}} />
-
       <Stack.Screen name="ListesJoueurs" component={ListesJoueurs} options={{title: t("listes_joueurs_navigation_title"), headerShown: false}} />
       <Stack.Screen name="CreateListeJoueurs" component={CreateListeJoueurs} options={{title: t("creation_liste_joueurs_navigation_title"), headerShown: false}} />
-
       <Stack.Screen name="InscriptionStack" component={InscriptionStack} options={{headerShown: false}} />
       <Stack.Screen name="ListeMatchsStack" component={ListeMatchsStack} options={{headerShown: false}} />
     </Stack.Navigator>

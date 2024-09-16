@@ -1,8 +1,12 @@
+import { Divider } from "@/components/ui/divider";
+import { VStack } from "@/components/ui/vstack";
+import { Text } from "@/components/ui/text";
+import { FlatList } from "@/components/ui/flat-list";
+import { HStack } from "@/components/ui/hstack";
 import React from 'react'
 import ListeResultatItem from '@components/ListeResultatItem'
 import { ranking } from '@utils/ranking'
 import { withTranslation } from 'react-i18next'
-import { HStack, FlatList, Text, VStack, Divider } from '@gluestack-ui/themed'
 import { TFunction } from 'i18next'
 import { PropsFromRedux, connector } from '@/store/connector'
 import { ListRenderItem } from 'react-native'
@@ -28,15 +32,15 @@ class ListeResultats extends React.Component<Props, State> {
       />
     );
     return (
-      <VStack flex={1} bgColor={"#0594ae"}>
-        <VStack flex={1} justifyContent='space-between'>
-          <HStack px={'$2'}>
-            <Text flex={2} color='$white' fontSize={'$lg'}>{t("place")}</Text>
-            <Text flex={1} textAlign='center' color='$white' fontSize={'$lg'}>{t("victoire")}</Text>
-            <Text flex={1} textAlign='center' color='$white' fontSize={'$lg'}>{t("m_j")}</Text>
-            <Text flex={1} textAlign='right' color='$white' fontSize={'$lg'}>{t("point")}</Text>
+      <VStack className="flex-1 bg-[#0594ae]">
+        <VStack className="flex-1 justify-between">
+          <HStack className="flex px-2">
+            <Text className="basis-2/5 text-white text-lg">{t("place")}</Text>
+            <Text className="basis-1/5 text-center text-white text-lg">{t("victoire")}</Text>
+            <Text className="basis-1/5 text-center text-white text-lg">{t("m_j")}</Text>
+            <Text className="basis-1/5 text-right text-white text-lg">{t("point")}</Text>
           </HStack>
-          <Divider my={'$0.5'} />
+          <Divider className="my-0.5" />
           <FlatList
             data={ranking(listeMatchs, optionsTournois)}
             keyExtractor={(item: Victoire) => item.joueurId.toString()}
@@ -44,7 +48,7 @@ class ListeResultats extends React.Component<Props, State> {
           />
         </VStack>
       </VStack>
-    )
+    );
   }
 }
 

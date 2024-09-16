@@ -1,8 +1,11 @@
+import { VStack } from "@/components/ui/vstack";
+import { Text } from "@/components/ui/text";
+import { Button, ButtonText } from "@/components/ui/button";
+import { Box } from "@/components/ui/box";
 import React from 'react'
 import Inscriptions from '@components/Inscriptions';
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Box, Button, ButtonText, Text, VStack } from '@gluestack-ui/themed';
 import TopBarBack from '@components/TopBarBack';
 import { TFunction } from 'i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -52,7 +55,7 @@ class CreateListeJoueur extends React.Component<Props, State> {
         <Button isDisabled={nbPlayers == 0} action='positive' onPress={() => this._dispatch(params.type, params.listId)}>
           <ButtonText>{title}</ButtonText>
         </Button>
-      )
+      );
     }
   }
 
@@ -64,21 +67,21 @@ class CreateListeJoueur extends React.Component<Props, State> {
     }
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} bgColor={"#0594ae"}>
+        <VStack className="flex-1 bg-[#0594ae]">
           <TopBarBack title={t("creation_liste_joueurs_navigation_title")} navigation={this.props.navigation}/>
-          <VStack flex={1} justifyContent='space-between'>
-            <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("nombre_joueurs", {nb: nbJoueurs})}</Text>
+          <VStack className="flex-1 justify-between">
+            <Text className="text-white text-xl text-center">{t("nombre_joueurs", {nb: nbJoueurs})}</Text>
             <Inscriptions
               navigation={this.props.navigation}
               loadListScreen={true}
             />
-            <Box px={'$10'}>
+            <Box className="px-10">
               {this._submitButton()}
             </Box>
           </VStack>
         </VStack>
       </SafeAreaView>
-    )
+    );
   }
 }
 

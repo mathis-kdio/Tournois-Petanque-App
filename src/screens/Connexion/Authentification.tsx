@@ -1,3 +1,8 @@
+import { VStack } from "@/components/ui/vstack";
+import { Text } from "@/components/ui/text";
+import { ScrollView } from "@/components/ui/scroll-view";
+import { Input, InputField } from "@/components/ui/input";
+import { Button, ButtonText } from "@/components/ui/button";
 import React, { useState } from 'react'
 import { Alert, AppState } from 'react-native'
 import { withTranslation } from 'react-i18next';
@@ -6,7 +11,6 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
-import { Button, ButtonText, Input, InputField, ScrollView, Text, VStack } from '@gluestack-ui/themed';
 import TopBarBack from '@/components/TopBarBack';
 
 // Tells Supabase Auth to continuously refresh the session automatically if
@@ -69,12 +73,12 @@ class Authentification extends React.Component<Props, State> {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <ScrollView height={'$1'} bgColor='#0594ae'>
+        <ScrollView className="h-1 bg-[#0594ae]">
           <TopBarBack title={t("authentification")} navigation={this.props.navigation}/>
-          <VStack flex={1} px={'$10'} justifyContent='space-between'>
-            <VStack mb='$5'>
-              <VStack mb='$5'>
-                <Text color='$white' fontSize={'$md'}>{t("email")}</Text>
+          <VStack className="flex-1 px-10 justify-between">
+            <VStack className="mb-5">
+              <VStack className="mb-5">
+                <Text className="text-white text-md">{t("email")}</Text>
                 <Input>
                   <InputField
                     placeholder={t("email_adresse")}
@@ -86,8 +90,8 @@ class Authentification extends React.Component<Props, State> {
                   />
                 </Input>
               </VStack>
-              <VStack mb='$5'>
-                <Text color='$white' fontSize={'$md'}>{t("mot_de_passe")}</Text>
+              <VStack className="mb-5">
+                <Text className="text-white text-md">{t("mot_de_passe")}</Text>
                 <Input size='md'>
                   <InputField
                     placeholder={t("mot_de_passe")}
@@ -98,7 +102,7 @@ class Authentification extends React.Component<Props, State> {
                   />
                 </Input>
               </VStack>
-              <VStack mb='$5'>
+              <VStack className="mb-5">
                 <Button isDisabled={this.state.loading} onPress={() => this.signInWithEmail()}>
                   <ButtonText>Se connecter</ButtonText>
                 </Button>
@@ -112,8 +116,8 @@ class Authentification extends React.Component<Props, State> {
           </VStack>
         </ScrollView>
       </SafeAreaView>
-    )
+    );
   }
 }
 
-export default (withTranslation()(Authentification))
+export default (withTranslation()(Authentification));

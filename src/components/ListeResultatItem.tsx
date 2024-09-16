@@ -1,7 +1,11 @@
+import { VStack } from "@/components/ui/vstack";
+import { Divider } from "@/components/ui/divider";
+import { Image } from "@/components/ui/image";
+import { Text } from "@/components/ui/text";
+import { HStack } from "@/components/ui/hstack";
 import { PropsFromRedux, connector } from '@/store/connector';
 import { Joueur } from '@/types/interfaces/joueur';
 import { Victoire } from '@/types/interfaces/victoire';
-import { HStack, Text, Image, Divider, VStack } from '@gluestack-ui/themed';
 import { TFunction } from 'i18next';
 import React from 'react'
 import { withTranslation } from 'react-i18next'
@@ -32,9 +36,7 @@ class ListeResultatItem extends React.Component<Props, State> {
       joueurName = joueur.name + ' (' + (joueur.id+1) + ')';
     }
 
-    return (
-      <Text color='$white' fontSize={'$lg'}>{joueurName}</Text>
-    )
+    return <Text className="text-white text-lg">{joueurName}</Text>;
   }
 
   _fanny(joueurNumber: number) {
@@ -54,10 +56,10 @@ class ListeResultatItem extends React.Component<Props, State> {
     if (fanny == true) {
       return (
         <HStack>
-          <Image size='2xs' alt='Fanny' source={require('@assets/images/fanny.png')} /> 
-          <Text color='$white' fontSize={'$lg'}>X{nbFanny}</Text>
+          <Image size='2xs' alt='Fanny' source={require('@assets/images/fanny.png')} />
+          <Text className="text-white text-lg">X{nbFanny}</Text>
         </HStack>
-      )
+      );
     }
   }
 
@@ -65,21 +67,21 @@ class ListeResultatItem extends React.Component<Props, State> {
     const { joueur } = this.props;
     return (
       <VStack>
-        <HStack px={'$2'} py={'$0.5'}>
-          <HStack flex={2}>
-            <Text color='$white' fontSize={'$lg'}>{joueur.position} - </Text>
+        <HStack className="flex px-2 py-0.5">
+          <HStack className="basis-2/5">
+            <Text className="text-white text-lg">{joueur.position} - </Text>
             {this._displayName(joueur.joueurId)}
           </HStack>
-          <Text flex={1} textAlign='center' color='$white' fontSize={'$lg'}>{joueur.victoires}</Text>
-          <Text flex={1} textAlign='center' color='$white' fontSize={'$lg'}>{joueur.nbMatchs}</Text>
-          <HStack flex={1} justifyContent='flex-end'>
+          <Text className="basis-1/5 text-center text-white text-lg">{joueur.victoires}</Text>
+          <Text className="basis-1/5 text-center text-white text-lg">{joueur.nbMatchs}</Text>
+          <HStack className="basis-1/5 justify-end">
             {this._fanny(joueur.joueurId)}
-            <Text color='$white' fontSize={'$lg'}> {joueur.points}</Text>
+            <Text className="text-white text-lg"> {joueur.points}</Text>
           </HStack>
         </HStack>
         <Divider/>
       </VStack>
-    )
+    );
   }
 }
 

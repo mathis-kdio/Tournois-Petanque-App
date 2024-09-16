@@ -1,4 +1,11 @@
-import { VStack, Text, Input, InputField, Button, HStack, Box, ButtonText, ScrollView, KeyboardAvoidingView } from '@gluestack-ui/themed';
+import { KeyboardAvoidingView } from "@/components/ui/keyboard-avoiding-view";
+import { ScrollView } from "@/components/ui/scroll-view";
+import { Box } from "@/components/ui/box";
+import { HStack } from "@/components/ui/hstack";
+import { Button, ButtonText } from "@/components/ui/button";
+import { Input, InputField } from "@/components/ui/input";
+import { Text } from "@/components/ui/text";
+import { VStack } from "@/components/ui/vstack";
 import React from 'react'
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -59,9 +66,7 @@ class MatchDetail extends React.Component<Props, State> {
   _displayTitle(match: Match) {
     const { t } = this.props;
     let title = match.terrain ? match.terrain.name : t("match_numero")+(match.id + 1);
-    return (
-      <Text color='$white' fontSize={'$xl'} textAlign='center'>{title}</Text>
-    )
+    return <Text className="text-white text-xl text-center">{title}</Text>;
   }
 
   _displayName(joueurNumber: number, equipe: number) {
@@ -69,9 +74,9 @@ class MatchDetail extends React.Component<Props, State> {
     let joueur = listeJoueurs.find((item: Joueur) => item.id === joueurNumber);
     if (joueur) {
       if (equipe === 1) {
-        return <Text key={joueur.id} color='$white' fontSize={'$md'} textAlign='left'>{(joueur.id + 1) + ' ' + joueur.name}</Text>
+        return <Text key={joueur.id} className="text-white text-md text-left">{(joueur.id + 1) + ' ' + joueur.name}</Text>;
       } else {
-        return <Text key={joueur.id} color='$white' fontSize={'$md'} textAlign='right'>{joueur.name + ' ' + (joueur.id + 1)}</Text>
+        return <Text key={joueur.id} className="text-white text-md text-right">{joueur.name + ' ' + (joueur.id + 1)}</Text>;
       }
     }
   }
@@ -119,7 +124,7 @@ class MatchDetail extends React.Component<Props, State> {
       <Button isDisabled={btnDisabled} action='positive' onPress={() => this._envoyerResultat(match)}>
         <ButtonText>{t("valider_score")}</ButtonText>
       </Button>
-    )
+    );
   }
 
   render() {
@@ -131,28 +136,29 @@ class MatchDetail extends React.Component<Props, State> {
         style={{ flex: 1, zIndex: 999 }}
       >
         <SafeAreaView style={{flex: 1}}>
-          <ScrollView height={'$1'} bgColor='#0594ae'>
+          <ScrollView className="h-1 bg-[#0594ae]">
             <VStack>
               <TopBarBack title={t("detail_match_navigation_title")} navigation={this.props.navigation}/>
-              <VStack px={'$10'} justifyContent='space-between'>
+              <VStack className="px-10 justify-between">
                 <VStack space='xl'>
                   {this._displayTitle(match)}
-                  <HStack alignItems='center'>
-                    <Box flex={2}>
+                  <HStack className="items-center">
+                    <Box className="flex-2">
                       {this._displayEquipe(1, match)}
                     </Box>
-                    <Box flex={1} alignItems='center'>
-                      <Text color='$white' fontSize={'$xl'}>VS</Text>
+                    <Box className="flex-1 items-center">
+                      <Text className="text-white text-xl">VS</Text>
                     </Box>
-                    <Box flex={2}>
+                    <Box className="flex-2">
                       {this._displayEquipe(2, match)}
                     </Box>
                   </HStack>
                   <HStack space='lg'>
-                    <Box flex={1}>
-                    <Text color='$white' fontSize={'$md'}>{t("score_equipe_1")} </Text>
-                      <Input size='md'>
+                    <Box className="flex-1">
+                    <Text className="text-white text-md">{t("score_equipe_1")} </Text>
+                      <Input size='md' className="border-white">
                         <InputField
+                          className='text-white'
                           placeholder={t("score_placeholder", {scoreVictoire: nbPtVictoire})}
                           autoFocus={true}
                           defaultValue={match.score1.toString()}
@@ -164,10 +170,11 @@ class MatchDetail extends React.Component<Props, State> {
                         />
                       </Input>
                     </Box>
-                    <Box flex={1}>
-                    <Text color='$white' fontSize={'$md'} alignSelf='flex-end'>{t("score_equipe_2")} </Text>
-                      <Input size='md'>
+                    <Box className="flex-1">
+                    <Text className="text-white text-md self-end">{t("score_equipe_2")} </Text>
+                      <Input size='md' className="border-white">
                         <InputField
+                          className='text-white'
                           placeholder={t("score_placeholder", {scoreVictoire: nbPtVictoire})}
                           defaultValue={match.score2.toString()}
                           keyboardType='decimal-pad'
@@ -180,13 +187,13 @@ class MatchDetail extends React.Component<Props, State> {
                     </Box>
                   </HStack>
                 </VStack>
-                <VStack space='lg' my={'$5'}>
+                <VStack space='lg' className="my-5">
                   <Button action='negative' onPress={() => this._supprimerResultat()}>
                     <ButtonText>{t("supprimer_score")}</ButtonText>
                   </Button>
                   {this._boutonValider(match)}
                 </VStack>
-                <VStack mb={'$5'}>
+                <VStack className="mb-5">
                   <AdMobMatchDetailBanner/>
                 </VStack>
               </VStack>
@@ -194,7 +201,7 @@ class MatchDetail extends React.Component<Props, State> {
           </ScrollView>
         </SafeAreaView>
       </KeyboardAvoidingView>
-    )
+    );
   }
 }
 

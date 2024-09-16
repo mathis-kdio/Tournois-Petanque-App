@@ -1,7 +1,24 @@
+import { CloseIcon, Icon } from "@/components/ui/icon";
+import { Heading } from "@/components/ui/heading";
+
+import {
+  AlertDialog,
+  AlertDialogBackdrop,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogCloseButton,
+  AlertDialogBody,
+  AlertDialogFooter,
+} from "@/components/ui/alert-dialog";
+
+import { Input, InputField } from "@/components/ui/input";
+import { Button, ButtonText, ButtonGroup } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
+import { HStack } from "@/components/ui/hstack";
+import { Box } from "@/components/ui/box";
 import React from 'react'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { withTranslation } from 'react-i18next';
-import { Box, HStack, Text, Button, Input, InputField, ButtonText, AlertDialog, AlertDialogBackdrop, AlertDialogContent, AlertDialogHeader, Heading, AlertDialogCloseButton, CloseIcon, AlertDialogBody, AlertDialogFooter, ButtonGroup } from '@gluestack-ui/themed';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { PropsFromRedux, connector } from '@/store/connector';
@@ -58,7 +75,11 @@ class ListeJoueursItem extends React.Component<Props, State> {
           <AlertDialogHeader>
             <Heading>{t("supprimer_liste_modal_titre")}</Heading>
             <AlertDialogCloseButton>
-              <CloseIcon/>
+              <Icon
+                as={CloseIcon}
+                size="md"
+                className="stroke-background-400 group-[:hover]/modal-close-button:stroke-background-700 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900"
+              />
             </AlertDialogCloseButton>
           </AlertDialogHeader>
           <AlertDialogBody>
@@ -75,8 +96,8 @@ class ListeJoueursItem extends React.Component<Props, State> {
             </ButtonGroup>
           </AlertDialogFooter>
         </AlertDialogContent>
-      </AlertDialog> 
-    )
+      </AlertDialog>
+    );
   }
 
   _removeList(listId: number) {
@@ -106,7 +127,7 @@ class ListeJoueursItem extends React.Component<Props, State> {
       <Box>
         <FontAwesome5.Button name={name} backgroundColor={bgColor} iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={action}/>
       </Box>
-    )
+    );
   }
 
   _renameList(listId: number) {
@@ -130,17 +151,17 @@ class ListeJoueursItem extends React.Component<Props, State> {
         <Button action='positive' onPress={() => this._loadList(listId)}>
           <ButtonText>{t("charger")}</ButtonText>
         </Button>
-      )
+      );
     }
     else {
-      return(
+      return (
         <HStack space='md'>
           <Button action='primary' onPress={() => this._modifyList(listId)}>
             <ButtonText>{t("modifier")}</ButtonText>
           </Button>
           <FontAwesome5.Button name="times" backgroundColor="#E63535" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this.setState({modalDeleteIsOpen: true})}/>
         </HStack>
-      )
+      );
     }
   }
 
@@ -155,20 +176,19 @@ class ListeJoueursItem extends React.Component<Props, State> {
     let listName = listeJoueursInfos.name ? listeJoueursInfos.name : 'n°' + listeJoueursInfos.listId;
     if (this.state.renommerOn) {
       return (
-        <Input>
+        <Input className="border-white">
           <InputField
+            className='text-white placeholder:text-black'
             placeholder={listName}
             autoFocus={true}
             onChangeText={(text) => this._listTextInputChanged(text)}
             onSubmitEditing={() => this._renameList(listeJoueursInfos.listId)}
           />
         </Input>
-      )
+      );
     }
     else {
-      return (
-        <Text color='$white'>{t("liste")} {listName}</Text>
-      )
+      return <Text className="text-white">{t("liste")} {listName}</Text>;
     }
   }
 
@@ -176,8 +196,8 @@ class ListeJoueursItem extends React.Component<Props, State> {
     const { list } = this.props;
     let listeJoueursInfos = list.at(-1) as ListeJoueursInfos;
     return (
-      <HStack px={'$2'} my={'$2'} space='md' alignItems='center'>
-        <Box flex={1}>
+      <HStack space='md' className="px-2 my-2 items-center">
+        <Box className="flex-1">
           {this._listName(listeJoueursInfos)}
         </Box>
         <HStack space='md'>
@@ -186,7 +206,7 @@ class ListeJoueursItem extends React.Component<Props, State> {
         </HStack>
         {this._modalSupprimerListe(listeJoueursInfos.listId)}
       </HStack>
-    )
+    );
   }
 }
 

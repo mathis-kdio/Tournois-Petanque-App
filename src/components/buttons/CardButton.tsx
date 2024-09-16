@@ -1,5 +1,9 @@
+import { Badge, BadgeText } from "@/components/ui/badge";
+import { HStack } from "@/components/ui/hstack";
+import { VStack } from "@/components/ui/vstack";
+import { Pressable } from "@/components/ui/pressable";
+import { Text } from "@/components/ui/text";
 import * as React from 'react';
-import { Text, Pressable, VStack, HStack, Badge, BadgeText } from '@gluestack-ui/themed';
 import { FontAwesome5 } from '@expo/vector-icons';
 
 export interface Props {
@@ -22,22 +26,24 @@ class CardButton extends React.Component<Props, State> {
   render() {
     const { text, icon, navigate, newBadge } = this.props;
     return (
-      <Pressable bg='#1c3969' flex={1} py={'$5'} rounded={'$3xl'} onPress={() => navigate()} justifyContent='center'>
+      <Pressable
+        onPress={() => navigate()}
+        className="bg-primary-500 flex-1 py-5 rounded-3xl justify-center">
         {newBadge ?
-          <HStack mt={-20}>
-            <Badge size='lg' variant='outline' borderRadius='$full' action='error'>
+          <HStack className={` mt-${-20} `}>
+            <Badge size='lg' variant='outline' action='error' className="rounded-full">
               <FontAwesome5 name='bolt' color='#EF4444' size={12}/>
-              <BadgeText mx='$2'>Nouveau</BadgeText>
+              <BadgeText className="mx-2">Nouveau</BadgeText>
               <FontAwesome5 name='bolt' color='#EF4444' size={12}/>
             </Badge>
           </HStack>
         : <></> }
-        <VStack alignItems='center'>
+        <VStack className="items-center">
           <FontAwesome5 name={icon} color='white' size={24}/>
-          <Text color='$white'>{text}</Text>
+          <Text className="text-white">{text}</Text>
         </VStack>
       </Pressable>
-    )
+    );
   }
 }
 

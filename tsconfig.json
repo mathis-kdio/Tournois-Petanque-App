@@ -2,9 +2,10 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "baseUrl": ".",
+    //"strict": true,
     "paths": {
       "@/*": [
-        "src/*"
+        "./src/*"
       ],
       "@animations/*": [
         "./src/animations/*"
@@ -29,13 +30,4 @@
       ]
     }
   },
-  "include": [
-    "App.tsx",
-    "src/**/*.ts",
-    "src/**/*.tsx",
-  ],
-  "exclude": [
-    "config"
-  ],
-  "strict": true
 }

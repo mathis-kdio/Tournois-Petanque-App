@@ -34,7 +34,7 @@ class FadeIn extends React.Component<Props, State> {
         style={{ left: this.state.positionLeft }}>
         {this.props.children}
       </Animated.View>
-    )
+    );
 }
 }
 

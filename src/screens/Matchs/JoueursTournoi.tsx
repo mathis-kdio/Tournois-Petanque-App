@@ -1,8 +1,12 @@
+import { FlatList } from "@/components/ui/flat-list";
+import { Box } from "@/components/ui/box";
+import { Text } from "@/components/ui/text";
+import { VStack } from "@/components/ui/vstack";
+import { ButtonText, Button } from "@/components/ui/button";
 import React from 'react'
 import ListeJoueurItem from '@components/ListeJoueurItem'
 import { withTranslation } from 'react-i18next'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { ButtonText, VStack, Button, Text, Box, FlatList } from '@gluestack-ui/themed'
 import TopBarBack from '@components/TopBarBack'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { TFunction } from 'i18next'
@@ -50,7 +54,7 @@ class JoueursTournoi extends React.Component<Props, State> {
           keyExtractor={(item: Joueur) => item.id.toString() }
           renderItem={renderItem}
         />
-      )
+      );
     }
   }
 
@@ -59,20 +63,20 @@ class JoueursTournoi extends React.Component<Props, State> {
     let optionsTournoi = this.props.listeMatchs.at(-1) as OptionsTournoi;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <VStack flex={1} bgColor={"#0594ae"}>
+        <VStack className="flex-1 bg-[#0594ae]">
           <TopBarBack title={t("liste_joueurs_inscrits_navigation_title")} navigation={this.props.navigation}/>
-          <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("nombre_joueurs", {nb: optionsTournoi.listeJoueurs.length})}</Text>
-          <VStack flex={1} my={'$2'}>
+          <Text className="text-white text-xl text-center">{t("nombre_joueurs", {nb: optionsTournoi.listeJoueurs.length})}</Text>
+          <VStack className="flex-1 my-2">
             {this._displayListeJoueur(optionsTournoi)}
           </VStack>
-          <Box px={'$10'} mb={'$2'}>
+          <Box className="px-10 mb-2">
             <Button action='primary' onPress={() => this._retourMatchs()}>
               <ButtonText>{t("retour_liste_matchs_bouton")}</ButtonText>
             </Button>
           </Box>
         </VStack>
       </SafeAreaView>
-    )
+    );
   }
 }
 

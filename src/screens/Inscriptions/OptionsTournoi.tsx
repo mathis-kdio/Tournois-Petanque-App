@@ -1,6 +1,29 @@
+import { KeyboardAvoidingView } from "@/components/ui/keyboard-avoiding-view";
+import { ScrollView } from "@/components/ui/scroll-view";
+import { HStack } from "@/components/ui/hstack";
+import { Slider, SliderTrack, SliderFilledTrack, SliderThumb } from "@/components/ui/slider";
+import { CheckIcon, ChevronDownIcon } from "@/components/ui/icon";
+
+import {
+  Select,
+  SelectItem,
+  SelectTrigger,
+  SelectInput,
+  SelectIcon,
+  SelectPortal,
+  SelectBackdrop,
+  SelectContent,
+  SelectDragIndicatorWrapper,
+  SelectDragIndicator,
+} from "@/components/ui/select";
+
+import { Input, InputField } from "@/components/ui/input";
+import { Text } from "@/components/ui/text";
+import { Button, ButtonText } from "@/components/ui/button";
+import { VStack } from "@/components/ui/vstack";
+import { Checkbox, CheckboxIcon, CheckboxIndicator, CheckboxLabel } from "@/components/ui/checkbox";
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Checkbox, VStack, Button, Text, Input, Select, CheckIcon, Slider, HStack, ScrollView, ButtonText, SliderTrack, SliderFilledTrack, SliderThumb, SelectItem, CheckboxIndicator, SelectTrigger, SelectInput, SelectIcon, SelectPortal, SelectBackdrop, SelectContent, SelectDragIndicatorWrapper, SelectDragIndicator, ChevronDownIcon, InputField, CheckboxLabel, KeyboardAvoidingView } from '@gluestack-ui/themed';
 import TopBarBack from '@components/TopBarBack';
 import { withTranslation } from 'react-i18next';
 import { Platform } from 'react-native';
@@ -94,7 +117,7 @@ class OptionsTournoi extends React.Component<Props, State> {
       >
         <ButtonText>{btnTitle}</ButtonText>
       </Button>
-    )
+    );
   }
 
   render() {
@@ -105,15 +128,16 @@ class OptionsTournoi extends React.Component<Props, State> {
         style={{ flex: 1, zIndex: 999 }}
       >
         <SafeAreaView style={{flex: 1}}>
-          <ScrollView height={'$1'} bgColor='#0594ae'>
-            <VStack flex={1}>
+          <ScrollView className="h-1 bg-[#0594ae]">
+            <VStack className="flex-1">
               <TopBarBack title={t("options_tournoi_title")} navigation={this.props.navigation}/>
-              <VStack px={'$10'} space='4xl'>
+              <VStack space='4xl' className="px-10">
                 <VStack space='md'>
                   <VStack>
-                    <Text color='$white' fontSize={'$md'}>{t("indiquer_nombre_tours")} </Text>
-                    <Input size='md'>
+                    <Text className="text-white text-md">{t("indiquer_nombre_tours")} </Text>
+                    <Input size='md' className="border-white">
                       <InputField
+                        className='text-white'
                         placeholder={t("nombre_placeholder")}
                         keyboardType="numeric"
                         defaultValue={this.nbToursTxt}
@@ -122,9 +146,10 @@ class OptionsTournoi extends React.Component<Props, State> {
                     </Input>
                   </VStack>
                   <VStack>
-                    <Text color='$white' fontSize={'$md'}>{t("indiquer_nombre_points_victoire")} </Text>
-                    <Input size='md'>
+                    <Text className="text-white text-md">{t("indiquer_nombre_points_victoire")} </Text>
+                    <Input size='md' className="border-white">
                       <InputField
+                        className='text-white'
                         placeholder={t("nombre_placeholder")}
                         keyboardType="numeric"
                         defaultValue={this.nbPtVictoireTxt}
@@ -141,10 +166,10 @@ class OptionsTournoi extends React.Component<Props, State> {
                     defaultIsChecked
                     size='md'
                   >
-                    <CheckboxIndicator mr={'$2'}>
-                      <CheckIcon color={this.state.speciauxIncompatibles ? '$white' : '$cyan600'}/>
+                    <CheckboxIndicator className="mr-2 border-white">
+                      <CheckboxIcon as={CheckIcon} className="text-white bg-[#0594ae]"/>
                     </CheckboxIndicator>
-                    <CheckboxLabel>{t("options_regle_speciaux")}</CheckboxLabel>
+                    <CheckboxLabel className="text-white">{t("options_regle_speciaux")}</CheckboxLabel>
                   </Checkbox>
                   <Checkbox
                     value="memesEquipes"
@@ -153,17 +178,17 @@ class OptionsTournoi extends React.Component<Props, State> {
                     defaultIsChecked
                     size='md'
                   >
-                    <CheckboxIndicator mr={'$2'}>
-                      <CheckIcon color={this.state.memesEquipes ? '$white' : '$cyan600'}/>
+                    <CheckboxIndicator className="mr-2 border-white">
+                      <CheckboxIcon as={CheckIcon} className="text-white bg-[#0594ae]"/>
                     </CheckboxIndicator>
-                    <CheckboxLabel>{t("options_regle_equipes")}</CheckboxLabel>
+                    <CheckboxLabel className="text-white">{t("options_regle_equipes")}</CheckboxLabel>
                   </Checkbox>
                 </VStack>
                 <VStack>
-                  <Text color='$white' fontSize={'$md'}>{t("options_regle_adversaires")}</Text>
-                  <HStack justifyContent="space-between">
-                    <Text color='$white'>{t("1_seul_match")}</Text>
-                    <Text color='$white'>{t("pourcent_matchs", {pourcent: "100"})}</Text>
+                  <Text className="text-white text-md">{t("options_regle_adversaires")}</Text>
+                  <HStack className="justify-between">
+                    <Text className="text-white">{t("1_seul_match")}</Text>
+                    <Text className="text-white">{t("pourcent_matchs", {pourcent: "100"})}</Text>
                   </HStack>
                   <Slider
                     minValue={0}
@@ -174,16 +199,16 @@ class OptionsTournoi extends React.Component<Props, State> {
                     onChangeEnd={v => {this.setState({memesAdversaires: v})}}
                   >
                     <SliderTrack>
-                      <SliderFilledTrack bg='#1c3969'/>
+                      <SliderFilledTrack className="bg-[#1c3969]"/>
                     </SliderTrack>
-                    <SliderThumb bg='#1c3969'/>
+                    <SliderThumb className="bg-[#1c3969]"/>
                   </Slider>
-                  <HStack justifyContent='center'>
-                    <Text color='$white'>{t("pourcent_matchs", {pourcent: "50"})}</Text>
+                  <HStack className="justify-center">
+                    <Text className="text-white">{t("pourcent_matchs", {pourcent: "50"})}</Text>
                   </HStack>
                 </VStack>
                 <VStack>
-                  <Text color='$white' fontSize={'$md'}>{t("options_regle_complement")}</Text>
+                  <Text className="text-white text-md">{t("options_regle_complement")}</Text>
                   <Select
                     selectedValue={this.state.complement}
                     defaultValue={Complement.TRIPLETTE}
@@ -192,11 +217,9 @@ class OptionsTournoi extends React.Component<Props, State> {
                     placeholder={t("choix_complement")}
                     onValueChange={(itemValue: Complement) => this.setState({complement: itemValue})}
                   >
-                    <SelectTrigger variant='outline' size='md'>
-                      <SelectInput/>
-                      <SelectIcon mr={'$3'}>
-                        <ChevronDownIcon color='$white'/>
-                      </SelectIcon>
+                    <SelectTrigger variant='outline' size='md' className='border-white'>
+                      <SelectInput className='flex-1 text-white placeholder:text-white' placeholder={t("choix_complement")}/>
+                      <SelectIcon className="mr-3 text-white" as={ChevronDownIcon}/>
                     </SelectTrigger>
                     <SelectPortal>
                       <SelectBackdrop/>
@@ -217,10 +240,10 @@ class OptionsTournoi extends React.Component<Props, State> {
                     aria-label={t("choix_option_terrains")}
                     size='md'
                   >
-                    <CheckboxIndicator mr={'$2'}>
-                      <CheckIcon color={this.state.avecTerrains ? '$white' : '$cyan600'}/>
+                    <CheckboxIndicator className="mr-2 border-white">
+                      <CheckboxIcon as={CheckIcon} className="text-white bg-[#0594ae]"/>
                     </CheckboxIndicator>
-                    <CheckboxLabel>{t("options_terrains_explications")}</CheckboxLabel>
+                    <CheckboxLabel className="text-white">{t("options_terrains_explications")}</CheckboxLabel>
                   </Checkbox>
                 </VStack>
                 <VStack>
@@ -230,8 +253,8 @@ class OptionsTournoi extends React.Component<Props, State> {
             </VStack>
           </ScrollView>
         </SafeAreaView>
-        </KeyboardAvoidingView>
-    )
+      </KeyboardAvoidingView>
+    );
   }
 }
 

@@ -1,6 +1,21 @@
+import { ScrollView } from "@/components/ui/scroll-view";
+import { Heading } from "@/components/ui/heading";
+import { CloseIcon, Icon } from "@/components/ui/icon";
+import { Pressable } from "@/components/ui/pressable";
+
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalBackdrop,
+  ModalCloseButton,
+} from "@/components/ui/modal";
+
+import { Text } from "@/components/ui/text";
+import { VStack } from "@/components/ui/vstack";
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { VStack, Text, Modal, Pressable, ModalContent, ModalHeader, ModalBody, ModalBackdrop, ModalCloseButton, CloseIcon, Heading, ScrollView } from '@gluestack-ui/themed';
 import { FontAwesome5 } from '@expo/vector-icons';
 import TopBarBack from '@components/TopBarBack';
 import CardButton from '@components/buttons/CardButton';
@@ -34,7 +49,7 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
     const { t } = this.props;
     if (!this.state.modalType) return;
     const infosModal = {
-      "melee-demelee": {
+      "mele-demele": {
         title: t("melee_demelee"),
         text:  t("description_melee_demelee")
       },
@@ -56,11 +71,15 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
     return (
       <Modal isOpen={this.state.showModal} onClose={() => this.setState({showModal: false})}>
         <ModalBackdrop/>
-        <ModalContent maxHeight='$5/6'>
+        <ModalContent className="max-h-5/6">
           <ModalHeader>
             <Heading>{infos.title}</Heading>
             <ModalCloseButton>
-              <CloseIcon/>
+              <Icon
+                as={CloseIcon}
+                size="md"
+                className="stroke-background-400 group-[:hover]/modal-close-button:stroke-background-700 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900"
+              />
             </ModalCloseButton>
           </ModalHeader>
           <ModalBody>
@@ -68,7 +87,7 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
           </ModalBody>
         </ModalContent>
       </Modal>
-    )
+    );
   }
 
   _navigate(typeTournoi: TypeTournoi) {
@@ -81,65 +100,73 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
     const { t } = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <ScrollView height={'$1'} bgColor='#0594ae'>
+        <ScrollView className="h-1 bg-[#0594ae]">
           <TopBarBack title={t("type_tournoi")} navigation={this.props.navigation}/>
-          <VStack flex={1} px={'$10'} space='2xl'>
-            <VStack flex={1}>
+          <VStack space='2xl' className="flex-1 px-10">
+            <VStack className="flex-1">
               <CardButton
                 text={t("type_melee_demelee")}
                 icon="random"
                 navigate={() => this._navigate(TypeTournoi.MELEDEMELE)}
                 newBadge={false}
               />
-              <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: TypeTournoi.MELEDEMELE})}>
+              <Pressable
+                onPress={() => this.setState({showModal: true, modalType: TypeTournoi.MELEDEMELE})}
+                className="flex-row justify-center mt-2">
                 <FontAwesome5 name="info-circle" color='white' size={24}/>
-                <Text color='$white'> {t("savoir_plus")}</Text>
+                <Text className="text-white"> {t("savoir_plus")}</Text>
               </Pressable>
             </VStack>
-            <VStack flex={1}>
+            <VStack className="flex-1">
               <CardButton
                 text={t("type_championnat")}
                 icon="table"
                 navigate={() => this._navigate(TypeTournoi.CHAMPIONNAT)}
                 newBadge={false}
               />
-              <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: TypeTournoi.CHAMPIONNAT})}>
+              <Pressable
+                onPress={() => this.setState({showModal: true, modalType: TypeTournoi.CHAMPIONNAT})}
+                className="flex-row justify-center mt-2">
                 <FontAwesome5 name="info-circle" color='white' size={24}/>
-                <Text color='$white'> {t("savoir_plus")}</Text>
+                <Text className="text-white"> {t("savoir_plus")}</Text>
               </Pressable>
             </VStack>
-            <VStack flex={1}>
+            <VStack className="flex-1">
               <CardButton
                 text={t("type_coupe")}
                 icon="trophy"
                 navigate={() => this._navigate(TypeTournoi.COUPE)}
                 newBadge={false}
               />
-              <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: TypeTournoi.COUPE})}>
+              <Pressable
+                onPress={() => this.setState({showModal: true, modalType: TypeTournoi.COUPE})}
+                className="flex-row justify-center mt-2">
                 <FontAwesome5 name="info-circle" color='white' size={24}/>
-                <Text color='$white'> {t("savoir_plus")}</Text>
+                <Text className="text-white"> {t("savoir_plus")}</Text>
               </Pressable>
             </VStack>
-            <VStack flex={1}>
+            <VStack className="flex-1">
               <CardButton
                 text={t("type_multi_chances")}
                 icon="code-branch"
                 navigate={() => this._navigate(TypeTournoi.MULTICHANCES)}
                 newBadge={true}
               />
-              <Pressable flexDirection='row' justifyContent='center' mt={'$2'} onPress={() => this.setState({showModal: true, modalType: TypeTournoi.MULTICHANCES})}>
+              <Pressable
+                onPress={() => this.setState({showModal: true, modalType: TypeTournoi.MULTICHANCES})}
+                className="flex-row justify-center mt-2">
                 <FontAwesome5 name="info-circle" color='white' size={24}/>
-                <Text color='$white'> {t("savoir_plus")}</Text>
+                <Text className="text-white"> {t("savoir_plus")}</Text>
               </Pressable>
             </VStack>
-            <VStack m={'$10'}>
+            <VStack className="m-10">
               <AdMobInscriptionsBanner/>
             </VStack>
           </VStack>
         </ScrollView>
         {this._modalInfos()}
       </SafeAreaView>
-    )
+    );
   }
 }
 

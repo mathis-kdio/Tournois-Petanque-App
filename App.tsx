@@ -1,3 +1,4 @@
+import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import 'react-native-gesture-handler'; //https://reactnavigation.org/docs/stack-navigator/
 import 'expo-dev-client';
 import React from 'react';
@@ -11,8 +12,7 @@ import { StatusBar } from 'expo-status-bar';
 import { I18nextProvider } from 'react-i18next';
 import * as Sentry from '@sentry/react-native';
 import i18n from './i18n';
-import { GluestackUIProvider } from '@gluestack-ui/themed';
-import { config } from './config/gluestack-ui.config';
+import "./global.css"
 import "@expo/metro-runtime"; //Fast-refresh web
 import SessionProvider from '@/components/supabase/SessionProvider';
 
@@ -38,7 +38,7 @@ class App extends React.Component {
       <Provider store={Store}>
         <PersistGate persistor={persistor}>
           <SessionProvider>
-            <GluestackUIProvider config={config}>
+            <GluestackUIProvider>
               <NavigationContainer onReady={() => routingInstrumentation.registerNavigationContainer(this.navigationRef)}>
                 <I18nextProvider i18n={i18n} defaultNS={'common'}>
                   <Navigation/>
@@ -49,7 +49,7 @@ class App extends React.Component {
           </SessionProvider>
         </PersistGate>
       </Provider>
-    )
+    );
   }
 }
 

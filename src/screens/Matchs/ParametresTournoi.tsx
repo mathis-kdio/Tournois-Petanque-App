@@ -1,4 +1,20 @@
-import { VStack, Button, Text, ButtonText, AlertDialog, AlertDialogBackdrop, AlertDialogContent, AlertDialogHeader, Heading, AlertDialogCloseButton, CloseIcon, AlertDialogFooter, ButtonGroup, AlertDialogBody, ScrollView } from '@gluestack-ui/themed';
+import { ScrollView } from "@/components/ui/scroll-view";
+import { CloseIcon, Icon } from "@/components/ui/icon";
+import { Heading } from "@/components/ui/heading";
+
+import {
+  AlertDialog,
+  AlertDialogBackdrop,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogCloseButton,
+  AlertDialogFooter,
+  AlertDialogBody,
+} from "@/components/ui/alert-dialog";
+
+import { Text } from "@/components/ui/text";
+import { Button, ButtonText, ButtonGroup } from "@/components/ui/button";
+import { VStack } from "@/components/ui/vstack";
 import React from 'react'
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -55,7 +71,11 @@ class ParametresTournoi extends React.Component<Props, State> {
           <AlertDialogHeader>
             <Heading>{t("supprimer_tournoi_actuel_modal_titre")}</Heading>
             <AlertDialogCloseButton>
-              <CloseIcon/>
+              <Icon
+                as={CloseIcon}
+                size="md"
+                className="stroke-background-400 group-[:hover]/modal-close-button:stroke-background-700 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900"
+              />
             </AlertDialogCloseButton>
           </AlertDialogHeader>
           <AlertDialogBody>
@@ -73,7 +93,7 @@ class ParametresTournoi extends React.Component<Props, State> {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    )
+    );
   }
 
   render() {
@@ -85,16 +105,16 @@ class ParametresTournoi extends React.Component<Props, State> {
     }
     return (
       <SafeAreaView style={{flex: 1}}>
-        <ScrollView height={'$1'} bgColor='#0594ae'>
+        <ScrollView className="h-1 bg-[#0594ae]">
           <TopBarBack title={t("parametres_tournoi_navigation_title")} navigation={this.props.navigation}/>
-          <VStack flex={1} px={'$10'} justifyContent='space-around'>
+          <VStack className="flex-1 px-10 justify-around">
             <VStack>
-              <Text color='$white' fontSize={'$xl'} textAlign='center'>{t("options_tournoi")}</Text>
-              <Text color='$white'>{t("nombre_tours")} {parametresTournoi.nbTours.toString()}</Text>
-              <Text color='$white'>{t("nombre_points_victoire")} {parametresTournoi.nbPtVictoire.toString()}</Text>
-              <Text color='$white'>{t("regle_speciaux")} {parametresTournoi.speciauxIncompatibles ? "Activé" : "Désactivé"}</Text>
-              <Text color='$white'>{t("regle_equipes_differentes")} {parametresTournoi.memesEquipes ? "Activé" : "Désactivé"}</Text>
-              <Text color='$white'>{t("regle_adversaires")} {parametresTournoi.memesAdversaires === 0 ? "1 match" : parametresTournoi.memesAdversaires+"% des matchs"}</Text>
+              <Text className="text-white text-xl text-center">{t("options_tournoi")}</Text>
+              <Text className="text-white">{t("nombre_tours")} {parametresTournoi.nbTours.toString()}</Text>
+              <Text className="text-white">{t("nombre_points_victoire")} {parametresTournoi.nbPtVictoire.toString()}</Text>
+              <Text className="text-white">{t("regle_speciaux")} {parametresTournoi.speciauxIncompatibles ? "Activé" : "Désactivé"}</Text>
+              <Text className="text-white">{t("regle_equipes_differentes")} {parametresTournoi.memesEquipes ? "Activé" : "Désactivé"}</Text>
+              <Text className="text-white">{t("regle_adversaires")} {parametresTournoi.memesAdversaires === 0 ? "1 match" : parametresTournoi.memesAdversaires+"% des matchs"}</Text>
             </VStack>
             <VStack space='xl'>
               <Button action='negative' onPress={() => this.setState({modalDeleteIsOpen: true})}>
@@ -108,7 +128,7 @@ class ParametresTournoi extends React.Component<Props, State> {
         </ScrollView>
         {this._modalSupprimerTournoi()}
       </SafeAreaView>
-    )
+    );
   }
 }
 

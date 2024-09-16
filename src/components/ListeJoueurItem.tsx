@@ -1,6 +1,39 @@
+import { Text } from "@/components/ui/text";
+
+import {
+  Select,
+  SelectBackdrop,
+  SelectContent,
+  SelectDragIndicator,
+  SelectDragIndicatorWrapper,
+  SelectIcon,
+  SelectInput,
+  SelectItem,
+  SelectPortal,
+  SelectTrigger,
+} from "@/components/ui/select";
+
+import { Input, InputField } from "@/components/ui/input";
+import { Image } from "@/components/ui/image";
+import { Heading } from "@/components/ui/heading";
+import { HStack } from "@/components/ui/hstack";
+import { Checkbox, CheckboxIcon, CheckboxIndicator, CheckboxLabel } from "@/components/ui/checkbox";
+import { CheckIcon, ChevronDownIcon, CloseIcon, Icon } from "@/components/ui/icon";
+import { Button, ButtonGroup, ButtonText } from "@/components/ui/button";
+import { Box } from "@/components/ui/box";
+
+import {
+  AlertDialog,
+  AlertDialogBackdrop,
+  AlertDialogBody,
+  AlertDialogCloseButton,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+} from "@/components/ui/alert-dialog";
+
 import React from 'react'
 import { FontAwesome5 } from '@expo/vector-icons';
-import { AlertDialog, AlertDialogBackdrop, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, Box, Button, ButtonGroup, ButtonText, CheckIcon, Checkbox, CheckboxIndicator, CheckboxLabel, ChevronDownIcon, CloseIcon, HStack, Heading, Image, Input, InputField, Select, SelectBackdrop, SelectContent, SelectDragIndicator, SelectDragIndicatorWrapper, SelectIcon, SelectInput, SelectItem, SelectPortal, SelectTrigger, Text } from '@gluestack-ui/themed';
 import { withTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
 import { JoueurType } from '@/types/enums/joueurType';
@@ -39,10 +72,10 @@ class ListeJoueurItem extends React.Component<Props, State> {
   _showSupprimerJoueur(joueur: Joueur, isInscription: boolean) {
     if (isInscription === true) {
       return (
-        <Box ml={'$2'}>
+        <Box className="ml-2">
           <FontAwesome5.Button name="times" backgroundColor='#E63535' iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._supprimerJoueur(joueur.id)}/>
         </Box>
-      )
+      );
     }
   }
 
@@ -80,7 +113,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
       <Box>
         <FontAwesome5.Button name={name} backgroundColor={bgColor} iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={action}/>
       </Box>
-    )
+    );
   }
 
   _renommerJoueurInput(joueur: Joueur) {
@@ -125,7 +158,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
 
   _joueurName(joueur: Joueur, isInscription: boolean, avecEquipes: boolean) {
     if (this.state.renommerOn == true) {
-      return(
+      return (
         <Input variant='underlined' size='md'>
           <InputField
             placeholder={joueur.name}
@@ -134,12 +167,10 @@ class ListeJoueurItem extends React.Component<Props, State> {
             onSubmitEditing={() => this._renommerJoueur(joueur, isInscription, avecEquipes)}
           />
         </Input>
-      )
+      );
     }
     else {
-      return(
-        <Text color='$white' fontSize={'$xl'} fontWeight='$bold'>{(joueur.id+1)}-{joueur.name}</Text>
-      )
+      return <Text className="text-white text-xl font-bold">{(joueur.id+1)}-{joueur.name}</Text>;
     }
   }
 
@@ -187,9 +218,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
         >
           <SelectTrigger>
             <SelectInput placeholder={t("choix_equipe")}/>
-            <SelectIcon mr={'$3'}>
-              <ChevronDownIcon color='$white'/>
-            </SelectIcon>
+            <SelectIcon className="mr-3 text-white" as={ChevronDownIcon}/>
           </SelectTrigger>
           <SelectPortal>
             <SelectBackdrop/>
@@ -202,14 +231,12 @@ class ListeJoueurItem extends React.Component<Props, State> {
             </SelectContent>
           </SelectPortal>
         </Select>
-      )
+      );
     }
   }
 
   _equipePickerItem(equipe: number) {
-    return (
-      <SelectItem label={equipe.toString()} value={equipe.toString()} key={equipe}/>
-    )
+    return <SelectItem label={equipe.toString()} value={equipe.toString()} key={equipe}/>;
   }
 
   _joueurTypeIcon(joueurType: string) {
@@ -218,17 +245,23 @@ class ListeJoueurItem extends React.Component<Props, State> {
       return (
         <Box>
           {joueurType == JoueurType.ENFANT && <FontAwesome5 name="child" color="darkgray" size={24}/>}
-          {joueurType == JoueurType.TIREUR && <Image source={require('@assets/images/tireur.png')} alt="tireur" width={30} height={30} />}
-          {joueurType == JoueurType.POINTEUR && <Image source={require('@assets/images/pointeur.png')} alt="tireur" width={30} height={30} />}
+          {joueurType == JoueurType.TIREUR && <Image
+            source={require('@assets/images/tireur.png')}
+            alt="tireur"
+            className="w-[30px] h-[30px]" />}
+          {joueurType == JoueurType.POINTEUR && <Image
+            source={require('@assets/images/pointeur.png')}
+            alt="tireur"
+            className="w-[30px] h-[30px]" />}
         </Box>
-      )
+      );
     }
     else {
       return (
         <Box>
           {joueurType == JoueurType.ENFANT && <FontAwesome5 name="child" color="darkgray" size={24}/>}
         </Box>
-      )
+      );
     }
   }
 
@@ -240,7 +273,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
         isChecked = false;
       }
       return (
-        <Box mr={'$1'}>
+        <Box className="mr-1">
           <Checkbox
             value="joueurCheckbox"
             onChange={() => this._onCheckboxChange(isChecked, joueur.id)}
@@ -248,13 +281,13 @@ class ListeJoueurItem extends React.Component<Props, State> {
             size='md'
             isChecked={isChecked}
           >
-            <CheckboxIndicator mr={'$2'}>
-              <CheckIcon color={isChecked ? '$white' : '$cyan600'}/>
+            <CheckboxIndicator className="mr-2 border-white">
+              <CheckboxIcon as={CheckIcon} className="text-white bg-[#0594ae]"/>
             </CheckboxIndicator>
             <CheckboxLabel/>
           </Checkbox>
         </Box>
-      )
+      );
     }
   }
 
@@ -275,7 +308,11 @@ class ListeJoueurItem extends React.Component<Props, State> {
           <AlertDialogHeader>
             <Heading>{t("confirmer_uncheck_modal_titre")}</Heading>
             <AlertDialogCloseButton>
-              <CloseIcon/>
+              <Icon
+                as={CloseIcon}
+                size="md"
+                className="stroke-background-400 group-[:hover]/modal-close-button:stroke-background-700 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900"
+              />
             </AlertDialogCloseButton>
           </AlertDialogHeader>
           <AlertDialogBody>
@@ -293,7 +330,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    )
+    );
   }
 
   _ajoutCheck(joueurId: number, isChecked: boolean) {
@@ -305,20 +342,24 @@ class ListeJoueurItem extends React.Component<Props, State> {
   render() {
     const { joueur, isInscription, avecEquipes, typeEquipes, nbJoueurs, showCheckbox } = this.props;
     return (
-      <HStack borderWidth={'$1'} borderColor='$white' borderRadius={'$xl'} m={'$1'} px={'$1'} alignItems='center'>
-        {this._joueurCheckbox(showCheckbox, joueur)}
-        {this._joueurTypeIcon(joueur.type)}
-        <Box flex={2}>
-          {this._joueurName(joueur, isInscription, avecEquipes)}
-        </Box>
-        {(avecEquipes == true && <Box flex={1}>
-          {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
-        </Box>)}
-        {this._showRenommerJoueur(joueur, isInscription, avecEquipes)}
-        {this._showSupprimerJoueur(joueur, isInscription)}
-        {this._modalConfirmUncheck()}
+      <HStack className="flex border border-white rounded-xl m-1 px-1 items-center">
+        <HStack className="basis-3/5">
+          {this._joueurCheckbox(showCheckbox, joueur)}
+          {this._joueurTypeIcon(joueur.type)}
+          <Box>
+            {this._joueurName(joueur, isInscription, avecEquipes)}
+          </Box>
+        </HStack>
+        <HStack className="basis-2/5 justify-end">
+          {(avecEquipes == true && <Box>
+            {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
+          </Box>)}
+          {this._showRenommerJoueur(joueur, isInscription, avecEquipes)}
+          {this._showSupprimerJoueur(joueur, isInscription)}
+          {this._modalConfirmUncheck()}
+        </HStack>
       </HStack>
-    )
+    );
   }
 }
 
