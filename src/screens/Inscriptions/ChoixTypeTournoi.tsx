@@ -150,7 +150,7 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
                 text={t("type_multi_chances")}
                 icon="code-branch"
                 navigate={() => this._navigate(TypeTournoi.MULTICHANCES)}
-                newBadge={true}
+                newBadge={false}
               />
               <Pressable
                 onPress={() => this.setState({showModal: true, modalType: TypeTournoi.MULTICHANCES})}
