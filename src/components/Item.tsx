@@ -27,14 +27,14 @@ class Item extends React.Component<Props, State> {
   render() {
     const { text, action, icon, type, drapeau } = this.props;
 
-    let colorTxt = 'typography-white';
+    let colorTxt = 'text-typography-white';
     let btnColor = 'white';
     if (type == "danger") {
-      colorTxt = 'error-500';
+      colorTxt = 'text-red-500';
       btnColor = 'red';
     }
     else if (type == "modal") {
-      colorTxt = 'typography-black';
+      colorTxt = 'text-typography-black';
       btnColor = 'black';
     }
     return (
@@ -46,7 +46,7 @@ class Item extends React.Component<Props, State> {
               :
               <Image source={drapeau} alt="drapeau" size='xs'/>
             }
-            <Text className={`text-${colorTxt} text-md`}>{text}</Text>
+            <Text className={`${colorTxt} text-md`}>{text}</Text>
           </HStack>
           <FontAwesome5 name="arrow-right" size={20} color={btnColor}/>
         </HStack>
