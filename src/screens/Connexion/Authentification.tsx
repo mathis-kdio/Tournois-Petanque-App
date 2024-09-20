@@ -55,14 +55,15 @@ class Authentification extends React.Component<Props, State> {
       password: this.state.password,
     })
 
-    if (error) {
-      Alert.alert(error.message)
-    }
-
     this.setState({loading: false})
     console.log(data)
     console.log(error)
-    this.props.navigation.navigate('AccueilGeneral');   
+
+    if (error) {
+      Alert.alert(error.message)
+    } else {
+      this.props.navigation.navigate('AccueilGeneral');   
+    }
   }
 
   inscription() {
@@ -79,8 +80,9 @@ class Authentification extends React.Component<Props, State> {
             <VStack className="mb-5">
               <VStack className="mb-5">
                 <Text className="text-white text-md">{t("email")}</Text>
-                <Input>
+                <Input className='border-white'>
                   <InputField
+                    className='text-white placeholder:text-white'
                     placeholder={t("email_adresse")}
                     keyboardType='email-address'
                     returnKeyType='next'
@@ -92,8 +94,9 @@ class Authentification extends React.Component<Props, State> {
               </VStack>
               <VStack className="mb-5">
                 <Text className="text-white text-md">{t("mot_de_passe")}</Text>
-                <Input size='md'>
+                <Input className='border-white'>
                   <InputField
+                    className='text-white placeholder:text-white'
                     placeholder={t("mot_de_passe")}
                     secureTextEntry={true}
                     autoCapitalize={'none'}

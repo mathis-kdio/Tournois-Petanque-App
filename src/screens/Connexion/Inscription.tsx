@@ -72,8 +72,9 @@ class Inscription extends React.Component<Props, State> {
           <VStack className="flex-1 px-10 justify-between">
             <VStack className="mb-5">
               <Text className="text-white text-md">{t("email")}</Text>
-              <Input>
+              <Input className='border-white'>
                 <InputField
+                  className='text-white placeholder:text-white'
                   placeholder={t("email_adresse")}
                   keyboardType='email-address'
                   returnKeyType='next'
@@ -85,8 +86,9 @@ class Inscription extends React.Component<Props, State> {
             </VStack>
             <VStack className="mb-5">
               <Text className="text-white text-md">{t("mot_de_passe")}</Text>
-              <Input size='md'>
+              <Input className='border-white'>
                 <InputField
+                  className='text-white placeholder:text-white'
                   placeholder={t("mot_de_passe")}
                   secureTextEntry={true}
                   autoCapitalize={'none'}
