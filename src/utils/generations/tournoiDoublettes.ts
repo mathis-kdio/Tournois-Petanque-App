@@ -191,11 +191,11 @@ export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, ty
 
   //On ordonne aléatoirement les ids des joueurs non enfants à chaque début de manche
   //Les listes pointeur ou tireur en 1ère et 2ème position
-  function _randomJoueursIds() {
-    let arrayIds = [];
-    let joueursPointeursId = [];
-    let joueursTireursId = [];
-    let joueursNonTypeId = [];
+  function _randomJoueursIds(joueursPointeurs, joueursTireurs, joueursNonType) {
+    let arrayIds:number[] = [];
+    let joueursPointeursId:number[] = [];
+    let joueursTireursId:number[] = [];
+    let joueursNonTypeId:number[] = [];
     for (let i = 0; i < joueursPointeurs.length; i++) {
       joueursPointeursId.push(joueursPointeurs[i].id);
     }
@@ -243,7 +243,7 @@ export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, ty
   let breaker = 0; //permet de détecter quand boucle infinie
   for (let i = 0; i < nbTours; i++) {
     breaker = 0;
-    let random = _randomJoueursIds();
+    let random = _randomJoueursIds(joueursPointeurs, joueursTireurs, joueursNonType);
     for (let j = 0; j < joueursNonSpe.length;) {
       //Affectation joueur 1
       if (matchs[idMatch].equipe[0][0] == -1) {
