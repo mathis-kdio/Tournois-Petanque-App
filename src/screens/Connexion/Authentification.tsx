@@ -3,8 +3,8 @@ import { Text } from "@/components/ui/text";
 import { ScrollView } from "@/components/ui/scroll-view";
 import { Input, InputField } from "@/components/ui/input";
 import { Button, ButtonText } from "@/components/ui/button";
-import React, { useState } from 'react'
-import { Alert, AppState } from 'react-native'
+import React from 'react'
+import { Alert, AppState, TextInput } from 'react-native'
 import { withTranslation } from 'react-i18next';
 import { supabase } from '@/utils/supabase';
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -37,7 +37,7 @@ interface State {
 }
 
 class Authentification extends React.Component<Props, State> {
-  mdpInput: React.ElementRef<typeof InputField> = null;
+  mdpInput = React.createRef<TextInput>();
 
   constructor(props: Props) {
     super(props)
@@ -86,7 +86,7 @@ class Authentification extends React.Component<Props, State> {
                     returnKeyType='next'
                     autoCapitalize='none'
                     onChangeText={(text) => this.setState({email: text})}
-                    onSubmitEditing={() => this.mdpInput.focus()}
+                    onSubmitEditing={() => this.mdpInput.current.focus()}
                   />
                 </Input>
               </VStack>
@@ -98,7 +98,7 @@ class Authentification extends React.Component<Props, State> {
                     secureTextEntry={true}
                     autoCapitalize={'none'}
                     onChangeText={(text) => this.setState({password: text})}
-                    ref={ref => {this.mdpInput = ref}}
+                    ref={this.mdpInput}
                   />
                 </Input>
               </VStack>

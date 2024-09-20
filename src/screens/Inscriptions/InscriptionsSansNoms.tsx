@@ -5,6 +5,7 @@ import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import React from 'react'
 import { withTranslation } from 'react-i18next'
+import { TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import TopBarBack from '@components/TopBarBack'
 import { StackNavigationProp } from '@react-navigation/stack'
@@ -25,6 +26,8 @@ interface State {
 }
 
 class InscriptionsSansNoms extends React.Component<Props, State> {
+  secondInput = React.createRef<TextInput>();
+
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -140,7 +143,7 @@ class InscriptionsSansNoms extends React.Component<Props, State> {
                   autoFocus={true}
                   blurOnSubmit={false}
                   onChangeText={(text) => this._textInputJoueursNormaux(text)}
-                  onSubmitEditing={() => this.secondInput.focus()}
+                  onSubmitEditing={() => this.secondInput.current.focus()}
                 />
               </Input>
             </VStack>
@@ -151,7 +154,7 @@ class InscriptionsSansNoms extends React.Component<Props, State> {
                   placeholder={t("nombre_placeholder")}
                   keyboardType='number-pad'
                   onChangeText={(text) => this._textInputJoueursEnfants(text)}
-                  ref={ref => {this.secondInput = ref}}
+                  ref={this.secondInput}
                 />
               </Input>
             </VStack>

@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@components/TopBarBack';
 import AdMobMatchDetailBanner from '../../components/adMob/AdMobMatchDetailBanner';
 import { nextMatch } from '../../utils/generations/nextMatch/nextMatch';
-import { Platform } from 'react-native';
+import { Platform, TextInput } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { Joueur } from '@/types/interfaces/joueur';
@@ -34,6 +34,8 @@ interface State {
 }
 
 class MatchDetail extends React.Component<Props, State> {
+  secondInput = React.createRef<TextInput>();
+
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -166,7 +168,7 @@ class MatchDetail extends React.Component<Props, State> {
                           returnKeyType='next'
                           maxLength={2}
                           onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 1)}
-                          onSubmitEditing={() => this.secondInput.focus()}
+                          onSubmitEditing={() => this.secondInput.current.focus()}
                         />
                       </Input>
                     </Box>
@@ -181,7 +183,7 @@ class MatchDetail extends React.Component<Props, State> {
                           maxLength={2}
                           onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 2)}
                           onSubmitEditing={() => this._envoyerResultat(match)}
-                          ref={ref => {this.secondInput = ref}}
+                          ref={this.secondInput}
                         />
                       </Input>
                     </Box>

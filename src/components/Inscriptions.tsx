@@ -32,7 +32,7 @@ import { TypeEquipes } from '@/types/enums/typeEquipes'
 import { Joueur } from '@/types/interfaces/joueur'
 import { ModeTournoi } from '@/types/enums/modeTournoi'
 import { PropsFromRedux, connector } from '@/store/connector';
-import { ListRenderItem } from 'react-native';
+import { ListRenderItem, TextInput } from 'react-native';
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any,any>;
@@ -52,7 +52,7 @@ interface State {
 
 class Inscription extends React.Component<Props, State> {
   joueurText: string = "";
-  addPlayerTextInput: React.RefObject<unknown> = React.createRef();
+  addPlayerTextInput = React.createRef<TextInput>();
 
   constructor(props: Props) {
     super(props)
