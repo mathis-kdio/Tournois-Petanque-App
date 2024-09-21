@@ -159,8 +159,9 @@ class ListeJoueurItem extends React.Component<Props, State> {
   _joueurName(joueur: Joueur, isInscription: boolean, avecEquipes: boolean) {
     if (this.state.renommerOn == true) {
       return (
-        <Input variant='underlined' size='md'>
+        <Input variant='underlined'>
           <InputField
+            className='text-white placeholder:text-white'
             placeholder={joueur.name}
             autoFocus={true}
             onChangeText={(text: string) => this._joueurTxtInputChanged(text)}
@@ -216,9 +217,9 @@ class ListeJoueurItem extends React.Component<Props, State> {
           aria-label={t("choix_equipe")}
           onValueChange={itemValue => this._ajoutEquipe(joueur.id, parseInt(itemValue))}
         >
-          <SelectTrigger>
-            <SelectInput placeholder={t("choix_equipe")}/>
-            <SelectIcon className="mr-3 text-white" as={ChevronDownIcon}/>
+          <SelectTrigger className="flex flex-row">
+            <SelectInput className="basis-5/6 text-white placeholder:text-white" placeholder={t("choix_equipe")}/>
+            <SelectIcon className="basis-1/6 mr-3 text-white" as={ChevronDownIcon}/>
           </SelectTrigger>
           <SelectPortal>
             <SelectBackdrop/>
@@ -341,23 +342,28 @@ class ListeJoueurItem extends React.Component<Props, State> {
 
   render() {
     const { joueur, isInscription, avecEquipes, typeEquipes, nbJoueurs, showCheckbox } = this.props;
+    let flexsize = avecEquipes ? ['basis-6/12', 'basis-6/12', 'basis-6/12', 'basis-3/12'] : ['basis-9/12', 'basis-3/12', 'basis-0/12', 'basis-6/12'];
     return (
-      <HStack className="flex border border-white rounded-xl m-1 px-1 items-center">
-        <HStack className="basis-3/5">
+      <HStack className="flex flex-row border border-white rounded-xl m-1 px-1 items-center">
+        <HStack className={`${flexsize[0]}`}>
           {this._joueurCheckbox(showCheckbox, joueur)}
           {this._joueurTypeIcon(joueur.type)}
           <Box>
             {this._joueurName(joueur, isInscription, avecEquipes)}
           </Box>
         </HStack>
-        <HStack className="basis-2/5 justify-end">
-          {(avecEquipes == true && <Box>
+        <HStack className={`${flexsize[1]} justify-end`}>
+          {(avecEquipes == true && <HStack className={`${flexsize[2]}`}>
             {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
-          </Box>)}
+          </HStack>)}
+          <HStack className={`${flexsize[3]}`}>
           {this._showRenommerJoueur(joueur, isInscription, avecEquipes)}
+          </HStack>
+          <HStack className={`${flexsize[3]}`}>
           {this._showSupprimerJoueur(joueur, isInscription)}
-          {this._modalConfirmUncheck()}
+          </HStack>
         </HStack>
+        {this._modalConfirmUncheck()}
       </HStack>
     );
   }

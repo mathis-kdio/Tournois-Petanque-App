@@ -69,7 +69,7 @@ class JoueurType extends React.Component<Props, State> {
         onValueChange={(itemValue: JoueurTypeEnum) => _setJoueurType(itemValue)}
       >
         <SelectTrigger variant='rounded' className='border-white'>
-          <SelectInput className='placeholder:text-white' placeholder={t("choisir_poste")}/>
+          <SelectInput className="text-white placeholder:text-white" placeholder={t("choisir_poste")}/>
           <SelectIcon className="mr-3 text-white" as={ChevronDownIcon}/>
         </SelectTrigger>
         <SelectPortal>

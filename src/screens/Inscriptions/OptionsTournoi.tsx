@@ -135,9 +135,9 @@ class OptionsTournoi extends React.Component<Props, State> {
                 <VStack space='md'>
                   <VStack>
                     <Text className="text-white text-md">{t("indiquer_nombre_tours")} </Text>
-                    <Input size='md' className="border-white">
+                    <Input className="border-white">
                       <InputField
-                        className='text-white'
+                        className='text-white placeholder:text-white'
                         placeholder={t("nombre_placeholder")}
                         keyboardType="numeric"
                         defaultValue={this.nbToursTxt}
@@ -147,9 +147,9 @@ class OptionsTournoi extends React.Component<Props, State> {
                   </VStack>
                   <VStack>
                     <Text className="text-white text-md">{t("indiquer_nombre_points_victoire")} </Text>
-                    <Input size='md' className="border-white">
+                    <Input className="border-white">
                       <InputField
-                        className='text-white'
+                        className='text-white placeholder:text-white'
                         placeholder={t("nombre_placeholder")}
                         keyboardType="numeric"
                         defaultValue={this.nbPtVictoireTxt}
@@ -218,7 +218,7 @@ class OptionsTournoi extends React.Component<Props, State> {
                     onValueChange={(itemValue: Complement) => this.setState({complement: itemValue})}
                   >
                     <SelectTrigger variant='outline' size='md' className='border-white'>
-                      <SelectInput className='flex-1 text-white placeholder:text-white' placeholder={t("choix_complement")}/>
+                      <SelectInput className="flex-1 text-white placeholder:text-white" placeholder={t("choix_complement")}/>
                       <SelectIcon className="mr-3 text-white" as={ChevronDownIcon}/>
                     </SelectTrigger>
                     <SelectPortal>

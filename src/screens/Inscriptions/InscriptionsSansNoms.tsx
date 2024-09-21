@@ -118,6 +118,7 @@ class InscriptionsSansNoms extends React.Component<Props, State> {
         isDisabled={boutonDesactive}
         action='positive'
         onPress={() => this._commencer()}
+        className="h-min min-h-10"
       >
         <ButtonText>{boutonTitle}</ButtonText>
       </Button>
@@ -134,8 +135,9 @@ class InscriptionsSansNoms extends React.Component<Props, State> {
             <Text className="text-white text-center text-xl">{t("nombre_joueurs", {nb: this._nbJoueurs()})}</Text>
             <VStack>
               <Text className="text-white text-md">{t("nombre_joueurs_adultes")} </Text>
-              <Input size='md'>
+              <Input className='border-white'>
                 <InputField
+                  className='text-white placeholder:text-white'
                   placeholder={t("nombre_placeholder")}
                   keyboardType='number-pad'
                   returnKeyType='next'
@@ -148,8 +150,9 @@ class InscriptionsSansNoms extends React.Component<Props, State> {
             </VStack>
             <VStack>
               <Text className="text-white text-md">{t("nombre_joueurs_enfants")} </Text>
-              <Input size='md'>
+              <Input className='border-white'>
                 <InputField
+                  className='text-white placeholder:text-white'
                   placeholder={t("nombre_placeholder")}
                   keyboardType='number-pad'
                   onChangeText={(text) => this._textInputJoueursEnfants(text)}

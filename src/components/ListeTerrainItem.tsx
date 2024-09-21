@@ -76,6 +76,7 @@ class ListeTerrainItem extends React.Component<Props, State> {
       return (
         <Input>
           <InputField
+            className='text-white placeholder:text-white'
             placeholder={terrain.name}
             autoFocus={true}
             onChangeText={(text) => this._terrainTxtInputChanged(text)}
