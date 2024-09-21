@@ -152,6 +152,7 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
         action={btnDisabled ? 'negative' : btnAction}
         onPress={() => this._commencer()}
         size='md'
+        className="h-min"
       >
         <ButtonText>{title}</ButtonText>
       </Button>
