@@ -4,7 +4,7 @@ import { ScrollView } from "@/components/ui/scroll-view";
 import { Input, InputField } from "@/components/ui/input";
 import { Button, ButtonText } from "@/components/ui/button";
 import React from 'react'
-import { Alert, AppState, TextInput } from 'react-native'
+import { Alert, AppState } from 'react-native'
 import { withTranslation } from 'react-i18next';
 import { supabase } from '@/utils/supabase';
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -37,7 +37,7 @@ interface State {
 }
 
 class Inscription extends React.Component<Props, State> {
-  mdpInput = React.createRef<TextInput>();
+  mdpInput = React.createRef<any>();
 
   constructor(props: Props) {
     super(props)
