@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@components/TopBarBack';
 import AdMobMatchDetailBanner from '../../components/adMob/AdMobMatchDetailBanner';
 import { nextMatch } from '../../utils/generations/nextMatch/nextMatch';
-import { Platform, TextInput } from 'react-native';
+import { Platform } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { Joueur } from '@/types/interfaces/joueur';
@@ -34,7 +34,7 @@ interface State {
 }
 
 class MatchDetail extends React.Component<Props, State> {
-  secondInput = React.createRef<TextInput>();
+  secondInput = React.createRef<any>();
 
   constructor(props: Props) {
     super(props)

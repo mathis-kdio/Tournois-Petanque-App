@@ -14,20 +14,37 @@ import { withStates } from '@gluestack-ui/nativewind-utils/withStates';
 import type { VariantProps } from '@gluestack-ui/nativewind-utils';
 const SCOPE = 'INPUT';
 
-const PrimitiveIcon = React.forwardRef(
+type IPrimitiveIcon = {
+  height?: number | string;
+  width?: number | string;
+  fill?: string;
+  color?: string;
+  size?: number | string;
+  stroke?: string;
+  as?: React.ElementType;
+  className?: string;
+  classNameColor?: string;
+};
+
+const PrimitiveIcon = React.forwardRef<
+  React.ElementRef<typeof Svg>,
+  IPrimitiveIcon
+>(
   (
     {
       height,
       width,
       fill,
       color,
+      classNameColor,
       size,
       stroke = 'currentColor',
       as: AsComp,
       ...props
-    }: any,
-    ref?: any
+    },
+    ref
   ) => {
+    color = color ?? classNameColor;
     const sizeProps = useMemo(() => {
       if (size) return { size };
       if (height && width) return { height, width };
@@ -36,34 +53,29 @@ const PrimitiveIcon = React.forwardRef(
       return {};
     }, [size, height, width]);
 
-    const colorProps =
-      stroke === 'currentColor' && color !== undefined ? color : stroke;
+    let colorProps = {};
+    if (fill) {
+      colorProps = { ...colorProps, fill: fill };
+    }
+    if (stroke !== 'currentColor') {
+      colorProps = { ...colorProps, stroke: stroke };
+    } else if (stroke === 'currentColor' && color !== undefined) {
+      colorProps = { ...colorProps, stroke: color };
+    }
 
     if (AsComp) {
-      return (
-        <AsComp
-          ref={ref}
-          fill={fill}
-          {...props}
-          {...sizeProps}
-          stroke={colorProps}
-        />
-      );
+      return <AsComp ref={ref} {...props} {...sizeProps} {...colorProps} />;
     }
     return (
-      <Svg
-        ref={ref}
-        height={height}
-        width={width}
-        fill={fill}
-        stroke={colorProps}
-        {...props}
-      />
+      <Svg ref={ref} height={height} width={width} {...colorProps} {...props} />
     );
   }
 );
 
-const InputWrapper = React.forwardRef(({ ...props }: any, ref?: any) => {
+const InputWrapper = React.forwardRef<
+  React.ElementRef<typeof View>,
+  React.ComponentProps<typeof View>
+>(({ ...props }, ref) => {
   return <View {...props} ref={ref} />;
 });
 
@@ -151,32 +163,24 @@ cssInterop(UIInput.Slot, { className: 'style' });
 cssInterop(UIInput.Input, {
   className: { target: 'style', nativeStyleToProp: { textAlign: true } },
 });
+//@ts-ignore
 cssInterop(UIInput.Icon, {
   className: {
     target: 'style',
     nativeStyleToProp: {
       height: true,
       width: true,
-      // @ts-ignore
       fill: true,
-      color: true,
+      color: 'classNameColor',
       stroke: true,
     },
   },
 });
 
 type IInputProps = React.ComponentProps<typeof UIInput> &
-  VariantProps<typeof inputStyle>;
-const Input = React.forwardRef(
-  (
-    {
-      className,
-      variant = 'outline',
-      size = 'md',
-      ...props
-    }: { className?: string } & IInputProps,
-    ref?: any
-  ) => {
+  VariantProps<typeof inputStyle> & { className?: string };
+const Input = React.forwardRef<React.ElementRef<typeof UIInput>, IInputProps>(
+  ({ className, variant = 'outline', size = 'md', ...props }, ref) => {
     return (
       <UIInput
         ref={ref}
@@ -188,100 +192,92 @@ const Input = React.forwardRef(
   }
 );
 
-type IInputIconProps = React.ComponentProps<typeof UIInput.Icon> & { as: any };
-const InputIcon = React.forwardRef(
-  (
-    {
-      className,
-      size,
-      ...props
-    }: {
-      className?: any;
-      as?: any;
-    } & IInputIconProps,
-    ref?: any
-  ) => {
-    const { size: parentSize } = useStyleContext(SCOPE);
+type IInputIconProps = React.ComponentProps<typeof UIInput.Icon> & {
+  className?: string;
+};
 
-    if (typeof size === 'number') {
-      return (
-        <UIInput.Icon
-          ref={ref}
-          {...props}
-          className={inputIconStyle({ class: className })}
-          size={size}
-        />
-      );
-    } else if (
-      (props.height !== undefined || props.width !== undefined) &&
-      size === undefined
-    ) {
-      return (
-        <UIInput.Icon
-          ref={ref}
-          {...props}
-          className={inputIconStyle({ class: className })}
-        />
-      );
-    }
+const InputIcon = React.forwardRef<
+  React.ElementRef<typeof UIInput.Icon>,
+  IInputIconProps
+>(({ className, size, ...props }, ref) => {
+  const { size: parentSize } = useStyleContext(SCOPE);
+
+  if (typeof size === 'number') {
     return (
       <UIInput.Icon
         ref={ref}
         {...props}
-        className={inputIconStyle({
-          parentVariants: {
-            size: parentSize,
-          },
-          class: className,
-        })}
+        className={inputIconStyle({ class: className })}
+        size={size}
+      />
+    );
+  } else if (
+    (props.height !== undefined || props.width !== undefined) &&
+    size === undefined
+  ) {
+    return (
+      <UIInput.Icon
+        ref={ref}
+        {...props}
+        className={inputIconStyle({ class: className })}
       />
     );
   }
-);
+  return (
+    <UIInput.Icon
+      ref={ref}
+      {...props}
+      className={inputIconStyle({
+        parentVariants: {
+          size: parentSize,
+        },
+        class: className,
+      })}
+    />
+  );
+});
 
 type IInputSlotProps = React.ComponentProps<typeof UIInput.Slot> &
-  VariantProps<typeof inputSlotStyle>;
-const InputSlot = React.forwardRef(
-  (
-    { className, ...props }: { className?: string } & IInputSlotProps,
-    ref?: any
-  ) => {
-    return (
-      <UIInput.Slot
-        ref={ref}
-        {...props}
-        className={inputSlotStyle({
-          class: className,
-        })}
-      />
-    );
-  }
-);
+  VariantProps<typeof inputSlotStyle> & { className?: string };
+
+const InputSlot = React.forwardRef<
+  React.ElementRef<typeof UIInput.Slot>,
+  IInputSlotProps
+>(({ className, ...props }, ref) => {
+  return (
+    <UIInput.Slot
+      ref={ref}
+      {...props}
+      className={inputSlotStyle({
+        class: className,
+      })}
+    />
+  );
+});
 
 type IInputFieldProps = React.ComponentProps<typeof UIInput.Input> &
-  VariantProps<typeof inputFieldStyle>;
-const InputField = React.forwardRef(
-  (
-    { className, ...props }: { className?: string } & IInputFieldProps,
-    ref?: any
-  ) => {
-    const { variant: parentVariant, size: parentSize } = useStyleContext(SCOPE);
+  VariantProps<typeof inputFieldStyle> & { className?: string };
 
-    return (
-      <UIInput.Input
-        ref={ref}
-        {...props}
-        className={inputFieldStyle({
-          parentVariants: {
-            variant: parentVariant,
-            size: parentSize,
-          },
-          class: className,
-        })}
-      />
-    );
-  }
-);
+const InputField = React.forwardRef<
+  React.ElementRef<typeof UIInput.Input>,
+  IInputFieldProps
+>(({ className, ...props }, ref) => {
+  const { variant: parentVariant, size: parentSize } = useStyleContext(SCOPE);
+
+  return (
+    <UIInput.Input
+      ref={ref}
+      {...props}
+      className={inputFieldStyle({
+        parentVariants: {
+          variant: parentVariant,
+          size: parentSize,
+        },
+        class: className,
+      })}
+    />
+  );
+});
 
 Input.displayName = 'Input';
 InputIcon.displayName = 'InputIcon';
