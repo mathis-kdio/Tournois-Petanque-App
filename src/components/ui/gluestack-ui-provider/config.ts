@@ -7,7 +7,7 @@ export const config = {
     '--color-primary-50': '153 153 153',
     '--color-primary-100': '128 128 128',
     '--color-primary-200': '115 115 115',
-    '--color-primary-300': '102 102 102',
+    '--color-primary-300': '28, 57, 105', //valeur modifiée manuellement
     '--color-primary-400': '82 82 82',
     '--color-primary-500': '28, 57, 105', //valeur modifiée manuellement
     '--color-primary-600': '41 41 41',

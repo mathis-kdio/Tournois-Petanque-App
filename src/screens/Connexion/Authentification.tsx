@@ -1,7 +1,7 @@
 import { VStack } from "@/components/ui/vstack";
 import { Text } from "@/components/ui/text";
 import { ScrollView } from "@/components/ui/scroll-view";
-import { Input, InputField } from "@/components/ui/input";
+import { Input, InputField, InputSlot } from "@/components/ui/input";
 import { Button, ButtonText } from "@/components/ui/button";
 import React from 'react'
 import { Alert, AppState } from 'react-native'
@@ -12,6 +12,10 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import TopBarBack from '@/components/TopBarBack';
+import { Divider } from "@/components/ui/divider";
+import { HStack } from "@/components/ui/hstack";
+import { FontAwesome5 } from '@expo/vector-icons';
+
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
@@ -34,6 +38,7 @@ interface State {
   loading: boolean;
   email: string;
   password: string;
+  showPassword: boolean;
 }
 
 class Authentification extends React.Component<Props, State> {
@@ -44,7 +49,8 @@ class Authentification extends React.Component<Props, State> {
     this.state = {
       loading: false,
       email: "",
-      password: ""
+      password: "",
+      showPassword: false
     }
   }
 
@@ -98,21 +104,48 @@ class Authentification extends React.Component<Props, State> {
                   <InputField
                     className='text-white placeholder:text-white'
                     placeholder={t("mot_de_passe")}
-                    secureTextEntry={true}
+                    type={this.state.showPassword ? "text" : "password"}
                     autoCapitalize={'none'}
                     onChangeText={(text) => this.setState({password: text})}
                     ref={this.mdpInput}
                   />
+                  <InputSlot className="pr-3">
+                    <FontAwesome5.Button 
+                      name={this.state.showPassword ? "eye" : "eye-slash"}
+                      backgroundColor="#00000000"
+                      iconStyle={{marginRight: 0}}
+                      size={16}
+                      onPress={() => this.setState({showPassword: !this.state.showPassword})}
+                    />
+                  </InputSlot>
                 </Input>
+                <Button className="text-white self-end" size="sm" variant="link" isDisabled={true}>
+                  <ButtonText className="text-white">Mot de passe oublié ?</ButtonText>
+                </Button>
               </VStack>
-              <VStack className="mb-5">
-                <Button isDisabled={this.state.loading} onPress={() => this.signInWithEmail()}>
+              <VStack>
+                <Button size="lg" isDisabled={this.state.loading} onPress={() => this.signInWithEmail()}>
                   <ButtonText>Se connecter</ButtonText>
                 </Button>
               </VStack>
             </VStack>
-            <VStack>
-              <Button isDisabled={this.state.loading} onPress={() => this.inscription()}>
+            <VStack space="md">
+              <Text className="text-white self-center" size="lg">Ou se connecter avec</Text>
+              <HStack className="flex" space="lg">
+                <Button className="grow" size="lg" variant="outline" isDisabled={true} onPress={() => this.inscription()}>
+                  <FontAwesome5 name="apple" color='white' size={18} style={{marginRight: 5}}/>
+                  <ButtonText className="text-white">Apple</ButtonText>
+                </Button>
+                <Button className="grow" size="lg" variant="outline" isDisabled={true} onPress={() => this.inscription()}>
+                  <FontAwesome5 name="google" color='white' size={14} className="mr-2"/>
+                  <ButtonText className="text-white">Google</ButtonText>
+                </Button>
+              </HStack>
+            </VStack>
+            <Divider className="my-5"/>
+            <VStack space="md">
+              <Text className="text-white self-center" size="lg">Pas encore de compte ?</Text>
+              <Button size="lg" isDisabled={this.state.loading} onPress={() => this.inscription()}>
                 <ButtonText>Créer un compte</ButtonText>
               </Button>
             </VStack>
