@@ -219,12 +219,16 @@
     "mon_compte": "Mon compte",
     "email": "E-mail",
     "mot_de_passe": "Mot de passe",
+    "mot_de_passe_confirmation": "Mot de passe de confirmation",
     "email_adresse": "e-mail@adresse.fr",
     "identifiants_invalides": "Identifiants invalides",
     "mot_de_passe_oublie": "Mot de passe oublié ?",
+    "accepte_termes_conditions": "J'accepte les termes et conditions",
     "ou_connecter_avec": "Ou se connecter avec",
+    "ou_creer_compte_avec": "Ou créer un compte avec",
     "pas_encore_compte": "Pas encore de compte ?",
-    "creer_compte": "Créer un compte",
+    "creer_un_compte": "Créer un compte",
+    "creer_le_compte": "Créer le compte",
     "se_connecter": "Se connecter",
     "se_deconnecter": "Se déconnecter"
   }

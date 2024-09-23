@@ -7,10 +7,10 @@ export const config = {
     '--color-primary-50': '153 153 153',
     '--color-primary-100': '128 128 128',
     '--color-primary-200': '115 115 115',
-    '--color-primary-300': '28, 57, 105', //valeur modifiée manuellement
+    '--color-primary-300': '28, 57, 105', //valeur modifiée
     '--color-primary-400': '82 82 82',
-    '--color-primary-500': '28, 57, 105', //valeur modifiée manuellement
-    '--color-primary-600': '41 41 41',
+    '--color-primary-500': '28, 57, 105', //valeur modifiée
+    '--color-primary-600': '255 255 255', //valeur modifiée pour éviter data-[checked=true]:border-white & data-[checked=true]:bg-white sur checkbox indicator
     '--color-primary-700': '31 31 31',
     '--color-primary-800': '13 13 13',
     '--color-primary-900': '10 10 10',
@@ -108,10 +108,10 @@ export const config = {
     '--color-typography-300': '212 212 212',
     '--color-typography-400': '163 163 163',
     '--color-typography-500': '140 140 140',
-    '--color-typography-600': '115 115 115',
+    '--color-typography-600': '255 255 255', //valeur modifiée pour éviter text-white sur checkbox-label
     '--color-typography-700': '82 82 82',
     '--color-typography-800': '64 64 64',
-    '--color-typography-900': '38 38 39',
+    '--color-typography-900': '255 255 255', //valeur modifiée pour éviter data-[checked=true]:text-white sur checkbox label
     '--color-typography-950': '23 23 23',
 
     /* Outline */
@@ -120,7 +120,7 @@ export const config = {
     '--color-outline-100': '230 230 230',
     '--color-outline-200': '221 220 219',
     '--color-outline-300': '211 211 211',
-    '--color-outline-400': '165 163 163',
+    '--color-outline-400': '255 255 255', //valeur modifiée pour éviter border-white sur checkbox
     '--color-outline-500': '140 141 141',
     '--color-outline-600': '115 116 116',
     '--color-outline-700': '83 82 82',
@@ -133,7 +133,7 @@ export const config = {
     '--color-background-50': '246 246 246',
     '--color-background-100': '242 241 241',
     '--color-background-200': '220 219 219',
-    '--color-background-300': '255 255 255', //valeur modifiée manuellement pour éviter border-white
+    '--color-background-300': '255 255 255', //valeur modifiée pour éviter border-white
     '--color-background-400': '162 163 163',
     '--color-background-500': '142 142 142',
     '--color-background-600': '116 116 116',
