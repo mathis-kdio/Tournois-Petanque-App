@@ -41,7 +41,7 @@ interface State {
   email: string;
   password: string;
   showPassword: boolean;
-  loginCorrect: boolean;
+  loginIncorrect: boolean;
 }
 
 class Authentification extends React.Component<Props, State> {
@@ -54,7 +54,7 @@ class Authentification extends React.Component<Props, State> {
       email: "",
       password: "",
       showPassword: false,
-      loginCorrect: false
+      loginIncorrect: false
     }
   }
 
@@ -64,14 +64,13 @@ class Authentification extends React.Component<Props, State> {
       email: this.state.email,
       password: this.state.password,
     });
-
     this.setState({loading: false});
+
     console.log(data);
     console.log(error);
-
     if (error) {
       this.setState({
-        loginCorrect: true
+        loginIncorrect: true
       });
     } else {
       this.props.navigation.navigate('AccueilGeneral');   
@@ -91,12 +90,14 @@ class Authentification extends React.Component<Props, State> {
           <VStack className="flex-1 px-10 justify-between">
             <VStack className="mb-5">
               <FormControl
-                isInvalid={this.state.loginCorrect}
+                isInvalid={this.state.loginIncorrect}
                 isRequired={true}
                 className="mb-5"
               >
                 <FormControlLabel className="mb-1">
-                  <FormControlLabelText className="text-white">{t("email")}</FormControlLabelText>
+                  <FormControlLabelText className="text-white">
+                    {t("email")}
+                  </FormControlLabelText>
                 </FormControlLabel>
                 <Input>
                   <InputField
@@ -112,19 +113,21 @@ class Authentification extends React.Component<Props, State> {
                 <FormControlError>
                   <FormControlErrorIcon as={AlertCircleIcon} />
                   <FormControlErrorText>
-                  {t("identifiants_invalides")}
+                    {t("identifiants_invalides")}
                   </FormControlErrorText>
                 </FormControlError>
               </FormControl>
               <FormControl
-                isInvalid={this.state.loginCorrect}
+                isInvalid={this.state.loginIncorrect}
                 isRequired={true}
                 className="mb-5"
               >
                 <FormControlLabel className="mb-1">
-                  <FormControlLabelText className="text-white">{t("mot_de_passe")}</FormControlLabelText>
+                  <FormControlLabelText className="text-white">
+                    {t("mot_de_passe")}
+                  </FormControlLabelText>
                 </FormControlLabel>
-                <Input /*className='border-white'*/>
+                <Input>
                   <InputField
                     className='text-white placeholder:text-white'
                     placeholder={t("mot_de_passe")}
@@ -155,32 +158,42 @@ class Authentification extends React.Component<Props, State> {
                   </ButtonText>
                 </Button>
               </FormControl>
-              <Button size="lg" isDisabled={this.state.loading} onPress={() => this.signInWithEmail()}>
-                <ButtonText>
-                  {t("se_connecter")}
-                </ButtonText>
-              </Button>
+              <FormControl>
+                <Button size="lg" isDisabled={this.state.loading} onPress={() => this.signInWithEmail()}>
+                  <ButtonText>
+                    {t("se_connecter")}
+                  </ButtonText>
+                </Button>
+              </FormControl>
             </VStack>
             <VStack space="md">
               <Text className="text-white self-center" size="lg">
                 {t("ou_connecter_avec")}
               </Text>
               <HStack className="flex" space="lg">
-                <Button className="grow" size="lg" variant="outline" isDisabled={true} onPress={() => this.inscription()}>
+                <Button className="grow" size="lg" variant="outline" isDisabled={true}>
                   <FontAwesome5 name="apple" color='white' size={18} style={{marginRight: 5}}/>
-                  <ButtonText className="text-white">Apple</ButtonText>
+                  <ButtonText className="text-white">
+                    Apple
+                  </ButtonText>
                 </Button>
-                <Button className="grow" size="lg" variant="outline" isDisabled={true} onPress={() => this.inscription()}>
+                <Button className="grow" size="lg" variant="outline" isDisabled={true}>
                   <FontAwesome5 name="google" color='white' size={14} className="mr-2"/>
-                  <ButtonText className="text-white">Google</ButtonText>
+                  <ButtonText className="text-white">
+                    Google
+                  </ButtonText>
                 </Button>
               </HStack>
             </VStack>
             <Divider className="my-5"/>
             <VStack space="md">
-              <Text className="text-white self-center" size="lg">{t("pas_encore_compte")}</Text>
+              <Text className="text-white self-center" size="lg">
+                {t("pas_encore_compte")}
+              </Text>
               <Button size="lg" isDisabled={this.state.loading} onPress={() => this.inscription()}>
-                <ButtonText>{t("creer_compte")}</ButtonText>
+                <ButtonText>
+                  {t("creer_un_compte")}
+                </ButtonText>
               </Button>
             </VStack>
           </VStack>
