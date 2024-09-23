@@ -220,6 +220,12 @@
     "email": "E-mail",
     "mot_de_passe": "Mot de passe",
     "email_adresse": "e-mail@adresse.fr",
+    "identifiants_invalides": "Identifiants invalides",
+    "mot_de_passe_oublie": "Mot de passe oublié ?",
+    "ou_connecter_avec": "Ou se connecter avec",
+    "pas_encore_compte": "Pas encore de compte ?",
+    "creer_compte": "Créer un compte",
+    "se_connecter": "Se connecter",
     "se_deconnecter": "Se déconnecter"
   }
 }

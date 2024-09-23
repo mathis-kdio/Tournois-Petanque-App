@@ -15,6 +15,8 @@ import TopBarBack from '@/components/TopBarBack';
 import { Divider } from "@/components/ui/divider";
 import { HStack } from "@/components/ui/hstack";
 import { FontAwesome5 } from '@expo/vector-icons';
+import { FormControl, FormControlError, FormControlErrorIcon, FormControlErrorText, FormControlLabel, FormControlLabelText } from "@/components/ui/form-control";
+import { AlertCircleIcon } from "@/components/ui/icon";
 
 
 // Tells Supabase Auth to continuously refresh the session automatically if
@@ -39,6 +41,7 @@ interface State {
   email: string;
   password: string;
   showPassword: boolean;
+  loginCorrect: boolean;
 }
 
 class Authentification extends React.Component<Props, State> {
@@ -50,23 +53,26 @@ class Authentification extends React.Component<Props, State> {
       loading: false,
       email: "",
       password: "",
-      showPassword: false
+      showPassword: false,
+      loginCorrect: false
     }
   }
 
   async signInWithEmail() {
-    this.setState({loading: true})
+    this.setState({loading: true});
     const { error, data } = await supabase.auth.signInWithPassword({
       email: this.state.email,
       password: this.state.password,
-    })
+    });
 
-    this.setState({loading: false})
-    console.log(data)
-    console.log(error)
+    this.setState({loading: false});
+    console.log(data);
+    console.log(error);
 
     if (error) {
-      Alert.alert(error.message)
+      this.setState({
+        loginCorrect: true
+      });
     } else {
       this.props.navigation.navigate('AccueilGeneral');   
     }
@@ -84,9 +90,15 @@ class Authentification extends React.Component<Props, State> {
           <TopBarBack title={t("authentification")} navigation={this.props.navigation}/>
           <VStack className="flex-1 px-10 justify-between">
             <VStack className="mb-5">
-              <VStack className="mb-5">
-                <Text className="text-white text-md">{t("email")}</Text>
-                <Input className='border-white'>
+              <FormControl
+                isInvalid={this.state.loginCorrect}
+                isRequired={true}
+                className="mb-5"
+              >
+                <FormControlLabel className="mb-1">
+                  <FormControlLabelText className="text-white">{t("email")}</FormControlLabelText>
+                </FormControlLabel>
+                <Input>
                   <InputField
                     className='text-white placeholder:text-white'
                     placeholder={t("email_adresse")}
@@ -97,10 +109,22 @@ class Authentification extends React.Component<Props, State> {
                     onSubmitEditing={() => this.mdpInput.current.focus()}
                   />
                 </Input>
-              </VStack>
-              <VStack className="mb-5">
-                <Text className="text-white text-md">{t("mot_de_passe")}</Text>
-                <Input className='border-white'>
+                <FormControlError>
+                  <FormControlErrorIcon as={AlertCircleIcon} />
+                  <FormControlErrorText>
+                  {t("identifiants_invalides")}
+                  </FormControlErrorText>
+                </FormControlError>
+              </FormControl>
+              <FormControl
+                isInvalid={this.state.loginCorrect}
+                isRequired={true}
+                className="mb-5"
+              >
+                <FormControlLabel className="mb-1">
+                  <FormControlLabelText className="text-white">{t("mot_de_passe")}</FormControlLabelText>
+                </FormControlLabel>
+                <Input /*className='border-white'*/>
                   <InputField
                     className='text-white placeholder:text-white'
                     placeholder={t("mot_de_passe")}
@@ -119,18 +143,28 @@ class Authentification extends React.Component<Props, State> {
                     />
                   </InputSlot>
                 </Input>
+                <FormControlError>
+                  <FormControlErrorIcon as={AlertCircleIcon} />
+                  <FormControlErrorText>
+                    {t("identifiants_invalides")}
+                  </FormControlErrorText>
+                </FormControlError>
                 <Button className="text-white self-end" size="sm" variant="link" isDisabled={true}>
-                  <ButtonText className="text-white">Mot de passe oublié ?</ButtonText>
+                  <ButtonText className="text-white">
+                    {t("mot_de_passe_oublie")}
+                  </ButtonText>
                 </Button>
-              </VStack>
-              <VStack>
-                <Button size="lg" isDisabled={this.state.loading} onPress={() => this.signInWithEmail()}>
-                  <ButtonText>Se connecter</ButtonText>
-                </Button>
-              </VStack>
+              </FormControl>
+              <Button size="lg" isDisabled={this.state.loading} onPress={() => this.signInWithEmail()}>
+                <ButtonText>
+                  {t("se_connecter")}
+                </ButtonText>
+              </Button>
             </VStack>
             <VStack space="md">
-              <Text className="text-white self-center" size="lg">Ou se connecter avec</Text>
+              <Text className="text-white self-center" size="lg">
+                {t("ou_connecter_avec")}
+              </Text>
               <HStack className="flex" space="lg">
                 <Button className="grow" size="lg" variant="outline" isDisabled={true} onPress={() => this.inscription()}>
                   <FontAwesome5 name="apple" color='white' size={18} style={{marginRight: 5}}/>
@@ -144,9 +178,9 @@ class Authentification extends React.Component<Props, State> {
             </VStack>
             <Divider className="my-5"/>
             <VStack space="md">
-              <Text className="text-white self-center" size="lg">Pas encore de compte ?</Text>
+              <Text className="text-white self-center" size="lg">{t("pas_encore_compte")}</Text>
               <Button size="lg" isDisabled={this.state.loading} onPress={() => this.inscription()}>
-                <ButtonText>Créer un compte</ButtonText>
+                <ButtonText>{t("creer_compte")}</ButtonText>
               </Button>
             </VStack>
           </VStack>

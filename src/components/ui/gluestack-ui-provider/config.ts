@@ -133,7 +133,7 @@ export const config = {
     '--color-background-50': '246 246 246',
     '--color-background-100': '242 241 241',
     '--color-background-200': '220 219 219',
-    '--color-background-300': '213 212 212',
+    '--color-background-300': '255 255 255', //valeur modifiée manuellement pour éviter border-white
     '--color-background-400': '162 163 163',
     '--color-background-500': '142 142 142',
     '--color-background-600': '116 116 116',
