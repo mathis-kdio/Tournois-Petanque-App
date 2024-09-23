@@ -4,7 +4,7 @@ import { ScrollView } from "@/components/ui/scroll-view";
 import { Input, InputField, InputSlot } from "@/components/ui/input";
 import { Button, ButtonText } from "@/components/ui/button";
 import React from 'react'
-import { Alert, AppState } from 'react-native'
+import { AppState } from 'react-native'
 import { withTranslation } from 'react-i18next';
 import { supabase } from '@/utils/supabase';
 import { SafeAreaView } from 'react-native-safe-area-context'
