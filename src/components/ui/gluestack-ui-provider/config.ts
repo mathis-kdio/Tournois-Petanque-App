@@ -107,7 +107,7 @@ export const config = {
     '--color-typography-200': '219 219 220',
     '--color-typography-300': '212 212 212',
     '--color-typography-400': '163 163 163',
-    '--color-typography-500': '140 140 140',
+    '--color-typography-500': '255 255 255', //valeur modifiée pour éviter text-white sur FormControlHelperText
     '--color-typography-600': '255 255 255', //valeur modifiée pour éviter text-white sur checkbox-label
     '--color-typography-700': '82 82 82',
     '--color-typography-800': '64 64 64',

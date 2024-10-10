@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import TopBarBack from '@/components/TopBarBack';
-import { FormControl, FormControlError, FormControlErrorIcon, FormControlErrorText, FormControlLabel, FormControlLabelText } from "@/components/ui/form-control";
+import { FormControl, FormControlError, FormControlErrorIcon, FormControlErrorText, FormControlHelper, FormControlHelperText, FormControlLabel, FormControlLabelText } from "@/components/ui/form-control";
 import { AlertCircleIcon, CheckIcon } from "@/components/ui/icon";
 import { HStack } from "@/components/ui/hstack";
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -39,10 +39,13 @@ interface State {
   loading: boolean;
   email: string;
   password: string;
+  password2: string;
+  conditionsCheckbox: boolean;
   showPassword1: boolean;
   showPassword2: boolean;
   emailIncorrect: boolean;
   passwordIncorrect: boolean;
+  password2Incorrect: boolean;
 }
 
 class Inscription extends React.Component<Props, State> {
@@ -55,14 +58,39 @@ class Inscription extends React.Component<Props, State> {
       loading: false,
       email: "",
       password: "",
+      password2: "",
+      conditionsCheckbox: false,
       showPassword1: false,
       showPassword2: false,
       emailIncorrect: false,
       passwordIncorrect: false,
+      password2Incorrect: false,
     }
   }
 
+  isValidEmail(email: string): boolean {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;    
+    return emailRegex.test(email);
+  }
+
+  isValidPassword(password: string): boolean {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/;    
+    return passwordRegex.test(password);
+  }
+
   async signUpWithEmail() {
+    let isValidEmail = this.isValidEmail(this.state.email);
+    let isValidPassword = this.isValidPassword(this.state.password);
+    let isValidPassword2 = this.state.password2 == this.state.password;
+    this.setState({
+      emailIncorrect: !isValidEmail,
+      passwordIncorrect: !isValidPassword,
+      password2Incorrect: !isValidPassword2,
+    });
+    if (!isValidEmail || !isValidPassword || !isValidPassword2) {
+      return;
+    }
+
     this.setState({loading: true});
     const {
       data: { session },
@@ -73,15 +101,19 @@ class Inscription extends React.Component<Props, State> {
     });
     this.setState({loading: false});
 
-    console.log(error);
     console.log(session);
     if (error) {
+      console.log(error);
       Alert.alert(error.message);
     } else {
       if (!session) {
         Alert.alert('Please check your inbox for email verification!');
       }
     }
+  }
+
+  isButtonDisable() {
+    return this.state.loading || this.state.email.length == 0 || this.state.password.length == 0 || this.state.password2.length == 0 || !this.state.conditionsCheckbox;
   }
 
   render() {
@@ -116,7 +148,7 @@ class Inscription extends React.Component<Props, State> {
                 <FormControlError>
                   <FormControlErrorIcon as={AlertCircleIcon} />
                   <FormControlErrorText>
-                    {t("")}TODO
+                    {t("email_non_valide")}
                   </FormControlErrorText>
                 </FormControlError>
               </FormControl>
@@ -153,18 +185,23 @@ class Inscription extends React.Component<Props, State> {
                 <FormControlError>
                   <FormControlErrorIcon as={AlertCircleIcon} />
                   <FormControlErrorText>
-                    {t("")}TODO
+                    {t("mdp_non_valide")}
                   </FormControlErrorText>
                 </FormControlError>
+                <FormControlHelper>
+                  <FormControlHelperText>
+                    {t("mdp_consignes")}
+                  </FormControlHelperText>
+                </FormControlHelper>
               </FormControl>
               <FormControl
-                isInvalid={this.state.passwordIncorrect}
+                isInvalid={this.state.password2Incorrect}
                 isRequired={true}
                 className="mb-5"
               >
                 <FormControlLabel className="mb-1">
                   <FormControlLabelText className="text-white">
-                    {t("")}TODO
+                    {t("mot_de_passe_confirmation")}
                   </FormControlLabelText>
                 </FormControlLabel>
                 <Input>
@@ -173,7 +210,7 @@ class Inscription extends React.Component<Props, State> {
                     placeholder={t("mot_de_passe")}
                     type={this.state.showPassword2 ? "text" : "password"}
                     autoCapitalize={'none'}
-                    onChangeText={(text) => this.setState({password: text})}
+                    onChangeText={(text) => this.setState({password2: text})}
                     ref={this.mdpInput2}
                   />
                   <InputSlot className="pr-3">
@@ -189,16 +226,24 @@ class Inscription extends React.Component<Props, State> {
                 <FormControlError>
                   <FormControlErrorIcon as={AlertCircleIcon} />
                   <FormControlErrorText>
-                    {t("mot_de_passe_confirmation")}
+                    {t("mdp_non_valide")}
                   </FormControlErrorText>
                 </FormControlError>
+                <FormControlHelper>
+                  <FormControlHelperText>
+                    {t("mdp_non_identique")}
+                  </FormControlHelperText>
+                </FormControlHelper>
               </FormControl>
               <FormControl
-                isInvalid={this.state.passwordIncorrect}
+                isInvalid={!this.state.conditionsCheckbox}
                 isRequired={true}
                 className="mb-5"
               >                
-                <Checkbox value="Mango">
+                <Checkbox
+                  value="conditionsCheckbox"
+                  onChange={() => this.setState({conditionsCheckbox: !this.state.conditionsCheckbox})}
+                >
                   <CheckboxIndicator className='mr-2'>
                     <CheckboxIcon>
                       <CheckIcon />
@@ -210,7 +255,11 @@ class Inscription extends React.Component<Props, State> {
                 </Checkbox>
               </FormControl>
               <FormControl>
-                <Button size="lg" isDisabled={this.state.loading} onPress={() => this.signUpWithEmail()}>
+                <Button 
+                  size="lg" 
+                  isDisabled={this.isButtonDisable()} 
+                  onPress={() => this.signUpWithEmail()}
+                >
                   <ButtonText>
                     {t("creer_le_compte")}
                   </ButtonText>
