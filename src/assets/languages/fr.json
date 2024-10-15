@@ -234,6 +234,10 @@
     "creer_un_compte": "Créer un compte",
     "creer_le_compte": "Créer le compte",
     "se_connecter": "Se connecter",
-    "se_deconnecter": "Se déconnecter"
+    "se_deconnecter": "Se déconnecter",
+    "confirmation_email": "Confirmation de l'email",
+    "confirmation_email_text_1": "Un email de confirmation vient d'être envoyé à :",
+    "confirmation_email_text_2": "Veuillez cliquer sur le lien dans le mail.",
+    "retour_accueil": "Retourner à l'accueil"
   }
 }

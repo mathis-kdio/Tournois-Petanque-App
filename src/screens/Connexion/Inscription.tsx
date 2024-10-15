@@ -107,7 +107,7 @@ class Inscription extends React.Component<Props, State> {
       Alert.alert(error.message);
     } else {
       if (!session) {
-        Alert.alert('Please check your inbox for email verification!');
+        this.props.navigation.navigate("ConfirmationEmail", { email: this.state.email })
       }
     }
   }
