@@ -163,7 +163,7 @@ class MatchDetail extends React.Component<Props, State> {
                           className='text-white placeholder:text-white'
                           placeholder={t("score_placeholder", {scoreVictoire: nbPtVictoire})}
                           autoFocus={true}
-                          defaultValue={match.score1.toString()}
+                          defaultValue={match.score1 !== undefined ? match.score1.toString() : ""}
                           keyboardType='decimal-pad'
                           returnKeyType='next'
                           maxLength={2}
@@ -178,7 +178,7 @@ class MatchDetail extends React.Component<Props, State> {
                         <InputField
                           className='text-white placeholder:text-white'
                           placeholder={t("score_placeholder", {scoreVictoire: nbPtVictoire})}
-                          defaultValue={match.score2.toString()}
+                          defaultValue={match.score2 !== undefined ? match.score2.toString() : ""}
                           keyboardType='decimal-pad'
                           maxLength={2}
                           onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 2)}
