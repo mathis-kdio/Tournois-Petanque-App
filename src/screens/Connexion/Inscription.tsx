@@ -167,6 +167,7 @@ class Inscription extends React.Component<Props, State> {
                     className='text-white placeholder:text-white'
                     placeholder={t("mot_de_passe")}
                     type={this.state.showPassword1 ? "text" : "password"}
+                    returnKeyType='next'
                     autoCapitalize={'none'}
                     onChangeText={(text) => this.setState({password: text})}
                     onSubmitEditing={() => this.mdpInput2.current.focus()}
