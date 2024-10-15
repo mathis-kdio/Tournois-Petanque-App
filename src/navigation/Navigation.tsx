@@ -37,6 +37,7 @@ import CreateListeJoueurs from '@screens/ListesJoueurs/CreateListeJoueurs';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { Match } from '@/types/interfaces/match';
 import { Tournoi } from '@/types/interfaces/tournoi';
+import ConfirmationEmail from "@/screens/Connexion/ConfirmationEmail";
 
 const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -244,11 +245,19 @@ function ParametresStack() {
   );
 }
 
+export type ConnexionStackParamList = {
+  Authentification: null;
+  ConfirmationEmail: { email: string };
+  Inscription: null;
+  Compte: null;
+};
+
 function ConnexionStack() {
   const { t } = useTranslation();
   return (
     <Stack.Navigator initialRouteName='Authentification' screenOptions={{headerTitleAlign: 'center', headerStyle: {backgroundColor: '#ffda00'}, headerTitleStyle: {color: '#1c3969'}}}>
       <Stack.Screen name="Authentification" component={Authentification} options={{title: t("authentification"), headerShown: false}} />
+      <Stack.Screen name="ConfirmationEmail" component={ConfirmationEmail} options={{title: t("confirmation_email"), headerShown: false}} />
       <Stack.Screen name="Inscription" component={Inscription} options={{title: t("inscription"), headerShown: false}} />
       <Stack.Screen name="Compte" component={Compte} options={{title: t("mon_compte"), headerShown: false}} />
     </Stack.Navigator>

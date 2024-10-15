@@ -219,7 +219,25 @@
     "mon_compte": "Mon compte",
     "email": "E-mail",
     "mot_de_passe": "Mot de passe",
+    "mot_de_passe_confirmation": "Mot de passe de confirmation",
     "email_adresse": "e-mail@adresse.fr",
-    "se_deconnecter": "Se déconnecter"
+    "identifiants_invalides": "Identifiants invalides",
+    "email_non_valide": "email non valide",
+    "mdp_non_valide": "mot de passe non valide",
+    "mdp_non_identique": "Doit être identique au 1er mot de passe",
+    "mdp_consignes": "Doit comporter au moins 10 caractères dont 1 lettre majuscule, 1 minuscule, 1 chiffre, 1 caractère spécial",
+    "mot_de_passe_oublie": "Mot de passe oublié ?",
+    "accepte_termes_conditions": "J'accepte les termes et conditions",
+    "ou_connecter_avec": "Ou se connecter avec",
+    "ou_creer_compte_avec": "Ou créer un compte avec",
+    "pas_encore_compte": "Pas encore de compte ?",
+    "creer_un_compte": "Créer un compte",
+    "creer_le_compte": "Créer le compte",
+    "se_connecter": "Se connecter",
+    "se_deconnecter": "Se déconnecter",
+    "confirmation_email": "Confirmation de l'email",
+    "confirmation_email_text_1": "Un email de confirmation vient d'être envoyé à :",
+    "confirmation_email_text_2": "Veuillez cliquer sur le lien dans le mail.",
+    "retour_accueil": "Retourner à l'accueil"
   }
 }
