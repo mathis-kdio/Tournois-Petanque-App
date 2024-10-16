@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['expo', 'prettier', 'universe/native'],
+  extends: ['expo', 'prettier'],
   plugins: ['prettier'],
   rules: {
     'prettier/prettier': 'error',
