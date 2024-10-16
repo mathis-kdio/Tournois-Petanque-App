@@ -108,14 +108,16 @@ class Accueil extends React.Component<Props, State> {
             this.props.navigation.navigate('ConnexionStack', {
               screen: 'Compte',
             })
-          }>
+          }
+        >
           <ButtonText>{t('mon_compte')}</ButtonText>
         </Button>
       );
     } else {
       return (
         <Button
-          onPress={() => this.props.navigation.navigate('ConnexionStack')}>
+          onPress={() => this.props.navigation.navigate('ConnexionStack')}
+        >
           <ButtonText>{t('authentification')}</ButtonText>
         </Button>
       );
@@ -166,13 +168,15 @@ class Accueil extends React.Component<Props, State> {
                 <HStack space="sm" className="justify-center">
                   <Pressable
                     onPress={() => _openURL(facebook)}
-                    className="items-center bg-[#1c3969] rounded-3xl p-3">
+                    className="items-center bg-[#1c3969] rounded-3xl p-3"
+                  >
                     <FontAwesome5 name="facebook" color="white" size={20} />
                     <Text className="text-white">{t('rejoindre_page_fb')}</Text>
                   </Pressable>
                   <Pressable
                     onPress={() => _openURL(website)}
-                    className="items-center bg-[#1c3969] rounded-3xl p-3">
+                    className="items-center bg-[#1c3969] rounded-3xl p-3"
+                  >
                     <FontAwesome5 name="globe" color="white" size={20} />
                     <Text className="text-white">{t('voir_website')}</Text>
                   </Pressable>
@@ -185,26 +189,30 @@ class Accueil extends React.Component<Props, State> {
                         appleMarketReviews,
                       )
                     }
-                    className="flex-1 items-center bg-[#1c3969] rounded-3xl p-2">
+                    className="flex-1 items-center bg-[#1c3969] rounded-3xl p-2"
+                  >
                     <FontAwesome5 name="star" color="white" size={20} />
                   </Pressable>
                   <Pressable
                     onPress={() => _openURL(mail)}
-                    className="flex-1 items-center bg-[#1c3969] rounded-3xl p-2">
+                    className="flex-1 items-center bg-[#1c3969] rounded-3xl p-2"
+                  >
                     <FontAwesome5 name="envelope" color="white" size={20} />
                   </Pressable>
                   <Pressable
                     onPress={() =>
                       this.props.navigation.navigate('ParametresStack')
                     }
-                    className="flex-1 items-center bg-[#1c3969] rounded-3xl p-2">
+                    className="flex-1 items-center bg-[#1c3969] rounded-3xl p-2"
+                  >
                     <FontAwesome5 name="wrench" color="white" size={20} />
                   </Pressable>
                 </HStack>
                 <HStack className="justify-center">
                   <Pressable
                     onPress={() => _openURL(gcuWebsite)}
-                    className="items-center bg-[#1c3969] rounded-3xl p-3">
+                    className="items-center bg-[#1c3969] rounded-3xl p-3"
+                  >
                     <Text className="text-white text-md">
                       {t('decouvrir_gcu')}
                     </Text>
