@@ -1,4 +1,4 @@
-import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
+import { GluestackUIProvider } from '@/components/ui/gluestack-ui-provider';
 import 'react-native-gesture-handler'; //https://reactnavigation.org/docs/stack-navigator/
 import 'expo-dev-client';
 import React from 'react';
@@ -7,13 +7,16 @@ import { Provider } from 'react-redux';
 import Store from '@store/configureStore';
 import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/es/integration/react';
-import { NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  createNavigationContainerRef,
+} from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { I18nextProvider } from 'react-i18next';
 import * as Sentry from '@sentry/react-native';
 import i18n from './i18n';
-import "./global.css"
-import "@expo/metro-runtime"; //Fast-refresh web
+import './global.css';
+import '@expo/metro-runtime'; //Fast-refresh web
 import SessionProvider from '@/components/supabase/SessionProvider';
 
 const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
@@ -39,10 +42,16 @@ class App extends React.Component {
         <PersistGate persistor={persistor}>
           <SessionProvider>
             <GluestackUIProvider>
-              <NavigationContainer onReady={() => routingInstrumentation.registerNavigationContainer(this.navigationRef)}>
+              <NavigationContainer
+                onReady={() =>
+                  routingInstrumentation.registerNavigationContainer(
+                    this.navigationRef,
+                  )
+                }
+              >
                 <I18nextProvider i18n={i18n} defaultNS={'common'}>
-                  <Navigation/>
-                  <StatusBar style="light" backgroundColor="#0594ae"/>
+                  <Navigation />
+                  <StatusBar style="light" backgroundColor="#0594ae" />
                 </I18nextProvider>
               </NavigationContainer>
             </GluestackUIProvider>
@@ -53,4 +62,6 @@ class App extends React.Component {
   }
 }
 
-export default Sentry.wrap(App, {touchEventBoundaryProps: { labelName: "accessibilityLabel" }});
+export default Sentry.wrap(App, {
+  touchEventBoundaryProps: { labelName: 'accessibilityLabel' },
+});
