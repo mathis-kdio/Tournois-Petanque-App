@@ -96,7 +96,7 @@ class Inscription extends React.Component<Props, State> {
   async signUpWithEmail() {
     let isValidEmail = this.isValidEmail(this.state.email);
     let isValidPassword = this.isValidPassword(this.state.password);
-    let isValidPassword2 = this.state.password2 == this.state.password;
+    let isValidPassword2 = this.state.password2 === this.state.password;
     this.setState({
       emailIncorrect: !isValidEmail,
       passwordIncorrect: !isValidPassword,
@@ -132,9 +132,9 @@ class Inscription extends React.Component<Props, State> {
   isButtonDisable() {
     return (
       this.state.loading ||
-      this.state.email.length == 0 ||
-      this.state.password.length == 0 ||
-      this.state.password2.length == 0 ||
+      this.state.email.length === 0 ||
+      this.state.password.length === 0 ||
+      this.state.password2.length === 0 ||
       !this.state.conditionsCheckbox
     );
   }

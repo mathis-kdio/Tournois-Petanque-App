@@ -53,38 +53,38 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
     const optionsTournoi = this.props.optionsTournoi;
     let nbEquipes = 0;
 
-    if (optionsTournoi.typeEquipes == TypeEquipes.TETEATETE) {
+    if (optionsTournoi.typeEquipes === TypeEquipes.TETEATETE) {
       nbEquipes = nbJoueurs;
-    } else if (optionsTournoi.typeEquipes == TypeEquipes.DOUBLETTE) {
+    } else if (optionsTournoi.typeEquipes === TypeEquipes.DOUBLETTE) {
       nbEquipes = Math.ceil(nbJoueurs / 2);
     } else {
       nbEquipes = Math.ceil(nbJoueurs / 3);
     }
 
     if (
-      optionsTournoi.typeTournoi == TypeTournoi.COUPE &&
+      optionsTournoi.typeTournoi === TypeTournoi.COUPE &&
       (nbEquipes < 4 || Math.log2(nbEquipes) % 1 !== 0)
     ) {
       title = t('configuration_impossible_coupe');
       btnDisabled = true;
     } else if (
-      optionsTournoi.typeTournoi == TypeTournoi.MULTICHANCES &&
-      (nbEquipes == 0 || nbEquipes % 8 != 0)
+      optionsTournoi.typeTournoi === TypeTournoi.MULTICHANCES &&
+      (nbEquipes === 0 || nbEquipes % 8 !== 0)
     ) {
       title = t('configuration_impossible_multichances');
       btnDisabled = true;
-    } else if (optionsTournoi.mode == ModeTournoi.AVECEQUIPES) {
+    } else if (optionsTournoi.mode === ModeTournoi.AVECEQUIPES) {
       if (
         listesJoueurs.avecEquipes.find(
           (el: Joueur) =>
-            el.equipe == undefined || el.equipe == 0 || el.equipe > nbEquipes,
-        ) != undefined
+            el.equipe === undefined || el.equipe === 0 || el.equipe > nbEquipes,
+        ) !== undefined
       ) {
         title = t('joueurs_sans_equipe');
         btnDisabled = true;
-      } else if (optionsTournoi.typeEquipes == TypeEquipes.TETEATETE) {
+      } else if (optionsTournoi.typeEquipes === TypeEquipes.TETEATETE) {
         if (
-          listesJoueurs.avecEquipes.length % 2 != 0 ||
+          listesJoueurs.avecEquipes.length % 2 !== 0 ||
           listesJoueurs.avecEquipes.length < 2
         ) {
           title = t('nombre_equipe_multiple_2');
@@ -93,7 +93,7 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
           for (let i = 0; i < nbEquipes; i++) {
             let count = listesJoueurs.avecEquipes.reduce(
               (counter: number, obj: Joueur) =>
-                obj.equipe == i ? (counter += 1) : counter,
+                obj.equipe === i ? (counter += 1) : counter,
               0,
             );
             if (count > 1) {
@@ -103,10 +103,10 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
             }
           }
         }
-      } else if (optionsTournoi.typeEquipes == TypeEquipes.DOUBLETTE) {
+      } else if (optionsTournoi.typeEquipes === TypeEquipes.DOUBLETTE) {
         if (
-          listesJoueurs.avecEquipes.length % 4 != 0 ||
-          listesJoueurs.avecEquipes.length == 0
+          listesJoueurs.avecEquipes.length % 4 !== 0 ||
+          listesJoueurs.avecEquipes.length === 0
         ) {
           title = t('equipe_doublette_multiple_4');
           btnDisabled = true;
@@ -114,7 +114,7 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
           for (let i = 0; i < nbEquipes; i++) {
             let count = listesJoueurs.avecEquipes.reduce(
               (counter: number, obj: Joueur) =>
-                obj.equipe == i ? (counter += 1) : counter,
+                obj.equipe === i ? (counter += 1) : counter,
               0,
             );
             if (count > 2) {
@@ -125,49 +125,49 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
           }
         }
       } else if (
-        optionsTournoi.typeEquipes == TypeEquipes.TRIPLETTE &&
-        (listesJoueurs.avecEquipes.length % 6 != 0 ||
-          listesJoueurs.avecEquipes.length == 0)
+        optionsTournoi.typeEquipes === TypeEquipes.TRIPLETTE &&
+        (listesJoueurs.avecEquipes.length % 6 !== 0 ||
+          listesJoueurs.avecEquipes.length === 0)
       ) {
         title = t('equipe_triplette_multiple_6');
         btnDisabled = true;
       }
     } else if (
-      optionsTournoi.typeEquipes == TypeEquipes.TETEATETE &&
-      (listesJoueurs.avecNoms.length % 2 != 0 ||
+      optionsTournoi.typeEquipes === TypeEquipes.TETEATETE &&
+      (listesJoueurs.avecNoms.length % 2 !== 0 ||
         listesJoueurs.avecNoms.length < 2)
     ) {
       title = t('tete_a_tete_multiple_2');
       btnDisabled = true;
     } else if (
-      optionsTournoi.typeEquipes == TypeEquipes.DOUBLETTE &&
-      (listesJoueurs.avecNoms.length % 4 != 0 ||
+      optionsTournoi.typeEquipes === TypeEquipes.DOUBLETTE &&
+      (listesJoueurs.avecNoms.length % 4 !== 0 ||
         listesJoueurs.avecNoms.length < 4)
     ) {
       if (listesJoueurs.avecNoms.length < 4) {
         title = t('joueurs_insuffisants');
         btnDisabled = true;
       } else if (
-        listesJoueurs.avecNoms.length % 2 == 0 &&
-        optionsTournoi.complement == Complement.TETEATETE
+        listesJoueurs.avecNoms.length % 2 === 0 &&
+        optionsTournoi.complement === Complement.TETEATETE
       ) {
         title = t('complement_tete_a_tete');
         btnAction = 'warning';
-      } else if (optionsTournoi.complement == Complement.TRIPLETTE) {
-        if (listesJoueurs.avecNoms.length == 7) {
+      } else if (optionsTournoi.complement === Complement.TRIPLETTE) {
+        if (listesJoueurs.avecNoms.length === 7) {
           title = t('configuration_impossible');
           btnDisabled = true;
         } else {
           title = t('complement_triplette');
           btnAction = 'warning';
         }
-      } else if (optionsTournoi.complement != Complement.TRIPLETTE) {
+      } else if (optionsTournoi.complement !== Complement.TRIPLETTE) {
         title = t('blocage_complement');
         btnDisabled = true;
       }
     } else if (
-      optionsTournoi.typeEquipes == TypeEquipes.TRIPLETTE &&
-      (listesJoueurs.avecNoms.length % 6 != 0 ||
+      optionsTournoi.typeEquipes === TypeEquipes.TRIPLETTE &&
+      (listesJoueurs.avecNoms.length % 6 !== 0 ||
         listesJoueurs.avecNoms.length < 6)
     ) {
       title = t('triplette_multiple_6');

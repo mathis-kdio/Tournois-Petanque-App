@@ -139,9 +139,9 @@ class OptionsTournoi extends React.Component<Props, State> {
     let btnTitle = t('champ_invalide');
     if (
       this.state.nbTours > 0 &&
-      this.state.nbTours % 1 == 0 &&
+      this.state.nbTours % 1 === 0 &&
       this.state.nbPtVictoire > 0 &&
-      this.state.nbPtVictoire % 1 == 0
+      this.state.nbPtVictoire % 1 === 0
     ) {
       btnTitle = t('valider_et_inscriptions');
       btnDisabled = false;

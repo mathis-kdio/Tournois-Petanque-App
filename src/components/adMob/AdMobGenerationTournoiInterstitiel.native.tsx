@@ -17,7 +17,7 @@ export const _adMobGenerationTournoiInterstitiel = async () => {
 
   if (
     selectPersonalisedAds === false ||
-    createAPersonalisedAdsProfile == false
+    createAPersonalisedAdsProfile === false
   ) {
     nonPersonalizedAdsOnly = true;
   }

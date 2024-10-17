@@ -76,7 +76,7 @@ class Inscription extends React.Component<Props, State> {
 
   componentDidUpdate() {
     let newSuggestions = this._getSuggestions();
-    if (newSuggestions.length != this.state.suggestions.length) {
+    if (newSuggestions.length !== this.state.suggestions.length) {
       this.setState({
         suggestions: newSuggestions,
       });
@@ -101,7 +101,7 @@ class Inscription extends React.Component<Props, State> {
   _ajoutJoueurTextInputChanged(text: string) {
     this.joueurText = text;
     //Possible d'utiliser le bouton sauf si pas de lettre
-    if (this.joueurText != '') {
+    if (this.joueurText !== '') {
       this.setState({
         etatBouton: true,
       });
@@ -114,10 +114,10 @@ class Inscription extends React.Component<Props, State> {
 
   _ajoutJoueur() {
     //Test si au moins 1 caractère
-    if (this.joueurText != '') {
+    if (this.joueurText !== '') {
       let equipe = 1;
       if (
-        this.props.optionsTournoi.typeEquipes == TypeEquipes.TETEATETE &&
+        this.props.optionsTournoi.typeEquipes === TypeEquipes.TETEATETE &&
         this.props.listesJoueurs[this.props.optionsTournoi.mode]
       ) {
         equipe =
@@ -211,7 +211,7 @@ class Inscription extends React.Component<Props, State> {
       this.props.listesJoueurs[this.props.optionsTournoi.mode] !== undefined
     ) {
       let avecEquipes = false;
-      if (this.props.optionsTournoi.mode == ModeTournoi.AVECEQUIPES) {
+      if (this.props.optionsTournoi.mode === ModeTournoi.AVECEQUIPES) {
         avecEquipes = true;
       }
       const renderItem: ListRenderItem<Joueur> = ({ item }) => (

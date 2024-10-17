@@ -28,7 +28,7 @@ class ListeResultatItem extends React.Component<Props, State> {
     let joueurName = '';
     if (joueur.name === undefined) {
       joueurName = t('sans_nom') + ' (' + (joueur.id + 1) + ')';
-    } else if (joueur.name == '') {
+    } else if (joueur.name === '') {
       joueurName = t('joueur') + ' ' + (joueur.id + 1);
     } else {
       joueurName = joueur.name + ' (' + (joueur.id + 1) + ')';
@@ -44,19 +44,19 @@ class ListeResultatItem extends React.Component<Props, State> {
     for (let i = 0; i < listeMatchs[listeMatchs.length - 1].nbMatchs; i++) {
       if (
         listeMatchs[i].equipe[0].includes(joueurNumber) &&
-        listeMatchs[i].score1 == '0'
+        listeMatchs[i].score1 === '0'
       ) {
         fanny = true;
         nbFanny++;
       } else if (
         listeMatchs[i].equipe[1].includes(joueurNumber) &&
-        listeMatchs[i].score2 == '0'
+        listeMatchs[i].score2 === '0'
       ) {
         fanny = true;
         nbFanny++;
       }
     }
-    if (fanny == true) {
+    if (fanny === true) {
       return (
         <HStack>
           <Image

@@ -25,10 +25,11 @@ interface State {}
 class CreateListeJoueur extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
+    this.state = {};
   }
 
   _dispatch(type: string, listId: number) {
-    if (type == 'create') {
+    if (type === 'create') {
       const addSavedList = {
         type: 'ADD_SAVED_LIST',
         value: {
@@ -37,7 +38,7 @@ class CreateListeJoueur extends React.Component<Props, State> {
         },
       };
       this.props.dispatch(addSavedList);
-    } else if (type == 'edit' && listId != undefined) {
+    } else if (type === 'edit' && listId !== undefined) {
       const updateSavedList = {
         type: 'UPDATE_SAVED_LIST',
         value: {
@@ -58,14 +59,14 @@ class CreateListeJoueur extends React.Component<Props, State> {
     if (params) {
       let nbPlayers = this.props.listesJoueurs.sauvegarde.length;
       let title = 'error';
-      if (params.type == 'create') {
+      if (params.type === 'create') {
         title = t('creer_liste');
-      } else if (params.type == 'edit') {
+      } else if (params.type === 'edit') {
         title = t('valider_modification');
       }
       return (
         <Button
-          isDisabled={nbPlayers == 0}
+          isDisabled={nbPlayers === 0}
           action="positive"
           onPress={() => this._dispatch(params.type, params.listId)}
         >

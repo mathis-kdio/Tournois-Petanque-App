@@ -8,6 +8,7 @@ interface State {}
 class AdMobInscriptionsBanner extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
+    this.state = {};
   }
 
   render() {

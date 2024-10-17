@@ -41,7 +41,7 @@ class MatchItem extends React.Component<Props, State> {
     return (
       <HStack>
         <Box className="flex-1 items-center">
-          {match.score1 == nbPtVictoire && (
+          {match.score1 === nbPtVictoire && (
             <FontAwesome5 name="trophy" size={20} color="#ffda00" />
           )}
         </Box>
@@ -49,7 +49,7 @@ class MatchItem extends React.Component<Props, State> {
           <Text className="text-white text-2xl p-0.5 text-center">{txt}</Text>
         </Box>
         <Box className="flex-1 items-center">
-          {match.score2 == nbPtVictoire && (
+          {match.score2 === nbPtVictoire && (
             <FontAwesome5 name="trophy" size={20} color="#ffda00" />
           )}
         </Box>
@@ -100,7 +100,7 @@ class MatchItem extends React.Component<Props, State> {
 
   render() {
     let { match, displayDetailForMatch, manche, nbPtVictoire } = this.props;
-    if (match.manche == manche) {
+    if (match.manche === manche) {
       return (
         <TouchableOpacity
           onPress={() => displayDetailForMatch(match.id, match, nbPtVictoire)}

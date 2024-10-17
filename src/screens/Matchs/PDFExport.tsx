@@ -47,10 +47,10 @@ class PDFExport extends React.Component<Props, State> {
     let typeTournoi = optionsTournoi.typeTournoi;
     let tournoiID = optionsTournoi.tournoiID;
     let infosTournoi = this.props.listeTournois.find(
-      (e) => e.tournoiId == tournoiID,
+      (e) => e.tournoiId === tournoiID,
     );
     let nbMatchsParTour = 0;
-    if (typeTournoi == TypeTournoi.COUPE) {
+    if (typeTournoi === TypeTournoi.COUPE) {
       nbMatchsParTour = (nbMatchs + 1) / 2;
     } else {
       nbMatchsParTour = nbMatchs / nbTours;
@@ -58,7 +58,7 @@ class PDFExport extends React.Component<Props, State> {
     let nbTables = Math.ceil(nbTours / toursParLigne);
     let nbToursRestants = nbTours;
     let html = '';
-    if (typeTournoi == TypeTournoi.COUPE) {
+    if (typeTournoi === TypeTournoi.COUPE) {
       html = generationPDFCoupe(
         affichageScore,
         affichageClassement,
@@ -85,7 +85,7 @@ class PDFExport extends React.Component<Props, State> {
         nbTables,
       );
     }
-    if (Platform.OS == 'web') {
+    if (Platform.OS === 'web') {
       const pW = window.open(
         '',
         '',
@@ -99,7 +99,7 @@ class PDFExport extends React.Component<Props, State> {
       this._toggleLoading(buttonId);
     } else {
       const { uri } = await Print.printToFileAsync({ html });
-      if ((await Sharing.isAvailableAsync()) && uri != undefined) {
+      if ((await Sharing.isAvailableAsync()) && uri !== undefined) {
         Sharing.shareAsync(uri).then(() => this._toggleLoading(buttonId));
       } else {
         this._toggleLoading(buttonId);
@@ -131,10 +131,8 @@ class PDFExport extends React.Component<Props, State> {
     affichageClassement: boolean,
   ) {
     let pressableDisabled = false;
-    let opacityStyle = 1;
     if (this.state.btnIsLoading[buttonId]) {
       pressableDisabled = true;
-      opacityStyle = 0.7;
     }
     return (
       <Button

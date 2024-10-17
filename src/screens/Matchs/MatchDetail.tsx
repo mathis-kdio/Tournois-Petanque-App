@@ -118,7 +118,7 @@ class MatchDetail extends React.Component<Props, State> {
       let nbTours =
         this.props.listeMatchs[this.props.listeMatchs.length - 1].nbTours;
       let actionNextMatch = nextMatch(match, nbMatchs, typeTournoi, nbTours);
-      if (actionNextMatch != undefined) {
+      if (actionNextMatch !== undefined) {
         this.props.dispatch(actionNextMatch);
       }
       const actionUpdateTournoi = {

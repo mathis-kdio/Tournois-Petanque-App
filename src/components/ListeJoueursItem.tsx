@@ -142,7 +142,7 @@ class ListeJoueursItem extends React.Component<Props, State> {
       name = 'edit';
       bgColor = '#004282';
       action = () => this.setState({ renommerOn: true });
-    } else if (this.listNameText == '') {
+    } else if (this.listNameText === '') {
       name = 'times';
       bgColor = '#5F5F5F';
       action = () => this.setState({ renommerOn: false });
@@ -165,7 +165,7 @@ class ListeJoueursItem extends React.Component<Props, State> {
   }
 
   _renameList(listId: number) {
-    if (this.listNameText != '') {
+    if (this.listNameText !== '') {
       this.setState({ renommerOn: false });
       const actionRenameList = {
         type: 'RENAME_SAVED_LIST',

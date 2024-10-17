@@ -33,6 +33,7 @@ interface State {}
 class ListesJoueurs extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
+    this.state = {};
   }
 
   _addList() {
@@ -67,8 +68,8 @@ class ListesJoueurs extends React.Component<Props, State> {
   _addListButton() {
     const { t } = this.props;
     if (
-      this.props.route.params == undefined ||
-      this.props.route.params.loadListScreen != true
+      this.props.route.params === undefined ||
+      this.props.route.params.loadListScreen !== true
     ) {
       return (
         <Button action="positive" onPress={() => this._addList()}>

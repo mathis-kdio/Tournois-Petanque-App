@@ -138,14 +138,14 @@ class GenerationMatchs extends React.Component<Props, State> {
     //Tant que la génération échoue à cause du breaker alors on relancer
     while (nbGenerationsRatee < nbEssaisPossibles) {
       returnType = this._generation();
-      if (returnType == 0 || returnType == 2) {
+      if (returnType === 0 || returnType === 2) {
         break;
       } else {
         nbGenerationsRatee++;
       }
     }
     //Si la génération échoue trop de fois à cause du breaker alors affichage d'un message pour indiquer de changer les options
-    if (nbGenerationsRatee == nbEssaisPossibles) {
+    if (nbGenerationsRatee === nbEssaisPossibles) {
       this.setState({
         isGenerationSuccess: false,
         isLoading: false,
@@ -160,21 +160,21 @@ class GenerationMatchs extends React.Component<Props, State> {
     let erreurMemesEquipes = undefined;
     let erreurSpeciaux = undefined;
     let echecGeneration = undefined;
-    if (this.typeTournoi == TypeTournoi.MELEDEMELE) {
-      if (this.typeInscription == ModeTournoi.AVECEQUIPES) {
+    if (this.typeTournoi === TypeTournoi.MELEDEMELE) {
+      if (this.typeInscription === ModeTournoi.AVECEQUIPES) {
         ({ matchs, nbMatchs, echecGeneration } = generationAvecEquipes(
           this.props.listesJoueurs.avecEquipes,
           this.nbTours,
           this.typeEquipes,
           this.eviterMemeAdversaire,
         ));
-      } else if (this.typeEquipes == TypeEquipes.TETEATETE) {
+      } else if (this.typeEquipes === TypeEquipes.TETEATETE) {
         ({ matchs, nbMatchs, echecGeneration } = generationTeteATete(
           this.props.listesJoueurs[this.typeInscription],
           this.nbTours,
           this.eviterMemeAdversaire,
         ));
-      } else if (this.typeEquipes == TypeEquipes.DOUBLETTE) {
+      } else if (this.typeEquipes === TypeEquipes.DOUBLETTE) {
         ({
           matchs,
           nbMatchs,
@@ -190,7 +190,7 @@ class GenerationMatchs extends React.Component<Props, State> {
           this.jamaisMemeCoequipier,
           this.eviterMemeAdversaire,
         ));
-      } else if (this.typeEquipes == TypeEquipes.TRIPLETTE) {
+      } else if (this.typeEquipes === TypeEquipes.TRIPLETTE) {
         ({
           matchs,
           nbMatchs,
@@ -204,17 +204,17 @@ class GenerationMatchs extends React.Component<Props, State> {
       } else {
         echecGeneration = true;
       }
-    } else if (this.typeTournoi == TypeTournoi.COUPE) {
+    } else if (this.typeTournoi === TypeTournoi.COUPE) {
       ({ matchs, nbTours, nbMatchs } = generationCoupe(
         this.props.optionsTournoi,
         this.props.listesJoueurs.avecEquipes,
       ));
-    } else if (this.typeTournoi == TypeTournoi.CHAMPIONNAT) {
+    } else if (this.typeTournoi === TypeTournoi.CHAMPIONNAT) {
       ({ matchs, nbTours, nbMatchs } = generationChampionnat(
         this.props.optionsTournoi,
         this.props.listesJoueurs.avecEquipes,
       ));
-    } else if (this.typeTournoi == TypeTournoi.MULTICHANCES) {
+    } else if (this.typeTournoi === TypeTournoi.MULTICHANCES) {
       ({ matchs, nbTours, nbMatchs } = generationMultiChances(
         this.props.listesJoueurs[this.typeInscription],
         this.typeEquipes,
@@ -242,7 +242,7 @@ class GenerationMatchs extends React.Component<Props, State> {
       );
       let i = 0;
       matchs.forEach((match: Match) => {
-        if (match.manche != manche) {
+        if (match.manche !== manche) {
           manche = match.manche;
           arrRandIdsTerrains = uniqueValueArrayRandOrder(
             this.props.listeTerrains.length,

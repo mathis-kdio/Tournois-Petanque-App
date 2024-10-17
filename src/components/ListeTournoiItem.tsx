@@ -21,7 +21,6 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { withTranslation } from 'react-i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
-import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { Tournoi } from '@/types/interfaces/tournoi';
 import { PropsFromRedux, connector } from '@/store/connector';
 
@@ -130,7 +129,7 @@ class ListeTournoiItem extends React.Component<Props, State> {
       name = 'edit';
       bgColor = '#004282';
       action = () => this.setState({ renommerOn: true });
-    } else if (this.tournoiNameText == '') {
+    } else if (this.tournoiNameText === '') {
       name = 'times';
       bgColor = '#5F5F5F';
       action = () => this.setState({ renommerOn: false });
@@ -160,7 +159,7 @@ class ListeTournoiItem extends React.Component<Props, State> {
   }
 
   _renameTournoi(tournoi: Tournoi) {
-    if (this.tournoiNameText != '') {
+    if (this.tournoiNameText !== '') {
       this.setState({ renommerOn: false });
       const actionRenameTournoi = {
         type: 'RENOMMER_TOURNOI',
@@ -205,7 +204,7 @@ class ListeTournoiItem extends React.Component<Props, State> {
     let btnDisabled = false;
     if (
       this.props.listeMatchs &&
-      tournoi.tournoiId ==
+      tournoi.tournoiId ===
         this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID
     ) {
       btnDisabled = true;

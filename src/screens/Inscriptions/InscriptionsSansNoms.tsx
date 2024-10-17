@@ -102,10 +102,10 @@ class InscriptionsSansNoms extends React.Component<Props, State> {
     let boutonTitle = '';
     let nbJoueurs = this._nbJoueurs();
     if (
-      this.props.optionsTournoi.typeEquipes == TypeEquipes.DOUBLETTE ||
-      this.props.optionsTournoi.typeEquipes == TypeEquipes.TETEATETE
+      this.props.optionsTournoi.typeEquipes === TypeEquipes.DOUBLETTE ||
+      this.props.optionsTournoi.typeEquipes === TypeEquipes.TETEATETE
     ) {
-      if (nbJoueurs % 2 == 0 && nbJoueurs != 0) {
+      if (nbJoueurs % 2 === 0 && nbJoueurs !== 0) {
         boutonTitle = t('commencer_tournoi');
         boutonDesactive = false;
       } else {
@@ -113,7 +113,7 @@ class InscriptionsSansNoms extends React.Component<Props, State> {
         boutonDesactive = true;
       }
     } else {
-      if (nbJoueurs % 6 == 0 && nbJoueurs >= 6) {
+      if (nbJoueurs % 6 === 0 && nbJoueurs >= 6) {
         boutonTitle = t('commencer_tournoi');
         boutonDesactive = false;
       } else {

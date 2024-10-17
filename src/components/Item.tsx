@@ -27,10 +27,10 @@ class Item extends React.Component<Props, State> {
 
     let colorTxt = 'text-typography-white';
     let btnColor = 'white';
-    if (type == 'danger') {
+    if (type === 'danger') {
       colorTxt = 'text-red-500';
       btnColor = 'red';
-    } else if (type == 'modal') {
+    } else if (type === 'modal') {
       colorTxt = 'text-typography-black';
       btnColor = 'black';
     }
@@ -38,7 +38,7 @@ class Item extends React.Component<Props, State> {
       <Pressable onPress={() => action()}>
         <HStack className="m-2 items-center justify-between">
           <HStack className="items-center">
-            {drapeau == undefined ? (
+            {drapeau === undefined ? (
               <FontAwesome5
                 name={icon}
                 size={16}

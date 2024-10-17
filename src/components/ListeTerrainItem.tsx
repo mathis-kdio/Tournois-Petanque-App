@@ -43,7 +43,7 @@ class ListeTerrainItem extends React.Component<Props, State> {
       name = 'edit';
       bgColor = '#004282';
       action = () => this.setState({ renommerOn: true });
-    } else if (this.terrainText == '') {
+    } else if (this.terrainText === '') {
       name = 'times';
       bgColor = '#5F5F5F';
       action = () => this.setState({ renommerOn: false });
@@ -66,7 +66,7 @@ class ListeTerrainItem extends React.Component<Props, State> {
   }
 
   _renommerTerrain(terrain: Terrain) {
-    if (this.terrainText != '') {
+    if (this.terrainText !== '') {
       this.setState({ renommerOn: false });
       const actionRenommer = {
         type: 'RENOMMER_TERRAIN',

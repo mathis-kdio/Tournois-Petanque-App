@@ -99,7 +99,7 @@ class JoueurSuggere extends React.Component<Props, State> {
 
   _addPlayer(playerName: string) {
     let equipe = undefined;
-    if (this.props.optionsTournoi.typeEquipes == TypeEquipes.TETEATETE) {
+    if (this.props.optionsTournoi.typeEquipes === TypeEquipes.TETEATETE) {
       equipe = this.props.listesJoueurs.avecEquipes.length + 1;
     }
     const action = {

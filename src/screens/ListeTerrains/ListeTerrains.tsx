@@ -27,6 +27,7 @@ interface State {}
 class ListeTerrains extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
+    this.state = {};
   }
 
   _ajoutTerrains() {

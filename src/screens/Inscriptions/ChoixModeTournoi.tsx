@@ -44,7 +44,7 @@ class ChoixModeTournoi extends React.Component<Props, State> {
 
   _nextStep() {
     let modeTournoi = this.state.modeTournoi;
-    if (this.props.optionsTournoi.typeTournoi != TypeTournoi.MELEDEMELE) {
+    if (this.props.optionsTournoi.typeTournoi !== TypeTournoi.MELEDEMELE) {
       modeTournoi = ModeTournoi.AVECEQUIPES;
     }
     const updateOptionEquipesTournoi = {
@@ -59,12 +59,12 @@ class ChoixModeTournoi extends React.Component<Props, State> {
     this.props.dispatch(updateOptionModeTournoi);
 
     if (
-      this.props.optionsTournoi.typeTournoi != TypeTournoi.CHAMPIONNAT &&
-      this.props.optionsTournoi.typeTournoi != TypeTournoi.COUPE &&
-      this.props.optionsTournoi.typeTournoi != TypeTournoi.MULTICHANCES
+      this.props.optionsTournoi.typeTournoi !== TypeTournoi.CHAMPIONNAT &&
+      this.props.optionsTournoi.typeTournoi !== TypeTournoi.COUPE &&
+      this.props.optionsTournoi.typeTournoi !== TypeTournoi.MULTICHANCES
     ) {
       let screenName =
-        this.state.modeTournoi == ModeTournoi.SANSNOMS
+        this.state.modeTournoi === ModeTournoi.SANSNOMS
           ? 'InscriptionsSansNoms'
           : 'InscriptionsAvecNoms';
       this.props.navigation.navigate({
@@ -90,8 +90,8 @@ class ChoixModeTournoi extends React.Component<Props, State> {
       title = t('valider_et_inscriptions');
     }
     if (
-      this.state.modeTournoi == ModeTournoi.AVECEQUIPES &&
-      this.state.typeEquipes == TypeEquipes.TETEATETE
+      this.state.modeTournoi === ModeTournoi.AVECEQUIPES &&
+      this.state.typeEquipes === TypeEquipes.TETEATETE
     ) {
       buttonDisabled = true;
       title = t('erreur_tournoi_tete_a_tete_et_equipes');

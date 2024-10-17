@@ -26,6 +26,7 @@ interface State {}
 class JoueursTournoi extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
+    this.state = {};
   }
 
   _retourMatchs() {
@@ -38,7 +39,7 @@ class JoueursTournoi extends React.Component<Props, State> {
         <ListeJoueurItem
           joueur={item}
           isInscription={false}
-          avecEquipes={optionsTournoi.mode == ModeTournoi.AVECEQUIPES}
+          avecEquipes={optionsTournoi.mode === ModeTournoi.AVECEQUIPES}
           typeEquipes={optionsTournoi.typeEquipes}
           nbJoueurs={optionsTournoi.listeJoueurs.length}
           showCheckbox={true}

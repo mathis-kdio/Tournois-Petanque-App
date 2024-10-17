@@ -28,7 +28,7 @@ class AdMobInscriptionsBanner extends React.Component<Props, State> {
 
     if (
       selectPersonalisedAds === false ||
-      createAPersonalisedAdsProfile == false
+      createAPersonalisedAdsProfile === false
     ) {
       this.setState({ nonPersonalizedAdsOnly: true });
     }

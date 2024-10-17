@@ -103,7 +103,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
       value: [this.props.optionsTournoi.mode, idJoueur],
     };
     this.props.dispatch(actionSuppr);
-    if (this.props.optionsTournoi.typeEquipes == TypeEquipes.TETEATETE) {
+    if (this.props.optionsTournoi.typeEquipes === TypeEquipes.TETEATETE) {
       const actionUpdateEquipe = {
         type: 'UPDATE_ALL_JOUEURS_EQUIPE',
         value: [this.props.optionsTournoi.mode],
@@ -124,7 +124,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
       name = 'edit';
       bgColor = '#004282';
       action = () => this.setState({ renommerOn: true });
-    } else if (this.joueurText == '') {
+    } else if (this.joueurText === '') {
       name = 'times';
       bgColor = '#5F5F5F';
       action = () => this.setState({ renommerOn: false });
@@ -158,13 +158,13 @@ class ListeJoueurItem extends React.Component<Props, State> {
     isInscription: boolean,
     avecEquipes: boolean,
   ) {
-    if (this.joueurText != '') {
+    if (this.joueurText !== '') {
       this.setState({ renommerOn: false });
       if (isInscription === true) {
         let typeInscription = '';
-        if (this.props.optionsTournoi.mode == ModeTournoi.SAUVEGARDE) {
+        if (this.props.optionsTournoi.mode === ModeTournoi.SAUVEGARDE) {
           typeInscription = ModeTournoi.SAUVEGARDE;
-        } else if (avecEquipes == true) {
+        } else if (avecEquipes === true) {
           typeInscription = ModeTournoi.AVECEQUIPES;
         } else {
           typeInscription = ModeTournoi.AVECNOMS;
@@ -202,7 +202,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
   };
 
   _joueurName(joueur: Joueur, isInscription: boolean, avecEquipes: boolean) {
-    if (this.state.renommerOn == true) {
+    if (this.state.renommerOn === true) {
       return (
         <Input variant="underlined">
           <InputField
@@ -240,15 +240,15 @@ class ListeJoueurItem extends React.Component<Props, State> {
     nbJoueurs: number,
   ) {
     const { t } = this.props;
-    if (avecEquipes == true) {
+    if (avecEquipes === true) {
       let selectedValue = '0';
       if (joueur.equipe) {
         selectedValue = joueur.equipe.toString();
       }
       let nbEquipes = nbJoueurs;
-      if (typeEquipes == TypeEquipes.DOUBLETTE) {
+      if (typeEquipes === TypeEquipes.DOUBLETTE) {
         nbEquipes = Math.ceil(nbJoueurs / 2);
-      } else if (typeEquipes == TypeEquipes.TRIPLETTE) {
+      } else if (typeEquipes === TypeEquipes.TRIPLETTE) {
         nbEquipes = Math.ceil(nbJoueurs / 3);
       }
 
@@ -256,17 +256,17 @@ class ListeJoueurItem extends React.Component<Props, State> {
       for (let i = 1; i <= nbEquipes; i++) {
         let count = this.props.listesJoueurs.avecEquipes.reduce(
           (counter: number, obj: Joueur) =>
-            obj.equipe == i ? (counter += 1) : counter,
+            obj.equipe === i ? (counter += 1) : counter,
           0,
         );
-        if (typeEquipes == TypeEquipes.TETEATETE && count < 1) {
+        if (typeEquipes === TypeEquipes.TETEATETE && count < 1) {
           pickerItem.push(this._equipePickerItem(i));
         }
-        if (typeEquipes == TypeEquipes.DOUBLETTE && count < 2) {
+        if (typeEquipes === TypeEquipes.DOUBLETTE && count < 2) {
           pickerItem.push(this._equipePickerItem(i));
-        } else if (typeEquipes == TypeEquipes.TRIPLETTE && count < 3) {
+        } else if (typeEquipes === TypeEquipes.TRIPLETTE && count < 3) {
           pickerItem.push(this._equipePickerItem(i));
-        } else if (joueur.equipe == i) {
+        } else if (joueur.equipe === i) {
           pickerItem.push(this._equipePickerItem(i));
         }
       }
@@ -316,23 +316,23 @@ class ListeJoueurItem extends React.Component<Props, State> {
   _joueurTypeIcon(joueurType: string) {
     const { mode, typeTournoi, typeEquipes } = this.props.optionsTournoi;
     if (
-      mode == ModeTournoi.SAUVEGARDE ||
-      (typeTournoi == TypeTournoi.MELEDEMELE &&
-        typeEquipes == TypeEquipes.DOUBLETTE)
+      mode === ModeTournoi.SAUVEGARDE ||
+      (typeTournoi === TypeTournoi.MELEDEMELE &&
+        typeEquipes === TypeEquipes.DOUBLETTE)
     ) {
       return (
         <Box>
-          {joueurType == JoueurType.ENFANT && (
+          {joueurType === JoueurType.ENFANT && (
             <FontAwesome5 name="child" color="darkgray" size={24} />
           )}
-          {joueurType == JoueurType.TIREUR && (
+          {joueurType === JoueurType.TIREUR && (
             <Image
               source={require('@assets/images/tireur.png')}
               alt="tireur"
               className="w-[30px] h-[30px]"
             />
           )}
-          {joueurType == JoueurType.POINTEUR && (
+          {joueurType === JoueurType.POINTEUR && (
             <Image
               source={require('@assets/images/pointeur.png')}
               alt="tireur"
@@ -344,7 +344,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
     } else {
       return (
         <Box>
-          {joueurType == JoueurType.ENFANT && (
+          {joueurType === JoueurType.ENFANT && (
             <FontAwesome5 name="child" color="darkgray" size={24} />
           )}
         </Box>
@@ -356,7 +356,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
     const { t } = this.props;
     if (showCheckbox) {
       let isChecked = true;
-      if (joueur.isChecked == undefined || !joueur.isChecked) {
+      if (joueur.isChecked === undefined || !joueur.isChecked) {
         isChecked = false;
       }
       return (
@@ -464,7 +464,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
           <Box>{this._joueurName(joueur, isInscription, avecEquipes)}</Box>
         </HStack>
         <HStack className={`${flexsize[1]} justify-end`}>
-          {avecEquipes == true && (
+          {avecEquipes === true && (
             <HStack className={`${flexsize[2]}`}>
               {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
             </HStack>

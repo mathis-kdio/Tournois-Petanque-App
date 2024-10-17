@@ -1,11 +1,10 @@
-import { Button, ButtonText } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { Menu, MenuItem, MenuItemLabel } from '@/components/ui/menu';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { TFunction } from 'i18next';
 import { NavigationProp } from '@react-navigation/native';
-import { MatchsStackParamList } from '@/navigation/Navigation';
 
 export interface Props {
   navigation: NavigationProp<ReactNavigation.RootParamList>;

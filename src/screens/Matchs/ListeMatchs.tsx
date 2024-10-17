@@ -17,6 +17,7 @@ interface State {}
 class ListeMatchs extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
+    this.state = {};
   }
 
   _displayDetailForMatch = (
@@ -38,7 +39,7 @@ class ListeMatchs extends React.Component<Props, State> {
     let nbMatchs = 0;
     let matchs = [];
     let nbPtVictoire = 13;
-    if (this.props.listeMatchs != undefined) {
+    if (this.props.listeMatchs !== undefined) {
       let tournoi = this.props.listeMatchs; //tournoi contient les matchs + la config du tournoi en dernière position
       nbMatchs = tournoi[tournoi.length - 1].nbMatchs; //On récup nb matchs dans la config
       nbPtVictoire = tournoi[tournoi.length - 1].nbPtVictoire
@@ -47,7 +48,7 @@ class ListeMatchs extends React.Component<Props, State> {
       matchs = tournoi.slice(0, -1); //On retire la config et donc seulement la liste des matchs
     }
     matchs = matchs.filter(
-      (match: Match) => match.manche == this.props.extraData,
+      (match: Match) => match.manche === this.props.extraData,
     ) as Match[];
     const renderItem: ListRenderItem<Match> = ({ item }) => (
       <MatchItem

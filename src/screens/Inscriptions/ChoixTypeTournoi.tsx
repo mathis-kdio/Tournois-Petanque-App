@@ -27,7 +27,7 @@ import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { PropsFromRedux, connector } from '@/store/connector';
 
 export interface Props extends PropsFromRedux {
-  navigation: StackNavigationProp<any,any>;
+  navigation: StackNavigationProp<any, any>;
   t: TFunction;
 }
 
@@ -38,39 +38,42 @@ interface State {
 
 class ChoixTypeTournoi extends React.Component<Props, State> {
   constructor(props: Props) {
-    super(props)
+    super(props);
     this.state = {
       showModal: false,
-      modalType: undefined
-    }
+      modalType: undefined,
+    };
   }
 
   _modalInfos() {
     const { t } = this.props;
     if (!this.state.modalType) return;
     const infosModal = {
-      "mele-demele": {
-        title: t("melee_demelee"),
-        text:  t("description_melee_demelee")
+      'mele-demele': {
+        title: t('melee_demelee'),
+        text: t('description_melee_demelee'),
       },
-      "championnat": {
-        title: t("championnat"),
-        text: t("description_championnat")
+      championnat: {
+        title: t('championnat'),
+        text: t('description_championnat'),
       },
-      "coupe": {
-        title: t("coupe"),
-        text: t("description_coupe")
+      coupe: {
+        title: t('coupe'),
+        text: t('description_coupe'),
       },
-      "multi-chances": {
-        title: t("multi_chances"),
-        text: t("description_multi_chances")
-      }
+      'multi-chances': {
+        title: t('multi_chances'),
+        text: t('description_multi_chances'),
+      },
     };
     let infos = infosModal[this.state.modalType];
     if (!infos) return;
     return (
-      <Modal isOpen={this.state.showModal} onClose={() => this.setState({showModal: false})}>
-        <ModalBackdrop/>
+      <Modal
+        isOpen={this.state.showModal}
+        onClose={() => this.setState({ showModal: false })}
+      >
+        <ModalBackdrop />
         <ModalContent className="max-h-5/6">
           <ModalHeader>
             <Heading>{infos.title}</Heading>
@@ -91,7 +94,10 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
   }
 
   _navigate(typeTournoi: TypeTournoi) {
-    const updateOptionTypeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['typeTournoi', typeTournoi]}
+    const updateOptionTypeTournoi = {
+      type: 'UPDATE_OPTION_TOURNOI',
+      value: ['typeTournoi', typeTournoi],
+    };
     this.props.dispatch(updateOptionTypeTournoi);
     return this.props.navigation.navigate('ChoixModeTournoi');
   }
@@ -99,68 +105,95 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
   render() {
     const { t } = this.props;
     return (
-      <SafeAreaView style={{flex: 1}}>
+      <SafeAreaView style={{ flex: 1 }}>
         <ScrollView className="h-1 bg-[#0594ae]">
-          <TopBarBack title={t("type_tournoi")} navigation={this.props.navigation}/>
-          <VStack space='2xl' className="flex-1 px-10">
+          <TopBarBack
+            title={t('type_tournoi')}
+            navigation={this.props.navigation}
+          />
+          <VStack space="2xl" className="flex-1 px-10">
             <VStack className="flex-1">
               <CardButton
-                text={t("type_melee_demelee")}
+                text={t('type_melee_demelee')}
                 icon="random"
                 navigate={() => this._navigate(TypeTournoi.MELEDEMELE)}
                 newBadge={false}
               />
               <Pressable
-                onPress={() => this.setState({showModal: true, modalType: TypeTournoi.MELEDEMELE})}
-                className="flex-row justify-center mt-2">
-                <FontAwesome5 name="info-circle" color='white' size={24}/>
-                <Text className="text-white"> {t("savoir_plus")}</Text>
+                onPress={() =>
+                  this.setState({
+                    showModal: true,
+                    modalType: TypeTournoi.MELEDEMELE,
+                  })
+                }
+                className="flex-row justify-center mt-2"
+              >
+                <FontAwesome5 name="info-circle" color="white" size={24} />
+                <Text className="text-white"> {t('savoir_plus')}</Text>
               </Pressable>
             </VStack>
             <VStack className="flex-1">
               <CardButton
-                text={t("type_championnat")}
+                text={t('type_championnat')}
                 icon="table"
                 navigate={() => this._navigate(TypeTournoi.CHAMPIONNAT)}
                 newBadge={false}
               />
               <Pressable
-                onPress={() => this.setState({showModal: true, modalType: TypeTournoi.CHAMPIONNAT})}
-                className="flex-row justify-center mt-2">
-                <FontAwesome5 name="info-circle" color='white' size={24}/>
-                <Text className="text-white"> {t("savoir_plus")}</Text>
+                onPress={() =>
+                  this.setState({
+                    showModal: true,
+                    modalType: TypeTournoi.CHAMPIONNAT,
+                  })
+                }
+                className="flex-row justify-center mt-2"
+              >
+                <FontAwesome5 name="info-circle" color="white" size={24} />
+                <Text className="text-white"> {t('savoir_plus')}</Text>
               </Pressable>
             </VStack>
             <VStack className="flex-1">
               <CardButton
-                text={t("type_coupe")}
+                text={t('type_coupe')}
                 icon="trophy"
                 navigate={() => this._navigate(TypeTournoi.COUPE)}
                 newBadge={false}
               />
               <Pressable
-                onPress={() => this.setState({showModal: true, modalType: TypeTournoi.COUPE})}
-                className="flex-row justify-center mt-2">
-                <FontAwesome5 name="info-circle" color='white' size={24}/>
-                <Text className="text-white"> {t("savoir_plus")}</Text>
+                onPress={() =>
+                  this.setState({
+                    showModal: true,
+                    modalType: TypeTournoi.COUPE,
+                  })
+                }
+                className="flex-row justify-center mt-2"
+              >
+                <FontAwesome5 name="info-circle" color="white" size={24} />
+                <Text className="text-white"> {t('savoir_plus')}</Text>
               </Pressable>
             </VStack>
             <VStack className="flex-1">
               <CardButton
-                text={t("type_multi_chances")}
+                text={t('type_multi_chances')}
                 icon="code-branch"
                 navigate={() => this._navigate(TypeTournoi.MULTICHANCES)}
                 newBadge={false}
               />
               <Pressable
-                onPress={() => this.setState({showModal: true, modalType: TypeTournoi.MULTICHANCES})}
-                className="flex-row justify-center mt-2">
-                <FontAwesome5 name="info-circle" color='white' size={24}/>
-                <Text className="text-white"> {t("savoir_plus")}</Text>
+                onPress={() =>
+                  this.setState({
+                    showModal: true,
+                    modalType: TypeTournoi.MULTICHANCES,
+                  })
+                }
+                className="flex-row justify-center mt-2"
+              >
+                <FontAwesome5 name="info-circle" color="white" size={24} />
+                <Text className="text-white"> {t('savoir_plus')}</Text>
               </Pressable>
             </VStack>
             <VStack className="m-10">
-              <AdMobInscriptionsBanner/>
+              <AdMobInscriptionsBanner />
             </VStack>
           </VStack>
         </ScrollView>
@@ -170,4 +203,4 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
   }
 }
 
-export default connector(withTranslation()(ChoixTypeTournoi))
+export default connector(withTranslation()(ChoixTypeTournoi));

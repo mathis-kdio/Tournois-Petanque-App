@@ -48,7 +48,7 @@ function topTabScreens() {
     (state) => state.gestionMatchs.listematchs,
   );
   let nbTours = 5;
-  if (gestionListeMatchs != undefined) {
+  if (gestionListeMatchs !== undefined) {
     nbTours = gestionListeMatchs[gestionListeMatchs.length - 1].nbTours;
   }
   let topTabScreenListe = [];
@@ -73,9 +73,9 @@ function topTabItemLabel(numero, listeMatchs) {
   let title = 'Tour ' + numero;
   if (
     listeMatchs &&
-    listeMatchs[listeMatchs.length - 1].typeTournoi == TypeTournoi.COUPE
+    listeMatchs[listeMatchs.length - 1].typeTournoi === TypeTournoi.COUPE
   ) {
-    title = listeMatchs.find((el) => el.manche == numero).mancheName;
+    title = listeMatchs.find((el) => el.manche === numero).mancheName;
   }
 
   let iconColor = '#ffda00';
@@ -87,13 +87,15 @@ function topTabItemLabel(numero, listeMatchs) {
     if (matchs) {
       let count = matchs.reduce(
         (acc, obj) =>
-          obj.score1 != undefined && obj.score2 != undefined ? (acc += 1) : acc,
+          obj.score1 !== undefined && obj.score2 !== undefined
+            ? (acc += 1)
+            : acc,
         0,
       );
-      if (count == matchs.length) {
+      if (count === matchs.length) {
         iconColor = 'success-500';
         iconName = 'battery-full';
-      } else if (count == 0) {
+      } else if (count === 0) {
         iconColor = 'error-500';
         iconName = 'battery-empty';
       }
@@ -141,13 +143,13 @@ function getTournoiName() {
   const listeMatchs = useSelector((state) => state.gestionMatchs.listematchs);
 
   let tournoiName = '';
-  if (listeTournois != undefined && listeMatchs != undefined) {
+  if (listeTournois !== undefined && listeMatchs !== undefined) {
     let tournoiId = listeMatchs[listeMatchs.length - 1].tournoiID;
     let tournoi = listeTournois.find(
-      (element) => element.tournoiId == tournoiId,
+      (element) => element.tournoiId === tournoiId,
     );
     tournoiName =
-      tournoi.name != undefined ? tournoi.name : 'n°' + tournoi.tournoiId;
+      tournoi.name !== undefined ? tournoi.name : 'n°' + tournoi.tournoiId;
   }
   return tournoiName;
 }
@@ -443,7 +445,7 @@ function ListeMatchsStack() {
       <Stack.Screen
         name="ListeMatchsScreen"
         component={
-          typeTournoi != TypeTournoi.COUPE
+          typeTournoi !== TypeTournoi.COUPE
             ? MatchsResultatsBottomNavigator
             : MatchsStack
         }
