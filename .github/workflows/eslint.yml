@@ -31,7 +31,7 @@ jobs:
           npm install eslint@8.10.0
           npm install @microsoft/eslint-formatter-sarif@3.1.0
           npm install eslint-config-expo
-          npm install @typescript-eslint/eslint-plugin
+          npm install --save-dev @typescript-eslint/eslint-plugin
 
       - name: Run ESLint
         env:
