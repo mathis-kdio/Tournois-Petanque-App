@@ -4,28 +4,41 @@ import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { Complement } from '@/types/enums/complement';
 import { Joueur } from '@/types/interfaces/joueur';
 
-const testRegleMemeCoequipiersValide = (nbTours: number, nbjoueurs: number, nbJoueursSpe: number, nbJoueursTireurs: number, nbJoueursPointeurs: number, moitieNbJoueurs: number) => {
+const testRegleMemeCoequipiersValide = (
+  nbTours: number,
+  nbjoueurs: number,
+  nbJoueursSpe: number,
+  nbJoueursTireurs: number,
+  nbJoueursPointeurs: number,
+  moitieNbJoueurs: number,
+) => {
   let nbCombinaisons = nbjoueurs;
   nbCombinaisons -= nbJoueursSpe;
   if (nbCombinaisons - nbJoueursTireurs > moitieNbJoueurs) {
     nbCombinaisons -= nbJoueursTireurs;
     if (nbCombinaisons - nbJoueursPointeurs > moitieNbJoueurs) {
       nbCombinaisons -= nbJoueursPointeurs;
-    }
-    else {
+    } else {
       nbCombinaisons = moitieNbJoueurs;
     }
-  }
-  else {
+  } else {
     nbCombinaisons = moitieNbJoueurs;
   }
   if (nbCombinaisons < nbTours) {
     return false;
   }
   return true;
-}
+};
 
-export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, typeEquipes: TypeEquipes, complement: Complement, speciauxIncompatibles: boolean, jamaisMemeCoequipier: boolean, eviterMemeAdversaire: number) => {
+export const generationDoublettes = (
+  listeJoueurs: Joueur[],
+  nbTours: number,
+  typeEquipes: TypeEquipes,
+  complement: Complement,
+  speciauxIncompatibles: boolean,
+  jamaisMemeCoequipier: boolean,
+  eviterMemeAdversaire: number,
+) => {
   let nbjoueurs = listeJoueurs.length;
   let matchs = [];
   let idMatch = 0;
@@ -38,7 +51,7 @@ export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, ty
 
   //Initialisation des matchs dans un tableau
   let nbMatchsParTour;
-  if (complement == Complement.TETEATETE) {
+  if (complement === Complement.TETEATETE) {
     nbMatchsParTour = Math.ceil(nbjoueurs / 4);
   } else {
     nbMatchsParTour = Math.floor(nbjoueurs / 4);
@@ -47,9 +60,18 @@ export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, ty
   idMatch = 0;
   for (let i = 1; i < nbTours + 1; i++) {
     for (let j = 0; j < nbMatchsParTour; j++) {
-      matchs.push({id: idMatch, manche: i, equipe: [[-1,-1,-1],[-1,-1,-1]], score1: undefined, score2: undefined});
+      matchs.push({
+        id: idMatch,
+        manche: i,
+        equipe: [
+          [-1, -1, -1],
+          [-1, -1, -1],
+        ],
+        score1: undefined,
+        score2: undefined,
+      });
       idMatch++;
-    }      
+    }
   }
 
   /*Création de tableaux contenant :
@@ -87,13 +109,21 @@ export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, ty
   let nbJoueursSpe = joueursEnfants.length;
   //Test s'il faut compléter des équipes
   //Si c'est le cas, alors on remplie de joueurs invisible pour le complément en mode tête à tête
-  if (nbjoueurs % 4 != 0) {
-    if (complement == Complement.TETEATETE && nbjoueurs % 2 == 0) {
-      joueurs.push({name: "Complément 1", type: JoueurType.ENFANT, id: (nbjoueurs)});
+  if (nbjoueurs % 4 !== 0) {
+    if (complement === Complement.TETEATETE && nbjoueurs % 2 === 0) {
+      joueurs.push({
+        name: 'Complément 1',
+        type: JoueurType.ENFANT,
+        id: nbjoueurs,
+      });
       joueurs[nbjoueurs].equipe = [];
-      joueurs.push({name: "Complément 2", type: JoueurType.ENFANT, id: (nbjoueurs + 1)});
+      joueurs.push({
+        name: 'Complément 2',
+        type: JoueurType.ENFANT,
+        id: nbjoueurs + 1,
+      });
       joueurs[nbjoueurs + 1].equipe = [];
-      
+
       for (let i = 1; i < nbTours + 1; i++) {
         matchs[nbMatchsParTour * i - 1].equipe[0][0] = nbjoueurs;
         matchs[nbMatchsParTour * i - 1].equipe[1][0] = nbjoueurs + 1;
@@ -102,72 +132,113 @@ export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, ty
   }
 
   //Test des règles speciauxIncompatibles et jamaisMemeCoequipier
-  if (speciauxIncompatibles == true) {
-    if (nbjoueurs % 4 == 0) { //Cas de non complément
+  if (speciauxIncompatibles === true) {
+    if (nbjoueurs % 4 === 0) {
+      //Cas de non complément
       let moitieNbJoueurs = nbjoueurs / 2;
       //Test si trop de joueurs de type pointeurs ou tireurs ou enfants
-      if (joueursEnfants.length > moitieNbJoueurs || joueursTireurs.length > moitieNbJoueurs || joueursPointeurs.length > moitieNbJoueurs) {
-        return {erreurSpeciaux: true};
+      if (
+        joueursEnfants.length > moitieNbJoueurs ||
+        joueursTireurs.length > moitieNbJoueurs ||
+        joueursPointeurs.length > moitieNbJoueurs
+      ) {
+        return { erreurSpeciaux: true };
       }
       //Test si possible d'appliquer la règle jamaisMemeCoequipier
-      let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs.length, joueursPointeurs.length, moitieNbJoueurs);
+      let regleValide = testRegleMemeCoequipiersValide(
+        nbTours,
+        nbjoueurs,
+        nbJoueursSpe,
+        joueursTireurs.length,
+        joueursPointeurs.length,
+        moitieNbJoueurs,
+      );
       if (!regleValide) {
-        return {erreurMemesEquipes: true};
+        return { erreurMemesEquipes: true };
       }
-    }
-    else { //Cas de complément
-      if (complement == Complement.TETEATETE) { //Complément tête-à-tête
-        let moitieNbJoueurs = (nbjoueurs / 2) + 1;
+    } else {
+      //Cas de complément
+      if (complement === Complement.TETEATETE) {
+        //Complément tête-à-tête
+        let moitieNbJoueurs = nbjoueurs / 2 + 1;
         //Test si trop de joueurs de type pointeurs ou tireurs ou enfants
-        if (joueursEnfants.length > moitieNbJoueurs || joueursTireurs.length > moitieNbJoueurs || joueursPointeurs.length > moitieNbJoueurs) {
-          return {erreurSpeciaux: true};
+        if (
+          joueursEnfants.length > moitieNbJoueurs ||
+          joueursTireurs.length > moitieNbJoueurs ||
+          joueursPointeurs.length > moitieNbJoueurs
+        ) {
+          return { erreurSpeciaux: true };
         }
         //Test si possible d'appliquer la règle jamaisMemeCoequipier
-        if (jamaisMemeCoequipier == true) {
-          let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs.length, joueursPointeurs.length, moitieNbJoueurs);
+        if (jamaisMemeCoequipier === true) {
+          let regleValide = testRegleMemeCoequipiersValide(
+            nbTours,
+            nbjoueurs,
+            nbJoueursSpe,
+            joueursTireurs.length,
+            joueursPointeurs.length,
+            moitieNbJoueurs,
+          );
           if (!regleValide) {
-            return {erreurMemesEquipes: true};
+            return { erreurMemesEquipes: true };
           }
         }
       }
-      if (complement == Complement.TRIPLETTE) { //Complément triplette
-        let moitieNbJoueurs = (nbjoueurs / 2) - 1;
+      if (complement === Complement.TRIPLETTE) {
+        //Complément triplette
+        let moitieNbJoueurs = nbjoueurs / 2 - 1;
         //Test si trop de joueurs de type pointeurs ou tireurs ou enfants
-        if (joueursEnfants.length > moitieNbJoueurs || joueursTireurs.length > moitieNbJoueurs || joueursPointeurs.length > moitieNbJoueurs) {
-          return {erreurSpeciaux: true};
+        if (
+          joueursEnfants.length > moitieNbJoueurs ||
+          joueursTireurs.length > moitieNbJoueurs ||
+          joueursPointeurs.length > moitieNbJoueurs
+        ) {
+          return { erreurSpeciaux: true };
         }
         //Test si possible d'appliquer la règle jamaisMemeCoequipier
-        if (jamaisMemeCoequipier == true) {
-          let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, nbJoueursSpe, joueursTireurs.length, joueursPointeurs.length, moitieNbJoueurs);
+        if (jamaisMemeCoequipier === true) {
+          let regleValide = testRegleMemeCoequipiersValide(
+            nbTours,
+            nbjoueurs,
+            nbJoueursSpe,
+            joueursTireurs.length,
+            joueursPointeurs.length,
+            moitieNbJoueurs,
+          );
           if (!regleValide) {
-            return {erreurMemesEquipes: true};
+            return { erreurMemesEquipes: true };
           }
         }
       }
     }
-  }
-  else if (speciauxIncompatibles == false) {
+  } else if (speciauxIncompatibles === false) {
     //Test si possible d'appliquer la règle jamaisMemeCoequipier
-    if (jamaisMemeCoequipier == true) {
-      let regleValide = testRegleMemeCoequipiersValide(nbTours, nbjoueurs, 0, 0, 0, nbjoueurs);
+    if (jamaisMemeCoequipier === true) {
+      let regleValide = testRegleMemeCoequipiersValide(
+        nbTours,
+        nbjoueurs,
+        0,
+        0,
+        0,
+        nbjoueurs,
+      );
       if (!regleValide) {
-        return {erreurMemesEquipes: true};
+        return { erreurMemesEquipes: true };
       }
     }
   }
 
   //Assignation des joueurs enfants
-  if (speciauxIncompatibles == true) {
+  if (speciauxIncompatibles === true) {
     //Joueurs enfants seront toujours joueur 2 ou joueur 4
     for (let i = 0; i < nbTours; i++) {
       let idMatch = i * nbMatchsParTour;
       let idsJoueursSpe = [];
       idsJoueursSpe = uniqueValueArrayRandOrder(joueursEnfants.length);
       for (let j = 0; j < joueursEnfants.length; j++) {
-        if (matchs[idMatch].equipe[0][1] == -1) {
+        if (matchs[idMatch].equipe[0][1] === -1) {
           matchs[idMatch].equipe[0][1] = joueursEnfants[idsJoueursSpe[j]].id;
-        }
-        else if (matchs[idMatch].equipe[1][1] == -1) {
+        } else if (matchs[idMatch].equipe[1][1] === -1) {
           matchs[idMatch].equipe[1][1] = joueursEnfants[idsJoueursSpe[j]].id;
           idMatch++;
         }
@@ -179,8 +250,8 @@ export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, ty
     joueursNonSpe.splice(0, joueursNonSpe.length);
     joueursNonType.splice(0, joueursNonType.length);
     for (let i = 0; i < nbjoueurs; i++) {
-      joueursNonSpe.push({...listeJoueurs[i]});
-      joueursNonType.push({...listeJoueurs[i]});
+      joueursNonSpe.push({ ...listeJoueurs[i] });
+      joueursNonType.push({ ...listeJoueurs[i] });
     }
   }
 
@@ -188,14 +259,13 @@ export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, ty
   //TODO
   //eviterMemeAdversaire = false;
 
-
   //On ordonne aléatoirement les ids des joueurs non enfants à chaque début de manche
   //Les listes pointeur ou tireur en 1ère et 2ème position
   function _randomJoueursIds(joueursPointeurs, joueursTireurs, joueursNonType) {
-    let arrayIds:number[] = [];
-    let joueursPointeursId:number[] = [];
-    let joueursTireursId:number[] = [];
-    let joueursNonTypeId:number[] = [];
+    let arrayIds: number[] = [];
+    let joueursPointeursId: number[] = [];
+    let joueursTireursId: number[] = [];
+    let joueursNonTypeId: number[] = [];
     for (let i = 0; i < joueursPointeurs.length; i++) {
       joueursPointeursId.push(joueursPointeurs[i].id);
     }
@@ -206,12 +276,11 @@ export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, ty
       joueursNonTypeId.push(joueursNonType[i].id);
     }
 
-    if (speciauxIncompatibles == true) {
+    if (speciauxIncompatibles === true) {
       if (joueursPointeurs.length > joueursTireurs.length) {
         arrayIds.push(...shuffle(joueursPointeursId));
         joueursNonTypeId.push(...joueursTireursId);
-      }
-      else {
+      } else {
         arrayIds.push(...shuffle(joueursTireursId));
         joueursNonTypeId.push(...joueursPointeursId);
       }
@@ -219,7 +288,7 @@ export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, ty
     arrayIds.push(...shuffle(joueursNonTypeId));
 
     return arrayIds;
-  };
+  }
 
   //FONCTIONNEMENT
   //S'il y a eu des joueurs enfants avant alors ils ont déjà été affectés
@@ -238,67 +307,77 @@ export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, ty
   //Exemple 5 manches: si joueur 8 à déjà joué 1 fois contre et 1 fois avec joueur 9 alors pas affecté en joueur 3 ou 4
   //Par contre possible que joueur 8 est déjà joué 2 fois contre joueur 9 et pourra après être avec joueur 9
 
-
   idMatch = 0;
   let breaker = 0; //permet de détecter quand boucle infinie
   for (let i = 0; i < nbTours; i++) {
     breaker = 0;
-    let random = _randomJoueursIds(joueursPointeurs, joueursTireurs, joueursNonType);
-    for (let j = 0; j < joueursNonSpe.length;) {
+    let random = _randomJoueursIds(
+      joueursPointeurs,
+      joueursTireurs,
+      joueursNonType,
+    );
+    for (let j = 0; j < joueursNonSpe.length; ) {
       //Affectation joueur 1
-      if (matchs[idMatch].equipe[0][0] == -1) {
-        if (jamaisMemeCoequipier == true && i > 0) {
-          if (joueurs[random[j]].equipe.includes(matchs[idMatch].equipe[0][1]) == false) {
+      if (matchs[idMatch].equipe[0][0] === -1) {
+        if (jamaisMemeCoequipier === true && i > 0) {
+          if (
+            joueurs[random[j]].equipe.includes(matchs[idMatch].equipe[0][1]) ===
+            false
+          ) {
             matchs[idMatch].equipe[0][0] = random[j];
-            j++
+            j++;
             breaker = 0;
-          }
-          else {
+          } else {
             breaker++;
           }
-        }
-        else {
+        } else {
           matchs[idMatch].equipe[0][0] = random[j];
           j++;
           breaker = 0;
         }
       }
       //Affectation joueur 2
-      if (random[j] != undefined && matchs[idMatch].equipe[0][1] == -1) {
+      if (random[j] !== undefined && matchs[idMatch].equipe[0][1] === -1) {
         //Empeche joueur 2 d'être du même type que joueur 1 si regle speciauxIncompatibles
-        if (speciauxIncompatibles == false || joueurs[random[j]].type == undefined || (speciauxIncompatibles == true && joueurs[random[j]].type != joueurs[matchs[idMatch].equipe[0][0]].type)) {
-
+        if (
+          speciauxIncompatibles === false ||
+          joueurs[random[j]].type === undefined ||
+          (speciauxIncompatibles === true &&
+            joueurs[random[j]].type !==
+              joueurs[matchs[idMatch].equipe[0][0]].type)
+        ) {
           //Empeche que le joueur 1 joue plusieurs fois dans la même équipe avec le même joueur
           //Ne s'applique qu'à partir de la manche 2
-          if (jamaisMemeCoequipier == true && i > 0) {
-            if (joueurs[random[j]].equipe.includes(matchs[idMatch].equipe[0][0]) == false) {
+          if (jamaisMemeCoequipier === true && i > 0) {
+            if (
+              joueurs[random[j]].equipe.includes(
+                matchs[idMatch].equipe[0][0],
+              ) === false
+            ) {
               matchs[idMatch].equipe[0][1] = random[j];
               j++;
               breaker = 0;
-            }
-            else {
+            } else {
               breaker++;
             }
-          }
-          else {
+          } else {
             matchs[idMatch].equipe[0][1] = random[j];
             j++;
             breaker = 0;
           }
-        }
-        else {
+        } else {
           breaker++;
         }
       }
       //Affectation joueur 3 & 4
-      if (random[j] != undefined) {
+      if (random[j] !== undefined) {
         //Test si le joueur 1 ou 2 n'a pas déjà joué (ensemble et contre) + de la moitié de ses matchs contre le joueur en cours d'affectation
-        let affectationPossible = true
+        let affectationPossible = true;
         if (eviterMemeAdversaire !== 100) {
-          if (matchs[idMatch].equipe[0][0] != -1) {
+          if (matchs[idMatch].equipe[0][0] !== -1) {
             let joueur1 = matchs[idMatch].equipe[0][0];
             let joueur2 = undefined;
-            if (matchs[idMatch].equipe[0][1] != -1) {
+            if (matchs[idMatch].equipe[0][1] !== -1) {
               joueur2 = matchs[idMatch].equipe[0][1];
             }
             let totPartiesJ1 = 0;
@@ -307,99 +386,154 @@ export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, ty
             //Si le joueur en affectation était joueur 3 ou 4 et qu'il a déjà eu le joueur 1 ou 2 comme adversaire
             //OU
             //Si le joueur en affectation était joueur 1 ou 2 et qu'il a déjà eu le joueur 3 ou 4 comme adversaire
-            const occurrencesAdversaireDansEquipe1 = (arr, joueurAdverse, joueurAffect) => arr.reduce((a, v) => ((v.equipe[0][0] === joueurAdverse || v.equipe[0][1] === joueurAdverse) && (v.equipe[1][0] === joueurAffect || v.equipe[1][1] === joueurAffect) ? a + 1 : a), 0);
-            const occurrencesAdversaireDansEquipe2 = (arr, joueurAdverse, joueurAffect) => arr.reduce((a, v) => ((v.equipe[1][0] === joueurAdverse || v.equipe[1][1] === joueurAdverse) && (v.equipe[0][0] === joueurAffect || v.equipe[0][1] === joueurAffect) ? a + 1 : a), 0);
-            totPartiesJ1 += occurrencesAdversaireDansEquipe1(matchs, joueur1, random[j]);
-            totPartiesJ1 += occurrencesAdversaireDansEquipe2(matchs, joueur1, random[j]);
+            const occurrencesAdversaireDansEquipe1 = (
+              arr,
+              joueurAdverse,
+              joueurAffect,
+            ) =>
+              arr.reduce(
+                (a, v) =>
+                  (v.equipe[0][0] === joueurAdverse ||
+                    v.equipe[0][1] === joueurAdverse) &&
+                  (v.equipe[1][0] === joueurAffect ||
+                    v.equipe[1][1] === joueurAffect)
+                    ? a + 1
+                    : a,
+                0,
+              );
+            const occurrencesAdversaireDansEquipe2 = (
+              arr,
+              joueurAdverse,
+              joueurAffect,
+            ) =>
+              arr.reduce(
+                (a, v) =>
+                  (v.equipe[1][0] === joueurAdverse ||
+                    v.equipe[1][1] === joueurAdverse) &&
+                  (v.equipe[0][0] === joueurAffect ||
+                    v.equipe[0][1] === joueurAffect)
+                    ? a + 1
+                    : a,
+                0,
+              );
+            totPartiesJ1 += occurrencesAdversaireDansEquipe1(
+              matchs,
+              joueur1,
+              random[j],
+            );
+            totPartiesJ1 += occurrencesAdversaireDansEquipe2(
+              matchs,
+              joueur1,
+              random[j],
+            );
             if (joueur2) {
-              totPartiesJ2 += occurrencesAdversaireDansEquipe1(matchs, joueur2, random[j]);
-              totPartiesJ2 += occurrencesAdversaireDansEquipe2(matchs, joueur2, random[j]);
+              totPartiesJ2 += occurrencesAdversaireDansEquipe1(
+                matchs,
+                joueur2,
+                random[j],
+              );
+              totPartiesJ2 += occurrencesAdversaireDansEquipe2(
+                matchs,
+                joueur2,
+                random[j],
+              );
             }
             //+1 si joueur en cours d'affectation a déjà joué dans la même équipe
             totPartiesJ1 += joueurs[joueur1].equipe.includes(random[j]) ? 1 : 0;
             if (joueur2) {
-              totPartiesJ2 += joueurs[joueur2].equipe.includes(random[j]) ? 1 : 0;
+              totPartiesJ2 += joueurs[joueur2].equipe.includes(random[j])
+                ? 1
+                : 0;
             }
 
             //Règle eviterMemeAdversaire choix dans slider options (0: seul match possible, 50: la moitié des matchs, 100: tous les matchs = règle désactivée)
             let maxNbMatchs = 1;
-            if (eviterMemeAdversaire == 50) {
-              maxNbMatchs = nbTours == 1 ? 1 : Math.floor(nbTours / 2);
+            if (eviterMemeAdversaire === 50) {
+              maxNbMatchs = nbTours === 1 ? 1 : Math.floor(nbTours / 2);
             }
             if (totPartiesJ1 >= maxNbMatchs || totPartiesJ2 >= maxNbMatchs) {
               affectationPossible = false;
             }
-          }
-          else {
+          } else {
             affectationPossible = false;
           }
         }
-        if (affectationPossible == true) {
+        if (affectationPossible === true) {
           //Affectation joueur 3
-          if (matchs[idMatch].equipe[1][0] == -1) {
-            if (jamaisMemeCoequipier == true && i > 0) {
-              if (joueurs[random[j]].equipe.includes(matchs[idMatch].equipe[1][1]) == false) {
+          if (matchs[idMatch].equipe[1][0] === -1) {
+            if (jamaisMemeCoequipier === true && i > 0) {
+              if (
+                joueurs[random[j]].equipe.includes(
+                  matchs[idMatch].equipe[1][1],
+                ) === false
+              ) {
                 matchs[idMatch].equipe[1][0] = random[j];
                 j++;
                 breaker = 0;
-              }
-              else {
+              } else {
                 breaker++;
               }
-            }
-            else {
+            } else {
               matchs[idMatch].equipe[1][0] = random[j];
               j++;
               breaker = 0;
             }
           }
           //Affectation joueur 4
-          else if (matchs[idMatch].equipe[1][1] == -1) {
+          else if (matchs[idMatch].equipe[1][1] === -1) {
             //Empeche joueur 4 d'être du même type que joueur 3 si regle speciauxIncompatibles
-            if (speciauxIncompatibles == false || joueurs[random[j]].type == undefined || (speciauxIncompatibles == true && joueurs[random[j]].type != joueurs[matchs[idMatch].equipe[1][0]].type)) {
+            if (
+              speciauxIncompatibles === false ||
+              joueurs[random[j]].type === undefined ||
+              (speciauxIncompatibles === true &&
+                joueurs[random[j]].type !==
+                  joueurs[matchs[idMatch].equipe[1][0]].type)
+            ) {
               //Empeche que le joueur 4 joue plusieurs fois dans la même équipe avec le même joueur
               //Ne s'applique qu'à partir de la manche 2
-              if (jamaisMemeCoequipier == true && i > 0) {
-                if (joueurs[random[j]].equipe.includes(matchs[idMatch].equipe[1][0]) == false) {
+              if (jamaisMemeCoequipier === true && i > 0) {
+                if (
+                  joueurs[random[j]].equipe.includes(
+                    matchs[idMatch].equipe[1][0],
+                  ) === false
+                ) {
                   matchs[idMatch].equipe[1][1] = random[j];
                   j++;
                   breaker = 0;
-                }
-                else {
+                } else {
                   breaker++;
                 }
-              }
-              else {
+              } else {
                 matchs[idMatch].equipe[1][1] = random[j];
                 j++;
                 breaker = 0;
               }
-            }
-            else {
+            } else {
               breaker++;
             }
           }
-        }
-        else {
+        } else {
           breaker++;
         }
       }
       //Affectation joueur(s) complémentaire(s) du tour si tournoi avec complément en triplette
-      if (random[j] != undefined && (idMatch + 1) % nbMatchsParTour == 0) {
-        if (nbjoueurs % 4 != 0 && complement == Complement.TRIPLETTE && matchs[idMatch].equipe[0][2] == -1) {
+      if (random[j] !== undefined && (idMatch + 1) % nbMatchsParTour === 0) {
+        if (
+          nbjoueurs % 4 !== 0 &&
+          complement === Complement.TRIPLETTE &&
+          matchs[idMatch].equipe[0][2] === -1
+        ) {
           let joueursEnTrop = nbjoueurs % 4;
           matchs[idMatch].equipe[0][2] = random[j];
-          if (joueursEnTrop == 2) {
+          if (joueursEnTrop === 2) {
             matchs[idMatch].equipe[1][2] = random[j + 1];
-          }
-          else if (joueursEnTrop == 3) {
+          } else if (joueursEnTrop === 3) {
             matchs[idMatch].equipe[1][2] = random[j + 1];
             matchs[idMatch - 1].equipe[0][2] = random[j + 2];
           }
           j += joueursEnTrop;
           breaker = 0;
-        }
-        else {
+        } else {
           breaker++;
         }
       }
@@ -414,27 +548,47 @@ export const generationDoublettes = (listeJoueurs: Joueur[], nbTours: number, ty
       //TODO condition de break à affiner
       //nbMatchs devrait être assez car le + opti devrait être : nbMatchs / nbTours
       if (breaker > nbMatchs) {
-        return {echecGeneration: true};
+        return { echecGeneration: true };
       }
     }
 
     idMatch = i * nbMatchsParTour;
     for (let j = 0; j < nbMatchsParTour; j++) {
-      if (matchs[idMatch + j].equipe[0][0] != -1 && matchs[idMatch + j].equipe[0][1] != -1) {
-        joueurs[matchs[idMatch + j].equipe[0][0]].equipe.push(matchs[idMatch + j].equipe[0][1]);
+      if (
+        matchs[idMatch + j].equipe[0][0] !== -1 &&
+        matchs[idMatch + j].equipe[0][1] !== -1
+      ) {
+        joueurs[matchs[idMatch + j].equipe[0][0]].equipe.push(
+          matchs[idMatch + j].equipe[0][1],
+        );
       }
-      if (matchs[idMatch + j].equipe[1][0] != -1 && matchs[idMatch + j].equipe[1][1] != -1) {
-        joueurs[matchs[idMatch + j].equipe[1][0]].equipe.push(matchs[idMatch + j].equipe[1][1]);
+      if (
+        matchs[idMatch + j].equipe[1][0] !== -1 &&
+        matchs[idMatch + j].equipe[1][1] !== -1
+      ) {
+        joueurs[matchs[idMatch + j].equipe[1][0]].equipe.push(
+          matchs[idMatch + j].equipe[1][1],
+        );
       }
-      if (matchs[idMatch + j].equipe[0][1] != -1 && matchs[idMatch + j].equipe[0][0] != -1) {
-        joueurs[matchs[idMatch + j].equipe[0][1]].equipe.push(matchs[idMatch + j].equipe[0][0]);
+      if (
+        matchs[idMatch + j].equipe[0][1] !== -1 &&
+        matchs[idMatch + j].equipe[0][0] !== -1
+      ) {
+        joueurs[matchs[idMatch + j].equipe[0][1]].equipe.push(
+          matchs[idMatch + j].equipe[0][0],
+        );
       }
-      if (matchs[idMatch + j].equipe[1][1] != -1 && matchs[idMatch + j].equipe[1][0] != -1) {
-        joueurs[matchs[idMatch + j].equipe[1][1]].equipe.push(matchs[idMatch + j].equipe[1][0]);
+      if (
+        matchs[idMatch + j].equipe[1][1] !== -1 &&
+        matchs[idMatch + j].equipe[1][0] !== -1
+      ) {
+        joueurs[matchs[idMatch + j].equipe[1][1]].equipe.push(
+          matchs[idMatch + j].equipe[1][0],
+        );
       }
     }
     idMatch = nbMatchsParTour * (i + 1);
   }
 
-  return {matchs, nbMatchs};
-}
+  return { matchs, nbMatchs };
+};

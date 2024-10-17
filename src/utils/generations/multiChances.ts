@@ -1,8 +1,11 @@
-import { TypeEquipes } from "@/types/enums/typeEquipes";
-import { Joueur } from "@/types/interfaces/joueur";
-import { shuffle } from "./generation";
+import { TypeEquipes } from '@/types/enums/typeEquipes';
+import { Joueur } from '@/types/interfaces/joueur';
+import { shuffle } from './generation';
 
-export const generationMultiChances = (listeJoueurs: Joueur[], typeEquipes: TypeEquipes) => {
+export const generationMultiChances = (
+  listeJoueurs: Joueur[],
+  typeEquipes: TypeEquipes,
+) => {
   let nbjoueurs = listeJoueurs.length;
   let matchs = [];
   let idMatch = 0;
@@ -13,21 +16,30 @@ export const generationMultiChances = (listeJoueurs: Joueur[], typeEquipes: Type
   let nbMatchsParTour: number;
   let nbTours: number;
   let nbMatchs: number;
-  if (typeEquipes == TypeEquipes.TETEATETE) {
+  if (typeEquipes === TypeEquipes.TETEATETE) {
     nbEquipes = nbjoueurs;
-  } else if (typeEquipes == TypeEquipes.DOUBLETTE) {
+  } else if (typeEquipes === TypeEquipes.DOUBLETTE) {
     nbEquipes = nbjoueurs / 2;
   } else {
     nbEquipes = nbjoueurs / 3;
   }
   nbMatchsParTour = nbEquipes / 2;
   nbTours = Math.log2(nbEquipes);
-  nbMatchs = nbMatchsParTour  * nbTours;
+  nbMatchs = nbMatchsParTour * nbTours;
 
   idMatch = 0;
   for (let i = 1; i < nbTours + 1; i++) {
     for (let j = 0; j < nbMatchsParTour; j++) {
-      matchs.push({id: idMatch, manche: i, equipe: [[-1,-1,-1],[-1,-1,-1]], score1: undefined, score2: undefined});
+      matchs.push({
+        id: idMatch,
+        manche: i,
+        equipe: [
+          [-1, -1, -1],
+          [-1, -1, -1],
+        ],
+        score1: undefined,
+        score2: undefined,
+      });
       idMatch++;
     }
   }
@@ -36,7 +48,7 @@ export const generationMultiChances = (listeJoueurs: Joueur[], typeEquipes: Type
   for (let i = 1; i <= nbEquipes; i++) {
     equipe.push([]);
     for (let j = 0; j < nbjoueurs; j++) {
-      if (listeJoueurs[j].equipe == i) {
+      if (listeJoueurs[j].equipe === i) {
         equipe[i - 1].push(listeJoueurs[j].id);
       }
     }
@@ -51,25 +63,31 @@ export const generationMultiChances = (listeJoueurs: Joueur[], typeEquipes: Type
   //FONCTIONNEMENT
   idMatch = 0;
   let randomEquipesIds = shuffle(equipesIds);
-  for (let j = 0; j < equipe.length;) {
+  for (let j = 0; j < equipe.length; ) {
     //Affectation equipe 1
-    if (matchs[idMatch].equipe[0][0] == -1) {
+    if (matchs[idMatch].equipe[0][0] === -1) {
       matchs[idMatch].equipe[0][0] = equipe[randomEquipesIds[j]][0];
-      if (typeEquipes == TypeEquipes.DOUBLETTE || typeEquipes == TypeEquipes.TRIPLETTE) {
+      if (
+        typeEquipes === TypeEquipes.DOUBLETTE ||
+        typeEquipes === TypeEquipes.TRIPLETTE
+      ) {
         matchs[idMatch].equipe[0][1] = equipe[randomEquipesIds[j]][1];
       }
-      if (typeEquipes == TypeEquipes.TRIPLETTE) {
+      if (typeEquipes === TypeEquipes.TRIPLETTE) {
         matchs[idMatch].equipe[0][2] = equipe[randomEquipesIds[j]][2];
       }
       j++;
     }
     //Affectation Equipe 2
-    if (matchs[idMatch].equipe[1][0] == -1) {
+    if (matchs[idMatch].equipe[1][0] === -1) {
       matchs[idMatch].equipe[1][0] = equipe[randomEquipesIds[j]][0];
-      if (typeEquipes == TypeEquipes.DOUBLETTE || typeEquipes == TypeEquipes.TRIPLETTE) {
+      if (
+        typeEquipes === TypeEquipes.DOUBLETTE ||
+        typeEquipes === TypeEquipes.TRIPLETTE
+      ) {
         matchs[idMatch].equipe[1][1] = equipe[randomEquipesIds[j]][1];
       }
-      if (typeEquipes == TypeEquipes.TRIPLETTE) {
+      if (typeEquipes === TypeEquipes.TRIPLETTE) {
         matchs[idMatch].equipe[1][2] = equipe[randomEquipesIds[j]][2];
       }
       j++;
@@ -77,5 +95,5 @@ export const generationMultiChances = (listeJoueurs: Joueur[], typeEquipes: Type
     idMatch++;
   }
 
-  return {matchs, nbTours, nbMatchs};  
-}
+  return { matchs, nbTours, nbMatchs };
+};
