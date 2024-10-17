@@ -18,48 +18,48 @@ i18n
     lng: Localization.getLocales()[0]['languageTag'],
     resources: {
       'fr-FR': {
-        'common': francais.translation,
-        'changelog': changelogFR
+        common: francais.translation,
+        changelog: changelogFR,
       },
       'en-US': {
-        'common': english.translation,
-        'changelog': changelogEN
+        common: english.translation,
+        changelog: changelogEN,
       },
       'en-GB': {
-        'common': english.translation,
-        'changelog': changelogEN
+        common: english.translation,
+        changelog: changelogEN,
       },
       'pl-PL': {
-        'common': polonais.translation,
-        'changelog': changelogPL
+        common: polonais.translation,
+        changelog: changelogPL,
       },
       'nl-NL': {
-        'common': neerlandais.translation,
-        'changelog': changelogNL
+        common: neerlandais.translation,
+        changelog: changelogNL,
       },
       ns: ['common', 'changelog'],
       supportedLngs: [
         {
           code: 'fr-FR',
-          locale: 'Français - France'
+          locale: 'Français - France',
         },
         {
           code: 'en-US',
-          locale: 'Anglais - Etats-Unis'
+          locale: 'Anglais - Etats-Unis',
         },
         {
           code: 'en-GB',
-          locale: 'Anglais - Royaume-Uni'
+          locale: 'Anglais - Royaume-Uni',
         },
         {
           code: 'pl-PL',
-          locale: 'Polonais - Pologne'
-        }
+          locale: 'Polonais - Pologne',
+        },
       ],
       defaultNS: 'common',
       interpolation: {
-        escapeValue: false // not needed for react
-      }
-    }
-  })
+        escapeValue: false, // not needed for react
+      },
+    },
+  });
 export default i18n;
