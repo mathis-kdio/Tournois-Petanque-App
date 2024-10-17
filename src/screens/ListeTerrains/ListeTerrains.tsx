@@ -1,8 +1,8 @@
-import { FlatList } from "@/components/ui/flat-list";
-import { Button, ButtonText } from "@/components/ui/button";
-import { Text } from "@/components/ui/text";
-import { VStack } from "@/components/ui/vstack";
-import React from 'react'
+import { FlatList } from '@/components/ui/flat-list';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
+import React from 'react';
 import ListeTerrainItem from '@components/ListeTerrainItem';
 import { calcNbMatchsParTour } from '@utils/generations/generation';
 import { withTranslation } from 'react-i18next';
@@ -17,44 +17,53 @@ import { RouteProp } from '@react-navigation/native';
 import { InscriptionStackParamList } from '@/navigation/Navigation';
 
 export interface Props extends PropsFromRedux {
-  navigation: StackNavigationProp<any,any>;
+  navigation: StackNavigationProp<any, any>;
   t: TFunction;
   route: RouteProp<InscriptionStackParamList, 'ListeTerrains'>;
 }
 
-interface State {
-}
+interface State {}
 
 class ListeTerrains extends React.Component<Props, State> {
-
   constructor(props: Props) {
-    super(props)
+    super(props);
   }
 
   _ajoutTerrains() {
-    const ajoutTerrain = { type: "AJOUT_TERRAIN", value: []};
+    const ajoutTerrain = { type: 'AJOUT_TERRAIN', value: [] };
     this.props.dispatch(ajoutTerrain);
   }
 
   _ajoutTerrainButton() {
     const { t } = this.props;
     return (
-      <Button action='primary' onPress={() => this._ajoutTerrains()}>
-        <ButtonText>{t("ajouter_terrain")}</ButtonText>
+      <Button action="primary" onPress={() => this._ajoutTerrains()}>
+        <ButtonText>{t('ajouter_terrain')}</ButtonText>
       </Button>
     );
   }
 
   _commencerButton() {
     const { t } = this.props;
-    const { typeEquipes, mode, typeTournoi, complement } = this.props.optionsTournoi;
+    const { typeEquipes, mode, typeTournoi, complement } =
+      this.props.optionsTournoi;
     const { listesJoueurs, listeTerrains } = this.props;
     const nbJoueurs = listesJoueurs[mode].length;
-    const nbTerrainsNecessaires = calcNbMatchsParTour(nbJoueurs, typeEquipes, mode, typeTournoi, complement);
+    const nbTerrainsNecessaires = calcNbMatchsParTour(
+      nbJoueurs,
+      typeEquipes,
+      mode,
+      typeTournoi,
+      complement,
+    );
     const disabled = listeTerrains.length < nbTerrainsNecessaires;
-    const title = disabled ? t("terrains_insuffisants") : t("commencer");
+    const title = disabled ? t('terrains_insuffisants') : t('commencer');
     return (
-      <Button isDisabled={disabled} action='positive' onPress={() => this._commencer()}>
+      <Button
+        isDisabled={disabled}
+        action="positive"
+        onPress={() => this._commencer()}
+      >
         <ButtonText>{title}</ButtonText>
       </Button>
     );
@@ -62,27 +71,30 @@ class ListeTerrains extends React.Component<Props, State> {
 
   _commencer() {
     this.props.navigation.navigate({
-      name: "GenerationMatchs",
+      name: 'GenerationMatchs',
       params: {
-        screenStackName: this.props.route.params.screenStackName
-      }
+        screenStackName: this.props.route.params.screenStackName,
+      },
     });
   }
 
   render() {
     const { t } = this.props;
 
-    const renderItem: ListRenderItem<Terrain> = ({item}) => (
-      <ListeTerrainItem
-        terrain={item}
-      />
+    const renderItem: ListRenderItem<Terrain> = ({ item }) => (
+      <ListeTerrainItem terrain={item} />
     );
 
     return (
-      <SafeAreaView style={{flex: 1}}>
+      <SafeAreaView style={{ flex: 1 }}>
         <VStack className="flex-1 bg-[#0594ae]">
-          <TopBarBack title={t("liste_terrains_navigation_title")} navigation={this.props.navigation}/>
-          <Text className="text-white text-xl text-center">{t("nombre_terrains", {nb: this.props.listeTerrains.length})}</Text>
+          <TopBarBack
+            title={t('liste_terrains_navigation_title')}
+            navigation={this.props.navigation}
+          />
+          <Text className="text-white text-xl text-center">
+            {t('nombre_terrains', { nb: this.props.listeTerrains.length })}
+          </Text>
           <VStack className="flex-1 my-2">
             <FlatList
               persistentScrollbar={true}
@@ -93,7 +105,7 @@ class ListeTerrains extends React.Component<Props, State> {
               className="h-1"
             />
           </VStack>
-          <VStack space='lg' className="px-10">
+          <VStack space="lg" className="px-10">
             {this._ajoutTerrainButton()}
             {this._commencerButton()}
           </VStack>
@@ -103,4 +115,4 @@ class ListeTerrains extends React.Component<Props, State> {
   }
 }
 
-export default connector(withTranslation()(ListeTerrains))
+export default connector(withTranslation()(ListeTerrains));

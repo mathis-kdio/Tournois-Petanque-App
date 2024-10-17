@@ -1,4 +1,4 @@
-import { Text } from "@/components/ui/text";
+import { Text } from '@/components/ui/text';
 
 import {
   Select,
@@ -11,16 +11,26 @@ import {
   SelectItem,
   SelectPortal,
   SelectTrigger,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 
-import { Input, InputField } from "@/components/ui/input";
-import { Image } from "@/components/ui/image";
-import { Heading } from "@/components/ui/heading";
-import { HStack } from "@/components/ui/hstack";
-import { Checkbox, CheckboxIcon, CheckboxIndicator, CheckboxLabel } from "@/components/ui/checkbox";
-import { CheckIcon, ChevronDownIcon, CloseIcon, Icon } from "@/components/ui/icon";
-import { Button, ButtonGroup, ButtonText } from "@/components/ui/button";
-import { Box } from "@/components/ui/box";
+import { Input, InputField } from '@/components/ui/input';
+import { Image } from '@/components/ui/image';
+import { Heading } from '@/components/ui/heading';
+import { HStack } from '@/components/ui/hstack';
+import {
+  Checkbox,
+  CheckboxIcon,
+  CheckboxIndicator,
+  CheckboxLabel,
+} from '@/components/ui/checkbox';
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  CloseIcon,
+  Icon,
+} from '@/components/ui/icon';
+import { Button, ButtonGroup, ButtonText } from '@/components/ui/button';
+import { Box } from '@/components/ui/box';
 
 import {
   AlertDialog,
@@ -30,9 +40,9 @@ import {
   AlertDialogContent,
   AlertDialogFooter,
   AlertDialogHeader,
-} from "@/components/ui/alert-dialog";
+} from '@/components/ui/alert-dialog';
 
-import React from 'react'
+import React from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { withTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
@@ -59,21 +69,26 @@ interface State {
 }
 
 class ListeJoueurItem extends React.Component<Props, State> {
-  joueurText: string = "";
+  joueurText: string = '';
 
   constructor(props: Props) {
-    super(props)
+    super(props);
     this.state = {
       renommerOn: false,
-      modalConfirmUncheckIsOpen: false
-    }
+      modalConfirmUncheckIsOpen: false,
+    };
   }
 
   _showSupprimerJoueur(joueur: Joueur, isInscription: boolean) {
     if (isInscription === true) {
       return (
         <Box className="ml-2">
-          <FontAwesome5.Button name="times" backgroundColor='#E63535' iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._supprimerJoueur(joueur.id)}/>
+          <FontAwesome5.Button
+            name="times"
+            backgroundColor="#E63535"
+            iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
+            onPress={() => this._supprimerJoueur(joueur.id)}
+          />
         </Box>
       );
     }
@@ -81,28 +96,38 @@ class ListeJoueurItem extends React.Component<Props, State> {
 
   _supprimerJoueur(idJoueur: number) {
     this.setState({
-      renommerOn: false
-    })
-    const actionSuppr = {type: "SUPPR_JOUEUR", value: [this.props.optionsTournoi.mode, idJoueur]};
+      renommerOn: false,
+    });
+    const actionSuppr = {
+      type: 'SUPPR_JOUEUR',
+      value: [this.props.optionsTournoi.mode, idJoueur],
+    };
     this.props.dispatch(actionSuppr);
     if (this.props.optionsTournoi.typeEquipes == TypeEquipes.TETEATETE) {
-      const actionUpdateEquipe = {type: "UPDATE_ALL_JOUEURS_EQUIPE", value: [this.props.optionsTournoi.mode]};
+      const actionUpdateEquipe = {
+        type: 'UPDATE_ALL_JOUEURS_EQUIPE',
+        value: [this.props.optionsTournoi.mode],
+      };
       this.props.dispatch(actionUpdateEquipe);
     }
   }
 
-  _showRenommerJoueur(joueur: Joueur, isInscription: boolean, avecEquipes: boolean) {
+  _showRenommerJoueur(
+    joueur: Joueur,
+    isInscription: boolean,
+    avecEquipes: boolean,
+  ) {
     let name: string;
     let bgColor: string;
     let action;
     if (!this.state.renommerOn) {
       name = 'edit';
       bgColor = '#004282';
-      action = () => this.setState({renommerOn: true});
+      action = () => this.setState({ renommerOn: true });
     } else if (this.joueurText == '') {
       name = 'times';
       bgColor = '#5F5F5F';
-      action = () => this.setState({renommerOn: false});
+      action = () => this.setState({ renommerOn: false });
     } else {
       name = 'check';
       bgColor = '#348352';
@@ -111,123 +136,165 @@ class ListeJoueurItem extends React.Component<Props, State> {
 
     return (
       <Box>
-        <FontAwesome5.Button name={name} backgroundColor={bgColor} iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={action}/>
+        <FontAwesome5.Button
+          name={name}
+          backgroundColor={bgColor}
+          iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
+          onPress={action}
+        />
       </Box>
     );
   }
 
   _renommerJoueurInput(joueur: Joueur) {
     this.setState({
-      renommerOn: true
-    })
-    this.joueurText = joueur.name
+      renommerOn: true,
+    });
+    this.joueurText = joueur.name;
   }
 
-  _renommerJoueur(joueur: Joueur, isInscription: boolean, avecEquipes: boolean) {
-    if (this.joueurText != "") {
-      this.setState({renommerOn: false})
+  _renommerJoueur(
+    joueur: Joueur,
+    isInscription: boolean,
+    avecEquipes: boolean,
+  ) {
+    if (this.joueurText != '') {
+      this.setState({ renommerOn: false });
       if (isInscription === true) {
-        let typeInscription = "";
+        let typeInscription = '';
         if (this.props.optionsTournoi.mode == ModeTournoi.SAUVEGARDE) {
-          typeInscription = ModeTournoi.SAUVEGARDE
+          typeInscription = ModeTournoi.SAUVEGARDE;
+        } else if (avecEquipes == true) {
+          typeInscription = ModeTournoi.AVECEQUIPES;
+        } else {
+          typeInscription = ModeTournoi.AVECNOMS;
         }
-        else if (avecEquipes == true) {
-          typeInscription = ModeTournoi.AVECEQUIPES
-        }
-        else {
-          typeInscription = ModeTournoi.AVECNOMS
-        }
-        const actionRenommer = { type: "RENOMMER_JOUEUR", value: [typeInscription, joueur.id, this.joueurText] }
-        this.props.dispatch(actionRenommer)
-      }
-      else {
+        const actionRenommer = {
+          type: 'RENOMMER_JOUEUR',
+          value: [typeInscription, joueur.id, this.joueurText],
+        };
+        this.props.dispatch(actionRenommer);
+      } else {
         let data = { playerId: joueur.id, newName: this.joueurText };
-        const inGameRenamePlayer = { type: "INGAME_RENAME_PLAYER", value: data };
+        const inGameRenamePlayer = {
+          type: 'INGAME_RENAME_PLAYER',
+          value: data,
+        };
         this.props.dispatch(inGameRenamePlayer);
-        const actionUpdateTournoi = { type: "UPDATE_TOURNOI", value: {tournoi: this.props.listeMatchs, tournoiId: this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID}};
+        const actionUpdateTournoi = {
+          type: 'UPDATE_TOURNOI',
+          value: {
+            tournoi: this.props.listeMatchs,
+            tournoiId:
+              this.props.listeMatchs[this.props.listeMatchs.length - 1]
+                .tournoiID,
+          },
+        };
         this.props.dispatch(actionUpdateTournoi);
       }
-      this.joueurText = ""
+      this.joueurText = '';
     }
   }
 
   _joueurTxtInputChanged = (text: string) => {
-    this.joueurText = text
-    this.setState({renommerOn: true});
-  }
+    this.joueurText = text;
+    this.setState({ renommerOn: true });
+  };
 
   _joueurName(joueur: Joueur, isInscription: boolean, avecEquipes: boolean) {
     if (this.state.renommerOn == true) {
       return (
-        <Input variant='underlined'>
+        <Input variant="underlined">
           <InputField
-            className='text-white placeholder:text-white'
+            className="text-white placeholder:text-white"
             placeholder={joueur.name}
             autoFocus={true}
             onChangeText={(text: string) => this._joueurTxtInputChanged(text)}
-            onSubmitEditing={() => this._renommerJoueur(joueur, isInscription, avecEquipes)}
+            onSubmitEditing={() =>
+              this._renommerJoueur(joueur, isInscription, avecEquipes)
+            }
           />
         </Input>
       );
-    }
-    else {
-      return <Text className="text-white text-xl font-bold">{(joueur.id+1)}-{joueur.name}</Text>;
+    } else {
+      return (
+        <Text className="text-white text-xl font-bold">
+          {joueur.id + 1}-{joueur.name}
+        </Text>
+      );
     }
   }
 
   _ajoutEquipe(joueurId: number, equipeId: number) {
-    const action = { type: "AJOUT_EQUIPE_JOUEUR", value: [ModeTournoi.AVECEQUIPES, joueurId, equipeId] };
+    const action = {
+      type: 'AJOUT_EQUIPE_JOUEUR',
+      value: [ModeTournoi.AVECEQUIPES, joueurId, equipeId],
+    };
     this.props.dispatch(action);
   }
 
-  _equipePicker(joueur: Joueur, avecEquipes: boolean, typeEquipes: TypeEquipes, nbJoueurs: number) {
+  _equipePicker(
+    joueur: Joueur,
+    avecEquipes: boolean,
+    typeEquipes: TypeEquipes,
+    nbJoueurs: number,
+  ) {
     const { t } = this.props;
     if (avecEquipes == true) {
-      let selectedValue = "0";
+      let selectedValue = '0';
       if (joueur.equipe) {
         selectedValue = joueur.equipe.toString();
       }
       let nbEquipes = nbJoueurs;
       if (typeEquipes == TypeEquipes.DOUBLETTE) {
         nbEquipes = Math.ceil(nbJoueurs / 2);
-      }
-      else if (typeEquipes == TypeEquipes.TRIPLETTE){
+      } else if (typeEquipes == TypeEquipes.TRIPLETTE) {
         nbEquipes = Math.ceil(nbJoueurs / 3);
       }
 
       let pickerItem = [];
       for (let i = 1; i <= nbEquipes; i++) {
-        let count = this.props.listesJoueurs.avecEquipes.reduce((counter: number, obj: Joueur) => obj.equipe == i ? counter += 1 : counter, 0);
+        let count = this.props.listesJoueurs.avecEquipes.reduce(
+          (counter: number, obj: Joueur) =>
+            obj.equipe == i ? (counter += 1) : counter,
+          0,
+        );
         if (typeEquipes == TypeEquipes.TETEATETE && count < 1) {
           pickerItem.push(this._equipePickerItem(i));
         }
         if (typeEquipes == TypeEquipes.DOUBLETTE && count < 2) {
           pickerItem.push(this._equipePickerItem(i));
-        }
-        else if (typeEquipes == TypeEquipes.TRIPLETTE && count < 3) {
+        } else if (typeEquipes == TypeEquipes.TRIPLETTE && count < 3) {
           pickerItem.push(this._equipePickerItem(i));
-        }
-        else if (joueur.equipe == i) {
+        } else if (joueur.equipe == i) {
           pickerItem.push(this._equipePickerItem(i));
         }
       }
       return (
         <Select
           selectedValue={selectedValue}
-          aria-label={t("choix_equipe")}
-          onValueChange={itemValue => this._ajoutEquipe(joueur.id, parseInt(itemValue))}
+          aria-label={t('choix_equipe')}
+          onValueChange={(itemValue) =>
+            this._ajoutEquipe(joueur.id, parseInt(itemValue))
+          }
         >
           <SelectTrigger className="flex flex-row">
-            <SelectInput className="basis-5/6 text-white placeholder:text-white" placeholder={t("choix_equipe")}/>
-            <SelectIcon className="basis-1/6 mr-3 text-white" as={ChevronDownIcon}/>
+            <SelectInput
+              className="basis-5/6 text-white placeholder:text-white"
+              placeholder={t('choix_equipe')}
+            />
+            <SelectIcon
+              className="basis-1/6 mr-3 text-white"
+              as={ChevronDownIcon}
+            />
           </SelectTrigger>
           <SelectPortal>
-            <SelectBackdrop/>
+            <SelectBackdrop />
             <SelectContent>
               <SelectDragIndicatorWrapper>
-                <SelectDragIndicator/>
+                <SelectDragIndicator />
               </SelectDragIndicatorWrapper>
-              <SelectItem label={t("choisir")} value="0" key="0"/>
+              <SelectItem label={t('choisir')} value="0" key="0" />
               {pickerItem}
             </SelectContent>
           </SelectPortal>
@@ -237,37 +304,56 @@ class ListeJoueurItem extends React.Component<Props, State> {
   }
 
   _equipePickerItem(equipe: number) {
-    return <SelectItem label={equipe.toString()} value={equipe.toString()} key={equipe}/>;
+    return (
+      <SelectItem
+        label={equipe.toString()}
+        value={equipe.toString()}
+        key={equipe}
+      />
+    );
   }
 
   _joueurTypeIcon(joueurType: string) {
     const { mode, typeTournoi, typeEquipes } = this.props.optionsTournoi;
-    if (mode == ModeTournoi.SAUVEGARDE || (typeTournoi == TypeTournoi.MELEDEMELE && typeEquipes == TypeEquipes.DOUBLETTE)) {
+    if (
+      mode == ModeTournoi.SAUVEGARDE ||
+      (typeTournoi == TypeTournoi.MELEDEMELE &&
+        typeEquipes == TypeEquipes.DOUBLETTE)
+    ) {
       return (
         <Box>
-          {joueurType == JoueurType.ENFANT && <FontAwesome5 name="child" color="darkgray" size={24}/>}
-          {joueurType == JoueurType.TIREUR && <Image
-            source={require('@assets/images/tireur.png')}
-            alt="tireur"
-            className="w-[30px] h-[30px]" />}
-          {joueurType == JoueurType.POINTEUR && <Image
-            source={require('@assets/images/pointeur.png')}
-            alt="tireur"
-            className="w-[30px] h-[30px]" />}
+          {joueurType == JoueurType.ENFANT && (
+            <FontAwesome5 name="child" color="darkgray" size={24} />
+          )}
+          {joueurType == JoueurType.TIREUR && (
+            <Image
+              source={require('@assets/images/tireur.png')}
+              alt="tireur"
+              className="w-[30px] h-[30px]"
+            />
+          )}
+          {joueurType == JoueurType.POINTEUR && (
+            <Image
+              source={require('@assets/images/pointeur.png')}
+              alt="tireur"
+              className="w-[30px] h-[30px]"
+            />
+          )}
         </Box>
       );
-    }
-    else {
+    } else {
       return (
         <Box>
-          {joueurType == JoueurType.ENFANT && <FontAwesome5 name="child" color="darkgray" size={24}/>}
+          {joueurType == JoueurType.ENFANT && (
+            <FontAwesome5 name="child" color="darkgray" size={24} />
+          )}
         </Box>
       );
     }
   }
 
   _joueurCheckbox(showCheckbox: boolean, joueur: Joueur) {
-    const {t} = this.props;
+    const { t } = this.props;
     if (showCheckbox) {
       let isChecked = true;
       if (joueur.isChecked == undefined || !joueur.isChecked) {
@@ -278,14 +364,17 @@ class ListeJoueurItem extends React.Component<Props, State> {
           <Checkbox
             value="joueurCheckbox"
             onChange={() => this._onCheckboxChange(isChecked, joueur.id)}
-            aria-label={t("checkbox_inscription_joueuritem")}
-            size='md'
+            aria-label={t('checkbox_inscription_joueuritem')}
+            size="md"
             isChecked={isChecked}
           >
             <CheckboxIndicator className="mr-2 border-white">
-              <CheckboxIcon as={CheckIcon} className="text-white bg-[#0594ae]"/>
+              <CheckboxIcon
+                as={CheckIcon}
+                className="text-white bg-[#0594ae]"
+              />
             </CheckboxIndicator>
-            <CheckboxLabel/>
+            <CheckboxLabel />
           </Checkbox>
         </Box>
       );
@@ -296,18 +385,21 @@ class ListeJoueurItem extends React.Component<Props, State> {
     if (!isChecked) {
       this._ajoutCheck(joueurId, true);
     } else {
-      this.setState({modalConfirmUncheckIsOpen: true})
+      this.setState({ modalConfirmUncheckIsOpen: true });
     }
   }
 
   _modalConfirmUncheck() {
     const { t, joueur } = this.props;
     return (
-      <AlertDialog isOpen={this.state.modalConfirmUncheckIsOpen} onClose={() => this.setState({modalConfirmUncheckIsOpen: false})}>
-        <AlertDialogBackdrop/>
+      <AlertDialog
+        isOpen={this.state.modalConfirmUncheckIsOpen}
+        onClose={() => this.setState({ modalConfirmUncheckIsOpen: false })}
+      >
+        <AlertDialogBackdrop />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <Heading>{t("confirmer_uncheck_modal_titre")}</Heading>
+            <Heading>{t('confirmer_uncheck_modal_titre')}</Heading>
             <AlertDialogCloseButton>
               <Icon
                 as={CloseIcon}
@@ -317,15 +409,24 @@ class ListeJoueurItem extends React.Component<Props, State> {
             </AlertDialogCloseButton>
           </AlertDialogHeader>
           <AlertDialogBody>
-            <Text>{t("confirmer_uncheck_modal_texte")}</Text>
+            <Text>{t('confirmer_uncheck_modal_texte')}</Text>
           </AlertDialogBody>
           <AlertDialogFooter>
             <ButtonGroup>
-              <Button variant='outline' action='secondary' onPress={() => this.setState({modalConfirmUncheckIsOpen: false})}>
-                <ButtonText>{t("annuler")}</ButtonText>
+              <Button
+                variant="outline"
+                action="secondary"
+                onPress={() =>
+                  this.setState({ modalConfirmUncheckIsOpen: false })
+                }
+              >
+                <ButtonText>{t('annuler')}</ButtonText>
               </Button>
-              <Button action='negative' onPress={() => this._ajoutCheck(joueur.id, false)}>
-                <ButtonText>{t("oui")}</ButtonText>
+              <Button
+                action="negative"
+                onPress={() => this._ajoutCheck(joueur.id, false)}
+              >
+                <ButtonText>{t('oui')}</ButtonText>
               </Button>
             </ButtonGroup>
           </AlertDialogFooter>
@@ -335,32 +436,44 @@ class ListeJoueurItem extends React.Component<Props, State> {
   }
 
   _ajoutCheck(joueurId: number, isChecked: boolean) {
-    const action = { type: "CHECK_JOUEUR", value: [this.props.optionsTournoi.mode, joueurId, isChecked] };
+    const action = {
+      type: 'CHECK_JOUEUR',
+      value: [this.props.optionsTournoi.mode, joueurId, isChecked],
+    };
     this.props.dispatch(action);
-    this.setState({modalConfirmUncheckIsOpen: false});
+    this.setState({ modalConfirmUncheckIsOpen: false });
   }
 
   render() {
-    const { joueur, isInscription, avecEquipes, typeEquipes, nbJoueurs, showCheckbox } = this.props;
-    let flexsize = avecEquipes ? ['basis-6/12', 'basis-6/12', 'basis-6/12', 'basis-3/12'] : ['basis-9/12', 'basis-3/12', 'basis-0/12', 'basis-6/12'];
+    const {
+      joueur,
+      isInscription,
+      avecEquipes,
+      typeEquipes,
+      nbJoueurs,
+      showCheckbox,
+    } = this.props;
+    let flexsize = avecEquipes
+      ? ['basis-6/12', 'basis-6/12', 'basis-6/12', 'basis-3/12']
+      : ['basis-9/12', 'basis-3/12', 'basis-0/12', 'basis-6/12'];
     return (
       <HStack className="flex flex-row border border-white rounded-xl m-1 px-1 items-center">
         <HStack className={`${flexsize[0]}`}>
           {this._joueurCheckbox(showCheckbox, joueur)}
           {this._joueurTypeIcon(joueur.type)}
-          <Box>
-            {this._joueurName(joueur, isInscription, avecEquipes)}
-          </Box>
+          <Box>{this._joueurName(joueur, isInscription, avecEquipes)}</Box>
         </HStack>
         <HStack className={`${flexsize[1]} justify-end`}>
-          {(avecEquipes == true && <HStack className={`${flexsize[2]}`}>
-            {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
-          </HStack>)}
+          {avecEquipes == true && (
+            <HStack className={`${flexsize[2]}`}>
+              {this._equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
+            </HStack>
+          )}
           <HStack className={`${flexsize[3]}`}>
-          {this._showRenommerJoueur(joueur, isInscription, avecEquipes)}
+            {this._showRenommerJoueur(joueur, isInscription, avecEquipes)}
           </HStack>
           <HStack className={`${flexsize[3]}`}>
-          {this._showSupprimerJoueur(joueur, isInscription)}
+            {this._showSupprimerJoueur(joueur, isInscription)}
           </HStack>
         </HStack>
         {this._modalConfirmUncheck()}
@@ -369,4 +482,4 @@ class ListeJoueurItem extends React.Component<Props, State> {
   }
 }
 
-export default connector(withTranslation()(ListeJoueurItem))
+export default connector(withTranslation()(ListeJoueurItem));

@@ -1,6 +1,6 @@
-import { ScrollView } from "@/components/ui/scroll-view";
-import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
-import { VStack } from "@/components/ui/vstack";
+import { ScrollView } from '@/components/ui/scroll-view';
+import { Button, ButtonSpinner, ButtonText } from '@/components/ui/button';
+import { VStack } from '@/components/ui/vstack';
 import React from 'react';
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
@@ -17,7 +17,7 @@ import { PropsFromRedux, connector } from '@/store/connector';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 
 export interface Props extends PropsFromRedux {
-  navigation: StackNavigationProp<any,any>;
+  navigation: StackNavigationProp<any, any>;
   t: TFunction;
 }
 
@@ -27,13 +27,17 @@ interface State {
 
 class PDFExport extends React.Component<Props, State> {
   constructor(props: Props) {
-    super(props)
+    super(props);
     this.state = {
       btnIsLoading: [false, false, false],
-    }
+    };
   }
 
-  _generatePDF = async (affichageScore: boolean, affichageClassement: boolean, buttonId: number) => {
+  _generatePDF = async (
+    affichageScore: boolean,
+    affichageClassement: boolean,
+    buttonId: number,
+  ) => {
     let toursParLigne = 3;
     let optionsTournoi = this.props.listeMatchs.at(-1) as OptionsTournoi;
     let nbTours = optionsTournoi.nbTours;
@@ -42,7 +46,9 @@ class PDFExport extends React.Component<Props, State> {
     let listeJoueurs = optionsTournoi.listeJoueurs;
     let typeTournoi = optionsTournoi.typeTournoi;
     let tournoiID = optionsTournoi.tournoiID;
-    let infosTournoi = this.props.listeTournois.find((e) => e.tournoiId == tournoiID);
+    let infosTournoi = this.props.listeTournois.find(
+      (e) => e.tournoiId == tournoiID,
+    );
     let nbMatchsParTour = 0;
     if (typeTournoi == TypeTournoi.COUPE) {
       nbMatchsParTour = (nbMatchs + 1) / 2;
@@ -51,44 +57,79 @@ class PDFExport extends React.Component<Props, State> {
     }
     let nbTables = Math.ceil(nbTours / toursParLigne);
     let nbToursRestants = nbTours;
-    let html = "";
+    let html = '';
     if (typeTournoi == TypeTournoi.COUPE) {
-      html = generationPDFCoupe(affichageScore, affichageClassement, listeJoueurs, optionsTournoi, listeMatchs, infosTournoi, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables);
+      html = generationPDFCoupe(
+        affichageScore,
+        affichageClassement,
+        listeJoueurs,
+        optionsTournoi,
+        listeMatchs,
+        infosTournoi,
+        nbMatchsParTour,
+        toursParLigne,
+        nbToursRestants,
+        nbTables,
+      );
     } else {
-      html = generationPDFTournoi(affichageScore, affichageClassement, listeJoueurs, optionsTournoi, listeMatchs, infosTournoi, nbMatchsParTour, toursParLigne, nbToursRestants, nbTables);
+      html = generationPDFTournoi(
+        affichageScore,
+        affichageClassement,
+        listeJoueurs,
+        optionsTournoi,
+        listeMatchs,
+        infosTournoi,
+        nbMatchsParTour,
+        toursParLigne,
+        nbToursRestants,
+        nbTables,
+      );
     }
     if (Platform.OS == 'web') {
-      const pW = window.open('', '', `width=${screen.availWidth},height=${screen.availHeight}`)
+      const pW = window.open(
+        '',
+        '',
+        `width=${screen.availWidth},height=${screen.availHeight}`,
+      );
       pW.document.write(html);
       pW.onafterprint = () => {
         pW.close();
       };
       pW.print();
-      this._toggleLoading(buttonId)
+      this._toggleLoading(buttonId);
     } else {
       const { uri } = await Print.printToFileAsync({ html });
       if ((await Sharing.isAvailableAsync()) && uri != undefined) {
         Sharing.shareAsync(uri).then(() => this._toggleLoading(buttonId));
       } else {
-        this._toggleLoading(buttonId)
+        this._toggleLoading(buttonId);
       }
     }
-  }
+  };
 
   _toggleLoading(buttonId: number) {
     let newBtnIsLoading = this.state.btnIsLoading;
     newBtnIsLoading[buttonId] = !this.state.btnIsLoading[buttonId];
     this.setState({
-      btnIsLoading: newBtnIsLoading
+      btnIsLoading: newBtnIsLoading,
     });
-  };
+  }
 
-  _onPressExportBtn(buttonId: number, affichageScore: boolean, affichageClassement: boolean) {
+  _onPressExportBtn(
+    buttonId: number,
+    affichageScore: boolean,
+    affichageClassement: boolean,
+  ) {
     this._toggleLoading(buttonId);
     this._generatePDF(affichageScore, affichageClassement, buttonId);
-  };
+  }
 
-  _exportButton(buttonId: number, buttonText: string, affichageScore: boolean, affichageClassement: boolean) {
+  _exportButton(
+    buttonId: number,
+    buttonText: string,
+    affichageScore: boolean,
+    affichageClassement: boolean,
+  ) {
     let pressableDisabled = false;
     let opacityStyle = 1;
     if (this.state.btnIsLoading[buttonId]) {
@@ -96,8 +137,15 @@ class PDFExport extends React.Component<Props, State> {
       opacityStyle = 0.7;
     }
     return (
-      <Button isDisabled={pressableDisabled} onPress={() => this._onPressExportBtn(buttonId, affichageScore, affichageClassement)}>
-        {this.state.btnIsLoading[buttonId] && <ButtonSpinner className="mr-1" />}
+      <Button
+        isDisabled={pressableDisabled}
+        onPress={() =>
+          this._onPressExportBtn(buttonId, affichageScore, affichageClassement)
+        }
+      >
+        {this.state.btnIsLoading[buttonId] && (
+          <ButtonSpinner className="mr-1" />
+        )}
         <ButtonText>{buttonText}</ButtonText>
       </Button>
     );
@@ -106,13 +154,21 @@ class PDFExport extends React.Component<Props, State> {
   render() {
     const { t } = this.props;
     return (
-      <SafeAreaView style={{flex: 1}}>
+      <SafeAreaView style={{ flex: 1 }}>
         <ScrollView className="h-1 bg-[#0594ae]">
-          <TopBarBack title={t("exporter_pdf_navigation_title")} navigation={this.props.navigation}/>
-          <VStack space='3xl' className="flex-1 px-10 justify-center">
-            {this._exportButton(0, t("export_pdf_sans_scores"), false, false)}
-            {this._exportButton(1, t("export_pdf_avec_scores"), true, false)}
-            {this._exportButton(2, t("export_pdf_avec_scores_classement"), true, true)}
+          <TopBarBack
+            title={t('exporter_pdf_navigation_title')}
+            navigation={this.props.navigation}
+          />
+          <VStack space="3xl" className="flex-1 px-10 justify-center">
+            {this._exportButton(0, t('export_pdf_sans_scores'), false, false)}
+            {this._exportButton(1, t('export_pdf_avec_scores'), true, false)}
+            {this._exportButton(
+              2,
+              t('export_pdf_avec_scores_classement'),
+              true,
+              true,
+            )}
           </VStack>
         </ScrollView>
       </SafeAreaView>
@@ -120,4 +176,4 @@ class PDFExport extends React.Component<Props, State> {
   }
 }
 
-export default connector(withTranslation()(PDFExport))
+export default connector(withTranslation()(PDFExport));

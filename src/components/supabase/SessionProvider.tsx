@@ -15,13 +15,18 @@ interface SessionProviderProps {
 }
 
 // Composant SessionProvider
-class SessionProvider extends Component<SessionProviderProps, SessionProviderState> {
-  private authListener: { data: { subscription: { unsubscribe: () => void } } } | null = null;
+class SessionProvider extends Component<
+  SessionProviderProps,
+  SessionProviderState
+> {
+  private authListener: {
+    data: { subscription: { unsubscribe: () => void } };
+  } | null = null;
 
   constructor(props: SessionProviderProps) {
     super(props);
     this.state = {
-      session: null
+      session: null,
     };
   }
 

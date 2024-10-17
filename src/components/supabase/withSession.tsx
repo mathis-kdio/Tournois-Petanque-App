@@ -6,11 +6,13 @@ export interface WithSessionProps {
   session: Session | null;
 }
 
-export function withSession<T extends WithSessionProps>(WrappedComponent: ComponentType<T>) {
+export function withSession<T extends WithSessionProps>(
+  WrappedComponent: ComponentType<T>,
+) {
   return function WithSessionComponent(props: Omit<T, keyof WithSessionProps>) {
     return (
       <SessionContext.Consumer>
-        {session => <WrappedComponent {...(props as T)} session={session} />}
+        {(session) => <WrappedComponent {...(props as T)} session={session} />}
       </SessionContext.Consumer>
     );
   };

@@ -1,20 +1,18 @@
 import * as React from 'react';
 
-export interface Props {
-}
+export interface Props {}
 
-interface State {
-}
+interface State {}
 
 //Cas web => voir AdMobInscriptionsBanner.native.js pour android et ios
 class AdMobInscriptionsBanner extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
   }
-  
+
   render() {
-    return (<></>)
+    return <></>;
   }
 }
 
-export default AdMobInscriptionsBanner
+export default AdMobInscriptionsBanner;

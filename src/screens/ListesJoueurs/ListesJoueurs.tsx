@@ -1,9 +1,9 @@
-import { Box } from "@/components/ui/box";
-import { FlatList } from "@/components/ui/flat-list";
-import { Button, ButtonText } from "@/components/ui/button";
-import { Text } from "@/components/ui/text";
-import { VStack } from "@/components/ui/vstack";
-import React from 'react'
+import { Box } from '@/components/ui/box';
+import { FlatList } from '@/components/ui/flat-list';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
+import React from 'react';
 import ListeJoueursItem from '@components/ListeJoueursItem';
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -17,46 +17,62 @@ import { GeneralStackParamList } from '@/navigation/Navigation';
 import { RouteProp } from '@react-navigation/native';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { ListRenderItem } from 'react-native';
-import { ListeJoueursInfos, ListeJoueurs as ListeJoueursInterface } from '@/types/interfaces/listeJoueurs';
+import {
+  ListeJoueursInfos,
+  ListeJoueurs as ListeJoueursInterface,
+} from '@/types/interfaces/listeJoueurs';
 
 export interface Props extends PropsFromRedux {
-  navigation: StackNavigationProp<any,any>;
+  navigation: StackNavigationProp<any, any>;
   t: TFunction;
   route: RouteProp<GeneralStackParamList, 'ListesJoueurs'>;
 }
 
-interface State {
-}
+interface State {}
 
 class ListesJoueurs extends React.Component<Props, State> {
-
   constructor(props: Props) {
-    super(props)
+    super(props);
   }
 
   _addList() {
-    const actionRemoveList = {type: "SUPPR_ALL_JOUEURS", value: [ModeTournoi.SAUVEGARDE]};
+    const actionRemoveList = {
+      type: 'SUPPR_ALL_JOUEURS',
+      value: [ModeTournoi.SAUVEGARDE],
+    };
     this.props.dispatch(actionRemoveList);
-    //Sera utilisé par le component inscription 
-    const updateOptionTypeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['typeTournoi', TypeTournoi.MELEDEMELE]};
+    //Sera utilisé par le component inscription
+    const updateOptionTypeTournoi = {
+      type: 'UPDATE_OPTION_TOURNOI',
+      value: ['typeTournoi', TypeTournoi.MELEDEMELE],
+    };
     this.props.dispatch(updateOptionTypeTournoi);
-    const updateOptionEquipesTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['typeEquipes', TypeEquipes.TETEATETE]};
+    const updateOptionEquipesTournoi = {
+      type: 'UPDATE_OPTION_TOURNOI',
+      value: ['typeEquipes', TypeEquipes.TETEATETE],
+    };
     this.props.dispatch(updateOptionEquipesTournoi);
-    const updateOptionModeTournoi = { type: "UPDATE_OPTION_TOURNOI", value: ['mode', ModeTournoi.SAUVEGARDE]};
+    const updateOptionModeTournoi = {
+      type: 'UPDATE_OPTION_TOURNOI',
+      value: ['mode', ModeTournoi.SAUVEGARDE],
+    };
     this.props.dispatch(updateOptionModeTournoi);
 
     this.props.navigation.navigate({
       name: 'CreateListeJoueurs',
-      params: { type: "create" }
+      params: { type: 'create' },
     });
   }
 
   _addListButton() {
     const { t } = this.props;
-    if (this.props.route.params == undefined || this.props.route.params.loadListScreen != true) {
+    if (
+      this.props.route.params == undefined ||
+      this.props.route.params.loadListScreen != true
+    ) {
       return (
-        <Button action='positive' onPress={() => this._addList()}>
-          <ButtonText>{t("creer_liste")}</ButtonText>
+        <Button action="positive" onPress={() => this._addList()}>
+          <ButtonText>{t('creer_liste')}</ButtonText>
         </Button>
       );
     }
@@ -70,7 +86,7 @@ class ListesJoueurs extends React.Component<Props, State> {
       nbLists += this.props.savedLists.avecNoms.length;
       nbLists += this.props.savedLists.sansNoms.length;
     }
-    const renderItem: ListRenderItem<ListeJoueursInterface> = ({item}) => (
+    const renderItem: ListRenderItem<ListeJoueursInterface> = ({ item }) => (
       <ListeJoueursItem
         list={item}
         navigation={this.props.navigation}
@@ -78,20 +94,25 @@ class ListesJoueurs extends React.Component<Props, State> {
       />
     );
     return (
-      <SafeAreaView style={{flex: 1}}>
+      <SafeAreaView style={{ flex: 1 }}>
         <VStack className="flex-1 bg-[#0594ae]">
-          <TopBarBack title={t("listes_joueurs_navigation_title")} navigation={this.props.navigation}/>
-          <Text className="text-white text-xl text-center">{t("nombre_listes", {nb: nbLists})}</Text>
-          <Box className="px-10">
-            {this._addListButton()}
-          </Box>
+          <TopBarBack
+            title={t('listes_joueurs_navigation_title')}
+            navigation={this.props.navigation}
+          />
+          <Text className="text-white text-xl text-center">
+            {t('nombre_listes', { nb: nbLists })}
+          </Text>
+          <Box className="px-10">{this._addListButton()}</Box>
           <VStack className="flex-1 my-2">
             <FlatList
               data={this.props.savedLists.avecNoms}
               initialNumToRender={20}
               keyExtractor={(item: ListeJoueursInterface) => {
-                let listeJoueursInfos = item[item.length - 1] as ListeJoueursInfos;
-                return listeJoueursInfos.listId.toString()
+                let listeJoueursInfos = item[
+                  item.length - 1
+                ] as ListeJoueursInfos;
+                return listeJoueursInfos.listId.toString();
               }}
               renderItem={renderItem}
               className="h-1"
@@ -103,4 +124,4 @@ class ListesJoueurs extends React.Component<Props, State> {
   }
 }
 
-export default connector(withTranslation()(ListesJoueurs))
+export default connector(withTranslation()(ListesJoueurs));

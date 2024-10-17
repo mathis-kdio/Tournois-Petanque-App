@@ -1,35 +1,38 @@
-import { FlatList } from "@/components/ui/flat-list";
-import { VStack } from "@/components/ui/vstack";
-import React from 'react'
-import MatchItem from '@components/MatchItem'
+import { FlatList } from '@/components/ui/flat-list';
+import { VStack } from '@/components/ui/vstack';
+import React from 'react';
+import MatchItem from '@components/MatchItem';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Match } from '@/types/interfaces/match';
 import { PropsFromRedux, connector } from '@/store/connector';
 import { ListRenderItem } from 'react-native';
 
 export interface Props extends PropsFromRedux {
-  navigation: StackNavigationProp<any,any>;
+  navigation: StackNavigationProp<any, any>;
   extraData: number;
 }
 
-interface State {
-}
+interface State {}
 
 class ListeMatchs extends React.Component<Props, State> {
   constructor(props: Props) {
-    super(props)
+    super(props);
   }
 
-  _displayDetailForMatch = (idMatch: number, match: Match, nbPtVictoire: number) => {
+  _displayDetailForMatch = (
+    idMatch: number,
+    match: Match,
+    nbPtVictoire: number,
+  ) => {
     this.props.navigation.navigate({
-      name: 'MatchDetailStack', 
+      name: 'MatchDetailStack',
       params: {
-        idMatch: idMatch, 
+        idMatch: idMatch,
         match: match,
         nbPtVictoire: nbPtVictoire,
-      }
+      },
     });
-  }
+  };
 
   _displayListeMatch() {
     let nbMatchs = 0;
@@ -38,11 +41,15 @@ class ListeMatchs extends React.Component<Props, State> {
     if (this.props.listeMatchs != undefined) {
       let tournoi = this.props.listeMatchs; //tournoi contient les matchs + la config du tournoi en dernière position
       nbMatchs = tournoi[tournoi.length - 1].nbMatchs; //On récup nb matchs dans la config
-      nbPtVictoire = tournoi[tournoi.length - 1].nbPtVictoire ? tournoi[tournoi.length - 1].nbPtVictoire : 13; //On récup le nb de pt pour la victoire sinon 13
+      nbPtVictoire = tournoi[tournoi.length - 1].nbPtVictoire
+        ? tournoi[tournoi.length - 1].nbPtVictoire
+        : 13; //On récup le nb de pt pour la victoire sinon 13
       matchs = tournoi.slice(0, -1); //On retire la config et donc seulement la liste des matchs
     }
-    matchs = matchs.filter((match: Match) => match.manche == this.props.extraData) as Match[];
-    const renderItem: ListRenderItem<Match> = ({item}) => (
+    matchs = matchs.filter(
+      (match: Match) => match.manche == this.props.extraData,
+    ) as Match[];
+    const renderItem: ListRenderItem<Match> = ({ item }) => (
       <MatchItem
         match={item}
         displayDetailForMatch={this._displayDetailForMatch}
@@ -55,7 +62,7 @@ class ListeMatchs extends React.Component<Props, State> {
       <FlatList
         data={matchs}
         initialNumToRender={nbMatchs}
-        keyExtractor={(item: Match) => item.id.toString() }
+        keyExtractor={(item: Match) => item.id.toString()}
         renderItem={renderItem}
       />
     );
@@ -70,4 +77,4 @@ class ListeMatchs extends React.Component<Props, State> {
   }
 }
 
-export default connector(ListeMatchs)
+export default connector(ListeMatchs);

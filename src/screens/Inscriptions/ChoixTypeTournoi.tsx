@@ -1,7 +1,7 @@
-import { ScrollView } from "@/components/ui/scroll-view";
-import { Heading } from "@/components/ui/heading";
-import { CloseIcon, Icon } from "@/components/ui/icon";
-import { Pressable } from "@/components/ui/pressable";
+import { ScrollView } from '@/components/ui/scroll-view';
+import { Heading } from '@/components/ui/heading';
+import { CloseIcon, Icon } from '@/components/ui/icon';
+import { Pressable } from '@/components/ui/pressable';
 
 import {
   Modal,
@@ -10,10 +10,10 @@ import {
   ModalBody,
   ModalBackdrop,
   ModalCloseButton,
-} from "@/components/ui/modal";
+} from '@/components/ui/modal';
 
-import { Text } from "@/components/ui/text";
-import { VStack } from "@/components/ui/vstack";
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome5 } from '@expo/vector-icons';

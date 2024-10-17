@@ -1,12 +1,12 @@
-import { KeyboardAvoidingView } from "@/components/ui/keyboard-avoiding-view";
-import { ScrollView } from "@/components/ui/scroll-view";
-import { Box } from "@/components/ui/box";
-import { HStack } from "@/components/ui/hstack";
-import { Button, ButtonText } from "@/components/ui/button";
-import { Input, InputField } from "@/components/ui/input";
-import { Text } from "@/components/ui/text";
-import { VStack } from "@/components/ui/vstack";
-import React from 'react'
+import { KeyboardAvoidingView } from '@/components/ui/keyboard-avoiding-view';
+import { ScrollView } from '@/components/ui/scroll-view';
+import { Box } from '@/components/ui/box';
+import { HStack } from '@/components/ui/hstack';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Input, InputField } from '@/components/ui/input';
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
+import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@components/TopBarBack';
@@ -22,27 +22,27 @@ import { RouteProp } from '@react-navigation/native';
 import { MatchsStackParamList } from '@/navigation/Navigation';
 
 export interface Props extends PropsFromRedux {
-  navigation: StackNavigationProp<any,any>;
+  navigation: StackNavigationProp<any, any>;
   t: TFunction;
   route: RouteProp<MatchsStackParamList, 'MatchDetailStack'>;
 }
 
 interface State {
-  idMatch: number,
-  score1: string,
-  score2: string
+  idMatch: number;
+  score1: string;
+  score2: string;
 }
 
 class MatchDetail extends React.Component<Props, State> {
   secondInput = React.createRef<any>();
 
   constructor(props: Props) {
-    super(props)
+    super(props);
     this.state = {
       idMatch: undefined,
       score1: undefined,
-      score2: undefined
-    }
+      score2: undefined,
+    };
   }
 
   componentDidMount() {
@@ -53,32 +53,42 @@ class MatchDetail extends React.Component<Props, State> {
   }
 
   _ajoutScoreTextInputChanged = (score: string, equipe: number) => {
-    if(equipe === 1) {
+    if (equipe === 1) {
       this.setState({
-        score1: score
+        score1: score,
+      });
+    } else if (equipe === 2) {
+      this.setState({
+        score2: score,
       });
     }
-    else if(equipe === 2) {
-      this.setState({
-        score2: score
-      });
-    }
-  } 
+  };
 
   _displayTitle(match: Match) {
     const { t } = this.props;
-    let title = match.terrain ? match.terrain.name : t("match_numero")+(match.id + 1);
+    let title = match.terrain
+      ? match.terrain.name
+      : t('match_numero') + (match.id + 1);
     return <Text className="text-white text-xl text-center">{title}</Text>;
   }
 
   _displayName(joueurNumber: number, equipe: number) {
-    let listeJoueurs = this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs;
+    let listeJoueurs =
+      this.props.listeMatchs[this.props.listeMatchs.length - 1].listeJoueurs;
     let joueur = listeJoueurs.find((item: Joueur) => item.id === joueurNumber);
     if (joueur) {
       if (equipe === 1) {
-        return <Text key={joueur.id} className="text-white text-md text-left">{(joueur.id + 1) + ' ' + joueur.name}</Text>;
+        return (
+          <Text key={joueur.id} className="text-white text-md text-left">
+            {joueur.id + 1 + ' ' + joueur.name}
+          </Text>
+        );
       } else {
-        return <Text key={joueur.id} className="text-white text-md text-right">{joueur.name + ' ' + (joueur.id + 1)}</Text>;
+        return (
+          <Text key={joueur.id} className="text-white text-md text-right">
+            {joueur.name + ' ' + (joueur.id + 1)}
+          </Text>
+        );
       }
     }
   }
@@ -93,28 +103,53 @@ class MatchDetail extends React.Component<Props, State> {
 
   _envoyerResultat(match: Match) {
     if (this.state.score1 && this.state.score2) {
-      let info = {idMatch: this.state.idMatch, score1: parseInt(this.state.score1), score2: parseInt(this.state.score2)};
-      const actionAjoutScore = { type: "AJOUT_SCORE", value: info};
+      let info = {
+        idMatch: this.state.idMatch,
+        score1: parseInt(this.state.score1),
+        score2: parseInt(this.state.score2),
+      };
+      const actionAjoutScore = { type: 'AJOUT_SCORE', value: info };
       this.props.dispatch(actionAjoutScore);
       //Si tournoi type coupe et pas le dernier match, alors on ajoute les gagnants au match suivant
-      let nbMatchs = this.props.listeMatchs[this.props.listeMatchs.length - 1].nbMatchs;
-      let typeTournoi = this.props.listeMatchs[this.props.listeMatchs.length - 1].typeTournoi;
-      let nbTours = this.props.listeMatchs[this.props.listeMatchs.length - 1].nbTours;
+      let nbMatchs =
+        this.props.listeMatchs[this.props.listeMatchs.length - 1].nbMatchs;
+      let typeTournoi =
+        this.props.listeMatchs[this.props.listeMatchs.length - 1].typeTournoi;
+      let nbTours =
+        this.props.listeMatchs[this.props.listeMatchs.length - 1].nbTours;
       let actionNextMatch = nextMatch(match, nbMatchs, typeTournoi, nbTours);
       if (actionNextMatch != undefined) {
         this.props.dispatch(actionNextMatch);
       }
-      const actionUpdateTournoi = { type: "UPDATE_TOURNOI", value: {tournoi: this.props.listeMatchs, tournoiId: this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID}};
+      const actionUpdateTournoi = {
+        type: 'UPDATE_TOURNOI',
+        value: {
+          tournoi: this.props.listeMatchs,
+          tournoiId:
+            this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID,
+        },
+      };
       this.props.dispatch(actionUpdateTournoi);
       this.props.navigation.navigate('ListeMatchsStack');
     }
   }
 
   _supprimerResultat() {
-    let info = {idMatch: this.state.idMatch, score1: undefined, score2: undefined};
-    const actionAjoutScore = { type: "AJOUT_SCORE", value: info};
+    let info = {
+      idMatch: this.state.idMatch,
+      score1: undefined,
+      score2: undefined,
+    };
+    const actionAjoutScore = { type: 'AJOUT_SCORE', value: info };
     this.props.dispatch(actionAjoutScore);
-    const actionUpdateTournoi = { type: "UPDATE_TOURNOI", value: {tournoi: this.props.listeMatchs, tournoiId: this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID}};
+    const actionUpdateTournoi = {
+      type: 'UPDATE_TOURNOI',
+      value: {
+        tournoi: this.props.listeMatchs,
+        tournoiId:
+          this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID,
+      },
+    };
     this.props.dispatch(actionUpdateTournoi);
     this.props.navigation.navigate('ListeMatchsStack');
   }
@@ -123,8 +158,12 @@ class MatchDetail extends React.Component<Props, State> {
     const { t } = this.props;
     let btnDisabled = !(this.state.score1 && this.state.score2);
     return (
-      <Button isDisabled={btnDisabled} action='positive' onPress={() => this._envoyerResultat(match)}>
-        <ButtonText>{t("valider_score")}</ButtonText>
+      <Button
+        isDisabled={btnDisabled}
+        action="positive"
+        onPress={() => this._envoyerResultat(match)}
+      >
+        <ButtonText>{t('valider_score')}</ButtonText>
       </Button>
     );
   }
@@ -134,15 +173,18 @@ class MatchDetail extends React.Component<Props, State> {
     let { match, nbPtVictoire } = this.props.route.params;
     return (
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "height" : "height"}
+        behavior={Platform.OS === 'ios' ? 'height' : 'height'}
         style={{ flex: 1, zIndex: 999 }}
       >
-        <SafeAreaView style={{flex: 1}}>
+        <SafeAreaView style={{ flex: 1 }}>
           <ScrollView className="h-1 bg-[#0594ae]">
             <VStack>
-              <TopBarBack title={t("detail_match_navigation_title")} navigation={this.props.navigation}/>
+              <TopBarBack
+                title={t('detail_match_navigation_title')}
+                navigation={this.props.navigation}
+              />
               <VStack className="px-10 justify-between">
-                <VStack space='xl'>
+                <VStack space="xl">
                   {this._displayTitle(match)}
                   <HStack className="items-center">
                     <Box className="flex-2">
@@ -155,33 +197,55 @@ class MatchDetail extends React.Component<Props, State> {
                       {this._displayEquipe(2, match)}
                     </Box>
                   </HStack>
-                  <HStack space='lg'>
+                  <HStack space="lg">
                     <Box className="flex-1">
-                    <Text className="text-white text-md">{t("score_equipe_1")} </Text>
+                      <Text className="text-white text-md">
+                        {t('score_equipe_1')}{' '}
+                      </Text>
                       <Input className="border-white">
                         <InputField
-                          className='text-white placeholder:text-white'
-                          placeholder={t("score_placeholder", {scoreVictoire: nbPtVictoire})}
+                          className="text-white placeholder:text-white"
+                          placeholder={t('score_placeholder', {
+                            scoreVictoire: nbPtVictoire,
+                          })}
                           autoFocus={true}
-                          defaultValue={match.score1 !== undefined ? match.score1.toString() : ""}
-                          keyboardType='decimal-pad'
-                          returnKeyType='next'
+                          defaultValue={
+                            match.score1 !== undefined
+                              ? match.score1.toString()
+                              : ''
+                          }
+                          keyboardType="decimal-pad"
+                          returnKeyType="next"
                           maxLength={2}
-                          onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 1)}
-                          onSubmitEditing={() => this.secondInput.current.focus()}
+                          onChangeText={(text) =>
+                            this._ajoutScoreTextInputChanged(text, 1)
+                          }
+                          onSubmitEditing={() =>
+                            this.secondInput.current.focus()
+                          }
                         />
                       </Input>
                     </Box>
                     <Box className="flex-1">
-                    <Text className="text-white text-md self-end">{t("score_equipe_2")} </Text>
+                      <Text className="text-white text-md self-end">
+                        {t('score_equipe_2')}{' '}
+                      </Text>
                       <Input className="border-white">
                         <InputField
-                          className='text-white placeholder:text-white'
-                          placeholder={t("score_placeholder", {scoreVictoire: nbPtVictoire})}
-                          defaultValue={match.score2 !== undefined ? match.score2.toString() : ""}
-                          keyboardType='decimal-pad'
+                          className="text-white placeholder:text-white"
+                          placeholder={t('score_placeholder', {
+                            scoreVictoire: nbPtVictoire,
+                          })}
+                          defaultValue={
+                            match.score2 !== undefined
+                              ? match.score2.toString()
+                              : ''
+                          }
+                          keyboardType="decimal-pad"
                           maxLength={2}
-                          onChangeText={(text) => this._ajoutScoreTextInputChanged(text, 2)}
+                          onChangeText={(text) =>
+                            this._ajoutScoreTextInputChanged(text, 2)
+                          }
                           onSubmitEditing={() => this._envoyerResultat(match)}
                           ref={this.secondInput}
                         />
@@ -189,14 +253,17 @@ class MatchDetail extends React.Component<Props, State> {
                     </Box>
                   </HStack>
                 </VStack>
-                <VStack space='lg' className="my-5">
-                  <Button action='negative' onPress={() => this._supprimerResultat()}>
-                    <ButtonText>{t("supprimer_score")}</ButtonText>
+                <VStack space="lg" className="my-5">
+                  <Button
+                    action="negative"
+                    onPress={() => this._supprimerResultat()}
+                  >
+                    <ButtonText>{t('supprimer_score')}</ButtonText>
                   </Button>
                   {this._boutonValider(match)}
                 </VStack>
                 <VStack className="mb-5">
-                  <AdMobMatchDetailBanner/>
+                  <AdMobMatchDetailBanner />
                 </VStack>
               </VStack>
             </VStack>
@@ -207,4 +274,4 @@ class MatchDetail extends React.Component<Props, State> {
   }
 }
 
-export default connector(withTranslation()(MatchDetail))
+export default connector(withTranslation()(MatchDetail));

@@ -1,27 +1,25 @@
-import { Image } from "@/components/ui/image";
-import { HStack } from "@/components/ui/hstack";
-import { Pressable } from "@/components/ui/pressable";
-import { Text } from "@/components/ui/text";
+import { Image } from '@/components/ui/image';
+import { HStack } from '@/components/ui/hstack';
+import { Pressable } from '@/components/ui/pressable';
+import { Text } from '@/components/ui/text';
 import * as React from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { ImageSourcePropType } from 'react-native';
 
 export interface Props {
   text: string;
-  action: () => void; 
+  action: () => void;
   icon: string;
   type: string;
   drapeau: string | ImageSourcePropType;
 }
 
-interface State {
-}
+interface State {}
 
 class Item extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
   render() {
@@ -29,11 +27,10 @@ class Item extends React.Component<Props, State> {
 
     let colorTxt = 'text-typography-white';
     let btnColor = 'white';
-    if (type == "danger") {
+    if (type == 'danger') {
       colorTxt = 'text-red-500';
       btnColor = 'red';
-    }
-    else if (type == "modal") {
+    } else if (type == 'modal') {
       colorTxt = 'text-typography-black';
       btnColor = 'black';
     }
@@ -41,18 +38,23 @@ class Item extends React.Component<Props, State> {
       <Pressable onPress={() => action()}>
         <HStack className="m-2 items-center justify-between">
           <HStack className="items-center">
-            {drapeau == undefined ?
-              <FontAwesome5 name={icon} size={16} color={btnColor} style={{marginRight: 5}}/>
-              :
-              <Image source={drapeau} alt="drapeau" size='xs'/>
-            }
+            {drapeau == undefined ? (
+              <FontAwesome5
+                name={icon}
+                size={16}
+                color={btnColor}
+                style={{ marginRight: 5 }}
+              />
+            ) : (
+              <Image source={drapeau} alt="drapeau" size="xs" />
+            )}
             <Text className={`${colorTxt} text-md`}>{text}</Text>
           </HStack>
-          <FontAwesome5 name="arrow-right" size={20} color={btnColor}/>
+          <FontAwesome5 name="arrow-right" size={20} color={btnColor} />
         </HStack>
       </Pressable>
     );
   }
 }
 
-export default Item
+export default Item;

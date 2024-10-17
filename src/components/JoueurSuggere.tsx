@@ -1,9 +1,9 @@
-import { Text } from "@/components/ui/text";
-import { Heading } from "@/components/ui/heading";
-import { HStack } from "@/components/ui/hstack";
-import { CloseIcon, Icon } from "@/components/ui/icon";
-import { Button, ButtonGroup, ButtonText } from "@/components/ui/button";
-import { Box } from "@/components/ui/box";
+import { Text } from '@/components/ui/text';
+import { Heading } from '@/components/ui/heading';
+import { HStack } from '@/components/ui/hstack';
+import { CloseIcon, Icon } from '@/components/ui/icon';
+import { Button, ButtonGroup, ButtonText } from '@/components/ui/button';
+import { Box } from '@/components/ui/box';
 
 import {
   AlertDialog,
@@ -13,14 +13,14 @@ import {
   AlertDialogContent,
   AlertDialogFooter,
   AlertDialogHeader,
-} from "@/components/ui/alert-dialog";
+} from '@/components/ui/alert-dialog';
 
-import React from 'react'
+import React from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
-import JoueurType from '@components/JoueurType'
+import JoueurType from '@components/JoueurType';
 import { withTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
-import { JoueurType as JoueurTypeEnum} from '@/types/enums/joueurType';
+import { JoueurType as JoueurTypeEnum } from '@/types/enums/joueurType';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { Joueur } from '@/types/interfaces/joueur';
 import { PropsFromRedux, connector } from '@/store/connector';
@@ -38,21 +38,24 @@ interface State {
 
 class JoueurSuggere extends React.Component<Props, State> {
   constructor(props: Props) {
-    super(props)
+    super(props);
     this.state = {
       joueurType: undefined,
-      modalRemoveIsOpen: false
-    }
+      modalRemoveIsOpen: false,
+    };
   }
 
   _modalRemovePlayer(playerId: number) {
     const { t } = this.props;
     return (
-      <AlertDialog isOpen={this.state.modalRemoveIsOpen} onClose={() => this.setState({modalRemoveIsOpen: false})}>
-        <AlertDialogBackdrop/>
+      <AlertDialog
+        isOpen={this.state.modalRemoveIsOpen}
+        onClose={() => this.setState({ modalRemoveIsOpen: false })}
+      >
+        <AlertDialogBackdrop />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <Heading>{t("supprimer_joueur_suggestions_modal_titre")}</Heading>
+            <Heading>{t('supprimer_joueur_suggestions_modal_titre')}</Heading>
             <AlertDialogCloseButton>
               <Icon
                 as={CloseIcon}
@@ -62,15 +65,22 @@ class JoueurSuggere extends React.Component<Props, State> {
             </AlertDialogCloseButton>
           </AlertDialogHeader>
           <AlertDialogBody>
-            <Text>{t("supprimer_joueur_suggestions_modal_texte")}</Text>
+            <Text>{t('supprimer_joueur_suggestions_modal_texte')}</Text>
           </AlertDialogBody>
           <AlertDialogFooter>
             <ButtonGroup>
-              <Button variant='outline' action='secondary' onPress={() => this.setState({modalRemoveIsOpen: false})}>
-                <ButtonText>{t("annuler")}</ButtonText>
+              <Button
+                variant="outline"
+                action="secondary"
+                onPress={() => this.setState({ modalRemoveIsOpen: false })}
+              >
+                <ButtonText>{t('annuler')}</ButtonText>
               </Button>
-              <Button action='negative' onPress={() => this._removePlayer(playerId)}>
-                <ButtonText>{t("oui")}</ButtonText>
+              <Button
+                action="negative"
+                onPress={() => this._removePlayer(playerId)}
+              >
+                <ButtonText>{t('oui')}</ButtonText>
               </Button>
             </ButtonGroup>
           </AlertDialogFooter>
@@ -80,7 +90,10 @@ class JoueurSuggere extends React.Component<Props, State> {
   }
 
   _removePlayer(playerId: number) {
-    const actionSuppr = {type: "SUPPR_JOUEUR", value: [ModeTournoi.HISTORIQUE, playerId]};
+    const actionSuppr = {
+      type: 'SUPPR_JOUEUR',
+      value: [ModeTournoi.HISTORIQUE, playerId],
+    };
     this.props.dispatch(actionSuppr);
   }
 
@@ -89,14 +102,22 @@ class JoueurSuggere extends React.Component<Props, State> {
     if (this.props.optionsTournoi.typeEquipes == TypeEquipes.TETEATETE) {
       equipe = this.props.listesJoueurs.avecEquipes.length + 1;
     }
-    const action = { type: "AJOUT_JOUEUR", value: [this.props.optionsTournoi.mode, playerName, this.state.joueurType, equipe] };
+    const action = {
+      type: 'AJOUT_JOUEUR',
+      value: [
+        this.props.optionsTournoi.mode,
+        playerName,
+        this.state.joueurType,
+        equipe,
+      ],
+    };
     this.props.dispatch(action);
   }
 
   _setJoueurType(type: JoueurTypeEnum) {
     this.setState({
-      joueurType: type
-    })
+      joueurType: type,
+    });
   }
 
   render() {
@@ -113,10 +134,20 @@ class JoueurSuggere extends React.Component<Props, State> {
           />
         </Box>
         <Box className="ml-2">
-          <FontAwesome5.Button name="times" backgroundColor="#E63535" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this.setState({modalRemoveIsOpen: true})}/>
+          <FontAwesome5.Button
+            name="times"
+            backgroundColor="#E63535"
+            iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
+            onPress={() => this.setState({ modalRemoveIsOpen: true })}
+          />
         </Box>
         <Box className="ml-2">
-          <FontAwesome5.Button name="plus" backgroundColor="#348352" iconStyle={{paddingHorizontal: 2, marginRight: 0}} onPress={() => this._addPlayer(joueur.name)}/>
+          <FontAwesome5.Button
+            name="plus"
+            backgroundColor="#348352"
+            iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
+            onPress={() => this._addPlayer(joueur.name)}
+          />
         </Box>
         {this._modalRemovePlayer(joueur.id)}
       </HStack>
@@ -124,4 +155,4 @@ class JoueurSuggere extends React.Component<Props, State> {
   }
 }
 
-export default connector(withTranslation()(JoueurSuggere))
+export default connector(withTranslation()(JoueurSuggere));

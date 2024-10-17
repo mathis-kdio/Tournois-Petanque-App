@@ -1,5 +1,5 @@
-import { CloseIcon, Icon } from "@/components/ui/icon";
-import { Heading } from "@/components/ui/heading";
+import { CloseIcon, Icon } from '@/components/ui/icon';
+import { Heading } from '@/components/ui/heading';
 
 import {
   Modal,
@@ -8,26 +8,26 @@ import {
   ModalCloseButton,
   ModalHeader,
   ModalBody,
-} from "@/components/ui/modal";
+} from '@/components/ui/modal';
 
-import { Divider } from "@/components/ui/divider";
-import { FlatList } from "@/components/ui/flat-list";
-import { Text } from "@/components/ui/text";
-import { VStack } from "@/components/ui/vstack";
-import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { withTranslation } from "react-i18next";
-import TopBarBack from '@components/TopBarBack'
-import ChangelogData from '@assets/ChangelogData.json'
-import Item from '@components/Item'
+import { Divider } from '@/components/ui/divider';
+import { FlatList } from '@/components/ui/flat-list';
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
+import React from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { withTranslation } from 'react-i18next';
+import TopBarBack from '@components/TopBarBack';
+import ChangelogData from '@assets/ChangelogData.json';
+import Item from '@components/Item';
 import { PropsFromRedux, connector } from '@/store/connector';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
-import { Changelog as ChangelogInterface} from '@/types/interfaces/changelog'
+import { Changelog as ChangelogInterface } from '@/types/interfaces/changelog';
 import { ListRenderItem } from 'react-native';
 
 export interface Props extends PropsFromRedux {
-  navigation: StackNavigationProp<any,any>;
+  navigation: StackNavigationProp<any, any>;
   t: TFunction;
 }
 
@@ -39,21 +39,24 @@ interface State {
 
 class Changelog extends React.Component<Props, State> {
   constructor(props: Props) {
-    super(props)
+    super(props);
     this.state = {
       alertOpen: false,
       modalChangelogOpen: false,
       modalChangelogItem: undefined,
-    }
+    };
   }
 
   _modalChangelog() {
     const { t } = this.props;
     if (this.state.modalChangelogItem) {
-      let title = t("version")+' '+this.state.modalChangelogItem.version;
+      let title = t('version') + ' ' + this.state.modalChangelogItem.version;
       return (
-        <Modal isOpen={this.state.modalChangelogOpen} onClose={() => this.setState({modalChangelogOpen: false})}>
-          <ModalBackdrop/>
+        <Modal
+          isOpen={this.state.modalChangelogOpen}
+          onClose={() => this.setState({ modalChangelogOpen: false })}
+        >
+          <ModalBackdrop />
           <ModalContent className="max-h-5/6">
             <ModalHeader>
               <Heading>{title}</Heading>
@@ -66,7 +69,13 @@ class Changelog extends React.Component<Props, State> {
               </ModalCloseButton>
             </ModalHeader>
             <ModalBody>
-              <Text>{t(`${this.state.modalChangelogItem.id}.infos`, { ns: 'changelog', returnObjects: true, joinArrays: '\n' })}</Text>
+              <Text>
+                {t(`${this.state.modalChangelogItem.id}.infos`, {
+                  ns: 'changelog',
+                  returnObjects: true,
+                  joinArrays: '\n',
+                })}
+              </Text>
             </ModalBody>
           </ModalContent>
         </Modal>
@@ -78,28 +87,42 @@ class Changelog extends React.Component<Props, State> {
     const { t } = this.props;
     return (
       <VStack>
-        <Item text={t("version")+" "+item.version+" :"} action={() => this.setState({modalChangelogOpen: true, modalChangelogItem: item})} icon={undefined} type={undefined} drapeau={undefined}/>
-        <Divider/>
+        <Item
+          text={t('version') + ' ' + item.version + ' :'}
+          action={() =>
+            this.setState({
+              modalChangelogOpen: true,
+              modalChangelogItem: item,
+            })
+          }
+          icon={undefined}
+          type={undefined}
+          drapeau={undefined}
+        />
+        <Divider />
       </VStack>
     );
   }
 
   render() {
     const { t } = this.props;
-    const renderItem: ListRenderItem<ChangelogInterface> = ({item}) => (
-      this._changelogItem(item)
-    );
+    const renderItem: ListRenderItem<ChangelogInterface> = ({ item }) =>
+      this._changelogItem(item);
     return (
-      <SafeAreaView style={{flex: 1}}>
+      <SafeAreaView style={{ flex: 1 }}>
         <VStack className="flex-1 bg-[#0594ae]">
-          <TopBarBack title={t("nouveautes")} navigation={this.props.navigation}/>
+          <TopBarBack
+            title={t('nouveautes')}
+            navigation={this.props.navigation}
+          />
           <VStack className="flex-1 px-10">
-            <Text className="text-xl text-white mb-1">{t("nouveautes")}</Text>
+            <Text className="text-xl text-white mb-1">{t('nouveautes')}</Text>
             <FlatList
               data={Object.values(ChangelogData).reverse()}
-              keyExtractor={(item: ChangelogInterface) => item.id.toString() }
+              keyExtractor={(item: ChangelogInterface) => item.id.toString()}
               renderItem={renderItem}
-              className="h-1 border border-white rounded-lg" />
+              className="h-1 border border-white rounded-lg"
+            />
           </VStack>
         </VStack>
         {this._modalChangelog()}
@@ -108,4 +131,4 @@ class Changelog extends React.Component<Props, State> {
   }
 }
 
-export default connector(withTranslation(['common', 'changelog'])(Changelog))
+export default connector(withTranslation(['common', 'changelog'])(Changelog));

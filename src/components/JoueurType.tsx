@@ -9,13 +9,13 @@ import {
   SelectItem,
   SelectPortal,
   SelectTrigger,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 
-import { ChevronDownIcon } from "@/components/ui/icon";
-import React from 'react'
+import { ChevronDownIcon } from '@/components/ui/icon';
+import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
-import { JoueurType as JoueurTypeEnum} from '../types/enums/joueurType';
+import { JoueurType as JoueurTypeEnum } from '../types/enums/joueurType';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { PropsFromRedux, connector } from '@/store/connector';
@@ -27,15 +27,14 @@ export interface Props extends PropsFromRedux {
   _setJoueurType: (type: JoueurTypeEnum) => void;
 }
 
-interface State {
-}
+interface State {}
 
 class JoueurType extends React.Component<Props, State> {
   constructor(props: Props) {
-    super(props)
+    super(props);
     this.state = {
       joueurType: undefined,
-    }
+    };
   }
 
   _selectItemList() {
@@ -43,19 +42,40 @@ class JoueurType extends React.Component<Props, State> {
     const { mode, typeTournoi, typeEquipes } = this.props.optionsTournoi;
     if (mode == ModeTournoi.SAUVEGARDE) {
       return [
-        <SelectItem label={t("tireur")} value={JoueurTypeEnum.TIREUR} key={1}/>,
-        <SelectItem label={t("pointeur")} value={JoueurTypeEnum.POINTEUR} key={2}/>,
-        <SelectItem label={t("milieu")} value={JoueurTypeEnum.MILIEU} key={3}/>
-      ]
-    }
-    else if (typeTournoi == TypeTournoi.MELEDEMELE && typeEquipes == TypeEquipes.DOUBLETTE) {
+        <SelectItem
+          label={t('tireur')}
+          value={JoueurTypeEnum.TIREUR}
+          key={1}
+        />,
+        <SelectItem
+          label={t('pointeur')}
+          value={JoueurTypeEnum.POINTEUR}
+          key={2}
+        />,
+        <SelectItem
+          label={t('milieu')}
+          value={JoueurTypeEnum.MILIEU}
+          key={3}
+        />,
+      ];
+    } else if (
+      typeTournoi == TypeTournoi.MELEDEMELE &&
+      typeEquipes == TypeEquipes.DOUBLETTE
+    ) {
       /*TEMPORAIRE AFFICHAGE DES POSTES TIREURS ET POINTEURS SEULEMENT EN DOUBLETTE*/
       return [
-        <SelectItem label={t("tireur")} value={JoueurTypeEnum.TIREUR} key={1}/>,
-        <SelectItem label={t("pointeur")} value={JoueurTypeEnum.POINTEUR} key={2}/>
-      ]
-    }
-    else {
+        <SelectItem
+          label={t('tireur')}
+          value={JoueurTypeEnum.TIREUR}
+          key={1}
+        />,
+        <SelectItem
+          label={t('pointeur')}
+          value={JoueurTypeEnum.POINTEUR}
+          key={2}
+        />,
+      ];
+    } else {
       return [];
     }
   }
@@ -64,21 +84,28 @@ class JoueurType extends React.Component<Props, State> {
     const { joueurType, _setJoueurType, t } = this.props;
     return (
       <Select
-        selectedValue={joueurType ? joueurType : ""}
-        aria-label={t("choisir_poste")}
+        selectedValue={joueurType ? joueurType : ''}
+        aria-label={t('choisir_poste')}
         onValueChange={(itemValue: JoueurTypeEnum) => _setJoueurType(itemValue)}
       >
-        <SelectTrigger variant='rounded' className='border-white'>
-          <SelectInput className="text-white placeholder:text-white" placeholder={t("choisir_poste")}/>
-          <SelectIcon className="mr-3 text-white" as={ChevronDownIcon}/>
+        <SelectTrigger variant="rounded" className="border-white">
+          <SelectInput
+            className="text-white placeholder:text-white"
+            placeholder={t('choisir_poste')}
+          />
+          <SelectIcon className="mr-3 text-white" as={ChevronDownIcon} />
         </SelectTrigger>
         <SelectPortal>
-          <SelectBackdrop/>
+          <SelectBackdrop />
           <SelectContent>
             <SelectDragIndicatorWrapper>
-              <SelectDragIndicator/>
+              <SelectDragIndicator />
             </SelectDragIndicatorWrapper>
-            <SelectItem label={t("enfant")} value={JoueurTypeEnum.ENFANT} key={0}/>
+            <SelectItem
+              label={t('enfant')}
+              value={JoueurTypeEnum.ENFANT}
+              key={0}
+            />
             {this._selectItemList()}
           </SelectContent>
         </SelectPortal>
@@ -87,4 +114,4 @@ class JoueurType extends React.Component<Props, State> {
   }
 }
 
-export default connector(withTranslation()(JoueurType))
+export default connector(withTranslation()(JoueurType));
