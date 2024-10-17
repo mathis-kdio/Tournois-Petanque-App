@@ -1,4 +1,4 @@
-import { JoueurType } from "../enums/joueurType";
+import { JoueurType } from '../enums/joueurType';
 
 export interface Joueur {
   id: number;

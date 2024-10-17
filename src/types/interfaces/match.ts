@@ -1,4 +1,4 @@
-import { Terrain } from "./terrain";
+import { Terrain } from './terrain';
 
 export interface Match {
   id: number;

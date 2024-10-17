@@ -1,5 +1,5 @@
 export enum TypeEquipes {
-  TETEATETE = "teteatete",
-  DOUBLETTE = "doublette",
-  TRIPLETTE = "triplette",
+  TETEATETE = 'teteatete',
+  DOUBLETTE = 'doublette',
+  TRIPLETTE = 'triplette',
 }

@@ -1,6 +1,6 @@
 export enum JoueurType {
-  TIREUR = "tireur",
-  POINTEUR = "pointeur",
-  MILIEU = "milieu",
-  ENFANT = "enfant",
+  TIREUR = 'tireur',
+  POINTEUR = 'pointeur',
+  MILIEU = 'milieu',
+  ENFANT = 'enfant',
 }

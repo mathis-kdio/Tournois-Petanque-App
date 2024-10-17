@@ -1,5 +1,5 @@
-import { OptionsTournoi } from "@/types/interfaces/optionsTournoi"
-import { ConnectedProps, connect } from "react-redux"
+import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
+import { ConnectedProps, connect } from 'react-redux';
 
 const mapStateToProps = (state: any) => {
   return {
@@ -9,9 +9,9 @@ const mapStateToProps = (state: any) => {
     listeTournois: state.listeTournois.listeTournois,
     listeTerrains: state.listeTournois.listeTerrains,
     optionsTournoi: state.optionsTournoi.options as OptionsTournoi,
-  }
-}
+  };
+};
 
-export const connector = connect(mapStateToProps)
+export const connector = connect(mapStateToProps);
 
-export type PropsFromRedux = ConnectedProps<typeof connector>
+export type PropsFromRedux = ConnectedProps<typeof connector>;

@@ -1,5 +1,5 @@
-import { Match } from "./match";
-import { OptionsTournoi } from "./optionsTournoi";
+import { Match } from './match';
+import { OptionsTournoi } from './optionsTournoi';
 
 export interface Tournoi {
   tournoiId: number;
