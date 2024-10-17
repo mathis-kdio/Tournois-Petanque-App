@@ -28,10 +28,10 @@ jobs:
 
       - name: Install ESLint
         run: |
-          npm eslint@^8.57.0
-          npm eslint-config-expo@^7.1.2
-          npm eslint-config-prettier@^9.1.0
-          npm eslint-plugin-prettier@^5.2.1
+          npm install eslint@^8.57.0
+          npm install eslint-config-expo@^7.1.2
+          npm install eslint-config-prettier@^9.1.0
+          npm install eslint-plugin-prettier@^5.2.1
           npm install @microsoft/eslint-formatter-sarif@3.1.0
 
       - name: Run ESLint
