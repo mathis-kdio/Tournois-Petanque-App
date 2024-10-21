@@ -27,6 +27,7 @@ import { Match } from '@/types/interfaces/match';
 import { PropsFromRedux, connector } from '@/store/connector';
 import { RouteProp } from '@react-navigation/native';
 import { InscriptionStackParamList } from '@/navigation/Navigation';
+import { InterstitialAd } from 'react-native-google-mobile-ads';
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any, any>;
@@ -36,7 +37,7 @@ export interface Props extends PropsFromRedux {
 
 interface State {
   isLoading: boolean;
-  isValid: boolean;
+  isGenerationEnd: boolean;
   isGenerationSuccess: boolean;
   erreurSpeciaux: boolean;
   erreurMemesEquipes: boolean;
@@ -55,14 +56,14 @@ class GenerationMatchs extends React.Component<Props, State> {
   complement: Complement = Complement.TRIPLETTE;
   typeTournoi: TypeTournoi = TypeTournoi.MELEDEMELE;
   avecTerrains: boolean = false;
-  interstitial: void | any;
+  interstitial: void | InterstitialAd;
   listener: string | boolean;
 
   constructor(props: Props) {
     super(props);
     this.state = {
       isLoading: true,
-      isValid: false,
+      isGenerationEnd: false,
       isGenerationSuccess: true,
       erreurSpeciaux: false,
       erreurMemesEquipes: false,
@@ -91,8 +92,10 @@ class GenerationMatchs extends React.Component<Props, State> {
     this.interstitial = await _adMobGenerationTournoiInterstitiel();
     this.listener = EventRegister.addEventListener(
       'interstitialAdEvent',
-      (data) =>
-        this.setState({ adLoaded: data.adLoaded, adClosed: data.adClosed }),
+      (data) => {
+        console.log(data);
+        this.setState({ adLoaded: data.adLoaded, adClosed: data.adClosed });
+      },
     );
     setTimeout(() => {
       this._lanceurGeneration();
@@ -276,7 +279,7 @@ class GenerationMatchs extends React.Component<Props, State> {
     //Désactivation de l'affichage du _displayLoading
     this.setState({
       isLoading: false,
-      isValid: true,
+      isGenerationEnd: true,
     });
 
     //Si génération valide alors return 2
@@ -322,10 +325,18 @@ class GenerationMatchs extends React.Component<Props, State> {
 
   render() {
     const { t } = this.props;
-    if (Platform.OS !== 'web' && this.state.adLoaded && this.state.isValid) {
+    if (
+      Platform.OS !== 'web' &&
+      this.state.isGenerationEnd &&
+      this.interstitial &&
+      this.state.adLoaded
+    ) {
       this.interstitial.show();
     }
-    if ((Platform.OS === 'web' && this.state.isValid) || this.state.adClosed) {
+    if (
+      (Platform.OS === 'web' && this.state.isGenerationEnd) ||
+      this.state.adClosed
+    ) {
       this._displayListeMatch();
     }
     return (
