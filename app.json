@@ -60,7 +60,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.MK.PetanqueGCU",
-      "versionCode": 107,
+      "versionCode": 108,
       "permissions": [
         "com.google.android.gms.permission.AD_ID"
       ],
