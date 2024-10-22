@@ -93,7 +93,6 @@ class GenerationMatchs extends React.Component<Props, State> {
     this.listener = EventRegister.addEventListener(
       'interstitialAdEvent',
       (data) => {
-        console.log(data);
         this.setState({ adLoaded: data.adLoaded, adClosed: data.adClosed });
       },
     );
