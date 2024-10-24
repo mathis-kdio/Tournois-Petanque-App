@@ -63,7 +63,11 @@ class Compte extends React.Component<Props, State> {
                   {'Forcer la synchronisation'}
                 </ButtonText>
               </Button>
-              <Button action="negative" onPress={() => this.supprimerCompte()}>
+              <Button
+                action="negative"
+                isDisabled={true}
+                onPress={() => this.supprimerCompte()}
+              >
                 <ButtonIcon as={TrashIcon} />
                 <ButtonText className="ml-2">
                   {'Supprimer mon compte'}
