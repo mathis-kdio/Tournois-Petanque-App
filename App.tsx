@@ -41,7 +41,7 @@ class App extends React.Component {
       <Provider store={Store}>
         <PersistGate persistor={persistor}>
           <SessionProvider>
-            <GluestackUIProvider>
+            <GluestackUIProvider mode="light">
               <NavigationContainer
                 onReady={() =>
                   routingInstrumentation.registerNavigationContainer(
