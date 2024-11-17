@@ -129,11 +129,11 @@
     ]
   },
   "14": {
-    "id": "14",
-    "version": "1.8.2",
+    "id": "",
+    "version": "",
     "infos": [
-      "- Status et Navigation bar de couleur.",
-      "- Thème light par défaut.",
+      ".",
+      ".",
       "- Correction de problèmes de navigation.",
       "- Correction de fautes de textes."
     ]
