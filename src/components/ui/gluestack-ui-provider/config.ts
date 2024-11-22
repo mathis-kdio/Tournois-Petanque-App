@@ -9,8 +9,8 @@ export const config = {
     '--color-primary-200': '115 115 115',
     '--color-primary-300': '28 57 105', //valeur modifiée
     '--color-primary-400': '82 82 82',
-    '--color-primary-500': '28 57 105', //valeur modifiée
-    '--color-primary-600': '255 255 255', //valeur modifiée pour éviter data-[checked=true]:border-white & data-[checked=true]:bg-white sur checkbox indicator
+    '--color-primary-500': '28 57 105', //valeur modifiée cas primary
+    '--color-primary-600': '8 16 105', //valeur modifiée cas primary hover
     '--color-primary-700': '31 31 31',
     '--color-primary-800': '13 13 13',
     '--color-primary-900': '10 10 10',

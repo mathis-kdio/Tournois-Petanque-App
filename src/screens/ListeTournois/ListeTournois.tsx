@@ -76,7 +76,7 @@ class ListeTournois extends React.Component<Props, State> {
           <ModalBackdrop />
           <ModalContent className="max-h-5/6">
             <ModalHeader>
-              <Heading size="lg">
+              <Heading className="text-black" size="lg">
                 {t('informations_tournoi_modal_titre')}
               </Heading>
               <ModalCloseButton>

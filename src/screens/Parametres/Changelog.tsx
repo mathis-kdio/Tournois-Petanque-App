@@ -59,7 +59,7 @@ class Changelog extends React.Component<Props, State> {
           <ModalBackdrop />
           <ModalContent className="max-h-5/6">
             <ModalHeader>
-              <Heading>{title}</Heading>
+              <Heading className="text-black">{title}</Heading>
               <ModalCloseButton>
                 <Icon
                   as={CloseIcon}

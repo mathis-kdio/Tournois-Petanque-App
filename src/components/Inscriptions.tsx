@@ -154,7 +154,9 @@ class Inscription extends React.Component<Props, State> {
         <AlertDialogBackdrop />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <Heading>{t('supprimer_joueurs_modal_titre')}</Heading>
+            <Heading className="text-black">
+              {t('supprimer_joueurs_modal_titre')}
+            </Heading>
             <AlertDialogCloseButton>
               <Icon
                 as={CloseIcon}

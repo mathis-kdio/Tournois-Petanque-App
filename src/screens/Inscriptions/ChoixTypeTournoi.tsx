@@ -76,7 +76,7 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
         <ModalBackdrop />
         <ModalContent className="max-h-5/6">
           <ModalHeader>
-            <Heading>{infos.title}</Heading>
+            <Heading className="text-black">{infos.title}</Heading>
             <ModalCloseButton>
               <Icon
                 as={CloseIcon}

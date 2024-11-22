@@ -55,7 +55,9 @@ class JoueurSuggere extends React.Component<Props, State> {
         <AlertDialogBackdrop />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <Heading>{t('supprimer_joueur_suggestions_modal_titre')}</Heading>
+            <Heading className="text-black">
+              {t('supprimer_joueur_suggestions_modal_titre')}
+            </Heading>
             <AlertDialogCloseButton>
               <Icon
                 as={CloseIcon}
@@ -125,7 +127,9 @@ class JoueurSuggere extends React.Component<Props, State> {
     return (
       <HStack className="border border-white rounded-xl m-1 px-1 items-center">
         <Box className="flex-1">
-          <Text className="text-white text-xl font-bold">{joueur.name}</Text>
+          <Text className="text-white text-xl font-bold break-words">
+            {joueur.name}
+          </Text>
         </Box>
         <Box className="flex-1">
           <JoueurType

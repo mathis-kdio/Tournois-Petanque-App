@@ -218,7 +218,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
       );
     } else {
       return (
-        <Text className="text-white text-xl font-bold">
+        <Text className="text-white text-xl font-bold break-words">
           {joueur.id + 1}-{joueur.name}
         </Text>
       );
@@ -399,7 +399,9 @@ class ListeJoueurItem extends React.Component<Props, State> {
         <AlertDialogBackdrop />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <Heading>{t('confirmer_uncheck_modal_titre')}</Heading>
+            <Heading className="text-black">
+              {t('confirmer_uncheck_modal_titre')}
+            </Heading>
             <AlertDialogCloseButton>
               <Icon
                 as={CloseIcon}

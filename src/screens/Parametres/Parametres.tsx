@@ -39,6 +39,7 @@ import Item from '@components/Item';
 import { PropsFromRedux, connector } from '@/store/connector';
 import { TFunction, i18n } from 'i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { Pressable } from '@/components/ui/pressable';
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any, any>;
@@ -75,7 +76,9 @@ class Parametres extends React.Component<Props, State> {
         <AlertDialogBackdrop />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <Heading>{t('supprimer_donnees_modal_titre')}</Heading>
+            <Heading className="text-black">
+              {t('supprimer_donnees_modal_titre')}
+            </Heading>
             <AlertDialogCloseButton>
               <Icon
                 as={CloseIcon}
@@ -159,7 +162,9 @@ class Parametres extends React.Component<Props, State> {
         <ModalBackdrop />
         <ModalContent className="max-h-5/6">
           <ModalHeader>
-            <Heading>{t('languages_disponibles')}</Heading>
+            <Heading className="text-black">
+              {t('languages_disponibles')}
+            </Heading>
             <ModalCloseButton>
               <Icon
                 as={CloseIcon}
@@ -202,12 +207,11 @@ class Parametres extends React.Component<Props, State> {
             />
             <Divider />
             <Text className="text-center">{t('envie_aider_traduction')}</Text>
-            <Text
-              onPress={() => _openURL(this.crowdin)}
-              className="text-center text-blue-500"
-            >
-              {t('texte_lien_traduction')}
-            </Text>
+            <Pressable onPress={() => _openURL(this.crowdin)}>
+              <Text className="text-center text-blue-500">
+                {t('texte_lien_traduction')}
+              </Text>
+            </Pressable>
             <Text className="text-center">{t('remerciements_traduction')}</Text>
             <Text className="text-center">
               {`\u2022`} N. Mieczynska ({t('polonais_abreviation')})
