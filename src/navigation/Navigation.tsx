@@ -13,6 +13,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import Accueil from '@screens/Accueil';
 import Authentification from '@screens/Connexion/Authentification';
 import Compte from '@screens/Connexion/Compte';
+import InfosPerso from '@screens/Connexion/InfosPerso';
 import Parametres from '@screens/Parametres/Parametres';
 import Changelog from '@screens/Parametres/Changelog';
 import ListeTournois from '@screens/ListeTournois/ListeTournois';
@@ -424,6 +425,11 @@ function ConnexionStack() {
       <Stack.Screen
         name="Compte"
         component={Compte}
+        options={{ title: t('mon_compte'), headerShown: false }}
+      />
+      <Stack.Screen
+        name="InfosPerso"
+        component={InfosPerso}
         options={{ title: t('mon_compte'), headerShown: false }}
       />
     </Stack.Navigator>
