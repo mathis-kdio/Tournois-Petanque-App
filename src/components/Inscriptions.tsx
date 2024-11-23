@@ -357,7 +357,7 @@ class Inscription extends React.Component<Props, State> {
             <Input className="border-white">
               <InputField
                 className="text-white placeholder:text-white"
-                placeholder={t('nom_inscription')}
+                placeholder={t('nom')}
                 autoFocus={true}
                 keyboardType="default"
                 onChangeText={(text) => this._ajoutJoueurTextInputChanged(text)}

@@ -46,7 +46,7 @@ class Compte extends React.Component<Props, State> {
           <VStack className="flex-1 px-10 justify-between">
             <VStack className="border border-white rounded-lg">
               <Item
-                text={'Informations personnelles'}
+                text={t('informations_personnelles')}
                 action={() => this.props.navigation.navigate('InfosPerso')}
                 icon={'info-circle'}
                 type={undefined}
@@ -60,7 +60,7 @@ class Compte extends React.Component<Props, State> {
               <Button isDisabled={true} onPress={() => undefined}>
                 <ButtonIcon as={LoaderIcon} />
                 <ButtonText className="ml-2">
-                  {'Forcer la synchronisation'}
+                  {t('forcer_synchronisation')}
                 </ButtonText>
               </Button>
               <Button
@@ -70,7 +70,7 @@ class Compte extends React.Component<Props, State> {
               >
                 <ButtonIcon as={TrashIcon} />
                 <ButtonText className="ml-2">
-                  {'Supprimer mon compte'}
+                  {t('supprimer_compte')}
                 </ButtonText>
               </Button>
             </VStack>
