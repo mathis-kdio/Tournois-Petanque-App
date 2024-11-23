@@ -12,6 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/TopBarBack';
 import { withSession } from '@/components/supabase/withSession';
 import { LoaderIcon, TrashIcon } from '@/components/ui/icon';
+import { Divider } from '@/components/ui/divider';
 
 export interface Props {
   navigation: StackNavigationProp<any, any>;
@@ -49,6 +50,14 @@ class Compte extends React.Component<Props, State> {
                 text={t('informations_personnelles')}
                 action={() => this.props.navigation.navigate('InfosPerso')}
                 icon={'info-circle'}
+                type={undefined}
+                drapeau={undefined}
+              />
+              <Divider />
+              <Item
+                text={t('securite')}
+                action={() => this.props.navigation.navigate('Securite')}
+                icon={'lock'}
                 type={undefined}
                 drapeau={undefined}
               />

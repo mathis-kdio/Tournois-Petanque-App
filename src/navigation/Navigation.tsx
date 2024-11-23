@@ -39,6 +39,7 @@ import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { Match } from '@/types/interfaces/match';
 import { Tournoi } from '@/types/interfaces/tournoi';
 import ConfirmationEmail from '@/screens/Connexion/ConfirmationEmail';
+import Securite from '@/screens/Connexion/Securite';
 
 const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -431,6 +432,11 @@ function ConnexionStack() {
         name="InfosPerso"
         component={InfosPerso}
         options={{ title: t('mon_compte'), headerShown: false }}
+      />
+      <Stack.Screen
+        name="Securite"
+        component={Securite}
+        options={{ title: t('securite'), headerShown: false }}
       />
     </Stack.Navigator>
   );
