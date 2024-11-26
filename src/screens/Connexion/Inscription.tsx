@@ -192,7 +192,7 @@ class Inscription extends React.Component<Props, State> {
                   <InputField
                     className="text-white placeholder:text-white"
                     placeholder={t('mot_de_passe')}
-                    type={this.state.showPassword1 ? 'text' : 'password'}
+                    secureTextEntry={!this.state.showPassword1}
                     returnKeyType="next"
                     autoCapitalize={'none'}
                     onChangeText={(text) => this.setState({ password: text })}
@@ -239,7 +239,7 @@ class Inscription extends React.Component<Props, State> {
                   <InputField
                     className="text-white placeholder:text-white"
                     placeholder={t('mot_de_passe')}
-                    type={this.state.showPassword2 ? 'text' : 'password'}
+                    secureTextEntry={!this.state.showPassword2}
                     autoCapitalize={'none'}
                     onChangeText={(text) => this.setState({ password2: text })}
                     ref={this.mdpInput2}

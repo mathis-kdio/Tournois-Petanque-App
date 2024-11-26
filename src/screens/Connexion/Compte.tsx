@@ -12,6 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/TopBarBack';
 import { withSession } from '@/components/supabase/withSession';
 import { LoaderIcon, TrashIcon } from '@/components/ui/icon';
+import { Divider } from '@/components/ui/divider';
 
 export interface Props {
   navigation: StackNavigationProp<any, any>;
@@ -46,9 +47,17 @@ class Compte extends React.Component<Props, State> {
           <VStack className="flex-1 px-10 justify-between">
             <VStack className="border border-white rounded-lg">
               <Item
-                text={'Informations personnelles'}
+                text={t('informations_personnelles')}
                 action={() => this.props.navigation.navigate('InfosPerso')}
                 icon={'info-circle'}
+                type={undefined}
+                drapeau={undefined}
+              />
+              <Divider />
+              <Item
+                text={t('securite')}
+                action={() => this.props.navigation.navigate('Securite')}
+                icon={'lock'}
                 type={undefined}
                 drapeau={undefined}
               />
@@ -60,7 +69,7 @@ class Compte extends React.Component<Props, State> {
               <Button isDisabled={true} onPress={() => undefined}>
                 <ButtonIcon as={LoaderIcon} />
                 <ButtonText className="ml-2">
-                  {'Forcer la synchronisation'}
+                  {t('forcer_synchronisation')}
                 </ButtonText>
               </Button>
               <Button
@@ -70,7 +79,7 @@ class Compte extends React.Component<Props, State> {
               >
                 <ButtonIcon as={TrashIcon} />
                 <ButtonText className="ml-2">
-                  {'Supprimer mon compte'}
+                  {t('supprimer_compte')}
                 </ButtonText>
               </Button>
             </VStack>

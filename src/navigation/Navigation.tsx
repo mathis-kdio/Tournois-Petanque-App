@@ -13,6 +13,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import Accueil from '@screens/Accueil';
 import Authentification from '@screens/Connexion/Authentification';
 import Compte from '@screens/Connexion/Compte';
+import InfosPerso from '@screens/Connexion/InfosPerso';
 import Parametres from '@screens/Parametres/Parametres';
 import Changelog from '@screens/Parametres/Changelog';
 import ListeTournois from '@screens/ListeTournois/ListeTournois';
@@ -38,6 +39,7 @@ import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { Match } from '@/types/interfaces/match';
 import { Tournoi } from '@/types/interfaces/tournoi';
 import ConfirmationEmail from '@/screens/Connexion/ConfirmationEmail';
+import Securite from '@/screens/Connexion/Securite';
 
 const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -425,6 +427,16 @@ function ConnexionStack() {
         name="Compte"
         component={Compte}
         options={{ title: t('mon_compte'), headerShown: false }}
+      />
+      <Stack.Screen
+        name="InfosPerso"
+        component={InfosPerso}
+        options={{ title: t('mon_compte'), headerShown: false }}
+      />
+      <Stack.Screen
+        name="Securite"
+        component={Securite}
+        options={{ title: t('securite'), headerShown: false }}
       />
     </Stack.Navigator>
   );

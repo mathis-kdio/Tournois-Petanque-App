@@ -9,7 +9,7 @@
     "exporter_pdf": "Exporter en PDF",
     "accueil": "Accueil",
     "equipe": "Equipe",
-    "nom_inscription": "Nom",
+    "nom": "Nom",
     "ajouter": "Ajouter",
     "renommer": "Renommer",
     "supprimer": "Supprimer",
@@ -238,6 +238,16 @@
     "confirmation_email": "Confirmation de l'email",
     "confirmation_email_text_1": "Un email de confirmation vient d'être envoyé à :",
     "confirmation_email_text_2": "Veuillez cliquer sur le lien dans le mail.",
-    "retour_accueil": "Retourner à l'accueil"
+    "retour_accueil": "Retourner à l'accueil",
+    "forcer_synchronisation": "Forcer la synchronisation",
+    "supprimer_compte": "Supprimer mon compte",
+    "informations_personnelles": "Informations personnelles",
+    "prenom": "Prenom",
+    "pays": "Pays",
+    "club": "Club",
+    "securite": "Sécurite",
+    "ancien_mdp": "Ancien mot de passe",
+    "nouveau_mdp": "Nouveau mot de passe",
+    "confirmer_mdp": "Confirmer le mot de passe"
   }
 }
