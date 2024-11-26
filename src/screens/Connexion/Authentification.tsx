@@ -140,7 +140,7 @@ class Authentification extends React.Component<Props, State> {
                   <InputField
                     className="text-white placeholder:text-white"
                     placeholder={t('mot_de_passe')}
-                    type={this.state.showPassword ? 'text' : 'password'}
+                    secureTextEntry={!this.state.showPassword}
                     autoCapitalize={'none'}
                     onChangeText={(text) => this.setState({ password: text })}
                     ref={this.mdpInput}

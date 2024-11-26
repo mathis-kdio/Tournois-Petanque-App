@@ -245,6 +245,9 @@
     "prenom": "Prenom",
     "pays": "Pays",
     "club": "Club",
-    "securite": "Sécurite"
+    "securite": "Sécurite",
+    "ancien_mdp": "Ancien mot de passe",
+    "nouveau_mdp": "Nouveau mot de passe",
+    "confirmer_mdp": "Confirmer le mot de passe"
   }
 }
