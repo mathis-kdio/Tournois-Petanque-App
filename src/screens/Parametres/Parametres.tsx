@@ -91,13 +91,13 @@ class Parametres extends React.Component<Props, State> {
             <Text>{t('supprimer_donnees_modal_texte')}</Text>
           </AlertDialogBody>
           <AlertDialogFooter>
-            <ButtonGroup>
+            <ButtonGroup flexDirection="row">
               <Button
                 variant="outline"
                 action="secondary"
                 onPress={() => this.setState({ alertOpen: false })}
               >
-                <ButtonText>{t('annuler')}</ButtonText>
+                <ButtonText className="text-black">{t('annuler')}</ButtonText>
               </Button>
               <Button action="negative" onPress={() => this._clearData()}>
                 <ButtonText>{t('oui')}</ButtonText>

@@ -102,13 +102,13 @@ class ListeTournoiItem extends React.Component<Props, State> {
             </Text>
           </AlertDialogBody>
           <AlertDialogFooter>
-            <ButtonGroup>
+            <ButtonGroup flexDirection="row">
               <Button
                 variant="outline"
                 action="secondary"
                 onPress={() => this.setState({ modalDeleteIsOpen: false })}
               >
-                <ButtonText>{t('annuler')}</ButtonText>
+                <ButtonText className="text-black">{t('annuler')}</ButtonText>
               </Button>
               <Button
                 action="negative"

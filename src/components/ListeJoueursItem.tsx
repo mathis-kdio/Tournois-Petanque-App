@@ -107,13 +107,13 @@ class ListeJoueursItem extends React.Component<Props, State> {
             <Text>{t('supprimer_liste_modal_texte', { id: listId + 1 })}</Text>
           </AlertDialogBody>
           <AlertDialogFooter>
-            <ButtonGroup>
+            <ButtonGroup flexDirection="row">
               <Button
                 variant="outline"
                 action="secondary"
                 onPress={() => this.setState({ modalDeleteIsOpen: false })}
               >
-                <ButtonText>{t('annuler')}</ButtonText>
+                <ButtonText className="text-black">{t('annuler')}</ButtonText>
               </Button>
               <Button
                 action="negative"

@@ -414,7 +414,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
             <Text>{t('confirmer_uncheck_modal_texte')}</Text>
           </AlertDialogBody>
           <AlertDialogFooter>
-            <ButtonGroup>
+            <ButtonGroup flexDirection="row">
               <Button
                 variant="outline"
                 action="secondary"
@@ -422,7 +422,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
                   this.setState({ modalConfirmUncheckIsOpen: false })
                 }
               >
-                <ButtonText>{t('annuler')}</ButtonText>
+                <ButtonText className="text-black">{t('annuler')}</ButtonText>
               </Button>
               <Button
                 action="negative"
