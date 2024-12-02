@@ -1,5 +1,17 @@
 # Change Log
 
+## [2.0.0] - 02-12-2024
+
+### Ajouté
+- Création de comptes
+- Gestion du compte
+
+### Changement
+- Migration socle technique
+- Mise à jour des dépendances
+
+### Corrigé
+
 ## [1.16.2] - 05-05-2024
 
 ### Ajouté
