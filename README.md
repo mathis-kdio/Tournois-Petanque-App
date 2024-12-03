@@ -5,6 +5,7 @@ L'application Tournois de Petanque App permet de créer et de gérer des tournoi
 [![CodeQL](https://github.com/mathis-kdio/Tournois-Petanque-App/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/mathis-kdio/Tournois-Petanque-App/actions/workflows/github-code-scanning/codeql)
 [![Dependabot Updates](https://github.com/mathis-kdio/Tournois-Petanque-App/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/mathis-kdio/Tournois-Petanque-App/actions/workflows/dependabot/dependabot-updates)
 [![ESLint](https://github.com/mathis-kdio/Tournois-Petanque-App/actions/workflows/eslint.yml/badge.svg)](https://github.com/mathis-kdio/Tournois-Petanque-App/actions/workflows/eslint.yml)
+[![Crowdin](https://badges.crowdin.net/tournois-de-ptanque-gcu/localized.svg)](https://crowdin.com/project/tournois-de-ptanque-gcu)
 
 ## Question & Suggestions
 tournoispetanqueapp@gmail.com
