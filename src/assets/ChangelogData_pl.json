@@ -1,4 +1,27 @@
 {
+  "27": {
+    "id": "27",
+    "version": "2.0.0",
+    "infos": [
+      "- Création de comptes",
+      "- Gestion du compte",
+      "- Migration socle technique",
+      "- Mise à jour des dépendances"
+    ]
+  },
+  "26": {
+    "id": "26",
+    "version": "1.16.2",
+    "infos": [
+      "- Traduction en néerlandais.",
+      "-Data turnieju w PDF.",
+      "-Małe poprawki w wyświetlaniu dokumentów w PDF.",
+      "-Tłumaczenie notatek dot. aktualizacji.",
+      "- Correction génération des tournois en tête-à-tête.",
+      "-Korekta wyświetlania przycisków i modalnych.",
+      "-Korekta błędów."
+    ]
+  },
   "25": {
     "id": "25",
     "version": "1.16.1",
