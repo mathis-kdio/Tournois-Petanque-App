@@ -40,6 +40,7 @@ import { Match } from '@/types/interfaces/match';
 import { Tournoi } from '@/types/interfaces/tournoi';
 import ConfirmationEmail from '@/screens/Connexion/ConfirmationEmail';
 import Securite from '@/screens/Connexion/Securite';
+import { captureMessage } from '@sentry/react-native';
 
 const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -148,10 +149,14 @@ function getTournoiName() {
   if (listeTournois !== undefined && listeMatchs !== undefined) {
     let tournoiId = listeMatchs[listeMatchs.length - 1].tournoiID;
     let tournoi = listeTournois.find(
-      (element) => element.tournoiId === tournoiId,
+      (element: Tournoi) => element.tournoiId === tournoiId,
     );
-    tournoiName =
-      tournoi.name !== undefined ? tournoi.name : 'n°' + tournoi.tournoiId;
+    if (tournoi) {
+      tournoiName =
+        tournoi.name !== undefined ? tournoi.name : 'n°' + tournoi.tournoiId;
+    } else {
+      captureMessage(`ID du tournoi : ${tournoiId}`, 'warning');
+    }
   }
   return tournoiName;
 }
