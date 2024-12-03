@@ -80,8 +80,7 @@ class ListeTerrains extends React.Component<Props, State> {
   }
 
   render() {
-    const { t } = this.props;
-
+    const { t, listeTerrains } = this.props;
     const renderItem: ListRenderItem<Terrain> = ({ item }) => (
       <ListeTerrainItem terrain={item} />
     );
@@ -94,12 +93,12 @@ class ListeTerrains extends React.Component<Props, State> {
             navigation={this.props.navigation}
           />
           <Text className="text-white text-xl text-center">
-            {t('nombre_terrains', { nb: this.props.listeTerrains.length })}
+            {t('nombre_terrains', { nb: listeTerrains.length })}
           </Text>
           <VStack className="flex-1 my-2">
             <FlatList
               persistentScrollbar={true}
-              data={this.props.listeTerrains}
+              data={listeTerrains}
               initialNumToRender={20}
               keyExtractor={(item: Terrain) => item.id.toString()}
               renderItem={renderItem}

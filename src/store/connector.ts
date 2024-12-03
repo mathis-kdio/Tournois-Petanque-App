@@ -7,7 +7,7 @@ const mapStateToProps = (state: any) => {
     savedLists: state.listesJoueurs.listesSauvegarde,
     listeMatchs: state.gestionMatchs.listematchs,
     listeTournois: state.listeTournois.listeTournois,
-    listeTerrains: state.listeTournois.listeTerrains,
+    listeTerrains: state.listeTerrains.listeTerrains,
     optionsTournoi: state.optionsTournoi.options as OptionsTournoi,
   };
 };
