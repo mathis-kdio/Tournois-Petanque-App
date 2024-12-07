@@ -1,5 +1,16 @@
 # Change Log
 
+## [2.0.1] - 07-12-2024
+### Ajouté
+
+### Changement
+- Mise à jour des traductions
+- Mise à jour des dépendances
+
+### Corrigé
+- Correction bug écran des terrains
+- Correction bug suppression tournoi
+
 ## [2.0.0] - 02-12-2024
 
 ### Ajouté
