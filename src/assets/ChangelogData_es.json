@@ -1,4 +1,14 @@
 {
+  "28": {
+    "id": "28",
+    "version": "2.0.1",
+    "infos": [
+      "- Mise à jour des traductions",
+      "- Mise à jour des dépendances",
+      "- Correction bug écran des terrains",
+      "- Correction bug suppression tournoi"
+    ]
+  },
   "27": {
     "id": "27",
     "version": "2.0.0",
@@ -139,11 +149,11 @@
     ]
   },
   "14": {
-    "id": "14",
-    "version": "1.8.2",
+    "id": "",
+    "version": "",
     "infos": [
-      "- Status et Navigation bar de couleur.",
-      "- Thème light par défaut.",
+      ".",
+      ".",
       "- Correction de problèmes de navigation.",
       "- Correction de fautes de textes."
     ]
