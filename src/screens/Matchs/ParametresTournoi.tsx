@@ -45,6 +45,15 @@ class ParametresTournoi extends React.Component<Props, State> {
   }
 
   _supprimerTournoi() {
+    this.setState({ modalDeleteIsOpen: false });
+    this.props.navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: 'AccueilGeneral',
+        },
+      ],
+    });
     const supprDansListeTournois = {
       type: 'SUPPR_TOURNOI',
       value: {
@@ -55,14 +64,6 @@ class ParametresTournoi extends React.Component<Props, State> {
     this.props.dispatch(supprDansListeTournois);
     const suppressionAllMatchs = { type: 'SUPPR_MATCHS' };
     this.props.dispatch(suppressionAllMatchs);
-    this.props.navigation.reset({
-      index: 0,
-      routes: [
-        {
-          name: 'AccueilGeneral',
-        },
-      ],
-    });
   }
 
   _modalSupprimerTournoi() {
@@ -93,7 +94,7 @@ class ParametresTournoi extends React.Component<Props, State> {
           </AlertDialogHeader>
           <AlertDialogBody>
             <Text>
-              {t('supprimer_tournoi_actuel_modal_texte', { id: tournoiId + 1 })}
+              {t('supprimer_tournoi_actuel_modal_texte', { id: tournoiId })}
             </Text>
           </AlertDialogBody>
           <AlertDialogFooter>
