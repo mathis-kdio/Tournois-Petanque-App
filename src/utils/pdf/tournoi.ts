@@ -72,7 +72,10 @@ export const generationPDFTournoi = (
               '<td rowspan="' +
               matchNbJoueur +
               '" class="td-score text-center">';
-            if (affichageScore === true && listeMatchs[matchId].score1) {
+            if (
+              affichageScore === true &&
+              listeMatchs[matchId].score1 !== undefined
+            ) {
               html += listeMatchs[matchId].score1.toString();
             }
             html += '</td>';
@@ -81,7 +84,10 @@ export const generationPDFTournoi = (
               '<td rowspan="' +
               matchNbJoueur +
               '" class="td-score text-center">';
-            if (affichageScore === true && listeMatchs[matchId].score2) {
+            if (
+              affichageScore === true &&
+              listeMatchs[matchId].score2 !== undefined
+            ) {
               html += listeMatchs[matchId].score2.toString();
             }
             html += '</td>';
