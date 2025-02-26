@@ -24,6 +24,9 @@
       "@screens/*": [
         "./src/screens/*"
       ],
+      "@services/*": [
+        "./src/services/*"
+      ],
       "@store/*": [
         "./src/store/*"
       ],
