@@ -282,52 +282,6 @@ class OptionsTournoi extends React.Component<Props, State> {
                   </HStack>
                 </VStack>
                 <VStack>
-                  <Text className="text-white text-md">
-                    {t('options_regle_complement')}
-                  </Text>
-                  <Select
-                    selectedValue={this.state.complement}
-                    defaultValue={Complement.TRIPLETTE}
-                    initialLabel={t('triplettes')}
-                    aria-label={t('choix_complement')}
-                    placeholder={t('choix_complement')}
-                    onValueChange={(itemValue: Complement) =>
-                      this.setState({ complement: itemValue })
-                    }
-                  >
-                    <SelectTrigger
-                      variant="outline"
-                      size="md"
-                      className="border-white"
-                    >
-                      <SelectInput
-                        className="flex-1 text-white placeholder:text-white"
-                        placeholder={t('choix_complement')}
-                      />
-                      <SelectIcon
-                        className="mr-3 text-white"
-                        as={ChevronDownIcon}
-                      />
-                    </SelectTrigger>
-                    <SelectPortal>
-                      <SelectBackdrop />
-                      <SelectContent>
-                        <SelectDragIndicatorWrapper>
-                          <SelectDragIndicator />
-                        </SelectDragIndicatorWrapper>
-                        <SelectItem
-                          label={t('triplettes')}
-                          value={Complement.TRIPLETTE}
-                        />
-                        <SelectItem
-                          label={t('tete_a_tete')}
-                          value={Complement.TETEATETE}
-                        />
-                      </SelectContent>
-                    </SelectPortal>
-                  </Select>
-                </VStack>
-                <VStack>
                   <Checkbox
                     value="avecTerrains"
                     onChange={() =>

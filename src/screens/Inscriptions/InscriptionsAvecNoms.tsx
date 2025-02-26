@@ -29,9 +29,11 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
     this.state = {};
   }
 
-  _commencer() {
+  _commencer(choixComplement: boolean) {
     let screenName = 'GenerationMatchs';
-    if (this.props.optionsTournoi.avecTerrains) {
+    if (choixComplement) {
+      screenName = 'ChoixComplement';
+    } else if (this.props.optionsTournoi.avecTerrains) {
       screenName = 'ListeTerrains';
     }
     this.props.navigation.navigate({
@@ -46,12 +48,12 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
     const { t } = this.props;
     let btnDisabled = false;
     let title = t('commencer_tournoi');
-    let btnAction = 'positive';
     const nbJoueurs =
       this.props.listesJoueurs[this.props.optionsTournoi.mode].length;
     const listesJoueurs = this.props.listesJoueurs;
     const optionsTournoi = this.props.optionsTournoi;
     let nbEquipes = 0;
+    let choixComplement = false;
 
     if (optionsTournoi.typeEquipes === TypeEquipes.TETEATETE) {
       nbEquipes = nbJoueurs;
@@ -139,31 +141,12 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
     ) {
       title = t('tete_a_tete_multiple_2');
       btnDisabled = true;
-    } else if (
-      optionsTournoi.typeEquipes === TypeEquipes.DOUBLETTE &&
-      (listesJoueurs.avecNoms.length % 4 !== 0 ||
-        listesJoueurs.avecNoms.length < 4)
-    ) {
+    } else if (optionsTournoi.typeEquipes === TypeEquipes.DOUBLETTE) {
       if (listesJoueurs.avecNoms.length < 4) {
         title = t('joueurs_insuffisants');
         btnDisabled = true;
-      } else if (
-        listesJoueurs.avecNoms.length % 2 === 0 &&
-        optionsTournoi.complement === Complement.TETEATETE
-      ) {
-        title = t('complement_tete_a_tete');
-        btnAction = 'warning';
-      } else if (optionsTournoi.complement === Complement.TRIPLETTE) {
-        if (listesJoueurs.avecNoms.length === 7) {
-          title = t('configuration_impossible');
-          btnDisabled = true;
-        } else {
-          title = t('complement_triplette');
-          btnAction = 'warning';
-        }
-      } else if (optionsTournoi.complement !== Complement.TRIPLETTE) {
-        title = t('blocage_complement');
-        btnDisabled = true;
+      } else if (listesJoueurs.avecNoms.length % 4 !== 0) {
+        choixComplement = true;
       }
     } else if (
       optionsTournoi.typeEquipes === TypeEquipes.TRIPLETTE &&
@@ -177,8 +160,8 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
     return (
       <Button
         isDisabled={btnDisabled}
-        action={btnDisabled ? 'negative' : btnAction}
-        onPress={() => this._commencer()}
+        action={btnDisabled ? 'negative' : 'positive'}
+        onPress={() => this._commencer(choixComplement)}
         size="md"
         className="h-min min-h-10"
       >

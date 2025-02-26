@@ -186,7 +186,6 @@ class GenerationMatchs extends React.Component<Props, State> {
         } = generationDoublettes(
           this.props.listesJoueurs[this.typeInscription],
           this.nbTours,
-          this.typeEquipes,
           this.complement,
           this.speciauxIncompatibles,
           this.jamaisMemeCoequipier,
