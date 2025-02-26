@@ -9,6 +9,8 @@ import polonais from '@assets/languages/pl.json';
 import changelogPL from '@assets/ChangelogData_pl.json';
 import neerlandais from '@assets/languages/nl.json';
 import changelogNL from '@assets/ChangelogData_nl.json';
+import allemand from '@assets/languages/de.json';
+import changelogDE from '@assets/ChangelogData_de.json';
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
@@ -36,6 +38,10 @@ i18n
       'nl-NL': {
         common: neerlandais.translation,
         changelog: changelogNL,
+      },
+      'de-DE': {
+        common: allemand.translation,
+        changelog: changelogDE,
       },
       ns: ['common', 'changelog'],
       supportedLngs: [
