@@ -1,22 +1,8 @@
 import { ScrollView } from '@/components/ui/scroll-view';
-import { Heading } from '@/components/ui/heading';
-import { CloseIcon, Icon } from '@/components/ui/icon';
-import { Pressable } from '@/components/ui/pressable';
-
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalBackdrop,
-  ModalCloseButton,
-} from '@/components/ui/modal';
-
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FontAwesome5 } from '@expo/vector-icons';
 import TopBarBack from '@components/TopBarBack';
 import CardButton from '@components/buttons/CardButton';
 import { withTranslation } from 'react-i18next';
@@ -32,8 +18,6 @@ export interface Props extends PropsFromRedux {
 }
 
 interface State {
-  showModal: boolean;
-  modalType: Complement;
   options: Complement[];
   complementTeteATeteDispo: boolean;
   complementTripletteDispo: boolean;
@@ -44,8 +28,6 @@ class ChoixComplement extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      showModal: false,
-      modalType: undefined,
       options: [],
       complementTeteATeteDispo: false,
       complementTripletteDispo: false,
@@ -55,54 +37,6 @@ class ChoixComplement extends React.Component<Props, State> {
 
   componentDidMount(): void {
     this.complementDoublette();
-  }
-
-  _modalInfos() {
-    const { t } = this.props;
-    if (!this.state.modalType) return;
-    const infosModal = {
-      'mele-demele': {
-        title: t('melee_demelee'),
-        text: t('description_melee_demelee'),
-      },
-      championnat: {
-        title: t('championnat'),
-        text: t('description_championnat'),
-      },
-      coupe: {
-        title: t('coupe'),
-        text: t('description_coupe'),
-      },
-      'multi-chances': {
-        title: t('multi_chances'),
-        text: t('description_multi_chances'),
-      },
-    };
-    let infos = infosModal[this.state.modalType];
-    if (!infos) return;
-    return (
-      <Modal
-        isOpen={this.state.showModal}
-        onClose={() => this.setState({ showModal: false })}
-      >
-        <ModalBackdrop />
-        <ModalContent className="max-h-5/6">
-          <ModalHeader>
-            <Heading className="text-black">{infos.title}</Heading>
-            <ModalCloseButton>
-              <Icon
-                as={CloseIcon}
-                size="md"
-                className="stroke-background-400 group-[:hover]/modal-close-button:stroke-background-700 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900"
-              />
-            </ModalCloseButton>
-          </ModalHeader>
-          <ModalBody>
-            <Text>{infos.text}</Text>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    );
   }
 
   _navigate(complement: Complement) {
@@ -130,12 +64,14 @@ class ChoixComplement extends React.Component<Props, State> {
     const nbJoueurs = listesJoueurs[mode].length;
 
     let options = [];
-    if (nbJoueurs === 7) {
-      options.push(Complement.DEUXVSUN);
-    } else if (nbJoueurs % 4 === 1) {
+    if (nbJoueurs % 4 === 1) {
       options.push(Complement.TROISVSDEUX);
-    } else {
+    } else if (nbJoueurs % 4 === 2) {
       options.push(Complement.TETEATETE, Complement.TRIPLETTE);
+    } else if (nbJoueurs % 4 === 3) {
+      options.push(Complement.DEUXVSUN);
+    } else {
+      console.error('nbJoueurs ne nécessite pas de choisir un complément');
     }
 
     this.setState({
@@ -145,26 +81,21 @@ class ChoixComplement extends React.Component<Props, State> {
 
   card(complement: Complement) {
     const { t } = this.props;
+    const complementTextMap: Record<Complement,{ text: string; icons: string[] }> = {
+      [Complement.TROISVSDEUX]: { text: t('3contre2'),icons: ['users', 'handshake', 'user-friends']},
+      [Complement.TETEATETE]: { text: t('1contre1'), icons: ['user-alt', 'handshake', 'user-alt'] },
+      [Complement.TRIPLETTE]: { text: t('3contre3'), icons: ['users', 'handshake', 'users']},
+      [Complement.DEUXVSUN]: {text: t('2contre1'), icons: ['user-friends', 'handshake', 'user-alt']},
+    };
+    const item = complementTextMap[complement];
     return (
       <VStack className="flex-1">
         <CardButton
-          text={complement.toString()}
-          icon="random"
+          text={item.text}
+          icons={item.icons}
           navigate={() => this._navigate(complement)}
           newBadge={false}
         />
-        <Pressable
-          onPress={() =>
-            this.setState({
-              showModal: true,
-              modalType: complement,
-            })
-          }
-          className="flex-row justify-center mt-2"
-        >
-          <FontAwesome5 name="info-circle" color="white" size={24} />
-          <Text className="text-white"> {t('savoir_plus')}</Text>
-        </Pressable>
       </VStack>
     );
   }
@@ -180,15 +111,24 @@ class ChoixComplement extends React.Component<Props, State> {
             navigation={this.props.navigation}
           />
           <VStack space="2xl" className="flex-1 px-10">
-            {this.state.options.map((complement) => (
+            <Text size={'lg'} className="text-white text-center">
+              Le nombre de joueurs inscrit n'est pas un multiple de 4. Il est
+              donc nécessaire de choisir la répartition des joueurs
+              supplémentaires.
+            </Text>
+            <Text size={'lg'} className="text-white text-center">
+              Vous pouvez choisir que le dernier match de chaque tour sera un :
+            </Text>
+            {this.state.options.map((complement, index) => (
               <VStack>
-                <VStack>{this.card(complement)}</VStack>
-                <Divider className="my-0.5" />
+                {this.card(complement)}
+                {index + 1 !== this.state.options.length && (
+                  <Divider className="mt-5 h-1" />
+                )}
               </VStack>
             ))}
           </VStack>
         </ScrollView>
-        {this._modalInfos()}
       </SafeAreaView>
     );
   }

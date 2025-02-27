@@ -249,6 +249,10 @@
     "securite": "Sécurite",
     "ancien_mdp": "Ancien mot de passe",
     "nouveau_mdp": "Nouveau mot de passe",
-    "confirmer_mdp": "Confirmer le mot de passe"
+    "confirmer_mdp": "Confirmer le mot de passe",
+    "2contre2": "3 contre 2",
+    "1contre1": "1 contre 1",
+    "3contre3": "3 contre 3",
+    "2contre1": "2 contre 1"
   }
 }
