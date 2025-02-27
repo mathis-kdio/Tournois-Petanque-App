@@ -7,20 +7,7 @@ import {
   SliderFilledTrack,
   SliderThumb,
 } from '@/components/ui/slider';
-import { CheckIcon, ChevronDownIcon } from '@/components/ui/icon';
-
-import {
-  Select,
-  SelectItem,
-  SelectTrigger,
-  SelectInput,
-  SelectIcon,
-  SelectPortal,
-  SelectBackdrop,
-  SelectContent,
-  SelectDragIndicatorWrapper,
-  SelectDragIndicator,
-} from '@/components/ui/select';
+import { CheckIcon } from '@/components/ui/icon';
 
 import { Input, InputField } from '@/components/ui/input';
 import { Text } from '@/components/ui/text';
@@ -39,7 +26,6 @@ import { withTranslation } from 'react-i18next';
 import { Platform } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
-import { Complement } from '@/types/enums/complement';
 import { PropsFromRedux, connector } from '@/store/connector';
 import { RouteProp } from '@react-navigation/native';
 import { InscriptionStackParamList } from '@/navigation/Navigation';
@@ -54,7 +40,6 @@ interface State {
   speciauxIncompatibles: boolean;
   memesEquipes: boolean;
   memesAdversaires: number;
-  complement: Complement;
   nbTours: number;
   nbPtVictoire: number;
   avecTerrains: boolean;
@@ -70,7 +55,6 @@ class OptionsTournoi extends React.Component<Props, State> {
       speciauxIncompatibles: true,
       memesEquipes: true,
       memesAdversaires: 50,
-      complement: Complement.TRIPLETTE,
       nbTours: 5,
       nbPtVictoire: 13,
       avecTerrains: false,
@@ -119,11 +103,6 @@ class OptionsTournoi extends React.Component<Props, State> {
       value: ['memesAdversaires', this.state.memesAdversaires],
     };
     this.props.dispatch(updateOptionMemesAdversaires);
-    const updateOptionComplement = {
-      type: 'UPDATE_OPTION_TOURNOI',
-      value: ['complement', this.state.complement],
-    };
-    this.props.dispatch(updateOptionComplement);
     const updateOptionAvecTerrains = {
       type: 'UPDATE_OPTION_TOURNOI',
       value: ['avecTerrains', this.state.avecTerrains],

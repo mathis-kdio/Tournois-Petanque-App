@@ -22,7 +22,6 @@ import CardButton from '@components/buttons/CardButton';
 import { withTranslation } from 'react-i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
-import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { PropsFromRedux, connector } from '@/store/connector';
 import { Divider } from '@/components/ui/divider';
 import { Complement } from '@/types/enums/complement';
