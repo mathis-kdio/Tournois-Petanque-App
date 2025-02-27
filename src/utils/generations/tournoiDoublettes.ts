@@ -1,5 +1,9 @@
 import { JoueurType } from '@/types/enums/joueurType';
-import { calcNbMatchsParTour, shuffle, uniqueValueArrayRandOrder } from './generation';
+import {
+  calcNbMatchsParTour,
+  shuffle,
+  uniqueValueArrayRandOrder,
+} from './generation';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { Complement } from '@/types/enums/complement';
 import { Joueur } from '@/types/interfaces/joueur';
