@@ -28,7 +28,7 @@ export const calcNbMatchsParTour = (
   modeTournoi: ModeTournoi,
   typeTournoi: TypeTournoi,
   complement: Complement,
-) => {
+): number | undefined => {
   let nbMatchsParTour = undefined;
 
   if (
@@ -50,9 +50,15 @@ export const calcNbMatchsParTour = (
     if (typeEquipes === TypeEquipes.TETEATETE) {
       nbMatchsParTour = nbjoueurs / 2;
     } else if (typeEquipes === TypeEquipes.DOUBLETTE) {
-      if (complement === Complement.TETEATETE) {
+      if (
+        complement === Complement.TETEATETE ||
+        complement === Complement.DEUXVSUN
+      ) {
         nbMatchsParTour = Math.ceil(nbjoueurs / 4);
-      } else if (complement === Complement.TRIPLETTE) {
+      } else if (
+        complement === Complement.TRIPLETTE ||
+        complement === Complement.TROISVSDEUX
+      ) {
         nbMatchsParTour = Math.floor(nbjoueurs / 4);
       } else {
         console.log(
