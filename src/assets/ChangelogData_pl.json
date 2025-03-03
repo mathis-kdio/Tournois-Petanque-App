@@ -12,31 +12,31 @@
     "id": "28",
     "version": "2.0.1",
     "infos": [
-      "- Mise à jour des traductions",
-      "- Mise à jour des dépendances",
-      "- Correction bug écran des terrains",
-      "- Correction bug suppression tournoi"
+      "-Aktualizacja tłumaczenia",
+      "-Aktualizacja zależnych",
+      "-Korekta błędu ekranu terenów",
+      "-Korekta błędu usuwania turnieju"
     ]
   },
   "27": {
     "id": "27",
     "version": "2.0.0",
     "infos": [
-      "- Création de comptes",
-      "- Gestion du compte",
-      "- Migration socle technique",
-      "- Mise à jour des dépendances"
+      "-Utworzenie kont",
+      "-Zarządzanie kontem",
+      "-Migracja bazy technicznej",
+      "-Aktualizacja zależnych"
     ]
   },
   "26": {
     "id": "26",
     "version": "1.16.2",
     "infos": [
-      "- Traduction en néerlandais.",
+      "-Tłumaczenie na niderlandzki",
       "-Data turnieju w PDF.",
       "-Małe poprawki w wyświetlaniu dokumentów w PDF.",
       "-Tłumaczenie notatek dot. aktualizacji.",
-      "- Correction génération des tournois en tête-à-tête.",
+      "-Korekta wczytywania turniejów typu Solo",
       "-Korekta wyświetlania przycisków i modalnych.",
       "-Korekta błędów."
     ]
@@ -59,7 +59,7 @@
       "- Podziękowania za tłumaczenie.",
       "- Korekta problemów wyświetlania.",
       "- Korekta błędów wczytywania.",
-      "- Mise à jour des dépendances."
+      "-Aktualizacja zależnych"
     ]
   },
   "23": {
