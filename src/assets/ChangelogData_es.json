@@ -1,4 +1,13 @@
 {
+  "29": {
+    "id": "29",
+    "version": "2.0.2",
+    "infos": [
+      "- Traduction en allemand",
+      "- Mise à jour des traductions",
+      "- Correction bug calcul classement"
+    ]
+  },
   "28": {
     "id": "28",
     "version": "2.0.1",
@@ -20,7 +29,7 @@
     ]
   },
   "26": {
-    "id": "26°",
+    "id": "26",
     "version": "1.16.2",
     "infos": [
       "- Traduction en néerlandais.",
@@ -149,11 +158,11 @@
     ]
   },
   "14": {
-    "id": "",
-    "version": "",
+    "id": "14",
+    "version": "1.8.2",
     "infos": [
-      ".",
-      ".",
+      "- Status et Navigation bar de couleur.",
+      "- Thème light par défaut.",
       "- Correction de problèmes de navigation.",
       "- Correction de fautes de textes."
     ]
