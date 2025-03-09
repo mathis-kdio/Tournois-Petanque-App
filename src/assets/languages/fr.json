@@ -253,6 +253,8 @@
     "2contre2": "3 contre 2",
     "1contre1": "1 contre 1",
     "3contre3": "3 contre 3",
-    "2contre1": "2 contre 1"
+    "2contre1": "2 contre 1",
+    "choix_complement_title_1": "Le nombre de joueurs inscrits n'est pas un multiple de 4. Il est donc nécessaire de choisir la répartition des joueurs supplémentaires.",
+    "choix_complement_title_2": "Vous pouvez choisir que le dernier match de chaque tour sera un :"
   }
 }

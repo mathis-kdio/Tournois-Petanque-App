@@ -127,12 +127,10 @@ class ChoixComplement extends React.Component<Props, State> {
           />
           <VStack space="2xl" className="flex-1 px-10">
             <Text size={'lg'} className="text-white text-center">
-              Le nombre de joueurs inscrit n'est pas un multiple de 4. Il est
-              donc nécessaire de choisir la répartition des joueurs
-              supplémentaires.
+              {t('choix_complement_title_1')}
             </Text>
             <Text size={'lg'} className="text-white text-center">
-              Vous pouvez choisir que le dernier match de chaque tour sera un :
+              {t('choix_complement_title_2')}
             </Text>
             {this.state.options.map((complement, index) => (
               <VStack>
