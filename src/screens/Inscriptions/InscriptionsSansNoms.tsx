@@ -102,7 +102,7 @@ class InscriptionsSansNoms extends React.Component<Props, State> {
   _boutonCommencer() {
     const { t, optionsTournoi } = this.props;
     let btnDisabled: boolean;
-    let title = t('commencer_tournoi');;
+    let title = t('commencer_tournoi');
     let nbJoueurs = this._nbJoueurs();
     let choixComplement = false;
 
