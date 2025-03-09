@@ -1,6 +1,6 @@
 [package]
 name = "app"
-version = "2.0.1"
+version = "2.0.2"
 description = "Créer un tournoi de pétanque et ajouter les scores n'a jamais été aussi simple !"
 authors = ["Mathis Cadio"]
 license = ""

@@ -154,6 +154,7 @@ class Parametres extends React.Component<Props, State> {
     let drapeauUSA = require('@assets/images/drapeau-usa.png');
     let drapeauPologne = require('@assets/images/drapeau-pologne.png');
     let drapeauPaysBas = require('@assets/images/drapeau-pays-bas.png');
+    let drapeauAllemagne = require('@assets/images/drapeau-allemagne.png');
     return (
       <Modal
         isOpen={this.state.modalLanguagesOpen}
@@ -206,6 +207,14 @@ class Parametres extends React.Component<Props, State> {
               drapeau={drapeauPaysBas}
             />
             <Divider />
+            <Divider />
+            <Item
+              text={t('allemand')}
+              action={() => this._changeLanguage('de-DE')}
+              icon={undefined}
+              type="modal"
+              drapeau={drapeauAllemagne}
+            />
             <Text className="text-center">{t('envie_aider_traduction')}</Text>
             <Pressable onPress={() => _openURL(this.crowdin)}>
               <Text className="text-center text-blue-500">
@@ -218,6 +227,9 @@ class Parametres extends React.Component<Props, State> {
             </Text>
             <Text className="text-center">
               {`\u2022`} GerKos653 ({t('neerlandais_abreviation')})
+            </Text>
+            <Text className="text-center">
+              {`\u2022`} MarcoHofmann ({t('allemand_abreviation')})
             </Text>
           </ModalBody>
         </ModalContent>
