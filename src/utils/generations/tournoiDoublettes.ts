@@ -1,8 +1,14 @@
 import { JoueurType } from '@/types/enums/joueurType';
-import { shuffle, uniqueValueArrayRandOrder } from './generation';
+import {
+  calcNbMatchsParTour,
+  shuffle,
+  uniqueValueArrayRandOrder,
+} from './generation';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { Complement } from '@/types/enums/complement';
 import { Joueur } from '@/types/interfaces/joueur';
+import { ModeTournoi } from '@/types/enums/modeTournoi';
+import { TypeTournoi } from '@/types/enums/typeTournoi';
 
 const testRegleMemeCoequipiersValide = (
   nbTours: number,
@@ -33,7 +39,6 @@ const testRegleMemeCoequipiersValide = (
 export const generationDoublettes = (
   listeJoueurs: Joueur[],
   nbTours: number,
-  typeEquipes: TypeEquipes,
   complement: Complement,
   speciauxIncompatibles: boolean,
   jamaisMemeCoequipier: boolean,
@@ -50,12 +55,14 @@ export const generationDoublettes = (
   let joueurs = [];
 
   //Initialisation des matchs dans un tableau
-  let nbMatchsParTour;
-  if (complement === Complement.TETEATETE) {
-    nbMatchsParTour = Math.ceil(nbjoueurs / 4);
-  } else {
-    nbMatchsParTour = Math.floor(nbjoueurs / 4);
-  }
+  let nbMatchsParTour = calcNbMatchsParTour(
+    nbjoueurs,
+    TypeEquipes.DOUBLETTE,
+    ModeTournoi.AVECNOMS,
+    TypeTournoi.MELEDEMELE,
+    complement,
+  );
+
   let nbMatchs = nbTours * nbMatchsParTour;
   idMatch = 0;
   for (let i = 1; i < nbTours + 1; i++) {
@@ -128,6 +135,17 @@ export const generationDoublettes = (
         matchs[nbMatchsParTour * i - 1].equipe[0][0] = nbjoueurs;
         matchs[nbMatchsParTour * i - 1].equipe[1][0] = nbjoueurs + 1;
       }
+    } else if (complement === Complement.DEUXVSUN) {
+      joueurs.push({
+        name: 'Complément 1',
+        type: JoueurType.ENFANT,
+        id: nbjoueurs,
+      });
+      joueurs[nbjoueurs].equipe = [];
+
+      for (let i = 1; i < nbTours + 1; i++) {
+        matchs[nbMatchsParTour * i - 1].equipe[1][0] = nbjoueurs;
+      }
     }
   }
 
@@ -158,56 +176,42 @@ export const generationDoublettes = (
       }
     } else {
       //Cas de complément
-      if (complement === Complement.TETEATETE) {
-        //Complément tête-à-tête
-        let moitieNbJoueurs = nbjoueurs / 2 + 1;
-        //Test si trop de joueurs de type pointeurs ou tireurs ou enfants
-        if (
-          joueursEnfants.length > moitieNbJoueurs ||
-          joueursTireurs.length > moitieNbJoueurs ||
-          joueursPointeurs.length > moitieNbJoueurs
-        ) {
-          return { erreurSpeciaux: true };
-        }
-        //Test si possible d'appliquer la règle jamaisMemeCoequipier
-        if (jamaisMemeCoequipier === true) {
-          let regleValide = testRegleMemeCoequipiersValide(
-            nbTours,
-            nbjoueurs,
-            nbJoueursSpe,
-            joueursTireurs.length,
-            joueursPointeurs.length,
-            moitieNbJoueurs,
-          );
-          if (!regleValide) {
-            return { erreurMemesEquipes: true };
-          }
-        }
+      let moitieNbJoueurs: number;
+      if (
+        complement === Complement.TETEATETE ||
+        complement === Complement.DEUXVSUN
+      ) {
+        //Complément tête-à-tête et DEUXVSUN
+        moitieNbJoueurs = nbjoueurs / 2 + 1;
       }
-      if (complement === Complement.TRIPLETTE) {
-        //Complément triplette
-        let moitieNbJoueurs = nbjoueurs / 2 - 1;
-        //Test si trop de joueurs de type pointeurs ou tireurs ou enfants
-        if (
-          joueursEnfants.length > moitieNbJoueurs ||
-          joueursTireurs.length > moitieNbJoueurs ||
-          joueursPointeurs.length > moitieNbJoueurs
-        ) {
-          return { erreurSpeciaux: true };
-        }
-        //Test si possible d'appliquer la règle jamaisMemeCoequipier
-        if (jamaisMemeCoequipier === true) {
-          let regleValide = testRegleMemeCoequipiersValide(
-            nbTours,
-            nbjoueurs,
-            nbJoueursSpe,
-            joueursTireurs.length,
-            joueursPointeurs.length,
-            moitieNbJoueurs,
-          );
-          if (!regleValide) {
-            return { erreurMemesEquipes: true };
-          }
+      if (
+        complement === Complement.TRIPLETTE ||
+        complement === Complement.TROISVSDEUX
+      ) {
+        //Complément triplette et TROISVSDEUX
+        moitieNbJoueurs = nbjoueurs / 2 - 1;
+      }
+
+      //Test si trop de joueurs de type pointeurs ou tireurs ou enfants
+      if (
+        joueursEnfants.length > moitieNbJoueurs ||
+        joueursTireurs.length > moitieNbJoueurs ||
+        joueursPointeurs.length > moitieNbJoueurs
+      ) {
+        return { erreurSpeciaux: true };
+      }
+      //Test si possible d'appliquer la règle jamaisMemeCoequipier
+      if (jamaisMemeCoequipier === true) {
+        let regleValide = testRegleMemeCoequipiersValide(
+          nbTours,
+          nbjoueurs,
+          nbJoueursSpe,
+          joueursTireurs.length,
+          joueursPointeurs.length,
+          moitieNbJoueurs,
+        );
+        if (!regleValide) {
+          return { erreurMemesEquipes: true };
         }
       }
     }
@@ -520,12 +524,15 @@ export const generationDoublettes = (
       if (random[j] !== undefined && (idMatch + 1) % nbMatchsParTour === 0) {
         if (
           nbjoueurs % 4 !== 0 &&
-          complement === Complement.TRIPLETTE &&
+          (complement === Complement.TRIPLETTE ||
+            complement === Complement.TROISVSDEUX) &&
           matchs[idMatch].equipe[0][2] === -1
         ) {
           let joueursEnTrop = nbjoueurs % 4;
-          matchs[idMatch].equipe[0][2] = random[j];
-          if (joueursEnTrop === 2) {
+          if (joueursEnTrop === 1) {
+            matchs[idMatch].equipe[0][2] = random[j];
+          } else if (joueursEnTrop === 2) {
+            matchs[idMatch].equipe[0][2] = random[j];
             matchs[idMatch].equipe[1][2] = random[j + 1];
           } else if (joueursEnTrop === 3) {
             matchs[idMatch].equipe[1][2] = random[j + 1];
