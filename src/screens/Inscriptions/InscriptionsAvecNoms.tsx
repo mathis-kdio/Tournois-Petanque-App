@@ -11,7 +11,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { Complement } from '@/types/enums/complement';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { Joueur } from '@/types/interfaces/joueur';
 import { PropsFromRedux, connector } from '@/store/connector';
