@@ -81,11 +81,26 @@ class ChoixComplement extends React.Component<Props, State> {
 
   card(complement: Complement) {
     const { t } = this.props;
-    const complementTextMap: Record<Complement,{ text: string; icons: string[] }> = {
-      [Complement.TROISVSDEUX]: { text: t('3contre2'),icons: ['users', 'handshake', 'user-friends']},
-      [Complement.TETEATETE]: { text: t('1contre1'), icons: ['user-alt', 'handshake', 'user-alt'] },
-      [Complement.TRIPLETTE]: { text: t('3contre3'), icons: ['users', 'handshake', 'users']},
-      [Complement.DEUXVSUN]: {text: t('2contre1'), icons: ['user-friends', 'handshake', 'user-alt']},
+    const complementTextMap: Record<
+      Complement,
+      { text: string; icons: string[] }
+    > = {
+      [Complement.TROISVSDEUX]: {
+        text: t('3contre2'),
+        icons: ['users', 'handshake', 'user-friends'],
+      },
+      [Complement.TETEATETE]: {
+        text: t('1contre1'),
+        icons: ['user-alt', 'handshake', 'user-alt'],
+      },
+      [Complement.TRIPLETTE]: {
+        text: t('3contre3'),
+        icons: ['users', 'handshake', 'users'],
+      },
+      [Complement.DEUXVSUN]: {
+        text: t('2contre1'),
+        icons: ['user-friends', 'handshake', 'user-alt'],
+      },
     };
     const item = complementTextMap[complement];
     return (
