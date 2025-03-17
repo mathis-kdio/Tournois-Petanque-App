@@ -147,13 +147,13 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
       } else if (listesJoueurs.avecNoms.length % 4 !== 0) {
         choixComplement = true;
       }
-    } else if (
-      optionsTournoi.typeEquipes === TypeEquipes.TRIPLETTE &&
-      (listesJoueurs.avecNoms.length % 6 !== 0 ||
-        listesJoueurs.avecNoms.length < 6)
-    ) {
-      title = t('triplette_multiple_6');
-      btnDisabled = true;
+    } else if (optionsTournoi.typeEquipes === TypeEquipes.TRIPLETTE) {
+      if (listesJoueurs.avecNoms.length < 6) {
+        title = t('joueurs_insuffisants');
+        btnDisabled = true;
+      } else if (listesJoueurs.avecNoms.length % 6 !== 0) {
+        choixComplement = true;
+      }
     }
 
     return (

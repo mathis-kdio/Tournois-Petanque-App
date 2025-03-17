@@ -11,6 +11,7 @@ import { TFunction } from 'i18next';
 import { PropsFromRedux, connector } from '@/store/connector';
 import { Divider } from '@/components/ui/divider';
 import { Complement } from '@/types/enums/complement';
+import { TypeEquipes } from '@/types/enums/typeEquipes';
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any, any>;
@@ -36,7 +37,7 @@ class ChoixComplement extends React.Component<Props, State> {
   }
 
   componentDidMount(): void {
-    this.complementDoublette();
+    this.prepareComplement();
   }
 
   _navigate(complement: Complement) {
@@ -58,25 +59,60 @@ class ChoixComplement extends React.Component<Props, State> {
     });
   }
 
-  complementDoublette() {
+  prepareComplement() {
+    const { typeEquipes } = this.props.optionsTournoi;
+    let options: Complement[] = [];
+    switch (typeEquipes) {
+      case TypeEquipes.TETEATETE:
+        throw new Error('Complement TETEATETE impossible');
+      case TypeEquipes.DOUBLETTE:
+        options = this.complementDoublette();
+        break;
+      case TypeEquipes.TRIPLETTE:
+        options = this.complementTriplette();
+        break;
+    }
+    this.setState({
+      options: options,
+    });
+  }
+
+  complementDoublette(): Complement[] {
     const { mode } = this.props.optionsTournoi;
     const { listesJoueurs } = this.props;
     const nbJoueurs = listesJoueurs[mode].length;
 
-    let options = [];
-    if (nbJoueurs % 4 === 1) {
-      options.push(Complement.TROISVSDEUX);
-    } else if (nbJoueurs % 4 === 2) {
-      options.push(Complement.TETEATETE, Complement.TRIPLETTE);
-    } else if (nbJoueurs % 4 === 3) {
-      options.push(Complement.DEUXVSUN);
-    } else {
-      console.error('nbJoueurs ne nécessite pas de choisir un complément');
+    switch (nbJoueurs % 4) {
+      case 1:
+        return [Complement.TROISVSDEUX];
+      case 2:
+        return [Complement.TETEATETE, Complement.TRIPLETTE];
+      case 3:
+        return [Complement.DEUXVSUN];
+      default:
+        throw new Error('Nombre de joueurs ne nécessitant pas un complément');
     }
+  }
 
-    this.setState({
-      options: options,
-    });
+  complementTriplette(): Complement[] {
+    const { mode } = this.props.optionsTournoi;
+    const { listesJoueurs } = this.props;
+    const nbJoueurs = listesJoueurs[mode].length;
+
+    switch (nbJoueurs % 6) {
+      case 1:
+        return [Complement.QUATREVSTROIS];
+      case 2:
+        return [Complement.TETEATETE];
+      case 3:
+        return [Complement.DEUXVSUN];
+      case 4:
+        return [Complement.DOUBLETTES];
+      case 5:
+        return [Complement.TROISVSDEUX];
+      default:
+        throw new Error('Nombre de joueurs ne nécessitant pas un complément');
+    }
   }
 
   card(complement: Complement) {
@@ -85,13 +121,13 @@ class ChoixComplement extends React.Component<Props, State> {
       Complement,
       { text: string; icons: string[] }
     > = {
-      [Complement.TROISVSDEUX]: {
-        text: t('3contre2'),
-        icons: ['users', 'handshake', 'user-friends'],
-      },
       [Complement.TETEATETE]: {
         text: t('1contre1'),
         icons: ['user-alt', 'handshake', 'user-alt'],
+      },
+      [Complement.DOUBLETTES]: {
+        text: t('2contre2'),
+        icons: ['user-friends', 'handshake', 'user-friends'],
       },
       [Complement.TRIPLETTE]: {
         text: t('3contre3'),
@@ -100,6 +136,14 @@ class ChoixComplement extends React.Component<Props, State> {
       [Complement.DEUXVSUN]: {
         text: t('2contre1'),
         icons: ['user-friends', 'handshake', 'user-alt'],
+      },
+      [Complement.TROISVSDEUX]: {
+        text: t('3contre2'),
+        icons: ['users', 'handshake', 'user-friends'],
+      },
+      [Complement.QUATREVSTROIS]: {
+        text: t('4contre3'),
+        icons: ['users', 'handshake', 'users'],
       },
     };
     const item = complementTextMap[complement];
@@ -117,6 +161,8 @@ class ChoixComplement extends React.Component<Props, State> {
 
   render() {
     const { t } = this.props;
+    const { typeEquipes } = this.props.optionsTournoi;
+    let nbModulo = typeEquipes === TypeEquipes.DOUBLETTE ? '4' : '6';
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -127,7 +173,7 @@ class ChoixComplement extends React.Component<Props, State> {
           />
           <VStack space="2xl" className="flex-1 px-10">
             <Text size={'lg'} className="text-white text-center">
-              {t('choix_complement_title_1')}
+              {t('choix_complement_title_1', { nbModulo: nbModulo })}
             </Text>
             <Text size={'lg'} className="text-white text-center">
               {t('choix_complement_title_2')}
