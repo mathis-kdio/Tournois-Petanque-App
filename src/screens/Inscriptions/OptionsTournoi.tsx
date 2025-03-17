@@ -103,6 +103,11 @@ class OptionsTournoi extends React.Component<Props, State> {
       value: ['memesAdversaires', this.state.memesAdversaires],
     };
     this.props.dispatch(updateOptionMemesAdversaires);
+    const updateOptionComplement = {
+      type: 'UPDATE_OPTION_TOURNOI',
+      value: ['complement', undefined],
+    };
+    this.props.dispatch(updateOptionComplement);
     const updateOptionAvecTerrains = {
       type: 'UPDATE_OPTION_TOURNOI',
       value: ['avecTerrains', this.state.avecTerrains],
