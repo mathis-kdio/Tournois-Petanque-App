@@ -119,12 +119,13 @@ class InscriptionsSansNoms extends React.Component<Props, State> {
       } else if (nbJoueurs % 4 !== 0) {
         choixComplement = true;
       }
-    } else if (
-      optionsTournoi.typeEquipes === TypeEquipes.TRIPLETTE &&
-      (nbJoueurs % 6 !== 0 || nbJoueurs < 6)
-    ) {
-      title = t('triplette_multiple_6');
-      btnDisabled = true;
+    } else if (optionsTournoi.typeEquipes === TypeEquipes.TRIPLETTE) {
+      if (nbJoueurs < 6) {
+        title = t('joueurs_insuffisants');
+        btnDisabled = true;
+      } else if (nbJoueurs % 6 !== 0) {
+        choixComplement = true;
+      }
     }
 
     return (

@@ -128,7 +128,6 @@
     "nombre_joueurs_enfants": "Nombre de joueurs enfants",
     "joueurs_enfants_explication": "Les joueurs enfants sont des joueurs qui ne peuvent pas jouer dans la même équipe",
     "commencer_tournoi": "Commencer le tournoi",
-    "triplette_multiple_6": "En triplette, le nombre de joueurs doit être un multiple de 6",
     "equipes_trop_joueurs": "Des équipes ont trop de joueurs",
     "joueurs_insuffisants": "Pas assez de joueurs",
     "nombre_equipe_multiple_2": "Le nombre d'equipe doit être un multiple de 2",
