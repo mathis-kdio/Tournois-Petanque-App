@@ -59,7 +59,7 @@ class MatchItem extends React.Component<Props, State> {
 
   _displayEquipe(equipe: number, match: Match) {
     let nomsJoueurs = [];
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 4; i++) {
       nomsJoueurs.push(this._displayName(match.equipe[equipe - 1][i], equipe));
     }
     return nomsJoueurs;
