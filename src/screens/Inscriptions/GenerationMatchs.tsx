@@ -201,6 +201,7 @@ class GenerationMatchs extends React.Component<Props, State> {
         } = generationTriplettes(
           this.props.listesJoueurs[this.typeInscription],
           this.nbTours,
+          this.complement,
         ));
       } else {
         echecGeneration = true;
