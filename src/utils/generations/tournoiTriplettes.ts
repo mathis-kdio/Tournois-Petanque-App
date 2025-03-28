@@ -1,22 +1,38 @@
 import { JoueurType } from '@/types/enums/joueurType';
-import { shuffle, uniqueValueArrayRandOrder } from './generation';
+import {
+  calcNbMatchsParTour,
+  shuffle,
+  uniqueValueArrayRandOrder,
+} from './generation';
 import { Joueur } from '@/types/interfaces/joueur';
+import { TypeEquipes } from '@/types/enums/typeEquipes';
+import { ModeTournoi } from '@/types/enums/modeTournoi';
+import { TypeTournoi } from '@/types/enums/typeTournoi';
+import { Complement } from '@/types/enums/complement';
+import { Match } from '@/types/interfaces/match';
 
 export const generationTriplettes = (
   listeJoueurs: Joueur[],
   nbTours: number,
+  complement: Complement,
 ) => {
   let nbjoueurs = listeJoueurs.length;
   let speciauxIncompatibles = true;
   let jamaisMemeCoequipier = true;
-  let matchs = [];
+  let matchs: Match[] = [];
   let idMatch = 0;
   let joueursSpe = [];
   let joueursNonSpe = [];
   let joueurs = [];
 
   //Initialisation des matchs dans un tableau
-  let nbMatchsParTour = Math.ceil(nbjoueurs / 6);
+  let nbMatchsParTour = calcNbMatchsParTour(
+    nbjoueurs,
+    TypeEquipes.TRIPLETTE,
+    ModeTournoi.AVECNOMS,
+    TypeTournoi.MELEDEMELE,
+    complement,
+  );
   let nbMatchs = nbTours * nbMatchsParTour;
   idMatch = 0;
   for (let i = 1; i < nbTours + 1; i++) {
@@ -25,11 +41,13 @@ export const generationTriplettes = (
         id: idMatch,
         manche: i,
         equipe: [
-          [-1, -1, -1],
-          [-1, -1, -1],
+          [-1, -1, -1, -1],
+          [-1, -1, -1, -1],
         ],
         score1: undefined,
         score2: undefined,
+        mancheName: undefined,
+        terrain: undefined,
       });
       idMatch++;
     }
@@ -49,23 +67,6 @@ export const generationTriplettes = (
     joueurs[i].equipe = [];
   }
   let nbJoueursSpe = joueursSpe.length;
-
-  /* EN TRIPLETTE A VOIR SI PARTIES AUSSI EN DOUBLETTES SI PAS ASSEZ DE JOUEURS ?
-  //Test si le nombre de joueurs est un multiple de 2 (test lors de l'inscription) mais pas de 4
-  //Si c'est le cas il faut donc ajouter 2 joueurs (joueur 1 et joueur 3) au dernier match de chaque tour
-  if (nbjoueurs % 4 != 0) {
-    joueurs.push({name: "Complément 1", type: JoueurType.ENFANT, id: (nbjoueurs + 1)})
-    joueurs[nbjoueurs].equipe = []
-    joueurs.push({name: "Complément 2", type: JoueurType.ENFANT, id: (nbjoueurs + 2)})
-    joueurs[nbjoueurs + 1].equipe = []
-    nbJoueursSpe++
-    
-    for (let i = 1; i < nbTours + 1; i++) {
-      matchs[nbMatchsParTour * i - 1].equipe[0][0] = nbjoueurs + 1
-      matchs[nbMatchsParTour * i - 1].equipe[1][0] = nbjoueurs + 2
-    }
-  }
-  */
 
   //Assignation des joueurs enfants
   if (speciauxIncompatibles === true) {
@@ -96,6 +97,67 @@ export const generationTriplettes = (
     joueursNonSpe.splice(0, joueursNonSpe.length);
     for (let i = 0; i < nbjoueurs; i++) {
       joueursNonSpe.push({ ...listeJoueurs[i] });
+    }
+  }
+
+  if (complement !== undefined) {
+    const complementIds = [];
+    let complementCount = 0;
+
+    switch (complement) {
+      case Complement.QUATREVSTROIS:
+        complementCount = 1;
+        break;
+      case Complement.TETEATETE:
+        complementCount = 4;
+        break;
+      case Complement.DEUXVSUN:
+        complementCount = 3;
+        break;
+      case Complement.DOUBLETTES:
+        complementCount = 2;
+        break;
+      case Complement.TROISVSDEUX:
+        complementCount = 1;
+        break;
+    }
+
+    for (let i = 0; i < complementCount; i++) {
+      const id = nbjoueurs + i;
+      joueurs.push({
+        name: 'Complement',
+        type: JoueurType.ENFANT,
+        id: id,
+        equipe: [],
+      });
+      complementIds.push(id);
+    }
+
+    for (let i = 1; i < nbTours + 1; i++) {
+      const matchIndex = nbMatchsParTour * i - 1;
+      switch (complement) {
+        case Complement.QUATREVSTROIS:
+          matchs[matchIndex].equipe[1][3] = complementIds[0];
+          break;
+        case Complement.TETEATETE:
+          matchs[matchIndex].equipe[0][0] = complementIds[0];
+          matchs[matchIndex].equipe[0][1] = complementIds[1];
+          matchs[matchIndex].equipe[1][0] = complementIds[2];
+          matchs[matchIndex].equipe[1][1] = complementIds[3];
+          break;
+        case Complement.DEUXVSUN:
+          matchs[matchIndex].equipe[0][0] = complementIds[0];
+          matchs[matchIndex].equipe[1][0] = complementIds[1];
+          matchs[matchIndex].equipe[1][1] = complementIds[2];
+          break;
+        case Complement.DOUBLETTES:
+          matchs[matchIndex].equipe[0][0] = complementIds[0];
+          matchs[matchIndex].equipe[1][0] = complementIds[1];
+          break;
+        case Complement.TROISVSDEUX:
+          matchs[matchIndex].equipe[1][0] = complementIds[0];
+          break;
+      }
     }
   }
 
@@ -259,6 +321,20 @@ export const generationTriplettes = (
         }
       } else {
         breaker++;
+      }
+
+      //Affectation du joueur complémentaire au dernier match du tour si complément QUATREVSTROIS
+      if (random[j] !== undefined && (idMatch + 1) % nbMatchsParTour === 0) {
+        if (
+          complement === Complement.QUATREVSTROIS &&
+          matchs[idMatch].equipe[0][3] === -1
+        ) {
+          matchs[idMatch].equipe[0][3] = random[j];
+          j++;
+          breaker = 0;
+        } else {
+          breaker++;
+        }
       }
 
       idMatch++;

@@ -83,7 +83,7 @@ class Accueil extends React.Component<Props, State> {
         return (
           <CardButton
             text={t('reprendre_tournoi')}
-            icon="play"
+            icons={['play']}
             navigate={() => this._showMatchs()}
             newBadge={false}
           />
@@ -144,7 +144,7 @@ class Accueil extends React.Component<Props, State> {
                 <HStack>
                   <CardButton
                     text={t('nouveau_tournoi')}
-                    icon="plus"
+                    icons={['plus']}
                     navigate={() => this._navigate('InscriptionStack')}
                     newBadge={false}
                   />
@@ -152,13 +152,13 @@ class Accueil extends React.Component<Props, State> {
                 <HStack space="sm">
                   <CardButton
                     text={t('mes_anciens_tournois')}
-                    icon="list"
+                    icons={['list']}
                     navigate={() => this._navigate('ListeTournois')}
                     newBadge={false}
                   />
                   <CardButton
                     text={t('mes_listes_joueurs')}
-                    icon="users"
+                    icons={['users']}
                     navigate={() => this._navigate('ListesJoueurs')}
                     newBadge={false}
                   />

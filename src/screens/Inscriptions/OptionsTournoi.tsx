@@ -7,20 +7,7 @@ import {
   SliderFilledTrack,
   SliderThumb,
 } from '@/components/ui/slider';
-import { CheckIcon, ChevronDownIcon } from '@/components/ui/icon';
-
-import {
-  Select,
-  SelectItem,
-  SelectTrigger,
-  SelectInput,
-  SelectIcon,
-  SelectPortal,
-  SelectBackdrop,
-  SelectContent,
-  SelectDragIndicatorWrapper,
-  SelectDragIndicator,
-} from '@/components/ui/select';
+import { CheckIcon } from '@/components/ui/icon';
 
 import { Input, InputField } from '@/components/ui/input';
 import { Text } from '@/components/ui/text';
@@ -39,7 +26,6 @@ import { withTranslation } from 'react-i18next';
 import { Platform } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
-import { Complement } from '@/types/enums/complement';
 import { PropsFromRedux, connector } from '@/store/connector';
 import { RouteProp } from '@react-navigation/native';
 import { InscriptionStackParamList } from '@/navigation/Navigation';
@@ -54,7 +40,6 @@ interface State {
   speciauxIncompatibles: boolean;
   memesEquipes: boolean;
   memesAdversaires: number;
-  complement: Complement;
   nbTours: number;
   nbPtVictoire: number;
   avecTerrains: boolean;
@@ -70,7 +55,6 @@ class OptionsTournoi extends React.Component<Props, State> {
       speciauxIncompatibles: true,
       memesEquipes: true,
       memesAdversaires: 50,
-      complement: Complement.TRIPLETTE,
       nbTours: 5,
       nbPtVictoire: 13,
       avecTerrains: false,
@@ -121,7 +105,7 @@ class OptionsTournoi extends React.Component<Props, State> {
     this.props.dispatch(updateOptionMemesAdversaires);
     const updateOptionComplement = {
       type: 'UPDATE_OPTION_TOURNOI',
-      value: ['complement', this.state.complement],
+      value: ['complement', undefined],
     };
     this.props.dispatch(updateOptionComplement);
     const updateOptionAvecTerrains = {
@@ -280,52 +264,6 @@ class OptionsTournoi extends React.Component<Props, State> {
                       {t('pourcent_matchs', { pourcent: '50' })}
                     </Text>
                   </HStack>
-                </VStack>
-                <VStack>
-                  <Text className="text-white text-md">
-                    {t('options_regle_complement')}
-                  </Text>
-                  <Select
-                    selectedValue={this.state.complement}
-                    defaultValue={Complement.TRIPLETTE}
-                    initialLabel={t('triplettes')}
-                    aria-label={t('choix_complement')}
-                    placeholder={t('choix_complement')}
-                    onValueChange={(itemValue: Complement) =>
-                      this.setState({ complement: itemValue })
-                    }
-                  >
-                    <SelectTrigger
-                      variant="outline"
-                      size="md"
-                      className="border-white"
-                    >
-                      <SelectInput
-                        className="flex-1 text-white placeholder:text-white"
-                        placeholder={t('choix_complement')}
-                      />
-                      <SelectIcon
-                        className="mr-3 text-white"
-                        as={ChevronDownIcon}
-                      />
-                    </SelectTrigger>
-                    <SelectPortal>
-                      <SelectBackdrop />
-                      <SelectContent>
-                        <SelectDragIndicatorWrapper>
-                          <SelectDragIndicator />
-                        </SelectDragIndicatorWrapper>
-                        <SelectItem
-                          label={t('triplettes')}
-                          value={Complement.TRIPLETTE}
-                        />
-                        <SelectItem
-                          label={t('tete_a_tete')}
-                          value={Complement.TETEATETE}
-                        />
-                      </SelectContent>
-                    </SelectPortal>
-                  </Select>
                 </VStack>
                 <VStack>
                   <Checkbox

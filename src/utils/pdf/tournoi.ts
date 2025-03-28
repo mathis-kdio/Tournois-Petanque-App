@@ -35,7 +35,9 @@ export const generationPDFTournoi = (
 
     for (let i = 0; i < nbMatchsParTour; i++) {
       let matchNbJoueur = 1;
-      if (listeMatchs[i].equipe[0][2] !== -1) {
+      if (listeMatchs[i].equipe[0][3] !== -1) {
+        matchNbJoueur = 4;
+      } else if (listeMatchs[i].equipe[0][2] !== -1) {
         matchNbJoueur = 3;
       } else if (listeMatchs[i].equipe[0][1] !== -1) {
         matchNbJoueur = 2;
@@ -55,7 +57,9 @@ export const generationPDFTournoi = (
           html += '<td class="no-border-bottom no-border-top">';
           if (listeMatchs[matchId].equipe[0][jidx] !== -1) {
             let joueur = listeJoueurs[listeMatchs[matchId].equipe[0][jidx]];
-            if (joueur.name === undefined) {
+            if (joueur === undefined) {
+              html += '';
+            } else if (joueur.name === undefined) {
               html += 'Sans Nom (' + (joueur.id + 1) + ')';
             } else if (joueur.name === '') {
               html += 'Joueur ' + (joueur.id + 1);
@@ -97,7 +101,9 @@ export const generationPDFTournoi = (
           html += '<td class="text-right no-border-bottom no-border-top">';
           if (listeMatchs[matchId].equipe[1][jidx] !== -1) {
             let joueur = listeJoueurs[listeMatchs[matchId].equipe[1][jidx]];
-            if (joueur.name === undefined) {
+            if (joueur === undefined) {
+              html += '';
+            } else if (joueur.name === undefined) {
               html += 'Sans Nom (' + (joueur.id + 1) + ')';
             } else if (joueur.name === '') {
               html += 'Joueur ' + (joueur.id + 1);

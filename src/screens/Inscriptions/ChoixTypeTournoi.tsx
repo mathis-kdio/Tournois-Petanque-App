@@ -115,7 +115,7 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
             <VStack className="flex-1">
               <CardButton
                 text={t('type_melee_demelee')}
-                icon="random"
+                icons={['random']}
                 navigate={() => this._navigate(TypeTournoi.MELEDEMELE)}
                 newBadge={false}
               />
@@ -135,7 +135,7 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
             <VStack className="flex-1">
               <CardButton
                 text={t('type_championnat')}
-                icon="table"
+                icons={['table']}
                 navigate={() => this._navigate(TypeTournoi.CHAMPIONNAT)}
                 newBadge={false}
               />
@@ -155,7 +155,7 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
             <VStack className="flex-1">
               <CardButton
                 text={t('type_coupe')}
-                icon="trophy"
+                icons={['trophy']}
                 navigate={() => this._navigate(TypeTournoi.COUPE)}
                 newBadge={false}
               />
@@ -175,7 +175,7 @@ class ChoixTypeTournoi extends React.Component<Props, State> {
             <VStack className="flex-1">
               <CardButton
                 text={t('type_multi_chances')}
-                icon="code-branch"
+                icons={['code-branch']}
                 navigate={() => this._navigate(TypeTournoi.MULTICHANCES)}
                 newBadge={false}
               />
