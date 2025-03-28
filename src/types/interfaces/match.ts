@@ -5,7 +5,7 @@ export interface Match {
   score1: number | undefined;
   score2: number | undefined;
   manche: number;
-  mancheName: string;
-  equipe: [[number, number, number], [number, number, number]];
-  terrain: Terrain;
+  mancheName: string | undefined;
+  equipe: [[number, number, number, number], [number, number, number, number]];
+  terrain: Terrain | undefined;
 }

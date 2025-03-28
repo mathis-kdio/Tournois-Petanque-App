@@ -28,49 +28,62 @@ export const calcNbMatchsParTour = (
   modeTournoi: ModeTournoi,
   typeTournoi: TypeTournoi,
   complement: Complement,
-) => {
-  let nbMatchsParTour = undefined;
-
+): number | undefined => {
   if (
     modeTournoi === ModeTournoi.AVECEQUIPES ||
     typeTournoi === TypeTournoi.CHAMPIONNAT
   ) {
     if (typeEquipes === TypeEquipes.TETEATETE) {
-      nbMatchsParTour = nbjoueurs / 2;
+      return nbjoueurs / 2;
     } else if (typeEquipes === TypeEquipes.DOUBLETTE) {
-      nbMatchsParTour = Math.ceil(nbjoueurs / 4);
+      return Math.ceil(nbjoueurs / 4);
     } else if (typeEquipes === TypeEquipes.TRIPLETTE) {
-      nbMatchsParTour = Math.ceil(nbjoueurs / 6);
+      return Math.ceil(nbjoueurs / 6);
     } else {
-      console.log(
-        'calcNbMatchsParTour : typeEquipes inconnu pour avecEquipes/championnat',
-      );
+      throw new Error('Type équipes non géré pour avecEquipes/championnat');
     }
   } else if (typeTournoi === TypeTournoi.MELEDEMELE) {
     if (typeEquipes === TypeEquipes.TETEATETE) {
-      nbMatchsParTour = nbjoueurs / 2;
+      return nbjoueurs / 2;
     } else if (typeEquipes === TypeEquipes.DOUBLETTE) {
-      if (complement === Complement.TETEATETE) {
-        nbMatchsParTour = Math.ceil(nbjoueurs / 4);
-      } else if (complement === Complement.TRIPLETTE) {
-        nbMatchsParTour = Math.floor(nbjoueurs / 4);
+      if (
+        complement === Complement.TETEATETE ||
+        complement === Complement.DEUXVSUN
+      ) {
+        return Math.ceil(nbjoueurs / 4);
+      } else if (
+        complement === Complement.TRIPLETTE ||
+        complement === Complement.TROISVSDEUX
+      ) {
+        return Math.floor(nbjoueurs / 4);
+      } else if (complement === undefined) {
+        return nbjoueurs / 4;
       } else {
-        console.log(
-          'calcNbMatchsParTour : complement inconnu pour mele-demele',
-        );
+        throw new Error('Complement non géré pour mele-demele doublette');
       }
     } else if (typeEquipes === TypeEquipes.TRIPLETTE) {
-      nbMatchsParTour = Math.ceil(nbjoueurs / 6);
+      if (complement === Complement.QUATREVSTROIS) {
+        return Math.floor(nbjoueurs / 6);
+      } else if (
+        complement === Complement.TETEATETE ||
+        complement === Complement.DEUXVSUN ||
+        complement === Complement.DOUBLETTES ||
+        complement === Complement.TROISVSDEUX
+      ) {
+        return Math.ceil(nbjoueurs / 6);
+      } else if (complement === undefined) {
+        return nbjoueurs / 6;
+      } else {
+        throw new Error('Complement non géré pour mele-demele triplette');
+      }
     } else {
-      console.log('calcNbMatchsParTour : typeEquipes inconnu pour mele-demele');
+      throw new Error('Type équipes non géré pour mele-demele');
     }
   } else if (typeTournoi === TypeTournoi.COUPE) {
-    console.log('calcNbMatchsParTour: coupe non prise en charge');
+    throw new Error('Type tournoi coupe non prise en charge');
   } else {
-    console.log('calcNbMatchsParTour: type de tournoi inconnu');
+    throw new Error('Type tournoi non géré');
   }
-
-  return nbMatchsParTour;
 };
 
 export const shuffle = (array: number[]) => {
