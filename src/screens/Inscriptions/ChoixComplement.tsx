@@ -20,9 +20,6 @@ export interface Props extends PropsFromRedux {
 
 interface State {
   options: Complement[];
-  complementTeteATeteDispo: boolean;
-  complementTripletteDispo: boolean;
-  complement2vs1Dispo: boolean;
 }
 
 class ChoixComplement extends React.Component<Props, State> {
@@ -30,14 +27,11 @@ class ChoixComplement extends React.Component<Props, State> {
     super(props);
     this.state = {
       options: [],
-      complementTeteATeteDispo: false,
-      complementTripletteDispo: false,
-      complement2vs1Dispo: false,
     };
   }
 
   componentDidMount(): void {
-    this.prepareComplement();
+    this.prepareComplements();
   }
 
   _navigate(complement: Complement) {
@@ -47,10 +41,8 @@ class ChoixComplement extends React.Component<Props, State> {
     };
     this.props.dispatch(updateOptionComplement);
 
-    let screenName = 'GenerationMatchs';
-    if (this.props.optionsTournoi.avecTerrains) {
-      screenName = 'ListeTerrains';
-    }
+    const { avecTerrains } = this.props.optionsTournoi;
+    let screenName = avecTerrains ? 'ListeTerrains' : 'GenerationMatchs';
     this.props.navigation.navigate({
       name: screenName,
       params: {
@@ -59,7 +51,7 @@ class ChoixComplement extends React.Component<Props, State> {
     });
   }
 
-  prepareComplement() {
+  prepareComplements() {
     const { typeEquipes } = this.props.optionsTournoi;
     let options: Complement[] = [];
     switch (typeEquipes) {
