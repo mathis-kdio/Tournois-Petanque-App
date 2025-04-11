@@ -312,14 +312,12 @@ export const generationTriplettes = (
   }
 
   function affectationE1(tour: number, joueur: number, place: number): boolean {
-    // Empêche qu'un joueur joue plusieurs fois dans la même équipe avec les mêmes coéquipiers
-    // Ne s'applique qu'à partir du tour 2
     if (jamaisMemeCoequipier && tour > 0) {
       const coequipiers = matchs[idMatch].equipe[0].slice(0, place);
+      const maxOccurrences = Math.ceil(nbTours / 3);
       return coequipiers.every(
         (coequipier) =>
-          countOccuEquipe(joueurs[joueur].equipe, coequipier) <
-          Math.ceil(nbTours / 3),
+          countOccuEquipe(joueurs[joueur].equipe, coequipier) < maxOccurrences,
       );
     }
     return true;
@@ -330,14 +328,12 @@ export const generationTriplettes = (
   }
 
   function affectationE2(tour: number, joueur: number, place: number): boolean {
-    // Empêche qu'un joueur joue plusieurs fois dans la même équipe avec les mêmes coéquipiers
-    // Ne s'applique qu'à partir du tour 2
     if (jamaisMemeCoequipier && tour > 0) {
       const coequipiers = matchs[idMatch].equipe[1].slice(0, place);
+      const maxOccurrences = Math.ceil(nbTours / 3);
       return coequipiers.every(
         (coequipier) =>
-          countOccuEquipe(joueurs[joueur].equipe, coequipier) <
-          Math.ceil(nbTours / 3),
+          countOccuEquipe(joueurs[joueur].equipe, coequipier) < maxOccurrences,
       );
     }
     return true;
