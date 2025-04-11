@@ -209,12 +209,12 @@ export const generationTriplettes = (
       }
       //Affectation J2 E1
       else if (matchs[idMatch].equipe[0][1] === -1) {
-        let affectationPossible = affectationE1J2(i, random[j]);
+        let affectationPossible = affectationE1(i, random[j], 1);
         affectation(affectationPossible, random[j], j, 0, 1);
       }
       //Affectation J3 E1
       else if (matchs[idMatch].equipe[0][2] === -1) {
-        let affectationPossible = affectationE1J3(i, random[j]);
+        let affectationPossible = affectationE1(i, random[j], 2);
         affectation(affectationPossible, random[j], j, 0, 2);
       }
       //Affectation J1 E2
@@ -224,12 +224,12 @@ export const generationTriplettes = (
       }
       //Affectation J2 E2
       else if (matchs[idMatch].equipe[1][1] === -1) {
-        let affectationPossible = affectationE2J2(i, random[j]);
+        let affectationPossible = affectationE2(i, random[j], 1);
         affectation(affectationPossible, random[j], j, 1, 1);
       }
       //Affectation J3 E2
       else if (matchs[idMatch].equipe[1][2] === -1) {
-        let affectationPossible = affectationE2J3(i, random[j]);
+        let affectationPossible = affectationE2(i, random[j], 2);
         affectation(affectationPossible, random[j], j, 1, 2);
       } else {
         breaker++;
@@ -311,28 +311,11 @@ export const generationTriplettes = (
     return true;
   }
 
-  function affectationE1J2(i: number, joueur: number): boolean {
-    // Empêche que le J1 E1 joue plusieurs fois dans la même équipe avec le même joueur
-    // Ne s'applique qu'à partir de la manche 2
-    if (jamaisMemeCoequipier && i > 0) {
-      const coequipier = matchs[idMatch].equipe[0][0];
-      const coequipierCount = countOccuEquipe(
-        joueurs[joueur].equipe,
-        coequipier,
-      );
-      return coequipierCount < Math.ceil(nbTours / 3);
-    }
-    return true;
-  }
-
-  function affectationE1J3(i: number, joueur: number) {
-    // Empêche que le J1 E1 ou le J2 E1 joue plusieurs fois dans la même équipe avec le même joueur
-    // Ne s'applique qu'à partir de la manche 2
-    if (jamaisMemeCoequipier && i > 0) {
-      const coequipiers = [
-        matchs[idMatch].equipe[0][0],
-        matchs[idMatch].equipe[0][1],
-      ];
+  function affectationE1(tour: number, joueur: number, place: number): boolean {
+    // Empêche qu'un joueur joue plusieurs fois dans la même équipe avec les mêmes coéquipiers
+    // Ne s'applique qu'à partir du tour 2
+    if (jamaisMemeCoequipier && tour > 0) {
+      const coequipiers = matchs[idMatch].equipe[0].slice(0, place);
       return coequipiers.every(
         (coequipier) =>
           countOccuEquipe(joueurs[joueur].equipe, coequipier) <
@@ -346,40 +329,18 @@ export const generationTriplettes = (
     return true;
   }
 
-  function affectationE2J2(i: number, joueur: number) {
-    //Empeche que le J1 E2 joue plusieurs fois dans la même équipe avec le même joueur
-    //Ne s'applique qu'à partir de la manche 2
-    if (jamaisMemeCoequipier === true && i > 0) {
-      if (
-        countOccuEquipe(joueurs[joueur].equipe, matchs[idMatch].equipe[1][0]) <
-        nbTours / 3
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return true;
+  function affectationE2(tour: number, joueur: number, place: number): boolean {
+    // Empêche qu'un joueur joue plusieurs fois dans la même équipe avec les mêmes coéquipiers
+    // Ne s'applique qu'à partir du tour 2
+    if (jamaisMemeCoequipier && tour > 0) {
+      const coequipiers = matchs[idMatch].equipe[1].slice(0, place);
+      return coequipiers.every(
+        (coequipier) =>
+          countOccuEquipe(joueurs[joueur].equipe, coequipier) <
+          Math.ceil(nbTours / 3),
+      );
     }
-  }
-
-  function affectationE2J3(i: number, joueur: number) {
-    //Empeche que le J1 E2 ou J2 E2 joue plusieurs fois dans la même équipe avec le même joueur
-    //Ne s'applique qu'à partir de la manche 2
-    if (jamaisMemeCoequipier === true && i > 0) {
-      if (
-        countOccuEquipe(joueurs[joueur].equipe, matchs[idMatch].equipe[1][0]) <
-          nbTours / 3 &&
-        countOccuEquipe(joueurs[joueur].equipe, matchs[idMatch].equipe[1][1]) <
-          nbTours / 3
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return true;
-    }
+    return true;
   }
 
   function affectation(
