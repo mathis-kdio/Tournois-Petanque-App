@@ -315,11 +315,12 @@ class ListeJoueurItem extends React.Component<Props, State> {
 
   _joueurTypeIcon(joueurType: string) {
     const { mode, typeTournoi, typeEquipes } = this.props.optionsTournoi;
-    if (
+    let showTireurPointeur =
       mode === ModeTournoi.SAUVEGARDE ||
       (typeTournoi === TypeTournoi.MELEDEMELE &&
-        typeEquipes === TypeEquipes.DOUBLETTE)
-    ) {
+        (typeEquipes === TypeEquipes.DOUBLETTE ||
+          typeEquipes === TypeEquipes.TRIPLETTE));
+    if (showTireurPointeur) {
       return (
         <Box>
           {joueurType === JoueurType.ENFANT && (
