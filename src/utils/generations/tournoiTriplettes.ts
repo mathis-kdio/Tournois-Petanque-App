@@ -35,11 +35,11 @@ export const generationTriplettes = (
   );
   let nbMatchs = nbTours * nbMatchsParTour;
   idMatch = 0;
-  for (let i = 1; i < nbTours + 1; i++) {
+  for (let tour = 1; tour < nbTours + 1; tour++) {
     for (let j = 0; j < nbMatchsParTour; j++) {
       matchs.push({
         id: idMatch,
-        manche: i,
+        manche: tour,
         equipe: [
           [-1, -1, -1, -1],
           [-1, -1, -1, -1],
@@ -225,7 +225,9 @@ export const generationTriplettes = (
             matchs[idMatch].equipe[equipe],
           );
           if (affectationPossible) {
-            affectation(joueur, j, equipe, place, matchs[idMatch], breaker);
+            matchs[idMatch].equipe[equipe][place] = joueur;
+            breaker = 0;
+            j++;
             assigned = true;
             break;
           } else {
@@ -244,7 +246,9 @@ export const generationTriplettes = (
           complement === Complement.QUATREVSTROIS &&
           matchs[idMatch].equipe[0][3] === -1;
         if (affectationPossible) {
-          affectation(joueur, j, 0, 3, matchs[idMatch], breaker);
+          matchs[idMatch].equipe[0][3] = joueur;
+          breaker = 0;
+          j++;
         } else {
           breaker++;
         }
@@ -315,17 +319,4 @@ function affectationEquipe(
     (coequipier) =>
       countOccuEquipe(joueurs[joueur].equipe, coequipier) < maxOccurrences,
   );
-}
-
-function affectation(
-  joueur: number,
-  j: number,
-  equipe: number,
-  place: number,
-  match: Match,
-  breaker: number,
-) {
-  match.equipe[equipe][place] = joueur;
-  breaker = 0;
-  j++;
 }
