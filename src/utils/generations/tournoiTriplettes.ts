@@ -204,32 +204,80 @@ export const generationTriplettes = (
     for (let j = 0; j < joueursNonSpe.length; ) {
       //Affectation J1 E1
       if (matchs[idMatch].equipe[0][0] === -1) {
-        let affectationPossible = affectationEquipe(i, random[j], 0, 0);
+        let affectationPossible = affectationEquipe(
+          i,
+          random[j],
+          0,
+          jamaisMemeCoequipier,
+          nbTours,
+          joueurs,
+          matchs[idMatch].equipe[0],
+        );
         affectation(affectationPossible, random[j], j, 0, 0);
       }
       //Affectation J2 E1
       else if (matchs[idMatch].equipe[0][1] === -1) {
-        let affectationPossible = affectationEquipe(i, random[j], 1, 0);
+        let affectationPossible = affectationEquipe(
+          i,
+          random[j],
+          1,
+          jamaisMemeCoequipier,
+          nbTours,
+          joueurs,
+          matchs[idMatch].equipe[0],
+        );
         affectation(affectationPossible, random[j], j, 0, 1);
       }
       //Affectation J3 E1
       else if (matchs[idMatch].equipe[0][2] === -1) {
-        let affectationPossible = affectationEquipe(i, random[j], 2, 0);
+        let affectationPossible = affectationEquipe(
+          i,
+          random[j],
+          2,
+          jamaisMemeCoequipier,
+          nbTours,
+          joueurs,
+          matchs[idMatch].equipe[0],
+        );
         affectation(affectationPossible, random[j], j, 0, 2);
       }
       //Affectation J1 E2
       if (matchs[idMatch].equipe[1][0] === -1) {
-        let affectationPossible = affectationEquipe(i, random[j], 0, 1);
+        let affectationPossible = affectationEquipe(
+          i,
+          random[j],
+          0,
+          jamaisMemeCoequipier,
+          nbTours,
+          joueurs,
+          matchs[idMatch].equipe[1],
+        );
         affectation(affectationPossible, random[j], j, 1, 0);
       }
       //Affectation J2 E2
       else if (matchs[idMatch].equipe[1][1] === -1) {
-        let affectationPossible = affectationEquipe(i, random[j], 1, 1);
+        let affectationPossible = affectationEquipe(
+          i,
+          random[j],
+          1,
+          jamaisMemeCoequipier,
+          nbTours,
+          joueurs,
+          matchs[idMatch].equipe[1],
+        );
         affectation(affectationPossible, random[j], j, 1, 1);
       }
       //Affectation J3 E2
       else if (matchs[idMatch].equipe[1][2] === -1) {
-        let affectationPossible = affectationEquipe(i, random[j], 2, 1);
+        let affectationPossible = affectationEquipe(
+          i,
+          random[j],
+          2,
+          jamaisMemeCoequipier,
+          nbTours,
+          joueurs,
+          matchs[idMatch].equipe[1],
+        );
         affectation(affectationPossible, random[j], j, 1, 2);
       } else {
         breaker++;
@@ -311,13 +359,15 @@ export const generationTriplettes = (
     tour: number,
     joueur: number,
     place: number,
-    equipe: number,
+    jamaisMemeCoequipier: boolean,
+    nbTours: number,
+    joueurs: Joueur[],
+    currentEquipe: [number, number, number, number],
   ): boolean {
     if (!jamaisMemeCoequipier || tour === 0) {
       return true;
     }
-
-    const coequipiers = matchs[idMatch].equipe[equipe].slice(0, place);
+    const coequipiers = currentEquipe.slice(0, place);
     const maxOccurrences = Math.ceil(nbTours / 3);
 
     return coequipiers.every(
