@@ -204,32 +204,32 @@ export const generationTriplettes = (
     for (let j = 0; j < joueursNonSpe.length; ) {
       //Affectation J1 E1
       if (matchs[idMatch].equipe[0][0] === -1) {
-        let affectationPossible = affectationE1(i, random[j], 0);
+        let affectationPossible = affectationEquipe(i, random[j], 0, 0);
         affectation(affectationPossible, random[j], j, 0, 0);
       }
       //Affectation J2 E1
       else if (matchs[idMatch].equipe[0][1] === -1) {
-        let affectationPossible = affectationE1(i, random[j], 1);
+        let affectationPossible = affectationEquipe(i, random[j], 1, 0);
         affectation(affectationPossible, random[j], j, 0, 1);
       }
       //Affectation J3 E1
       else if (matchs[idMatch].equipe[0][2] === -1) {
-        let affectationPossible = affectationE1(i, random[j], 2);
+        let affectationPossible = affectationEquipe(i, random[j], 2, 0);
         affectation(affectationPossible, random[j], j, 0, 2);
       }
       //Affectation J1 E2
       if (matchs[idMatch].equipe[1][0] === -1) {
-        let affectationPossible = affectationE2(i, random[j], 0);
+        let affectationPossible = affectationEquipe(i, random[j], 0, 1);
         affectation(affectationPossible, random[j], j, 1, 0);
       }
       //Affectation J2 E2
       else if (matchs[idMatch].equipe[1][1] === -1) {
-        let affectationPossible = affectationE2(i, random[j], 1);
+        let affectationPossible = affectationEquipe(i, random[j], 1, 1);
         affectation(affectationPossible, random[j], j, 1, 1);
       }
       //Affectation J3 E2
       else if (matchs[idMatch].equipe[1][2] === -1) {
-        let affectationPossible = affectationE2(i, random[j], 2);
+        let affectationPossible = affectationEquipe(i, random[j], 2, 1);
         affectation(affectationPossible, random[j], j, 1, 2);
       } else {
         breaker++;
@@ -307,26 +307,17 @@ export const generationTriplettes = (
 
   return { matchs, nbMatchs };
 
-  function affectationE1(tour: number, joueur: number, place: number): boolean {
+  function affectationEquipe(
+    tour: number,
+    joueur: number,
+    place: number,
+    equipe: number,
+  ): boolean {
     if (!jamaisMemeCoequipier || tour === 0) {
       return true;
     }
 
-    const coequipiers = matchs[idMatch].equipe[0].slice(0, place);
-    const maxOccurrences = Math.ceil(nbTours / 3);
-
-    return coequipiers.every(
-      (coequipier) =>
-        countOccuEquipe(joueurs[joueur].equipe, coequipier) < maxOccurrences,
-    );
-  }
-
-  function affectationE2(tour: number, joueur: number, place: number): boolean {
-    if (!jamaisMemeCoequipier || tour === 0) {
-      return true;
-    }
-
-    const coequipiers = matchs[idMatch].equipe[1].slice(0, place);
+    const coequipiers = matchs[idMatch].equipe[equipe].slice(0, place);
     const maxOccurrences = Math.ceil(nbTours / 3);
 
     return coequipiers.every(
