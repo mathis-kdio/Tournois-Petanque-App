@@ -209,8 +209,6 @@ export const generationTriplettes = (
       }
       //Affectation J2 E1
       else if (matchs[idMatch].equipe[0][1] === -1) {
-        //Empeche que le J1 E1 joue plusieurs fois dans la même équipe avec le même joueur
-        //Ne s'applique qu'à partir de la manche 2
         let affectationPossible = affectationE1J2(i, random[j]);
         affectation(affectationPossible, random[j], j, 0, 1);
       }
@@ -313,38 +311,35 @@ export const generationTriplettes = (
     return true;
   }
 
-  function affectationE1J2(i: number, joueur: number) {
-    if (jamaisMemeCoequipier === true && i > 0) {
-      if (
-        countOccuEquipe(joueurs[joueur].equipe, matchs[idMatch].equipe[0][0]) <
-        nbTours / 3
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return true;
+  function affectationE1J2(i: number, joueur: number): boolean {
+    // Empêche que le J1 E1 joue plusieurs fois dans la même équipe avec le même joueur
+    // Ne s'applique qu'à partir de la manche 2
+    if (jamaisMemeCoequipier && i > 0) {
+      const coequipier = matchs[idMatch].equipe[0][0];
+      const coequipierCount = countOccuEquipe(
+        joueurs[joueur].equipe,
+        coequipier,
+      );
+      return coequipierCount < Math.ceil(nbTours / 3);
     }
+    return true;
   }
 
   function affectationE1J3(i: number, joueur: number) {
-    //Empeche que le J1 E1 ou le J2 E1 joue plusieurs fois dans la même équipe avec le même joueur
-    //Ne s'applique qu'à partir de la manche 2
-    if (jamaisMemeCoequipier === true && i > 0) {
-      if (
-        countOccuEquipe(joueurs[joueur].equipe, matchs[idMatch].equipe[0][0]) <
-          nbTours / 3 &&
-        countOccuEquipe(joueurs[joueur].equipe, matchs[idMatch].equipe[0][1]) <
-          nbTours / 3
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return true;
+    // Empêche que le J1 E1 ou le J2 E1 joue plusieurs fois dans la même équipe avec le même joueur
+    // Ne s'applique qu'à partir de la manche 2
+    if (jamaisMemeCoequipier && i > 0) {
+      const coequipiers = [
+        matchs[idMatch].equipe[0][0],
+        matchs[idMatch].equipe[0][1],
+      ];
+      return coequipiers.every(
+        (coequipier) =>
+          countOccuEquipe(joueurs[joueur].equipe, coequipier) <
+          Math.ceil(nbTours / 3),
+      );
     }
+    return true;
   }
 
   function affectationE2J1() {
