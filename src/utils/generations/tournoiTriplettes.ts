@@ -204,7 +204,7 @@ export const generationTriplettes = (
     for (let j = 0; j < joueursNonSpe.length; ) {
       //Affectation J1 E1
       if (matchs[idMatch].equipe[0][0] === -1) {
-        let affectationPossible = affectationE1J1();
+        let affectationPossible = affectationE1(i, random[j], 0);
         affectation(affectationPossible, random[j], j, 0, 0);
       }
       //Affectation J2 E1
@@ -219,7 +219,7 @@ export const generationTriplettes = (
       }
       //Affectation J1 E2
       if (matchs[idMatch].equipe[1][0] === -1) {
-        let affectationPossible = affectationE2J1();
+        let affectationPossible = affectationE2(i, random[j], 0);
         affectation(affectationPossible, random[j], j, 1, 0);
       }
       //Affectation J2 E2
@@ -307,10 +307,6 @@ export const generationTriplettes = (
 
   return { matchs, nbMatchs };
 
-  function affectationE1J1() {
-    return true;
-  }
-
   function affectationE1(tour: number, joueur: number, place: number): boolean {
     if (!jamaisMemeCoequipier || tour === 0) {
       return true;
@@ -323,10 +319,6 @@ export const generationTriplettes = (
       (coequipier) =>
         countOccuEquipe(joueurs[joueur].equipe, coequipier) < maxOccurrences,
     );
-  }
-
-  function affectationE2J1() {
-    return true;
   }
 
   function affectationE2(tour: number, joueur: number, place: number): boolean {
