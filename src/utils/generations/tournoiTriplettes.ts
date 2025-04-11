@@ -204,137 +204,45 @@ export const generationTriplettes = (
     for (let j = 0; j < joueursNonSpe.length; ) {
       //Affectation J1 E1
       if (matchs[idMatch].equipe[0][0] === -1) {
-        matchs[idMatch].equipe[0][0] = random[j];
-        j++;
-        breaker = 0;
+        let affectationPossible = affectationE1J1();
+        affectation(affectationPossible, random[j], j, 0, 0);
       }
       //Affectation J2 E1
       else if (matchs[idMatch].equipe[0][1] === -1) {
         //Empeche que le J1 E1 joue plusieurs fois dans la même équipe avec le même joueur
         //Ne s'applique qu'à partir de la manche 2
-        if (jamaisMemeCoequipier === true && i > 0) {
-          if (
-            countOccuEquipe(
-              joueurs[random[j]].equipe,
-              matchs[idMatch].equipe[0][0],
-            ) <
-            nbTours / 3
-          ) {
-            matchs[idMatch].equipe[0][1] = random[j];
-            j++;
-            breaker = 0;
-          } else {
-            breaker++;
-          }
-        } else {
-          matchs[idMatch].equipe[0][1] = random[j];
-          j++;
-          breaker = 0;
-        }
+        let affectationPossible = affectationE1J2(i, random[j]);
+        affectation(affectationPossible, random[j], j, 0, 1);
       }
       //Affectation J3 E1
       else if (matchs[idMatch].equipe[0][2] === -1) {
-        //Empeche que le J1 E1 ou le J2 E1 joue plusieurs fois dans la même équipe avec le même joueur
-        //Ne s'applique qu'à partir de la manche 2
-        if (jamaisMemeCoequipier === true && i > 0) {
-          if (
-            countOccuEquipe(
-              joueurs[random[j]].equipe,
-              matchs[idMatch].equipe[0][0],
-            ) <
-              nbTours / 3 &&
-            countOccuEquipe(
-              joueurs[random[j]].equipe,
-              matchs[idMatch].equipe[0][1],
-            ) <
-              nbTours / 3
-          ) {
-            matchs[idMatch].equipe[0][2] = random[j];
-            j++;
-            breaker = 0;
-          } else {
-            breaker++;
-          }
-        } else {
-          matchs[idMatch].equipe[0][2] = random[j];
-          j++;
-          breaker = 0;
-        }
+        let affectationPossible = affectationE1J3(i, random[j]);
+        affectation(affectationPossible, random[j], j, 0, 2);
       }
       //Affectation J1 E2
       if (matchs[idMatch].equipe[1][0] === -1) {
-        matchs[idMatch].equipe[1][0] = random[j];
-        j++;
-        breaker = 0;
+        let affectationPossible = affectationE2J1();
+        affectation(affectationPossible, random[j], j, 1, 0);
       }
       //Affectation J2 E2
       else if (matchs[idMatch].equipe[1][1] === -1) {
-        //Empeche que le J1 E2 joue plusieurs fois dans la même équipe avec le même joueur
-        //Ne s'applique qu'à partir de la manche 2
-        if (jamaisMemeCoequipier === true && i > 0) {
-          if (
-            countOccuEquipe(
-              joueurs[random[j]].equipe,
-              matchs[idMatch].equipe[1][0],
-            ) <
-            nbTours / 3
-          ) {
-            matchs[idMatch].equipe[1][1] = random[j];
-            j++;
-            breaker = 0;
-          } else {
-            breaker++;
-          }
-        } else {
-          matchs[idMatch].equipe[1][1] = random[j];
-          j++;
-          breaker = 0;
-        }
+        let affectationPossible = affectationE2J2(i, random[j]);
+        affectation(affectationPossible, random[j], j, 1, 1);
       }
       //Affectation J3 E2
       else if (matchs[idMatch].equipe[1][2] === -1) {
-        //Empeche que le J1 E2 ou J2 E2 joue plusieurs fois dans la même équipe avec le même joueur
-        //Ne s'applique qu'à partir de la manche 2
-        if (jamaisMemeCoequipier === true && i > 0) {
-          if (
-            countOccuEquipe(
-              joueurs[random[j]].equipe,
-              matchs[idMatch].equipe[1][0],
-            ) <
-              nbTours / 3 &&
-            countOccuEquipe(
-              joueurs[random[j]].equipe,
-              matchs[idMatch].equipe[1][1],
-            ) <
-              nbTours / 3
-          ) {
-            matchs[idMatch].equipe[1][2] = random[j];
-            j++;
-            breaker = 0;
-          } else {
-            breaker++;
-          }
-        } else {
-          matchs[idMatch].equipe[1][2] = random[j];
-          j++;
-          breaker = 0;
-        }
+        let affectationPossible = affectationE2J3(i, random[j]);
+        affectation(affectationPossible, random[j], j, 1, 2);
       } else {
         breaker++;
       }
 
       //Affectation du joueur complémentaire au dernier match du tour si complément QUATREVSTROIS
       if (random[j] !== undefined && (idMatch + 1) % nbMatchsParTour === 0) {
-        if (
+        let affectationPossible =
           complement === Complement.QUATREVSTROIS &&
-          matchs[idMatch].equipe[0][3] === -1
-        ) {
-          matchs[idMatch].equipe[0][3] = random[j];
-          j++;
-          breaker = 0;
-        } else {
-          breaker++;
-        }
+          matchs[idMatch].equipe[0][3] === -1;
+        affectation(affectationPossible, random[j], j, 0, 3);
       }
 
       idMatch++;
@@ -400,4 +308,98 @@ export const generationTriplettes = (
   }
 
   return { matchs, nbMatchs };
+
+  function affectationE1J1() {
+    return true;
+  }
+
+  function affectationE1J2(i: number, joueur: number) {
+    if (jamaisMemeCoequipier === true && i > 0) {
+      if (
+        countOccuEquipe(joueurs[joueur].equipe, matchs[idMatch].equipe[0][0]) <
+        nbTours / 3
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }
+
+  function affectationE1J3(i: number, joueur: number) {
+    //Empeche que le J1 E1 ou le J2 E1 joue plusieurs fois dans la même équipe avec le même joueur
+    //Ne s'applique qu'à partir de la manche 2
+    if (jamaisMemeCoequipier === true && i > 0) {
+      if (
+        countOccuEquipe(joueurs[joueur].equipe, matchs[idMatch].equipe[0][0]) <
+          nbTours / 3 &&
+        countOccuEquipe(joueurs[joueur].equipe, matchs[idMatch].equipe[0][1]) <
+          nbTours / 3
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }
+
+  function affectationE2J1() {
+    return true;
+  }
+
+  function affectationE2J2(i: number, joueur: number) {
+    //Empeche que le J1 E2 joue plusieurs fois dans la même équipe avec le même joueur
+    //Ne s'applique qu'à partir de la manche 2
+    if (jamaisMemeCoequipier === true && i > 0) {
+      if (
+        countOccuEquipe(joueurs[joueur].equipe, matchs[idMatch].equipe[1][0]) <
+        nbTours / 3
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }
+
+  function affectationE2J3(i: number, joueur: number) {
+    //Empeche que le J1 E2 ou J2 E2 joue plusieurs fois dans la même équipe avec le même joueur
+    //Ne s'applique qu'à partir de la manche 2
+    if (jamaisMemeCoequipier === true && i > 0) {
+      if (
+        countOccuEquipe(joueurs[joueur].equipe, matchs[idMatch].equipe[1][0]) <
+          nbTours / 3 &&
+        countOccuEquipe(joueurs[joueur].equipe, matchs[idMatch].equipe[1][1]) <
+          nbTours / 3
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }
+
+  function affectation(
+    affectationPossible: boolean,
+    joueur: number,
+    j: number,
+    equipe: number,
+    place: number,
+  ) {
+    if (affectationPossible) {
+      matchs[idMatch].equipe[equipe][place] = joueur;
+      breaker = 0;
+      return j++;
+    } else {
+      breaker++;
+    }
+  }
 };
