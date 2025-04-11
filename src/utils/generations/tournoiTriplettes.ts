@@ -194,7 +194,14 @@ export const generationTriplettes = (
   //Si impossible d'être ajouté dans le match alors tentative dans le match suivant du même tour
   //Si impossible dans aucun match du tour alors breaker rentre en action et affiche un message
 
-  const countOccuEquipe = (arr, val) => arr.filter((x) => x === val).length;
+  const equipeIndices = [
+    { equipe: 0, place: 0 },
+    { equipe: 0, place: 1 },
+    { equipe: 0, place: 2 },
+    { equipe: 1, place: 0 },
+    { equipe: 1, place: 1 },
+    { equipe: 1, place: 2 },
+  ];
 
   idMatch = 0;
   let breaker = 0; //permet de détecter quand boucle infinie
@@ -202,15 +209,6 @@ export const generationTriplettes = (
     breaker = 0;
     let random = shuffle(joueursNonSpeId);
     for (let j = 0; j < joueursNonSpe.length; ) {
-      const equipeIndices = [
-        { equipe: 0, place: 0 },
-        { equipe: 0, place: 1 },
-        { equipe: 0, place: 2 },
-        { equipe: 1, place: 0 },
-        { equipe: 1, place: 1 },
-        { equipe: 1, place: 2 },
-      ];
-
       let assigned = false;
 
       for (const { equipe, place } of equipeIndices) {
@@ -308,27 +306,6 @@ export const generationTriplettes = (
 
   return { matchs, nbMatchs };
 
-  function affectationEquipe(
-    tour: number,
-    joueur: number,
-    place: number,
-    jamaisMemeCoequipier: boolean,
-    nbTours: number,
-    joueurs: Joueur[],
-    currentEquipe: [number, number, number, number],
-  ): boolean {
-    if (!jamaisMemeCoequipier || tour === 0) {
-      return true;
-    }
-    const coequipiers = currentEquipe.slice(0, place);
-    const maxOccurrences = Math.ceil(nbTours / 3);
-
-    return coequipiers.every(
-      (coequipier) =>
-        countOccuEquipe(joueurs[joueur].equipe, coequipier) < maxOccurrences,
-    );
-  }
-
   function affectation(
     affectationPossible: boolean,
     joueur: number,
@@ -345,3 +322,28 @@ export const generationTriplettes = (
     }
   }
 };
+
+function countOccuEquipe(arr, val) {
+  return arr.filter((x) => x === val).length;
+}
+
+function affectationEquipe(
+  tour: number,
+  joueur: number,
+  place: number,
+  jamaisMemeCoequipier: boolean,
+  nbTours: number,
+  joueurs: any[],
+  currentEquipe: [number, number, number, number],
+): boolean {
+  if (!jamaisMemeCoequipier || tour === 0) {
+    return true;
+  }
+  const coequipiers = currentEquipe.slice(0, place);
+  const maxOccurrences = Math.ceil(nbTours / 3);
+
+  return coequipiers.every(
+    (coequipier) =>
+      countOccuEquipe(joueurs[joueur].equipe, coequipier) < maxOccurrences,
+  );
+}
