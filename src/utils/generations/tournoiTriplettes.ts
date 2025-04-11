@@ -312,15 +312,17 @@ export const generationTriplettes = (
   }
 
   function affectationE1(tour: number, joueur: number, place: number): boolean {
-    if (jamaisMemeCoequipier && tour > 0) {
-      const coequipiers = matchs[idMatch].equipe[0].slice(0, place);
-      const maxOccurrences = Math.ceil(nbTours / 3);
-      return coequipiers.every(
-        (coequipier) =>
-          countOccuEquipe(joueurs[joueur].equipe, coequipier) < maxOccurrences,
-      );
+    if (!jamaisMemeCoequipier || tour === 0) {
+      return true;
     }
-    return true;
+
+    const coequipiers = matchs[idMatch].equipe[0].slice(0, place);
+    const maxOccurrences = Math.ceil(nbTours / 3);
+
+    return coequipiers.every(
+      (coequipier) =>
+        countOccuEquipe(joueurs[joueur].equipe, coequipier) < maxOccurrences,
+    );
   }
 
   function affectationE2J1() {
@@ -328,15 +330,17 @@ export const generationTriplettes = (
   }
 
   function affectationE2(tour: number, joueur: number, place: number): boolean {
-    if (jamaisMemeCoequipier && tour > 0) {
-      const coequipiers = matchs[idMatch].equipe[1].slice(0, place);
-      const maxOccurrences = Math.ceil(nbTours / 3);
-      return coequipiers.every(
-        (coequipier) =>
-          countOccuEquipe(joueurs[joueur].equipe, coequipier) < maxOccurrences,
-      );
+    if (!jamaisMemeCoequipier || tour === 0) {
+      return true;
     }
-    return true;
+
+    const coequipiers = matchs[idMatch].equipe[1].slice(0, place);
+    const maxOccurrences = Math.ceil(nbTours / 3);
+
+    return coequipiers.every(
+      (coequipier) =>
+        countOccuEquipe(joueurs[joueur].equipe, coequipier) < maxOccurrences,
+    );
   }
 
   function affectation(
