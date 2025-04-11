@@ -202,84 +202,37 @@ export const generationTriplettes = (
     breaker = 0;
     let random = shuffle(joueursNonSpeId);
     for (let j = 0; j < joueursNonSpe.length; ) {
-      //Affectation J1 E1
-      if (matchs[idMatch].equipe[0][0] === -1) {
-        let affectationPossible = affectationEquipe(
-          i,
-          random[j],
-          0,
-          jamaisMemeCoequipier,
-          nbTours,
-          joueurs,
-          matchs[idMatch].equipe[0],
-        );
-        affectation(affectationPossible, random[j], j, 0, 0);
+      const equipeIndices = [
+        { equipe: 0, place: 0 },
+        { equipe: 0, place: 1 },
+        { equipe: 0, place: 2 },
+        { equipe: 1, place: 0 },
+        { equipe: 1, place: 1 },
+        { equipe: 1, place: 2 },
+      ];
+
+      let assigned = false;
+
+      for (const { equipe, place } of equipeIndices) {
+        if (matchs[idMatch].equipe[equipe][place] === -1) {
+          const affectationPossible = affectationEquipe(
+            i,
+            random[j],
+            place,
+            jamaisMemeCoequipier,
+            nbTours,
+            joueurs,
+            matchs[idMatch].equipe[equipe],
+          );
+          if (affectationPossible) {
+            affectation(true, random[j], j, equipe, place);
+            assigned = true;
+            break;
+          }
+        }
       }
-      //Affectation J2 E1
-      else if (matchs[idMatch].equipe[0][1] === -1) {
-        let affectationPossible = affectationEquipe(
-          i,
-          random[j],
-          1,
-          jamaisMemeCoequipier,
-          nbTours,
-          joueurs,
-          matchs[idMatch].equipe[0],
-        );
-        affectation(affectationPossible, random[j], j, 0, 1);
-      }
-      //Affectation J3 E1
-      else if (matchs[idMatch].equipe[0][2] === -1) {
-        let affectationPossible = affectationEquipe(
-          i,
-          random[j],
-          2,
-          jamaisMemeCoequipier,
-          nbTours,
-          joueurs,
-          matchs[idMatch].equipe[0],
-        );
-        affectation(affectationPossible, random[j], j, 0, 2);
-      }
-      //Affectation J1 E2
-      if (matchs[idMatch].equipe[1][0] === -1) {
-        let affectationPossible = affectationEquipe(
-          i,
-          random[j],
-          0,
-          jamaisMemeCoequipier,
-          nbTours,
-          joueurs,
-          matchs[idMatch].equipe[1],
-        );
-        affectation(affectationPossible, random[j], j, 1, 0);
-      }
-      //Affectation J2 E2
-      else if (matchs[idMatch].equipe[1][1] === -1) {
-        let affectationPossible = affectationEquipe(
-          i,
-          random[j],
-          1,
-          jamaisMemeCoequipier,
-          nbTours,
-          joueurs,
-          matchs[idMatch].equipe[1],
-        );
-        affectation(affectationPossible, random[j], j, 1, 1);
-      }
-      //Affectation J3 E2
-      else if (matchs[idMatch].equipe[1][2] === -1) {
-        let affectationPossible = affectationEquipe(
-          i,
-          random[j],
-          2,
-          jamaisMemeCoequipier,
-          nbTours,
-          joueurs,
-          matchs[idMatch].equipe[1],
-        );
-        affectation(affectationPossible, random[j], j, 1, 2);
-      } else {
+
+      if (!assigned) {
         breaker++;
       }
 
