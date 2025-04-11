@@ -267,47 +267,24 @@ export const generationTriplettes = (
 
     idMatch = tour * nbMatchsParTour;
     for (let j = 0; j < nbMatchsParTour; j++) {
-      joueurs[matchs[idMatch + j].equipe[0][0]].equipe.push(
-        matchs[idMatch + j].equipe[0][1],
-      );
-      joueurs[matchs[idMatch + j].equipe[0][0]].equipe.push(
-        matchs[idMatch + j].equipe[0][2],
-      );
+      let match = matchs[idMatch + j];
+      joueurs[match.equipe[0][0]].equipe.push(match.equipe[0][1]);
+      joueurs[match.equipe[0][0]].equipe.push(match.equipe[0][2]);
 
-      joueurs[matchs[idMatch + j].equipe[0][1]].equipe.push(
-        matchs[idMatch + j].equipe[0][0],
-      );
-      joueurs[matchs[idMatch + j].equipe[0][1]].equipe.push(
-        matchs[idMatch + j].equipe[0][2],
-      );
+      joueurs[match.equipe[0][1]].equipe.push(match.equipe[0][0]);
+      joueurs[match.equipe[0][1]].equipe.push(match.equipe[0][2]);
 
-      joueurs[matchs[idMatch + j].equipe[0][2]].equipe.push(
-        matchs[idMatch + j].equipe[0][0],
-      );
-      joueurs[matchs[idMatch + j].equipe[0][2]].equipe.push(
-        matchs[idMatch + j].equipe[0][1],
-      );
+      joueurs[match.equipe[0][2]].equipe.push(match.equipe[0][0]);
+      joueurs[match.equipe[0][2]].equipe.push(match.equipe[0][1]);
 
-      joueurs[matchs[idMatch + j].equipe[1][0]].equipe.push(
-        matchs[idMatch + j].equipe[1][1],
-      );
-      joueurs[matchs[idMatch + j].equipe[1][0]].equipe.push(
-        matchs[idMatch + j].equipe[1][2],
-      );
+      joueurs[match.equipe[1][0]].equipe.push(match.equipe[1][1]);
+      joueurs[match.equipe[1][0]].equipe.push(match.equipe[1][2]);
 
-      joueurs[matchs[idMatch + j].equipe[1][1]].equipe.push(
-        matchs[idMatch + j].equipe[1][0],
-      );
-      joueurs[matchs[idMatch + j].equipe[1][1]].equipe.push(
-        matchs[idMatch + j].equipe[1][2],
-      );
+      joueurs[match.equipe[1][1]].equipe.push(match.equipe[1][0]);
+      joueurs[match.equipe[1][1]].equipe.push(match.equipe[1][2]);
 
-      joueurs[matchs[idMatch + j].equipe[1][2]].equipe.push(
-        matchs[idMatch + j].equipe[1][0],
-      );
-      joueurs[matchs[idMatch + j].equipe[1][2]].equipe.push(
-        matchs[idMatch + j].equipe[1][1],
-      );
+      joueurs[match.equipe[1][2]].equipe.push(match.equipe[1][0]);
+      joueurs[match.equipe[1][2]].equipe.push(match.equipe[1][1]);
     }
     idMatch = nbMatchsParTour * (tour + 1);
   }
