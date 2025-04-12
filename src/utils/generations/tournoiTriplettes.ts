@@ -107,25 +107,8 @@ export const generationTriplettes = (
 
   if (complement !== undefined) {
     const complementIds = [];
-    let complementCount = 0;
 
-    switch (complement) {
-      case Complement.QUATREVSTROIS:
-        complementCount = 1;
-        break;
-      case Complement.TETEATETE:
-        complementCount = 4;
-        break;
-      case Complement.DEUXVSUN:
-        complementCount = 3;
-        break;
-      case Complement.DOUBLETTES:
-        complementCount = 2;
-        break;
-      case Complement.TROISVSDEUX:
-        complementCount = 1;
-        break;
-    }
+    const complementCount = getNbComplements(complement);
 
     for (let i = 0; i < complementCount; i++) {
       const id = nbjoueurs + i;
@@ -301,6 +284,20 @@ export const generationTriplettes = (
 
   return { matchs, nbMatchs };
 };
+
+function getNbComplements(complement: Complement) {
+  switch (complement) {
+    case Complement.TETEATETE:
+      return 4;
+    case Complement.DEUXVSUN:
+      return 3;
+    case Complement.DOUBLETTES:
+      return 2;
+    case Complement.QUATREVSTROIS:
+    case Complement.TROISVSDEUX:
+      return 1;
+  }
+}
 
 function countOccuEquipe(arr: number[], val: number) {
   return arr.filter((x) => x === val).length;
