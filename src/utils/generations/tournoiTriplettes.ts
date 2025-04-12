@@ -16,10 +16,10 @@ export const generationTriplettes = (
   listeJoueurs: Joueur[],
   nbTours: number,
   complement: Complement,
+  speciauxIncompatibles: boolean,
+  jamaisMemeCoequipier: boolean,
 ) => {
   let nbjoueurs = listeJoueurs.length;
-  let speciauxIncompatibles = true;
-  let jamaisMemeCoequipier = true;
   let matchs: Match[] = [];
   let idMatch = 0;
   let joueursSpe = [];
@@ -65,12 +65,14 @@ export const generationTriplettes = (
       joueursNonSpe[joueursNonSpe.length - 1].equipe = [];
     }
     joueurs.push({
-      ...listeJoueurs[i],
+      id: listeJoueurs[i].id,
+      name: listeJoueurs[i].name,
+      type: listeJoueurs[i].type,
+      isChecked: listeJoueurs[i].isChecked,
       coequipier: [],
     });
   }
-  console.log('Test JoueurGeneration');
-  console.table(joueurs);
+
   let nbJoueursSpe = joueursSpe.length;
 
   //Assignation des joueurs enfants
@@ -212,7 +214,7 @@ export const generationTriplettes = (
             speciauxIncompatibles,
             nbTours,
             matchs[idMatch].equipe[equipe],
-            listeJoueurs,
+            joueurs,
           );
           if (affectationPossible) {
             matchs[idMatch].equipe[equipe][place] = joueurId;
@@ -312,19 +314,23 @@ function affectationEquipe(
   speciauxIncompatibles: boolean,
   nbTours: number,
   currentEquipe: [number, number, number, number],
-  listeJoueurs: Joueur[],
+  listeJoueurs: JoueurGeneration[],
 ): boolean {
   const coequipiers = currentEquipe.slice(0, place);
-
-  if (speciauxIncompatibles) {
-    if (coequipiers.some((id) => joueur.type === listeJoueurs[id].type)) {
-      return false;
-    }
+  if (
+    speciauxIncompatibles &&
+    joueur.type &&
+    coequipiers.some(
+      (id) => listeJoueurs[id]?.type && listeJoueurs[id]?.type === joueur.type,
+    )
+  ) {
+    return false;
   }
 
   if (!jamaisMemeCoequipier || tour === 0) {
     return true;
   }
+
   const maxOccurrences = Math.ceil(nbTours / 3);
 
   return coequipiers.every(
