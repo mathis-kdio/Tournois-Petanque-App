@@ -204,6 +204,7 @@ class GenerationMatchs extends React.Component<Props, State> {
           this.complement,
           this.speciauxIncompatibles,
           this.jamaisMemeCoequipier,
+          this.eviterMemeAdversaire,
         ));
       } else {
         echecGeneration = true;

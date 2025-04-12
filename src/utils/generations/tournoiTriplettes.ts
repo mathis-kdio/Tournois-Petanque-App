@@ -18,6 +18,7 @@ export const generationTriplettes = (
   complement: Complement,
   speciauxIncompatibles: boolean,
   jamaisMemeCoequipier: boolean,
+  eviterMemeAdversaire: number,
 ) => {
   let nbjoueurs = listeJoueurs.length;
   let matchs: Match[] = [];
@@ -69,7 +70,7 @@ export const generationTriplettes = (
       name: listeJoueurs[i].name,
       type: listeJoueurs[i].type,
       isChecked: listeJoueurs[i].isChecked,
-      coequipier: [],
+      ensembleCoequipiers: [],
     });
   }
 
@@ -119,7 +120,7 @@ export const generationTriplettes = (
         type: JoueurType.ENFANT,
         id: id,
         isChecked: false,
-        coequipier: [],
+        ensembleCoequipiers: [],
       });
       complementIds.push(id);
     }
@@ -212,6 +213,7 @@ export const generationTriplettes = (
             place,
             jamaisMemeCoequipier,
             speciauxIncompatibles,
+            eviterMemeAdversaire,
             nbTours,
             matchs[idMatch].equipe[equipe],
             joueurs,
@@ -264,23 +266,23 @@ export const generationTriplettes = (
     idMatch = tour * nbMatchsParTour;
     for (let j = 0; j < nbMatchsParTour; j++) {
       let match = matchs[idMatch + j];
-      joueurs[match.equipe[0][0]].coequipier.push(match.equipe[0][1]);
-      joueurs[match.equipe[0][0]].coequipier.push(match.equipe[0][2]);
+      joueurs[match.equipe[0][0]].ensembleCoequipiers.push(match.equipe[0][1]);
+      joueurs[match.equipe[0][0]].ensembleCoequipiers.push(match.equipe[0][2]);
 
-      joueurs[match.equipe[0][1]].coequipier.push(match.equipe[0][0]);
-      joueurs[match.equipe[0][1]].coequipier.push(match.equipe[0][2]);
+      joueurs[match.equipe[0][1]].ensembleCoequipiers.push(match.equipe[0][0]);
+      joueurs[match.equipe[0][1]].ensembleCoequipiers.push(match.equipe[0][2]);
 
-      joueurs[match.equipe[0][2]].coequipier.push(match.equipe[0][0]);
-      joueurs[match.equipe[0][2]].coequipier.push(match.equipe[0][1]);
+      joueurs[match.equipe[0][2]].ensembleCoequipiers.push(match.equipe[0][0]);
+      joueurs[match.equipe[0][2]].ensembleCoequipiers.push(match.equipe[0][1]);
 
-      joueurs[match.equipe[1][0]].coequipier.push(match.equipe[1][1]);
-      joueurs[match.equipe[1][0]].coequipier.push(match.equipe[1][2]);
+      joueurs[match.equipe[1][0]].ensembleCoequipiers.push(match.equipe[1][1]);
+      joueurs[match.equipe[1][0]].ensembleCoequipiers.push(match.equipe[1][2]);
 
-      joueurs[match.equipe[1][1]].coequipier.push(match.equipe[1][0]);
-      joueurs[match.equipe[1][1]].coequipier.push(match.equipe[1][2]);
+      joueurs[match.equipe[1][1]].ensembleCoequipiers.push(match.equipe[1][0]);
+      joueurs[match.equipe[1][1]].ensembleCoequipiers.push(match.equipe[1][2]);
 
-      joueurs[match.equipe[1][2]].coequipier.push(match.equipe[1][0]);
-      joueurs[match.equipe[1][2]].coequipier.push(match.equipe[1][1]);
+      joueurs[match.equipe[1][2]].ensembleCoequipiers.push(match.equipe[1][0]);
+      joueurs[match.equipe[1][2]].ensembleCoequipiers.push(match.equipe[1][1]);
     }
     idMatch = nbMatchsParTour * (tour + 1);
   }
@@ -312,29 +314,39 @@ function affectationEquipe(
   place: number,
   jamaisMemeCoequipier: boolean,
   speciauxIncompatibles: boolean,
+  eviterMemeAdversaire: number,
   nbTours: number,
   currentEquipe: [number, number, number, number],
   listeJoueurs: JoueurGeneration[],
 ): boolean {
-  const coequipiers = currentEquipe.slice(0, place);
+  const coequipiersActuels = currentEquipe.slice(0, place);
+
+  //Test speciauxIncompatibles
   if (
     speciauxIncompatibles &&
     joueur.type &&
-    coequipiers.some(
+    coequipiersActuels.some(
       (id) => listeJoueurs[id]?.type && listeJoueurs[id]?.type === joueur.type,
     )
   ) {
     return false;
   }
 
+  //Test eviterMemeAdversaire
+  if (eviterMemeAdversaire !== 100) {
+    //TODO
+  }
+
+  //Test jamaisMemeCoequipier
   if (!jamaisMemeCoequipier || tour === 0) {
     return true;
   }
 
-  const maxOccurrences = Math.ceil(nbTours / 3);
-
-  return coequipiers.every(
-    (coequipier) =>
-      countOccuEquipe(joueur.coequipier, coequipier) < maxOccurrences,
-  );
+  if (
+    coequipiersActuels.some((coequipierActuel) =>
+      joueur.ensembleCoequipiers.includes(coequipierActuel),
+    )
+  ) {
+    return false;
+  }
 }

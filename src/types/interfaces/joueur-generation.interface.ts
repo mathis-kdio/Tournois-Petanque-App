@@ -5,5 +5,5 @@ export interface JoueurGeneration {
   name: string;
   type: JoueurType | undefined;
   isChecked: boolean;
-  coequipier: number[];
+  ensembleCoequipiers: number[];
 }
