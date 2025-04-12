@@ -10,6 +10,7 @@ import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { Complement } from '@/types/enums/complement';
 import { Match } from '@/types/interfaces/match';
+import { JoueurGeneration } from '@/types/interfaces/joueur-generation.interface';
 
 export const generationTriplettes = (
   listeJoueurs: Joueur[],
@@ -23,7 +24,7 @@ export const generationTriplettes = (
   let idMatch = 0;
   let joueursSpe = [];
   let joueursNonSpe = [];
-  let joueurs = [];
+  let joueurs: JoueurGeneration[] = [];
 
   //Initialisation des matchs dans un tableau
   let nbMatchsParTour = calcNbMatchsParTour(
@@ -63,9 +64,13 @@ export const generationTriplettes = (
       joueursNonSpe.push({ ...listeJoueurs[i] });
       joueursNonSpe[joueursNonSpe.length - 1].equipe = [];
     }
-    joueurs.push({ ...listeJoueurs[i] });
-    joueurs[i].equipe = [];
+    joueurs.push({
+      ...listeJoueurs[i],
+      coequipier: [],
+    });
   }
+  console.log('Test JoueurGeneration');
+  console.table(joueurs);
   let nbJoueursSpe = joueursSpe.length;
 
   //Assignation des joueurs enfants
@@ -128,7 +133,8 @@ export const generationTriplettes = (
         name: 'Complement',
         type: JoueurType.ENFANT,
         id: id,
-        equipe: [],
+        isChecked: false,
+        coequipier: [],
       });
       complementIds.push(id);
     }
@@ -209,7 +215,7 @@ export const generationTriplettes = (
     breaker = 0;
     let random = shuffle(joueursNonSpeId);
     for (let j = 0; j < joueursNonSpe.length; ) {
-      let joueur = random[j];
+      let joueurId = random[j];
 
       let assigned = false;
 
@@ -217,15 +223,15 @@ export const generationTriplettes = (
         if (matchs[idMatch].equipe[equipe][place] === -1) {
           const affectationPossible = affectationEquipe(
             tour,
-            joueur,
+            joueurs[joueurId],
             place,
             jamaisMemeCoequipier,
+            speciauxIncompatibles,
             nbTours,
-            joueurs,
             matchs[idMatch].equipe[equipe],
           );
           if (affectationPossible) {
-            matchs[idMatch].equipe[equipe][place] = joueur;
+            matchs[idMatch].equipe[equipe][place] = joueurId;
             breaker = 0;
             j++;
             assigned = true;
@@ -241,12 +247,12 @@ export const generationTriplettes = (
       }
 
       //Affectation du joueur complémentaire au dernier match du tour si complément QUATREVSTROIS
-      if (joueur !== undefined && (idMatch + 1) % nbMatchsParTour === 0) {
+      if (joueurId !== undefined && (idMatch + 1) % nbMatchsParTour === 0) {
         let affectationPossible =
           complement === Complement.QUATREVSTROIS &&
           matchs[idMatch].equipe[0][3] === -1;
         if (affectationPossible) {
-          matchs[idMatch].equipe[0][3] = joueur;
+          matchs[idMatch].equipe[0][3] = joueurId;
           breaker = 0;
           j++;
         } else {
@@ -272,23 +278,23 @@ export const generationTriplettes = (
     idMatch = tour * nbMatchsParTour;
     for (let j = 0; j < nbMatchsParTour; j++) {
       let match = matchs[idMatch + j];
-      joueurs[match.equipe[0][0]].equipe.push(match.equipe[0][1]);
-      joueurs[match.equipe[0][0]].equipe.push(match.equipe[0][2]);
+      joueurs[match.equipe[0][0]].coequipier.push(match.equipe[0][1]);
+      joueurs[match.equipe[0][0]].coequipier.push(match.equipe[0][2]);
 
-      joueurs[match.equipe[0][1]].equipe.push(match.equipe[0][0]);
-      joueurs[match.equipe[0][1]].equipe.push(match.equipe[0][2]);
+      joueurs[match.equipe[0][1]].coequipier.push(match.equipe[0][0]);
+      joueurs[match.equipe[0][1]].coequipier.push(match.equipe[0][2]);
 
-      joueurs[match.equipe[0][2]].equipe.push(match.equipe[0][0]);
-      joueurs[match.equipe[0][2]].equipe.push(match.equipe[0][1]);
+      joueurs[match.equipe[0][2]].coequipier.push(match.equipe[0][0]);
+      joueurs[match.equipe[0][2]].coequipier.push(match.equipe[0][1]);
 
-      joueurs[match.equipe[1][0]].equipe.push(match.equipe[1][1]);
-      joueurs[match.equipe[1][0]].equipe.push(match.equipe[1][2]);
+      joueurs[match.equipe[1][0]].coequipier.push(match.equipe[1][1]);
+      joueurs[match.equipe[1][0]].coequipier.push(match.equipe[1][2]);
 
-      joueurs[match.equipe[1][1]].equipe.push(match.equipe[1][0]);
-      joueurs[match.equipe[1][1]].equipe.push(match.equipe[1][2]);
+      joueurs[match.equipe[1][1]].coequipier.push(match.equipe[1][0]);
+      joueurs[match.equipe[1][1]].coequipier.push(match.equipe[1][2]);
 
-      joueurs[match.equipe[1][2]].equipe.push(match.equipe[1][0]);
-      joueurs[match.equipe[1][2]].equipe.push(match.equipe[1][1]);
+      joueurs[match.equipe[1][2]].coequipier.push(match.equipe[1][0]);
+      joueurs[match.equipe[1][2]].coequipier.push(match.equipe[1][1]);
     }
     idMatch = nbMatchsParTour * (tour + 1);
   }
@@ -296,19 +302,23 @@ export const generationTriplettes = (
   return { matchs, nbMatchs };
 };
 
-function countOccuEquipe(arr, val) {
+function countOccuEquipe(arr: number[], val: number) {
   return arr.filter((x) => x === val).length;
 }
 
 function affectationEquipe(
   tour: number,
-  joueur: number,
+  joueur: JoueurGeneration,
   place: number,
   jamaisMemeCoequipier: boolean,
+  speciauxIncompatibles: boolean,
   nbTours: number,
-  joueurs: any[],
   currentEquipe: [number, number, number, number],
 ): boolean {
+  if (speciauxIncompatibles) {
+    let joueurType = joueur.type;
+  }
+
   if (!jamaisMemeCoequipier || tour === 0) {
     return true;
   }
@@ -317,6 +327,6 @@ function affectationEquipe(
 
   return coequipiers.every(
     (coequipier) =>
-      countOccuEquipe(joueurs[joueur].equipe, coequipier) < maxOccurrences,
+      countOccuEquipe(joueur.coequipier, coequipier) < maxOccurrences,
   );
 }
