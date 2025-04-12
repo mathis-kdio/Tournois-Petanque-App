@@ -71,6 +71,7 @@ export const generationTriplettes = (
       type: listeJoueurs[i].type,
       isChecked: listeJoueurs[i].isChecked,
       ensembleCoequipiers: [],
+      ensembleAdversaires: [],
     });
   }
 
@@ -121,6 +122,7 @@ export const generationTriplettes = (
         id: id,
         isChecked: false,
         ensembleCoequipiers: [],
+        ensembleAdversaires: [],
       });
       complementIds.push(id);
     }
@@ -210,12 +212,12 @@ export const generationTriplettes = (
           const affectationPossible = affectationEquipe(
             tour,
             joueurs[joueurId],
-            place,
             jamaisMemeCoequipier,
             speciauxIncompatibles,
             eviterMemeAdversaire,
             nbTours,
             matchs[idMatch].equipe[equipe],
+            matchs[idMatch].equipe[(equipe + 1) % 2],
             joueurs,
           );
           if (affectationPossible) {
@@ -265,24 +267,24 @@ export const generationTriplettes = (
 
     idMatch = tour * nbMatchsParTour;
     for (let j = 0; j < nbMatchsParTour; j++) {
-      let match = matchs[idMatch + j];
-      joueurs[match.equipe[0][0]].ensembleCoequipiers.push(match.equipe[0][1]);
-      joueurs[match.equipe[0][0]].ensembleCoequipiers.push(match.equipe[0][2]);
+      const match = matchs[idMatch + j];
+      const equipe1 = match.equipe[0];
+      const equipe2 = match.equipe[1];
 
-      joueurs[match.equipe[0][1]].ensembleCoequipiers.push(match.equipe[0][0]);
-      joueurs[match.equipe[0][1]].ensembleCoequipiers.push(match.equipe[0][2]);
+      joueurs[equipe1[0]].ensembleCoequipiers.push(equipe1[1], equipe1[2]);
+      joueurs[equipe1[1]].ensembleCoequipiers.push(equipe1[0], equipe1[2]);
+      joueurs[equipe1[2]].ensembleCoequipiers.push(equipe1[0], equipe1[1]);
+      joueurs[equipe1[0]].ensembleAdversaires.push(equipe2[0], equipe2[1], equipe2[2]);
+      joueurs[equipe1[1]].ensembleAdversaires.push(equipe2[0], equipe2[1], equipe2[2]);
+      joueurs[equipe1[2]].ensembleAdversaires.push(equipe2[0], equipe2[1], equipe2[2]);
+      //TODO AJouter complémentaire QUATREVSTROIS aka [0][3] si présent
 
-      joueurs[match.equipe[0][2]].ensembleCoequipiers.push(match.equipe[0][0]);
-      joueurs[match.equipe[0][2]].ensembleCoequipiers.push(match.equipe[0][1]);
-
-      joueurs[match.equipe[1][0]].ensembleCoequipiers.push(match.equipe[1][1]);
-      joueurs[match.equipe[1][0]].ensembleCoequipiers.push(match.equipe[1][2]);
-
-      joueurs[match.equipe[1][1]].ensembleCoequipiers.push(match.equipe[1][0]);
-      joueurs[match.equipe[1][1]].ensembleCoequipiers.push(match.equipe[1][2]);
-
-      joueurs[match.equipe[1][2]].ensembleCoequipiers.push(match.equipe[1][0]);
-      joueurs[match.equipe[1][2]].ensembleCoequipiers.push(match.equipe[1][1]);
+      joueurs[equipe2[0]].ensembleCoequipiers.push(equipe2[1], equipe2[2]);
+      joueurs[equipe2[1]].ensembleCoequipiers.push(equipe2[0], equipe2[2]);
+      joueurs[equipe2[2]].ensembleCoequipiers.push(equipe2[0], equipe2[1]);
+      joueurs[equipe1[0]].ensembleAdversaires.push(equipe1[0], equipe1[1], equipe1[2]);
+      joueurs[equipe1[1]].ensembleAdversaires.push(equipe1[0], equipe1[1], equipe1[2]);
+      joueurs[equipe1[2]].ensembleAdversaires.push(equipe1[0], equipe1[1], equipe1[2]);
     }
     idMatch = nbMatchsParTour * (tour + 1);
   }
@@ -311,15 +313,15 @@ function countOccuEquipe(arr: number[], val: number) {
 function affectationEquipe(
   tour: number,
   joueur: JoueurGeneration,
-  place: number,
   jamaisMemeCoequipier: boolean,
   speciauxIncompatibles: boolean,
   eviterMemeAdversaire: number,
   nbTours: number,
   currentEquipe: [number, number, number, number],
+  currentAdversaire: [number, number, number, number],
   listeJoueurs: JoueurGeneration[],
 ): boolean {
-  const coequipiersActuels = currentEquipe.slice(0, place);
+  const coequipiersActuels = currentEquipe.filter((id) => id !== -1);
 
   //Test speciauxIncompatibles
   if (
@@ -334,7 +336,19 @@ function affectationEquipe(
 
   //Test eviterMemeAdversaire
   if (eviterMemeAdversaire !== 100) {
-    //TODO
+    const adversairesActuels = currentAdversaire.filter((id) => id !== -1);
+    for (const adversaire of adversairesActuels) {
+      const nbRencontres = countOccuEquipe(
+        joueur.ensembleAdversaires,
+        adversaire,
+      );
+      if (eviterMemeAdversaire === 50) {
+        const maxRencontres = Math.floor(nbTours / 2);
+        if (nbRencontres >= maxRencontres) {
+          return false;
+        }
+      }
+    }
   }
 
   //Test jamaisMemeCoequipier
@@ -349,4 +363,6 @@ function affectationEquipe(
   ) {
     return false;
   }
+
+  return true;
 }
