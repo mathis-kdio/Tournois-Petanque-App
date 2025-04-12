@@ -274,17 +274,41 @@ export const generationTriplettes = (
       joueurs[equipe1[0]].ensembleCoequipiers.push(equipe1[1], equipe1[2]);
       joueurs[equipe1[1]].ensembleCoequipiers.push(equipe1[0], equipe1[2]);
       joueurs[equipe1[2]].ensembleCoequipiers.push(equipe1[0], equipe1[1]);
-      joueurs[equipe1[0]].ensembleAdversaires.push(equipe2[0], equipe2[1], equipe2[2]);
-      joueurs[equipe1[1]].ensembleAdversaires.push(equipe2[0], equipe2[1], equipe2[2]);
-      joueurs[equipe1[2]].ensembleAdversaires.push(equipe2[0], equipe2[1], equipe2[2]);
+      joueurs[equipe1[0]].ensembleAdversaires.push(
+        equipe2[0],
+        equipe2[1],
+        equipe2[2],
+      );
+      joueurs[equipe1[1]].ensembleAdversaires.push(
+        equipe2[0],
+        equipe2[1],
+        equipe2[2],
+      );
+      joueurs[equipe1[2]].ensembleAdversaires.push(
+        equipe2[0],
+        equipe2[1],
+        equipe2[2],
+      );
       //TODO AJouter complémentaire QUATREVSTROIS aka [0][3] si présent
 
       joueurs[equipe2[0]].ensembleCoequipiers.push(equipe2[1], equipe2[2]);
       joueurs[equipe2[1]].ensembleCoequipiers.push(equipe2[0], equipe2[2]);
       joueurs[equipe2[2]].ensembleCoequipiers.push(equipe2[0], equipe2[1]);
-      joueurs[equipe1[0]].ensembleAdversaires.push(equipe1[0], equipe1[1], equipe1[2]);
-      joueurs[equipe1[1]].ensembleAdversaires.push(equipe1[0], equipe1[1], equipe1[2]);
-      joueurs[equipe1[2]].ensembleAdversaires.push(equipe1[0], equipe1[1], equipe1[2]);
+      joueurs[equipe1[0]].ensembleAdversaires.push(
+        equipe1[0],
+        equipe1[1],
+        equipe1[2],
+      );
+      joueurs[equipe1[1]].ensembleAdversaires.push(
+        equipe1[0],
+        equipe1[1],
+        equipe1[2],
+      );
+      joueurs[equipe1[2]].ensembleAdversaires.push(
+        equipe1[0],
+        equipe1[1],
+        equipe1[2],
+      );
     }
     idMatch = nbMatchsParTour * (tour + 1);
   }
@@ -342,11 +366,10 @@ function affectationEquipe(
         joueur.ensembleAdversaires,
         adversaire,
       );
-      if (eviterMemeAdversaire === 50) {
-        const maxRencontres = Math.floor(nbTours / 2);
-        if (nbRencontres >= maxRencontres) {
-          return false;
-        }
+      const maxRencontres =
+        eviterMemeAdversaire === 50 ? Math.floor(nbTours / 2) : 1;
+      if (nbRencontres >= maxRencontres) {
+        return false;
       }
     }
   }
