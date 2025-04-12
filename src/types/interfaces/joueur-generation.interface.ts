@@ -5,6 +5,6 @@ export interface JoueurGeneration {
   name: string;
   type: JoueurType | undefined;
   isChecked: boolean;
-  ensembleCoequipiers: number[];
-  ensembleAdversaires: number[];
+  allCoequipiers: number[];
+  allAdversaires: number[];
 }

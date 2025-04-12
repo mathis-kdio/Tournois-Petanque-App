@@ -70,8 +70,8 @@ export const generationTriplettes = (
       name: listeJoueurs[i].name,
       type: listeJoueurs[i].type,
       isChecked: listeJoueurs[i].isChecked,
-      ensembleCoequipiers: [],
-      ensembleAdversaires: [],
+      allCoequipiers: [],
+      allAdversaires: [],
     });
   }
 
@@ -121,8 +121,8 @@ export const generationTriplettes = (
         type: JoueurType.ENFANT,
         id: id,
         isChecked: false,
-        ensembleCoequipiers: [],
-        ensembleAdversaires: [],
+        allCoequipiers: [],
+        allAdversaires: [],
       });
       complementIds.push(id);
     }
@@ -271,40 +271,40 @@ export const generationTriplettes = (
       const equipe1 = match.equipe[0];
       const equipe2 = match.equipe[1];
 
-      joueurs[equipe1[0]].ensembleCoequipiers.push(equipe1[1], equipe1[2]);
-      joueurs[equipe1[1]].ensembleCoequipiers.push(equipe1[0], equipe1[2]);
-      joueurs[equipe1[2]].ensembleCoequipiers.push(equipe1[0], equipe1[1]);
-      joueurs[equipe1[0]].ensembleAdversaires.push(
+      joueurs[equipe1[0]].allCoequipiers.push(equipe1[1], equipe1[2]);
+      joueurs[equipe1[1]].allCoequipiers.push(equipe1[0], equipe1[2]);
+      joueurs[equipe1[2]].allCoequipiers.push(equipe1[0], equipe1[1]);
+      joueurs[equipe1[0]].allAdversaires.push(
         equipe2[0],
         equipe2[1],
         equipe2[2],
       );
-      joueurs[equipe1[1]].ensembleAdversaires.push(
+      joueurs[equipe1[1]].allAdversaires.push(
         equipe2[0],
         equipe2[1],
         equipe2[2],
       );
-      joueurs[equipe1[2]].ensembleAdversaires.push(
+      joueurs[equipe1[2]].allAdversaires.push(
         equipe2[0],
         equipe2[1],
         equipe2[2],
       );
       //TODO AJouter complémentaire QUATREVSTROIS aka [0][3] si présent
 
-      joueurs[equipe2[0]].ensembleCoequipiers.push(equipe2[1], equipe2[2]);
-      joueurs[equipe2[1]].ensembleCoequipiers.push(equipe2[0], equipe2[2]);
-      joueurs[equipe2[2]].ensembleCoequipiers.push(equipe2[0], equipe2[1]);
-      joueurs[equipe1[0]].ensembleAdversaires.push(
+      joueurs[equipe2[0]].allCoequipiers.push(equipe2[1], equipe2[2]);
+      joueurs[equipe2[1]].allCoequipiers.push(equipe2[0], equipe2[2]);
+      joueurs[equipe2[2]].allCoequipiers.push(equipe2[0], equipe2[1]);
+      joueurs[equipe2[0]].allAdversaires.push(
         equipe1[0],
         equipe1[1],
         equipe1[2],
       );
-      joueurs[equipe1[1]].ensembleAdversaires.push(
+      joueurs[equipe2[1]].allAdversaires.push(
         equipe1[0],
         equipe1[1],
         equipe1[2],
       );
-      joueurs[equipe1[2]].ensembleAdversaires.push(
+      joueurs[equipe2[2]].allAdversaires.push(
         equipe1[0],
         equipe1[1],
         equipe1[2],
@@ -362,10 +362,7 @@ function affectationEquipe(
   if (eviterMemeAdversaire !== 100) {
     const adversairesActuels = currentAdversaire.filter((id) => id !== -1);
     for (const adversaire of adversairesActuels) {
-      const nbRencontres = countOccuEquipe(
-        joueur.ensembleAdversaires,
-        adversaire,
-      );
+      const nbRencontres = countOccuEquipe(joueur.allAdversaires, adversaire);
       const maxRencontres =
         eviterMemeAdversaire === 50 ? Math.floor(nbTours / 2) : 1;
       if (nbRencontres >= maxRencontres) {
@@ -381,7 +378,7 @@ function affectationEquipe(
 
   if (
     coequipiersActuels.some((coequipierActuel) =>
-      joueur.ensembleCoequipiers.includes(coequipierActuel),
+      joueur.allCoequipiers.includes(coequipierActuel),
     )
   ) {
     return false;
