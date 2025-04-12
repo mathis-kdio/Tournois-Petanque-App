@@ -212,6 +212,7 @@ export const generationTriplettes = (
             speciauxIncompatibles,
             nbTours,
             matchs[idMatch].equipe[equipe],
+            listeJoueurs,
           );
           if (affectationPossible) {
             matchs[idMatch].equipe[equipe][place] = joueurId;
@@ -311,15 +312,19 @@ function affectationEquipe(
   speciauxIncompatibles: boolean,
   nbTours: number,
   currentEquipe: [number, number, number, number],
+  listeJoueurs: Joueur[],
 ): boolean {
+  const coequipiers = currentEquipe.slice(0, place);
+
   if (speciauxIncompatibles) {
-    let joueurType = joueur.type;
+    if (coequipiers.some((id) => joueur.type === listeJoueurs[id].type)) {
+      return false;
+    }
   }
 
   if (!jamaisMemeCoequipier || tour === 0) {
     return true;
   }
-  const coequipiers = currentEquipe.slice(0, place);
   const maxOccurrences = Math.ceil(nbTours / 3);
 
   return coequipiers.every(
