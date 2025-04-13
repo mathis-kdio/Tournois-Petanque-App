@@ -231,7 +231,7 @@ export const generationTriplettes = (
           }
         }
       }
-
+      joueurId = random[j];
       if (!assigned) {
         breaker++;
       }
