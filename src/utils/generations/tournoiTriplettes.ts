@@ -265,36 +265,13 @@ export const generationTriplettes = (
       }
     }
 
-    idMatch = tour * nbMatchsParTour;
-    for (let j = 0; j < nbMatchsParTour; j++) {
-      const match = matchs[idMatch + j];
+    const idPremierMatchTour = tour * nbMatchsParTour;
+    const idDernierMatchTour = idPremierMatchTour + nbMatchsParTour;
+    for (let idMatchTour = idPremierMatchTour; idMatchTour < idDernierMatchTour; idMatchTour++) {
+      const match = matchs[idMatchTour];
       const [equipe1, equipe2] = match.equipe;
-
-      // Update allCoequipiers and allAdversaires for equipe1
-      equipe1.forEach((joueurId) => {
-        if (joueurId !== -1) {
-          const coequipiers = equipe1.filter(
-            (id) => id !== -1 && id !== joueurId,
-          );
-          const adversaires = equipe2.filter((id) => id !== -1);
-
-          joueurs[joueurId].allCoequipiers.push(...coequipiers);
-          joueurs[joueurId].allAdversaires.push(...adversaires);
-        }
-      });
-
-      // Update allCoequipiers and allAdversaires for equipe2
-      equipe2.forEach((joueurId) => {
-        if (joueurId !== -1) {
-          const coequipiers = equipe2.filter(
-            (id) => id !== -1 && id !== joueurId,
-          );
-          const adversaires = equipe1.filter((id) => id !== -1);
-
-          joueurs[joueurId].allCoequipiers.push(...coequipiers);
-          joueurs[joueurId].allAdversaires.push(...adversaires);
-        }
-      });
+      updatePlayerRelationships(joueurs, equipe1, equipe2);
+      updatePlayerRelationships(joueurs, equipe2, equipe1);
     }
 
     idMatch = nbMatchsParTour * (tour + 1);
@@ -372,4 +349,21 @@ function affectationEquipe(
   }
 
   return true;
+}
+
+function updatePlayerRelationships(
+  joueurs: JoueurGeneration[],
+  equipe: [number, number, number, number],
+  equipeAdverse: [number, number, number, number],
+) {
+  equipe.forEach((joueurId) => {
+    if (joueurId !== -1) {
+      const coequipiers = equipe.filter((id) => id !== -1 && id !== joueurId);
+      const adversaires = equipeAdverse.filter((id) => id !== -1);
+
+      const joueur = joueurs[joueurId];
+      joueur.allCoequipiers.push(...coequipiers);
+      joueur.allAdversaires.push(...adversaires);
+    }
+  });
 }
