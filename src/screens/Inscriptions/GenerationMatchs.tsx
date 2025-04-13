@@ -202,6 +202,9 @@ class GenerationMatchs extends React.Component<Props, State> {
           this.props.listesJoueurs[this.typeInscription],
           this.nbTours,
           this.complement,
+          this.speciauxIncompatibles,
+          this.jamaisMemeCoequipier,
+          this.eviterMemeAdversaire,
         ));
       } else {
         echecGeneration = true;
