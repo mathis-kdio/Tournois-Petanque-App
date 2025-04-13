@@ -268,48 +268,35 @@ export const generationTriplettes = (
     idMatch = tour * nbMatchsParTour;
     for (let j = 0; j < nbMatchsParTour; j++) {
       const match = matchs[idMatch + j];
-      const equipe1 = match.equipe[0];
-      const equipe2 = match.equipe[1];
+      const [equipe1, equipe2] = match.equipe;
 
-      joueurs[equipe1[0]].allCoequipiers.push(equipe1[1], equipe1[2]);
-      joueurs[equipe1[1]].allCoequipiers.push(equipe1[0], equipe1[2]);
-      joueurs[equipe1[2]].allCoequipiers.push(equipe1[0], equipe1[1]);
-      joueurs[equipe1[0]].allAdversaires.push(
-        equipe2[0],
-        equipe2[1],
-        equipe2[2],
-      );
-      joueurs[equipe1[1]].allAdversaires.push(
-        equipe2[0],
-        equipe2[1],
-        equipe2[2],
-      );
-      joueurs[equipe1[2]].allAdversaires.push(
-        equipe2[0],
-        equipe2[1],
-        equipe2[2],
-      );
-      //TODO AJouter complémentaire QUATREVSTROIS aka [0][3] si présent
+      // Update allCoequipiers and allAdversaires for equipe1
+      equipe1.forEach((joueurId) => {
+        if (joueurId !== -1) {
+          const coequipiers = equipe1.filter(
+            (id) => id !== -1 && id !== joueurId,
+          );
+          const adversaires = equipe2.filter((id) => id !== -1);
 
-      joueurs[equipe2[0]].allCoequipiers.push(equipe2[1], equipe2[2]);
-      joueurs[equipe2[1]].allCoequipiers.push(equipe2[0], equipe2[2]);
-      joueurs[equipe2[2]].allCoequipiers.push(equipe2[0], equipe2[1]);
-      joueurs[equipe2[0]].allAdversaires.push(
-        equipe1[0],
-        equipe1[1],
-        equipe1[2],
-      );
-      joueurs[equipe2[1]].allAdversaires.push(
-        equipe1[0],
-        equipe1[1],
-        equipe1[2],
-      );
-      joueurs[equipe2[2]].allAdversaires.push(
-        equipe1[0],
-        equipe1[1],
-        equipe1[2],
-      );
+          joueurs[joueurId].allCoequipiers.push(...coequipiers);
+          joueurs[joueurId].allAdversaires.push(...adversaires);
+        }
+      });
+
+      // Update allCoequipiers and allAdversaires for equipe2
+      equipe2.forEach((joueurId) => {
+        if (joueurId !== -1) {
+          const coequipiers = equipe2.filter(
+            (id) => id !== -1 && id !== joueurId,
+          );
+          const adversaires = equipe1.filter((id) => id !== -1);
+
+          joueurs[joueurId].allCoequipiers.push(...coequipiers);
+          joueurs[joueurId].allAdversaires.push(...adversaires);
+        }
+      });
     }
+
     idMatch = nbMatchsParTour * (tour + 1);
   }
 
@@ -330,7 +317,7 @@ function getNbComplements(complement: Complement) {
   }
 }
 
-function countOccuEquipe(arr: number[], val: number) {
+function occuAdversaire(arr: number[], val: number) {
   return arr.filter((x) => x === val).length;
 }
 
@@ -362,7 +349,7 @@ function affectationEquipe(
   if (eviterMemeAdversaire !== 100) {
     const adversairesActuels = currentAdversaire.filter((id) => id !== -1);
     for (const adversaire of adversairesActuels) {
-      const nbRencontres = countOccuEquipe(joueur.allAdversaires, adversaire);
+      const nbRencontres = occuAdversaire(joueur.allAdversaires, adversaire);
       const maxRencontres =
         eviterMemeAdversaire === 50 ? Math.floor(nbTours / 2) : 1;
       if (nbRencontres >= maxRencontres) {
