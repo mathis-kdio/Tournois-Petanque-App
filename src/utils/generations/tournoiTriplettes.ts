@@ -236,18 +236,17 @@ export const generationTriplettes = (
         breaker++;
       }
 
-      //Affectation du joueur complémentaire au dernier match du tour si complément QUATREVSTROIS
-      if (joueurId !== undefined && (idMatch + 1) % nbMatchsParTour === 0) {
-        let affectationPossible =
-          complement === Complement.QUATREVSTROIS &&
-          matchs[idMatch].equipe[0][3] === -1;
-        if (affectationPossible) {
-          matchs[idMatch].equipe[0][3] = joueurId;
-          breaker = 0;
-          j++;
-        } else {
-          breaker++;
-        }
+      // Affectation du joueur complémentaire au dernier match du tour si complément QUATREVSTROIS
+      const isLastMatchTour = (idMatch + 1) % nbMatchsParTour === 0;
+      if (
+        isLastMatchTour &&
+        joueurId !== undefined &&
+        complement === Complement.QUATREVSTROIS &&
+        matchs[idMatch].equipe[0][3] === -1
+      ) {
+        matchs[idMatch].equipe[0][3] = joueurId;
+        breaker = 0;
+        j++;
       }
 
       idMatch++;
