@@ -265,10 +265,11 @@ export const generationTriplettes = (
       }
     }
 
-    const idPremierMatchTour = tour * nbMatchsParTour;
-    const idDernierMatchTour = idPremierMatchTour + nbMatchsParTour;
-    for (let idMatchTour = idPremierMatchTour; idMatchTour < idDernierMatchTour; idMatchTour++) {
-      const match = matchs[idMatchTour];
+    const startMatchId = tour * nbMatchsParTour;
+    const endMatchId = startMatchId + nbMatchsParTour;
+
+    for (let matchId = startMatchId; matchId < endMatchId; matchId++) {
+      const match = matchs[matchId];
       const [equipe1, equipe2] = match.equipe;
       updatePlayerRelationships(joueurs, equipe1, equipe2);
       updatePlayerRelationships(joueurs, equipe2, equipe1);
