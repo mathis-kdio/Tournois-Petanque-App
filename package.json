@@ -5,7 +5,7 @@
     "android": "npx expo start --android",
     "ios": "npx expo start --ios",
     "web": "npx expo start --web",
-    "tauri": "npx tauri dev",
+    "tauri-dev": "npx tauri dev",
     "eject": "npx expo prebuild",
     "build": "npx eas-cli build",
     "build-android": "npx eas-cli build --platform android",
@@ -13,7 +13,7 @@
     "build-web": "npx expo export --platform web",
     "build-desktop": "npx tauri build",
     "ts:check": "tsc",
-    "eslint": "eslint ."
+    "lint": "eslint ."
   },
   "dependencies": {
     "@expo/html-elements": "^0.4.3",
