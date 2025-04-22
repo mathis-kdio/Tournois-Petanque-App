@@ -1,6 +1,5 @@
 name: 'Tauri Publish'
 
-# This will trigger the action on each push to the `release` branch.
 on:
   push:
     tags:
@@ -38,7 +37,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
-          cache: 'yarn' # Set this to npm, yarn or pnpm.
+          cache: 'npm'
 
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable # Set this to dtolnay/rust-toolchain@nightly
