@@ -20,15 +20,21 @@ class BoutonMenuHeaderNav extends React.Component<Props, State> {
   }
 
   _showOptions() {
-    this.props.navigation.navigate('ParametresTournoi');
+    this.props.navigation.navigate('ListeMatchsBottom', {
+      screen: 'ParametresTournoi',
+    });
   }
 
   _showJoueurs() {
-    this.props.navigation.navigate('ListeJoueur');
+    this.props.navigation.navigate('ListeMatchsBottom', {
+      screen: 'ListeJoueur',
+    });
   }
 
   _showPDFExport() {
-    this.props.navigation.navigate('PDFExport');
+    this.props.navigation.navigate('ListeMatchsBottom', {
+      screen: 'PDFExport',
+    });
   }
 
   _showAccueil = () => {
