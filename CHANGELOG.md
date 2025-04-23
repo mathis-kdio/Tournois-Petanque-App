@@ -1,5 +1,15 @@
 # Change Log
 
+## [2.0.2] - 26-02-2025
+### Ajouté
+- Traduction en allemand
+
+### Changement
+- Mise à jour des traductions
+
+### Corrigé
+- Correction bug calcul classement
+
 ## [2.0.1] - 07-12-2024
 ### Ajouté
 

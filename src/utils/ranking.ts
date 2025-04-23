@@ -72,14 +72,20 @@ const rankingMuliChances = (
   for (let i = 0; i < victoires.length; i++) {
     let position = 1;
     for (let j = 0; j < optionsTournoi.nbMatchs; j++) {
-      if (listeMatchs[j].equipe[0].includes(i) && listeMatchs[j].score1) {
+      if (
+        listeMatchs[j].equipe[0].includes(i) &&
+        listeMatchs[j].score1 !== undefined
+      ) {
         if (listeMatchs[j].score1 >= nbPtVictoire) {
           position += factorial(
             optionsTournoi.nbTours + 1 - listeMatchs[j].manche,
           );
         }
       }
-      if (listeMatchs[j].equipe[1].includes(i) && listeMatchs[j].score2) {
+      if (
+        listeMatchs[j].equipe[1].includes(i) &&
+        listeMatchs[j].score2 !== undefined
+      ) {
         if (listeMatchs[j].score2 >= nbPtVictoire) {
           position += factorial(listeMatchs[j].manche);
         }
@@ -107,7 +113,10 @@ const victoiresPointsCalc = (
     let nbPoints = 0;
     let nbMatchs = 0;
     for (let j = 0; j < optionsTournoi.nbMatchs; j++) {
-      if (listeMatchs[j].equipe[0].includes(i) && listeMatchs[j].score1) {
+      if (
+        listeMatchs[j].equipe[0].includes(i) &&
+        listeMatchs[j].score1 !== undefined
+      ) {
         if (listeMatchs[j].score1 >= nbPtVictoire) {
           nbVictoire++;
           nbPoints += nbPtVictoire - listeMatchs[j].score2;
@@ -116,7 +125,10 @@ const victoiresPointsCalc = (
         }
         nbMatchs++;
       }
-      if (listeMatchs[j].equipe[1].includes(i) && listeMatchs[j].score2) {
+      if (
+        listeMatchs[j].equipe[1].includes(i) &&
+        listeMatchs[j].score2 !== undefined
+      ) {
         if (listeMatchs[j].score2 >= nbPtVictoire) {
           nbVictoire++;
           nbPoints += nbPtVictoire - listeMatchs[j].score1;

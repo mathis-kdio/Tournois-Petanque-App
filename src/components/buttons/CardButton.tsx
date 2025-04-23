@@ -8,7 +8,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 export interface Props {
   text: string;
-  icon: string;
+  icons: string[];
   navigate: () => void;
   newBadge: boolean;
 }
@@ -22,14 +22,14 @@ class CardButton extends React.Component<Props, State> {
   }
 
   render() {
-    const { text, icon, navigate, newBadge } = this.props;
+    const { text, icons, navigate, newBadge } = this.props;
     return (
       <Pressable
         onPress={() => navigate()}
         className="bg-primary-500 flex-1 py-5 rounded-3xl justify-center"
       >
         {newBadge ? (
-          <HStack className={` mt-${-20} `}>
+          <HStack className="mt-20">
             <Badge
               size="lg"
               variant="outline"
@@ -45,7 +45,11 @@ class CardButton extends React.Component<Props, State> {
           <></>
         )}
         <VStack className="items-center">
-          <FontAwesome5 name={icon} color="white" size={24} />
+          <HStack space="md">
+            {icons.map((icon) => (
+              <FontAwesome5 name={icon} color="white" size={24} />
+            ))}
+          </HStack>
           <Text className="text-white">{text}</Text>
         </VStack>
       </Pressable>

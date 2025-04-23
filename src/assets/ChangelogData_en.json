@@ -1,4 +1,23 @@
 {
+  "29": {
+    "id": "29",
+    "version": "2.0.2",
+    "infos": [
+      "- Traduction en allemand",
+      "- Mise à jour des traductions",
+      "- Correction bug calcul classement"
+    ]
+  },
+  "28": {
+    "id": "28",
+    "version": "2.0.1",
+    "infos": [
+      "- Mise à jour des traductions",
+      "- Mise à jour des dépendances",
+      "- Correction bug écran des terrains",
+      "- Correction bug suppression tournoi"
+    ]
+  },
   "27": {
     "id": "27",
     "version": "2.0.0",

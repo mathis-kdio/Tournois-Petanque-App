@@ -53,7 +53,7 @@ class GenerationMatchs extends React.Component<Props, State> {
   eviterMemeAdversaire: number = 50;
   typeEquipes: TypeEquipes = TypeEquipes.DOUBLETTE;
   typeInscription: ModeTournoi = ModeTournoi.AVECNOMS;
-  complement: Complement = Complement.TRIPLETTE;
+  complement: Complement = undefined;
   typeTournoi: TypeTournoi = TypeTournoi.MELEDEMELE;
   avecTerrains: boolean = false;
   interstitial: void | InterstitialAd;
@@ -186,7 +186,6 @@ class GenerationMatchs extends React.Component<Props, State> {
         } = generationDoublettes(
           this.props.listesJoueurs[this.typeInscription],
           this.nbTours,
-          this.typeEquipes,
           this.complement,
           this.speciauxIncompatibles,
           this.jamaisMemeCoequipier,
@@ -202,6 +201,10 @@ class GenerationMatchs extends React.Component<Props, State> {
         } = generationTriplettes(
           this.props.listesJoueurs[this.typeInscription],
           this.nbTours,
+          this.complement,
+          this.speciauxIncompatibles,
+          this.jamaisMemeCoequipier,
+          this.eviterMemeAdversaire,
         ));
       } else {
         echecGeneration = true;

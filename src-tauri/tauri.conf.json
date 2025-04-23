@@ -1,64 +1,51 @@
 {
-  "package": {
-    "productName": "Tournois Petanque App",
-    "version": "2.0.1"
-  },
+  "identifier": "fr.tournoispetanqueapp.desktop",
+  "productName": "Tournois Petanque App",
+  "version": "2.0.2",
   "build": {
-    "distDir": "../dist",
-    "devPath": "http://localhost:8081/",
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:8081/",
     "beforeDevCommand": "",
     "beforeBuildCommand": ""
   },
-  "tauri": {
-    "bundle": {
-      "active": true,
-      "targets": "all",
-      "identifier": "fr.tournoispetanqueapp.desktop",
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.ico"
-      ],
-      "resources": [],
-      "externalBin": [],
-      "copyright": "Mathis Cadio",
-      "category": "Sports",
-      "shortDescription": "Créer un tournoi de pétanque et ajouter les scores n'a jamais été aussi simple !",
-      "longDescription": "Avec Tournois Pétanque App, vous pouvez créer rapidement et gérer facilement un tournoi de pétanque sans internet ! Plusieurs types de tournois sont disponibles : mêlé-démêlé, championnat et coupe. Chaque type de tournois peut être réalisé en tête-à-tête, doublette ou triplette. Si vous choisissez la doublette et que vous êtes un nombre impair, alors les matchs seront complétés par une triplette ou tête-à-tête. Vous pouvez également enregistrer les joueurs par leur nom ou par un numéro. Il est aussi possible d'indiquer si un joueur est un enfant afin d'équilibrer les équipes. Le nombre de tours du tournoi et de points par matchs sont configurables. Une fois que votre tournoi est paramétré, l'application va automatiquement créer les matchs et répartir les joueurs de la manière la plus optimisée. Vous pourrez alors ajouter les scores au fur et à mesure du tournoi. Le classement est calculé à chaque fois que le score d'une partie est ajouté. Enfin, vous pouvez exporter en PDF vos scores et le classement.",
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.ico"
+    ],
+    "resources": [],
+    "externalBin": [],
+    "copyright": "Mathis Cadio",
+    "category": "Sports",
+    "shortDescription": "Créer un tournoi de pétanque et ajouter les scores n'a jamais été aussi simple !",
+    "longDescription": "Avec Tournois Pétanque App, vous pouvez créer rapidement et gérer facilement un tournoi de pétanque sans internet ! Plusieurs types de tournois sont disponibles : mêlé-démêlé, championnat et coupe. Chaque type de tournois peut être réalisé en tête-à-tête, doublette ou triplette. Si vous choisissez la doublette et que vous êtes un nombre impair, alors les matchs seront complétés par une triplette ou tête-à-tête. Vous pouvez également enregistrer les joueurs par leur nom ou par un numéro. Il est aussi possible d'indiquer si un joueur est un enfant afin d'équilibrer les équipes. Le nombre de tours du tournoi et de points par matchs sont configurables. Une fois que votre tournoi est paramétré, l'application va automatiquement créer les matchs et répartir les joueurs de la manière la plus optimisée. Vous pourrez alors ajouter les scores au fur et à mesure du tournoi. Le classement est calculé à chaque fois que le score d'une partie est ajouté. Enfin, vous pouvez exporter en PDF vos scores et le classement.",
+    "linux": {
       "deb": {
         "depends": []
-      },
-      "macOS": {
-        "frameworks": [],
-        "minimumSystemVersion": "",
-        "exceptionDomain": "",
-        "signingIdentity": null,
-        "entitlements": null
-      },
-      "windows": {
-        "certificateThumbprint": null,
-        "digestAlgorithm": "sha256",
-        "timestampUrl": "",
-        "webviewInstallMode": {
-          "type": "embedBootstrapper"
-        }
       }
     },
-    "updater": {
-      "active": true,
-      "endpoints": [
-        "https://tournoispetanqueapp.fr/update.json"
-      ],
-      "dialog": true,
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDI3RDBDRkE1QjYyMkQ2Q0UKUldUTzFpSzJwYy9RSjM2di9KTEhBQk9BTGtYb2Fxd1Y0TXNkUzcvNzJ6M2NZd1BVUVNkUGYvV1UK",
-      "windows": {
-        "installMode": "basicUi"
+    "macOS": {
+      "frameworks": [],
+      "minimumSystemVersion": "",
+      "exceptionDomain": "",
+      "signingIdentity": null,
+      "entitlements": null
+    },
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": "",
+      "webviewInstallMode": {
+        "type": "embedBootstrapper"
       }
     },
-    "allowlist": {
-      "all": true
-    },
+    "createUpdaterArtifacts": "v1Compatible"
+  },
+  "app": {
     "windows": [
       {
         "title": "Tournois Pétanque App",
@@ -72,6 +59,17 @@
     "security": {
       "dangerousDisableAssetCspModification": true,
       "csp": "default-src blob: data: filesystem: ws: wss: http: https: tauri: 'unsafe-eval' 'unsafe-inline' 'self' img-src: 'self'"
+    }
+  },
+  "plugins": {
+    "updater": {
+      "endpoints": [
+        "https://tournoispetanqueapp.fr/update.json"
+      ],
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDI3RDBDRkE1QjYyMkQ2Q0UKUldUTzFpSzJwYy9RSjM2di9KTEhBQk9BTGtYb2Fxd1Y0TXNkUzcvNzJ6M2NZd1BVUVNkUGYvV1UK",
+      "windows": {
+        "installMode": "passive"
+      }
     }
   }
 }

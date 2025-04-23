@@ -1,9 +1,10 @@
 import { JoueurType } from '../enums/joueurType';
 
-export interface Joueur {
+export interface JoueurGeneration {
   id: number;
   name: string;
   type: JoueurType | undefined;
-  equipe: number;
   isChecked: boolean;
+  allCoequipiers: number[];
+  allAdversaires: number[];
 }

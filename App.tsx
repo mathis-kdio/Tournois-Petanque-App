@@ -1,5 +1,5 @@
 import { GluestackUIProvider } from '@/components/ui/gluestack-ui-provider';
-import 'react-native-gesture-handler'; //https://reactnavigation.org/docs/stack-navigator/
+import '@/navigation/gesture-handler'; //https://reactnavigation.org/docs/stack-navigator/
 import 'expo-dev-client';
 import React from 'react';
 import Navigation from '@navigation/Navigation';
@@ -19,17 +19,20 @@ import './global.css';
 import '@expo/metro-runtime'; //Fast-refresh web
 import SessionProvider from '@/components/supabase/SessionProvider';
 
-const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
+const reactNavigationIntegration = Sentry.reactNavigationIntegration({
+  enableTimeToInitialDisplay: true,
+});
+
 Sentry.init({
   dsn: 'https://ca59ddcb4fb74f3bb4f82a10a1378747@o1284678.ingest.sentry.io/6495554',
   enabled: !__DEV__,
   debug: false, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
   tracesSampleRate: 0.3,
-  integrations: [
-    new Sentry.ReactNativeTracing({
-      routingInstrumentation,
-    }),
-  ],
+  _experiments: {
+    replaysSessionSampleRate: 0,
+    replaysOnErrorSampleRate: 1.0,
+  },
+  integrations: [reactNavigationIntegration, Sentry.mobileReplayIntegration()],
   attachStacktrace: true,
 });
 
@@ -44,7 +47,7 @@ class App extends React.Component {
             <GluestackUIProvider mode="light">
               <NavigationContainer
                 onReady={() =>
-                  routingInstrumentation.registerNavigationContainer(
+                  reactNavigationIntegration.registerNavigationContainer(
                     this.navigationRef,
                   )
                 }

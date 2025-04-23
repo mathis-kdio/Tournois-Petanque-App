@@ -41,6 +41,7 @@ import { Tournoi } from '@/types/interfaces/tournoi';
 import ConfirmationEmail from '@/screens/Connexion/ConfirmationEmail';
 import Securite from '@/screens/Connexion/Securite';
 import { captureMessage } from '@sentry/react-native';
+import ChoixComplement from '@/screens/Inscriptions/ChoixComplement';
 
 const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -350,6 +351,14 @@ function InscriptionStack() {
         component={ListeTerrains}
         options={{
           title: t('liste_terrains_navigation_title'),
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ChoixComplement"
+        component={ChoixComplement}
+        options={{
+          title: t('choix_complement_navigation_title'),
           headerShown: false,
         }}
       />
