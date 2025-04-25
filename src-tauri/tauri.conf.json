@@ -42,6 +42,9 @@
       "timestampUrl": "",
       "webviewInstallMode": {
         "type": "embedBootstrapper"
+      },
+      "wix": {
+        "upgradeCode": "{FA95505E-EF46-5E07-9D58-53AD5EAB8ED1}"
       }
     },
     "createUpdaterArtifacts": "v1Compatible"
