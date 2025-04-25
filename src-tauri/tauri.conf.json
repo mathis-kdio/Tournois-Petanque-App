@@ -57,7 +57,8 @@
         "fullscreen": false,
         "center": true,
         "minWidth": 600,
-        "minHeight": 450
+        "minHeight": 450,
+        "useHttpsScheme": true
       }
     ],
     "security": {
