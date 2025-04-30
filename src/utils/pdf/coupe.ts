@@ -141,9 +141,6 @@ export const generationPDFCoupe = (
     }
   }
   if (affichageClassement === true) {
-    if (toursParLigne === 1) {
-      html += '<div class="pagebreak"></div>';
-    }
     html += '<br><table><tr>';
     html +=
       '<th>Place</th><th>Victoires</th><th>Matchs Joués</th><th>Points</th>';
