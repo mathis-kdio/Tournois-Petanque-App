@@ -15,6 +15,10 @@ import { TFunction } from 'i18next';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { PropsFromRedux, connector } from '@/store/connector';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
+import { Text } from '@/components/ui/text';
+import { HStack } from '@/components/ui/hstack';
+import { Switch } from '@/components/ui/switch';
+import { Box } from '@/components/ui/box';
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any, any>;
@@ -22,23 +26,29 @@ export interface Props extends PropsFromRedux {
 }
 
 interface State {
-  btnIsLoading: boolean[];
+  btnIsLoading: boolean;
+  ajoutScore: boolean;
+  ajoutClassement: boolean;
+  affichageCompact: boolean;
 }
 
 class PDFExport extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      btnIsLoading: [false, false, false],
+      btnIsLoading: false,
+      ajoutScore: true,
+      ajoutClassement: true,
+      affichageCompact: false,
     };
   }
 
   _generatePDF = async (
     affichageScore: boolean,
     affichageClassement: boolean,
-    buttonId: number,
+    affichageCompact: boolean,
   ) => {
-    let toursParLigne = 3;
+    let toursParLigne = affichageCompact ? 3 : 1;
     let optionsTournoi = this.props.listeMatchs.at(-1) as OptionsTournoi;
     let nbTours = optionsTournoi.nbTours;
     let nbMatchs = optionsTournoi.nbMatchs;
@@ -96,56 +106,29 @@ class PDFExport extends React.Component<Props, State> {
         pW.close();
       };
       pW.print();
-      this._toggleLoading(buttonId);
+      this._toggleLoading();
     } else {
       const { uri } = await Print.printToFileAsync({ html });
       if ((await Sharing.isAvailableAsync()) && uri !== undefined) {
-        Sharing.shareAsync(uri).then(() => this._toggleLoading(buttonId));
+        Sharing.shareAsync(uri).then(() => this._toggleLoading());
       } else {
-        this._toggleLoading(buttonId);
+        this._toggleLoading();
       }
     }
   };
 
-  _toggleLoading(buttonId: number) {
-    let newBtnIsLoading = this.state.btnIsLoading;
-    newBtnIsLoading[buttonId] = !this.state.btnIsLoading[buttonId];
+  _toggleLoading() {
     this.setState({
-      btnIsLoading: newBtnIsLoading,
+      btnIsLoading: !this.state.btnIsLoading,
     });
   }
 
-  _onPressExportBtn(
-    buttonId: number,
-    affichageScore: boolean,
-    affichageClassement: boolean,
-  ) {
-    this._toggleLoading(buttonId);
-    this._generatePDF(affichageScore, affichageClassement, buttonId);
-  }
-
-  _exportButton(
-    buttonId: number,
-    buttonText: string,
-    affichageScore: boolean,
-    affichageClassement: boolean,
-  ) {
-    let pressableDisabled = false;
-    if (this.state.btnIsLoading[buttonId]) {
-      pressableDisabled = true;
-    }
-    return (
-      <Button
-        isDisabled={pressableDisabled}
-        onPress={() =>
-          this._onPressExportBtn(buttonId, affichageScore, affichageClassement)
-        }
-      >
-        {this.state.btnIsLoading[buttonId] && (
-          <ButtonSpinner className="mr-1" />
-        )}
-        <ButtonText>{buttonText}</ButtonText>
-      </Button>
+  _onPressExportBtn() {
+    this._toggleLoading();
+    this._generatePDF(
+      this.state.ajoutScore,
+      this.state.ajoutClassement,
+      this.state.affichageCompact,
     );
   }
 
@@ -158,15 +141,70 @@ class PDFExport extends React.Component<Props, State> {
             title={t('exporter_pdf_navigation_title')}
             navigation={this.props.navigation}
           />
-          <VStack space="3xl" className="flex-1 px-10 justify-center">
-            {this._exportButton(0, t('export_pdf_sans_scores'), false, false)}
-            {this._exportButton(1, t('export_pdf_avec_scores'), true, false)}
-            {this._exportButton(
-              2,
-              t('export_pdf_avec_scores_classement'),
-              true,
-              true,
-            )}
+          <VStack space="xl" className="flex-1 px-10 justify-center">
+            <HStack>
+              <Text className="text-white mr-3">
+                {t('export_pdf_ajout_scores')}
+              </Text>
+              <Box className="justify-center">
+                <Switch
+                  value={this.state.ajoutScore}
+                  onValueChange={() =>
+                    this.setState({
+                      ajoutScore: !this.state.ajoutScore,
+                    })
+                  }
+                  trackColor={{ false: '#ffffff', true: '#1c3969' }}
+                  thumbColor={'#ffffff'}
+                  ios_backgroundColor={'#ffffff'}
+                />
+              </Box>
+            </HStack>
+            <HStack>
+              <Text className="text-white mr-3">
+                {t('export_pdf_ajout_classement')}
+              </Text>
+              <Box className="justify-center">
+                <Switch
+                  value={this.state.ajoutClassement}
+                  onValueChange={() =>
+                    this.setState({
+                      ajoutClassement: !this.state.ajoutClassement,
+                    })
+                  }
+                  trackColor={{ false: '#ffffff', true: '#1c3969' }}
+                  thumbColor={'#ffffff'}
+                  ios_backgroundColor={'#ffffff'}
+                />
+              </Box>
+            </HStack>
+            <HStack>
+              <Text className="text-white mr-3">
+                {t('export_pdf_affichage_compact')}
+              </Text>
+              <Box className="justify-center">
+                <Switch
+                  value={this.state.affichageCompact}
+                  onValueChange={() =>
+                    this.setState({
+                      affichageCompact: !this.state.affichageCompact,
+                    })
+                  }
+                  trackColor={{ false: '#ffffff', true: '#1c3969' }}
+                  thumbColor={'#ffffff'}
+                  ios_backgroundColor={'#ffffff'}
+                />
+              </Box>
+            </HStack>
+            <Button
+              isDisabled={this.state.btnIsLoading}
+              onPress={() => this._onPressExportBtn()}
+            >
+              {this.state.btnIsLoading && (
+                <ButtonSpinner className="mr-1 color-white" />
+              )}
+              <ButtonText>{t('export_pdf')}</ButtonText>
+            </Button>
           </VStack>
         </ScrollView>
       </SafeAreaView>
