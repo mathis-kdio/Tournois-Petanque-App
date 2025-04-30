@@ -5,8 +5,11 @@ import { withTranslation } from 'react-i18next';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { TFunction } from 'i18next';
 import { NavigationProp } from '@react-navigation/native';
+import { connector, PropsFromRedux } from '@/store/connector';
+import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
+import { TypeTournoi } from '@/types/enums/typeTournoi';
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   navigation: NavigationProp<ReactNavigation.RootParamList>;
   t: TFunction;
 }
@@ -14,25 +17,27 @@ export interface Props {
 interface State {}
 
 class BoutonMenuHeaderNav extends React.Component<Props, State> {
+  private navigator: string;
+
   constructor(props: Props) {
     super(props);
     this.state = {};
   }
 
   _showOptions() {
-    this.props.navigation.navigate('ListeMatchsBottom', {
+    this.props.navigation.navigate(this.navigator, {
       screen: 'ParametresTournoi',
     });
   }
 
   _showJoueurs() {
-    this.props.navigation.navigate('ListeMatchsBottom', {
+    this.props.navigation.navigate(this.navigator, {
       screen: 'ListeJoueur',
     });
   }
 
   _showPDFExport() {
-    this.props.navigation.navigate('ListeMatchsBottom', {
+    this.props.navigation.navigate(this.navigator, {
       screen: 'PDFExport',
     });
   }
@@ -50,6 +55,11 @@ class BoutonMenuHeaderNav extends React.Component<Props, State> {
 
   render() {
     const { t } = this.props;
+    let parametresTournoi = this.props.listeMatchs.at(-1) as OptionsTournoi;
+    this.navigator =
+      parametresTournoi.typeTournoi === TypeTournoi.COUPE
+        ? 'ListeMatchsScreen'
+        : 'ListeMatchsBottom';
     return (
       <Menu
         placement="bottom left"
@@ -94,4 +104,4 @@ class BoutonMenuHeaderNav extends React.Component<Props, State> {
   }
 }
 
-export default withTranslation()(BoutonMenuHeaderNav);
+export default connector(withTranslation()(BoutonMenuHeaderNav));
