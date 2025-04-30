@@ -119,6 +119,25 @@ class GenerationMatchs extends React.Component<Props, State> {
     }
   }
 
+  componentDidUpdate(prevProps, prevState: State) {
+    if (
+      Platform.OS !== 'web' &&
+      this.state.isGenerationEnd &&
+      this.interstitial &&
+      this.state.adLoaded
+    ) {
+      this.interstitial.show();
+    }
+
+    if (
+      this.state.isGenerationEnd &&
+      (Platform.OS === 'web' || this.state.adClosed) &&
+      (!prevState.isGenerationEnd || prevState.adClosed !== this.state.adClosed)
+    ) {
+      this._displayListeMatch();
+    }
+  }
+
   componentWillUnmount() {
     if (typeof this.listener === 'string') {
       EventRegister.removeEventListener(this.listener);
@@ -345,20 +364,6 @@ class GenerationMatchs extends React.Component<Props, State> {
 
   render() {
     const { t } = this.props;
-    if (
-      Platform.OS !== 'web' &&
-      this.state.isGenerationEnd &&
-      this.interstitial &&
-      this.state.adLoaded
-    ) {
-      this.interstitial.show();
-    }
-    if (
-      this.state.isGenerationEnd &&
-      (Platform.OS === 'web' || this.state.adClosed)
-    ) {
-      this._displayListeMatch();
-    }
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <VStack className="flex-1 bg-[#0594ae]">
