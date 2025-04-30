@@ -89,7 +89,7 @@ class GenerationMatchs extends React.Component<Props, State> {
   }
 
   async componentDidMount() {
-    this.interstitial = await _adMobGenerationTournoiInterstitiel();
+    this.setInterstitial();
     this.listener = EventRegister.addEventListener(
       'interstitialAdEvent',
       (data) => {
@@ -99,6 +99,24 @@ class GenerationMatchs extends React.Component<Props, State> {
     setTimeout(() => {
       this._lanceurGeneration();
     }, 1000);
+  }
+
+  async setInterstitial() {
+    const timeout = (ms: number): Promise<never> =>
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Timeout')), ms),
+      );
+
+    try {
+      this.interstitial = await Promise.race([
+        _adMobGenerationTournoiInterstitiel(),
+        timeout(20000),
+      ]);
+    } catch (error) {
+      if (error instanceof Error && error.message === 'Timeout') {
+        this.setState({ adClosed: true });
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -336,8 +354,8 @@ class GenerationMatchs extends React.Component<Props, State> {
       this.interstitial.show();
     }
     if (
-      (Platform.OS === 'web' && this.state.isGenerationEnd) ||
-      this.state.adClosed
+      this.state.isGenerationEnd &&
+      (Platform.OS === 'web' || this.state.adClosed)
     ) {
       this._displayListeMatch();
     }
