@@ -89,7 +89,7 @@ class GenerationMatchs extends React.Component<Props, State> {
   }
 
   async componentDidMount() {
-    this.getInterstitial();
+    this.setInterstitial();
     this.listener = EventRegister.addEventListener(
       'interstitialAdEvent',
       (data) => {
@@ -101,7 +101,7 @@ class GenerationMatchs extends React.Component<Props, State> {
     }, 1000);
   }
 
-  async getInterstitial() {
+  async setInterstitial() {
     const timeout = (ms: number): Promise<never> =>
       new Promise((_, reject) =>
         setTimeout(() => reject(new Error('Timeout')), ms),
