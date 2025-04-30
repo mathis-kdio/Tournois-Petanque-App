@@ -21,6 +21,7 @@ export const generationPDFCoupe = (
   let html = `<!DOCTYPE html><html><head><style>@page{margin: 10px;} table{width: 100%;} table,th,td{border: 1px solid black;border-collapse: collapse;} td{min-width: 50px; word-break:break-all;} .td-score{min-width: 20px;} .text-right{text-align: right;} .text-center{text-align: center;} .no-border-top{border-top: none;} .no-border-bottom{border-bottom: none;} .border-top{border-top: 1px solid;}</style></head><body>`;
   html += '<h1 class="text-center">Tournoi ' + date + '</h1>';
   let idxFirstMatchsTable = 0;
+  let nbMatchTourEnCours = nbMatchsParTour;
   for (let tableIdx = 0; tableIdx < nbTables; tableIdx++) {
     let minTourTable = tableIdx * toursParLigne;
     html += '<table><tr>';
@@ -33,7 +34,7 @@ export const generationPDFCoupe = (
       html += '<th colspan="4">Tour n°' + (minTourTable + i) + '</th>';
     }
     html += '</tr>';
-    for (let i = 0; i < nbMatchsParTour; i++) {
+    for (let i = 0; i < nbMatchTourEnCours; i++) {
       let matchNbJoueur = 1;
       if (listeMatchs[i].equipe[0][2] !== -1) {
         matchNbJoueur = 3;
@@ -113,16 +114,18 @@ export const generationPDFCoupe = (
           } else {
             html += '<td class="no-border-bottom no-border-top">';
             html += '</td>';
-            html +=
-              '<td rowspan="' +
-              matchNbJoueur +
-              '" class="td-score text-center">';
-            html += '</td>';
-            html +=
-              '<td rowspan="' +
-              matchNbJoueur +
-              '" class="td-score text-center">';
-            html += '</td>';
+            if (jidx === 0) {
+              html +=
+                '<td rowspan="' +
+                matchNbJoueur +
+                '" class="td-score text-center">';
+              html += '</td>';
+              html +=
+                '<td rowspan="' +
+                matchNbJoueur +
+                '" class="td-score text-center">';
+              html += '</td>';
+            }
             html += '<td class="text-right no-border-bottom no-border-top">';
             html += '</td>';
           }
@@ -130,11 +133,8 @@ export const generationPDFCoupe = (
         html += '</tr>';
       }
     }
-    idxFirstMatchsTable += nbMatchsParTour - 1;
-    for (let index = 0; index < nbTourTable; index++) {
-      nbMatchsParTour /= 2;
-      idxFirstMatchsTable += nbMatchsParTour;
-    }
+    idxFirstMatchsTable += nbMatchTourEnCours;
+    nbMatchTourEnCours /= 2;
     html += '</tr></table><br>';
     if (toursParLigne === 1) {
       html += '<div class="pagebreak"></div>';
