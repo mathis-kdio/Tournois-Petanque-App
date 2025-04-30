@@ -46,8 +46,8 @@ class CardButton extends React.Component<Props, State> {
         )}
         <VStack className="items-center">
           <HStack space="md">
-            {icons.map((icon) => (
-              <FontAwesome5 name={icon} color="white" size={24} />
+            {icons.map((icon, index) => (
+              <FontAwesome5 key={index} name={icon} color="white" size={24} />
             ))}
           </HStack>
           <Text className="text-white">{text}</Text>

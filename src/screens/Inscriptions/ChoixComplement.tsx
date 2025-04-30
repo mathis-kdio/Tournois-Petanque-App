@@ -171,7 +171,7 @@ class ChoixComplement extends React.Component<Props, State> {
               {t('choix_complement_title_2')}
             </Text>
             {this.state.options.map((complement, index) => (
-              <VStack>
+              <VStack key={index}>
                 {this.card(complement)}
                 {index + 1 !== this.state.options.length && (
                   <Divider className="mt-5 h-1" />
