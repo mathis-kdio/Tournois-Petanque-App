@@ -64,7 +64,7 @@
     "expo-status-bar": "~2.0.1",
     "expo-tracking-transparency": "~5.1.1",
     "expo-updates": "~0.27.4",
-    "i18next": "^25.0.1",
+    "i18next": "^25.0.2",
     "nativewind": "^4.1.23",
     "react": "18.3.1",
     "react-dom": "18.3.1",
@@ -72,7 +72,7 @@
     "react-native": "~0.77.1",
     "react-native-event-listeners": "^1.0.7",
     "react-native-gesture-handler": "~2.22.0",
-    "react-native-google-mobile-ads": "^15.1.0",
+    "react-native-google-mobile-ads": "^15.2.0",
     "react-native-pager-view": "^6.7.1",
     "react-native-reanimated": "~3.16.7",
     "react-native-safe-area-context": "~5.1.0",
@@ -86,7 +86,7 @@
     "tailwindcss": "^3.4.17"
   },
   "devDependencies": {
-    "@babel/core": "^7.26.10",
+    "@babel/core": "^7.27.1",
     "@expo/metro-runtime": "~4.0.1",
     "@tauri-apps/cli": "^2.5.0",
     "babel-plugin-module-resolver": "^5.0.2",
