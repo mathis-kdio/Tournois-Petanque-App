@@ -11,6 +11,10 @@ import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { Complement } from '@/types/enums/complement';
 import { Match } from '@/types/interfaces/match';
 import { JoueurGeneration } from '@/types/interfaces/joueur-generation.interface';
+import {
+  testAffectationPossible,
+  updatePlayerRelationships,
+} from './melee-demelee';
 
 export const generationTriplettes = (
   listeJoueurs: Joueur[],
@@ -204,24 +208,25 @@ export const generationTriplettes = (
     let random = shuffle(joueursNonSpeId);
     for (let j = 0; j < joueursNonSpe.length; ) {
       let joueurId = random[j];
+      let match = matchs[idMatch];
 
       let assigned = false;
 
       for (const { equipe, place } of equipeIndices) {
-        if (matchs[idMatch].equipe[equipe][place] === -1) {
-          const affectationPossible = affectationEquipe(
+        if (match.equipe[equipe][place] === -1) {
+          const affectationPossible = testAffectationPossible(
             tour,
             joueurs[joueurId],
             jamaisMemeCoequipier,
             speciauxIncompatibles,
             eviterMemeAdversaire,
             nbTours,
-            matchs[idMatch].equipe[equipe],
-            matchs[idMatch].equipe[(equipe + 1) % 2],
+            match.equipe[equipe],
+            match.equipe[(equipe + 1) % 2],
             joueurs,
           );
           if (affectationPossible) {
-            matchs[idMatch].equipe[equipe][place] = joueurId;
+            match.equipe[equipe][place] = joueurId;
             breaker = 0;
             j++;
             assigned = true;
@@ -242,9 +247,9 @@ export const generationTriplettes = (
         isLastMatchTour &&
         joueurId !== undefined &&
         complement === Complement.QUATREVSTROIS &&
-        matchs[idMatch].equipe[0][3] === -1
+        match.equipe[0][3] === -1
       ) {
-        matchs[idMatch].equipe[0][3] = joueurId;
+        match.equipe[0][3] = joueurId;
         breaker = 0;
         j++;
       }
@@ -292,78 +297,4 @@ function getNbComplements(complement: Complement) {
     case Complement.TROISVSDEUX:
       return 1;
   }
-}
-
-function occuAdversaire(arr: number[], val: number) {
-  return arr.filter((x) => x === val).length;
-}
-
-function affectationEquipe(
-  tour: number,
-  joueur: JoueurGeneration,
-  jamaisMemeCoequipier: boolean,
-  speciauxIncompatibles: boolean,
-  eviterMemeAdversaire: number,
-  nbTours: number,
-  currentEquipe: [number, number, number, number],
-  currentAdversaire: [number, number, number, number],
-  listeJoueurs: JoueurGeneration[],
-): boolean {
-  const coequipiersActuels = currentEquipe.filter((id) => id !== -1);
-
-  //Test speciauxIncompatibles
-  if (
-    speciauxIncompatibles &&
-    joueur.type &&
-    coequipiersActuels.some(
-      (id) => listeJoueurs[id]?.type && listeJoueurs[id]?.type === joueur.type,
-    )
-  ) {
-    return false;
-  }
-
-  //Test eviterMemeAdversaire
-  if (eviterMemeAdversaire !== 100) {
-    const adversairesActuels = currentAdversaire.filter((id) => id !== -1);
-    for (const adversaire of adversairesActuels) {
-      const nbRencontres = occuAdversaire(joueur.allAdversaires, adversaire);
-      const maxRencontres =
-        eviterMemeAdversaire === 50 ? Math.floor(nbTours / 2) : 1;
-      if (nbRencontres >= maxRencontres) {
-        return false;
-      }
-    }
-  }
-
-  //Test jamaisMemeCoequipier
-  if (!jamaisMemeCoequipier || tour === 0) {
-    return true;
-  }
-
-  if (
-    coequipiersActuels.some((coequipierActuel) =>
-      joueur.allCoequipiers.includes(coequipierActuel),
-    )
-  ) {
-    return false;
-  }
-
-  return true;
-}
-
-function updatePlayerRelationships(
-  joueurs: JoueurGeneration[],
-  equipe: [number, number, number, number],
-  equipeAdverse: [number, number, number, number],
-) {
-  equipe.forEach((joueurId) => {
-    if (joueurId !== -1) {
-      const coequipiers = equipe.filter((id) => id !== -1 && id !== joueurId);
-      const adversaires = equipeAdverse.filter((id) => id !== -1);
-
-      const joueur = joueurs[joueurId];
-      joueur.allCoequipiers.push(...coequipiers);
-      joueur.allAdversaires.push(...adversaires);
-    }
-  });
 }
