@@ -16,29 +16,29 @@ import {
   updatePlayerRelationships,
 } from './melee-demelee';
 
-const testRegleMemeCoequipiersValide = (
+const testRegleJamaisMemeCoequipier = (
   nbTours: number,
   nbjoueurs: number,
   nbJoueursSpe: number,
   nbJoueursTireurs: number,
   nbJoueursPointeurs: number,
-  moitieNbJoueurs: number,
 ) => {
-  let nbCombinaisons = nbjoueurs;
-  nbCombinaisons -= nbJoueursSpe;
-  if (nbCombinaisons - nbJoueursTireurs > moitieNbJoueurs) {
-    nbCombinaisons -= nbJoueursTireurs;
-    if (nbCombinaisons - nbJoueursPointeurs > moitieNbJoueurs) {
-      nbCombinaisons -= nbJoueursPointeurs;
-    } else {
-      nbCombinaisons = moitieNbJoueurs;
-    }
-  } else {
-    nbCombinaisons = moitieNbJoueurs;
-  }
-  if (nbCombinaisons < nbTours) {
+  if (nbjoueurs - 1 < nbTours) {
     return false;
   }
+
+  if (nbjoueurs - nbJoueursSpe < nbTours) {
+    return false;
+  }
+
+  if (nbjoueurs - nbJoueursTireurs < nbTours) {
+    return false;
+  }
+
+  if (nbjoueurs - nbJoueursPointeurs < nbTours) {
+    return false;
+  }
+
   return true;
 };
 
@@ -182,18 +182,6 @@ export const generationDoublettes = (
       ) {
         return { erreurSpeciaux: true };
       }
-      //Test si possible d'appliquer la règle jamaisMemeCoequipier
-      let regleValide = testRegleMemeCoequipiersValide(
-        nbTours,
-        nbjoueurs,
-        nbJoueursSpe,
-        joueursTireurs.length,
-        joueursPointeurs.length,
-        moitieNbJoueurs,
-      );
-      if (!regleValide) {
-        return { erreurMemesEquipes: true };
-      }
     } else {
       //Cas de complément
       let moitieNbJoueurs: number;
@@ -220,31 +208,29 @@ export const generationDoublettes = (
       ) {
         return { erreurSpeciaux: true };
       }
-      //Test si possible d'appliquer la règle jamaisMemeCoequipier
-      if (jamaisMemeCoequipier === true) {
-        let regleValide = testRegleMemeCoequipiersValide(
-          nbTours,
-          nbjoueurs,
-          nbJoueursSpe,
-          joueursTireurs.length,
-          joueursPointeurs.length,
-          moitieNbJoueurs,
-        );
-        if (!regleValide) {
-          return { erreurMemesEquipes: true };
-        }
+    }
+    //Test si possible d'appliquer la règle jamaisMemeCoequipier
+    if (jamaisMemeCoequipier === true) {
+      let regleValide = testRegleJamaisMemeCoequipier(
+        nbTours,
+        nbjoueurs,
+        nbJoueursSpe,
+        joueursTireurs.length,
+        joueursPointeurs.length,
+      );
+      if (!regleValide) {
+        return { erreurMemesEquipes: true };
       }
     }
   } else if (speciauxIncompatibles === false) {
     //Test si possible d'appliquer la règle jamaisMemeCoequipier
     if (jamaisMemeCoequipier === true) {
-      let regleValide = testRegleMemeCoequipiersValide(
+      let regleValide = testRegleJamaisMemeCoequipier(
         nbTours,
         nbjoueurs,
         0,
         0,
         0,
-        nbjoueurs,
       );
       if (!regleValide) {
         return { erreurMemesEquipes: true };
