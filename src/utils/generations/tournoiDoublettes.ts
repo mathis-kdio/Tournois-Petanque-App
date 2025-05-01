@@ -377,7 +377,7 @@ export const generationDoublettes = (
         breaker++;
       }
 
-      //Affectation joueur(s) complémentaire(s) du tour si tournoi avec complément en triplette
+      // Affectation du joueur complémentaire au dernier match du tour si complément TRIPLETTE ou TROISVSDEUX
       if (random[j] !== undefined && (idMatch + 1) % nbMatchsParTour === 0) {
         if (
           nbjoueurs % 4 !== 0 &&
@@ -437,99 +437,6 @@ export const generationDoublettes = (
 
   return { matchs, nbMatchs };
 };
-
-function affectationJoueur1(
-  joueurId: number,
-  match: Match,
-  speciauxIncompatibles: boolean,
-  jamaisMemeCoequipier: boolean,
-  joueurs: JoueurGeneration[],
-  tour: number,
-): boolean {
-  if (joueurId === undefined || match.equipe[0][0] !== -1) {
-    return false;
-  }
-
-  if (
-    speciauxIncompatibles &&
-    joueurs[joueurId].type &&
-    joueurs[joueurId].type === joueurs[match.equipe[0][1]].type
-  ) {
-    return false;
-  }
-
-  if (jamaisMemeCoequipier === false || tour === 0) {
-    return true;
-  }
-
-  if (joueurs[joueurId].allCoequipiers.includes(match.equipe[0][1]) === true) {
-    return false;
-  }
-
-  return true;
-}
-
-function affectationJoueur2(
-  joueurId: number,
-  match: Match,
-  speciauxIncompatibles: boolean,
-  jamaisMemeCoequipier: boolean,
-  joueurs: JoueurGeneration[],
-  tour: number,
-): boolean {
-  if (joueurId === undefined || match.equipe[0][1] !== -1) {
-    return false;
-  }
-
-  if (
-    speciauxIncompatibles &&
-    joueurs[joueurId].type &&
-    joueurs[joueurId].type === joueurs[match.equipe[0][0]].type
-  ) {
-    return false;
-  }
-
-  if (jamaisMemeCoequipier === false || tour === 0) {
-    return true;
-  }
-
-  if (joueurs[joueurId].allCoequipiers.includes(match.equipe[0][0]) === true) {
-    return false;
-  }
-
-  return true;
-}
-
-function affectationJoueur3(
-  joueurId: number,
-  match: Match,
-  speciauxIncompatibles: boolean,
-  jamaisMemeCoequipier: boolean,
-  joueurs: JoueurGeneration[],
-  tour: number,
-): boolean {
-  if (joueurId === undefined || match.equipe[1][0] !== -1) {
-    return false;
-  }
-
-  if (
-    speciauxIncompatibles &&
-    joueurs[joueurId].type &&
-    joueurs[joueurId].type === joueurs[match.equipe[1][1]].type
-  ) {
-    return false;
-  }
-
-  if (jamaisMemeCoequipier === false || tour === 0) {
-    return true;
-  }
-
-  if (joueurs[joueurId].allCoequipiers.includes(match.equipe[1][1]) === true) {
-    return false;
-  }
-
-  return true;
-}
 
 function occuAdversaire(arr: number[], val: number) {
   return arr.filter((x) => x === val).length;
