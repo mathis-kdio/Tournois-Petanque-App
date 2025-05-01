@@ -208,11 +208,12 @@ export const generationTriplettes = (
     let random = shuffle(joueursNonSpeId);
     for (let j = 0; j < joueursNonSpe.length; ) {
       let joueurId = random[j];
+      let match = matchs[idMatch];
 
       let assigned = false;
 
       for (const { equipe, place } of equipeIndices) {
-        if (matchs[idMatch].equipe[equipe][place] === -1) {
+        if (match.equipe[equipe][place] === -1) {
           const affectationPossible = testAffectationPossible(
             tour,
             joueurs[joueurId],
@@ -220,12 +221,12 @@ export const generationTriplettes = (
             speciauxIncompatibles,
             eviterMemeAdversaire,
             nbTours,
-            matchs[idMatch].equipe[equipe],
-            matchs[idMatch].equipe[(equipe + 1) % 2],
+            match.equipe[equipe],
+            match.equipe[(equipe + 1) % 2],
             joueurs,
           );
           if (affectationPossible) {
-            matchs[idMatch].equipe[equipe][place] = joueurId;
+            match.equipe[equipe][place] = joueurId;
             breaker = 0;
             j++;
             assigned = true;
@@ -246,9 +247,9 @@ export const generationTriplettes = (
         isLastMatchTour &&
         joueurId !== undefined &&
         complement === Complement.QUATREVSTROIS &&
-        matchs[idMatch].equipe[0][3] === -1
+        match.equipe[0][3] === -1
       ) {
-        matchs[idMatch].equipe[0][3] = joueurId;
+        match.equipe[0][3] = joueurId;
         breaker = 0;
         j++;
       }

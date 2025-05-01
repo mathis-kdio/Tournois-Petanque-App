@@ -50,14 +50,14 @@ export const generationDoublettes = (
   jamaisMemeCoequipier: boolean,
   eviterMemeAdversaire: number,
 ) => {
-  let nbjoueurs = listeJoueurs.length;
+  const nbjoueurs = listeJoueurs.length;
   let matchs: Match[] = [];
   let idMatch = 0;
-  let joueursEnfants = [];
-  let joueursTireurs = [];
-  let joueursPointeurs = [];
-  let joueursNonType = [];
-  let joueursNonSpe = [];
+  let joueursEnfants: Joueur[] = [];
+  let joueursTireurs: Joueur[] = [];
+  let joueursPointeurs: Joueur[] = [];
+  let joueursNonType: Joueur[] = [];
+  let joueursNonSpe: Joueur[] = [];
   let joueurs: JoueurGeneration[] = [];
 
   //Initialisation des matchs dans un tableau
@@ -69,7 +69,7 @@ export const generationDoublettes = (
     complement,
   );
 
-  let nbMatchs = nbTours * nbMatchsParTour;
+  const nbMatchs = nbTours * nbMatchsParTour;
   idMatch = 0;
   for (let i = 1; i < nbTours + 1; i++) {
     for (let j = 0; j < nbMatchsParTour; j++) {
@@ -99,7 +99,7 @@ export const generationDoublettes = (
     Le tableau contenant les tous les joueurs permettra de connaitre dans quel équipe chaque joueur a été
   */
   for (let i = 0; i < nbjoueurs; i++) {
-    const joueur = { ...listeJoueurs[i], equipe: [] };
+    const joueur = { ...listeJoueurs[i] };
 
     if (listeJoueurs[i].type === JoueurType.ENFANT) {
       if (speciauxIncompatibles) {
@@ -170,10 +170,10 @@ export const generationDoublettes = (
   }
 
   //Test des règles speciauxIncompatibles et jamaisMemeCoequipier
-  if (speciauxIncompatibles === true) {
+  if (speciauxIncompatibles) {
     if (nbjoueurs % 4 === 0) {
       //Cas de non complément
-      let moitieNbJoueurs = nbjoueurs / 2;
+      const moitieNbJoueurs = nbjoueurs / 2;
       //Test si trop de joueurs de type pointeurs ou tireurs ou enfants
       if (
         joueursEnfants.length > moitieNbJoueurs ||
@@ -185,19 +185,19 @@ export const generationDoublettes = (
     } else {
       //Cas de complément
       let moitieNbJoueurs: number;
-      if (
-        complement === Complement.TETEATETE ||
-        complement === Complement.DEUXVSUN
-      ) {
-        //Complément tête-à-tête et DEUXVSUN
-        moitieNbJoueurs = nbjoueurs / 2 + 1;
-      }
-      if (
-        complement === Complement.TRIPLETTE ||
-        complement === Complement.TROISVSDEUX
-      ) {
-        //Complément triplette et TROISVSDEUX
-        moitieNbJoueurs = nbjoueurs / 2 - 1;
+      switch (complement) {
+        case Complement.TETEATETE:
+        case Complement.DEUXVSUN:
+          // Complément tête-à-tête et DEUXVSUN
+          moitieNbJoueurs = Math.ceil(nbjoueurs / 2);
+          break;
+        case Complement.TRIPLETTE:
+        case Complement.TROISVSDEUX:
+          // Complément triplette et TROISVSDEUX
+          moitieNbJoueurs = Math.floor(nbjoueurs / 2);
+          break;
+        default:
+          moitieNbJoueurs = nbjoueurs / 2;
       }
 
       //Test si trop de joueurs de type pointeurs ou tireurs ou enfants
@@ -209,37 +209,30 @@ export const generationDoublettes = (
         return { erreurSpeciaux: true };
       }
     }
-    //Test si possible d'appliquer la règle jamaisMemeCoequipier
-    if (jamaisMemeCoequipier === true) {
-      let regleValide = testRegleJamaisMemeCoequipier(
+  }
+
+  //Test si possible d'appliquer la règle jamaisMemeCoequipier
+  if (jamaisMemeCoequipier) {
+    let regleValide = false;
+    if (speciauxIncompatibles) {
+      regleValide = testRegleJamaisMemeCoequipier(
         nbTours,
         nbjoueurs,
         nbJoueursSpe,
         joueursTireurs.length,
         joueursPointeurs.length,
       );
-      if (!regleValide) {
-        return { erreurMemesEquipes: true };
-      }
+    } else {
+      regleValide = testRegleJamaisMemeCoequipier(nbTours, nbjoueurs, 0, 0, 0);
     }
-  } else if (speciauxIncompatibles === false) {
-    //Test si possible d'appliquer la règle jamaisMemeCoequipier
-    if (jamaisMemeCoequipier === true) {
-      let regleValide = testRegleJamaisMemeCoequipier(
-        nbTours,
-        nbjoueurs,
-        0,
-        0,
-        0,
-      );
-      if (!regleValide) {
-        return { erreurMemesEquipes: true };
-      }
+
+    if (!regleValide) {
+      return { erreurMemesEquipes: true };
     }
   }
 
   //Assignation des joueurs enfants
-  if (speciauxIncompatibles === true) {
+  if (speciauxIncompatibles) {
     //Joueurs enfants seront toujours joueur 2 ou joueur 4
     for (let i = 0; i < nbTours; i++) {
       let idMatch = i * nbMatchsParTour;
@@ -269,37 +262,6 @@ export const generationDoublettes = (
   //TODO
   //eviterMemeAdversaire = false;
 
-  //On ordonne aléatoirement les ids des joueurs non enfants à chaque début de manche
-  //Les listes pointeur ou tireur en 1ère et 2ème position
-  function _randomJoueursIds(joueursPointeurs, joueursTireurs, joueursNonType) {
-    let arrayIds: number[] = [];
-    let joueursPointeursId: number[] = [];
-    let joueursTireursId: number[] = [];
-    let joueursNonTypeId: number[] = [];
-    for (let i = 0; i < joueursPointeurs.length; i++) {
-      joueursPointeursId.push(joueursPointeurs[i].id);
-    }
-    for (let i = 0; i < joueursTireurs.length; i++) {
-      joueursTireursId.push(joueursTireurs[i].id);
-    }
-    for (let i = 0; i < joueursNonType.length; i++) {
-      joueursNonTypeId.push(joueursNonType[i].id);
-    }
-
-    if (speciauxIncompatibles === true) {
-      if (joueursPointeurs.length > joueursTireurs.length) {
-        arrayIds.push(...shuffle(joueursPointeursId));
-        joueursNonTypeId.push(...joueursTireursId);
-      } else {
-        arrayIds.push(...shuffle(joueursTireursId));
-        joueursNonTypeId.push(...joueursPointeursId);
-      }
-    }
-    arrayIds.push(...shuffle(joueursNonTypeId));
-
-    return arrayIds;
-  }
-
   //FONCTIONNEMENT
   //S'il y a eu des joueurs enfants avant alors ils ont déjà été affectés
   //On complète avec tous les joueurs non enfants
@@ -328,18 +290,22 @@ export const generationDoublettes = (
   let breaker = 0; //permet de détecter quand boucle infinie
   for (let tour = 0; tour < nbTours; tour++) {
     breaker = 0;
+    //On ordonne aléatoirement les ids des joueurs non enfants à chaque début de manche
+    //Les listes pointeur ou tireur en 1ère et 2ème position
     let random = _randomJoueursIds(
       joueursPointeurs,
       joueursTireurs,
       joueursNonType,
+      speciauxIncompatibles,
     );
     for (let j = 0; j < joueursNonSpe.length; ) {
       let joueurId = random[j];
+      let match = matchs[idMatch];
 
       let assigned = false;
 
       for (const { equipe, place } of equipeIndices) {
-        if (matchs[idMatch].equipe[equipe][place] === -1) {
+        if (match.equipe[equipe][place] === -1) {
           const affectationPossible = testAffectationPossible(
             tour,
             joueurs[joueurId],
@@ -347,12 +313,12 @@ export const generationDoublettes = (
             speciauxIncompatibles,
             eviterMemeAdversaire,
             nbTours,
-            matchs[idMatch].equipe[equipe],
-            matchs[idMatch].equipe[(equipe + 1) % 2],
+            match.equipe[equipe],
+            match.equipe[(equipe + 1) % 2],
             joueurs,
           );
           if (affectationPossible) {
-            matchs[idMatch].equipe[equipe][place] = joueurId;
+            match.equipe[equipe][place] = joueurId;
             breaker = 0;
             j++;
             assigned = true;
@@ -368,21 +334,22 @@ export const generationDoublettes = (
       }
 
       // Affectation du joueur complémentaire au dernier match du tour si complément TRIPLETTE ou TROISVSDEUX
-      if (joueurId !== undefined && (idMatch + 1) % nbMatchsParTour === 0) {
+      const isLastMatchTour = (idMatch + 1) % nbMatchsParTour === 0;
+      if (isLastMatchTour && joueurId !== undefined) {
         if (
           nbjoueurs % 4 !== 0 &&
           (complement === Complement.TRIPLETTE ||
             complement === Complement.TROISVSDEUX) &&
-          matchs[idMatch].equipe[0][2] === -1
+          match.equipe[0][2] === -1
         ) {
-          let joueursEnTrop = nbjoueurs % 4;
+          const joueursEnTrop = nbjoueurs % 4;
           if (joueursEnTrop === 1) {
-            matchs[idMatch].equipe[0][2] = joueurId;
+            match.equipe[0][2] = joueurId;
           } else if (joueursEnTrop === 2) {
-            matchs[idMatch].equipe[0][2] = joueurId;
-            matchs[idMatch].equipe[1][2] = random[j + 1];
+            match.equipe[0][2] = joueurId;
+            match.equipe[1][2] = random[j + 1];
           } else if (joueursEnTrop === 3) {
-            matchs[idMatch].equipe[1][2] = random[j + 1];
+            match.equipe[1][2] = random[j + 1];
             matchs[idMatch - 1].equipe[0][2] = random[j + 2];
           }
           j += joueursEnTrop;
@@ -391,6 +358,7 @@ export const generationDoublettes = (
           breaker++;
         }
       }
+
       idMatch++;
       //Si l'id du Match correspond à un match du prochain tour alors retour au premier match du tour en cours
       if (idMatch >= nbMatchsParTour * (tour + 1)) {
@@ -421,3 +389,37 @@ export const generationDoublettes = (
 
   return { matchs, nbMatchs };
 };
+
+function _randomJoueursIds(
+  joueursPointeurs: Joueur[],
+  joueursTireurs: Joueur[],
+  joueursNonType: Joueur[],
+  speciauxIncompatibles: boolean,
+): number[] {
+  let arrayIds: number[] = [];
+  let joueursPointeursId: number[] = [];
+  let joueursTireursId: number[] = [];
+  let joueursNonTypeId: number[] = [];
+  for (let i = 0; i < joueursPointeurs.length; i++) {
+    joueursPointeursId.push(joueursPointeurs[i].id);
+  }
+  for (let i = 0; i < joueursTireurs.length; i++) {
+    joueursTireursId.push(joueursTireurs[i].id);
+  }
+  for (let i = 0; i < joueursNonType.length; i++) {
+    joueursNonTypeId.push(joueursNonType[i].id);
+  }
+
+  if (speciauxIncompatibles === true) {
+    if (joueursPointeurs.length > joueursTireurs.length) {
+      arrayIds.push(...shuffle(joueursPointeursId));
+      joueursNonTypeId.push(...joueursTireursId);
+    } else {
+      arrayIds.push(...shuffle(joueursTireursId));
+      joueursNonTypeId.push(...joueursPointeursId);
+    }
+  }
+  arrayIds.push(...shuffle(joueursNonTypeId));
+
+  return arrayIds;
+}
