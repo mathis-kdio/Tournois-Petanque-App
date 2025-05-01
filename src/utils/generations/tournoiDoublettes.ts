@@ -11,7 +11,7 @@ import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { Match } from '@/types/interfaces/match';
 import { JoueurGeneration } from '@/types/interfaces/joueur-generation.interface';
-import { updatePlayerRelationships } from './melee-demelee';
+import { affectationEquipe, updatePlayerRelationships } from './melee-demelee';
 
 const testRegleMemeCoequipiersValide = (
   nbTours: number,
@@ -432,60 +432,3 @@ export const generationDoublettes = (
 
   return { matchs, nbMatchs };
 };
-
-function occuAdversaire(arr: number[], val: number) {
-  return arr.filter((x) => x === val).length;
-}
-
-function affectationEquipe(
-  tour: number,
-  joueur: JoueurGeneration,
-  jamaisMemeCoequipier: boolean,
-  speciauxIncompatibles: boolean,
-  eviterMemeAdversaire: number,
-  nbTours: number,
-  currentEquipe: [number, number, number, number],
-  currentAdversaire: [number, number, number, number],
-  listeJoueurs: JoueurGeneration[],
-): boolean {
-  const coequipiersActuels = currentEquipe.filter((id) => id !== -1);
-
-  //Test speciauxIncompatibles
-  if (
-    speciauxIncompatibles &&
-    joueur.type &&
-    coequipiersActuels.some(
-      (id) => listeJoueurs[id]?.type && listeJoueurs[id]?.type === joueur.type,
-    )
-  ) {
-    return false;
-  }
-
-  //Test eviterMemeAdversaire
-  if (eviterMemeAdversaire !== 100) {
-    const adversairesActuels = currentAdversaire.filter((id) => id !== -1);
-    for (const adversaire of adversairesActuels) {
-      const nbRencontres = occuAdversaire(joueur.allAdversaires, adversaire);
-      const maxRencontres =
-        eviterMemeAdversaire === 50 ? Math.floor(nbTours / 2) : 1;
-      if (nbRencontres >= maxRencontres) {
-        return false;
-      }
-    }
-  }
-
-  //Test jamaisMemeCoequipier
-  if (!jamaisMemeCoequipier || tour === 0) {
-    return true;
-  }
-
-  if (
-    coequipiersActuels.some((coequipierActuel) =>
-      joueur.allCoequipiers.includes(coequipierActuel),
-    )
-  ) {
-    return false;
-  }
-
-  return true;
-}
