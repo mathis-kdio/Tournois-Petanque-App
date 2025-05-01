@@ -169,7 +169,7 @@ export const generationDoublettes = (
     }
   }
 
-  //Test des règles speciauxIncompatibles et jamaisMemeCoequipier
+  //Test des règles speciauxIncompatibles
   if (speciauxIncompatibles) {
     if (nbjoueurs % 4 === 0) {
       //Cas de non complément
@@ -231,6 +231,9 @@ export const generationDoublettes = (
     }
   }
 
+  //Test si possible d'appliquer la règle eviterMemeAdversaire
+  //TODO
+
   //Assignation des joueurs enfants
   if (speciauxIncompatibles) {
     //Joueurs enfants seront toujours joueur 2 ou joueur 4
@@ -257,10 +260,6 @@ export const generationDoublettes = (
       joueursNonType.push({ ...listeJoueurs[i] });
     }
   }
-
-  //Test si possible d'appliquer la règle eviterMemeAdversaire
-  //TODO
-  //eviterMemeAdversaire = false;
 
   //FONCTIONNEMENT
   //S'il y a eu des joueurs enfants avant alors ils ont déjà été affectés
