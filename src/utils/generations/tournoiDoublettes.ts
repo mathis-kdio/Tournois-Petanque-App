@@ -11,6 +11,7 @@ import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { Match } from '@/types/interfaces/match';
 import { JoueurGeneration } from '@/types/interfaces/joueur-generation.interface';
+import { updatePlayerRelationships } from './melee-demelee';
 
 const testRegleMemeCoequipiersValide = (
   nbTours: number,
@@ -416,22 +417,16 @@ export const generationDoublettes = (
       }
     }
 
-    idMatch = tour * nbMatchsParTour;
-    for (let j = 0; j < nbMatchsParTour; j++) {
-      const match = matchs[idMatch + j];
-      if (match.equipe[0][0] !== -1 && match.equipe[0][1] !== -1) {
-        joueurs[match.equipe[0][0]].allCoequipiers.push(match.equipe[0][1]);
-      }
-      if (match.equipe[1][0] !== -1 && match.equipe[1][1] !== -1) {
-        joueurs[match.equipe[1][0]].allCoequipiers.push(match.equipe[1][1]);
-      }
-      if (match.equipe[0][1] !== -1 && match.equipe[0][0] !== -1) {
-        joueurs[match.equipe[0][1]].allCoequipiers.push(match.equipe[0][0]);
-      }
-      if (match.equipe[1][1] !== -1 && match.equipe[1][0] !== -1) {
-        joueurs[match.equipe[1][1]].allCoequipiers.push(match.equipe[1][0]);
-      }
+    const startMatchId = tour * nbMatchsParTour;
+    const endMatchId = startMatchId + nbMatchsParTour;
+
+    for (let matchId = startMatchId; matchId < endMatchId; matchId++) {
+      const match = matchs[matchId];
+      const [equipe1, equipe2] = match.equipe;
+      updatePlayerRelationships(joueurs, equipe1, equipe2);
+      updatePlayerRelationships(joueurs, equipe2, equipe1);
     }
+
     idMatch = nbMatchsParTour * (tour + 1);
   }
 
