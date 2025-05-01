@@ -11,7 +11,10 @@ import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { Complement } from '@/types/enums/complement';
 import { Match } from '@/types/interfaces/match';
 import { JoueurGeneration } from '@/types/interfaces/joueur-generation.interface';
-import { affectationEquipe, updatePlayerRelationships } from './melee-demelee';
+import {
+  testAffectationPossible,
+  updatePlayerRelationships,
+} from './melee-demelee';
 
 export const generationTriplettes = (
   listeJoueurs: Joueur[],
@@ -210,7 +213,7 @@ export const generationTriplettes = (
 
       for (const { equipe, place } of equipeIndices) {
         if (matchs[idMatch].equipe[equipe][place] === -1) {
-          const affectationPossible = affectationEquipe(
+          const affectationPossible = testAffectationPossible(
             tour,
             joueurs[joueurId],
             jamaisMemeCoequipier,

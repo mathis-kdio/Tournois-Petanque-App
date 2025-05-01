@@ -11,7 +11,10 @@ import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { Match } from '@/types/interfaces/match';
 import { JoueurGeneration } from '@/types/interfaces/joueur-generation.interface';
-import { affectationEquipe, updatePlayerRelationships } from './melee-demelee';
+import {
+  testAffectationPossible,
+  updatePlayerRelationships,
+} from './melee-demelee';
 
 const testRegleMemeCoequipiersValide = (
   nbTours: number,
@@ -351,7 +354,7 @@ export const generationDoublettes = (
 
       for (const { equipe, place } of equipeIndices) {
         if (matchs[idMatch].equipe[equipe][place] === -1) {
-          const affectationPossible = affectationEquipe(
+          const affectationPossible = testAffectationPossible(
             tour,
             joueurs[joueurId],
             jamaisMemeCoequipier,

@@ -1,6 +1,6 @@
 import { JoueurGeneration } from '@/types/interfaces/joueur-generation.interface';
 
-export function affectationEquipe(
+export function testAffectationPossible(
   tour: number,
   joueur: JoueurGeneration,
   jamaisMemeCoequipier: boolean,
