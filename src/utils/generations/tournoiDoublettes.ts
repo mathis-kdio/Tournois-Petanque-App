@@ -329,7 +329,7 @@ export const generationDoublettes = (
 
   idMatch = 0;
   let breaker = 0; //permet de détecter quand boucle infinie
-  for (let i = 0; i < nbTours; i++) {
+  for (let tour = 0; tour < nbTours; tour++) {
     breaker = 0;
     let random = _randomJoueursIds(
       joueursPointeurs,
@@ -338,7 +338,7 @@ export const generationDoublettes = (
     );
     for (let j = 0; j < joueursNonSpe.length; ) {
       //Affectation joueur 1
-      let affectationPossibleJ1 = affectationJoueur1(matchs[idMatch], jamaisMemeCoequipier, i, joueurs, random[j]);
+      let affectationPossibleJ1 = affectationJoueur1(matchs[idMatch], jamaisMemeCoequipier, tour, joueurs, random[j]);
       if (affectationPossibleJ1) {
         matchs[idMatch].equipe[0][0] = random[j];
         j++;
@@ -348,7 +348,7 @@ export const generationDoublettes = (
       }
 
       //Affectation joueur 2
-      let affectationPossibleJ2 = affectationJoueur2(random[j], matchs[idMatch], speciauxIncompatibles, joueurs, jamaisMemeCoequipier, i);
+      let affectationPossibleJ2 = affectationJoueur2(random[j], matchs[idMatch], speciauxIncompatibles, joueurs, jamaisMemeCoequipier, tour);
       if (affectationPossibleJ2) {
         matchs[idMatch].equipe[0][1] = random[j];
         j++;
@@ -449,7 +449,7 @@ export const generationDoublettes = (
         if (affectationPossible === true) {
           //Affectation joueur 3
           if (matchs[idMatch].equipe[1][0] === -1) {
-            if (jamaisMemeCoequipier === true && i > 0) {
+            if (jamaisMemeCoequipier === true && tour > 0) {
               if (
                 joueurs[random[j]].allCoequipiers.includes(
                   matchs[idMatch].equipe[1][1],
@@ -479,7 +479,7 @@ export const generationDoublettes = (
             ) {
               //Empeche que le joueur 4 joue plusieurs fois dans la même équipe avec le même joueur
               //Ne s'applique qu'à partir de la manche 2
-              if (jamaisMemeCoequipier === true && i > 0) {
+              if (jamaisMemeCoequipier === true && tour > 0) {
                 if (
                   joueurs[random[j]].allCoequipiers.includes(
                     matchs[idMatch].equipe[1][0],
@@ -530,8 +530,8 @@ export const generationDoublettes = (
       }
       idMatch++;
       //Si l'id du Match correspond à un match du prochain tour alors retour au premier match du tour en cours
-      if (idMatch >= nbMatchsParTour * (i + 1)) {
-        idMatch = i * nbMatchsParTour;
+      if (idMatch >= nbMatchsParTour * (tour + 1)) {
+        idMatch = tour * nbMatchsParTour;
       }
 
       //En cas de trop nombreuses tentatives, arret de la génération
@@ -543,7 +543,7 @@ export const generationDoublettes = (
       }
     }
 
-    idMatch = i * nbMatchsParTour;
+    idMatch = tour * nbMatchsParTour;
     for (let j = 0; j < nbMatchsParTour; j++) {
       const match = matchs[idMatch + j];
       if (match.equipe[0][0] !== -1 && match.equipe[0][1] !== -1) {
@@ -559,7 +559,7 @@ export const generationDoublettes = (
         joueurs[match.equipe[1][1]].allCoequipiers.push(match.equipe[1][0]);
       }
     }
-    idMatch = nbMatchsParTour * (i + 1);
+    idMatch = nbMatchsParTour * (tour + 1);
   }
 
   return { matchs, nbMatchs };
@@ -568,7 +568,7 @@ export const generationDoublettes = (
 function affectationJoueur1(
   match: Match,
   jamaisMemeCoequipier: boolean,
-  i: number,
+  tour: number,
   joueurs: any[],
   joueurId: number,
 ): boolean {
@@ -576,7 +576,7 @@ function affectationJoueur1(
     return false;
   }
 
-  if (jamaisMemeCoequipier === false || i === 0) {
+  if (jamaisMemeCoequipier === false || tour === 0) {
     return true;
   }
 
@@ -593,7 +593,7 @@ function affectationJoueur2(
   speciauxIncompatibles: boolean,
   joueurs: any[],
   jamaisMemeCoequipier: boolean,
-  i: number,
+  tour: number,
 ): boolean {
   if (joueurId === undefined || match.equipe[0][1] !== -1) {
     return false;
@@ -609,7 +609,7 @@ function affectationJoueur2(
     return false;
   }
 
-  if (jamaisMemeCoequipier === false || i === 0) {
+  if (jamaisMemeCoequipier === false || tour === 0) {
     return true;
   }
 
