@@ -42,7 +42,7 @@ export interface Props extends PropsFromRedux {
 
 interface State {
   joueur: Joueur;
-  joueurType: JoueurTypeEnum;
+  joueurType: JoueurTypeEnum | '';
   etatBouton: boolean;
   suggestions: Joueur[];
   nbSuggestions: number;
@@ -58,7 +58,7 @@ class Inscription extends React.Component<Props, State> {
     super(props);
     this.state = {
       joueur: undefined,
-      joueurType: undefined,
+      joueurType: '',
       etatBouton: false,
       suggestions: [],
       nbSuggestions: 5,
@@ -136,7 +136,7 @@ class Inscription extends React.Component<Props, State> {
       this.addPlayerTextInput.current.clear();
       this.joueurText = '';
       this.setState({
-        joueurType: undefined,
+        joueurType: '',
         etatBouton: false,
       });
       //Ne fonctionne pas avec: "this.addPlayerTextInput.current.focus()" quand validation avec clavier donc "hack" ci-dessous

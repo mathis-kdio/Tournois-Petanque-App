@@ -32,7 +32,7 @@ export interface Props extends PropsFromRedux {
 }
 
 interface State {
-  joueurType: JoueurTypeEnum;
+  joueurType: JoueurTypeEnum | '';
   modalRemoveIsOpen: boolean;
 }
 
@@ -40,7 +40,7 @@ class JoueurSuggere extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      joueurType: undefined,
+      joueurType: '',
       modalRemoveIsOpen: false,
     };
   }

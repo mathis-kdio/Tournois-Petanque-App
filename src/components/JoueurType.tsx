@@ -23,7 +23,7 @@ import { ModeTournoi } from '@/types/enums/modeTournoi';
 
 export interface Props extends PropsFromRedux {
   t: TFunction;
-  joueurType: JoueurTypeEnum;
+  joueurType: JoueurTypeEnum | '';
   _setJoueurType: (type: JoueurTypeEnum) => void;
 }
 
@@ -85,9 +85,10 @@ class JoueurType extends React.Component<Props, State> {
 
   render() {
     const { joueurType, _setJoueurType, t } = this.props;
+    console.log('joueurType: ', joueurType);
     return (
       <Select
-        selectedValue={joueurType ? joueurType : ''}
+        selectedValue={joueurType}
         aria-label={t('choisir_poste')}
         onValueChange={(itemValue: JoueurTypeEnum) => _setJoueurType(itemValue)}
       >
@@ -95,6 +96,7 @@ class JoueurType extends React.Component<Props, State> {
           <SelectInput
             className="text-white placeholder:text-white"
             placeholder={t('choisir_poste')}
+            value={joueurType}
           />
           <SelectIcon className="mr-3 text-white" as={ChevronDownIcon} />
         </SelectTrigger>
