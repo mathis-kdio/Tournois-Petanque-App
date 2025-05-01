@@ -448,57 +448,22 @@ export const generationDoublettes = (
         }
         if (affectationPossible === true) {
           //Affectation joueur 3
-          if (matchs[idMatch].equipe[1][0] === -1) {
-            if (jamaisMemeCoequipier === true && tour > 0) {
-              if (
-                joueurs[random[j]].allCoequipiers.includes(
-                  matchs[idMatch].equipe[1][1],
-                ) === false
-              ) {
-                matchs[idMatch].equipe[1][0] = random[j];
-                j++;
-                breaker = 0;
-              } else {
-                breaker++;
-              }
-            } else {
-              matchs[idMatch].equipe[1][0] = random[j];
-              j++;
-              breaker = 0;
-            }
+          let affectationPossibleJ3 = affectationJoueur3(random[j], matchs[idMatch], jamaisMemeCoequipier, tour, joueurs);
+          if (affectationPossibleJ3) {
+            matchs[idMatch].equipe[1][0] = random[j];
+            j++;
+            breaker = 0;
+          } else {
+            breaker++;
           }
           //Affectation joueur 4
-          else if (matchs[idMatch].equipe[1][1] === -1) {
-            //Empeche joueur 4 d'être du même type que joueur 3 si regle speciauxIncompatibles
-            if (
-              speciauxIncompatibles === false ||
-              joueurs[random[j]].type === undefined ||
-              (speciauxIncompatibles === true &&
-                joueurs[random[j]].type !==
-                  joueurs[matchs[idMatch].equipe[1][0]].type)
-            ) {
-              //Empeche que le joueur 4 joue plusieurs fois dans la même équipe avec le même joueur
-              //Ne s'applique qu'à partir de la manche 2
-              if (jamaisMemeCoequipier === true && tour > 0) {
-                if (
-                  joueurs[random[j]].allCoequipiers.includes(
-                    matchs[idMatch].equipe[1][0],
-                  ) === false
-                ) {
-                  matchs[idMatch].equipe[1][1] = random[j];
-                  j++;
-                  breaker = 0;
-                } else {
-                  breaker++;
-                }
-              } else {
-                matchs[idMatch].equipe[1][1] = random[j];
-                j++;
-                breaker = 0;
-              }
-            } else {
-              breaker++;
-            }
+          let affectationPossibleJ4 = affectationJoueur4(random[j], matchs[idMatch], speciauxIncompatibles, joueurs, jamaisMemeCoequipier, tour);
+          if (affectationPossibleJ4) {
+            matchs[idMatch].equipe[1][1] = random[j];
+            j++;
+            breaker = 0;
+          } else {
+            breaker++;
           }
         } else {
           breaker++;
@@ -572,7 +537,7 @@ function affectationJoueur1(
   joueurs: any[],
   joueurId: number,
 ): boolean {
-  if (match.equipe[0][0] !== -1) {
+  if (joueurId === undefined || match.equipe[0][0] !== -1) {
     return false;
   }
 
@@ -599,7 +564,7 @@ function affectationJoueur2(
     return false;
   }
 
-  //Empeche joueur 2 d'être du même type que joueur 1 si regle speciauxIncompatibles
+  // TODO
   if (
     speciauxIncompatibles === false ||
     joueurs[joueurId].type === undefined ||
@@ -614,6 +579,61 @@ function affectationJoueur2(
   }
 
   if (joueurs[joueurId].equipe.includes(match.equipe[0][0]) === true) {
+    return false;
+  }
+
+  return true;
+}
+
+function affectationJoueur3(
+  joueurId: number,
+  match: Match,
+  jamaisMemeCoequipier: boolean,
+  tour: number,
+  joueurs: JoueurGeneration[],
+): boolean {
+  if (joueurId === undefined || match.equipe[1][0] !== -1) {
+    return false;
+  }
+
+  if (jamaisMemeCoequipier === false || tour === 0) {
+    return true;
+  }
+
+  if (joueurs[joueurId].allCoequipiers.includes(match.equipe[1][1]) === true) {
+    return false;
+  }
+
+  return true;
+}
+
+function affectationJoueur4(
+  joueurId: number,
+  match: Match,
+  speciauxIncompatibles: boolean,
+  joueurs: JoueurGeneration[],
+  jamaisMemeCoequipier: boolean,
+  tour: number,
+): boolean {
+  if (joueurId === undefined || match.equipe[1][1] !== -1) {
+    return false;
+  }
+
+  // TODO
+  if (
+    speciauxIncompatibles === false ||
+    joueurs[joueurId].type === undefined ||
+    (speciauxIncompatibles === true &&
+      joueurs[joueurId].type !== joueurs[match.equipe[1][0]].type)
+  ) {
+    return false;
+  }
+
+  if (jamaisMemeCoequipier === false || tour === 0) {
+    return true;
+  }
+
+  if (joueurs[joueurId].allCoequipiers.includes(match.equipe[1][0]) === true) {
     return false;
   }
 
