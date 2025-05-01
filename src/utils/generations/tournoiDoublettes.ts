@@ -352,13 +352,13 @@ export const generationDoublettes = (
         if (matchs[idMatch].equipe[equipe][place] === -1) {
           const affectationPossible = affectationEquipe(
             tour,
-            joueurs[random[j]],
+            joueurs[joueurId],
             jamaisMemeCoequipier,
             speciauxIncompatibles,
             eviterMemeAdversaire,
             nbTours,
-            matchs[idMatch].equipe[0],
-            matchs[idMatch].equipe[1],
+            matchs[idMatch].equipe[equipe],
+            matchs[idMatch].equipe[(equipe + 1) % 2],
             joueurs,
           );
           if (affectationPossible) {
@@ -378,7 +378,7 @@ export const generationDoublettes = (
       }
 
       // Affectation du joueur complémentaire au dernier match du tour si complément TRIPLETTE ou TROISVSDEUX
-      if (random[j] !== undefined && (idMatch + 1) % nbMatchsParTour === 0) {
+      if (joueurId !== undefined && (idMatch + 1) % nbMatchsParTour === 0) {
         if (
           nbjoueurs % 4 !== 0 &&
           (complement === Complement.TRIPLETTE ||
@@ -387,9 +387,9 @@ export const generationDoublettes = (
         ) {
           let joueursEnTrop = nbjoueurs % 4;
           if (joueursEnTrop === 1) {
-            matchs[idMatch].equipe[0][2] = random[j];
+            matchs[idMatch].equipe[0][2] = joueurId;
           } else if (joueursEnTrop === 2) {
-            matchs[idMatch].equipe[0][2] = random[j];
+            matchs[idMatch].equipe[0][2] = joueurId;
             matchs[idMatch].equipe[1][2] = random[j + 1];
           } else if (joueursEnTrop === 3) {
             matchs[idMatch].equipe[1][2] = random[j + 1];
