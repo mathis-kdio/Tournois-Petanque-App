@@ -338,9 +338,25 @@ export const generationDoublettes = (
     );
     for (let j = 0; j < joueursNonSpe.length; ) {
       //Affectation joueur 1
-      ({ j, breaker } = affectationJoueur1(matchs[idMatch], jamaisMemeCoequipier, i, joueurs, random[j], j, breaker));
+      let affectationPossibleJ1 = affectationJoueur1(matchs[idMatch], jamaisMemeCoequipier, i, joueurs, random[j]);
+      if (affectationPossibleJ1) {
+        matchs[idMatch].equipe[0][0] = random[j];
+        j++;
+        breaker = 0;
+      } else {
+        breaker++;
+      }
+
       //Affectation joueur 2
-      ({ j, breaker } = affectationJoueur2(random[j], j, matchs[idMatch], speciauxIncompatibles, joueurs, jamaisMemeCoequipier, i, breaker));
+      let affectationPossibleJ2 = affectationJoueur2(random[j], matchs[idMatch], speciauxIncompatibles, joueurs, jamaisMemeCoequipier, i);
+      if (affectationPossibleJ2) {
+        matchs[idMatch].equipe[0][1] = random[j];
+        j++;
+        breaker = 0;
+      } else {
+        breaker++;
+      }
+
       //Affectation joueur 3 & 4
       if (random[j] !== undefined) {
         //Test si le joueur 1 ou 2 n'a pas déjà joué (ensemble et contre) + de la moitié de ses matchs contre le joueur en cours d'affectation
@@ -411,9 +427,9 @@ export const generationDoublettes = (
               );
             }
             //+1 si joueur en cours d'affectation a déjà joué dans la même équipe
-            totPartiesJ1 += joueurs[joueur1].equipe.includes(random[j]) ? 1 : 0;
+            totPartiesJ1 += joueurs[joueur1].allCoequipiers.includes(random[j]) ? 1 : 0;
             if (joueur2) {
-              totPartiesJ2 += joueurs[joueur2].equipe.includes(random[j])
+              totPartiesJ2 += joueurs[joueur2].allCoequipiers.includes(random[j])
                 ? 1
                 : 0;
             }
@@ -435,7 +451,7 @@ export const generationDoublettes = (
           if (matchs[idMatch].equipe[1][0] === -1) {
             if (jamaisMemeCoequipier === true && i > 0) {
               if (
-                joueurs[random[j]].equipe.includes(
+                joueurs[random[j]].allCoequipiers.includes(
                   matchs[idMatch].equipe[1][1],
                 ) === false
               ) {
@@ -465,7 +481,7 @@ export const generationDoublettes = (
               //Ne s'applique qu'à partir de la manche 2
               if (jamaisMemeCoequipier === true && i > 0) {
                 if (
-                  joueurs[random[j]].equipe.includes(
+                  joueurs[random[j]].allCoequipiers.includes(
                     matchs[idMatch].equipe[1][0],
                   ) === false
                 ) {
@@ -555,63 +571,51 @@ function affectationJoueur1(
   i: number,
   joueurs: any[],
   joueurId: number,
-  j: number,
-  breaker: number,
-) {
-  if (match.equipe[0][0] === -1) {
-    if (jamaisMemeCoequipier === true && i > 0) {
-      if (joueurs[joueurId].equipe.includes(match.equipe[0][1]) === false) {
-        match.equipe[0][0] = joueurId;
-        j++;
-        breaker = 0;
-      } else {
-        breaker++;
-      }
-    } else {
-      match.equipe[0][0] = joueurId;
-      j++;
-      breaker = 0;
-    }
+): boolean {
+  if (match.equipe[0][0] !== -1) {
+    return false;
   }
-  return { j, breaker };
+
+  if (jamaisMemeCoequipier === false || i === 0) {
+    return true;
+  }
+
+  if (joueurs[joueurId].equipe.includes(match.equipe[0][1]) === true) {
+    return false;
+  }
+
+  return true;
 }
 
 function affectationJoueur2(
   joueurId: number,
-  j: number,
   match: Match,
   speciauxIncompatibles: boolean,
   joueurs: any[],
   jamaisMemeCoequipier: boolean,
   i: number,
-  breaker: number,
-) {
-  if (joueurId !== undefined && match.equipe[0][1] === -1) {
-    //Empeche joueur 2 d'être du même type que joueur 1 si regle speciauxIncompatibles
-    if (
-      speciauxIncompatibles === false ||
-      joueurs[joueurId].type === undefined ||
-      (speciauxIncompatibles === true &&
-        joueurs[joueurId].type !== joueurs[match.equipe[0][0]].type)
-    ) {
-      //Empeche que le joueur 1 joue plusieurs fois dans la même équipe avec le même joueur
-      //Ne s'applique qu'à partir de la manche 2
-      if (jamaisMemeCoequipier === true && i > 0) {
-        if (joueurs[joueurId].equipe.includes(match.equipe[0][0]) === false) {
-          match.equipe[0][1] = joueurId;
-          j++;
-          breaker = 0;
-        } else {
-          breaker++;
-        }
-      } else {
-        match.equipe[0][1] = joueurId;
-        j++;
-        breaker = 0;
-      }
-    } else {
-      breaker++;
-    }
+): boolean {
+  if (joueurId === undefined || match.equipe[0][1] !== -1) {
+    return false;
   }
-  return { j, breaker };
+
+  //Empeche joueur 2 d'être du même type que joueur 1 si regle speciauxIncompatibles
+  if (
+    speciauxIncompatibles === false ||
+    joueurs[joueurId].type === undefined ||
+    (speciauxIncompatibles === true &&
+      joueurs[joueurId].type !== joueurs[match.equipe[0][0]].type)
+  ) {
+    return false;
+  }
+
+  if (jamaisMemeCoequipier === false || i === 0) {
+    return true;
+  }
+
+  if (joueurs[joueurId].equipe.includes(match.equipe[0][0]) === true) {
+    return false;
+  }
+
+  return true;
 }
