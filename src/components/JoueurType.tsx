@@ -94,7 +94,7 @@ class JoueurType extends React.Component<Props, State> {
       >
         <SelectTrigger variant="rounded" className="border-white">
           <SelectInput
-            className="text-white placeholder:text-white"
+            className="text-white"
             placeholder={t('choisir_poste')}
             value={joueurType}
           />
@@ -106,6 +106,7 @@ class JoueurType extends React.Component<Props, State> {
             <SelectDragIndicatorWrapper>
               <SelectDragIndicator />
             </SelectDragIndicatorWrapper>
+            <SelectItem label={t('aucun_poste')} value="" key="none" />
             <SelectItem
               label={t('enfant')}
               value={JoueurTypeEnum.ENFANT}
