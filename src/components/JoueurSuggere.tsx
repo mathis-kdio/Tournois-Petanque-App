@@ -97,6 +97,7 @@ class JoueurSuggere extends React.Component<Props, State> {
       value: [ModeTournoi.HISTORIQUE, playerId],
     };
     this.props.dispatch(actionSuppr);
+    this.setState({ modalRemoveIsOpen: false });
   }
 
   _addPlayer(playerName: string) {
