@@ -85,7 +85,6 @@ class JoueurType extends React.Component<Props, State> {
 
   render() {
     const { joueurType, _setJoueurType, t } = this.props;
-    console.log('joueurType: ', joueurType);
     return (
       <Select
         selectedValue={joueurType}
