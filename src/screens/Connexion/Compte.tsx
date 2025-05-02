@@ -9,7 +9,7 @@ import Item from '@components/Item';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import TopBarBack from '@/components/TopBarBack';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import { withSession } from '@/components/supabase/withSession';
 import { LoaderIcon, TrashIcon } from '@/components/ui/icon';
 import { Divider } from '@/components/ui/divider';

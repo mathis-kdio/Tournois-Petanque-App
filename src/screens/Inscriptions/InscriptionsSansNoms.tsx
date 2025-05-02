@@ -6,7 +6,7 @@ import { VStack } from '@/components/ui/vstack';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import TopBarBack from '@components/TopBarBack';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { JoueurType } from '@/types/enums/joueurType';

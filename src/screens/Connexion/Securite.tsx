@@ -6,7 +6,7 @@ import { withTranslation } from 'react-i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import TopBarBack from '@/components/TopBarBack';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import { withSession } from '@/components/supabase/withSession';
 import { Input, InputField, InputSlot } from '@/components/ui/input';
 import { Button, ButtonText } from '@/components/ui/button';

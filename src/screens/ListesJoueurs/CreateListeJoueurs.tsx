@@ -6,7 +6,7 @@ import React from 'react';
 import Inscriptions from '@components/Inscriptions';
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import TopBarBack from '@components/TopBarBack';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import { TFunction } from 'i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ModeTournoi } from '@/types/enums/modeTournoi';

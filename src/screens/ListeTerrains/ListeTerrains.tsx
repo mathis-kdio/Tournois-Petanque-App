@@ -7,7 +7,7 @@ import ListeTerrainItem from '@components/ListeTerrainItem';
 import { calcNbMatchsParTour } from '@utils/generations/generation';
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import TopBarBack from '@components/TopBarBack';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { PropsFromRedux, connector } from '@/store/connector';

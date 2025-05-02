@@ -11,7 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
-import TopBarBack from '@/components/TopBarBack';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import {
   FormControl,
   FormControlError,

@@ -7,7 +7,7 @@ import React from 'react';
 import ListeJoueurItem from '@components/ListeJoueurItem';
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import TopBarBack from '@components/TopBarBack';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { Joueur } from '@/types/interfaces/joueur';

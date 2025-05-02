@@ -7,7 +7,7 @@ import React from 'react';
 import ListeJoueursItem from '@components/ListeJoueursItem';
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import TopBarBack from '@components/TopBarBack';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { StackNavigationProp } from '@react-navigation/stack';
