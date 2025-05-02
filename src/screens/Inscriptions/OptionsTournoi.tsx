@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/checkbox';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import TopBarBack from '@components/TopBarBack';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import { withTranslation } from 'react-i18next';
 import { Platform } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';

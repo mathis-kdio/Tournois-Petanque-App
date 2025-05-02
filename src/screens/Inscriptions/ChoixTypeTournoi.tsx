@@ -17,7 +17,7 @@ import { VStack } from '@/components/ui/vstack';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome5 } from '@expo/vector-icons';
-import TopBarBack from '@components/TopBarBack';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import CardButton from '@components/buttons/CardButton';
 import { withTranslation } from 'react-i18next';
 import AdMobInscriptionsBanner from '../../components/adMob/AdMobInscriptionsBanner';

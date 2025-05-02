@@ -8,7 +8,7 @@ import { withTranslation } from 'react-i18next';
 import { generationPDFTournoi } from '@utils/pdf/tournoi';
 import { generationPDFCoupe } from '@utils/pdf/coupe';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import TopBarBack from '../../components/TopBarBack';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import { Platform } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';

@@ -34,7 +34,7 @@ import { _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { _adsConsentShowForm } from '../../utils/adMob/consentForm';
 import { withTranslation } from 'react-i18next';
-import TopBarBack from '@components/TopBarBack';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import Item from '@components/Item';
 import { PropsFromRedux, connector } from '@/store/connector';
 import { TFunction, i18n } from 'i18next';

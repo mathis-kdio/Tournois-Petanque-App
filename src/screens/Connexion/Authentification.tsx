@@ -11,7 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
-import TopBarBack from '@/components/TopBarBack';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import { Divider } from '@/components/ui/divider';
 import { HStack } from '@/components/ui/hstack';
 import { FontAwesome5 } from '@expo/vector-icons';

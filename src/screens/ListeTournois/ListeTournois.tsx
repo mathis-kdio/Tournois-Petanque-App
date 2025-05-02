@@ -17,7 +17,7 @@ import React from 'react';
 import ListeTournoiItem from '@components/ListeTournoiItem';
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import TopBarBack from '@components/TopBarBack';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';

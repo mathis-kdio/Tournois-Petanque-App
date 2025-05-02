@@ -9,7 +9,7 @@ import { VStack } from '@/components/ui/vstack';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import TopBarBack from '@components/TopBarBack';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import AdMobMatchDetailBanner from '../../components/adMob/AdMobMatchDetailBanner';
 import { nextMatch } from '../../utils/generations/nextMatch/nextMatch';
 import { Platform } from 'react-native';

@@ -1,4 +1,4 @@
-import TopBarBack from '@/components/TopBarBack';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import { Button, ButtonText } from '@/components/ui/button';
 import { HStack } from '@/components/ui/hstack';
 import { ScrollView } from '@/components/ui/scroll-view';

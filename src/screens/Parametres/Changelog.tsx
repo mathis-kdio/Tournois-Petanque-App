@@ -17,7 +17,7 @@ import { VStack } from '@/components/ui/vstack';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { withTranslation } from 'react-i18next';
-import TopBarBack from '@components/TopBarBack';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import ChangelogData from '@assets/ChangelogData.json';
 import Item from '@components/Item';
 import { PropsFromRedux, connector } from '@/store/connector';
