@@ -194,7 +194,7 @@ class Accueil extends React.Component<Props, State> {
                     <FontAwesome5 name="star" color="white" size={20} />
                   </Pressable>
                   <Pressable
-                    onPress={() => _openURL(mail)}
+                    onPress={() => _openURL(encodeURI(mail))}
                     className="flex-1 items-center bg-[#1c3969] rounded-3xl p-2"
                   >
                     <FontAwesome5 name="envelope" color="white" size={20} />
