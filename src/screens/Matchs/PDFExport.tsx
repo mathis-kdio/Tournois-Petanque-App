@@ -4,6 +4,8 @@ import { VStack } from '@/components/ui/vstack';
 import React from 'react';
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
+import * as IntentLauncher from 'expo-intent-launcher';
+import * as FileSystem from 'expo-file-system';
 import { withTranslation } from 'react-i18next';
 import { generationPDFTournoi } from '@utils/pdf/tournoi';
 import { generationPDFCoupe } from '@utils/pdf/coupe';
@@ -109,8 +111,19 @@ class PDFExport extends React.Component<Props, State> {
       this._toggleLoading();
     } else {
       const { uri } = await Print.printToFileAsync({ html });
-      if ((await Sharing.isAvailableAsync()) && uri !== undefined) {
-        Sharing.shareAsync(uri).then(() => this._toggleLoading());
+      if (Platform.OS === 'android') {
+        let contentUri = await FileSystem.getContentUriAsync(uri);
+        IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
+          data: contentUri,
+          flags: 1,
+          type: 'application/pdf',
+        }).then(() => this._toggleLoading());
+      } else if (Platform.OS === 'ios') {
+        if (await Sharing.isAvailableAsync()) {
+          Sharing.shareAsync(uri).then(() => this._toggleLoading());
+        } else {
+          this._toggleLoading();
+        }
       } else {
         this._toggleLoading();
       }
