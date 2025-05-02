@@ -11,3 +11,4 @@ node_modules
 dist
 .extra
 serviceAccountKeyPath.json
+.env.local
