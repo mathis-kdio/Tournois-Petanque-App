@@ -13,7 +13,6 @@ import { generationTriplettes } from '@utils/generations/tournoiTriplettes';
 import { uniqueValueArrayRandOrder } from '@utils/generations/generation';
 import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import TopBarBack from '@/components/topBar/TopBarBack';
 import { _adMobGenerationTournoiInterstitiel } from '../../components/adMob/AdMobGenerationTournoiInterstitiel';
 import { Platform } from 'react-native';
 import { EventRegister } from 'react-native-event-listeners';
@@ -28,6 +27,7 @@ import { PropsFromRedux, connector } from '@/store/connector';
 import { RouteProp } from '@react-navigation/native';
 import { InscriptionStackParamList } from '@/navigation/Navigation';
 import { InterstitialAd } from 'react-native-google-mobile-ads';
+import TopBar from '@/components/topBar/TopBar';
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any, any>;
@@ -367,10 +367,7 @@ class GenerationMatchs extends React.Component<Props, State> {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <VStack className="flex-1 bg-[#0594ae]">
-          <TopBarBack
-            title={t('generation_matchs_navigation_title')}
-            navigation={this.props.navigation}
-          />
+          <TopBar title={t('generation_matchs_navigation_title')} />
           <VStack className="flex-1 px-10 justify-center items-center">
             {this._displayLoading()}
           </VStack>
