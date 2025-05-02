@@ -22,6 +22,7 @@ import TopBarBack from '@/components/topBar/TopBarBack';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
 import { PropsFromRedux, connector } from '@/store/connector';
+import { CommonActions } from '@react-navigation/native';
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any, any>;
@@ -46,14 +47,14 @@ class ParametresTournoi extends React.Component<Props, State> {
 
   _supprimerTournoi() {
     this.setState({ modalDeleteIsOpen: false });
-    this.props.navigation.reset({
-      index: 0,
-      routes: [
-        {
-          name: 'AccueilGeneral',
-        },
-      ],
-    });
+
+    this.props.navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'AccueilGeneral' }],
+      }),
+    );
+
     const supprDansListeTournois = {
       type: 'SUPPR_TOURNOI',
       value: {
@@ -61,9 +62,11 @@ class ParametresTournoi extends React.Component<Props, State> {
           this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID,
       },
     };
-    this.props.dispatch(supprDansListeTournois);
     const suppressionAllMatchs = { type: 'SUPPR_MATCHS' };
-    this.props.dispatch(suppressionAllMatchs);
+    setTimeout(() => {
+      this.props.dispatch(supprDansListeTournois);
+      this.props.dispatch(suppressionAllMatchs);
+    }, 1000);
   }
 
   _modalSupprimerTournoi() {
