@@ -24,7 +24,7 @@ import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { Complement } from '@/types/enums/complement';
 import { Match } from '@/types/interfaces/match';
 import { PropsFromRedux, connector } from '@/store/connector';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, StackActions } from '@react-navigation/native';
 import { InscriptionStackParamList } from '@/navigation/Navigation';
 import { InterstitialAd } from 'react-native-google-mobile-ads';
 import TopBar from '@/components/topBar/TopBar';
@@ -359,7 +359,10 @@ class GenerationMatchs extends React.Component<Props, State> {
   }
 
   _retourInscription() {
-    this.props.navigation.navigate(this.props.route.params.screenStackName);
+    const popToAction = StackActions.popTo(
+      this.props.route.params.screenStackName,
+    );
+    this.props.navigation.dispatch(popToAction);
   }
 
   render() {
