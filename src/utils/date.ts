@@ -24,3 +24,10 @@ export const dateFormatDateCompact = (date: Date) => {
     return compactFormatter.format(new Date(date));
   }
 };
+
+export const dateFormatDateFileName = (date: Date) => {
+  if (date != null) {
+    const formattedDate = compactFormatter.format(new Date(date));
+    return formattedDate.replace(/\//g, '-');
+  }
+};

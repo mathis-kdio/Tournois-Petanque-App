@@ -21,6 +21,8 @@ import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
 import { Switch } from '@/components/ui/switch';
 import { Box } from '@/components/ui/box';
+import { dateFormatDateFileName } from '@/utils/date';
+import { Tournoi } from '@/types/interfaces/tournoi';
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any, any>;
@@ -60,7 +62,7 @@ class PDFExport extends React.Component<Props, State> {
     let tournoiID = optionsTournoi.tournoiID;
     let infosTournoi = this.props.listeTournois.find(
       (e) => e.tournoiId === tournoiID,
-    );
+    ) as Tournoi;
     let nbMatchsParTour = 0;
     if (typeTournoi === TypeTournoi.COUPE) {
       nbMatchsParTour = (nbMatchs + 1) / 2;
@@ -111,8 +113,17 @@ class PDFExport extends React.Component<Props, State> {
       this._toggleLoading();
     } else {
       const { uri } = await Print.printToFileAsync({ html });
+
+      const date = dateFormatDateFileName(infosTournoi.creationDate);
+      const newFileName = `tournoi-petanque-${infosTournoi.tournoiId}-${date}.pdf`;
+      const newUri = FileSystem.cacheDirectory + newFileName;
+      await FileSystem.moveAsync({
+        from: uri,
+        to: newUri,
+      });
+
       if (Platform.OS === 'android') {
-        let contentUri = await FileSystem.getContentUriAsync(uri);
+        let contentUri = await FileSystem.getContentUriAsync(newUri);
         IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
           data: contentUri,
           flags: 1,
