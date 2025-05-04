@@ -46,6 +46,7 @@ class App extends React.Component {
           <SessionProvider>
             <GluestackUIProvider mode="light">
               <NavigationContainer
+                ref={this.navigationRef}
                 onReady={() =>
                   reactNavigationIntegration.registerNavigationContainer(
                     this.navigationRef,
