@@ -20,6 +20,7 @@ import { Match } from '@/types/interfaces/match';
 import { PropsFromRedux, connector } from '@/store/connector';
 import { RouteProp } from '@react-navigation/native';
 import { MatchsStackParamList } from '@/navigation/Navigation';
+import { requestReview } from '@/utils/storeReview/StoreReview';
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any, any>;
@@ -101,7 +102,9 @@ class MatchDetail extends React.Component<Props, State> {
     return nomsJoueurs;
   }
 
-  _envoyerResultat(match: Match) {
+  async _envoyerResultat(match: Match) {
+    await requestReview();
+
     if (this.state.score1 && this.state.score2) {
       let info = {
         idMatch: this.state.idMatch,
