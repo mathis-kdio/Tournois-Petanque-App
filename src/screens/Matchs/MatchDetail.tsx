@@ -18,7 +18,7 @@ import { TFunction } from 'i18next';
 import { Joueur } from '@/types/interfaces/joueur';
 import { Match } from '@/types/interfaces/match';
 import { PropsFromRedux, connector } from '@/store/connector';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, StackActions } from '@react-navigation/native';
 import { MatchsStackParamList } from '@/navigation/Navigation';
 import { requestReview } from '@/utils/storeReview/StoreReview';
 
@@ -133,7 +133,8 @@ class MatchDetail extends React.Component<Props, State> {
         },
       };
       this.props.dispatch(actionUpdateTournoi);
-      this.props.navigation.navigate('ListeMatchsStack');
+
+      this.props.navigation.dispatch(StackActions.pop(1));
     }
   }
 
