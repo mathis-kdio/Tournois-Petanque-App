@@ -2,7 +2,7 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "baseUrl": ".",
-    //"strict": true,
+    "strict": true,
     "jsxImportSource": "nativewind",
     "paths": {
       "tailwind.config": ["./tailwind.config.js"],
