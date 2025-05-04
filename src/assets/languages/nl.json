@@ -254,6 +254,9 @@
     "3contre2": "3 contre 2",
     "4contre3": "4 contre 3",
     "choix_complement_title_1": "Le nombre de joueurs inscrits n'est pas un multiple de {{nbModulo}}. Il est donc nécessaire de choisir la répartition des joueurs supplémentaires.",
-    "choix_complement_title_2": "Vous pouvez choisir que le dernier match de chaque tour sera un :"
+    "choix_complement_title_2": "Vous pouvez choisir que le dernier match de chaque tour sera un :",
+    "quitter_tournoi": "Quitter le tournoi",
+    "quitter_tournoi_question": "Voulez-vous quitter le tournoi ? Vous pourrez toujours le recharger plus tard.",
+    "rester": "Rester"
   }
 }
