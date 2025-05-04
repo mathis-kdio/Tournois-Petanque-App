@@ -1,5 +1,6 @@
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { Joueur } from '@/types/interfaces/joueur';
+import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
 
 const initialState = {
   listesJoueurs: {
@@ -168,20 +169,21 @@ function listesJoueurs(state = initialState, action) {
       }
       return nextState || state;
     case 'UPDATE_SAVED_LIST': //typeInscription: avecNoms/sansNoms/AvecEquipes  listId: id   savedList: list
-      if (
-        action.value.typeInscription !== '' &&
-        action.value.listId !== undefined &&
-        action.value.savedList !== ''
-      ) {
+      const typeInscription = action.value.typeInscription as ModeTournoi;
+      if (action.value.listId !== undefined && action.value.savedList !== '') {
         const savedLists = { ...state.listesSauvegarde };
-        action.value.savedList.push({
-          id: action.value.savedList.length,
-          listId: action.value.listId,
-        });
-        let typeSavedLists = savedLists[action.value.typeInscription];
+        let typeSavedLists = savedLists[typeInscription];
         let listIndex = typeSavedLists.findIndex(
           (e) => e[e.length - 1].listId === action.value.listId,
         );
+        const oldSaved = typeSavedLists[listIndex];
+        const oldSavedInfos = oldSaved.at(-1) as ListeJoueursInfos;
+
+        action.value.savedList.push({
+          id: action.value.savedList.length,
+          name: oldSavedInfos.name,
+          listId: action.value.listId,
+        });
         typeSavedLists[listIndex] = action.value.savedList;
         nextState = {
           ...state,
