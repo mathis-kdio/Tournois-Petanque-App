@@ -206,7 +206,6 @@ class ListeJoueurItem extends React.Component<Props, State> {
       return (
         <Input variant="underlined">
           <InputField
-            className="text-white placeholder:text-white"
             placeholder={joueur.name}
             autoFocus={true}
             onChangeText={(text: string) => this._joueurTxtInputChanged(text)}
@@ -361,7 +360,7 @@ class ListeJoueurItem extends React.Component<Props, State> {
         isChecked = false;
       }
       return (
-        <Box className="mr-1">
+        <Box className="mr-1 place-self-center">
           <Checkbox
             value="joueurCheckbox"
             onChange={() => this._onCheckboxChange(isChecked, joueur.id)}
@@ -464,7 +463,9 @@ class ListeJoueurItem extends React.Component<Props, State> {
         <HStack className={`${flexsize[0]}`}>
           {this._joueurCheckbox(showCheckbox, joueur)}
           {this._joueurTypeIcon(joueur.type)}
-          <Box>{this._joueurName(joueur, isInscription, avecEquipes)}</Box>
+          <Box className="flex-1">
+            {this._joueurName(joueur, isInscription, avecEquipes)}
+          </Box>
         </HStack>
         <HStack className={`${flexsize[1]} justify-end`}>
           {avecEquipes === true && (
