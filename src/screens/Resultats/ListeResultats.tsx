@@ -3,7 +3,6 @@ import { VStack } from '@/components/ui/vstack';
 import { Text } from '@/components/ui/text';
 import { FlatList } from '@/components/ui/flat-list';
 import { HStack } from '@/components/ui/hstack';
-import React from 'react';
 import ListeResultatItem from '@components/ListeResultatItem';
 import { ranking } from '@utils/ranking';
 import { withTranslation } from 'react-i18next';
@@ -12,14 +11,17 @@ import { PropsFromRedux, connector } from '@/store/connector';
 import { ListRenderItem } from 'react-native';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { Victoire } from '@/types/interfaces/victoire';
+import WithExitAlert from '@/screens/withExitAlert/WithExitAlert';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 export interface Props extends PropsFromRedux {
+  navigation: StackNavigationProp<any, any>;
   t: TFunction;
 }
 
 interface State {}
 
-class ListeResultats extends React.Component<Props, State> {
+class ListeResultats extends WithExitAlert<Props, State> {
   render() {
     const { t } = this.props;
     let listeMatchs = this.props.listeMatchs.slice(0, -1);
