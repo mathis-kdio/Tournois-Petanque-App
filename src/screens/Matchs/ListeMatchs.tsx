@@ -1,20 +1,23 @@
 import { FlatList } from '@/components/ui/flat-list';
 import { VStack } from '@/components/ui/vstack';
-import React from 'react';
 import MatchItem from '@components/MatchItem';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Match } from '@/types/interfaces/match';
 import { PropsFromRedux, connector } from '@/store/connector';
 import { ListRenderItem } from 'react-native';
+import WithExitAlert from '@/screens/withExitAlert/WithExitAlert';
+import { TFunction } from 'i18next';
+import { withTranslation } from 'react-i18next';
 
 export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any, any>;
+  t: TFunction;
   extraData: number;
 }
 
 interface State {}
 
-class ListeMatchs extends React.Component<Props, State> {
+class ListeMatchs extends WithExitAlert<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {};
@@ -78,4 +81,4 @@ class ListeMatchs extends React.Component<Props, State> {
   }
 }
 
-export default connector(ListeMatchs);
+export default connector(withTranslation()(ListeMatchs));
