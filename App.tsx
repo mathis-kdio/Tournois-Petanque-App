@@ -28,10 +28,8 @@ Sentry.init({
   enabled: !__DEV__,
   debug: false, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
   tracesSampleRate: 0.3,
-  _experiments: {
-    replaysSessionSampleRate: 0,
-    replaysOnErrorSampleRate: 1.0,
-  },
+  replaysSessionSampleRate: 0,
+  replaysOnErrorSampleRate: 1.0,
   integrations: [reactNavigationIntegration, Sentry.mobileReplayIntegration()],
   attachStacktrace: true,
 });
