@@ -8,6 +8,7 @@
       "@components/*": ["./src/components/*"],
       "@navigation/*": ["./src/navigation/*"],
       "@screens/*": ["./src/screens/*"],
+      "@ervices/*": ["./src/services/*"],
       "@store/*": ["./src/store/*"],
       "@utils/*": ["./src/utils/*"]
     }

@@ -13,8 +13,11 @@ import TopBarBack from '@/components/topBar/TopBarBack';
 import { withSession } from '@/components/supabase/withSession';
 import { LoaderIcon, TrashIcon } from '@/components/ui/icon';
 import { Divider } from '@/components/ui/divider';
+import { synchroniserTournois } from '@/services/tournoisService';
+import { Tournoi } from '@/types/interfaces/tournoi';
+import { connector, PropsFromRedux } from '@/store/connector';
 
-export interface Props {
+export interface Props extends PropsFromRedux {
   navigation: StackNavigationProp<any, any>;
   t: TFunction;
   session: Session | null;
@@ -31,6 +34,12 @@ class Compte extends React.Component<Props, State> {
   deconnexion() {
     supabase.auth.signOut();
     this.props.navigation.navigate('AccueilGeneral');
+  }
+
+  synchronisation(): void {
+    let tournois: Tournoi[] = this.props.listeTournois;
+    console.log(tournois.slice(0, 2));
+    synchroniserTournois(tournois.slice(0, 2));
   }
 
   async supprimerCompte() {}
@@ -66,7 +75,7 @@ class Compte extends React.Component<Props, State> {
               <Button onPress={() => this.deconnexion()}>
                 <ButtonText>{t('se_deconnecter')}</ButtonText>
               </Button>
-              <Button isDisabled={true} onPress={() => undefined}>
+              <Button onPress={() => this.synchronisation()}>
                 <ButtonIcon as={LoaderIcon} />
                 <ButtonText className="ml-2">
                   {t('forcer_synchronisation')}
@@ -90,4 +99,4 @@ class Compte extends React.Component<Props, State> {
   }
 }
 
-export default withSession(withTranslation()(Compte));
+export default connector(withSession(withTranslation()(Compte)));
