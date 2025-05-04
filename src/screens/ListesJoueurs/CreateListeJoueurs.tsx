@@ -11,7 +11,7 @@ import { TFunction } from 'i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { PropsFromRedux, connector } from '@/store/connector';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, StackActions } from '@react-navigation/native';
 import { GeneralStackParamList } from '@/navigation/Navigation';
 
 export interface Props extends PropsFromRedux {
@@ -50,7 +50,7 @@ class CreateListeJoueur extends React.Component<Props, State> {
       this.props.dispatch(updateSavedList);
     }
 
-    this.props.navigation.navigate('ListesJoueurs');
+    this.props.navigation.dispatch(StackActions.pop(1));
   }
 
   _submitButton() {
