@@ -1,5 +1,27 @@
 # Change Log
 
+## [2.1.0] - 07-05-2025
+### Ajouté
+- Ajout écran de sélection du complément lorsque le nombre de joueurs ne permet pas de faire des matchs complets
+- Ajout pointeur, Tireur et Milieu en Triplette
+- Ajout de la prise en compte des règles (jamais même coéquipier, etc) en Triplette
+- Ajout Store Review
+
+### Changement
+- Amélioration de l'export et de la mise en page des PDF
+- Amélioration de la génération des matchs mêlée-démêlée doublette
+- Amélioration de la navigation en arrière sur les écrans
+- Mise à jour des traductions
+- Mise à jour des dépendances
+
+### Corrigé
+- Correction affichage du champ pour renommer un joueur
+- Correction bug pub bloquante
+- Correction sélection type du joueur
+- Correction popup suppression joueur suggéré
+- Correction crash après suppression du tournoi en cours
+- Correction nom d'une liste de joueur n'était conservée après une modification de la liste
+
 ## [2.0.2] - 26-02-2025
 ### Ajouté
 - Traduction en allemand
