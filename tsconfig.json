@@ -22,7 +22,7 @@
         "./src/navigation/*"
       ],
       "@screens/*": [
-        "./src/screens/*"
+        "./src/app/*"
       ],
       "@store/*": [
         "./src/store/*"

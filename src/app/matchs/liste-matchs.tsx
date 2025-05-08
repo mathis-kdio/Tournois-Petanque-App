@@ -5,7 +5,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Match } from '@/types/interfaces/match';
 import { PropsFromRedux, connector } from '@/store/connector';
 import { ListRenderItem } from 'react-native';
-import WithExitAlert from '@/screens/withExitAlert/WithExitAlert';
+import WithExitAlert from '@/app/with-exit-alert/with-exit-alert';
 import { TFunction } from 'i18next';
 import { withTranslation } from 'react-i18next';
 
