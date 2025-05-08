@@ -11,7 +11,7 @@ export interface Props {
   action: () => void;
   icon: string;
   type: string;
-  drapeau: string | ImageSourcePropType;
+  drapeau: string | ImageSourcePropType | undefined;
 }
 
 interface State {}
