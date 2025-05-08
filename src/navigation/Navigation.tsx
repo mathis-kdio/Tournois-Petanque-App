@@ -3,7 +3,6 @@ import { HStack } from '@/components/ui/hstack';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -47,12 +46,12 @@ const BottomTab = createBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
 
 const TopTabScreens = () => {
-  const listematchs = useSelector(
+  const listeMatchs = useSelector(
     (state: any) => state.gestionMatchs.listematchs,
   );
   let nbTours = 5;
-  if (listematchs !== undefined) {
-    nbTours = listematchs.at(-1).nbTours;
+  if (listeMatchs !== undefined) {
+    nbTours = listeMatchs.at(-1).nbTours;
   }
   let topTabScreenListe = [];
   for (let i = 0; i < nbTours; i++) {
@@ -62,7 +61,7 @@ const TopTabScreens = () => {
         key={i}
         name={name}
         options={{
-          tabBarLabel: () => TopTabItemLabel(i + 1, listematchs),
+          tabBarLabel: () => TopTabItemLabel(i + 1, listeMatchs),
         }}
       >
         {(props) => <ListeMatchs {...props} extraData={i + 1} />}
@@ -148,7 +147,7 @@ const GetTournoiName = () => {
 
   let tournoiName = '';
   if (listeTournois !== undefined && listeMatchs !== undefined) {
-    let tournoiId = listeMatchs[listeMatchs.length - 1].tournoiID;
+    let tournoiId = listeMatchs.at(-1).tournoiID;
     let tournoi = listeTournois.find(
       (element: Tournoi) => element.tournoiId === tournoiId,
     );
@@ -459,12 +458,8 @@ const ListeMatchsStack = () => {
     (state: any) => state.gestionMatchs.listematchs,
   );
   let typeTournoi = TypeTournoi.MELEDEMELE;
-  if (
-    listeMatchs &&
-    listeMatchs.length > 0 &&
-    listeMatchs[listeMatchs.length - 1].typeTournoi
-  ) {
-    typeTournoi = listeMatchs[listeMatchs.length - 1].typeTournoi;
+  if (listeMatchs && listeMatchs.length > 0 && listeMatchs.at(-1).typeTournoi) {
+    typeTournoi = listeMatchs.at(-1).typeTournoi;
   }
   return (
     <Stack.Navigator>
