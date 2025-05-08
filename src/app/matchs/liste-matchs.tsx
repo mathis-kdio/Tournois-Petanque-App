@@ -37,7 +37,7 @@ const ListeMatchs: React.FC<ListeMatchsProps> = ({ extraData }) => {
     let matchs = [];
     let nbPtVictoire = 13;
     if (tournoi !== undefined) {
-      let optionsTournoi = tournoi[tournoi.length - 1] as OptionsTournoi;
+      let optionsTournoi = tournoi.at(-1) as OptionsTournoi;
       nbMatchs = optionsTournoi.nbMatchs;
       nbPtVictoire = optionsTournoi.nbPtVictoire
         ? optionsTournoi.nbPtVictoire
