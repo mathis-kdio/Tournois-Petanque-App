@@ -1,10 +1,18 @@
 import 'react-native-url-polyfill/auto';
-import React, { Component, ReactNode } from 'react';
+import React, { Component, ReactNode, useContext } from 'react';
 import { supabase } from '@utils/supabase';
 import { Session } from '@supabase/supabase-js';
 
+type MaybeSession = Session | null;
+
+type SupabaseContext = {
+  session: MaybeSession;
+};
+
 // Créer le contexte de session
-export const SessionContext = React.createContext<Session | null>(null);
+export const SessionContext = React.createContext<SupabaseContext>({
+  session: null,
+});
 
 interface SessionProviderState {
   session: Session | null;
@@ -57,3 +65,5 @@ class SessionProvider extends Component<
 }
 
 export default SessionProvider;
+
+export const useSupabase = () => useContext(SessionContext);
