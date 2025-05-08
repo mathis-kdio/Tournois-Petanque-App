@@ -1,6 +1,5 @@
 import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
-import React from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
@@ -23,6 +22,7 @@ import Inscription from '@/app/connexion/inscription';
 import InscriptionsAvecNoms from '@/app/inscriptions/inscriptions-avec-noms';
 import InscriptionsSansNoms from '@/app/inscriptions/inscriptions-sans-noms';
 import OptionsTournoi from '@/app/inscriptions/options-tournoi';
+import ChoixComplement from '@/app/inscriptions/choix-complement';
 import GenerationMatchs from '@/app/inscriptions/generation-matchs';
 import ListeResultats from '@/app/resultats/liste-resultats';
 import ListeMatchs from '@/app/matchs/liste-matchs';
@@ -31,25 +31,24 @@ import MatchDetail from '@/app/matchs/match-detail';
 import JoueursTournoi from '@/app/matchs/joueurs-tournoi';
 import ParametresTournoi from '@/app/matchs/parametres-tournoi';
 import PDFExport from '@/app/matchs/pdf-export';
-
-import BoutonMenuHeaderNav from '@components/BoutonMenuHeaderNavigation';
+import ConfirmationEmail from '@/app/connexion/confirmation-email';
+import Securite from '@/app/connexion/securite';
 import ListesJoueurs from '@/app/listes-joueurs/listes-joueurs';
 import CreateListeJoueurs from '@/app/listes-joueurs/create-liste-joueurs';
+
+import BoutonMenuHeaderNav from '@components/BoutonMenuHeaderNavigation';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { Match } from '@/types/interfaces/match';
 import { Tournoi } from '@/types/interfaces/tournoi';
-import ConfirmationEmail from '@/app/connexion/confirmation-email';
-import Securite from '@/app/connexion/securite';
 import { captureMessage } from '@sentry/react-native';
-import ChoixComplement from '@/app/inscriptions/choix-complement';
 
 const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
 
-function topTabScreens() {
+const TopTabScreens = () => {
   const gestionListeMatchs = useSelector(
-    (state) => state.gestionMatchs.listematchs,
+    (state: any) => state.gestionMatchs.listematchs,
   );
   let nbTours = 5;
   if (gestionListeMatchs !== undefined) {
@@ -63,7 +62,7 @@ function topTabScreens() {
         key={i}
         name={name}
         options={{
-          tabBarLabel: () => topTabItemLabel(i + 1, gestionListeMatchs),
+          tabBarLabel: () => TopTabItemLabel(i + 1, gestionListeMatchs),
         }}
       >
         {(props) => <ListeMatchs {...props} extraData={i + 1} />}
@@ -71,14 +70,11 @@ function topTabScreens() {
     );
   }
   return topTabScreenListe;
-}
+};
 
-function topTabItemLabel(numero, listeMatchs) {
+const TopTabItemLabel = (numero: number, listeMatchs) => {
   let title = 'Tour ' + numero;
-  if (
-    listeMatchs &&
-    listeMatchs[listeMatchs.length - 1].typeTournoi === TypeTournoi.COUPE
-  ) {
+  if (listeMatchs && listeMatchs.at(-1).typeTournoi === TypeTournoi.COUPE) {
     title = listeMatchs.find((el) => el.manche === numero).mancheName;
   }
 
@@ -116,9 +112,9 @@ function topTabItemLabel(numero, listeMatchs) {
       </Text>
     </HStack>
   );
-}
+};
 
-function ManchesTopTabNavigator() {
+const ManchesTopTabNavigator = () => {
   const { t } = useTranslation();
   return (
     <TopTab.Navigator
@@ -135,16 +131,18 @@ function ManchesTopTabNavigator() {
         },
       }}
     >
-      {topTabScreens()}
+      {TopTabScreens()}
     </TopTab.Navigator>
   );
-}
+};
 
-function getTournoiName() {
+const GetTournoiName = () => {
   const listeTournois = useSelector(
-    (state) => state.listeTournois.listeTournois,
+    (state: any) => state.listeTournois.listeTournois,
   );
-  const listeMatchs = useSelector((state) => state.gestionMatchs.listematchs);
+  const listeMatchs = useSelector(
+    (state: any) => state.gestionMatchs.listematchs,
+  );
 
   let tournoiName = '';
   if (listeTournois !== undefined && listeMatchs !== undefined) {
@@ -160,7 +158,7 @@ function getTournoiName() {
     }
   }
   return tournoiName;
-}
+};
 
 export type MatchsStackParamList = {
   ListeMatchsStack: null;
@@ -170,10 +168,10 @@ export type MatchsStackParamList = {
   PDFExport: null;
 };
 
-function MatchsStack() {
+const MatchsStack = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  let tournoiName = getTournoiName();
+  let tournoiName = GetTournoiName();
   return (
     <Stack.Navigator
       screenOptions={{ headerStyle: { backgroundColor: '#ffda00' } }}
@@ -226,12 +224,12 @@ function MatchsStack() {
       />
     </Stack.Navigator>
   );
-}
+};
 
-function ResultatsStack() {
+const ResultatsStack = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  let tournoiName = getTournoiName();
+  let tournoiName = GetTournoiName();
   return (
     <Stack.Navigator
       screenOptions={{ title: t('resultats_classement_navigation_title') }}
@@ -252,9 +250,9 @@ function ResultatsStack() {
       />
     </Stack.Navigator>
   );
-}
+};
 
-function MatchsResultatsBottomNavigator() {
+const MatchsResultatsBottomNavigator = () => {
   const { t } = useTranslation();
   return (
     <BottomTab.Navigator
@@ -291,7 +289,7 @@ function MatchsResultatsBottomNavigator() {
       />
     </BottomTab.Navigator>
   );
-}
+};
 
 export type InscriptionStackParamList = {
   ChoixTypeTournoi: null;
@@ -304,7 +302,7 @@ export type InscriptionStackParamList = {
   ListeMatchsInscription: { tournoiId: number; tournoi: Tournoi };
 };
 
-function InscriptionStack() {
+const InscriptionStack = () => {
   const { t } = useTranslation();
   return (
     <Stack.Navigator
@@ -377,9 +375,9 @@ function InscriptionStack() {
       />
     </Stack.Navigator>
   );
-}
+};
 
-function ParametresStack() {
+const ParametresStack = () => {
   const { t } = useTranslation();
   return (
     <Stack.Navigator
@@ -402,7 +400,7 @@ function ParametresStack() {
       />
     </Stack.Navigator>
   );
-}
+};
 
 export type ConnexionStackParamList = {
   Authentification: null;
@@ -411,7 +409,7 @@ export type ConnexionStackParamList = {
   Compte: null;
 };
 
-function ConnexionStack() {
+const ConnexionStack = () => {
   const { t } = useTranslation();
   return (
     <Stack.Navigator
@@ -454,10 +452,12 @@ function ConnexionStack() {
       />
     </Stack.Navigator>
   );
-}
+};
 
-function ListeMatchsStack() {
-  const listeMatchs = useSelector((state) => state.gestionMatchs.listematchs);
+const ListeMatchsStack = () => {
+  const listeMatchs = useSelector(
+    (state: any) => state.gestionMatchs.listematchs,
+  );
   let typeTournoi = TypeTournoi.MELEDEMELE;
   if (
     listeMatchs &&
@@ -479,7 +479,7 @@ function ListeMatchsStack() {
       />
     </Stack.Navigator>
   );
-}
+};
 
 export type GeneralStackParamList = {
   AccueilGeneral: null;
@@ -491,7 +491,7 @@ export type GeneralStackParamList = {
   ListeMatchsStack: null;
 };
 
-function General() {
+const General = () => {
   const { t } = useTranslation();
   return (
     <Stack.Navigator
@@ -553,7 +553,7 @@ function General() {
       />
     </Stack.Navigator>
   );
-}
+};
 
 export default function App() {
   return (
