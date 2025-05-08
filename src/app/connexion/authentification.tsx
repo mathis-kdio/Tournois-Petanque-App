@@ -6,7 +6,7 @@ import { Button, ButtonText } from '@/components/ui/button';
 import React from 'react';
 import { AppState } from 'react-native';
 import { withTranslation } from 'react-i18next';
-import { supabase } from '@/utils/supabase';
+import { supabaseClient } from '@/utils/supabase';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -31,9 +31,9 @@ import { AlertCircleIcon } from '@/components/ui/icon';
 // if the user's session is terminated. This should only be registered once.
 AppState.addEventListener('change', (state) => {
   if (state === 'active') {
-    supabase.auth.startAutoRefresh();
+    supabaseClient.auth.startAutoRefresh();
   } else {
-    supabase.auth.stopAutoRefresh();
+    supabaseClient.auth.stopAutoRefresh();
   }
 });
 
@@ -66,7 +66,7 @@ class Authentification extends React.Component<Props, State> {
 
   async signInWithEmail() {
     this.setState({ loading: true });
-    const { error, data } = await supabase.auth.signInWithPassword({
+    const { error, data } = await supabaseClient.auth.signInWithPassword({
       email: this.state.email,
       password: this.state.password,
     });

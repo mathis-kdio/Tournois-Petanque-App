@@ -9,7 +9,7 @@ import { withSession } from '@/components/supabase/withSession';
 import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
 import { useNavigation } from '@react-navigation/native';
-import { useSupabase } from '@/components/supabase/SessionProvider';
+import { useAuth } from '@/components/supabase/SessionProvider';
 
 interface UserDetail {
   Nom: { label: string; value: string };
@@ -22,7 +22,7 @@ interface UserDetail {
 const InfosPerso = () => {
   const { t } = useTranslation();
   const navigation = useNavigation<StackNavigationProp<any, any>>();
-  const { session } = useSupabase();
+  const { session } = useAuth();
 
   const userDetailsInit: UserDetail = {
     Nom: { label: 'nom', value: 'Non renseigné' },
@@ -35,7 +35,7 @@ const InfosPerso = () => {
   const [userDetails, setUserDetails] = useState<UserDetail>(userDetailsInit);
 
   useEffect(() => {
-    if (session === null || session.user.email === undefined) {
+    if (!session || session.user.email === undefined) {
       return;
     }
     const email = session.user.email;

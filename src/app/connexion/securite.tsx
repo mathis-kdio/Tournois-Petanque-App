@@ -7,7 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { Input, InputField, InputSlot } from '@/components/ui/input';
 import { Button, ButtonText } from '@/components/ui/button';
-import { supabase } from '@/utils/supabase';
+import { supabaseClient } from '@/utils/supabase';
 import { Alert } from 'react-native';
 import {
   FormControl,
@@ -51,7 +51,7 @@ const Securite = () => {
     setIsLoading(true);
     try {
       // Mise à jour du mot de passe
-      const { error } = await supabase.auth.updateUser({
+      const { error } = await supabaseClient.auth.updateUser({
         password: newPassword,
       });
 

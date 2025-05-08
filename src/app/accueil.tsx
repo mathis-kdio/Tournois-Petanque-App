@@ -19,7 +19,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-import { useSupabase } from '@/components/supabase/SessionProvider';
+import { useAuth } from '@/components/supabase/SessionProvider';
 
 const googleMarketReviews =
   'market://details?id=com.MK.PetanqueGCU&showAllReviews=true';
@@ -33,7 +33,7 @@ const website = 'https://tournoispetanqueapp.fr/';
 const Accueil = () => {
   const { t } = useTranslation();
   const navigation = useNavigation<StackNavigationProp<any, any>>();
-  const { session } = useSupabase();
+  const { session } = useAuth();
 
   const listeMatchs = useSelector(
     (state: any) => state.gestionMatchs.listematchs,

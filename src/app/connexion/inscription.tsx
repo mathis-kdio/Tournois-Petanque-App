@@ -6,7 +6,7 @@ import { Button, ButtonText } from '@/components/ui/button';
 import React, { useState } from 'react';
 import { Alert, AppState } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { supabase } from '@/utils/supabase';
+import { supabaseClient } from '@/utils/supabase';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -38,9 +38,9 @@ import { useNavigation } from '@react-navigation/native';
 // if the user's session is terminated. This should only be registered once.
 AppState.addEventListener('change', (state) => {
   if (state === 'active') {
-    supabase.auth.startAutoRefresh();
+    supabaseClient.auth.startAutoRefresh();
   } else {
-    supabase.auth.stopAutoRefresh();
+    supabaseClient.auth.stopAutoRefresh();
   }
 });
 
@@ -88,7 +88,7 @@ const Inscription = () => {
     const {
       data: { session },
       error,
-    } = await supabase.auth.signUp({
+    } = await supabaseClient.auth.signUp({
       email: email,
       password: password,
     });

@@ -17,7 +17,7 @@ import * as Sentry from '@sentry/react-native';
 import i18n from './i18n';
 import './global.css';
 import '@expo/metro-runtime'; //Fast-refresh web
-import SessionProvider from '@/components/supabase/SessionProvider';
+import { AuthProvider } from '@/components/supabase/SessionProvider';
 
 const reactNavigationIntegration = Sentry.reactNavigationIntegration({
   enableTimeToInitialDisplay: true,
@@ -41,7 +41,7 @@ class App extends React.Component {
     return (
       <Provider store={Store}>
         <PersistGate persistor={persistor}>
-          <SessionProvider>
+          <AuthProvider>
             <GluestackUIProvider mode="light">
               <NavigationContainer
                 ref={this.navigationRef}
@@ -57,7 +57,7 @@ class App extends React.Component {
                 </I18nextProvider>
               </NavigationContainer>
             </GluestackUIProvider>
-          </SessionProvider>
+          </AuthProvider>
         </PersistGate>
       </Provider>
     );

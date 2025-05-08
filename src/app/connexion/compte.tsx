@@ -1,7 +1,7 @@
 import { VStack } from '@/components/ui/vstack';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
-import { supabase } from '@/utils/supabase';
+import { supabaseClient } from '@/utils/supabase';
 import { useTranslation } from 'react-i18next';
 import Item from '@components/Item';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -16,7 +16,7 @@ const Compte = () => {
   const navigation = useNavigation<StackNavigationProp<any, any>>();
 
   const deconnexion = () => {
-    supabase.auth.signOut();
+    supabaseClient.auth.signOut();
     navigation.navigate('AccueilGeneral');
   };
 
