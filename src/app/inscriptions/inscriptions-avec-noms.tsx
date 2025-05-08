@@ -2,55 +2,48 @@ import { VStack } from '@/components/ui/vstack';
 import { Text } from '@/components/ui/text';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Box } from '@/components/ui/box';
-import React from 'react';
 import Inscriptions from '@components/Inscriptions';
-import { withTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { TFunction } from 'i18next';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { Joueur } from '@/types/interfaces/joueur';
-import { PropsFromRedux, connector } from '@/store/connector';
+import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-export interface Props extends PropsFromRedux {
-  navigation: StackNavigationProp<any, any>;
-  t: TFunction;
-}
+const InscriptionsAvecNoms = () => {
+  const { t } = useTranslation();
+  const navigation = useNavigation<StackNavigationProp<any, any>>();
 
-interface State {}
+  const optionsTournoi = useSelector(
+    (state: any) => state.optionsTournoi.options,
+  );
+  const listesJoueurs = useSelector(
+    (state: any) => state.listesJoueurs.listesJoueurs,
+  );
 
-class InscriptionsAvecNoms extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {};
-  }
-
-  _commencer(choixComplement: boolean) {
+  const _commencer = (choixComplement: boolean) => {
     let screenName = 'GenerationMatchs';
     if (choixComplement) {
       screenName = 'ChoixComplement';
-    } else if (this.props.optionsTournoi.avecTerrains) {
+    } else if (optionsTournoi.avecTerrains) {
       screenName = 'ListeTerrains';
     }
-    this.props.navigation.navigate({
+    navigation.navigate({
       name: screenName,
       params: {
         screenStackName: 'InscriptionsAvecNoms',
       },
     });
-  }
+  };
 
-  _boutonCommencer() {
-    const { t } = this.props;
+  const _boutonCommencer = () => {
     let btnDisabled = false;
     let title = t('commencer_tournoi');
-    const nbJoueurs =
-      this.props.listesJoueurs[this.props.optionsTournoi.mode].length;
-    const listesJoueurs = this.props.listesJoueurs;
-    const optionsTournoi = this.props.optionsTournoi;
+    const nbJoueurs = listesJoueurs[optionsTournoi.mode].length;
     let nbEquipes = 0;
     let choixComplement = false;
 
@@ -160,40 +153,33 @@ class InscriptionsAvecNoms extends React.Component<Props, State> {
       <Button
         isDisabled={btnDisabled}
         action={btnDisabled ? 'negative' : 'positive'}
-        onPress={() => this._commencer(choixComplement)}
+        onPress={() => _commencer(choixComplement)}
         size="md"
         className="h-min min-h-10"
       >
         <ButtonText>{title}</ButtonText>
       </Button>
     );
-  }
+  };
 
-  render() {
-    const { t } = this.props;
-    const nbJoueur =
-      this.props.listesJoueurs[this.props.optionsTournoi.mode].length;
-    return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <VStack className="flex-1 bg-[#0594ae]">
-          <TopBarBack
-            title={t('inscription_avec_noms_navigation_title')}
-            navigation={this.props.navigation}
-          />
-          <VStack className="flex-1">
-            <Text className="text-white text-xl text-center">
-              {t('nombre_joueurs', { nb: nbJoueur })}
-            </Text>
-            <Inscriptions
-              navigation={this.props.navigation}
-              loadListScreen={false}
-            />
-            <Box className="px-10">{this._boutonCommencer()}</Box>
-          </VStack>
+  const nbJoueur = listesJoueurs[optionsTournoi.mode].length;
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <VStack className="flex-1 bg-[#0594ae]">
+        <TopBarBack
+          title={t('inscription_avec_noms_navigation_title')}
+          navigation={navigation}
+        />
+        <VStack className="flex-1">
+          <Text className="text-white text-xl text-center">
+            {t('nombre_joueurs', { nb: nbJoueur })}
+          </Text>
+          <Inscriptions navigation={navigation} loadListScreen={false} />
+          <Box className="px-10">{_boutonCommencer()}</Box>
         </VStack>
-      </SafeAreaView>
-    );
-  }
-}
+      </VStack>
+    </SafeAreaView>
+  );
+};
 
-export default connector(withTranslation()(InscriptionsAvecNoms));
+export default InscriptionsAvecNoms;
