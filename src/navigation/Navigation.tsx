@@ -47,12 +47,12 @@ const BottomTab = createBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
 
 const TopTabScreens = () => {
-  const gestionListeMatchs = useSelector(
+  const listematchs = useSelector(
     (state: any) => state.gestionMatchs.listematchs,
   );
   let nbTours = 5;
-  if (gestionListeMatchs !== undefined) {
-    nbTours = gestionListeMatchs[gestionListeMatchs.length - 1].nbTours;
+  if (listematchs !== undefined) {
+    nbTours = listematchs.at(-1).nbTours;
   }
   let topTabScreenListe = [];
   for (let i = 0; i < nbTours; i++) {
@@ -62,7 +62,7 @@ const TopTabScreens = () => {
         key={i}
         name={name}
         options={{
-          tabBarLabel: () => TopTabItemLabel(i + 1, gestionListeMatchs),
+          tabBarLabel: () => TopTabItemLabel(i + 1, listematchs),
         }}
       >
         {(props) => <ListeMatchs {...props} extraData={i + 1} />}
@@ -172,7 +172,6 @@ export type MatchsStackParamList = {
 
 const MatchsStack = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation();
   let tournoiName = GetTournoiName();
   return (
     <Stack.Navigator
@@ -189,7 +188,7 @@ const MatchsStack = () => {
               {t('tournoi')} {tournoiName}
             </Text>
           ),
-          headerRight: () => <BoutonMenuHeaderNav navigation={navigation} />,
+          headerRight: () => <BoutonMenuHeaderNav />,
         }}
       />
       <Stack.Screen
@@ -230,7 +229,6 @@ const MatchsStack = () => {
 
 const ResultatsStack = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation();
   let tournoiName = GetTournoiName();
   return (
     <Stack.Navigator
@@ -247,7 +245,7 @@ const ResultatsStack = () => {
               {t('tournoi')} {tournoiName}
             </Text>
           ),
-          headerRight: () => <BoutonMenuHeaderNav navigation={navigation} />,
+          headerRight: () => <BoutonMenuHeaderNav />,
         }}
       />
     </Stack.Navigator>
