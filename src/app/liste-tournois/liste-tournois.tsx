@@ -18,20 +18,13 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { TFunction } from 'i18next';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { Tournoi } from '@/types/interfaces/tournoi';
-import { PropsFromRedux } from '@/store/connector';
 import { ListRenderItem } from 'react-native';
 import { dateFormatDateHeure } from '../../utils/date';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-
-export interface Props extends PropsFromRedux {
-  navigation: StackNavigationProp<any, any>;
-  t: TFunction;
-}
 
 const ListeTournois = () => {
   const { t } = useTranslation();

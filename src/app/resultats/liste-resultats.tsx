@@ -6,7 +6,6 @@ import { HStack } from '@/components/ui/hstack';
 import ListeResultatItem from '@components/ListeResultatItem';
 import { ranking } from '@utils/ranking';
 import { useTranslation } from 'react-i18next';
-import { connector } from '@/store/connector';
 import { ListRenderItem } from 'react-native';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { Victoire } from '@/types/interfaces/victoire';
@@ -51,4 +50,4 @@ const ListeResultats = () => {
   );
 }
 
-export default connector(ListeResultats);
+export default ListeResultats;

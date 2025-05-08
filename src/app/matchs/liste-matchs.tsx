@@ -2,17 +2,12 @@ import { FlatList } from '@/components/ui/flat-list';
 import { VStack } from '@/components/ui/vstack';
 import MatchItem from '@components/MatchItem';
 import { Match } from '@/types/interfaces/match';
-import { PropsFromRedux } from '@/store/connector';
 import { ListRenderItem } from 'react-native';
 import WithExitAlert from '@/app/with-exit-alert/with-exit-alert';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-
-export interface Props extends PropsFromRedux {
-  extraData: number;
-}
 
 interface ListeMatchsProps {
   extraData: number;

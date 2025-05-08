@@ -16,11 +16,10 @@ import { Text } from '@/components/ui/text';
 import { Button, ButtonText, ButtonGroup } from '@/components/ui/button';
 import { VStack } from '@/components/ui/vstack';
 import { useState } from 'react';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { connector } from '@/store/connector';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
@@ -172,4 +171,4 @@ const ParametresTournoi = () => {
   );
 };
 
-export default connector(withTranslation()(ParametresTournoi));
+export default ParametresTournoi;
