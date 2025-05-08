@@ -13,48 +13,39 @@ import {
 import { FlatList } from '@/components/ui/flat-list';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import React from 'react';
 import ListeTournoiItem from '@components/ListeTournoiItem';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { TFunction } from 'i18next';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { Tournoi } from '@/types/interfaces/tournoi';
-import { PropsFromRedux, connector } from '@/store/connector';
 import { ListRenderItem } from 'react-native';
 import { dateFormatDateHeure } from '../../utils/date';
+import { useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
-export interface Props extends PropsFromRedux {
-  navigation: StackNavigationProp<any, any>;
-  t: TFunction;
-}
+const ListeTournois = () => {
+  const { t } = useTranslation();
+  const navigation = useNavigation<StackNavigationProp<any, any>>();
 
-interface State {
-  modalTournoiInfosIsOpen: boolean;
-  infosTournoi: Tournoi;
-}
+  const [modalTournoiInfosIsOpen, setModalTournoiInfosIsOpen] = useState(false);
+  const [infosTournoi, setInfosTournoi] = useState<Tournoi | undefined>(
+    undefined,
+  );
 
-class ListeTournois extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      modalTournoiInfosIsOpen: false,
-      infosTournoi: undefined,
-    };
-  }
+  const listeTournois = useSelector(
+    (state: any) => state.listeTournois.listeTournois,
+  );
 
-  _showModalTournoiInfos(tournoi: Tournoi) {
-    this.setState({
-      modalTournoiInfosIsOpen: true,
-      infosTournoi: tournoi,
-    });
-  }
+  const _showModalTournoiInfos = (tournoi: Tournoi) => {
+    setModalTournoiInfosIsOpen(true);
+    setInfosTournoi(tournoi);
+  };
 
-  _modalTournoiInfos() {
-    const { t } = this.props;
-    let tournoi = this.state.infosTournoi;
+  const _modalTournoiInfos = () => {
+    let tournoi = infosTournoi;
     if (tournoi && tournoi.tournoi) {
       let tournoiOptions = tournoi.tournoi.at(-1) as OptionsTournoi;
       let creationDate = t('date_inconnue');
@@ -70,8 +61,8 @@ class ListeTournois extends React.Component<Props, State> {
         : 13;
       return (
         <Modal
-          isOpen={this.state.modalTournoiInfosIsOpen}
-          onClose={() => this.setState({ modalTournoiInfosIsOpen: false })}
+          isOpen={modalTournoiInfosIsOpen}
+          onClose={() => setModalTournoiInfosIsOpen(false)}
         >
           <ModalBackdrop />
           <ModalContent className="max-h-5/6">
@@ -147,43 +138,40 @@ class ListeTournois extends React.Component<Props, State> {
         </Modal>
       );
     }
-  }
+  };
 
-  render() {
-    const { t } = this.props;
-    const renderItem: ListRenderItem<Tournoi> = ({ item }) => (
-      <ListeTournoiItem
-        tournoi={item}
-        navigation={this.props.navigation}
-        _showModalTournoiInfos={(tournoi: Tournoi) =>
-          this._showModalTournoiInfos(tournoi)
-        }
-      />
-    );
-    return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <VStack className="flex-1 bg-[#0594ae]">
-          <TopBarBack
-            title={t('choix_tournoi_navigation_title')}
-            navigation={this.props.navigation}
+  const renderItem: ListRenderItem<Tournoi> = ({ item }) => (
+    <ListeTournoiItem
+      tournoi={item}
+      navigation={navigation}
+      _showModalTournoiInfos={(tournoi: Tournoi) =>
+        _showModalTournoiInfos(tournoi)
+      }
+    />
+  );
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <VStack className="flex-1 bg-[#0594ae]">
+        <TopBarBack
+          title={t('choix_tournoi_navigation_title')}
+          navigation={navigation}
+        />
+        <Text className="text-white text-xl text-center px-10">
+          {t('nombre_tournois', { nb: listeTournois.length })}
+        </Text>
+        <VStack className="flex-1 my-2">
+          <FlatList
+            data={listeTournois}
+            initialNumToRender={20}
+            keyExtractor={(item: Tournoi) => item.tournoiId.toString()}
+            renderItem={renderItem}
+            className="h-1"
           />
-          <Text className="text-white text-xl text-center px-10">
-            {t('nombre_tournois', { nb: this.props.listeTournois.length })}
-          </Text>
-          <VStack className="flex-1 my-2">
-            <FlatList
-              data={this.props.listeTournois}
-              initialNumToRender={20}
-              keyExtractor={(item: Tournoi) => item.tournoiId.toString()}
-              renderItem={renderItem}
-              className="h-1"
-            />
-          </VStack>
-          {this._modalTournoiInfos()}
         </VStack>
-      </SafeAreaView>
-    );
-  }
-}
+        {_modalTournoiInfos()}
+      </VStack>
+    </SafeAreaView>
+  );
+};
 
-export default connector(withTranslation()(ListeTournois));
+export default ListeTournois;

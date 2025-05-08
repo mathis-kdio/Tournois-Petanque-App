@@ -1,49 +1,33 @@
-import { CommonActions, NavigationProp } from '@react-navigation/native';
+import {
+  CommonActions,
+  NavigationProp,
+  useNavigation,
+} from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { TFunction } from 'i18next';
-import React from 'react';
-import { Alert, BackHandler } from 'react-native';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Alert, BackHandler, NativeEventSubscription } from 'react-native';
 
 type WithExitAlertProps = {
   navigation: NavigationProp<any>;
   t: TFunction;
 };
 
-export default class WithExitAlert<
-  P extends WithExitAlertProps,
-  S,
-> extends React.Component<P, S> {
-  focusListener = null;
-  blurListener = null;
-  backHandler = null;
+const WithExitAlert = () => {
+  const { t } = useTranslation();
+  const navigation = useNavigation<StackNavigationProp<any, any>>();
 
-  componentDidMount() {
-    const { navigation } = this.props;
+  let focusListener: () => void;
+  let blurListener: () => void;
+  let backHandler: NativeEventSubscription;
 
-    this.focusListener = navigation.addListener('focus', () => {
-      this.backHandler = BackHandler.addEventListener(
-        'hardwareBackPress',
-        this.onBackPress,
-      );
-    });
-
-    this.blurListener = navigation.addListener('blur', () => {
-      if (this.backHandler) this.backHandler.remove();
-    });
-  }
-
-  componentWillUnmount() {
-    if (this.focusListener) this.focusListener();
-    if (this.blurListener) this.blurListener();
-    if (this.backHandler) this.backHandler.remove();
-  }
-
-  resetAccueil = CommonActions.reset({
+  const resetAccueil = CommonActions.reset({
     index: 0,
     routes: [{ name: 'AccueilGeneral' }],
   });
 
-  onBackPress = () => {
-    const { t } = this.props;
+  const onBackPress = () => {
     Alert.alert(
       t('quitter_tournoi'),
       t('quitter_tournoi_question'),
@@ -51,7 +35,7 @@ export default class WithExitAlert<
         { text: t('rester'), onPress: () => null, style: 'cancel' },
         {
           text: t('retour_accueil'),
-          onPress: () => this.props.navigation.dispatch(this.resetAccueil),
+          onPress: () => navigation.dispatch(resetAccueil),
         },
       ],
       { cancelable: true },
@@ -59,4 +43,33 @@ export default class WithExitAlert<
 
     return true;
   };
-}
+
+  useEffect(() => {
+    focusListener = navigation.addListener('focus', () => {
+      backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        onBackPress,
+      );
+    });
+
+    blurListener = navigation.addListener('blur', () => {
+      if (backHandler) {
+        backHandler.remove();
+      }
+    });
+
+    return () => {
+      if (focusListener) {
+        focusListener();
+      }
+      if (blurListener) {
+        blurListener();
+      }
+      if (backHandler) {
+        backHandler.remove();
+      }
+    };
+  }, [navigation, onBackPress]);
+};
+
+export default WithExitAlert;

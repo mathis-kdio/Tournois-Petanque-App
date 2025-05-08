@@ -1,49 +1,43 @@
 import { Button } from '@/components/ui/button';
 import { Menu, MenuItem, MenuItemLabel } from '@/components/ui/menu';
-import React from 'react';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { TFunction } from 'i18next';
-import { NavigationProp } from '@react-navigation/native';
-import { connector, PropsFromRedux } from '@/store/connector';
+import { useNavigation } from '@react-navigation/native';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useSelector } from 'react-redux';
 
-export interface Props extends PropsFromRedux {
-  navigation: NavigationProp<ReactNavigation.RootParamList>;
-  t: TFunction;
-}
+const BoutonMenuHeaderNav = () => {
+  const { t } = useTranslation();
+  const navigation = useNavigation<StackNavigationProp<any, any>>();
 
-interface State {}
+  const listeMatchs = useSelector(
+    (state: any) => state.gestionMatchs.listematchs,
+  );
 
-class BoutonMenuHeaderNav extends React.Component<Props, State> {
-  private navigator: string;
+  let navigator: string;
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {};
-  }
-
-  _showOptions() {
-    this.props.navigation.navigate(this.navigator, {
+  const _showOptions = () => {
+    navigation.navigate(navigator, {
       screen: 'ParametresTournoi',
     });
-  }
+  };
 
-  _showJoueurs() {
-    this.props.navigation.navigate(this.navigator, {
+  const _showJoueurs = () => {
+    navigation.navigate(navigator, {
       screen: 'ListeJoueur',
     });
-  }
+  };
 
-  _showPDFExport() {
-    this.props.navigation.navigate(this.navigator, {
+  const _showPDFExport = () => {
+    navigation.navigate(navigator, {
       screen: 'PDFExport',
     });
-  }
+  };
 
-  _showAccueil = () => {
-    this.props.navigation.reset({
+  const _showAccueil = () => {
+    navigation.reset({
       index: 0,
       routes: [
         {
@@ -53,55 +47,52 @@ class BoutonMenuHeaderNav extends React.Component<Props, State> {
     });
   };
 
-  render() {
-    const { t } = this.props;
-    let parametresTournoi = this.props.listeMatchs.at(-1) as OptionsTournoi;
-    this.navigator =
-      parametresTournoi.typeTournoi === TypeTournoi.COUPE
-        ? 'ListeMatchsScreen'
-        : 'ListeMatchsBottom';
-    return (
-      <Menu
-        placement="bottom left"
-        trigger={({ ...triggerProps }) => {
-          return (
-            <Button {...triggerProps} className="bg-[#0594ae]">
-              <FontAwesome5 name="bars" size={28} color="white" />
-            </Button>
-          );
-        }}
+  let parametresTournoi = listeMatchs.at(-1) as OptionsTournoi;
+  navigator =
+    parametresTournoi.typeTournoi === TypeTournoi.COUPE
+      ? 'ListeMatchsScreen'
+      : 'ListeMatchsBottom';
+  return (
+    <Menu
+      placement="bottom left"
+      trigger={({ ...triggerProps }) => {
+        return (
+          <Button {...triggerProps} className="bg-[#0594ae]">
+            <FontAwesome5 name="bars" size={28} color="white" />
+          </Button>
+        );
+      }}
+    >
+      <MenuItem
+        key="Joueurs"
+        textValue={t('liste_joueurs')}
+        onPress={() => _showJoueurs()}
       >
-        <MenuItem
-          key="Joueurs"
-          textValue={t('liste_joueurs')}
-          onPress={() => this._showJoueurs()}
-        >
-          <MenuItemLabel size="sm">{t('liste_joueurs')}</MenuItemLabel>
-        </MenuItem>
-        <MenuItem
-          key="Options"
-          textValue={t('parametres_tournoi')}
-          onPress={() => this._showOptions()}
-        >
-          <MenuItemLabel size="sm">{t('parametres_tournoi')}</MenuItemLabel>
-        </MenuItem>
-        <MenuItem
-          key="PDF"
-          textValue={t('exporter_pdf')}
-          onPress={() => this._showPDFExport()}
-        >
-          <MenuItemLabel size="sm">{t('exporter_pdf')}</MenuItemLabel>
-        </MenuItem>
-        <MenuItem
-          key="Accueil"
-          textValue={t('accueil')}
-          onPress={() => this._showAccueil()}
-        >
-          <MenuItemLabel size="sm">{t('accueil')}</MenuItemLabel>
-        </MenuItem>
-      </Menu>
-    );
-  }
-}
+        <MenuItemLabel size="sm">{t('liste_joueurs')}</MenuItemLabel>
+      </MenuItem>
+      <MenuItem
+        key="Options"
+        textValue={t('parametres_tournoi')}
+        onPress={() => _showOptions()}
+      >
+        <MenuItemLabel size="sm">{t('parametres_tournoi')}</MenuItemLabel>
+      </MenuItem>
+      <MenuItem
+        key="PDF"
+        textValue={t('exporter_pdf')}
+        onPress={() => _showPDFExport()}
+      >
+        <MenuItemLabel size="sm">{t('exporter_pdf')}</MenuItemLabel>
+      </MenuItem>
+      <MenuItem
+        key="Accueil"
+        textValue={t('accueil')}
+        onPress={() => _showAccueil()}
+      >
+        <MenuItemLabel size="sm">{t('accueil')}</MenuItemLabel>
+      </MenuItem>
+    </Menu>
+  );
+};
 
-export default connector(withTranslation()(BoutonMenuHeaderNav));
+export default BoutonMenuHeaderNav;

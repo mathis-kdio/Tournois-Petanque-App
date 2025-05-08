@@ -1,93 +1,72 @@
 import { VStack } from '@/components/ui/vstack';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
-import React from 'react';
-import { supabase } from '@/utils/supabase';
-import { Session } from '@supabase/supabase-js';
-import { withTranslation } from 'react-i18next';
+import { supabaseClient } from '@/utils/supabase';
+import { useTranslation } from 'react-i18next';
 import Item from '@components/Item';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { TFunction } from 'i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { withSession } from '@/components/supabase/withSession';
 import { LoaderIcon, TrashIcon } from '@/components/ui/icon';
 import { Divider } from '@/components/ui/divider';
+import { useNavigation } from '@react-navigation/native';
 
-export interface Props {
-  navigation: StackNavigationProp<any, any>;
-  t: TFunction;
-  session: Session | null;
-}
+const Compte = () => {
+  const { t } = useTranslation();
+  const navigation = useNavigation<StackNavigationProp<any, any>>();
 
-interface State {}
+  const deconnexion = () => {
+    supabaseClient.auth.signOut();
+    navigation.navigate('AccueilGeneral');
+  };
 
-class Compte extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {};
-  }
+  const supprimerCompte = () => {};
 
-  deconnexion() {
-    supabase.auth.signOut();
-    this.props.navigation.navigate('AccueilGeneral');
-  }
-
-  async supprimerCompte() {}
-
-  render() {
-    const { t } = this.props;
-    return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView className="h-1 bg-[#0594ae]">
-          <TopBarBack
-            title={t('mon_compte')}
-            navigation={this.props.navigation}
-          />
-          <VStack className="flex-1 px-10 justify-between">
-            <VStack className="border border-white rounded-lg">
-              <Item
-                text={t('informations_personnelles')}
-                action={() => this.props.navigation.navigate('InfosPerso')}
-                icon={'info-circle'}
-                type={undefined}
-                drapeau={undefined}
-              />
-              <Divider />
-              <Item
-                text={t('securite')}
-                action={() => this.props.navigation.navigate('Securite')}
-                icon={'lock'}
-                type={undefined}
-                drapeau={undefined}
-              />
-            </VStack>
-            <VStack space="xl" className="mt-5">
-              <Button onPress={() => this.deconnexion()}>
-                <ButtonText>{t('se_deconnecter')}</ButtonText>
-              </Button>
-              <Button isDisabled={true} onPress={() => undefined}>
-                <ButtonIcon as={LoaderIcon} />
-                <ButtonText className="ml-2">
-                  {t('forcer_synchronisation')}
-                </ButtonText>
-              </Button>
-              <Button
-                action="negative"
-                isDisabled={true}
-                onPress={() => this.supprimerCompte()}
-              >
-                <ButtonIcon as={TrashIcon} />
-                <ButtonText className="ml-2">
-                  {t('supprimer_compte')}
-                </ButtonText>
-              </Button>
-            </VStack>
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView className="h-1 bg-[#0594ae]">
+        <TopBarBack title={t('mon_compte')} navigation={navigation} />
+        <VStack className="flex-1 px-10 justify-between">
+          <VStack className="border border-white rounded-lg">
+            <Item
+              text={t('informations_personnelles')}
+              action={() => navigation.navigate('InfosPerso')}
+              icon={'info-circle'}
+              type={''}
+              drapeau={undefined}
+            />
+            <Divider />
+            <Item
+              text={t('securite')}
+              action={() => navigation.navigate('Securite')}
+              icon={'lock'}
+              type={''}
+              drapeau={undefined}
+            />
           </VStack>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-}
+          <VStack space="xl" className="mt-5">
+            <Button onPress={() => deconnexion()}>
+              <ButtonText>{t('se_deconnecter')}</ButtonText>
+            </Button>
+            <Button isDisabled={true} onPress={() => undefined}>
+              <ButtonIcon as={LoaderIcon} />
+              <ButtonText className="ml-2">
+                {t('forcer_synchronisation')}
+              </ButtonText>
+            </Button>
+            <Button
+              action="negative"
+              isDisabled={true}
+              onPress={() => supprimerCompte()}
+            >
+              <ButtonIcon as={TrashIcon} />
+              <ButtonText className="ml-2">{t('supprimer_compte')}</ButtonText>
+            </Button>
+          </VStack>
+        </VStack>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
 
-export default withSession(withTranslation()(Compte));
+export default Compte;

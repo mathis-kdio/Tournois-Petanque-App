@@ -11,87 +11,81 @@ import {
 import { Text } from '@/components/ui/text';
 import { Button, ButtonText } from '@/components/ui/button';
 import { VStack } from '@/components/ui/vstack';
-import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import AdMobInscriptionsBanner from '../../components/adMob/AdMobInscriptionsBanner';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { TFunction } from 'i18next';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { PropsFromRedux, connector } from '@/store/connector';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
 
-export interface Props extends PropsFromRedux {
-  navigation: StackNavigationProp<any, any>;
-  t: TFunction;
-}
+const ChoixModeTournoi = () => {
+  const { t } = useTranslation();
+  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const dispatch = useDispatch();
 
-interface State {
-  typeEquipes: string;
-  modeTournoi: string;
-}
+  const optionsTournoi = useSelector(
+    (state: any) => state.optionsTournoi.options,
+  );
 
-class ChoixModeTournoi extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      typeEquipes: TypeEquipes.DOUBLETTE,
-      modeTournoi: ModeTournoi.AVECNOMS,
-    };
-  }
+  const [typeEquipes, setTypeEquipes] = useState(TypeEquipes.DOUBLETTE);
+  const [modeTournoi, setModeTournoi] = useState(ModeTournoi.AVECNOMS);
 
-  _nextStep() {
-    let modeTournoi = this.state.modeTournoi;
-    if (this.props.optionsTournoi.typeTournoi !== TypeTournoi.MELEDEMELE) {
-      modeTournoi = ModeTournoi.AVECEQUIPES;
+  const _nextStep = () => {
+    let finalModeTournoi = modeTournoi;
+    let typeTournoi = optionsTournoi.typeTournoi;
+    if (typeTournoi !== TypeTournoi.MELEDEMELE) {
+      finalModeTournoi = ModeTournoi.AVECEQUIPES;
     }
     const updateOptionEquipesTournoi = {
       type: 'UPDATE_OPTION_TOURNOI',
-      value: ['typeEquipes', this.state.typeEquipes],
+      value: ['typeEquipes', typeEquipes],
     };
-    this.props.dispatch(updateOptionEquipesTournoi);
+    dispatch(updateOptionEquipesTournoi);
     const updateOptionModeTournoi = {
       type: 'UPDATE_OPTION_TOURNOI',
-      value: ['mode', modeTournoi],
+      value: ['mode', finalModeTournoi],
     };
-    this.props.dispatch(updateOptionModeTournoi);
+    dispatch(updateOptionModeTournoi);
 
     if (
-      this.props.optionsTournoi.typeTournoi !== TypeTournoi.CHAMPIONNAT &&
-      this.props.optionsTournoi.typeTournoi !== TypeTournoi.COUPE &&
-      this.props.optionsTournoi.typeTournoi !== TypeTournoi.MULTICHANCES
+      typeTournoi !== TypeTournoi.CHAMPIONNAT &&
+      typeTournoi !== TypeTournoi.COUPE &&
+      typeTournoi !== TypeTournoi.MULTICHANCES
     ) {
       let screenName =
-        this.state.modeTournoi === ModeTournoi.SANSNOMS
+        modeTournoi === ModeTournoi.SANSNOMS
           ? 'InscriptionsSansNoms'
           : 'InscriptionsAvecNoms';
-      this.props.navigation.navigate({
+      navigation.navigate({
         name: 'OptionsTournoi',
         params: {
           screenStackName: screenName,
         },
       });
     } else {
-      this.props.navigation.navigate('InscriptionsAvecNoms');
+      navigation.navigate('InscriptionsAvecNoms');
     }
-  }
+  };
 
-  _validButton() {
-    const { t } = this.props;
+  const _validButton = () => {
     let buttonDisabled = false;
     let title = t('valider_et_options');
+    let typeTournoi = optionsTournoi.typeTournoi;
     if (
-      this.props.optionsTournoi.typeTournoi === TypeTournoi.CHAMPIONNAT ||
-      this.props.optionsTournoi.typeTournoi === TypeTournoi.COUPE ||
-      this.props.optionsTournoi.typeTournoi === TypeTournoi.MULTICHANCES
+      typeTournoi === TypeTournoi.CHAMPIONNAT ||
+      typeTournoi === TypeTournoi.COUPE ||
+      typeTournoi === TypeTournoi.MULTICHANCES
     ) {
       title = t('valider_et_inscriptions');
     }
     if (
-      this.state.modeTournoi === ModeTournoi.AVECEQUIPES &&
-      this.state.typeEquipes === TypeEquipes.TETEATETE
+      modeTournoi === ModeTournoi.AVECEQUIPES &&
+      typeEquipes === TypeEquipes.TETEATETE
     ) {
       buttonDisabled = true;
       title = t('erreur_tournoi_tete_a_tete_et_equipes');
@@ -100,18 +94,19 @@ class ChoixModeTournoi extends React.Component<Props, State> {
       <Button
         action="primary"
         isDisabled={buttonDisabled}
-        onPress={() => this._nextStep()}
+        onPress={() => _nextStep()}
         size="md"
       >
         <ButtonText>{title}</ButtonText>
       </Button>
     );
-  }
+  };
 
-  _modeTournoi() {
-    const { t } = this.props;
-    if (this.props.optionsTournoi.typeTournoi !== TypeTournoi.MELEDEMELE)
+  const _modeTournoi = () => {
+    let typeTournoi = optionsTournoi.typeTournoi;
+    if (typeTournoi !== TypeTournoi.MELEDEMELE) {
       return;
+    }
     return (
       <VStack>
         <Text className="text-white text-2xl text-center">
@@ -119,10 +114,8 @@ class ChoixModeTournoi extends React.Component<Props, State> {
         </Text>
         <RadioGroup
           aria-label={t('choix_mode_tournoi')}
-          value={this.state.modeTournoi}
-          onChange={(nextValue) => {
-            this.setState({ modeTournoi: nextValue });
-          }}
+          value={modeTournoi}
+          onChange={(nextValue) => setModeTournoi(nextValue)}
         >
           <VStack space="lg">
             <Radio value={ModeTournoi.AVECNOMS} size="lg">
@@ -162,76 +155,68 @@ class ChoixModeTournoi extends React.Component<Props, State> {
         </RadioGroup>
       </VStack>
     );
-  }
+  };
 
-  render() {
-    const { t } = this.props;
-    return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView className="h-1 bg-[#0594ae]">
-          <TopBarBack
-            title={t('mode_tournoi')}
-            navigation={this.props.navigation}
-          />
-          <VStack className="flex-1 px-10 justify-between">
-            <VStack space="4xl">
-              <Text className="text-white text-2xl text-center">
-                {t('type_equipes')}
-              </Text>
-              <RadioGroup
-                aria-label={t('choix_type_equipes')}
-                value={this.state.typeEquipes}
-                onChange={(nextValue) => {
-                  this.setState({ typeEquipes: nextValue });
-                }}
-              >
-                <VStack space="lg">
-                  <Radio value={TypeEquipes.TETEATETE} size="lg">
-                    <RadioIndicator className="mr-2 border-white">
-                      <RadioIcon
-                        as={CircleIcon}
-                        className="fill-white text-background-white"
-                      />
-                    </RadioIndicator>
-                    <RadioLabel className="text-white">
-                      {t('tete_a_tete')}
-                    </RadioLabel>
-                  </Radio>
-                  <Radio value={TypeEquipes.DOUBLETTE} size="lg">
-                    <RadioIndicator className="mr-2 border-white">
-                      <RadioIcon
-                        as={CircleIcon}
-                        className="fill-white text-background-white"
-                      />
-                    </RadioIndicator>
-                    <RadioLabel className="text-white">
-                      {t('doublettes')}
-                    </RadioLabel>
-                  </Radio>
-                  <Radio value={TypeEquipes.TRIPLETTE} size="lg">
-                    <RadioIndicator className="mr-2 border-white">
-                      <RadioIcon
-                        as={CircleIcon}
-                        className="fill-white text-background-white"
-                      />
-                    </RadioIndicator>
-                    <RadioLabel className="text-white">
-                      {t('triplettes')}
-                    </RadioLabel>
-                  </Radio>
-                </VStack>
-              </RadioGroup>
-              {this._modeTournoi()}
-              {this._validButton()}
-            </VStack>
-            <Box className="my-10">
-              <AdMobInscriptionsBanner />
-            </Box>
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView className="h-1 bg-[#0594ae]">
+        <TopBarBack title={t('mode_tournoi')} navigation={navigation} />
+        <VStack className="flex-1 px-10 justify-between">
+          <VStack space="4xl">
+            <Text className="text-white text-2xl text-center">
+              {t('type_equipes')}
+            </Text>
+            <RadioGroup
+              aria-label={t('choix_type_equipes')}
+              value={typeEquipes}
+              onChange={(nextValue) => setTypeEquipes(nextValue)}
+            >
+              <VStack space="lg">
+                <Radio value={TypeEquipes.TETEATETE} size="lg">
+                  <RadioIndicator className="mr-2 border-white">
+                    <RadioIcon
+                      as={CircleIcon}
+                      className="fill-white text-background-white"
+                    />
+                  </RadioIndicator>
+                  <RadioLabel className="text-white">
+                    {t('tete_a_tete')}
+                  </RadioLabel>
+                </Radio>
+                <Radio value={TypeEquipes.DOUBLETTE} size="lg">
+                  <RadioIndicator className="mr-2 border-white">
+                    <RadioIcon
+                      as={CircleIcon}
+                      className="fill-white text-background-white"
+                    />
+                  </RadioIndicator>
+                  <RadioLabel className="text-white">
+                    {t('doublettes')}
+                  </RadioLabel>
+                </Radio>
+                <Radio value={TypeEquipes.TRIPLETTE} size="lg">
+                  <RadioIndicator className="mr-2 border-white">
+                    <RadioIcon
+                      as={CircleIcon}
+                      className="fill-white text-background-white"
+                    />
+                  </RadioIndicator>
+                  <RadioLabel className="text-white">
+                    {t('triplettes')}
+                  </RadioLabel>
+                </Radio>
+              </VStack>
+            </RadioGroup>
+            {_modeTournoi()}
+            {_validButton()}
           </VStack>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-}
+          <Box className="my-10">
+            <AdMobInscriptionsBanner />
+          </Box>
+        </VStack>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
 
-export default connector(withTranslation()(ChoixModeTournoi));
+export default ChoixModeTournoi;

@@ -3,107 +3,95 @@ import { Input, InputField } from '@/components/ui/input';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import React from 'react';
-import { withTranslation } from 'react-i18next';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { TFunction } from 'i18next';
 import { JoueurType } from '@/types/enums/joueurType';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { PropsFromRedux, connector } from '@/store/connector';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 
-export interface Props extends PropsFromRedux {
-  navigation: StackNavigationProp<any, any>;
-  t: TFunction;
-}
+const InscriptionsSansNoms = () => {
+  const { t } = useTranslation();
+  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const dispatch = useDispatch();
 
-interface State {
-  nbJoueurNormaux: number;
-  nbJoueurEnfants: number;
-}
+  const optionsTournoi = useSelector(
+    (state: any) => state.optionsTournoi.options,
+  );
 
-class InscriptionsSansNoms extends React.Component<Props, State> {
-  secondInput = React.createRef<any>();
+  const [nbJoueurNormaux, setNbJoueurNormaux] = useState(0);
+  const [nbJoueurEnfants, setNbJoueurEnfants] = useState(0);
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      nbJoueurNormaux: 0,
-      nbJoueurEnfants: 0,
-    };
-  }
+  const secondInput = React.createRef<any>();
 
-  _textInputJoueursNormaux(text: string) {
-    this.setState({
-      nbJoueurNormaux: parseInt(text),
-    });
-  }
+  const _textInputJoueursNormaux = (text: string) => {
+    setNbJoueurNormaux(parseInt(text));
+  };
 
-  _textInputJoueursEnfants(text: string) {
-    this.setState({
-      nbJoueurEnfants: parseInt(text),
-    });
-  }
+  const _textInputJoueursEnfants = (text: string) => {
+    setNbJoueurEnfants(parseInt(text));
+  };
 
-  _ajoutJoueur(type: JoueurType) {
+  const _ajoutJoueur = (type?: JoueurType) => {
     const action = {
       type: 'AJOUT_JOUEUR',
       value: [ModeTournoi.SANSNOMS, '', type, undefined],
     };
-    this.props.dispatch(action);
-  }
+    dispatch(action);
+  };
 
-  _supprimerJoueurs() {
+  const _supprimerJoueurs = () => {
     const suppressionAllJoueurs = {
       type: 'SUPPR_ALL_JOUEURS',
       value: [ModeTournoi.SANSNOMS],
     };
-    this.props.dispatch(suppressionAllJoueurs);
-  }
+    dispatch(suppressionAllJoueurs);
+  };
 
-  _commencer(choixComplement: boolean) {
-    this._supprimerJoueurs();
+  const _commencer = (choixComplement: boolean) => {
+    _supprimerJoueurs();
 
-    for (let i = 0; i < this.state.nbJoueurNormaux; i++) {
-      this._ajoutJoueur(undefined);
+    for (let i = 0; i < nbJoueurNormaux; i++) {
+      _ajoutJoueur();
     }
 
-    for (let i = 0; i < this.state.nbJoueurEnfants; i++) {
-      this._ajoutJoueur(JoueurType.ENFANT);
+    for (let i = 0; i < nbJoueurEnfants; i++) {
+      _ajoutJoueur(JoueurType.ENFANT);
     }
 
     let screenName = 'GenerationMatchs';
     if (choixComplement) {
       screenName = 'ChoixComplement';
-    } else if (this.props.optionsTournoi.avecTerrains) {
+    } else if (optionsTournoi.avecTerrains) {
       screenName = 'ListeTerrains';
     }
-    this.props.navigation.navigate({
+    navigation.navigate({
       name: screenName,
       params: {
         screenStackName: 'InscriptionsSansNoms',
       },
     });
-  }
+  };
 
-  _nbJoueurs() {
+  const _nbJoueurs = () => {
     let nbJoueur = 0;
-    if (!isNaN(this.state.nbJoueurNormaux)) {
-      nbJoueur = this.state.nbJoueurNormaux;
+    if (!isNaN(nbJoueurNormaux)) {
+      nbJoueur = nbJoueurNormaux;
     }
-    if (!isNaN(this.state.nbJoueurEnfants)) {
-      nbJoueur += this.state.nbJoueurEnfants;
+    if (!isNaN(nbJoueurEnfants)) {
+      nbJoueur += nbJoueurEnfants;
     }
     return nbJoueur;
-  }
+  };
 
-  _boutonCommencer() {
-    const { t, optionsTournoi } = this.props;
-    let btnDisabled: boolean;
+  const _boutonCommencer = () => {
+    let btnDisabled: boolean = false;
     let title = t('commencer_tournoi');
-    let nbJoueurs = this._nbJoueurs();
+    let nbJoueurs = _nbJoueurs();
     let choixComplement = false;
 
     if (
@@ -132,65 +120,60 @@ class InscriptionsSansNoms extends React.Component<Props, State> {
       <Button
         isDisabled={btnDisabled}
         action="positive"
-        onPress={() => this._commencer(choixComplement)}
+        onPress={() => _commencer(choixComplement)}
         className="h-min min-h-10"
       >
         <ButtonText>{title}</ButtonText>
       </Button>
     );
-  }
+  };
 
-  render() {
-    const { t } = this.props;
-    return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView className="h-1 bg-[#0594ae]">
-          <TopBarBack
-            title={t('inscription_sans_noms_navigation_title')}
-            navigation={this.props.navigation}
-          />
-          <VStack space="2xl" className="flex-1 px-10">
-            <Text className="text-white text-center text-xl">
-              {t('nombre_joueurs', { nb: this._nbJoueurs() })}
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView className="h-1 bg-[#0594ae]">
+        <TopBarBack
+          title={t('inscription_sans_noms_navigation_title')}
+          navigation={navigation}
+        />
+        <VStack space="2xl" className="flex-1 px-10">
+          <Text className="text-white text-center text-xl">
+            {t('nombre_joueurs', { nb: _nbJoueurs() })}
+          </Text>
+          <VStack>
+            <Text className="text-white text-md">
+              {t('nombre_joueurs_adultes')}{' '}
             </Text>
-            <VStack>
-              <Text className="text-white text-md">
-                {t('nombre_joueurs_adultes')}{' '}
-              </Text>
-              <Input className="border-white">
-                <InputField
-                  placeholder={t('nombre_placeholder')}
-                  keyboardType="number-pad"
-                  returnKeyType="next"
-                  autoFocus={true}
-                  blurOnSubmit={false}
-                  onChangeText={(text) => this._textInputJoueursNormaux(text)}
-                  onSubmitEditing={() => this.secondInput.current.focus()}
-                />
-              </Input>
-            </VStack>
-            <VStack>
-              <Text className="text-white text-md">
-                {t('nombre_joueurs_enfants')}{' '}
-              </Text>
-              <Input className="border-white">
-                <InputField
-                  placeholder={t('nombre_placeholder')}
-                  keyboardType="number-pad"
-                  onChangeText={(text) => this._textInputJoueursEnfants(text)}
-                  ref={this.secondInput}
-                />
-              </Input>
-            </VStack>
-            <Text className="text-white">
-              {t('joueurs_enfants_explication')}
-            </Text>
-            {this._boutonCommencer()}
+            <Input className="border-white">
+              <InputField
+                placeholder={t('nombre_placeholder')}
+                keyboardType="number-pad"
+                returnKeyType="next"
+                autoFocus={true}
+                blurOnSubmit={false}
+                onChangeText={(text) => _textInputJoueursNormaux(text)}
+                onSubmitEditing={() => secondInput.current.focus()}
+              />
+            </Input>
           </VStack>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-}
+          <VStack>
+            <Text className="text-white text-md">
+              {t('nombre_joueurs_enfants')}{' '}
+            </Text>
+            <Input className="border-white">
+              <InputField
+                placeholder={t('nombre_placeholder')}
+                keyboardType="number-pad"
+                onChangeText={(text) => _textInputJoueursEnfants(text)}
+                ref={secondInput}
+              />
+            </Input>
+          </VStack>
+          <Text className="text-white">{t('joueurs_enfants_explication')}</Text>
+          {_boutonCommencer()}
+        </VStack>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
 
-export default connector(withTranslation()(InscriptionsSansNoms));
+export default InscriptionsSansNoms;

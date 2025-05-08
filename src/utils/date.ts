@@ -14,9 +14,7 @@ const compactFormatter = new Intl.DateTimeFormat('fr-FR', {
 });
 
 export const dateFormatDateHeure = (date: Date) => {
-  if (date != null) {
-    return longFormatter.format(new Date(date));
-  }
+  return longFormatter.format(new Date(date));
 };
 
 export const dateFormatDateCompact = (date: Date) => {

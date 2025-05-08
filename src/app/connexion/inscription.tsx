@@ -3,14 +3,13 @@ import { Text } from '@/components/ui/text';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Input, InputField, InputSlot } from '@/components/ui/input';
 import { Button, ButtonText } from '@/components/ui/button';
-import React from 'react';
+import React, { useState } from 'react';
 import { Alert, AppState } from 'react-native';
-import { withTranslation } from 'react-i18next';
-import { supabase } from '@/utils/supabase';
+import { useTranslation } from 'react-i18next';
+import { supabaseClient } from '@/utils/supabase';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { StackNavigationProp } from '@react-navigation/stack';
-import { TFunction } from 'i18next';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import {
   FormControl,
@@ -31,6 +30,7 @@ import {
   CheckboxIndicator,
   CheckboxLabel,
 } from '@/components/ui/checkbox';
+import { useNavigation } from '@react-navigation/native';
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
@@ -38,83 +38,61 @@ import {
 // if the user's session is terminated. This should only be registered once.
 AppState.addEventListener('change', (state) => {
   if (state === 'active') {
-    supabase.auth.startAutoRefresh();
+    supabaseClient.auth.startAutoRefresh();
   } else {
-    supabase.auth.stopAutoRefresh();
+    supabaseClient.auth.stopAutoRefresh();
   }
 });
 
-export interface Props {
-  navigation: StackNavigationProp<any, any>;
-  t: TFunction;
-}
+const Inscription = () => {
+  const { t } = useTranslation();
+  const navigation = useNavigation<StackNavigationProp<any, any>>();
 
-interface State {
-  loading: boolean;
-  email: string;
-  password: string;
-  password2: string;
-  conditionsCheckbox: boolean;
-  showPassword1: boolean;
-  showPassword2: boolean;
-  emailIncorrect: boolean;
-  passwordIncorrect: boolean;
-  password2Incorrect: boolean;
-}
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
+  const [conditionsCheckbox, setConditionsCheckbox] = useState(false);
+  const [showPassword1, setShowPassword1] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
+  const [emailIncorrect, setEmailIncorrect] = useState(false);
+  const [passwordIncorrect, setPasswordIncorrect] = useState(false);
+  const [password2Incorrect, setPassword2Incorrect] = useState(false);
 
-class Inscription extends React.Component<Props, State> {
-  mdpInput1 = React.createRef<any>();
-  mdpInput2 = React.createRef<any>();
+  const mdpInput1 = React.createRef<any>();
+  const mdpInput2 = React.createRef<any>();
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      loading: false,
-      email: '',
-      password: '',
-      password2: '',
-      conditionsCheckbox: false,
-      showPassword1: false,
-      showPassword2: false,
-      emailIncorrect: false,
-      passwordIncorrect: false,
-      password2Incorrect: false,
-    };
-  }
-
-  isValidEmail(email: string): boolean {
+  const validEmailTest = (email: string): boolean => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
-  }
+  };
 
-  isValidPassword(password: string): boolean {
+  const validPasswordTest = (password: string): boolean => {
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/;
     return passwordRegex.test(password);
-  }
+  };
 
-  async signUpWithEmail() {
-    let isValidEmail = this.isValidEmail(this.state.email);
-    let isValidPassword = this.isValidPassword(this.state.password);
-    let isValidPassword2 = this.state.password2 === this.state.password;
-    this.setState({
-      emailIncorrect: !isValidEmail,
-      passwordIncorrect: !isValidPassword,
-      password2Incorrect: !isValidPassword2,
-    });
+  const signUpWithEmail = async () => {
+    let isValidEmail = validEmailTest(email);
+    let isValidPassword = validPasswordTest(password);
+    let isValidPassword2 = password2 === password;
+    setEmailIncorrect(!isValidEmail);
+    setPasswordIncorrect(!isValidPassword);
+    setPassword2Incorrect(!isValidPassword2);
     if (!isValidEmail || !isValidPassword || !isValidPassword2) {
       return;
     }
 
-    this.setState({ loading: true });
+    setLoading(true);
     const {
       data: { session },
       error,
-    } = await supabase.auth.signUp({
-      email: this.state.email,
-      password: this.state.password,
+    } = await supabaseClient.auth.signUp({
+      email: email,
+      password: password,
     });
-    this.setState({ loading: false });
+    setLoading(false);
 
     console.log(session);
     if (error) {
@@ -122,227 +100,207 @@ class Inscription extends React.Component<Props, State> {
       Alert.alert(error.message);
     } else {
       if (!session) {
-        this.props.navigation.navigate('ConfirmationEmail', {
-          email: this.state.email,
+        navigation.navigate('ConfirmationEmail', {
+          email: email,
         });
       }
     }
-  }
+  };
 
-  isButtonDisable() {
+  const isButtonDisable = () => {
     return (
-      this.state.loading ||
-      this.state.email.length === 0 ||
-      this.state.password.length === 0 ||
-      this.state.password2.length === 0 ||
-      !this.state.conditionsCheckbox
+      loading ||
+      email.length === 0 ||
+      password.length === 0 ||
+      password2.length === 0 ||
+      !conditionsCheckbox
     );
-  }
+  };
 
-  render() {
-    const { t } = this.props;
-    return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView className="h-1 bg-[#0594ae]">
-          <TopBarBack
-            title={t('inscription')}
-            navigation={this.props.navigation}
-          />
-          <VStack className="flex-1 px-10 justify-between">
-            <VStack className="mb-5">
-              <FormControl
-                isInvalid={this.state.emailIncorrect}
-                isRequired={true}
-                className="mb-5"
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView className="h-1 bg-[#0594ae]">
+        <TopBarBack title={t('inscription')} navigation={navigation} />
+        <VStack className="flex-1 px-10 justify-between">
+          <VStack className="mb-5">
+            <FormControl
+              isInvalid={emailIncorrect}
+              isRequired={true}
+              className="mb-5"
+            >
+              <FormControlLabel className="mb-1">
+                <FormControlLabelText className="text-white">
+                  {t('email')}
+                </FormControlLabelText>
+              </FormControlLabel>
+              <Input>
+                <InputField
+                  className="text-white placeholder:text-white"
+                  placeholder={t('email_adresse')}
+                  keyboardType="email-address"
+                  returnKeyType="next"
+                  autoCapitalize="none"
+                  onChangeText={(text) => setEmail(text)}
+                  onSubmitEditing={() => mdpInput1.current.focus()}
+                />
+              </Input>
+              <FormControlError>
+                <FormControlErrorIcon as={AlertCircleIcon} />
+                <FormControlErrorText>
+                  {t('email_non_valide')}
+                </FormControlErrorText>
+              </FormControlError>
+            </FormControl>
+            <FormControl
+              isInvalid={passwordIncorrect}
+              isRequired={true}
+              className="mb-5"
+            >
+              <FormControlLabel className="mb-1">
+                <FormControlLabelText className="text-white">
+                  {t('mot_de_passe')}
+                </FormControlLabelText>
+              </FormControlLabel>
+              <Input>
+                <InputField
+                  className="text-white placeholder:text-white"
+                  placeholder={t('mot_de_passe')}
+                  secureTextEntry={!showPassword1}
+                  returnKeyType="next"
+                  autoCapitalize={'none'}
+                  onChangeText={(text) => setPassword(text)}
+                  onSubmitEditing={() => mdpInput2.current.focus()}
+                  ref={mdpInput1}
+                />
+                <InputSlot className="pr-3">
+                  <FontAwesome5.Button
+                    name={showPassword1 ? 'eye' : 'eye-slash'}
+                    backgroundColor="#00000000"
+                    iconStyle={{ marginRight: 0 }}
+                    size={16}
+                    onPress={() => setShowPassword1(!showPassword1)}
+                  />
+                </InputSlot>
+              </Input>
+              <FormControlError>
+                <FormControlErrorIcon as={AlertCircleIcon} />
+                <FormControlErrorText>
+                  {t('mdp_non_valide')}
+                </FormControlErrorText>
+              </FormControlError>
+              <FormControlHelper>
+                <FormControlHelperText>
+                  {t('mdp_consignes')}
+                </FormControlHelperText>
+              </FormControlHelper>
+            </FormControl>
+            <FormControl
+              isInvalid={password2Incorrect}
+              isRequired={true}
+              className="mb-5"
+            >
+              <FormControlLabel className="mb-1">
+                <FormControlLabelText className="text-white">
+                  {t('mot_de_passe_confirmation')}
+                </FormControlLabelText>
+              </FormControlLabel>
+              <Input>
+                <InputField
+                  className="text-white placeholder:text-white"
+                  placeholder={t('mot_de_passe')}
+                  secureTextEntry={!showPassword2}
+                  autoCapitalize={'none'}
+                  onChangeText={(text) => setPassword2(text)}
+                  ref={mdpInput2}
+                />
+                <InputSlot className="pr-3">
+                  <FontAwesome5.Button
+                    name={showPassword2 ? 'eye' : 'eye-slash'}
+                    backgroundColor="#00000000"
+                    iconStyle={{ marginRight: 0 }}
+                    size={16}
+                    onPress={() => setShowPassword2(!showPassword2)}
+                  />
+                </InputSlot>
+              </Input>
+              <FormControlError>
+                <FormControlErrorIcon as={AlertCircleIcon} />
+                <FormControlErrorText>
+                  {t('mdp_non_valide')}
+                </FormControlErrorText>
+              </FormControlError>
+              <FormControlHelper>
+                <FormControlHelperText>
+                  {t('mdp_non_identique')}
+                </FormControlHelperText>
+              </FormControlHelper>
+            </FormControl>
+            <FormControl
+              isInvalid={!conditionsCheckbox}
+              isRequired={true}
+              className="mb-5"
+            >
+              <Checkbox
+                value="conditionsCheckbox"
+                onChange={() => setConditionsCheckbox(!conditionsCheckbox)}
               >
-                <FormControlLabel className="mb-1">
-                  <FormControlLabelText className="text-white">
-                    {t('email')}
-                  </FormControlLabelText>
-                </FormControlLabel>
-                <Input>
-                  <InputField
-                    className="text-white placeholder:text-white"
-                    placeholder={t('email_adresse')}
-                    keyboardType="email-address"
-                    returnKeyType="next"
-                    autoCapitalize="none"
-                    onChangeText={(text) => this.setState({ email: text })}
-                    onSubmitEditing={() => this.mdpInput1.current.focus()}
-                  />
-                </Input>
-                <FormControlError>
-                  <FormControlErrorIcon as={AlertCircleIcon} />
-                  <FormControlErrorText>
-                    {t('email_non_valide')}
-                  </FormControlErrorText>
-                </FormControlError>
-              </FormControl>
-              <FormControl
-                isInvalid={this.state.passwordIncorrect}
-                isRequired={true}
-                className="mb-5"
+                <CheckboxIndicator className="mr-2">
+                  <CheckboxIcon>
+                    <CheckIcon />
+                  </CheckboxIcon>
+                </CheckboxIndicator>
+                <CheckboxLabel>{t('accepte_termes_conditions')}</CheckboxLabel>
+              </Checkbox>
+            </FormControl>
+            <FormControl>
+              <Button
+                size="lg"
+                isDisabled={isButtonDisable()}
+                onPress={() => signUpWithEmail()}
               >
-                <FormControlLabel className="mb-1">
-                  <FormControlLabelText className="text-white">
-                    {t('mot_de_passe')}
-                  </FormControlLabelText>
-                </FormControlLabel>
-                <Input>
-                  <InputField
-                    className="text-white placeholder:text-white"
-                    placeholder={t('mot_de_passe')}
-                    secureTextEntry={!this.state.showPassword1}
-                    returnKeyType="next"
-                    autoCapitalize={'none'}
-                    onChangeText={(text) => this.setState({ password: text })}
-                    onSubmitEditing={() => this.mdpInput2.current.focus()}
-                    ref={this.mdpInput1}
-                  />
-                  <InputSlot className="pr-3">
-                    <FontAwesome5.Button
-                      name={this.state.showPassword1 ? 'eye' : 'eye-slash'}
-                      backgroundColor="#00000000"
-                      iconStyle={{ marginRight: 0 }}
-                      size={16}
-                      onPress={() =>
-                        this.setState({
-                          showPassword1: !this.state.showPassword1,
-                        })
-                      }
-                    />
-                  </InputSlot>
-                </Input>
-                <FormControlError>
-                  <FormControlErrorIcon as={AlertCircleIcon} />
-                  <FormControlErrorText>
-                    {t('mdp_non_valide')}
-                  </FormControlErrorText>
-                </FormControlError>
-                <FormControlHelper>
-                  <FormControlHelperText>
-                    {t('mdp_consignes')}
-                  </FormControlHelperText>
-                </FormControlHelper>
-              </FormControl>
-              <FormControl
-                isInvalid={this.state.password2Incorrect}
-                isRequired={true}
-                className="mb-5"
-              >
-                <FormControlLabel className="mb-1">
-                  <FormControlLabelText className="text-white">
-                    {t('mot_de_passe_confirmation')}
-                  </FormControlLabelText>
-                </FormControlLabel>
-                <Input>
-                  <InputField
-                    className="text-white placeholder:text-white"
-                    placeholder={t('mot_de_passe')}
-                    secureTextEntry={!this.state.showPassword2}
-                    autoCapitalize={'none'}
-                    onChangeText={(text) => this.setState({ password2: text })}
-                    ref={this.mdpInput2}
-                  />
-                  <InputSlot className="pr-3">
-                    <FontAwesome5.Button
-                      name={this.state.showPassword2 ? 'eye' : 'eye-slash'}
-                      backgroundColor="#00000000"
-                      iconStyle={{ marginRight: 0 }}
-                      size={16}
-                      onPress={() =>
-                        this.setState({
-                          showPassword2: !this.state.showPassword2,
-                        })
-                      }
-                    />
-                  </InputSlot>
-                </Input>
-                <FormControlError>
-                  <FormControlErrorIcon as={AlertCircleIcon} />
-                  <FormControlErrorText>
-                    {t('mdp_non_valide')}
-                  </FormControlErrorText>
-                </FormControlError>
-                <FormControlHelper>
-                  <FormControlHelperText>
-                    {t('mdp_non_identique')}
-                  </FormControlHelperText>
-                </FormControlHelper>
-              </FormControl>
-              <FormControl
-                isInvalid={!this.state.conditionsCheckbox}
-                isRequired={true}
-                className="mb-5"
-              >
-                <Checkbox
-                  value="conditionsCheckbox"
-                  onChange={() =>
-                    this.setState({
-                      conditionsCheckbox: !this.state.conditionsCheckbox,
-                    })
-                  }
-                >
-                  <CheckboxIndicator className="mr-2">
-                    <CheckboxIcon>
-                      <CheckIcon />
-                    </CheckboxIcon>
-                  </CheckboxIndicator>
-                  <CheckboxLabel>
-                    {t('accepte_termes_conditions')}
-                  </CheckboxLabel>
-                </Checkbox>
-              </FormControl>
-              <FormControl>
-                <Button
-                  size="lg"
-                  isDisabled={this.isButtonDisable()}
-                  onPress={() => this.signUpWithEmail()}
-                >
-                  <ButtonText>{t('creer_le_compte')}</ButtonText>
-                </Button>
-              </FormControl>
-            </VStack>
-            <VStack space="md">
-              <Text className="text-white self-center" size="lg">
-                {t('ou_creer_compte_avec')}
-              </Text>
-              <HStack className="flex" space="lg">
-                <Button
-                  className="grow"
-                  size="lg"
-                  variant="outline"
-                  isDisabled={true}
-                >
-                  <FontAwesome5
-                    name="apple"
-                    color="white"
-                    size={18}
-                    style={{ marginRight: 5 }}
-                  />
-                  <ButtonText className="text-white">Apple</ButtonText>
-                </Button>
-                <Button
-                  className="grow"
-                  size="lg"
-                  variant="outline"
-                  isDisabled={true}
-                >
-                  <FontAwesome5
-                    name="google"
-                    color="white"
-                    size={14}
-                    className="mr-2"
-                  />
-                  <ButtonText className="text-white">Google</ButtonText>
-                </Button>
-              </HStack>
-            </VStack>
+                <ButtonText>{t('creer_le_compte')}</ButtonText>
+              </Button>
+            </FormControl>
           </VStack>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-}
+          <VStack space="md">
+            <Text className="text-white self-center" size="lg">
+              {t('ou_creer_compte_avec')}
+            </Text>
+            <HStack className="flex" space="lg">
+              <Button
+                className="grow"
+                size="lg"
+                variant="outline"
+                isDisabled={true}
+              >
+                <FontAwesome5
+                  name="apple"
+                  color="white"
+                  size={18}
+                  style={{ marginRight: 5 }}
+                />
+                <ButtonText className="text-white">Apple</ButtonText>
+              </Button>
+              <Button
+                className="grow"
+                size="lg"
+                variant="outline"
+                isDisabled={true}
+              >
+                <FontAwesome5
+                  name="google"
+                  color="white"
+                  size={14}
+                  className="mr-2"
+                />
+                <ButtonText className="text-white">Google</ButtonText>
+              </Button>
+            </HStack>
+          </VStack>
+        </VStack>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
 
-export default withTranslation()(Inscription);
+export default Inscription;
