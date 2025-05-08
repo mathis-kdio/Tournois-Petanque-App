@@ -3,14 +3,12 @@ import { Text } from '@/components/ui/text';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Input, InputField, InputSlot } from '@/components/ui/input';
 import { Button, ButtonText } from '@/components/ui/button';
-import React from 'react';
+import React, { useState } from 'react';
 import { AppState } from 'react-native';
-import { withTranslation } from 'react-i18next';
 import { supabaseClient } from '@/utils/supabase';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { StackNavigationProp } from '@react-navigation/stack';
-import { TFunction } from 'i18next';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { Divider } from '@/components/ui/divider';
 import { HStack } from '@/components/ui/hstack';
@@ -24,6 +22,8 @@ import {
   FormControlLabelText,
 } from '@/components/ui/form-control';
 import { AlertCircleIcon } from '@/components/ui/icon';
+import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
@@ -37,208 +37,181 @@ AppState.addEventListener('change', (state) => {
   }
 });
 
-export interface Props {
-  navigation: StackNavigationProp<any, any>;
-  t: TFunction;
-}
+const Authentification = () => {
+  const { t } = useTranslation();
+  const navigation = useNavigation<StackNavigationProp<any, any>>();
 
-interface State {
-  loading: boolean;
-  email: string;
-  password: string;
-  showPassword: boolean;
-  loginIncorrect: boolean;
-}
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginIncorrect, setLoginIncorrect] = useState(false);
 
-class Authentification extends React.Component<Props, State> {
-  mdpInput = React.createRef<any>();
+  const mdpInput = React.createRef<any>();
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      loading: false,
-      email: '',
-      password: '',
-      showPassword: false,
-      loginIncorrect: false,
-    };
-  }
-
-  async signInWithEmail() {
-    this.setState({ loading: true });
+  const signInWithEmail = async () => {
+    setLoading(true);
     const { error, data } = await supabaseClient.auth.signInWithPassword({
-      email: this.state.email,
-      password: this.state.password,
+      email: email,
+      password: password,
     });
-    this.setState({ loading: false });
+    setLoading(false);
 
     console.log(data);
     console.log(error);
     if (error) {
-      this.setState({
-        loginIncorrect: true,
-      });
+      setLoginIncorrect(true);
     } else {
-      this.props.navigation.navigate('AccueilGeneral');
+      navigation.navigate('AccueilGeneral');
     }
-  }
+  };
 
-  inscription() {
-    this.props.navigation.navigate('Inscription');
-  }
+  const inscription = () => {
+    navigation.navigate('Inscription');
+  };
 
-  render() {
-    const { t } = this.props;
-    return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView className="h-1 bg-[#0594ae]">
-          <TopBarBack
-            title={t('authentification')}
-            navigation={this.props.navigation}
-          />
-          <VStack className="flex-1 px-10 justify-between">
-            <VStack className="mb-5">
-              <FormControl
-                isInvalid={this.state.loginIncorrect}
-                isRequired={true}
-                className="mb-5"
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView className="h-1 bg-[#0594ae]">
+        <TopBarBack title={t('authentification')} navigation={navigation} />
+        <VStack className="flex-1 px-10 justify-between">
+          <VStack className="mb-5">
+            <FormControl
+              isInvalid={loginIncorrect}
+              isRequired={true}
+              className="mb-5"
+            >
+              <FormControlLabel className="mb-1">
+                <FormControlLabelText className="text-white">
+                  {t('email')}
+                </FormControlLabelText>
+              </FormControlLabel>
+              <Input>
+                <InputField
+                  className="text-white placeholder:text-white"
+                  placeholder={t('email_adresse')}
+                  keyboardType="email-address"
+                  returnKeyType="next"
+                  autoCapitalize="none"
+                  onChangeText={(text) => setEmail(text)}
+                  onSubmitEditing={() => mdpInput.current.focus()}
+                />
+              </Input>
+              <FormControlError>
+                <FormControlErrorIcon as={AlertCircleIcon} />
+                <FormControlErrorText>
+                  {t('identifiants_invalides')}
+                </FormControlErrorText>
+              </FormControlError>
+            </FormControl>
+            <FormControl
+              isInvalid={loginIncorrect}
+              isRequired={true}
+              className="mb-5"
+            >
+              <FormControlLabel className="mb-1">
+                <FormControlLabelText className="text-white">
+                  {t('mot_de_passe')}
+                </FormControlLabelText>
+              </FormControlLabel>
+              <Input>
+                <InputField
+                  className="text-white placeholder:text-white"
+                  placeholder={t('mot_de_passe')}
+                  secureTextEntry={!showPassword}
+                  autoCapitalize={'none'}
+                  onChangeText={(text) => setPassword(text)}
+                  ref={mdpInput}
+                />
+                <InputSlot className="pr-3">
+                  <FontAwesome5.Button
+                    name={showPassword ? 'eye' : 'eye-slash'}
+                    backgroundColor="#00000000"
+                    iconStyle={{ marginRight: 0 }}
+                    size={16}
+                    onPress={() => setShowPassword(!showPassword)}
+                  />
+                </InputSlot>
+              </Input>
+              <FormControlError>
+                <FormControlErrorIcon as={AlertCircleIcon} />
+                <FormControlErrorText>
+                  {t('identifiants_invalides')}
+                </FormControlErrorText>
+              </FormControlError>
+              <Button
+                className="text-white self-end"
+                size="sm"
+                variant="link"
+                isDisabled={true}
               >
-                <FormControlLabel className="mb-1">
-                  <FormControlLabelText className="text-white">
-                    {t('email')}
-                  </FormControlLabelText>
-                </FormControlLabel>
-                <Input>
-                  <InputField
-                    className="text-white placeholder:text-white"
-                    placeholder={t('email_adresse')}
-                    keyboardType="email-address"
-                    returnKeyType="next"
-                    autoCapitalize="none"
-                    onChangeText={(text) => this.setState({ email: text })}
-                    onSubmitEditing={() => this.mdpInput.current.focus()}
-                  />
-                </Input>
-                <FormControlError>
-                  <FormControlErrorIcon as={AlertCircleIcon} />
-                  <FormControlErrorText>
-                    {t('identifiants_invalides')}
-                  </FormControlErrorText>
-                </FormControlError>
-              </FormControl>
-              <FormControl
-                isInvalid={this.state.loginIncorrect}
-                isRequired={true}
-                className="mb-5"
-              >
-                <FormControlLabel className="mb-1">
-                  <FormControlLabelText className="text-white">
-                    {t('mot_de_passe')}
-                  </FormControlLabelText>
-                </FormControlLabel>
-                <Input>
-                  <InputField
-                    className="text-white placeholder:text-white"
-                    placeholder={t('mot_de_passe')}
-                    secureTextEntry={!this.state.showPassword}
-                    autoCapitalize={'none'}
-                    onChangeText={(text) => this.setState({ password: text })}
-                    ref={this.mdpInput}
-                  />
-                  <InputSlot className="pr-3">
-                    <FontAwesome5.Button
-                      name={this.state.showPassword ? 'eye' : 'eye-slash'}
-                      backgroundColor="#00000000"
-                      iconStyle={{ marginRight: 0 }}
-                      size={16}
-                      onPress={() =>
-                        this.setState({
-                          showPassword: !this.state.showPassword,
-                        })
-                      }
-                    />
-                  </InputSlot>
-                </Input>
-                <FormControlError>
-                  <FormControlErrorIcon as={AlertCircleIcon} />
-                  <FormControlErrorText>
-                    {t('identifiants_invalides')}
-                  </FormControlErrorText>
-                </FormControlError>
-                <Button
-                  className="text-white self-end"
-                  size="sm"
-                  variant="link"
-                  isDisabled={true}
-                >
-                  <ButtonText className="text-white">
-                    {t('mot_de_passe_oublie')}
-                  </ButtonText>
-                </Button>
-              </FormControl>
-              <FormControl>
-                <Button
-                  size="lg"
-                  isDisabled={this.state.loading}
-                  onPress={() => this.signInWithEmail()}
-                >
-                  <ButtonText>{t('se_connecter')}</ButtonText>
-                </Button>
-              </FormControl>
-            </VStack>
-            <VStack space="md">
-              <Text className="text-white self-center" size="lg">
-                {t('ou_connecter_avec')}
-              </Text>
-              <HStack className="flex" space="lg">
-                <Button
-                  className="grow"
-                  size="lg"
-                  variant="outline"
-                  isDisabled={true}
-                >
-                  <FontAwesome5
-                    name="apple"
-                    color="white"
-                    size={18}
-                    style={{ marginRight: 5 }}
-                  />
-                  <ButtonText className="text-white">Apple</ButtonText>
-                </Button>
-                <Button
-                  className="grow"
-                  size="lg"
-                  variant="outline"
-                  isDisabled={true}
-                >
-                  <FontAwesome5
-                    name="google"
-                    color="white"
-                    size={14}
-                    className="mr-2"
-                  />
-                  <ButtonText className="text-white">Google</ButtonText>
-                </Button>
-              </HStack>
-            </VStack>
-            <Divider className="my-5" />
-            <VStack space="md">
-              <Text className="text-white self-center" size="lg">
-                {t('pas_encore_compte')}
-              </Text>
+                <ButtonText className="text-white">
+                  {t('mot_de_passe_oublie')}
+                </ButtonText>
+              </Button>
+            </FormControl>
+            <FormControl>
               <Button
                 size="lg"
-                isDisabled={this.state.loading}
-                onPress={() => this.inscription()}
+                isDisabled={loading}
+                onPress={() => signInWithEmail()}
               >
-                <ButtonText>{t('creer_un_compte')}</ButtonText>
+                <ButtonText>{t('se_connecter')}</ButtonText>
               </Button>
-            </VStack>
+            </FormControl>
           </VStack>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-}
+          <VStack space="md">
+            <Text className="text-white self-center" size="lg">
+              {t('ou_connecter_avec')}
+            </Text>
+            <HStack className="flex" space="lg">
+              <Button
+                className="grow"
+                size="lg"
+                variant="outline"
+                isDisabled={true}
+              >
+                <FontAwesome5
+                  name="apple"
+                  color="white"
+                  size={18}
+                  style={{ marginRight: 5 }}
+                />
+                <ButtonText className="text-white">Apple</ButtonText>
+              </Button>
+              <Button
+                className="grow"
+                size="lg"
+                variant="outline"
+                isDisabled={true}
+              >
+                <FontAwesome5
+                  name="google"
+                  color="white"
+                  size={14}
+                  className="mr-2"
+                />
+                <ButtonText className="text-white">Google</ButtonText>
+              </Button>
+            </HStack>
+          </VStack>
+          <Divider className="my-5" />
+          <VStack space="md">
+            <Text className="text-white self-center" size="lg">
+              {t('pas_encore_compte')}
+            </Text>
+            <Button
+              size="lg"
+              isDisabled={loading}
+              onPress={() => inscription()}
+            >
+              <ButtonText>{t('creer_un_compte')}</ButtonText>
+            </Button>
+          </VStack>
+        </VStack>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
 
-export default withTranslation()(Authentification);
+export default Authentification;
