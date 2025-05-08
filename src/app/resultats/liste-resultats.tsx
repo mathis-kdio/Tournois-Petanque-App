@@ -5,55 +5,50 @@ import { FlatList } from '@/components/ui/flat-list';
 import { HStack } from '@/components/ui/hstack';
 import ListeResultatItem from '@components/ListeResultatItem';
 import { ranking } from '@utils/ranking';
-import { withTranslation } from 'react-i18next';
-import { TFunction } from 'i18next';
-import { PropsFromRedux, connector } from '@/store/connector';
+import { useTranslation } from 'react-i18next';
+import { connector } from '@/store/connector';
 import { ListRenderItem } from 'react-native';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { Victoire } from '@/types/interfaces/victoire';
 import WithExitAlert from '@/app/with-exit-alert/with-exit-alert';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { useSelector } from 'react-redux';
+import { Match } from '@/types/interfaces/match';
 
-export interface Props extends PropsFromRedux {
-  navigation: StackNavigationProp<any, any>;
-  t: TFunction;
-}
+const ListeResultats = () => {
+  const { t } = useTranslation();
+  const tournoi = useSelector((state: any) => state.gestionMatchs.listematchs);
 
-interface State {}
+  const listeMatchs = tournoi.slice(0, -1) as Match[];
+  const optionsTournois = tournoi.at(-1) as OptionsTournoi;
 
-class ListeResultats extends WithExitAlert<Props, State> {
-  render() {
-    const { t } = this.props;
-    let listeMatchs = this.props.listeMatchs.slice(0, -1);
-    let optionsTournois = this.props.listeMatchs.at(-1) as OptionsTournoi;
-    const renderItem: ListRenderItem<Victoire> = ({ item }) => (
-      <ListeResultatItem joueur={item} />
-    );
-    return (
-      <VStack className="flex-1 bg-[#0594ae]">
-        <VStack className="flex-1 justify-between">
-          <HStack className="flex px-2">
-            <Text className="basis-2/5 text-white text-lg">{t('place')}</Text>
-            <Text className="basis-1/5 text-center text-white text-lg">
-              {t('victoire')}
-            </Text>
-            <Text className="basis-1/5 text-center text-white text-lg">
-              {t('m_j')}
-            </Text>
-            <Text className="basis-1/5 text-right text-white text-lg">
-              {t('point')}
-            </Text>
-          </HStack>
-          <Divider className="my-0.5" />
-          <FlatList
-            data={ranking(listeMatchs, optionsTournois)}
-            keyExtractor={(item: Victoire) => item.joueurId.toString()}
-            renderItem={renderItem}
-          />
-        </VStack>
+  const renderItem: ListRenderItem<Victoire> = ({ item }) => (
+    <ListeResultatItem joueur={item} />
+  );
+
+  return (
+    <VStack className="flex-1 bg-[#0594ae]">
+      <VStack className="flex-1 justify-between">
+        <HStack className="flex px-2">
+          <Text className="basis-2/5 text-white text-lg">{t('place')}</Text>
+          <Text className="basis-1/5 text-center text-white text-lg">
+            {t('victoire')}
+          </Text>
+          <Text className="basis-1/5 text-center text-white text-lg">
+            {t('m_j')}
+          </Text>
+          <Text className="basis-1/5 text-right text-white text-lg">
+            {t('point')}
+          </Text>
+        </HStack>
+        <Divider className="my-0.5" />
+        <FlatList
+          data={ranking(listeMatchs, optionsTournois)}
+          keyExtractor={(item: Victoire) => item.joueurId.toString()}
+          renderItem={renderItem}
+        />
       </VStack>
-    );
-  }
+    </VStack>
+  );
 }
 
-export default connector(withTranslation()(ListeResultats));
+export default connector(ListeResultats);
