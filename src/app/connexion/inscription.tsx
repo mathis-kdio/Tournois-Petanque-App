@@ -5,12 +5,11 @@ import { Input, InputField, InputSlot } from '@/components/ui/input';
 import { Button, ButtonText } from '@/components/ui/button';
 import React, { useState } from 'react';
 import { Alert, AppState } from 'react-native';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '@/utils/supabase';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { StackNavigationProp } from '@react-navigation/stack';
-import { TFunction } from 'i18next';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import {
   FormControl,
@@ -44,24 +43,6 @@ AppState.addEventListener('change', (state) => {
     supabase.auth.stopAutoRefresh();
   }
 });
-
-export interface Props {
-  navigation: StackNavigationProp<any, any>;
-  t: TFunction;
-}
-
-interface State {
-  loading: boolean;
-  email: string;
-  password: string;
-  password2: string;
-  conditionsCheckbox: boolean;
-  showPassword1: boolean;
-  showPassword2: boolean;
-  emailIncorrect: boolean;
-  passwordIncorrect: boolean;
-  password2Incorrect: boolean;
-}
 
 const Inscription = () => {
   const { t } = useTranslation();
@@ -322,4 +303,4 @@ const Inscription = () => {
   );
 };
 
-export default withTranslation()(Inscription);
+export default Inscription;
