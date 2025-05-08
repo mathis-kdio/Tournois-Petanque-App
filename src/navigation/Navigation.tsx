@@ -82,7 +82,9 @@ const TopTabItemLabel = (numero: number, listeMatchs) => {
   let iconName = 'battery-half';
   let matchsRestant = 0;
   if (listeMatchs) {
-    let matchs = listeMatchs.filter((el) => el.manche === numero);
+    let matchs: Match[] = listeMatchs.filter(
+      (el: Match) => el.manche === numero,
+    );
     matchsRestant = matchs.length;
     if (matchs) {
       let count = matchs.reduce(
