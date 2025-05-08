@@ -11,7 +11,7 @@ import { PropsFromRedux, connector } from '@/store/connector';
 import { ListRenderItem } from 'react-native';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { Victoire } from '@/types/interfaces/victoire';
-import WithExitAlert from '@/app/with-exit-alert/WithExitAlert';
+import WithExitAlert from '@/app/with-exit-alert/with-exit-alert';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 export interface Props extends PropsFromRedux {
