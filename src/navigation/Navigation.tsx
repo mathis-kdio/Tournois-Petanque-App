@@ -10,7 +10,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { FontAwesome5 } from '@expo/vector-icons';
 
-import Accueil from '@/app';
+import Accueil from '@/app/accueil';
 import Authentification from '@/app/connexion/authentification';
 import Compte from '@/app/connexion/compte';
 import InfosPerso from '@/app/connexion/infos-perso';
@@ -47,7 +47,7 @@ const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
 
-function topTabScreens() {
+function TopTabScreens() {
   const gestionListeMatchs = useSelector(
     (state) => state.gestionMatchs.listematchs,
   );
@@ -63,7 +63,7 @@ function topTabScreens() {
         key={i}
         name={name}
         options={{
-          tabBarLabel: () => topTabItemLabel(i + 1, gestionListeMatchs),
+          tabBarLabel: () => TopTabItemLabel(i + 1, gestionListeMatchs),
         }}
       >
         {(props) => <ListeMatchs {...props} extraData={i + 1} />}
@@ -73,7 +73,7 @@ function topTabScreens() {
   return topTabScreenListe;
 }
 
-function topTabItemLabel(numero, listeMatchs) {
+function TopTabItemLabel(numero, listeMatchs) {
   let title = 'Tour ' + numero;
   if (
     listeMatchs &&
@@ -135,12 +135,12 @@ function ManchesTopTabNavigator() {
         },
       }}
     >
-      {topTabScreens()}
+      {TopTabScreens()}
     </TopTab.Navigator>
   );
 }
 
-function getTournoiName() {
+function GetTournoiName() {
   const listeTournois = useSelector(
     (state) => state.listeTournois.listeTournois,
   );
@@ -173,7 +173,7 @@ export type MatchsStackParamList = {
 function MatchsStack() {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  let tournoiName = getTournoiName();
+  let tournoiName = GetTournoiName();
   return (
     <Stack.Navigator
       screenOptions={{ headerStyle: { backgroundColor: '#ffda00' } }}
@@ -231,7 +231,7 @@ function MatchsStack() {
 function ResultatsStack() {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  let tournoiName = getTournoiName();
+  let tournoiName = GetTournoiName();
   return (
     <Stack.Navigator
       screenOptions={{ title: t('resultats_classement_navigation_title') }}
