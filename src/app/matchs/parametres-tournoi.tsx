@@ -15,40 +15,30 @@ import {
 import { Text } from '@/components/ui/text';
 import { Button, ButtonText, ButtonGroup } from '@/components/ui/button';
 import { VStack } from '@/components/ui/vstack';
-import React from 'react';
-import { withTranslation } from 'react-i18next';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { TFunction } from 'i18next';
-import { PropsFromRedux, connector } from '@/store/connector';
-import { CommonActions } from '@react-navigation/native';
+import { CommonActions, useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 
-export interface Props extends PropsFromRedux {
-  navigation: StackNavigationProp<any, any>;
-  t: TFunction;
-}
+const ParametresTournoi = () => {
+  const { t } = useTranslation();
+  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const dispatch = useDispatch();
+  const tournoi = useSelector((state: any) => state.gestionMatchs.listematchs);
 
-interface State {
-  modalDeleteIsOpen: boolean;
-}
+  const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false);
 
-class ParametresTournoi extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      modalDeleteIsOpen: false,
-    };
-  }
+  const _showMatchs = () => {
+    navigation.navigate('ListeMatchsStack');
+  };
 
-  _showMatchs() {
-    this.props.navigation.navigate('ListeMatchsStack');
-  }
-
-  _supprimerTournoi() {
-    this.setState({ modalDeleteIsOpen: false });
-
-    this.props.navigation.dispatch(
+  const _supprimerTournoi = () => {
+    setModalDeleteIsOpen(false);
+    navigation.dispatch(
       CommonActions.reset({
         index: 0,
         routes: [{ name: 'AccueilGeneral' }],
@@ -58,28 +48,25 @@ class ParametresTournoi extends React.Component<Props, State> {
     const supprDansListeTournois = {
       type: 'SUPPR_TOURNOI',
       value: {
-        tournoiId:
-          this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID,
+        tournoiId: tournoi.at(-1).tournoiID,
       },
     };
     const suppressionAllMatchs = { type: 'SUPPR_MATCHS' };
     setTimeout(() => {
-      this.props.dispatch(supprDansListeTournois);
-      this.props.dispatch(suppressionAllMatchs);
+      dispatch(supprDansListeTournois);
+      dispatch(suppressionAllMatchs);
     }, 1000);
-  }
+  };
 
-  _modalSupprimerTournoi() {
-    const { t } = this.props;
+  const _modalSupprimerTournoi = () => {
     let tournoiId = 0;
-    if (this.props.listeMatchs) {
-      tournoiId =
-        this.props.listeMatchs[this.props.listeMatchs.length - 1].tournoiID;
+    if (tournoi) {
+      tournoiId = tournoi.at(-1).tournoiID;
     }
     return (
       <AlertDialog
-        isOpen={this.state.modalDeleteIsOpen}
-        onClose={() => this.setState({ modalDeleteIsOpen: false })}
+        isOpen={modalDeleteIsOpen}
+        onClose={() => setModalDeleteIsOpen(false)}
       >
         <AlertDialogBackdrop />
         <AlertDialogContent>
@@ -105,14 +92,11 @@ class ParametresTournoi extends React.Component<Props, State> {
               <Button
                 variant="outline"
                 action="secondary"
-                onPress={() => this.setState({ modalDeleteIsOpen: false })}
+                onPress={() => setModalDeleteIsOpen(false)}
               >
                 <ButtonText className="text-black">{t('annuler')}</ButtonText>
               </Button>
-              <Button
-                action="negative"
-                onPress={() => this._supprimerTournoi()}
-              >
+              <Button action="negative" onPress={() => _supprimerTournoi()}>
                 <ButtonText>{t('oui')}</ButtonText>
               </Button>
             </ButtonGroup>
@@ -120,77 +104,71 @@ class ParametresTournoi extends React.Component<Props, State> {
         </AlertDialogContent>
       </AlertDialog>
     );
-  }
+  };
 
-  render() {
-    const { t } = this.props;
-    let parametresTournoi = {
-      nbTours: 0,
-      nbPtVictoire: 13,
-      speciauxIncompatibles: false,
-      memesEquipes: false,
-      memesAdversaires: 50,
-    };
-    if (this.props.listeMatchs) {
-      parametresTournoi =
-        this.props.listeMatchs[this.props.listeMatchs.length - 1];
-      parametresTournoi.nbPtVictoire = parametresTournoi.nbPtVictoire
-        ? parametresTournoi.nbPtVictoire
-        : 13;
-    }
-    return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView className="h-1 bg-[#0594ae]">
-          <TopBarBack
-            title={t('parametres_tournoi_navigation_title')}
-            navigation={this.props.navigation}
-          />
-          <VStack className="flex-1 px-10 justify-around">
-            <VStack>
-              <Text className="text-white text-xl text-center">
-                {t('options_tournoi')}
-              </Text>
-              <Text className="text-white">
-                {t('nombre_tours')} {parametresTournoi.nbTours.toString()}
-              </Text>
-              <Text className="text-white">
-                {t('nombre_points_victoire')}{' '}
-                {parametresTournoi.nbPtVictoire.toString()}
-              </Text>
-              <Text className="text-white">
-                {t('regle_speciaux')}{' '}
-                {parametresTournoi.speciauxIncompatibles
-                  ? 'Activé'
-                  : 'Désactivé'}
-              </Text>
-              <Text className="text-white">
-                {t('regle_equipes_differentes')}{' '}
-                {parametresTournoi.memesEquipes ? 'Activé' : 'Désactivé'}
-              </Text>
-              <Text className="text-white">
-                {t('regle_adversaires')}{' '}
-                {parametresTournoi.memesAdversaires === 0
-                  ? '1 match'
-                  : parametresTournoi.memesAdversaires + '% des matchs'}
-              </Text>
-            </VStack>
-            <VStack space="xl">
-              <Button
-                action="negative"
-                onPress={() => this.setState({ modalDeleteIsOpen: true })}
-              >
-                <ButtonText>{t('supprimer_tournoi')}</ButtonText>
-              </Button>
-              <Button action="primary" onPress={() => this._showMatchs()}>
-                <ButtonText>{t('retour_liste_matchs_bouton')}</ButtonText>
-              </Button>
-            </VStack>
+  let parametresTournoi: OptionsTournoi = {
+    nbTours: 0,
+    nbPtVictoire: 13,
+    speciauxIncompatibles: false,
+    memesEquipes: false,
+    memesAdversaires: 50,
+  };
+  if (tournoi) {
+    parametresTournoi = tournoi.at(-1) as OptionsTournoi;
+    parametresTournoi.nbPtVictoire = parametresTournoi.nbPtVictoire
+      ? parametresTournoi.nbPtVictoire
+      : 13;
+  }
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView className="h-1 bg-[#0594ae]">
+        <TopBarBack
+          title={t('parametres_tournoi_navigation_title')}
+          navigation={navigation}
+        />
+        <VStack className="flex-1 px-10 justify-around">
+          <VStack>
+            <Text className="text-white text-xl text-center">
+              {t('options_tournoi')}
+            </Text>
+            <Text className="text-white">
+              {t('nombre_tours')} {parametresTournoi.nbTours.toString()}
+            </Text>
+            <Text className="text-white">
+              {t('nombre_points_victoire')}{' '}
+              {parametresTournoi.nbPtVictoire.toString()}
+            </Text>
+            <Text className="text-white">
+              {t('regle_speciaux')}{' '}
+              {parametresTournoi.speciauxIncompatibles ? 'Activé' : 'Désactivé'}
+            </Text>
+            <Text className="text-white">
+              {t('regle_equipes_differentes')}{' '}
+              {parametresTournoi.memesEquipes ? 'Activé' : 'Désactivé'}
+            </Text>
+            <Text className="text-white">
+              {t('regle_adversaires')}{' '}
+              {parametresTournoi.memesAdversaires === 0
+                ? '1 match'
+                : parametresTournoi.memesAdversaires + '% des matchs'}
+            </Text>
           </VStack>
-        </ScrollView>
-        {this._modalSupprimerTournoi()}
-      </SafeAreaView>
-    );
-  }
-}
+          <VStack space="xl">
+            <Button
+              action="negative"
+              onPress={() => setModalDeleteIsOpen(true)}
+            >
+              <ButtonText>{t('supprimer_tournoi')}</ButtonText>
+            </Button>
+            <Button action="primary" onPress={() => _showMatchs()}>
+              <ButtonText>{t('retour_liste_matchs_bouton')}</ButtonText>
+            </Button>
+          </VStack>
+        </VStack>
+      </ScrollView>
+      {_modalSupprimerTournoi()}
+    </SafeAreaView>
+  );
+};
 
-export default connector(withTranslation()(ParametresTournoi));
+export default ParametresTournoi;

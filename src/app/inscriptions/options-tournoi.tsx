@@ -19,113 +19,97 @@ import {
   CheckboxIndicator,
   CheckboxLabel,
 } from '@/components/ui/checkbox';
-import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { Platform } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { TFunction } from 'i18next';
-import { PropsFromRedux, connector } from '@/store/connector';
-import { RouteProp } from '@react-navigation/native';
-import { InscriptionStackParamList } from '@/navigation/Navigation';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 
-export interface Props extends PropsFromRedux {
-  navigation: StackNavigationProp<any, any>;
-  t: TFunction;
-  route: RouteProp<InscriptionStackParamList, 'OptionsTournoi'>;
-}
+type CreateListeJoueurRouteProp = {
+  params: {
+    screenStackName: string;
+  };
+};
 
-interface State {
-  speciauxIncompatibles: boolean;
-  memesEquipes: boolean;
-  memesAdversaires: number;
-  nbTours: number;
-  nbPtVictoire: number;
-  avecTerrains: boolean;
-}
+const OptionsTournoi = () => {
+  const { t } = useTranslation();
+  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const route = useRoute<CreateListeJoueurRouteProp>();
+  const dispatch = useDispatch();
 
-class OptionsTournoi extends React.Component<Props, State> {
-  nbToursTxt: string = '5';
-  nbPtVictoireTxt: string = '13';
+  const [speciauxIncompatibles, setSpeciauxIncompatibles] = useState(true);
+  const [memesEquipes, setMemesEquipes] = useState(true);
+  const [memesAdversaires, setMemesAdversaires] = useState(50);
+  const [nbTours, setNbTours] = useState<number | undefined>(5);
+  const [nbPtVictoire, setNbPtVictoire] = useState<number | undefined>(13);
+  const [avecTerrains, setAvecTerrains] = useState(false);
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      speciauxIncompatibles: true,
-      memesEquipes: true,
-      memesAdversaires: 50,
-      nbTours: 5,
-      nbPtVictoire: 13,
-      avecTerrains: false,
-    };
-  }
+  let nbToursTxt: string = '5';
+  let nbPtVictoireTxt: string = '13';
 
-  _nbToursTxtInputChanged(text: string) {
-    this.nbToursTxt = text;
-    this.setState({
-      nbTours: this.nbToursTxt ? parseInt(this.nbToursTxt) : undefined,
-    });
-  }
+  const _nbToursTxtInputChanged = (text: string) => {
+    nbToursTxt = text;
+    setNbTours(nbToursTxt ? parseInt(nbToursTxt) : undefined);
+  };
 
-  _nbPtVictoireTxtInputChanged(text: string) {
-    this.nbPtVictoireTxt = text;
-    this.setState({
-      nbPtVictoire: this.nbPtVictoireTxt
-        ? parseInt(this.nbPtVictoireTxt)
-        : undefined,
-    });
-  }
+  const _nbPtVictoireTxtInputChanged = (text: string) => {
+    nbPtVictoireTxt = text;
+    setNbPtVictoire(nbPtVictoireTxt ? parseInt(nbPtVictoireTxt) : undefined);
+  };
 
-  _nextStep() {
+  const _nextStep = () => {
     const updateOptionNbTours = {
       type: 'UPDATE_OPTION_TOURNOI',
-      value: ['nbTours', this.state.nbTours],
+      value: ['nbTours', nbTours],
     };
-    this.props.dispatch(updateOptionNbTours);
+    dispatch(updateOptionNbTours);
     const updateOptionNbPtVictoire = {
       type: 'UPDATE_OPTION_TOURNOI',
-      value: ['nbPtVictoire', this.state.nbPtVictoire],
+      value: ['nbPtVictoire', nbPtVictoire],
     };
-    this.props.dispatch(updateOptionNbPtVictoire);
+    dispatch(updateOptionNbPtVictoire);
     const updateOptionSpeciauxIncompatibles = {
       type: 'UPDATE_OPTION_TOURNOI',
-      value: ['speciauxIncompatibles', this.state.speciauxIncompatibles],
+      value: ['speciauxIncompatibles', speciauxIncompatibles],
     };
-    this.props.dispatch(updateOptionSpeciauxIncompatibles);
+    dispatch(updateOptionSpeciauxIncompatibles);
     const updateOptionMemesEquipes = {
       type: 'UPDATE_OPTION_TOURNOI',
-      value: ['memesEquipes', this.state.memesEquipes],
+      value: ['memesEquipes', memesEquipes],
     };
-    this.props.dispatch(updateOptionMemesEquipes);
+    dispatch(updateOptionMemesEquipes);
     const updateOptionMemesAdversaires = {
       type: 'UPDATE_OPTION_TOURNOI',
-      value: ['memesAdversaires', this.state.memesAdversaires],
+      value: ['memesAdversaires', memesAdversaires],
     };
-    this.props.dispatch(updateOptionMemesAdversaires);
+    dispatch(updateOptionMemesAdversaires);
     const updateOptionComplement = {
       type: 'UPDATE_OPTION_TOURNOI',
       value: ['complement', undefined],
     };
-    this.props.dispatch(updateOptionComplement);
+    dispatch(updateOptionComplement);
     const updateOptionAvecTerrains = {
       type: 'UPDATE_OPTION_TOURNOI',
-      value: ['avecTerrains', this.state.avecTerrains],
+      value: ['avecTerrains', avecTerrains],
     };
-    this.props.dispatch(updateOptionAvecTerrains);
+    dispatch(updateOptionAvecTerrains);
 
-    this.props.navigation.navigate(this.props.route.params.screenStackName);
-  }
+    navigation.navigate(route.params.screenStackName);
+  };
 
-  _boutonValider() {
-    const { t } = this.props;
+  const _boutonValider = () => {
     let btnDisabled = true;
     let btnTitle = t('champ_invalide');
     if (
-      this.state.nbTours > 0 &&
-      this.state.nbTours % 1 === 0 &&
-      this.state.nbPtVictoire > 0 &&
-      this.state.nbPtVictoire % 1 === 0
+      nbTours &&
+      nbTours > 0 &&
+      nbTours % 1 === 0 &&
+      nbPtVictoire &&
+      nbPtVictoire > 0 &&
+      nbPtVictoire % 1 === 0
     ) {
       btnTitle = t('valider_et_inscriptions');
       btnDisabled = false;
@@ -134,165 +118,151 @@ class OptionsTournoi extends React.Component<Props, State> {
       <Button
         action="primary"
         isDisabled={btnDisabled}
-        onPress={() => this._nextStep()}
+        onPress={() => _nextStep()}
         size="md"
       >
         <ButtonText>{btnTitle}</ButtonText>
       </Button>
     );
-  }
+  };
 
-  render() {
-    const { t } = this.props;
-    return (
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'height' : 'height'}
-        style={{ flex: 1, zIndex: 999 }}
-      >
-        <SafeAreaView style={{ flex: 1 }}>
-          <ScrollView className="h-1 bg-[#0594ae]">
-            <VStack className="flex-1">
-              <TopBarBack
-                title={t('options_tournoi_title')}
-                navigation={this.props.navigation}
-              />
-              <VStack space="4xl" className="px-10">
-                <VStack space="md">
-                  <VStack>
-                    <Text className="text-white text-md">
-                      {t('indiquer_nombre_tours')}{' '}
-                    </Text>
-                    <Input className="border-white">
-                      <InputField
-                        className="text-white placeholder:text-white"
-                        placeholder={t('nombre_placeholder')}
-                        keyboardType="numeric"
-                        defaultValue={this.nbToursTxt}
-                        onChangeText={(text) =>
-                          this._nbToursTxtInputChanged(text)
-                        }
-                      />
-                    </Input>
-                  </VStack>
-                  <VStack>
-                    <Text className="text-white text-md">
-                      {t('indiquer_nombre_points_victoire')}{' '}
-                    </Text>
-                    <Input className="border-white">
-                      <InputField
-                        className="text-white placeholder:text-white"
-                        placeholder={t('nombre_placeholder')}
-                        keyboardType="numeric"
-                        defaultValue={this.nbPtVictoireTxt}
-                        onChangeText={(text) =>
-                          this._nbPtVictoireTxtInputChanged(text)
-                        }
-                      />
-                    </Input>
-                  </VStack>
-                </VStack>
-                <VStack space="md">
-                  <Checkbox
-                    value="speciauxIncompatibles"
-                    onChange={() =>
-                      this.setState({
-                        speciauxIncompatibles:
-                          !this.state.speciauxIncompatibles,
-                      })
-                    }
-                    aria-label={t('choix_regle_speciaux')}
-                    defaultIsChecked
-                    size="md"
-                  >
-                    <CheckboxIndicator className="mr-2 border-white">
-                      <CheckboxIcon
-                        as={CheckIcon}
-                        className="text-white bg-[#0594ae]"
-                      />
-                    </CheckboxIndicator>
-                    <CheckboxLabel className="text-white">
-                      {t('options_regle_speciaux')}
-                    </CheckboxLabel>
-                  </Checkbox>
-                  <Checkbox
-                    value="memesEquipes"
-                    onChange={() =>
-                      this.setState({ memesEquipes: !this.state.memesEquipes })
-                    }
-                    aria-label={t('choix_regle_equipes')}
-                    defaultIsChecked
-                    size="md"
-                  >
-                    <CheckboxIndicator className="mr-2 border-white">
-                      <CheckboxIcon
-                        as={CheckIcon}
-                        className="text-white bg-[#0594ae]"
-                      />
-                    </CheckboxIndicator>
-                    <CheckboxLabel className="text-white">
-                      {t('options_regle_equipes')}
-                    </CheckboxLabel>
-                  </Checkbox>
+  return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'height' : 'height'}
+      style={{ flex: 1, zIndex: 999 }}
+    >
+      <SafeAreaView style={{ flex: 1 }}>
+        <ScrollView className="h-1 bg-[#0594ae]">
+          <VStack className="flex-1">
+            <TopBarBack
+              title={t('options_tournoi_title')}
+              navigation={navigation}
+            />
+            <VStack space="4xl" className="px-10">
+              <VStack space="md">
+                <VStack>
+                  <Text className="text-white text-md">
+                    {t('indiquer_nombre_tours')}{' '}
+                  </Text>
+                  <Input className="border-white">
+                    <InputField
+                      className="text-white placeholder:text-white"
+                      placeholder={t('nombre_placeholder')}
+                      keyboardType="numeric"
+                      defaultValue={nbToursTxt}
+                      onChangeText={(text) => _nbToursTxtInputChanged(text)}
+                    />
+                  </Input>
                 </VStack>
                 <VStack>
                   <Text className="text-white text-md">
-                    {t('options_regle_adversaires')}
+                    {t('indiquer_nombre_points_victoire')}{' '}
                   </Text>
-                  <HStack className="justify-between">
-                    <Text className="text-white">{t('1_seul_match')}</Text>
-                    <Text className="text-white">
-                      {t('pourcent_matchs', { pourcent: '100' })}
-                    </Text>
-                  </HStack>
-                  <Slider
-                    minValue={0}
-                    maxValue={100}
-                    defaultValue={50}
-                    step={50}
-                    aria-label={t('choix_regle_adversaires')}
-                    onChangeEnd={(v) => {
-                      this.setState({ memesAdversaires: v });
-                    }}
-                  >
-                    <SliderTrack>
-                      <SliderFilledTrack className="bg-[#1c3969]" />
-                    </SliderTrack>
-                    <SliderThumb className="bg-[#1c3969]" />
-                  </Slider>
-                  <HStack className="justify-center">
-                    <Text className="text-white">
-                      {t('pourcent_matchs', { pourcent: '50' })}
-                    </Text>
-                  </HStack>
+                  <Input className="border-white">
+                    <InputField
+                      className="text-white placeholder:text-white"
+                      placeholder={t('nombre_placeholder')}
+                      keyboardType="numeric"
+                      defaultValue={nbPtVictoireTxt}
+                      onChangeText={(text) =>
+                        _nbPtVictoireTxtInputChanged(text)
+                      }
+                    />
+                  </Input>
                 </VStack>
-                <VStack>
-                  <Checkbox
-                    value="avecTerrains"
-                    onChange={() =>
-                      this.setState({ avecTerrains: !this.state.avecTerrains })
-                    }
-                    aria-label={t('choix_option_terrains')}
-                    size="md"
-                  >
-                    <CheckboxIndicator className="mr-2 border-white">
-                      <CheckboxIcon
-                        as={CheckIcon}
-                        className="text-white bg-[#0594ae]"
-                      />
-                    </CheckboxIndicator>
-                    <CheckboxLabel className="text-white">
-                      {t('options_terrains_explications')}
-                    </CheckboxLabel>
-                  </Checkbox>
-                </VStack>
-                <VStack>{this._boutonValider()}</VStack>
               </VStack>
+              <VStack space="md">
+                <Checkbox
+                  value="speciauxIncompatibles"
+                  onChange={() =>
+                    setSpeciauxIncompatibles(!speciauxIncompatibles)
+                  }
+                  aria-label={t('choix_regle_speciaux')}
+                  defaultIsChecked
+                  size="md"
+                >
+                  <CheckboxIndicator className="mr-2 border-white">
+                    <CheckboxIcon
+                      as={CheckIcon}
+                      className="text-white bg-[#0594ae]"
+                    />
+                  </CheckboxIndicator>
+                  <CheckboxLabel className="text-white">
+                    {t('options_regle_speciaux')}
+                  </CheckboxLabel>
+                </Checkbox>
+                <Checkbox
+                  value="memesEquipes"
+                  onChange={() => setMemesEquipes(!memesEquipes)}
+                  aria-label={t('choix_regle_equipes')}
+                  defaultIsChecked
+                  size="md"
+                >
+                  <CheckboxIndicator className="mr-2 border-white">
+                    <CheckboxIcon
+                      as={CheckIcon}
+                      className="text-white bg-[#0594ae]"
+                    />
+                  </CheckboxIndicator>
+                  <CheckboxLabel className="text-white">
+                    {t('options_regle_equipes')}
+                  </CheckboxLabel>
+                </Checkbox>
+              </VStack>
+              <VStack>
+                <Text className="text-white text-md">
+                  {t('options_regle_adversaires')}
+                </Text>
+                <HStack className="justify-between">
+                  <Text className="text-white">{t('1_seul_match')}</Text>
+                  <Text className="text-white">
+                    {t('pourcent_matchs', { pourcent: '100' })}
+                  </Text>
+                </HStack>
+                <Slider
+                  minValue={0}
+                  maxValue={100}
+                  defaultValue={50}
+                  step={50}
+                  aria-label={t('choix_regle_adversaires')}
+                  onChangeEnd={(v) => setMemesAdversaires(v)}
+                >
+                  <SliderTrack>
+                    <SliderFilledTrack className="bg-[#1c3969]" />
+                  </SliderTrack>
+                  <SliderThumb className="bg-[#1c3969]" />
+                </Slider>
+                <HStack className="justify-center">
+                  <Text className="text-white">
+                    {t('pourcent_matchs', { pourcent: '50' })}
+                  </Text>
+                </HStack>
+              </VStack>
+              <VStack>
+                <Checkbox
+                  value="avecTerrains"
+                  onChange={() => setAvecTerrains(!avecTerrains)}
+                  aria-label={t('choix_option_terrains')}
+                  size="md"
+                >
+                  <CheckboxIndicator className="mr-2 border-white">
+                    <CheckboxIcon
+                      as={CheckIcon}
+                      className="text-white bg-[#0594ae]"
+                    />
+                  </CheckboxIndicator>
+                  <CheckboxLabel className="text-white">
+                    {t('options_terrains_explications')}
+                  </CheckboxLabel>
+                </Checkbox>
+              </VStack>
+              <VStack>{_boutonValider()}</VStack>
             </VStack>
-          </ScrollView>
-        </SafeAreaView>
-      </KeyboardAvoidingView>
-    );
-  }
-}
+          </VStack>
+        </ScrollView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
+  );
+};
 
-export default connector(withTranslation()(OptionsTournoi));
+export default OptionsTournoi;

@@ -1,59 +1,61 @@
-import 'react-native-url-polyfill/auto';
-import React, { Component, ReactNode } from 'react';
-import { supabase } from '@utils/supabase';
-import { Session } from '@supabase/supabase-js';
+import { Session, User } from '@supabase/supabase-js';
+import { useContext, useState, useEffect, createContext } from 'react';
+import { supabaseClient } from '@utils/supabase';
 
-// Créer le contexte de session
-export const SessionContext = React.createContext<Session | null>(null);
+// create a context for authentication
+const AuthContext = createContext<{
+  session: Session | null | undefined;
+  user: User | null | undefined;
+  signOut: () => void;
+}>({ session: null, user: null, signOut: () => {} });
 
-interface SessionProviderState {
-  session: Session | null;
-}
+export const AuthProvider = ({ children }: any) => {
+  const [user, setUser] = useState<User>();
+  const [session, setSession] = useState<Session | null>();
+  const [loading, setLoading] = useState(true);
 
-interface SessionProviderProps {
-  children: ReactNode;
-}
-
-// Composant SessionProvider
-class SessionProvider extends Component<
-  SessionProviderProps,
-  SessionProviderState
-> {
-  private authListener: {
-    data: { subscription: { unsubscribe: () => void } };
-  } | null = null;
-
-  constructor(props: SessionProviderProps) {
-    super(props);
-    this.state = {
-      session: null,
+  useEffect(() => {
+    const setData = async () => {
+      const {
+        data: { session },
+        error,
+      } = await supabaseClient.auth.getSession();
+      if (error) throw error;
+      setSession(session);
+      setUser(session?.user);
+      setLoading(false);
     };
-  }
 
-  componentDidMount() {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      this.setState({ session });
-    });
-
-    this.authListener = supabase.auth.onAuthStateChange((_event, session) => {
-      this.setState({ session });
-    });
-  }
-
-  componentWillUnmount() {
-    if (this.authListener) {
-      this.authListener.data.subscription.unsubscribe();
-    }
-  }
-
-  render() {
-    const { session } = this.state;
-    return (
-      <SessionContext.Provider value={session}>
-        {this.props.children}
-      </SessionContext.Provider>
+    const { data: listener } = supabaseClient.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+        setUser(session?.user);
+        setLoading(false);
+      },
     );
-  }
-}
 
-export default SessionProvider;
+    setData();
+
+    return () => {
+      listener?.subscription.unsubscribe();
+    };
+  }, []);
+
+  const value = {
+    session,
+    user,
+    signOut: () => supabaseClient.auth.signOut(),
+  };
+
+  // use a provider to pass down the value
+  return (
+    <AuthContext.Provider value={value}>
+      {!loading && children}
+    </AuthContext.Provider>
+  );
+};
+
+// export the useAuth hook
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
