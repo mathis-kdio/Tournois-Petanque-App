@@ -3,17 +3,19 @@ import { VStack } from '@/components/ui/vstack';
 import MatchItem from '@components/MatchItem';
 import { Match } from '@/types/interfaces/match';
 import { ListRenderItem } from 'react-native';
-import WithExitAlert from '@/app/with-exit-alert/with-exit-alert';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import useExitAlertOnBack from '@/app/with-exit-alert/with-exit-alert';
 
 interface ListeMatchsProps {
   extraData: number;
 }
 
 const ListeMatchs: React.FC<ListeMatchsProps> = ({ extraData }) => {
+  useExitAlertOnBack();
+
   const navigation = useNavigation<StackNavigationProp<any, any>>();
   const tournoi = useSelector((state: any) => state.gestionMatchs.listematchs);
 

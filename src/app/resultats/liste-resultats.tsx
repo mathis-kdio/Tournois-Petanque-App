@@ -9,11 +9,13 @@ import { useTranslation } from 'react-i18next';
 import { ListRenderItem } from 'react-native';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { Victoire } from '@/types/interfaces/victoire';
-import WithExitAlert from '@/app/with-exit-alert/with-exit-alert';
 import { useSelector } from 'react-redux';
 import { Match } from '@/types/interfaces/match';
+import useExitAlertOnBack from '@/app/with-exit-alert/with-exit-alert';
 
 const ListeResultats = () => {
+  useExitAlertOnBack();
+
   const { t } = useTranslation();
   const tournoi = useSelector((state: any) => state.gestionMatchs.listematchs);
 
@@ -48,6 +50,6 @@ const ListeResultats = () => {
       </VStack>
     </VStack>
   );
-}
+};
 
 export default ListeResultats;
