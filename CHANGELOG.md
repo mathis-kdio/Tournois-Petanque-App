@@ -1,5 +1,13 @@
 # Change Log
 
+## [2.1.1] - 14-05-2025
+### Ajouté
+
+### Changement
+
+### Corrigé
+- Correction de l'export PDF sur iOS
+
 ## [2.1.0] - 07-05-2025
 ### Ajouté
 - Ajout écran de sélection du complément lorsque le nombre de joueurs ne permet pas de faire des matchs complets

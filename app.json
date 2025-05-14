@@ -2,7 +2,7 @@
   "expo": {
     "name": "Tournois Pétanque App",
     "slug": "PetanqueGCU",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "light",
@@ -27,7 +27,7 @@
     ],
     "ios": {
       "bundleIdentifier": "TournoisPetanqueApp",
-      "buildNumber": "2.1.1",
+      "buildNumber": "2.1.2",
       "supportsTablet": true,
       "userInterfaceStyle": "light",
       "infoPlist": {
@@ -62,7 +62,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.MK.PetanqueGCU",
-      "versionCode": 119,
+      "versionCode": 120,
       "permissions": [
         "com.google.android.gms.permission.AD_ID"
       ],
