@@ -1,320 +1,327 @@
 {
-  "30": {
-    "id": "30",
-    "version": "2.1.0",
-    "infos": [
-      "- Ajout écran de sélection du complément lorsque le nombre de joueurs ne permet pas de faire des matchs complets",
-      "- Ajout pointeur, Tireur et Milieu en Triplette",
-      "- Ajout de la prise en compte des règles (jamais même coéquipier, etc) en Triplette",
-      "- Ajout Store Review",
-      "- Amélioration de l'export et de la mise en page des PDF",
-      "- Amélioration de la génération des matchs mêlée-démêlée doublette",
-      "- Amélioration de la navigation en arrière sur les écrans",
-      "- Mise à jour des traductions",
-      "- Mise à jour des dépendances",
-      "- Correction affichage du champ pour renommer un joueur",
-      "- Correction bug pub bloquante",
-      "- Correction sélection type du joueur",
-      "- Correction popup suppression joueur suggéré",
-      "- Correction crash après suppression du tournoi en cours",
-      "- Correction nom d'une liste de joueur n'était conservée après une modification de la liste"
-    ]
-  },
-  "29": {
-    "id": "29",
-    "version": "2.0.2",
-    "infos": [
-      "-Tłumaczenie na niemiecki",
-      "-Aktualizacja tłumaczenia",
-      "-Korekta błędów klasyfikacji"
-    ]
-  },
-  "28": {
-    "id": "28",
-    "version": "2.0.1",
-    "infos": [
-      "-Aktualizacja tłumaczenia",
-      "-Aktualizacja zależnych",
-      "-Korekta błędu ekranu terenów",
-      "-Korekta błędu usuwania turnieju"
-    ]
-  },
-  "27": {
-    "id": "27",
-    "version": "2.0.0",
-    "infos": [
-      "-Utworzenie kont",
-      "-Zarządzanie kontem",
-      "-Migracja bazy technicznej",
-      "-Aktualizacja zależnych"
-    ]
-  },
-  "26": {
-    "id": "26",
-    "version": "1.16.2",
-    "infos": [
-      "-Tłumaczenie na niderlandzki",
-      "-Data turnieju w PDF.",
-      "-Małe poprawki w wyświetlaniu dokumentów w PDF.",
-      "-Tłumaczenie notatek dot. aktualizacji.",
-      "-Korekta wczytywania turniejów typu Solo",
-      "-Korekta wyświetlania przycisków i modalnych.",
-      "-Korekta błędów."
-    ]
-  },
-  "25": {
-    "id": "25",
-    "version": "1.16.1",
-    "infos": [
-      "- Ulepszone wyświetlanie na małych ekranach.",
-      "- Usunięcie strony z dotacjami.",
-      "- Korekta błędów."
-    ]
-  },
-  "24": {
-    "id": "24",
-    "version": "1.16.0",
-    "infos": [
-      "- Turniej wielokrotnych szans.",
-      "- Ulepszenie wyświetlania zakładek i wygranych drużyn na liście meczów.",
-      "- Podziękowania za tłumaczenie.",
-      "- Korekta problemów wyświetlania.",
-      "- Korekta błędów wczytywania.",
-      "-Aktualizacja zależnych"
-    ]
-  },
-  "23": {
-    "id": "23",
-    "version": "1.15.0",
-    "infos": [
-      "-Nowy projekt aplikacji.",
-      "-Tłumaczenie aplikacji na język polski.",
-      "-Korekta błędów."
-    ]
-  },
-  "22": {
-    "id": "22",
-    "version": "1.14.0",
-    "infos": [
-      "-Tłumaczenie aplikacji.",
-      "-Eksport Pucharów do PDF.",
-      "-Możliwość wyświetlania pól do zaznaczenia przy rejestracji.",
-      "-Nowa strona rejestracji.",
-      "-Korekta etykiet.",
-      "-Korekta błędów."
-    ]
-  },
-  "21": {
-    "id": "21",
-    "version": "1.13.0",
-    "infos": [
-      "-Dodano opcje przypisywania meczów do terenów.",
-      "-Nowa strona dla: Ustawienia, Typ turnieju, Tryb turnieju, Opcje turnieju.",
-      "-Ulepszenie opcji Bez tych samych przeciwników.",
-      "-Korekta wczytywania turniejów typu Solo/miks.",
-      "-Korekta wyświetlania typu graczy."
-    ]
-  },
-  "20": {
-    "id": "20",
-    "version": "1.12.0",
-    "infos": [
-      "-Możliwość przypisania graczom w dubletach ról Puentera/ Strzelca/ Środka dla uzyskania lepszego zrównoważenia drużyn.",
-      "-Nowa strona główna.",
-      "-Wybór liczby punktów do wygranej.",
-      "-Przestawienie ekranu ustawień.",
-      "-Ulepszenie zmiany imion graczy."
-    ]
-  },
-  "19": {
-    "id": "19",
-    "version": "1.11.0",
-    "infos": [
-      "-Aplikacja na iOS!",
-      "-Powstanie grupy społecznościowej na Facebooku i dodanie przycisku na stronie głównej.",
-      "-Dodanie daty utworzenia i zmiany turnieju.",
-      "-Ulepszenie wyświetlania szczegółów turnieju.",
-      "-Możliwość zmiany nazwy listy graczy.",
-      "-Korekta błędów z listami graczy.",
-      "-Korekta wyświetlania w trybie jasnym aplikacji."
-    ]
-  },
-  "18": {
-    "id": "18",
-    "version": "1.10.1",
-    "infos": [
-      "-Informacja o nowej aktualizacji. ",
-      "-Korekta błędu, który uniemożliwiał wczytywanie turnieju."
-    ]
-  },
-  "17": {
-    "id": "17",
-    "version": "1.10.0",
-    "infos": [
-      "-Dodano możliwość utworzenia list graczy dostępnych do wczytania podczas rejestracji w celu zaoszczędzenia czasu.",
-      "-Dodano wyświetlanie sugestii graczy.",
-      "-Dodanie opcji usunięcia sugerowanych graczy.",
-      "-Dodano wyświetlanie informacji o poprzednich turniejach.",
-      "-Dodanie zmiany nazw turniejów.",
-      "-Dostosowanie interfejsu.",
-      "-Poprawa stabilności.",
-      "-Korekta błędów."
-    ]
-  },
-  "16": {
-    "id": "16",
-    "version": "1.9.0",
-    "infos": [
-      "-Dodanie trybu pucharowego.",
-      "-Nowa strona główna.",
-      "-Korekta błędów."
-    ]
-  },
-  "15": {
-    "id": "15",
-    "version": "1.8.3",
-    "infos": [
-      "-Dodano przyciski wczytywania podczas eksportu do PDF.",
-      "-Ulepszenie wczytywania rozgrywek bez drużyn."
-    ]
-  },
-  "14": {
-    "id": "14",
-    "version": "1.8.2",
-    "infos": [
-      "-Status i pasek nawigacji w kolorze.",
-      "-Tryb jasny domyślnie.",
-      "-Korekta problemów z nawigacją.",
-      "-Korekta błędów w tekście."
-    ]
-  },
-  "13": {
-    "id": "13",
-    "version": "1.8.1",
-    "infos": [
-      "-Ostrzeżenie o potwierdzeniu podczas usuwania turnieju.",
-      "-Usuwanie turnieju w toku."
-    ]
-  },
-  "12": {
-    "id": "12",
-    "version": "1.8.0",
-    "infos": [
-      "-Dodanie trybu turniejowego!",
-      "-Dodanie automatycznego raportu w przypadku awarii.",
-      "-Dodanie przycisku maila na stronie głównej.",
-      "-Dezaktywacja przycisku rozpoczęcia turnieju z 7 graczami (tryb nieobsługiwany).",
-      "-Naprawiono wczytywanie i zapisywanie poprzednich turniejów.",
-      "-Naprawiono usuwanie turnieju.",
-      "-Naprawiono wczytywanie tripletów.",
-      "-Poprawiono wyświetlanie trybu jeden na jednego."
-    ]
-  },
-  "11": {
-    "id": "11",
-    "version": "1.7.1",
-    "infos": [
-      "-Korekta wczytywania turniejów z nieparzystą liczbą graczy."
-    ]
-  },
-  "10": {
-    "id": "10",
-    "version": "1.7.0",
-    "infos": [
-      "-Dodano eksport turnieju do PDF.",
-      "-Dodanie sugestii imion graczy podczas rejestracji.",
-      "-Dodanie przycisku usuwania wszystkich graczy podczas rejestracji.",
-      "-Korekta wyświetlania poprzednich turniejów.",
-      "-Korekta fokusu mistrzostw dla rejestracji bez imion.",
-      "-Korekta zmiany imion przy rejestracji.",
-      "-Modyfikacja listy graczy pomiędzy rejestracjami.",
-      "-Modyfikacja wyświetlania klasyfikacji meczów bez nazwy.",
-      "-Aktualizacja galerii.",
-      "-Aktualizacja modułów."
-    ]
-  },
-  "9": {
-    "id": "9",
-    "version": "1.6.1",
-    "infos": [
-      "-Naprawiono zawieszanie się aplikacji przy uruchamianiu."
-    ]
-  },
-  "8": {
-    "id": "8",
-    "version": "1.6",
-    "infos": [
-      "-Możliwość wczytywania poprzednich turniejów.",
-      "-Wyświetlanie imion zarejestrowanych graczy w meczu, nie osobno.",
-      "-Używanie trybu jeden na jednego i w ekipie w tym samym czasie niemożliwe.",
-      "-Korekta błędów.",
-      "-Błąd drużyn w tripletach.",
-      "-Błąd wczytywania meczów w przypadku turnieju w dubletach z opcją tripletu. Dodatkowi gracze byli zawsze tacy sami."
-    ]
-  },
-  "7": {
-    "id": "7",
-    "version": "1.5.1",
-    "infos": [
-      "-Naprawiono zawieszanie się aplikacji przy uruchamianiu."
-    ]
-  },
-  "6": {
-    "id": "6",
-    "version": "1.5",
-    "infos": [
-      "-Dostępność turniejów z utworzonymi drużynami.",
-      "-Dostępność turniejów w trybie jeden na jednego.",
-      "-Możliwość stworzenia turnieju bez nazw w tripletach.",
-      "-Ulepszenie rozlokowania graczy w turniejach w tripletach.",
-      "Możliwość wyboru drużyn w tripletach lub w trybie jeden na jednego przy nieparzystej liczbie graczy w dublecie.",
-      "-Powiadomienie w przypadku aktualizacji.",
-      "-Korekta błędów."
-    ]
-  },
-  "5": {
-    "id": "5",
-    "version": "1.4",
-    "infos": [
-      "-Dostępność turniejów w tripletach.",
-      "-Ostrzeżenie: jeśli uczestniczysz w turnieju, nie będziesz mógł do niego dołączyć po tej aktualizacji!.",
-      "-Strona dziennika zmian.",
-      "-Przycisk do robienia notatek i komentarza.",
-      "-Korekta błędów."
-    ]
-  },
-  "4": {
-    "id": "4",
-    "version": "1.3",
-    "infos": [
-      "-Menu wyboru trybu turniejowego w dubletach i tripletach.",
-      "-Ostrzeżenie: (na razie) nie działają tryby tripletów i w drużynie.",
-      "-Rejestracja bez imion graczy, wystarczy wskazać liczbę graczy normalnych i specjalnych.",
-      "-Wyświetlanie numeru graczy na stronie klasyfikacji i na stronie do wprowadzania wyników.",
-      "-Korekta błędów."
-    ]
-  },
-  "3": {
-    "id": "3",
-    "version": "1.2",
-    "infos": [
-      "-Lepszy kombinacja graczy specjalnych. "
-    ]
-  },
-  "2": {
-    "id": "2",
-    "version": "1.1",
-    "infos": [
-      "-Wyświetlania numeru gracza oprócz jego imienia (jeśli posiada)."
-    ]
-  },
-  "1": {
-    "id": "1",
-    "version": "1.0",
-    "infos": [
-      "-Nowe logo",
-      "-Aplikacja dostępna teraz w kolorach GCU. ",
-      "-Możliwość rozpoczęcia turnieju z liczbą graczy będącą wielokrotnością 2, a nie tylko będącą wielokrotnością 4."
-    ]
-  }
+    "31": {
+        "id": "31",
+        "version": "2.1.1",
+        "infos": [
+            "- Correction de l'export PDF sur iOS"
+        ]
+    },
+    "30": {
+        "id": "30",
+        "version": "2.1.0",
+        "infos": [
+            "- Ajout écran de sélection du complément lorsque le nombre de joueurs ne permet pas de faire des matchs complets",
+            "- Ajout pointeur, Tireur et Milieu en Triplette",
+            "- Ajout de la prise en compte des règles (jamais même coéquipier, etc) en Triplette",
+            "- Ajout Store Review",
+            "- Amélioration de l'export et de la mise en page des PDF",
+            "- Amélioration de la génération des matchs mêlée-démêlée doublette",
+            "- Amélioration de la navigation en arrière sur les écrans",
+            "- Mise à jour des traductions",
+            "- Mise à jour des dépendances",
+            "- Correction affichage du champ pour renommer un joueur",
+            "- Correction bug pub bloquante",
+            "- Correction sélection type du joueur",
+            "- Correction popup suppression joueur suggéré",
+            "- Correction crash après suppression du tournoi en cours",
+            "- Correction nom d'une liste de joueur n'était conservée après une modification de la liste"
+        ]
+    },
+    "29": {
+        "id": "29",
+        "version": "2.0.2",
+        "infos": [
+            "-Tłumaczenie na niemiecki",
+            "-Aktualizacja tłumaczenia",
+            "-Korekta błędów klasyfikacji"
+        ]
+    },
+    "28": {
+        "id": "28",
+        "version": "2.0.1",
+        "infos": [
+            "-Aktualizacja tłumaczenia",
+            "-Aktualizacja zależnych",
+            "-Korekta błędu ekranu terenów",
+            "-Korekta błędu usuwania turnieju"
+        ]
+    },
+    "27": {
+        "id": "27",
+        "version": "2.0.0",
+        "infos": [
+            "-Utworzenie kont",
+            "-Zarządzanie kontem",
+            "-Migracja bazy technicznej",
+            "-Aktualizacja zależnych"
+        ]
+    },
+    "26": {
+        "id": "26",
+        "version": "1.16.2",
+        "infos": [
+            "-Tłumaczenie na niderlandzki",
+            "-Data turnieju w PDF.",
+            "-Małe poprawki w wyświetlaniu dokumentów w PDF.",
+            "-Tłumaczenie notatek dot. aktualizacji.",
+            "-Korekta wczytywania turniejów typu Solo",
+            "-Korekta wyświetlania przycisków i modalnych.",
+            "-Korekta błędów."
+        ]
+    },
+    "25": {
+        "id": "25",
+        "version": "1.16.1",
+        "infos": [
+            "- Ulepszone wyświetlanie na małych ekranach.",
+            "- Usunięcie strony z dotacjami.",
+            "- Korekta błędów."
+        ]
+    },
+    "24": {
+        "id": "24",
+        "version": "1.16.0",
+        "infos": [
+            "- Turniej wielokrotnych szans.",
+            "- Ulepszenie wyświetlania zakładek i wygranych drużyn na liście meczów.",
+            "- Podziękowania za tłumaczenie.",
+            "- Korekta problemów wyświetlania.",
+            "- Korekta błędów wczytywania.",
+            "-Aktualizacja zależnych"
+        ]
+    },
+    "23": {
+        "id": "23",
+        "version": "1.15.0",
+        "infos": [
+            "-Nowy projekt aplikacji.",
+            "-Tłumaczenie aplikacji na język polski.",
+            "-Korekta błędów."
+        ]
+    },
+    "22": {
+        "id": "22",
+        "version": "1.14.0",
+        "infos": [
+            "-Tłumaczenie aplikacji.",
+            "-Eksport Pucharów do PDF.",
+            "-Możliwość wyświetlania pól do zaznaczenia przy rejestracji.",
+            "-Nowa strona rejestracji.",
+            "-Korekta etykiet.",
+            "-Korekta błędów."
+        ]
+    },
+    "21": {
+        "id": "21",
+        "version": "1.13.0",
+        "infos": [
+            "-Dodano opcje przypisywania meczów do terenów.",
+            "-Nowa strona dla: Ustawienia, Typ turnieju, Tryb turnieju, Opcje turnieju.",
+            "-Ulepszenie opcji Bez tych samych przeciwników.",
+            "-Korekta wczytywania turniejów typu Solo/miks.",
+            "-Korekta wyświetlania typu graczy."
+        ]
+    },
+    "20": {
+        "id": "20",
+        "version": "1.12.0",
+        "infos": [
+            "-Możliwość przypisania graczom w dubletach ról Puentera/ Strzelca/ Środka dla uzyskania lepszego zrównoważenia drużyn.",
+            "-Nowa strona główna.",
+            "-Wybór liczby punktów do wygranej.",
+            "-Przestawienie ekranu ustawień.",
+            "-Ulepszenie zmiany imion graczy."
+        ]
+    },
+    "19": {
+        "id": "19",
+        "version": "1.11.0",
+        "infos": [
+            "-Aplikacja na iOS!",
+            "-Powstanie grupy społecznościowej na Facebooku i dodanie przycisku na stronie głównej.",
+            "-Dodanie daty utworzenia i zmiany turnieju.",
+            "-Ulepszenie wyświetlania szczegółów turnieju.",
+            "-Możliwość zmiany nazwy listy graczy.",
+            "-Korekta błędów z listami graczy.",
+            "-Korekta wyświetlania w trybie jasnym aplikacji."
+        ]
+    },
+    "18": {
+        "id": "18",
+        "version": "1.10.1",
+        "infos": [
+            "-Informacja o nowej aktualizacji. ",
+            "-Korekta błędu, który uniemożliwiał wczytywanie turnieju."
+        ]
+    },
+    "17": {
+        "id": "17",
+        "version": "1.10.0",
+        "infos": [
+            "-Dodano możliwość utworzenia list graczy dostępnych do wczytania podczas rejestracji w celu zaoszczędzenia czasu.",
+            "-Dodano wyświetlanie sugestii graczy.",
+            "-Dodanie opcji usunięcia sugerowanych graczy.",
+            "-Dodano wyświetlanie informacji o poprzednich turniejach.",
+            "-Dodanie zmiany nazw turniejów.",
+            "-Dostosowanie interfejsu.",
+            "-Poprawa stabilności.",
+            "-Korekta błędów."
+        ]
+    },
+    "16": {
+        "id": "16",
+        "version": "1.9.0",
+        "infos": [
+            "-Dodanie trybu pucharowego.",
+            "-Nowa strona główna.",
+            "-Korekta błędów."
+        ]
+    },
+    "15": {
+        "id": "15",
+        "version": "1.8.3",
+        "infos": [
+            "-Dodano przyciski wczytywania podczas eksportu do PDF.",
+            "-Ulepszenie wczytywania rozgrywek bez drużyn."
+        ]
+    },
+    "14": {
+        "id": "14",
+        "version": "1.8.2",
+        "infos": [
+            "-Status i pasek nawigacji w kolorze.",
+            "-Tryb jasny domyślnie.",
+            "-Korekta problemów z nawigacją.",
+            "-Korekta błędów w tekście."
+        ]
+    },
+    "13": {
+        "id": "13",
+        "version": "1.8.1",
+        "infos": [
+            "-Ostrzeżenie o potwierdzeniu podczas usuwania turnieju.",
+            "-Usuwanie turnieju w toku."
+        ]
+    },
+    "12": {
+        "id": "12",
+        "version": "1.8.0",
+        "infos": [
+            "-Dodanie trybu turniejowego!",
+            "-Dodanie automatycznego raportu w przypadku awarii.",
+            "-Dodanie przycisku maila na stronie głównej.",
+            "-Dezaktywacja przycisku rozpoczęcia turnieju z 7 graczami (tryb nieobsługiwany).",
+            "-Naprawiono wczytywanie i zapisywanie poprzednich turniejów.",
+            "-Naprawiono usuwanie turnieju.",
+            "-Naprawiono wczytywanie tripletów.",
+            "-Poprawiono wyświetlanie trybu jeden na jednego."
+        ]
+    },
+    "11": {
+        "id": "11",
+        "version": "1.7.1",
+        "infos": [
+            "-Korekta wczytywania turniejów z nieparzystą liczbą graczy."
+        ]
+    },
+    "10": {
+        "id": "10",
+        "version": "1.7.0",
+        "infos": [
+            "-Dodano eksport turnieju do PDF.",
+            "-Dodanie sugestii imion graczy podczas rejestracji.",
+            "-Dodanie przycisku usuwania wszystkich graczy podczas rejestracji.",
+            "-Korekta wyświetlania poprzednich turniejów.",
+            "-Korekta fokusu mistrzostw dla rejestracji bez imion.",
+            "-Korekta zmiany imion przy rejestracji.",
+            "-Modyfikacja listy graczy pomiędzy rejestracjami.",
+            "-Modyfikacja wyświetlania klasyfikacji meczów bez nazwy.",
+            "-Aktualizacja galerii.",
+            "-Aktualizacja modułów."
+        ]
+    },
+    "9": {
+        "id": "9",
+        "version": "1.6.1",
+        "infos": [
+            "-Naprawiono zawieszanie się aplikacji przy uruchamianiu."
+        ]
+    },
+    "8": {
+        "id": "8",
+        "version": "1.6",
+        "infos": [
+            "-Możliwość wczytywania poprzednich turniejów.",
+            "-Wyświetlanie imion zarejestrowanych graczy w meczu, nie osobno.",
+            "-Używanie trybu jeden na jednego i w ekipie w tym samym czasie niemożliwe.",
+            "-Korekta błędów.",
+            "-Błąd drużyn w tripletach.",
+            "-Błąd wczytywania meczów w przypadku turnieju w dubletach z opcją tripletu. Dodatkowi gracze byli zawsze tacy sami."
+        ]
+    },
+    "7": {
+        "id": "7",
+        "version": "1.5.1",
+        "infos": [
+            "-Naprawiono zawieszanie się aplikacji przy uruchamianiu."
+        ]
+    },
+    "6": {
+        "id": "6",
+        "version": "1.5",
+        "infos": [
+            "-Dostępność turniejów z utworzonymi drużynami.",
+            "-Dostępność turniejów w trybie jeden na jednego.",
+            "-Możliwość stworzenia turnieju bez nazw w tripletach.",
+            "-Ulepszenie rozlokowania graczy w turniejach w tripletach.",
+            "Możliwość wyboru drużyn w tripletach lub w trybie jeden na jednego przy nieparzystej liczbie graczy w dublecie.",
+            "-Powiadomienie w przypadku aktualizacji.",
+            "-Korekta błędów."
+        ]
+    },
+    "5": {
+        "id": "5",
+        "version": "1.4",
+        "infos": [
+            "-Dostępność turniejów w tripletach.",
+            "-Ostrzeżenie: jeśli uczestniczysz w turnieju, nie będziesz mógł do niego dołączyć po tej aktualizacji!.",
+            "-Strona dziennika zmian.",
+            "-Przycisk do robienia notatek i komentarza.",
+            "-Korekta błędów."
+        ]
+    },
+    "4": {
+        "id": "4",
+        "version": "1.3",
+        "infos": [
+            "-Menu wyboru trybu turniejowego w dubletach i tripletach.",
+            "-Ostrzeżenie: (na razie) nie działają tryby tripletów i w drużynie.",
+            "-Rejestracja bez imion graczy, wystarczy wskazać liczbę graczy normalnych i specjalnych.",
+            "-Wyświetlanie numeru graczy na stronie klasyfikacji i na stronie do wprowadzania wyników.",
+            "-Korekta błędów."
+        ]
+    },
+    "3": {
+        "id": "3",
+        "version": "1.2",
+        "infos": [
+            "-Lepszy kombinacja graczy specjalnych. "
+        ]
+    },
+    "2": {
+        "id": "2",
+        "version": "1.1",
+        "infos": [
+            "-Wyświetlania numeru gracza oprócz jego imienia (jeśli posiada)."
+        ]
+    },
+    "1": {
+        "id": "1",
+        "version": "1.0",
+        "infos": [
+            "-Nowe logo",
+            "-Aplikacja dostępna teraz w kolorach GCU. ",
+            "-Możliwość rozpoczęcia turnieju z liczbą graczy będącą wielokrotnością 2, a nie tylko będącą wielokrotnością 4."
+        ]
+    }
 }
