@@ -110,7 +110,7 @@ class GenerationMatchs extends React.Component<Props, State> {
     try {
       this.interstitial = await Promise.race([
         _adMobGenerationTournoiInterstitiel(),
-        timeout(20000),
+        timeout(5000),
       ]);
     } catch (error) {
       if (error instanceof Error && error.message === 'Timeout') {
