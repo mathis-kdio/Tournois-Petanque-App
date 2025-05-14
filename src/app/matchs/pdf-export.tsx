@@ -131,7 +131,7 @@ class PDFExport extends React.Component<Props, State> {
         }).then(() => this._toggleLoading());
       } else if (Platform.OS === 'ios') {
         if (await Sharing.isAvailableAsync()) {
-          Sharing.shareAsync(uri).then(() => this._toggleLoading());
+          Sharing.shareAsync(newUri).then(() => this._toggleLoading());
         } else {
           this._toggleLoading();
         }
