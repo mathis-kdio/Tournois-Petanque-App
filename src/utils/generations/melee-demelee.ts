@@ -25,12 +25,12 @@ export function testAffectationPossible(
   }
 
   //Test eviterMemeAdversaire
-  if (eviterMemeAdversaire !== 100) {
+  if (eviterMemeAdversaire !== 100 && tour !== 0) {
     const adversairesActuels = currentAdversaire.filter((id) => id !== -1);
+    const maxRencontres =
+      eviterMemeAdversaire === 50 ? Math.floor(nbTours / 2) : 1;
     for (const adversaire of adversairesActuels) {
       const nbRencontres = occuAdversaire(joueur.allAdversaires, adversaire);
-      const maxRencontres =
-        eviterMemeAdversaire === 50 ? Math.floor(nbTours / 2) : 1;
       if (nbRencontres >= maxRencontres) {
         return false;
       }

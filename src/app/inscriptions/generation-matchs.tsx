@@ -88,12 +88,11 @@ const GenerationMatchs = () => {
 
   useEffect(() => {
     try {
-      Promise.race([
-        _adMobGenerationTournoiInterstitiel(),
-        timeout(20000),
-      ]).then((a) => {
-        interstitial.current = a;
-      });
+      Promise.race([_adMobGenerationTournoiInterstitiel(), timeout(5000)]).then(
+        (a) => {
+          interstitial.current = a;
+        },
+      );
     } catch (error) {
       if (error instanceof Error && error.message === 'Timeout') {
         setAdClosed(true);

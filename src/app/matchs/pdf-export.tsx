@@ -122,7 +122,7 @@ const PDFExport = () => {
         }).then(() => _toggleLoading());
       } else if (Platform.OS === 'ios') {
         if (await Sharing.isAvailableAsync()) {
-          Sharing.shareAsync(uri).then(() => _toggleLoading());
+          Sharing.shareAsync(newUri).then(() => _toggleLoading());
         } else {
           _toggleLoading();
         }
