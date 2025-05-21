@@ -1,7 +1,7 @@
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import CardButton from '@components/buttons/CardButton';
@@ -27,10 +27,6 @@ const ChoixComplement = () => {
 
   const [options, setOptions] = useState<Complement[]>([]);
 
-  useEffect(() => {
-    prepareComplements();
-  }, []);
-
   const _navigate = (complement: Complement) => {
     const updateOptionComplement = {
       type: 'UPDATE_OPTION_TOURNOI',
@@ -48,26 +44,25 @@ const ChoixComplement = () => {
     });
   };
 
-  const prepareComplements = () => {
-    const { typeEquipes } = optionsTournoi;
-    let options: Complement[] = [];
-    switch (typeEquipes) {
-      case TypeEquipes.TETEATETE:
-        throw new Error('Complement TETEATETE impossible');
-      case TypeEquipes.DOUBLETTE:
-        options = complementDoublette();
-        break;
-      case TypeEquipes.TRIPLETTE:
-        options = complementTriplette();
-        break;
-    }
-    setOptions(options);
-  };
+  const prepareComplements = useCallback(
+    (typeEquipes: TypeEquipes, nbJoueurs: number) => {
+      let options: Complement[] = [];
+      switch (typeEquipes) {
+        case TypeEquipes.TETEATETE:
+          throw new Error('Complement TETEATETE impossible');
+        case TypeEquipes.DOUBLETTE:
+          options = complementDoublette(nbJoueurs);
+          break;
+        case TypeEquipes.TRIPLETTE:
+          options = complementTriplette(nbJoueurs);
+          break;
+      }
+      setOptions(options);
+    },
+    [],
+  );
 
-  const complementDoublette = (): Complement[] => {
-    const { mode } = optionsTournoi;
-    const nbJoueurs = listesJoueurs[mode].length;
-
+  const complementDoublette = (nbJoueurs: number): Complement[] => {
     switch (nbJoueurs % 4) {
       case 1:
         return [Complement.TROISVSDEUX];
@@ -80,10 +75,7 @@ const ChoixComplement = () => {
     }
   };
 
-  const complementTriplette = (): Complement[] => {
-    const { mode } = optionsTournoi;
-    const nbJoueurs = listesJoueurs[mode].length;
-
+  const complementTriplette = (nbJoueurs: number): Complement[] => {
     switch (nbJoueurs % 6) {
       case 1:
         return [Complement.QUATREVSTROIS];
@@ -99,6 +91,12 @@ const ChoixComplement = () => {
         throw new Error('Nombre de joueurs ne nécessitant pas un complément');
     }
   };
+
+  useEffect(() => {
+    const { typeEquipes, mode } = optionsTournoi;
+    let nbJoueurs = listesJoueurs[mode].length;
+    prepareComplements(typeEquipes, nbJoueurs);
+  }, [listesJoueurs, optionsTournoi, prepareComplements]);
 
   const card = (complement: Complement) => {
     const complementTextMap: Record<
