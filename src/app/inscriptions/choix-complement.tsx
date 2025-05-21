@@ -1,79 +1,68 @@
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import React from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import CardButton from '@components/buttons/CardButton';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { TFunction } from 'i18next';
-import { PropsFromRedux, connector } from '@/store/connector';
 import { Divider } from '@/components/ui/divider';
 import { Complement } from '@/types/enums/complement';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 
-export interface Props extends PropsFromRedux {
-  navigation: StackNavigationProp<any, any>;
-  t: TFunction;
-}
+const ChoixComplement = () => {
+  const { t } = useTranslation();
+  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const dispatch = useDispatch();
 
-interface State {
-  options: Complement[];
-}
+  const optionsTournoi = useSelector(
+    (state: any) => state.optionsTournoi.options,
+  );
+  const listesJoueurs = useSelector(
+    (state: any) => state.listesJoueurs.listesJoueurs,
+  );
 
-class ChoixComplement extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      options: [],
-    };
-  }
+  const [options, setOptions] = useState<Complement[]>([]);
 
-  componentDidMount(): void {
-    this.prepareComplements();
-  }
-
-  _navigate(complement: Complement) {
+  const _navigate = (complement: Complement) => {
     const updateOptionComplement = {
       type: 'UPDATE_OPTION_TOURNOI',
       value: ['complement', complement],
     };
-    this.props.dispatch(updateOptionComplement);
+    dispatch(updateOptionComplement);
 
-    const { avecTerrains } = this.props.optionsTournoi;
+    const { avecTerrains } = optionsTournoi;
     let screenName = avecTerrains ? 'ListeTerrains' : 'GenerationMatchs';
-    this.props.navigation.navigate({
+    navigation.navigate({
       name: screenName,
       params: {
         screenStackName: 'InscriptionsAvecNoms',
       },
     });
-  }
+  };
 
-  prepareComplements() {
-    const { typeEquipes } = this.props.optionsTournoi;
-    let options: Complement[] = [];
-    switch (typeEquipes) {
-      case TypeEquipes.TETEATETE:
-        throw new Error('Complement TETEATETE impossible');
-      case TypeEquipes.DOUBLETTE:
-        options = this.complementDoublette();
-        break;
-      case TypeEquipes.TRIPLETTE:
-        options = this.complementTriplette();
-        break;
-    }
-    this.setState({
-      options: options,
-    });
-  }
+  const prepareComplements = useCallback(
+    (typeEquipes: TypeEquipes, nbJoueurs: number) => {
+      let options: Complement[] = [];
+      switch (typeEquipes) {
+        case TypeEquipes.TETEATETE:
+          throw new Error('Complement TETEATETE impossible');
+        case TypeEquipes.DOUBLETTE:
+          options = complementDoublette(nbJoueurs);
+          break;
+        case TypeEquipes.TRIPLETTE:
+          options = complementTriplette(nbJoueurs);
+          break;
+      }
+      setOptions(options);
+    },
+    [],
+  );
 
-  complementDoublette(): Complement[] {
-    const { mode } = this.props.optionsTournoi;
-    const { listesJoueurs } = this.props;
-    const nbJoueurs = listesJoueurs[mode].length;
-
+  const complementDoublette = (nbJoueurs: number): Complement[] => {
     switch (nbJoueurs % 4) {
       case 1:
         return [Complement.TROISVSDEUX];
@@ -84,13 +73,9 @@ class ChoixComplement extends React.Component<Props, State> {
       default:
         throw new Error('Nombre de joueurs ne nécessitant pas un complément');
     }
-  }
+  };
 
-  complementTriplette(): Complement[] {
-    const { mode } = this.props.optionsTournoi;
-    const { listesJoueurs } = this.props;
-    const nbJoueurs = listesJoueurs[mode].length;
-
+  const complementTriplette = (nbJoueurs: number): Complement[] => {
     switch (nbJoueurs % 6) {
       case 1:
         return [Complement.QUATREVSTROIS];
@@ -105,10 +90,15 @@ class ChoixComplement extends React.Component<Props, State> {
       default:
         throw new Error('Nombre de joueurs ne nécessitant pas un complément');
     }
-  }
+  };
 
-  card(complement: Complement) {
-    const { t } = this.props;
+  useEffect(() => {
+    const { typeEquipes, mode } = optionsTournoi;
+    let nbJoueurs = listesJoueurs[mode].length;
+    prepareComplements(typeEquipes, nbJoueurs);
+  }, [listesJoueurs, optionsTournoi, prepareComplements]);
+
+  const card = (complement: Complement) => {
     const complementTextMap: Record<
       Complement,
       { text: string; icons: string[] }
@@ -144,45 +134,37 @@ class ChoixComplement extends React.Component<Props, State> {
         <CardButton
           text={item.text}
           icons={item.icons}
-          navigate={() => this._navigate(complement)}
+          navigate={() => _navigate(complement)}
           newBadge={false}
         />
       </VStack>
     );
-  }
+  };
 
-  render() {
-    const { t } = this.props;
-    const { typeEquipes } = this.props.optionsTournoi;
-    let nbModulo = typeEquipes === TypeEquipes.DOUBLETTE ? '4' : '6';
+  const { typeEquipes } = optionsTournoi;
+  let nbModulo = typeEquipes === TypeEquipes.DOUBLETTE ? '4' : '6';
 
-    return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView className="h-1 bg-[#0594ae]">
-          <TopBarBack
-            title={t('choix_complement')}
-            navigation={this.props.navigation}
-          />
-          <VStack space="2xl" className="flex-1 px-10">
-            <Text size={'lg'} className="text-white text-center">
-              {t('choix_complement_title_1', { nbModulo: nbModulo })}
-            </Text>
-            <Text size={'lg'} className="text-white text-center">
-              {t('choix_complement_title_2')}
-            </Text>
-            {this.state.options.map((complement, index) => (
-              <VStack key={index}>
-                {this.card(complement)}
-                {index + 1 !== this.state.options.length && (
-                  <Divider className="mt-5 h-1" />
-                )}
-              </VStack>
-            ))}
-          </VStack>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-}
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView className="h-1 bg-[#0594ae]">
+        <TopBarBack title={t('choix_complement')} navigation={navigation} />
+        <VStack space="2xl" className="flex-1 px-10">
+          <Text size={'lg'} className="text-white text-center">
+            {t('choix_complement_title_1', { nbModulo: nbModulo })}
+          </Text>
+          <Text size={'lg'} className="text-white text-center">
+            {t('choix_complement_title_2')}
+          </Text>
+          {options.map((complement, index) => (
+            <VStack key={index}>
+              {card(complement)}
+              {index + 1 !== options.length && <Divider className="mt-5 h-1" />}
+            </VStack>
+          ))}
+        </VStack>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
 
-export default connector(withTranslation()(ChoixComplement));
+export default ChoixComplement;
