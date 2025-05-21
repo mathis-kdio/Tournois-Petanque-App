@@ -28,7 +28,7 @@ import {
 import { InterstitialAd } from 'react-native-google-mobile-ads';
 import TopBar from '@/components/topBar/TopBar';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type GenerationMatchsRouteProp = {
   params: {
@@ -60,7 +60,7 @@ const GenerationMatchs = () => {
   const [adLoaded, setAdLoaded] = useState(false);
   const [adClosed, setAdClosed] = useState(false);
 
-  let interstitial: void | InterstitialAd;
+  const interstitial = useRef<InterstitialAd | void>(undefined);
   let listener: string | boolean;
 
   const _ajoutMatchs = (matchs) => {
@@ -73,64 +73,71 @@ const GenerationMatchs = () => {
     dispatch(actionAjoutTournoi);
   };
 
-  useEffect(() => {
-    setInterstitial();
+  listener = EventRegister.addEventListener('interstitialAdEvent', (data) => {
+    setAdLoaded(data.adLoaded);
+    setAdClosed(data.adClosed);
+  });
 
-    listener = EventRegister.addEventListener('interstitialAdEvent', (data) => {
-      setAdLoaded(data.adLoaded);
-      setAdClosed(data.adClosed);
+  const timeout = (ms: number): Promise<void> => {
+    return new Promise((_, reject) => {
+      setTimeout(() => {
+        reject(new Error('Timeout'));
+      }, ms);
     });
+  };
 
-    const timer = setTimeout(() => {
-      _lanceurGeneration();
-    }, 1000);
-
-    return () => {
-      if (typeof listener === 'string') {
-        EventRegister.removeEventListener(listener);
-      }
-      clearTimeout(timer);
-    };
-  }, []);
-
-  const setInterstitial = () => {
-    const timeout = (ms: number): Promise<never> =>
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Timeout')), ms),
-      );
-
+  useEffect(() => {
     try {
       Promise.race([
         _adMobGenerationTournoiInterstitiel(),
         timeout(20000),
-      ]).then((v) => (interstitial = v));
+      ]).then((a) => {
+        interstitial.current = a;
+      });
     } catch (error) {
       if (error instanceof Error && error.message === 'Timeout') {
         setAdClosed(true);
       }
     }
-  };
+
+    return () => {
+      if (typeof listener === 'string') {
+        EventRegister.removeEventListener(listener);
+      }
+    };
+  }, [listener, interstitial]);
 
   useEffect(() => {
     if (!isGenerationEnd) return;
 
-    if (Platform.OS !== 'web' && interstitial && adLoaded) {
-      interstitial.show();
+    if (
+      Platform.OS !== 'web' &&
+      interstitial &&
+      interstitial.current &&
+      adLoaded
+    ) {
+      interstitial.current.show();
       return;
     }
 
     if (Platform.OS === 'web' || adClosed) {
-      _displayListeMatch();
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'ListeMatchsInscription' }],
+      });
       return;
     }
-  }, [isGenerationEnd, adLoaded, adClosed]);
+  }, [isGenerationEnd, adLoaded, adClosed, interstitial, navigation]);
 
-  const _displayListeMatch = () => {
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'ListeMatchsInscription' }],
-    });
-  };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      _lanceurGeneration();
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   const _lanceurGeneration = () => {
     let typeInscription = optionsTournoi.mode;
