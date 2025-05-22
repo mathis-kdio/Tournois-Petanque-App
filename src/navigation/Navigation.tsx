@@ -8,7 +8,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { FontAwesome5 } from '@expo/vector-icons';
 
-import Accueil from '@/app/accueil';
+import Accueil from '@/app';
 import Authentification from '@/app/connexion/authentification';
 import Compte from '@/app/connexion/compte';
 import InfosPerso from '@/app/connexion/infos-perso';

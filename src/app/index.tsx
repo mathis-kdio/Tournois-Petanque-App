@@ -14,12 +14,12 @@ import { _adsConsentForm } from '../utils/adMob/consentForm';
 import CardButton from '@components/buttons/CardButton';
 import { AppState, AppStateStatus, Platform } from 'react-native';
 import { _requestTrackingPermissions } from '../utils/expoTrackingTransparency/requestTrackingPermission';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/native';
+import { CommonActions } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { useAuth } from '@/components/supabase/SessionProvider';
+import { useNavigation, useRouter } from 'expo-router';
 
 const googleMarketReviews =
   'market://details?id=com.MK.PetanqueGCU&showAllReviews=true';
@@ -32,7 +32,7 @@ const website = 'https://tournoispetanqueapp.fr/';
 
 const Accueil = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const navigation = useNavigation();
   const { session } = useAuth();
 
   const listeMatchs = useSelector(
@@ -63,10 +63,9 @@ const Accueil = () => {
   }, [appState]);
 
   const _showMatchs = () => {
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'ListeMatchsStack' }],
-    });
+    navigation.dispatch(CommonActions.reset({
+      routes: [{key: "0", name: 'ListeMatchsStack'}]
+    }))
   };
 
   const _navigate = (name: string) => {
