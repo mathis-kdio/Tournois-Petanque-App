@@ -33,6 +33,7 @@ const website = 'https://tournoispetanqueapp.fr/';
 const Accueil = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const router = useRouter();
   const { session } = useAuth();
 
   const listeMatchs = useSelector(
@@ -187,7 +188,7 @@ const Accueil = () => {
                   <FontAwesome5 name="envelope" color="white" size={20} />
                 </Pressable>
                 <Pressable
-                  onPress={() => navigation.navigate('ParametresStack')}
+                  onPress={() => router.navigate('/parametres')}
                   className="flex-1 items-center bg-[#1c3969] rounded-3xl p-2"
                 >
                   <FontAwesome5 name="wrench" color="white" size={20} />
