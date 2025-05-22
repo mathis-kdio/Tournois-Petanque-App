@@ -38,11 +38,7 @@ export default function RootLayout() {
         <AuthProvider>
           <GluestackUIProvider mode="light">
             <I18nextProvider i18n={i18n} defaultNS={'common'}>
-              <Stack
-                screenOptions={{
-                  headerShown: false,
-                }}
-              />
+              <Stack screenOptions={{ headerShown: false }} />
               <StatusBar style="light" backgroundColor="#0594ae" />
             </I18nextProvider>
           </GluestackUIProvider>
