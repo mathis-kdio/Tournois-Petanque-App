@@ -64,13 +64,11 @@ const Accueil = () => {
   }, [appState]);
 
   const _showMatchs = () => {
-    navigation.dispatch(CommonActions.reset({
-      routes: [{key: "0", name: 'ListeMatchsStack'}]
-    }))
-  };
-
-  const _navigate = (name: string) => {
-    navigation.navigate(name);
+    navigation.dispatch(
+      CommonActions.reset({
+        routes: [{ key: '0', name: 'ListeMatchsStack' }],
+      }),
+    );
   };
 
   const _buttonShowMatchs = () => {
@@ -136,7 +134,7 @@ const Accueil = () => {
                 <CardButton
                   text={t('nouveau_tournoi')}
                   icons={['plus']}
-                  navigate={() => _navigate('InscriptionStack')}
+                  navigate={() => router.navigate('InscriptionStack')}
                   newBadge={false}
                 />
               </HStack>
@@ -144,13 +142,13 @@ const Accueil = () => {
                 <CardButton
                   text={t('mes_anciens_tournois')}
                   icons={['list']}
-                  navigate={() => _navigate('ListeTournois')}
+                  navigate={() => router.navigate('/liste-tournois')}
                   newBadge={false}
                 />
                 <CardButton
                   text={t('mes_listes_joueurs')}
                   icons={['users']}
-                  navigate={() => _navigate('ListesJoueurs')}
+                  navigate={() => router.navigate('/listes-joueurs')}
                   newBadge={false}
                 />
               </HStack>
