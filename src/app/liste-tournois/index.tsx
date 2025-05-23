@@ -17,18 +17,17 @@ import ListeTournoiItem from '@components/ListeTournoiItem';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { Tournoi } from '@/types/interfaces/tournoi';
 import { ListRenderItem } from 'react-native';
 import { dateFormatDateHeure } from '../../utils/date';
-import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigation } from 'expo-router';
 
 const ListeTournois = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const navigation = useNavigation();
 
   const [modalTournoiInfosIsOpen, setModalTournoiInfosIsOpen] = useState(false);
   const [infosTournoi, setInfosTournoi] = useState<Tournoi | undefined>(
