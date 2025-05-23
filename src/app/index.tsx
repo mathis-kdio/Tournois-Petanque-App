@@ -64,11 +64,14 @@ const Accueil = () => {
   }, [appState]);
 
   const _showMatchs = () => {
+    router.navigate('/matchs/(tabs)/');
+    /*
     navigation.dispatch(
       CommonActions.reset({
-        routes: [{ key: '0', name: 'ListeMatchsStack' }],
+        routes: [{ name: '/matchs/(tabs)/' }],
       }),
     );
+    */
   };
 
   const _buttonShowMatchs = () => {
