@@ -99,13 +99,7 @@ const Accueil = () => {
   const boutonConnexion = () => {
     if (session) {
       return (
-        <Button
-          onPress={() =>
-            navigation.navigate('ConnexionStack', {
-              screen: 'Compte',
-            })
-          }
-        >
+        <Button onPress={() => router.navigate('/compte')}>
           <ButtonText>{t('mon_compte')}</ButtonText>
         </Button>
       );
