@@ -8,31 +8,20 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
-import {
-  StackActions,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-
-type CreateListeJoueurRouteProp = {
-  params: {
-    type: string;
-    listId: number;
-  };
-};
+import { useLocalSearchParams } from 'expo-router';
 
 const CreateListeJoueur = () => {
   const { t } = useTranslation();
   const navigation = useNavigation<StackNavigationProp<any, any>>();
-  const route = useRoute<CreateListeJoueurRouteProp>();
   const dispatch = useDispatch();
 
   const listesJoueurs = useSelector(
     (state: any) => state.listesJoueurs.listesJoueurs,
   );
 
-  const _dispatch = (type: string, listId: number) => {
+  const _dispatch = (type: string, listId?: number) => {
     if (type === 'create') {
       const addSavedList = {
         type: 'ADD_SAVED_LIST',
@@ -58,20 +47,27 @@ const CreateListeJoueur = () => {
   };
 
   const _submitButton = () => {
-    let params = route.params;
-    if (params) {
+    const { type, listId } = useLocalSearchParams<{
+      type: string;
+      listId?: string;
+    }>();
+
+    if (type) {
       let nbPlayers = listesJoueurs.sauvegarde.length;
       let title = 'error';
-      if (params.type === 'create') {
+      if (type === 'create') {
         title = t('creer_liste');
-      } else if (params.type === 'edit') {
+      } else if (type === 'edit') {
         title = t('valider_modification');
       }
+
+      const idList = listId ? parseInt(listId) : undefined;
+
       return (
         <Button
           isDisabled={nbPlayers === 0}
           action="positive"
-          onPress={() => _dispatch(params.type, params.listId)}
+          onPress={() => _dispatch(type, idList)}
         >
           <ButtonText>{title}</ButtonText>
         </Button>

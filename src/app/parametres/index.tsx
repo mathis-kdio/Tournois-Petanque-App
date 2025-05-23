@@ -41,6 +41,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Pressable } from '@/components/ui/pressable';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
+import { useRouter } from 'expo-router';
 
 const Parametres = () => {
   const githubRepository =
@@ -53,6 +54,7 @@ const Parametres = () => {
 
   const { t } = useTranslation();
   const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const _alertDialogClearData = () => {
@@ -285,7 +287,7 @@ const Parametres = () => {
               <Box className="border border-white rounded-lg">
                 <Item
                   text={t('voir_nouveautes')}
-                  action={() => navigation.navigate('Changelog')}
+                  action={() => router.navigate('./changelog')}
                   icon="certificate"
                   type={''}
                   drapeau={undefined}

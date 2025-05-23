@@ -10,7 +10,6 @@ import TopBarBack from '@/components/topBar/TopBarBack';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation, useRoute } from '@react-navigation/native';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { ListRenderItem } from 'react-native';
 import {
@@ -18,6 +17,8 @@ import {
   ListeJoueurs as ListeJoueursInterface,
 } from '@/types/interfaces/listeJoueurs';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation, useRouter } from 'expo-router';
+import { useRoute } from '@react-navigation/native';
 
 type ListesJoueursRouteProp = {
   params: {
@@ -27,6 +28,8 @@ type ListesJoueursRouteProp = {
 
 const ListesJoueurs = () => {
   const { t } = useTranslation();
+  const router = useRouter();
+
   const navigation = useNavigation<StackNavigationProp<any, any>>();
   const route = useRoute<ListesJoueursRouteProp>();
   const dispatch = useDispatch();
@@ -58,8 +61,8 @@ const ListesJoueurs = () => {
     };
     dispatch(updateOptionModeTournoi);
 
-    navigation.navigate({
-      name: 'CreateListeJoueurs',
+    router.navigate({
+      pathname: '/listes-joueurs/create-liste-joueurs',
       params: { type: 'create' },
     });
   };
