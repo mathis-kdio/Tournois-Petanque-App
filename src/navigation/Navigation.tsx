@@ -12,9 +12,6 @@ import Accueil from '@/app';
 import Authentification from '@/app/connexion/authentification';
 import Compte from '@/app/connexion/compte';
 import InfosPerso from '@/app/connexion/infos-perso';
-import Parametres from '@/app/parametres';
-import Changelog from '@/app/parametres/changelog';
-import ListeTournois from '@/app/liste-tournois/liste-tournois';
 import ChoixTypeTournoi from '@/app/inscriptions/choix-type-tournoi';
 import ChoixModeTournoi from '@/app/inscriptions/choix-mode-tournoi';
 import Inscription from '@/app/connexion/inscription';
@@ -25,15 +22,13 @@ import ChoixComplement from '@/app/inscriptions/choix-complement';
 import GenerationMatchs from '@/app/inscriptions/generation-matchs';
 import ListeResultats from '@/app/resultats/liste-resultats';
 import ListeMatchs from '@/app/matchs/liste-matchs';
-import ListeTerrains from '@/app/liste-terrains/liste-terrains';
+import ListeTerrains from '@/app/inscriptions/liste-terrains';
 import MatchDetail from '@/app/matchs/match-detail';
 import JoueursTournoi from '@/app/matchs/joueurs-tournoi';
 import ParametresTournoi from '@/app/matchs/parametres-tournoi';
 import PDFExport from '@/app/matchs/pdf-export';
 import ConfirmationEmail from '@/app/connexion/confirmation-email';
 import Securite from '@/app/connexion/securite';
-import ListesJoueurs from '@/app/listes-joueurs/listes-joueurs';
-import CreateListeJoueurs from '@/app/listes-joueurs/create-liste-joueurs';
 
 import BoutonMenuHeaderNav from '@components/BoutonMenuHeaderNavigation';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
@@ -376,31 +371,6 @@ const InscriptionStack = () => {
   );
 };
 
-const ParametresStack = () => {
-  const { t } = useTranslation();
-  return (
-    <Stack.Navigator
-      initialRouteName="Parametres"
-      screenOptions={{
-        headerTitleAlign: 'center',
-        headerStyle: { backgroundColor: '#ffda00' },
-        headerTitleStyle: { color: '#1c3969' },
-      }}
-    >
-      <Stack.Screen
-        name="Parametres"
-        component={Parametres}
-        options={{ title: t('parametres'), headerShown: false }}
-      />
-      <Stack.Screen
-        name="Changelog"
-        component={Changelog}
-        options={{ title: t('Nouveautes'), headerShown: false }}
-      />
-    </Stack.Navigator>
-  );
-};
-
 export type ConnexionStackParamList = {
   Authentification: null;
   ConfirmationEmail: { email: string };
@@ -479,7 +449,6 @@ const ListeMatchsStack = () => {
 export type GeneralStackParamList = {
   AccueilGeneral: null;
   Parametres: null;
-  ListeTournois: null;
   ListesJoueurs: { loadListScreen: boolean };
   CreateListeJoueurs: { type: string; listId: number };
   InscriptionStack: null;
@@ -506,35 +475,6 @@ const General = () => {
         name="ConnexionStack"
         component={ConnexionStack}
         options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="ParametresStack"
-        component={ParametresStack}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="ListeTournois"
-        component={ListeTournois}
-        options={{
-          title: t('choix_tournoi_navigation_title'),
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="ListesJoueurs"
-        component={ListesJoueurs}
-        options={{
-          title: t('listes_joueurs_navigation_title'),
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="CreateListeJoueurs"
-        component={CreateListeJoueurs}
-        options={{
-          title: t('creation_liste_joueurs_navigation_title'),
-          headerShown: false,
-        }}
       />
       <Stack.Screen
         name="InscriptionStack"
