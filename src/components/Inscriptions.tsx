@@ -19,75 +19,51 @@ import { VStack } from '@/components/ui/vstack';
 import { Input, InputField } from '@/components/ui/input';
 import { HStack } from '@/components/ui/hstack';
 import { Box } from '@/components/ui/box';
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import ListeJoueurItem from '@components/ListeJoueurItem';
 import JoueurSuggere from '@components/JoueurSuggere';
 import JoueurType from '@components/JoueurType';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { withTranslation } from 'react-i18next';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { TFunction } from 'i18next';
-import { JoueurType as JoueurTypeEnum } from '@/types/enums/joueurType';
+import { useTranslation } from 'react-i18next';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { Joueur } from '@/types/interfaces/joueur';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { PropsFromRedux, connector } from '@/store/connector';
 import { ListRenderItem } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-export interface Props extends PropsFromRedux {
-  navigation: StackNavigationProp<any, any>;
-  t: TFunction;
+export interface Props {
   loadListScreen: boolean;
 }
 
-interface State {
-  joueur: Joueur;
-  joueurType: JoueurTypeEnum | '';
-  etatBouton: boolean;
-  suggestions: Joueur[];
-  nbSuggestions: number;
-  modalRemoveIsOpen: boolean;
-  showCheckbox: boolean;
-}
+const Inscription: React.FC<Props> = ({ loadListScreen }) => {
+  const { t } = useTranslation();
+  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const dispatch = useDispatch();
 
-class Inscription extends React.Component<Props, State> {
-  joueurText: string = '';
-  addPlayerTextInput = React.createRef<any>();
+  const [joueurType, setJoueurType] = useState('');
+  const [etatBouton, setEtatBouton] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
+  const [nbSuggestions, setNbSuggestions] = useState(5);
+  const [modalRemoveIsOpen, setModalRemoveIsOpen] = useState(false);
+  const [showCheckbox, setShowCheckbox] = useState(false);
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      joueur: undefined,
-      joueurType: '',
-      etatBouton: false,
-      suggestions: [],
-      nbSuggestions: 5,
-      modalRemoveIsOpen: false,
-      showCheckbox: false,
-    };
-  }
+  const optionsTournoi = useSelector(
+    (state: any) => state.optionsTournoi.options,
+  );
+  const listesJoueurs = useSelector(
+    (state: any) => state.listesJoueurs.listesJoueurs,
+  );
 
-  componentDidMount() {
-    let suggestions = this._getSuggestions();
-    this.setState({
-      suggestions: suggestions,
-    });
-  }
+  let joueurText: string = '';
+  const addPlayerTextInput = React.createRef<any>();
 
-  componentDidUpdate() {
-    let newSuggestions = this._getSuggestions();
-    if (newSuggestions.length !== this.state.suggestions.length) {
-      this.setState({
-        suggestions: newSuggestions,
-      });
-    }
-  }
-
-  _getSuggestions() {
-    let listeHistoriqueFiltre = this.props.listesJoueurs.historique.filter(
-      (item1) =>
-        this.props.listesJoueurs[this.props.optionsTournoi.mode].every(
-          (item2) => item2.name !== item1.name,
+  const _getSuggestions = useCallback(() => {
+    let listeHistoriqueFiltre = listesJoueurs.historique.filter(
+      (item1: Joueur) =>
+        listesJoueurs[optionsTournoi.mode].every(
+          (item2: Joueur) => item2.name !== item1.name,
         ),
     );
     if (listeHistoriqueFiltre.length > 0) {
@@ -96,60 +72,60 @@ class Inscription extends React.Component<Props, State> {
       });
     }
     return [];
-  }
+  }, [listesJoueurs, optionsTournoi.mode]);
 
-  _ajoutJoueurTextInputChanged(text: string) {
-    this.joueurText = text;
-    //Possible d'utiliser le bouton sauf si pas de lettre
-    if (this.joueurText !== '') {
-      this.setState({
-        etatBouton: true,
-      });
-    } else {
-      this.setState({
-        etatBouton: false,
-      });
+  useEffect(() => {
+    let suggestions = _getSuggestions();
+    setSuggestions(suggestions);
+  }, [_getSuggestions]);
+
+  useEffect(() => {
+    const newSuggestions = _getSuggestions();
+    if (newSuggestions.length !== suggestions.length) {
+      setSuggestions(newSuggestions);
     }
-  }
+  }, [_getSuggestions, suggestions]);
 
-  _ajoutJoueur() {
+  const _ajoutJoueurTextInputChanged = (text: string) => {
+    joueurText = text;
+    //Possible d'utiliser le bouton sauf si pas de lettre
+    if (joueurText !== '') {
+      setEtatBouton(true);
+    } else {
+      setEtatBouton(false);
+    }
+  };
+
+  const _ajoutJoueur = () => {
     //Test si au moins 1 caractère
-    if (this.joueurText !== '') {
+    if (joueurText !== '') {
       let equipe = 1;
       if (
-        this.props.optionsTournoi.typeEquipes === TypeEquipes.TETEATETE &&
-        this.props.listesJoueurs[this.props.optionsTournoi.mode]
+        optionsTournoi.typeEquipes === TypeEquipes.TETEATETE &&
+        listesJoueurs[optionsTournoi.mode]
       ) {
-        equipe =
-          this.props.listesJoueurs[this.props.optionsTournoi.mode].length + 1;
+        equipe = listesJoueurs[optionsTournoi.mode].length + 1;
       }
       const action = {
         type: 'AJOUT_JOUEUR',
-        value: [
-          this.props.optionsTournoi.mode,
-          this.joueurText,
-          this.state.joueurType,
-          equipe,
-        ],
+        value: [optionsTournoi.mode, joueurText, joueurType, equipe],
       };
-      this.props.dispatch(action);
-      this.addPlayerTextInput.current.clear();
-      this.joueurText = '';
-      this.setState({
-        joueurType: '',
-        etatBouton: false,
-      });
-      //Ne fonctionne pas avec: "this.addPlayerTextInput.current.focus()" quand validation avec clavier donc "hack" ci-dessous
-      setTimeout(() => this.addPlayerTextInput.current.focus(), 0);
-    }
-  }
+      dispatch(action);
+      addPlayerTextInput.current.clear();
+      joueurText = '';
 
-  _modalRemoveAllPlayers() {
-    const { t } = this.props;
+      setJoueurType('');
+      setEtatBouton(false);
+      //Ne fonctionne pas avec: "this.addPlayerTextInput.current.focus()" quand validation avec clavier donc "hack" ci-dessous
+      setTimeout(() => addPlayerTextInput.current.focus(), 0);
+    }
+  };
+
+  const _modalRemoveAllPlayers = () => {
     return (
       <AlertDialog
-        isOpen={this.state.modalRemoveIsOpen}
-        onClose={() => this.setState({ modalRemoveIsOpen: false })}
+        isOpen={modalRemoveIsOpen}
+        onClose={() => setModalRemoveIsOpen(false)}
       >
         <AlertDialogBackdrop />
         <AlertDialogContent>
@@ -173,14 +149,11 @@ class Inscription extends React.Component<Props, State> {
               <Button
                 variant="outline"
                 action="secondary"
-                onPress={() => this.setState({ modalRemoveIsOpen: false })}
+                onPress={() => setModalRemoveIsOpen(false)}
               >
                 <ButtonText className="text-black">{t('annuler')}</ButtonText>
               </Button>
-              <Button
-                action="negative"
-                onPress={() => this._removeAllPlayers()}
-              >
+              <Button action="negative" onPress={() => _removeAllPlayers()}>
                 <ButtonText>{t('oui')}</ButtonText>
               </Button>
             </ButtonGroup>
@@ -188,32 +161,30 @@ class Inscription extends React.Component<Props, State> {
         </AlertDialogContent>
       </AlertDialog>
     );
-  }
+  };
 
-  _removeAllPlayers() {
+  const _removeAllPlayers = () => {
     const actionRemoveAll = {
       type: 'SUPPR_ALL_JOUEURS',
-      value: [this.props.optionsTournoi.mode],
+      value: [optionsTournoi.mode],
     };
-    this.props.dispatch(actionRemoveAll);
-    this.setState({ modalRemoveIsOpen: false });
-  }
+    dispatch(actionRemoveAll);
+    setModalRemoveIsOpen(false);
+  };
 
-  _loadSavedList() {
-    this.props.navigation.navigate({
+  const _loadSavedList = () => {
+    navigation.navigate({
       name: 'ListesJoueurs',
       params: {
         loadListScreen: true,
       },
     });
-  }
+  };
 
-  _displayListeJoueur() {
-    if (
-      this.props.listesJoueurs[this.props.optionsTournoi.mode] !== undefined
-    ) {
+  const _displayListeJoueur = () => {
+    if (listesJoueurs[optionsTournoi.mode] !== undefined) {
       let avecEquipes = false;
-      if (this.props.optionsTournoi.mode === ModeTournoi.AVECEQUIPES) {
+      if (optionsTournoi.mode === ModeTournoi.AVECEQUIPES) {
         avecEquipes = true;
       }
       const renderItem: ListRenderItem<Joueur> = ({ item }) => (
@@ -221,42 +192,36 @@ class Inscription extends React.Component<Props, State> {
           joueur={item}
           isInscription={true}
           avecEquipes={avecEquipes}
-          typeEquipes={this.props.optionsTournoi.typeEquipes}
-          nbJoueurs={
-            this.props.listesJoueurs[this.props.optionsTournoi.mode].length
-          }
-          showCheckbox={this.state.showCheckbox}
+          typeEquipes={optionsTournoi.typeEquipes}
+          nbJoueurs={listesJoueurs[optionsTournoi.mode].length}
+          showCheckbox={showCheckbox}
         />
       );
       return (
         <FlatList
           removeClippedSubviews={false}
           persistentScrollbar={true}
-          data={this.props.listesJoueurs[this.props.optionsTournoi.mode]}
+          data={listesJoueurs[optionsTournoi.mode]}
           keyExtractor={(item: Joueur) => item.id.toString()}
           renderItem={renderItem}
           ListFooterComponent={
             <VStack space="md" className="flex-1">
               <VStack space="sm" className="px-10">
-                {this._buttonRemoveAllPlayers()}
-                {this._buttonLoadSavedList()}
+                {_buttonRemoveAllPlayers()}
+                {_buttonLoadSavedList()}
               </VStack>
-              {this._displayListeJoueursSuggeres()}
+              {_displayListeJoueursSuggeres()}
             </VStack>
           }
           className="h-1"
         />
       );
     }
-  }
+  };
 
-  _displayListeJoueursSuggeres() {
-    const { t } = this.props;
-    if (this.state.suggestions.length > 0) {
-      let partialSuggested = this.state.suggestions.slice(
-        0,
-        this.state.nbSuggestions,
-      );
+  const _displayListeJoueursSuggeres = () => {
+    if (suggestions.length > 0) {
+      let partialSuggested = suggestions.slice(0, nbSuggestions);
       const renderItem: ListRenderItem<Joueur> = ({ item }) => (
         <JoueurSuggere joueur={item} />
       );
@@ -272,64 +237,52 @@ class Inscription extends React.Component<Props, State> {
             keyExtractor={(item: Joueur) => item.id.toString()}
             renderItem={renderItem}
           />
-          <Box className="px-10 pb-2">{this._buttonMoreSuggestedPlayers()}</Box>
+          <Box className="px-10 pb-2">{_buttonMoreSuggestedPlayers()}</Box>
         </VStack>
       );
     }
-  }
+  };
 
-  _buttonMoreSuggestedPlayers() {
-    const { t } = this.props;
-    if (this.state.nbSuggestions < this.state.suggestions.length) {
+  const _buttonMoreSuggestedPlayers = () => {
+    if (nbSuggestions < suggestions.length) {
       return (
-        <Button
-          action="primary"
-          onPress={() => this._showMoreSuggestedPlayers()}
-        >
+        <Button action="primary" onPress={() => _showMoreSuggestedPlayers()}>
           <FontAwesome5 name="chevron-down" />
           <ButtonText>{t('plus_suggestions_joueurs_bouton')}</ButtonText>
           <FontAwesome5 name="chevron-down" />
         </Button>
       );
     }
-  }
+  };
 
-  _showMoreSuggestedPlayers() {
-    this.setState((prevState) => ({
-      nbSuggestions: prevState.nbSuggestions + 5,
-    }));
-  }
+  const _showMoreSuggestedPlayers = () => {
+    setNbSuggestions((prevState) => prevState + 5);
+  };
 
-  _buttonRemoveAllPlayers() {
-    const { t } = this.props;
-    if (this.props.listesJoueurs[this.props.optionsTournoi.mode].length > 0) {
+  const _buttonRemoveAllPlayers = () => {
+    if (listesJoueurs[optionsTournoi.mode].length > 0) {
       return (
-        <Button
-          action="negative"
-          onPress={() => this.setState({ modalRemoveIsOpen: true })}
-        >
+        <Button action="negative" onPress={() => setModalRemoveIsOpen(true)}>
           <ButtonText>{t('supprimer_joueurs_bouton')}</ButtonText>
         </Button>
       );
     }
-  }
+  };
 
-  _buttonLoadSavedList() {
-    const { t } = this.props;
-    if (!this.props.loadListScreen) {
+  const _buttonLoadSavedList = () => {
+    if (!loadListScreen) {
       return (
-        <Button action="primary" onPress={() => this._loadSavedList()}>
+        <Button action="primary" onPress={() => _loadSavedList()}>
           <ButtonText>{t('charger_liste_joueurs_bouton')}</ButtonText>
         </Button>
       );
     }
-  }
+  };
 
-  _showCheckboxSection() {
-    const { t } = this.props;
+  const _showCheckboxSection = () => {
     let icon = 'eye';
     let text = t('afficher');
-    if (this.state.showCheckbox) {
+    if (showCheckbox) {
       icon = 'eye-slash';
       text = t('cacher');
     }
@@ -337,59 +290,54 @@ class Inscription extends React.Component<Props, State> {
       <HStack className="my-1 items-center">
         <FontAwesome5 name={icon} size={15} color="white" />
         <Text
-          onPress={() =>
-            this.setState({ showCheckbox: !this.state.showCheckbox })
-          }
+          onPress={() => setShowCheckbox(!showCheckbox)}
           className="text-white text-md"
         >
           {text} {t('case_a_cocher')}
         </Text>
       </HStack>
     );
-  }
+  };
 
-  render() {
-    const { t } = this.props;
-    return (
-      <VStack className="flex-1">
-        <HStack space="md" className="items-center mx-1">
-          <Box className="flex-1">
-            <Input className="border-white">
-              <InputField
-                className="text-white placeholder:text-white"
-                placeholder={t('nom')}
-                autoFocus={true}
-                keyboardType="default"
-                onChangeText={(text) => this._ajoutJoueurTextInputChanged(text)}
-                onSubmitEditing={() => this._ajoutJoueur()}
-                ref={this.addPlayerTextInput}
-              />
-            </Input>
-          </Box>
-          <Box className="flex-1">
-            <JoueurType
-              joueurType={this.state.joueurType}
-              _setJoueurType={(type) => this.setState({ joueurType: type })}
+  return (
+    <VStack className="flex-1">
+      <HStack space="md" className="items-center mx-1">
+        <Box className="flex-1">
+          <Input className="border-white">
+            <InputField
+              className="text-white placeholder:text-white"
+              placeholder={t('nom')}
+              autoFocus={true}
+              keyboardType="default"
+              onChangeText={(text) => _ajoutJoueurTextInputChanged(text)}
+              onSubmitEditing={() => _ajoutJoueur()}
+              ref={addPlayerTextInput}
             />
-          </Box>
-          <Box>
-            <Button
-              action="positive"
-              isDisabled={!this.state.etatBouton}
-              onPress={() => this._ajoutJoueur()}
-              size="md"
-            >
-              <ButtonText>{t('ajouter')}</ButtonText>
-            </Button>
-          </Box>
-        </HStack>
-        {this._showCheckboxSection()}
-        <Divider className="bg-white h-0.5 my-2" />
-        <VStack className="flex-1">{this._displayListeJoueur()}</VStack>
-        {this._modalRemoveAllPlayers()}
-      </VStack>
-    );
-  }
-}
+          </Input>
+        </Box>
+        <Box className="flex-1">
+          <JoueurType
+            joueurType={joueurType}
+            _setJoueurType={(type) => setJoueurType(type)}
+          />
+        </Box>
+        <Box>
+          <Button
+            action="positive"
+            isDisabled={!etatBouton}
+            onPress={() => _ajoutJoueur()}
+            size="md"
+          >
+            <ButtonText>{t('ajouter')}</ButtonText>
+          </Button>
+        </Box>
+      </HStack>
+      {_showCheckboxSection()}
+      <Divider className="bg-white h-0.5 my-2" />
+      <VStack className="flex-1">{_displayListeJoueur()}</VStack>
+      {_modalRemoveAllPlayers()}
+    </VStack>
+  );
+};
 
-export default connector(withTranslation()(Inscription));
+export default Inscription;
