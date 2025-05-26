@@ -5,11 +5,11 @@ import * as React from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
-interface TopBarBackProps {
+interface Props {
   title: string;
 }
 
-const TopBarBack: React.FC<TopBarBackProps> = ({ title }) => {
+const TopBarBack: React.FC<Props> = ({ title }) => {
   const navigation = useNavigation();
   return (
     <HStack className="items-center px-5 py-2">
