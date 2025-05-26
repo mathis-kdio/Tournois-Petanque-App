@@ -13,33 +13,27 @@ import {
 
 import { ChevronDownIcon } from '@/components/ui/icon';
 import React from 'react';
-import { withTranslation } from 'react-i18next';
-import { TFunction } from 'i18next';
+import { useTranslation } from 'react-i18next';
 import { JoueurType as JoueurTypeEnum } from '../types/enums/joueurType';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { PropsFromRedux, connector } from '@/store/connector';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
+import { useSelector } from 'react-redux';
 
-export interface Props extends PropsFromRedux {
-  t: TFunction;
-  joueurType: JoueurTypeEnum | '';
+export interface Props {
+  joueurType: JoueurTypeEnum | string;
   _setJoueurType: (type: JoueurTypeEnum) => void;
 }
 
-interface State {}
+const JoueurType: React.FC<Props> = ({ joueurType, _setJoueurType }) => {
+  const { t } = useTranslation();
 
-class JoueurType extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      joueurType: undefined,
-    };
-  }
+  const optionsTournoi = useSelector(
+    (state: any) => state.optionsTournoi.options,
+  );
 
-  _selectItemList() {
-    const { t } = this.props;
-    const { mode, typeTournoi, typeEquipes } = this.props.optionsTournoi;
+  const _selectItemList = () => {
+    const { mode, typeTournoi, typeEquipes } = optionsTournoi;
     if (
       mode === ModeTournoi.SAUVEGARDE ||
       (typeTournoi === TypeTournoi.MELEDEMELE &&
@@ -83,40 +77,37 @@ class JoueurType extends React.Component<Props, State> {
     }
   }
 
-  render() {
-    const { joueurType, _setJoueurType, t } = this.props;
-    return (
-      <Select
-        selectedValue={joueurType}
-        aria-label={t('choisir_poste')}
-        onValueChange={(itemValue: JoueurTypeEnum) => _setJoueurType(itemValue)}
-      >
-        <SelectTrigger variant="rounded" className="border-white">
-          <SelectInput
-            className="text-white"
-            placeholder={t('choisir_poste')}
-            value={joueurType}
+  return (
+    <Select
+      selectedValue={joueurType}
+      aria-label={t('choisir_poste')}
+      onValueChange={(itemValue: JoueurTypeEnum) => _setJoueurType(itemValue)}
+    >
+      <SelectTrigger variant="rounded" className="border-white">
+        <SelectInput
+          className="text-white"
+          placeholder={t('choisir_poste')}
+          value={joueurType}
+        />
+        <SelectIcon className="mr-3 text-white" as={ChevronDownIcon} />
+      </SelectTrigger>
+      <SelectPortal>
+        <SelectBackdrop />
+        <SelectContent>
+          <SelectDragIndicatorWrapper>
+            <SelectDragIndicator />
+          </SelectDragIndicatorWrapper>
+          <SelectItem label={t('aucun_poste')} value="" key="none" />
+          <SelectItem
+            label={t('enfant')}
+            value={JoueurTypeEnum.ENFANT}
+            key={0}
           />
-          <SelectIcon className="mr-3 text-white" as={ChevronDownIcon} />
-        </SelectTrigger>
-        <SelectPortal>
-          <SelectBackdrop />
-          <SelectContent>
-            <SelectDragIndicatorWrapper>
-              <SelectDragIndicator />
-            </SelectDragIndicatorWrapper>
-            <SelectItem label={t('aucun_poste')} value="" key="none" />
-            <SelectItem
-              label={t('enfant')}
-              value={JoueurTypeEnum.ENFANT}
-              key={0}
-            />
-            {this._selectItemList()}
-          </SelectContent>
-        </SelectPortal>
-      </Select>
-    );
-  }
-}
+          {_selectItemList()}
+        </SelectContent>
+      </SelectPortal>
+    </Select>
+  );
+};
 
-export default connector(withTranslation()(JoueurType));
+export default JoueurType;

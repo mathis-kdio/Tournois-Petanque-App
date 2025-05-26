@@ -3,17 +3,15 @@ import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
 import { Divider } from '@/components/ui/divider';
 import { Box } from '@/components/ui/box';
-import { PropsFromRedux, connector } from '@/store/connector';
 import { Joueur } from '@/types/interfaces/joueur';
 import { Match } from '@/types/interfaces/match';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { TFunction } from 'i18next';
 import React from 'react';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
 
-export interface Props extends PropsFromRedux {
-  t: TFunction;
+export interface Props {
   match: Match;
   displayDetailForMatch: (
     idMatch: number,
@@ -24,16 +22,19 @@ export interface Props extends PropsFromRedux {
   nbPtVictoire: number;
 }
 
-interface State {}
+const MatchItem: React.FC<Props> = ({
+  match,
+  displayDetailForMatch,
+  manche,
+  nbPtVictoire,
+}) => {
+  const { t } = useTranslation();
 
-class MatchItem extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {};
-  }
+  const listeMatchs = useSelector(
+    (state: any) => state.gestionMatchs.listematchs,
+  );
 
-  _displayTitle(match: Match, nbPtVictoire: number) {
-    const { t } = this.props;
+  const _displayTitle = (match: Match, nbPtVictoire: number) => {
     let txt = t('match_numero') + (match.id + 1);
     if (match.terrain) {
       txt = match.terrain.name;
@@ -55,20 +56,20 @@ class MatchItem extends React.Component<Props, State> {
         </Box>
       </HStack>
     );
-  }
+  };
 
-  _displayEquipe(equipe: number, match: Match) {
+  const _displayEquipe = (equipe: number, match: Match) => {
     let nomsJoueurs = [];
     for (let i = 0; i < 4; i++) {
-      nomsJoueurs.push(this._displayName(match.equipe[equipe - 1][i], equipe));
+      nomsJoueurs.push(_displayName(match.equipe[equipe - 1][i], equipe));
     }
     return nomsJoueurs;
-  }
+  };
 
-  _displayName(joueurNumber: number, equipe: number) {
-    let joueur = this.props.listeMatchs[
-      this.props.listeMatchs.length - 1
-    ].listeJoueurs.find((item: Joueur) => item.id === joueurNumber);
+  const _displayName = (joueurNumber: number, equipe: number) => {
+    let joueur = listeMatchs[listeMatchs.at(-1)].listeJoueurs.find(
+      (item: Joueur) => item.id === joueurNumber,
+    );
     if (joueur) {
       if (equipe === 1) {
         return (
@@ -84,11 +85,11 @@ class MatchItem extends React.Component<Props, State> {
         );
       }
     }
-  }
+  };
 
-  _displayScore(matchID: number) {
-    let score1 = this.props.listeMatchs[matchID].score1 ?? '?';
-    let score2 = this.props.listeMatchs[matchID].score2 ?? '?';
+  const _displayScore = (matchID: number) => {
+    let score1 = listeMatchs[matchID].score1 ?? '?';
+    let score2 = listeMatchs[matchID].score2 ?? '?';
     return (
       <HStack className="justify-center">
         <Text className="text-white text-2xl p-2">{score1}</Text>
@@ -96,29 +97,26 @@ class MatchItem extends React.Component<Props, State> {
         <Text className="text-white text-2xl p-2">{score2}</Text>
       </HStack>
     );
-  }
+  };
 
-  render() {
-    let { match, displayDetailForMatch, manche, nbPtVictoire } = this.props;
-    if (match.manche === manche) {
-      return (
-        <TouchableOpacity
-          onPress={() => displayDetailForMatch(match.id, match, nbPtVictoire)}
-        >
-          <VStack className="m-2">
-            {this._displayTitle(match, nbPtVictoire)}
-            <HStack className="items-center">
-              <Box className="flex-1">{this._displayEquipe(1, match)}</Box>
-              <Box className="flex-1">{this._displayScore(match.id)}</Box>
-              <Box className="flex-1">{this._displayEquipe(2, match)}</Box>
-            </HStack>
-          </VStack>
-          <Divider />
-        </TouchableOpacity>
-      );
-    }
-    return null;
+  if (match.manche === manche) {
+    return (
+      <TouchableOpacity
+        onPress={() => displayDetailForMatch(match.id, match, nbPtVictoire)}
+      >
+        <VStack className="m-2">
+          {_displayTitle(match, nbPtVictoire)}
+          <HStack className="items-center">
+            <Box className="flex-1">{_displayEquipe(1, match)}</Box>
+            <Box className="flex-1">{_displayScore(match.id)}</Box>
+            <Box className="flex-1">{_displayEquipe(2, match)}</Box>
+          </HStack>
+        </VStack>
+        <Divider />
+      </TouchableOpacity>
+    );
   }
-}
+  return null;
+};
 
-export default connector(withTranslation()(MatchItem));
+export default MatchItem;
