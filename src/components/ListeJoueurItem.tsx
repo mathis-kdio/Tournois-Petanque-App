@@ -52,7 +52,7 @@ import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { useDispatch, useSelector } from 'react-redux';
 
-export interface Props{
+export interface Props {
   joueur: Joueur;
   isInscription: boolean;
   avecEquipes: boolean;
