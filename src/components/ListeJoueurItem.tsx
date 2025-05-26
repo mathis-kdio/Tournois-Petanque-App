@@ -50,10 +50,9 @@ import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { Joueur } from '@/types/interfaces/joueur';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { PropsFromRedux } from '@/store/connector';
 import { useDispatch, useSelector } from 'react-redux';
 
-export interface Props extends PropsFromRedux {
+export interface Props{
   joueur: Joueur;
   isInscription: boolean;
   avecEquipes: boolean;
