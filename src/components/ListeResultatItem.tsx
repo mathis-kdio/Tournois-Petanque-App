@@ -21,7 +21,7 @@ const ListeResultatItem: React.FC<Props> = ({ joueur }) => {
   );
 
   const _displayName = (joueurId: number) => {
-    let listeJoueurs = listeMatchs[listeMatchs.at(-1)].listeJoueurs;
+    let listeJoueurs = listeMatchs.at(-1).listeJoueurs;
     let joueur = listeJoueurs.find((item: Joueur) => item.id === joueurId);
     let joueurName = '';
     if (joueur.name === undefined) {
@@ -38,7 +38,7 @@ const ListeResultatItem: React.FC<Props> = ({ joueur }) => {
   const _fanny = (joueurNumber: number) => {
     let fanny = false;
     let nbFanny = 0;
-    for (let i = 0; i < listeMatchs[listeMatchs.at(-1)].nbMatchs; i++) {
+    for (let i = 0; i < listeMatchs.at(-1).nbMatchs; i++) {
       if (
         listeMatchs[i].equipe[0].includes(joueurNumber) &&
         listeMatchs[i].score1 === '0'

@@ -67,9 +67,9 @@ const MatchItem: React.FC<Props> = ({
   };
 
   const _displayName = (joueurNumber: number, equipe: number) => {
-    let joueur = listeMatchs[listeMatchs.at(-1)].listeJoueurs.find(
-      (item: Joueur) => item.id === joueurNumber,
-    );
+    let joueur = listeMatchs
+      .at(-1)
+      .listeJoueurs.find((item: Joueur) => item.id === joueurNumber);
     if (joueur) {
       if (equipe === 1) {
         return (

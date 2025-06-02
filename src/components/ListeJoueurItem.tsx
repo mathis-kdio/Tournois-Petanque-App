@@ -185,7 +185,7 @@ const ListeJoueurItem: React.FC<Props> = ({
           type: 'UPDATE_TOURNOI',
           value: {
             tournoi: listeMatchs,
-            tournoiId: listeMatchs[listeMatchs.at(-1)].tournoiID,
+            tournoiId: listeMatchs.at(-1).tournoiID,
           },
         };
         dispatch(actionUpdateTournoi);

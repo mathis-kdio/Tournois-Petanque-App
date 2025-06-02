@@ -192,10 +192,7 @@ const ListeTournoiItem: React.FC<Props> = ({
   };
 
   let btnDisabled = false;
-  if (
-    listeMatchs &&
-    tournoi.tournoiId === listeMatchs[listeMatchs.at(-1)].tournoiID
-  ) {
+  if (listeMatchs && tournoi.tournoiId === listeMatchs.at(-1).tournoiID) {
     btnDisabled = true;
   }
   return (
