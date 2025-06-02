@@ -40,13 +40,12 @@ const ListeJoueursItem: React.FC<Props> = ({ list, route }) => {
   const dispatch = useDispatch();
 
   const [renommerOn, setRenommerOn] = useState(false);
+  const [listNameText, setListNameText] = useState('');
   const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false);
 
   const optionsTournoi = useSelector(
     (state: any) => state.optionsTournoi.options,
   );
-
-  let listNameText: string = '';
 
   const _modifyList = (listId: number) => {
     const actionRemoveList = {
@@ -169,12 +168,12 @@ const ListeJoueursItem: React.FC<Props> = ({ list, route }) => {
         },
       };
       dispatch(actionRenameList);
-      listNameText = '';
+      setListNameText('');
     }
   };
 
   const _listTextInputChanged = (text: string) => {
-    listNameText = text;
+    setListNameText(text);
     setRenommerOn(true);
   };
 

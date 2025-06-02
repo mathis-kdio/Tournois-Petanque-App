@@ -38,13 +38,12 @@ const ListeTournoiItem: React.FC<Props> = ({
   const dispatch = useDispatch();
 
   const [renommerOn, setRenommerOn] = useState(false);
+  const [tournoiNameText, setTournoiNameText] = useState('');
   const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false);
 
   const listeMatchs = useSelector(
     (state: any) => state.gestionMatchs.listematchs,
   );
-
-  let tournoiNameText: string = '';
 
   const _chargerTournoi = (tournoi: Tournoi) => {
     const actionUpdateListeMatchs = {
@@ -159,12 +158,12 @@ const ListeTournoiItem: React.FC<Props> = ({
         value: { tournoiId: tournoi.tournoiId, newName: tournoiNameText },
       };
       dispatch(actionRenameTournoi);
-      tournoiNameText = '';
+      setTournoiNameText('');
     }
   };
 
   const _tournoiTextInputChanged = (text: string) => {
-    tournoiNameText = text;
+    setTournoiNameText(text);
     setRenommerOn(true);
   };
 

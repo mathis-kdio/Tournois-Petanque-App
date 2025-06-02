@@ -73,6 +73,7 @@ const ListeJoueurItem: React.FC<Props> = ({
   const dispatch = useDispatch();
 
   const [renommerOn, setRenommerOn] = useState(false);
+  const [joueurText, setJoueurText] = useState('');
   const [modalConfirmUncheckIsOpen, setModalConfirmUncheckIsOpen] =
     useState(false);
 
@@ -85,8 +86,6 @@ const ListeJoueurItem: React.FC<Props> = ({
   const listeMatchs = useSelector(
     (state: any) => state.gestionMatchs.listematchs,
   );
-
-  let joueurText: string = '';
 
   const _showSupprimerJoueur = (joueur: Joueur, isInscription: boolean) => {
     if (isInscription === true) {
@@ -190,12 +189,12 @@ const ListeJoueurItem: React.FC<Props> = ({
         };
         dispatch(actionUpdateTournoi);
       }
-      joueurText = '';
+      setJoueurText('');
     }
   };
 
   const _joueurTxtInputChanged = (text: string) => {
-    joueurText = text;
+    setJoueurText(text);
     setRenommerOn(true);
   };
 
