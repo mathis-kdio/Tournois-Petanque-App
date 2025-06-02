@@ -15,8 +15,7 @@ const ListeTerrainItem: React.FC<Props> = ({ terrain }) => {
   const dispatch = useDispatch();
 
   const [renommerOn, setRenommerOn] = useState(false);
-
-  let terrainText: string = '';
+  const [terrainText, setTerrainText] = useState('');
 
   const _supprimerTerrain = (terrain: Terrain) => {
     setRenommerOn(false);
@@ -65,12 +64,12 @@ const ListeTerrainItem: React.FC<Props> = ({ terrain }) => {
         value: { terrainId: terrain.id, newName: terrainText },
       };
       dispatch(actionRenommer);
-      terrainText = '';
+      setTerrainText('');
     }
   };
 
   const _terrainTxtInputChanged = (text: string) => {
-    terrainText = text;
+    setTerrainText(text);
     setRenommerOn(true);
   };
 
