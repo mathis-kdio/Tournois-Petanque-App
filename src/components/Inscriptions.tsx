@@ -193,6 +193,8 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
           isInscription={true}
           avecEquipes={avecEquipes}
           typeEquipes={optionsTournoi.typeEquipes}
+          modeTournoi={optionsTournoi.mode}
+          typeTournoi={optionsTournoi.typeTournoi}
           nbJoueurs={listesJoueurs[optionsTournoi.mode].length}
           showCheckbox={showCheckbox}
         />

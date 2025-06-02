@@ -57,6 +57,8 @@ export interface Props {
   isInscription: boolean;
   avecEquipes: boolean;
   typeEquipes: TypeEquipes;
+  modeTournoi: ModeTournoi;
+  typeTournoi: TypeTournoi;
   nbJoueurs: number;
   showCheckbox: boolean;
 }
@@ -66,6 +68,8 @@ const ListeJoueurItem: React.FC<Props> = ({
   isInscription,
   avecEquipes,
   typeEquipes,
+  modeTournoi,
+  typeTournoi,
   nbJoueurs,
   showCheckbox,
 }) => {
@@ -77,9 +81,6 @@ const ListeJoueurItem: React.FC<Props> = ({
   const [modalConfirmUncheckIsOpen, setModalConfirmUncheckIsOpen] =
     useState(false);
 
-  const optionsTournoi = useSelector(
-    (state: any) => state.optionsTournoi.options,
-  );
   const listesJoueurs = useSelector(
     (state: any) => state.listesJoueurs.listesJoueurs,
   );
@@ -106,13 +107,13 @@ const ListeJoueurItem: React.FC<Props> = ({
     setRenommerOn(false);
     const actionSuppr = {
       type: 'SUPPR_JOUEUR',
-      value: [optionsTournoi.mode, idJoueur],
+      value: [modeTournoi, idJoueur],
     };
     dispatch(actionSuppr);
-    if (optionsTournoi.typeEquipes === TypeEquipes.TETEATETE) {
+    if (typeEquipes === TypeEquipes.TETEATETE) {
       const actionUpdateEquipe = {
         type: 'UPDATE_ALL_JOUEURS_EQUIPE',
-        value: [optionsTournoi.mode],
+        value: [modeTournoi],
       };
       dispatch(actionUpdateEquipe);
     }
@@ -161,7 +162,7 @@ const ListeJoueurItem: React.FC<Props> = ({
       setRenommerOn(false);
       if (isInscription === true) {
         let typeInscription = '';
-        if (optionsTournoi.mode === ModeTournoi.SAUVEGARDE) {
+        if (modeTournoi === ModeTournoi.SAUVEGARDE) {
           typeInscription = ModeTournoi.SAUVEGARDE;
         } else if (avecEquipes === true) {
           typeInscription = ModeTournoi.AVECEQUIPES;
@@ -314,9 +315,8 @@ const ListeJoueurItem: React.FC<Props> = ({
 
   const _joueurTypeIcon = (joueurType: JoueurType | undefined) => {
     if (joueurType === undefined) return;
-    const { mode, typeTournoi, typeEquipes } = optionsTournoi;
     let showTireurPointeur =
-      mode === ModeTournoi.SAUVEGARDE ||
+      modeTournoi === ModeTournoi.SAUVEGARDE ||
       (typeTournoi === TypeTournoi.MELEDEMELE &&
         (typeEquipes === TypeEquipes.DOUBLETTE ||
           typeEquipes === TypeEquipes.TRIPLETTE));
@@ -437,7 +437,7 @@ const ListeJoueurItem: React.FC<Props> = ({
   const _ajoutCheck = (joueurId: number, isChecked: boolean) => {
     const action = {
       type: 'CHECK_JOUEUR',
-      value: [optionsTournoi.mode, joueurId, isChecked],
+      value: [modeTournoi, joueurId, isChecked],
     };
     dispatch(action);
     setModalConfirmUncheckIsOpen(false);
