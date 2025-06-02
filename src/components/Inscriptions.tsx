@@ -28,7 +28,7 @@ import { useTranslation } from 'react-i18next';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { Joueur } from '@/types/interfaces/joueur';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { ListRenderItem } from 'react-native';
+import { ListRenderItem, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -289,15 +289,15 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
       text = t('cacher');
     }
     return (
-      <HStack className="my-1 items-center">
+      <Pressable
+        onPress={() => setShowCheckbox(!showCheckbox)}
+        className="my-1 flex-row items-center"
+      >
         <FontAwesome5 name={icon} size={15} color="white" />
-        <Text
-          onPress={() => setShowCheckbox(!showCheckbox)}
-          className="text-white text-md"
-        >
+        <Text className="text-white text-md">
           {text} {t('case_a_cocher')}
         </Text>
-      </HStack>
+      </Pressable>
     );
   };
 
