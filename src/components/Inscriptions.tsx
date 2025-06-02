@@ -44,6 +44,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
 
   const [joueurType, setJoueurType] = useState('');
   const [etatBouton, setEtatBouton] = useState(false);
+  const [joueurText, setJoueurText] = useState<string>('');
   const [suggestions, setSuggestions] = useState([]);
   const [nbSuggestions, setNbSuggestions] = useState(5);
   const [modalRemoveIsOpen, setModalRemoveIsOpen] = useState(false);
@@ -56,7 +57,6 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
     (state: any) => state.listesJoueurs.listesJoueurs,
   );
 
-  let joueurText: string = '';
   const addPlayerTextInput = React.createRef<any>();
 
   const _getSuggestions = useCallback(() => {
@@ -87,9 +87,9 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
   }, [_getSuggestions, suggestions]);
 
   const _ajoutJoueurTextInputChanged = (text: string) => {
-    joueurText = text;
+    setJoueurText(text);
     //Possible d'utiliser le bouton sauf si pas de lettre
-    if (joueurText !== '') {
+    if (text !== '') {
       setEtatBouton(true);
     } else {
       setEtatBouton(false);
@@ -112,7 +112,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
       };
       dispatch(action);
       addPlayerTextInput.current.clear();
-      joueurText = '';
+      setJoueurText('');
 
       setJoueurType('');
       setEtatBouton(false);
