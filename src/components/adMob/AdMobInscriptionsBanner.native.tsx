@@ -1,5 +1,4 @@
 import { VStack } from '@/components/ui/vstack';
-import * as React from 'react';
 import {
   BannerAd,
   BannerAdSize,
@@ -7,22 +6,16 @@ import {
   AdsConsent,
 } from 'react-native-google-mobile-ads';
 import { Platform } from 'react-native';
+import { useEffect, useState } from 'react';
 
-export interface Props {}
+const AdMobInscriptionsBanner = () => {
+  const [nonPersonalizedAdsOnly, setNonPersonalizedAdsOnly] = useState(false);
 
-interface State {
-  nonPersonalizedAdsOnly: boolean;
-}
+  useEffect(() => {
+    fetchConsent();
+  }, []);
 
-class AdMobInscriptionsBanner extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      nonPersonalizedAdsOnly: false,
-    };
-  }
-
-  async componentDidMount() {
+  const fetchConsent = async () => {
     const { createAPersonalisedAdsProfile, selectPersonalisedAds } =
       await AdsConsent.getUserChoices();
 
@@ -30,36 +23,34 @@ class AdMobInscriptionsBanner extends React.Component<Props, State> {
       selectPersonalisedAds === false ||
       createAPersonalisedAdsProfile === false
     ) {
-      this.setState({ nonPersonalizedAdsOnly: true });
+      setNonPersonalizedAdsOnly(true);
     }
-  }
+  };
 
-  render() {
-    let size = BannerAdSize.ANCHORED_ADAPTIVE_BANNER;
+  let size = BannerAdSize.ANCHORED_ADAPTIVE_BANNER;
 
-    let unitId = undefined;
-    if (__DEV__) {
-      unitId = TestIds.BANNER;
-    } else if (Platform.OS === 'android') {
-      unitId = 'ca-app-pub-4863676282747598/3937725790';
-    } else if (Platform.OS === 'ios') {
-      unitId = 'ca-app-pub-4863676282747598/3784972118';
-    } else {
-      console.log('Plateforme non prise en charge pour admob banner');
-    }
-    if (!unitId) return;
-    return (
-      <VStack className="items-center">
-        <BannerAd
-          unitId={unitId}
-          size={size}
-          requestOptions={{
-            requestNonPersonalizedAdsOnly: this.state.nonPersonalizedAdsOnly,
-          }}
-        />
-      </VStack>
-    );
+  let unitId = undefined;
+  if (__DEV__) {
+    unitId = TestIds.BANNER;
+  } else if (Platform.OS === 'android') {
+    unitId = 'ca-app-pub-4863676282747598/3937725790';
+  } else if (Platform.OS === 'ios') {
+    unitId = 'ca-app-pub-4863676282747598/3784972118';
+  } else {
+    console.log('Plateforme non prise en charge pour admob banner');
   }
-}
+  if (!unitId) return;
+  return (
+    <VStack className="items-center">
+      <BannerAd
+        unitId={unitId}
+        size={size}
+        requestOptions={{
+          requestNonPersonalizedAdsOnly: nonPersonalizedAdsOnly,
+        }}
+      />
+    </VStack>
+  );
+};
 
 export default AdMobInscriptionsBanner;

@@ -73,6 +73,7 @@ const TopTabItemLabel = (numero: number, listeMatchs) => {
   }
 
   let iconColor = '#ffda00';
+  let textColor = 'text-yellow-400';
   let iconName = 'battery-half';
   let matchsRestant = 0;
   if (listeMatchs) {
@@ -89,10 +90,12 @@ const TopTabItemLabel = (numero: number, listeMatchs) => {
         0,
       );
       if (count === matchs.length) {
-        iconColor = 'success-500';
+        textColor = 'text-success-500';
+        iconColor = 'green';
         iconName = 'battery-full';
       } else if (count === 0) {
-        iconColor = 'error-500';
+        textColor = 'text-error-500';
+        iconColor = 'red';
         iconName = 'battery-empty';
       }
       matchsRestant -= count;
@@ -103,7 +106,7 @@ const TopTabItemLabel = (numero: number, listeMatchs) => {
     <HStack className="items-center">
       <Text className="text-white text-lg mr-2">{title}</Text>
       <FontAwesome5 name={iconName} size={20} color={iconColor} />
-      <Text className={`text-${iconColor} ml-0.5`} size="lg">
+      <Text className={`${textColor} ml-1`} size="xl">
         {matchsRestant.toString()}
       </Text>
     </HStack>

@@ -292,6 +292,7 @@ const GenerationMatchs = () => {
       typeTournoi: typeTournoi,
       listeJoueurs: listesJoueurs[typeInscription].slice(),
       avecTerrains: avecTerrains,
+      mode: typeInscription,
     });
 
     //Ajout dans le store

@@ -16,49 +16,43 @@ import { Button, ButtonText, ButtonGroup } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
 import { Box } from '@/components/ui/box';
-import React from 'react';
+import React, { useState } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { TFunction } from 'i18next';
-import { PropsFromRedux, connector } from '@/store/connector';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import {
   ListeJoueurs,
   ListeJoueursInfos,
 } from '@/types/interfaces/listeJoueurs';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import { GeneralStackParamList } from '@/navigation/Navigation';
+import { useDispatch, useSelector } from 'react-redux';
 
-export interface Props extends PropsFromRedux {
-  navigation: StackNavigationProp<any, any>;
-  t: TFunction;
+export interface Props {
   list: ListeJoueurs;
   route: RouteProp<GeneralStackParamList, 'ListesJoueurs'>;
 }
 
-interface State {
-  renommerOn: boolean;
-  modalDeleteIsOpen: boolean;
-}
+const ListeJoueursItem: React.FC<Props> = ({ list, route }) => {
+  const { t } = useTranslation();
+  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const dispatch = useDispatch();
 
-class ListeJoueursItem extends React.Component<Props, State> {
-  listNameText: string = '';
+  const [renommerOn, setRenommerOn] = useState(false);
+  const [listNameText, setListNameText] = useState('');
+  const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false);
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      renommerOn: false,
-      modalDeleteIsOpen: false,
-    };
-  }
+  const optionsTournoi = useSelector(
+    (state: any) => state.optionsTournoi.options,
+  );
 
-  _modifyList(listId: number) {
+  const _modifyList = (listId: number) => {
     const actionRemoveList = {
       type: 'SUPPR_ALL_JOUEURS',
       value: [ModeTournoi.SAUVEGARDE],
     };
-    this.props.dispatch(actionRemoveList);
+    dispatch(actionRemoveList);
     const actionLoadList = {
       type: 'LOAD_SAVED_LIST',
       value: {
@@ -67,27 +61,26 @@ class ListeJoueursItem extends React.Component<Props, State> {
         listId: listId,
       },
     };
-    this.props.dispatch(actionLoadList);
+    dispatch(actionLoadList);
     const updateOptionModeTournoi = {
       type: 'UPDATE_OPTION_TOURNOI',
       value: ['mode', ModeTournoi.SAUVEGARDE],
     };
-    this.props.dispatch(updateOptionModeTournoi);
-    this.props.navigation.navigate({
+    dispatch(updateOptionModeTournoi);
+    navigation.navigate({
       name: 'CreateListeJoueurs',
       params: {
         type: 'edit',
         listId: listId,
       },
     });
-  }
+  };
 
-  _modalSupprimerListe(listId: number) {
-    const { t } = this.props;
+  const _modalSupprimerListe = (listId: number) => {
     return (
       <AlertDialog
-        isOpen={this.state.modalDeleteIsOpen}
-        onClose={() => this.setState({ modalDeleteIsOpen: false })}
+        isOpen={modalDeleteIsOpen}
+        onClose={() => setModalDeleteIsOpen(false)}
       >
         <AlertDialogBackdrop />
         <AlertDialogContent>
@@ -111,14 +104,11 @@ class ListeJoueursItem extends React.Component<Props, State> {
               <Button
                 variant="outline"
                 action="secondary"
-                onPress={() => this.setState({ modalDeleteIsOpen: false })}
+                onPress={() => setModalDeleteIsOpen(false)}
               >
                 <ButtonText className="text-black">{t('annuler')}</ButtonText>
               </Button>
-              <Button
-                action="negative"
-                onPress={() => this._removeList(listId)}
-              >
+              <Button action="negative" onPress={() => _removeList(listId)}>
                 <ButtonText>{t('oui')}</ButtonText>
               </Button>
             </ButtonGroup>
@@ -126,32 +116,32 @@ class ListeJoueursItem extends React.Component<Props, State> {
         </AlertDialogContent>
       </AlertDialog>
     );
-  }
+  };
 
-  _removeList(listId: number) {
+  const _removeList = (listId: number) => {
     const actionRemoveList = {
       type: 'REMOVE_SAVED_LIST',
       value: { typeInscription: 'avecNoms', listId: listId },
     };
-    this.props.dispatch(actionRemoveList);
-  }
+    dispatch(actionRemoveList);
+  };
 
-  _showRenameList(listId: number) {
+  const _showRenameList = (listId: number) => {
     let name: string;
     let bgColor: string;
     let action;
-    if (!this.state.renommerOn) {
+    if (!renommerOn) {
       name = 'edit';
       bgColor = '#004282';
-      action = () => this.setState({ renommerOn: true });
-    } else if (this.listNameText === '') {
+      action = () => setRenommerOn(true);
+    } else if (listNameText === '') {
       name = 'times';
       bgColor = '#5F5F5F';
-      action = () => this.setState({ renommerOn: false });
+      action = () => setRenommerOn(false);
     } else {
       name = 'check';
       bgColor = '#348352';
-      action = () => this._renameList(listId);
+      action = () => _renameList(listId);
     }
 
     return (
@@ -164,85 +154,79 @@ class ListeJoueursItem extends React.Component<Props, State> {
         />
       </Box>
     );
-  }
+  };
 
-  _renameList(listId: number) {
-    if (this.listNameText !== '') {
-      this.setState({ renommerOn: false });
+  const _renameList = (listId: number) => {
+    if (listNameText !== '') {
+      setRenommerOn(false);
       const actionRenameList = {
         type: 'RENAME_SAVED_LIST',
         value: {
           typeInscription: 'avecNoms',
           listId: listId,
-          newName: this.listNameText,
+          newName: listNameText,
         },
       };
-      this.props.dispatch(actionRenameList);
-      this.listNameText = '';
+      dispatch(actionRenameList);
+      setListNameText('');
     }
-  }
+  };
 
-  _listTextInputChanged(text: string) {
-    this.listNameText = text;
-    this.setState({ renommerOn: true });
-  }
+  const _listTextInputChanged = (text: string) => {
+    setListNameText(text);
+    setRenommerOn(true);
+  };
 
-  _buttons(listId: number) {
-    const { t } = this.props;
-    if (
-      this.props.route &&
-      this.props.route.params &&
-      this.props.route.params.loadListScreen
-    ) {
+  const _buttons = (listId: number) => {
+    if (route && route.params && route.params.loadListScreen) {
       return (
-        <Button action="positive" onPress={() => this._loadList(listId)}>
+        <Button action="positive" onPress={() => _loadList(listId)}>
           <ButtonText>{t('charger')}</ButtonText>
         </Button>
       );
     } else {
       return (
         <HStack space="md">
-          <Button action="primary" onPress={() => this._modifyList(listId)}>
+          <Button action="primary" onPress={() => _modifyList(listId)}>
             <ButtonText>{t('modifier')}</ButtonText>
           </Button>
           <FontAwesome5.Button
             name="times"
             backgroundColor="#E63535"
             iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
-            onPress={() => this.setState({ modalDeleteIsOpen: true })}
+            onPress={() => setModalDeleteIsOpen(true)}
           />
         </HStack>
       );
     }
-  }
+  };
 
-  _loadList(listId: number) {
+  const _loadList = (listId: number) => {
     const actionLoadList = {
       type: 'LOAD_SAVED_LIST',
       value: {
         typeInscriptionSrc: 'avecNoms',
-        typeInscriptionDst: this.props.optionsTournoi.mode,
+        typeInscriptionDst: optionsTournoi.mode,
         listId: listId,
       },
     };
-    this.props.dispatch(actionLoadList);
-    this.props.navigation.goBack();
-  }
+    dispatch(actionLoadList);
+    navigation.goBack();
+  };
 
-  _listName(listeJoueursInfos: ListeJoueursInfos) {
-    const { t } = this.props;
+  const _listName = (listeJoueursInfos: ListeJoueursInfos) => {
     let listName = listeJoueursInfos.name
       ? listeJoueursInfos.name
       : 'n°' + listeJoueursInfos.listId;
-    if (this.state.renommerOn) {
+    if (renommerOn) {
       return (
         <Input className="border-white">
           <InputField
             className="text-white placeholder:text-black"
             placeholder={listName}
             autoFocus={true}
-            onChangeText={(text) => this._listTextInputChanged(text)}
-            onSubmitEditing={() => this._renameList(listeJoueursInfos.listId)}
+            onChangeText={(text) => _listTextInputChanged(text)}
+            onSubmitEditing={() => _renameList(listeJoueursInfos.listId)}
           />
         </Input>
       );
@@ -253,22 +237,19 @@ class ListeJoueursItem extends React.Component<Props, State> {
         </Text>
       );
     }
-  }
+  };
 
-  render() {
-    const { list } = this.props;
-    let listeJoueursInfos = list.at(-1) as ListeJoueursInfos;
-    return (
-      <HStack space="md" className="px-2 my-2 items-center">
-        <Box className="flex-1">{this._listName(listeJoueursInfos)}</Box>
-        <HStack space="md">
-          {this._showRenameList(listeJoueursInfos.listId)}
-          {this._buttons(listeJoueursInfos.listId)}
-        </HStack>
-        {this._modalSupprimerListe(listeJoueursInfos.listId)}
+  let listeJoueursInfos = list.at(-1) as ListeJoueursInfos;
+  return (
+    <HStack space="md" className="px-2 my-2 items-center">
+      <Box className="flex-1">{_listName(listeJoueursInfos)}</Box>
+      <HStack space="md">
+        {_showRenameList(listeJoueursInfos.listId)}
+        {_buttons(listeJoueursInfos.listId)}
       </HStack>
-    );
-  }
-}
+      {_modalSupprimerListe(listeJoueursInfos.listId)}
+    </HStack>
+  );
+};
 
-export default connector(withTranslation()(ListeJoueursItem));
+export default ListeJoueursItem;

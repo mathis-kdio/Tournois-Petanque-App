@@ -32,6 +32,8 @@ const JoueursTournoi = () => {
           isInscription={false}
           avecEquipes={optionsTournoi.mode === ModeTournoi.AVECEQUIPES}
           typeEquipes={optionsTournoi.typeEquipes}
+          modeTournoi={optionsTournoi.mode}
+          typeTournoi={optionsTournoi.typeTournoi}
           nbJoueurs={optionsTournoi.listeJoueurs.length}
           showCheckbox={true}
         />
