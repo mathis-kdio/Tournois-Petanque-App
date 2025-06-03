@@ -2,55 +2,46 @@ import { Text } from '@/components/ui/text';
 import { Input, InputField } from '@/components/ui/input';
 import { HStack } from '@/components/ui/hstack';
 import { Box } from '@/components/ui/box';
-import React from 'react';
+import React, { useState } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { withTranslation } from 'react-i18next';
 import { Terrain } from '@/types/interfaces/terrain';
-import { PropsFromRedux, connector } from '@/store/connector';
+import { useDispatch } from 'react-redux';
 
-export interface Props extends PropsFromRedux {
+export interface Props {
   terrain: Terrain;
 }
 
-interface State {
-  renommerOn: boolean;
-}
+const ListeTerrainItem: React.FC<Props> = ({ terrain }) => {
+  const dispatch = useDispatch();
 
-class ListeTerrainItem extends React.Component<Props, State> {
-  terrainText: string = '';
+  const [renommerOn, setRenommerOn] = useState(false);
+  const [terrainText, setTerrainText] = useState('');
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      renommerOn: false,
-    };
-  }
-
-  _supprimerTerrain(terrain: Terrain) {
-    this.setState({ renommerOn: false });
+  const _supprimerTerrain = (terrain: Terrain) => {
+    setRenommerOn(false);
     const actionSuppr = {
       type: 'SUPPR_TERRAIN',
       value: { terrainId: terrain.id },
     };
-    this.props.dispatch(actionSuppr);
-  }
+    dispatch(actionSuppr);
+  };
 
-  _showRenommerTerrain(terrain: Terrain) {
+  const _showRenommerTerrain = (terrain: Terrain) => {
     let name: string;
     let bgColor: string;
     let action;
-    if (!this.state.renommerOn) {
+    if (!renommerOn) {
       name = 'edit';
       bgColor = '#004282';
-      action = () => this.setState({ renommerOn: true });
-    } else if (this.terrainText === '') {
+      action = () => setRenommerOn(true);
+    } else if (terrainText === '') {
       name = 'times';
       bgColor = '#5F5F5F';
-      action = () => this.setState({ renommerOn: false });
+      action = () => setRenommerOn(false);
     } else {
       name = 'check';
       bgColor = '#348352';
-      action = () => this._renommerTerrain(terrain);
+      action = () => _renommerTerrain(terrain);
     }
 
     return (
@@ -63,35 +54,35 @@ class ListeTerrainItem extends React.Component<Props, State> {
         />
       </Box>
     );
-  }
+  };
 
-  _renommerTerrain(terrain: Terrain) {
-    if (this.terrainText !== '') {
-      this.setState({ renommerOn: false });
+  const _renommerTerrain = (terrain: Terrain) => {
+    if (terrainText !== '') {
+      setRenommerOn(false);
       const actionRenommer = {
         type: 'RENOMMER_TERRAIN',
-        value: { terrainId: terrain.id, newName: this.terrainText },
+        value: { terrainId: terrain.id, newName: terrainText },
       };
-      this.props.dispatch(actionRenommer);
-      this.terrainText = '';
+      dispatch(actionRenommer);
+      setTerrainText('');
     }
-  }
+  };
 
-  _terrainTxtInputChanged(text: string) {
-    this.terrainText = text;
-    this.setState({ renommerOn: true });
-  }
+  const _terrainTxtInputChanged = (text: string) => {
+    setTerrainText(text);
+    setRenommerOn(true);
+  };
 
-  _terrainName(terrain: Terrain) {
-    if (this.state.renommerOn) {
+  const _terrainName = (terrain: Terrain) => {
+    if (renommerOn) {
       return (
         <Input>
           <InputField
             className="text-white placeholder:text-white"
             placeholder={terrain.name}
             autoFocus={true}
-            onChangeText={(text) => this._terrainTxtInputChanged(text)}
-            onSubmitEditing={() => this._renommerTerrain(terrain)}
+            onChangeText={(text) => _terrainTxtInputChanged(text)}
+            onSubmitEditing={() => _renommerTerrain(terrain)}
           />
         </Input>
       );
@@ -102,25 +93,22 @@ class ListeTerrainItem extends React.Component<Props, State> {
         </Text>
       );
     }
-  }
+  };
 
-  render() {
-    const { terrain } = this.props;
-    return (
-      <HStack space="md" className="px-2 my-2 items-center">
-        <Box className="flex-1">{this._terrainName(terrain)}</Box>
-        <HStack space="md">
-          {this._showRenommerTerrain(terrain)}
-          <FontAwesome5.Button
-            name="times"
-            backgroundColor="#E63535"
-            iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
-            onPress={() => this._supprimerTerrain(terrain)}
-          />
-        </HStack>
+  return (
+    <HStack space="md" className="px-2 my-2 items-center">
+      <Box className="flex-1">{_terrainName(terrain)}</Box>
+      <HStack space="md">
+        {_showRenommerTerrain(terrain)}
+        <FontAwesome5.Button
+          name="times"
+          backgroundColor="#E63535"
+          iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
+          onPress={() => _supprimerTerrain(terrain)}
+        />
       </HStack>
-    );
-  }
-}
+    </HStack>
+  );
+};
 
-export default connector(withTranslation()(ListeTerrainItem));
+export default ListeTerrainItem;
