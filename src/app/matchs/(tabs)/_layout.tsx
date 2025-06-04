@@ -6,10 +6,9 @@ export default function TabLayout() {
   const { t } = useTranslation();
   return (
     <Tabs
-      initialRouteName="liste-matchs"
+      initialRouteName="(top-tabs)"
       backBehavior="none"
       screenOptions={{
-        headerShown: false,
         tabBarStyle: { backgroundColor: '#0594ae' },
         tabBarActiveTintColor: 'white',
         tabBarInactiveTintColor: 'black',
@@ -26,7 +25,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="liste-matchs"
+        name="(top-tabs)"
         options={{
           title: t('matchs_details_navigation_title'),
           tabBarIcon: ({ color }) => (

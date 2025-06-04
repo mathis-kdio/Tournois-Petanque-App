@@ -10,8 +10,8 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 import Accueil from '@/app';
 import Authentification from '@/app/connexion/authentification';
-import Compte from '@/app/connexion/compte';
-import InfosPerso from '@/app/connexion/infos-perso';
+import Compte from '@/app/compte';
+import InfosPerso from '@/app/compte/infos-perso';
 import ChoixTypeTournoi from '@/app/inscriptions/choix-type-tournoi';
 import ChoixModeTournoi from '@/app/inscriptions/choix-mode-tournoi';
 import Inscription from '@/app/connexion/inscription';
@@ -21,14 +21,14 @@ import OptionsTournoi from '@/app/inscriptions/options-tournoi';
 import ChoixComplement from '@/app/inscriptions/choix-complement';
 import GenerationMatchs from '@/app/inscriptions/generation-matchs';
 import ListeResultats from '@/app/matchs/(tabs)/liste-resultats';
-import ListeMatchs from '@/app/matchs/(tabs)/liste-matchs';
+import ListeMatchs from '@/app/matchs/(tabs)/(top-tabs)/liste-matchs';
 import ListeTerrains from '@/app/inscriptions/liste-terrains';
 import MatchDetail from '@/app/matchs/match-detail';
 import JoueursTournoi from '@/app/matchs/joueurs-tournoi';
 import ParametresTournoi from '@/app/matchs/parametres-tournoi';
 import PDFExport from '@/app/matchs/pdf-export';
 import ConfirmationEmail from '@/app/connexion/confirmation-email';
-import Securite from '@/app/connexion/securite';
+import Securite from '@/app/compte/securite';
 
 import BoutonMenuHeaderNav from '@components/BoutonMenuHeaderNavigation';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
