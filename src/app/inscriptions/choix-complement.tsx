@@ -6,16 +6,20 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import CardButton from '@components/buttons/CardButton';
 import { useTranslation } from 'react-i18next';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { Divider } from '@/components/ui/divider';
 import { Complement } from '@/types/enums/complement';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+
+type SearchParams = {
+  screenStackName?: string;
+};
 
 const ChoixComplement = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const router = useRouter();
+  const { screenStackName } = useLocalSearchParams<SearchParams>();
   const dispatch = useDispatch();
 
   const optionsTournoi = useSelector(
@@ -35,11 +39,11 @@ const ChoixComplement = () => {
     dispatch(updateOptionComplement);
 
     const { avecTerrains } = optionsTournoi;
-    let screenName = avecTerrains ? 'ListeTerrains' : 'GenerationMatchs';
-    navigation.navigate({
-      name: screenName,
+    let screenName = avecTerrains ? 'liste-terrains' : 'generation-matchs';
+    router.navigate({
+      pathname: `/inscriptions/${screenName}`,
       params: {
-        screenStackName: 'InscriptionsAvecNoms',
+        screenStackName: screenStackName,
       },
     });
   };

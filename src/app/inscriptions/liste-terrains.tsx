@@ -6,23 +6,20 @@ import ListeTerrainItem from '@components/ListeTerrainItem';
 import { calcNbMatchsParTour } from '@utils/generations/generation';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { Terrain } from '@/types/interfaces/terrain';
 import { ListRenderItem } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 
-type ListeTerrainsRouteProp = {
-  params: {
-    screenStackName: string;
-  };
+type SearchParams = {
+  screenStackName?: string;
 };
 
 const ListeTerrains = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
-  const route = useRoute<ListeTerrainsRouteProp>();
+  const router = useRouter();
+  const { screenStackName } = useLocalSearchParams<SearchParams>();
   const dispatch = useDispatch();
 
   const listesJoueurs = useSelector(
@@ -72,10 +69,10 @@ const ListeTerrains = () => {
   };
 
   const _commencer = () => {
-    navigation.navigate({
-      name: 'GenerationMatchs',
+    router.navigate({
+      pathname: '/inscriptions/generation-matchs',
       params: {
-        screenStackName: route.params.screenStackName,
+        screenStackName: screenStackName,
       },
     });
   };

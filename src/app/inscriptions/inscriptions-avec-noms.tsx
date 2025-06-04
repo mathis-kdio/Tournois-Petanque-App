@@ -11,12 +11,11 @@ import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { Joueur } from '@/types/interfaces/joueur';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { useRouter } from 'expo-router';
 
 const InscriptionsAvecNoms = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const router = useRouter();
 
   const optionsTournoi = useSelector(
     (state: any) => state.optionsTournoi.options,
@@ -26,16 +25,16 @@ const InscriptionsAvecNoms = () => {
   );
 
   const _commencer = (choixComplement: boolean) => {
-    let screenName = 'GenerationMatchs';
+    let screenName = 'generation-matchs';
     if (choixComplement) {
-      screenName = 'ChoixComplement';
+      screenName = 'choix-complement';
     } else if (optionsTournoi.avecTerrains) {
-      screenName = 'ListeTerrains';
+      screenName = 'liste-terrains';
     }
-    navigation.navigate({
-      name: screenName,
+    router.navigate({
+      pathname: `/inscriptions/${screenName}`,
       params: {
-        screenStackName: 'InscriptionsAvecNoms',
+        screenStackName: 'inscriptions-avec-noms',
       },
     });
   };
@@ -171,7 +170,7 @@ const InscriptionsAvecNoms = () => {
           <Text className="text-white text-xl text-center">
             {t('nombre_joueurs', { nb: nbJoueur })}
           </Text>
-          <Inscriptions navigation={navigation} loadListScreen={false} />
+          <Inscriptions loadListScreen={false} />
           <Box className="px-10">{_boutonCommencer()}</Box>
         </VStack>
       </VStack>

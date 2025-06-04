@@ -7,16 +7,15 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { JoueurType } from '@/types/enums/joueurType';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'expo-router';
 
 const InscriptionsSansNoms = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const optionsTournoi = useSelector(
@@ -63,16 +62,16 @@ const InscriptionsSansNoms = () => {
       _ajoutJoueur(JoueurType.ENFANT);
     }
 
-    let screenName = 'GenerationMatchs';
+    let screenName = 'generation-matchs';
     if (choixComplement) {
-      screenName = 'ChoixComplement';
+      screenName = 'choix-complement';
     } else if (optionsTournoi.avecTerrains) {
-      screenName = 'ListeTerrains';
+      screenName = 'liste-terrains';
     }
-    navigation.navigate({
-      name: screenName,
+    router.navigate({
+      pathname: `/inscriptions/${screenName}`,
       params: {
-        screenStackName: 'InscriptionsSansNoms',
+        screenStackName: 'inscriptions-sans-noms',
       },
     });
   };
