@@ -12,7 +12,6 @@ import { generationPDFCoupe } from '@utils/pdf/coupe';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { Platform } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { Text } from '@/components/ui/text';
@@ -21,12 +20,10 @@ import { Switch } from '@/components/ui/switch';
 import { Box } from '@/components/ui/box';
 import { dateFormatDateFileName } from '@/utils/date';
 import { Tournoi } from '@/types/interfaces/tournoi';
-import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
 const PDFExport = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
 
   const tournoi = useSelector((state: any) => state.gestionMatchs.listematchs);
   const listeTournois = useSelector(

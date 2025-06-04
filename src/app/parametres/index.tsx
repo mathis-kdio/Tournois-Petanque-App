@@ -37,9 +37,7 @@ import { useTranslation } from 'react-i18next';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import Item from '@components/Item';
 import i18n from 'i18next';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { Pressable } from '@/components/ui/pressable';
-import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'expo-router';
 
@@ -53,7 +51,6 @@ const Parametres = () => {
   const [modalLanguagesOpen, openModalLanguages] = useState(false);
 
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
   const router = useRouter();
   const dispatch = useDispatch();
 
