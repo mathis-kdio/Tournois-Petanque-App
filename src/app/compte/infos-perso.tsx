@@ -2,12 +2,10 @@ import { VStack } from '@/components/ui/vstack';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
-import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '@/components/supabase/SessionProvider';
 
 interface UserDetail {
@@ -20,7 +18,6 @@ interface UserDetail {
 
 const InfosPerso = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
   const { session } = useAuth();
 
   const userDetailsInit: UserDetail = {
