@@ -14,18 +14,17 @@ import { VStack } from '@/components/ui/vstack';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { useTranslation } from 'react-i18next';
-import AdMobInscriptionsBanner from '../../components/adMob/AdMobInscriptionsBanner';
-import { StackNavigationProp } from '@react-navigation/stack';
+import AdMobInscriptionsBanner from '@/components/adMob/AdMobInscriptionsBanner';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
+import { useNavigation } from 'expo-router';
 
 const ChoixModeTournoi = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const optionsTournoi = useSelector(

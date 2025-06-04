@@ -20,15 +20,14 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import CardButton from '@components/buttons/CardButton';
 import { useTranslation } from 'react-i18next';
-import AdMobInscriptionsBanner from '../../components/adMob/AdMobInscriptionsBanner';
-import { StackNavigationProp } from '@react-navigation/stack';
+import AdMobInscriptionsBanner from '@/components/adMob/AdMobInscriptionsBanner';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
+import { useNavigation } from 'expo-router';
 
 const ChoixTypeTournoi = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const [showModal, setShowModal] = useState(false);
