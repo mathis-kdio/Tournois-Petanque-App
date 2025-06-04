@@ -20,11 +20,11 @@ import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-import { useNavigation } from 'expo-router';
+import { useRouter } from 'expo-router';
 
 const ChoixModeTournoi = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation();
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const optionsTournoi = useSelector(
@@ -58,16 +58,16 @@ const ChoixModeTournoi = () => {
     ) {
       let screenName =
         modeTournoi === ModeTournoi.SANSNOMS
-          ? 'InscriptionsSansNoms'
-          : 'InscriptionsAvecNoms';
-      navigation.navigate({
-        name: 'OptionsTournoi',
+          ? 'inscriptions-sans-noms'
+          : 'inscriptions-avec-noms';
+      router.navigate({
+        pathname: '/inscriptions/options-tournoi',
         params: {
           screenStackName: screenName,
         },
       });
     } else {
-      navigation.navigate('InscriptionsAvecNoms');
+      router.navigate('/inscriptions/inscriptions-avec-noms');
     }
   };
 

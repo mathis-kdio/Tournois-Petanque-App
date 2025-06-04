@@ -23,11 +23,11 @@ import { useTranslation } from 'react-i18next';
 import AdMobInscriptionsBanner from '@/components/adMob/AdMobInscriptionsBanner';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { useDispatch } from 'react-redux';
-import { useNavigation } from 'expo-router';
+import { useRouter } from 'expo-router';
 
 const ChoixTypeTournoi = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation();
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const [showModal, setShowModal] = useState(false);
@@ -83,7 +83,7 @@ const ChoixTypeTournoi = () => {
       value: ['typeTournoi', typeTournoi],
     };
     dispatch(updateOptionTypeTournoi);
-    return navigation.navigate('ChoixModeTournoi');
+    return router.navigate('inscriptions/choix-mode-tournoi');
   };
 
   const _setState = (modalType: TypeTournoi) => {

@@ -16,10 +16,9 @@ import { AppState, AppStateStatus, Platform } from 'react-native';
 import { _requestTrackingPermissions } from '../utils/expoTrackingTransparency/requestTrackingPermission';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CommonActions } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { useAuth } from '@/components/supabase/SessionProvider';
-import { useNavigation, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 
 const googleMarketReviews =
   'market://details?id=com.MK.PetanqueGCU&showAllReviews=true';
@@ -32,7 +31,6 @@ const website = 'https://tournoispetanqueapp.fr/';
 
 const Accueil = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation();
   const router = useRouter();
   const { session } = useAuth();
 
@@ -105,7 +103,7 @@ const Accueil = () => {
       );
     } else {
       return (
-        <Button onPress={() => navigation.navigate('ConnexionStack')}>
+        <Button onPress={() => router.navigate('ConnexionStack')}>
           <ButtonText>{t('authentification')}</ButtonText>
         </Button>
       );
@@ -131,7 +129,9 @@ const Accueil = () => {
                 <CardButton
                   text={t('nouveau_tournoi')}
                   icons={['plus']}
-                  navigate={() => router.navigate('InscriptionStack')}
+                  navigate={() =>
+                    router.navigate('/inscriptions/choix-type-tournoi')
+                  }
                   newBadge={false}
                 />
               </HStack>
