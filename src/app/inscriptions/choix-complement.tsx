@@ -147,7 +147,7 @@ const ChoixComplement = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView className="h-1 bg-[#0594ae]">
-        <TopBarBack title={t('choix_complement')} navigation={navigation} />
+        <TopBarBack title={t('choix_complement')} />
         <VStack space="2xl" className="flex-1 px-10">
           <Text size={'lg'} className="text-white text-center">
             {t('choix_complement_title_1', { nbModulo: nbModulo })}

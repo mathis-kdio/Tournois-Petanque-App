@@ -25,7 +25,7 @@ const ConfirmationEmail = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView className="h-1 bg-[#0594ae]">
-        <TopBarBack title={t('confirmation_email')} navigation={navigation} />
+        <TopBarBack title={t('confirmation_email')} />
         <VStack className="px-10 justify-center items-center">
           <HStack className="justify-center">
             <MaterialCommunityIcons

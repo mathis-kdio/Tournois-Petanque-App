@@ -151,10 +151,7 @@ const ListeTournois = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <VStack className="flex-1 bg-[#0594ae]">
-        <TopBarBack
-          title={t('choix_tournoi_navigation_title')}
-          navigation={navigation}
-        />
+        <TopBarBack title={t('choix_tournoi_navigation_title')} />
         <Text className="text-white text-xl text-center px-10">
           {t('nombre_tournois', { nb: listeTournois.length })}
         </Text>

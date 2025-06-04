@@ -134,10 +134,7 @@ const OptionsTournoi = () => {
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView className="h-1 bg-[#0594ae]">
           <VStack className="flex-1">
-            <TopBarBack
-              title={t('options_tournoi_title')}
-              navigation={navigation}
-            />
+            <TopBarBack title={t('options_tournoi_title')} />
             <VStack space="4xl" className="px-10">
               <VStack space="md">
                 <VStack>

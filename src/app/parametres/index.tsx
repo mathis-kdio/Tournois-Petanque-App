@@ -231,7 +231,7 @@ const Parametres = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <VStack className="flex-1 bg-[#0594ae]">
-        <TopBarBack title={t('parametres')} navigation={navigation} />
+        <TopBarBack title={t('parametres')} />
         <ScrollView className="h-1">
           <VStack space="lg" className="flex-1 px-10">
             <VStack>

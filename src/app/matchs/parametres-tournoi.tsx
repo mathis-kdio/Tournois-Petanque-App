@@ -122,10 +122,7 @@ const ParametresTournoi = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView className="h-1 bg-[#0594ae]">
-        <TopBarBack
-          title={t('parametres_tournoi_navigation_title')}
-          navigation={navigation}
-        />
+        <TopBarBack title={t('parametres_tournoi_navigation_title')} />
         <VStack className="flex-1 px-10 justify-around">
           <VStack>
             <Text className="text-white text-xl text-center">

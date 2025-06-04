@@ -73,7 +73,7 @@ const Authentification = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView className="h-1 bg-[#0594ae]">
-        <TopBarBack title={t('authentification')} navigation={navigation} />
+        <TopBarBack title={t('authentification')} />
         <VStack className="flex-1 px-10 justify-between">
           <VStack className="mb-5">
             <FormControl

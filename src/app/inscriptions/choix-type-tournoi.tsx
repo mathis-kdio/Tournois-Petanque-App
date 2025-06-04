@@ -95,7 +95,7 @@ const ChoixTypeTournoi = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView className="h-1 bg-[#0594ae]">
-        <TopBarBack title={t('type_tournoi')} navigation={navigation} />
+        <TopBarBack title={t('type_tournoi')} />
         <VStack space="2xl" className="flex-1 px-10">
           <VStack className="flex-1">
             <CardButton

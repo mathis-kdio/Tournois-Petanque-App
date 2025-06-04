@@ -169,10 +169,7 @@ const MatchDetail = () => {
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView className="h-1 bg-[#0594ae]">
           <VStack>
-            <TopBarBack
-              title={t('detail_match_navigation_title')}
-              navigation={navigation}
-            />
+            <TopBarBack title={t('detail_match_navigation_title')} />
             <VStack className="px-10 justify-between">
               <VStack space="xl">
                 {_displayTitle(match)}

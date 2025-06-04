@@ -131,10 +131,7 @@ const InscriptionsSansNoms = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView className="h-1 bg-[#0594ae]">
-        <TopBarBack
-          title={t('inscription_sans_noms_navigation_title')}
-          navigation={navigation}
-        />
+        <TopBarBack title={t('inscription_sans_noms_navigation_title')} />
         <VStack space="2xl" className="flex-1 px-10">
           <Text className="text-white text-center text-xl">
             {t('nombre_joueurs', { nb: _nbJoueurs() })}

@@ -94,7 +94,7 @@ const Securite = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView className="h-1 bg-[#0594ae]">
-        <TopBarBack title={t('securite')} navigation={navigation} />
+        <TopBarBack title={t('securite')} />
         <VStack className="flex-1 px-10">
           <VStack className="flex-1">
             <Heading className="text-white">Changer le mot de passe</Heading>
