@@ -20,7 +20,7 @@ import TopBarBack from '@/components/topBar/TopBarBack';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { Tournoi } from '@/types/interfaces/tournoi';
 import { ListRenderItem } from 'react-native';
-import { dateFormatDateHeure } from '../../utils/date';
+import { dateFormatDateHeure } from '@/utils/date';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigation } from 'expo-router';

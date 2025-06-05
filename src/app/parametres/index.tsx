@@ -32,7 +32,7 @@ import { useState } from 'react';
 import { expo } from '../../../app.json';
 import { _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { _adsConsentShowForm } from '../../utils/adMob/consentForm';
+import { _adsConsentShowForm } from '@utils/adMob/consentForm';
 import { useTranslation } from 'react-i18next';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import Item from '@components/Item';

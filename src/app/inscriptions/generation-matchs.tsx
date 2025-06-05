@@ -12,7 +12,7 @@ import { generationTriplettes } from '@utils/generations/tournoiTriplettes';
 import { uniqueValueArrayRandOrder } from '@utils/generations/generation';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { _adMobGenerationTournoiInterstitiel } from '../../components/adMob/AdMobGenerationTournoiInterstitiel';
+import { _adMobGenerationTournoiInterstitiel } from '@components/adMob/AdMobGenerationTournoiInterstitiel';
 import { Platform } from 'react-native';
 import { EventRegister } from 'react-native-event-listeners';
 import { StackNavigationProp } from '@react-navigation/stack';

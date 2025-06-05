@@ -4,7 +4,7 @@ import { Match } from '@/types/interfaces/match';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
 import { useSelector } from 'react-redux';
-import ListeMatchs from '../../../components/matchs/liste-matchs';
+import ListeMatchs from '@components/matchs/liste-matchs';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { FontAwesome5 } from '@expo/vector-icons';
 
