@@ -38,6 +38,7 @@ export default function TabLayout() {
 
   return (
     <Tabs
+      initialRouteName="matchs"
       backBehavior="none"
       screenOptions={{
         tabBarStyle: { backgroundColor: '#0594ae' },
