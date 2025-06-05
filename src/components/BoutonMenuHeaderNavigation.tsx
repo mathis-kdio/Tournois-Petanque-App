@@ -9,15 +9,15 @@ const BoutonMenuHeaderNav = () => {
   const router = useRouter();
 
   const _showOptions = () => {
-    router.navigate('matchs/parametres-tournoi');
+    router.navigate('/tournoi/parametres-tournoi');
   };
 
   const _showJoueurs = () => {
-    router.navigate('matchs/joueurs-tournoi');
+    router.navigate('/tournoi/joueurs-tournoi');
   };
 
   const _showPDFExport = () => {
-    router.navigate('matchs/pdf-export');
+    router.navigate('/tournoi/pdf-export');
   };
 
   const _showAccueil = () => {
