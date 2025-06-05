@@ -2,42 +2,26 @@ import { Button } from '@/components/ui/button';
 import { Menu, MenuItem, MenuItemLabel } from '@/components/ui/menu';
 import { useTranslation } from 'react-i18next';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
-import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { useSelector } from 'react-redux';
+import { useRouter } from 'expo-router';
 
 const BoutonMenuHeaderNav = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
-
-  const listeMatchs = useSelector(
-    (state: any) => state.gestionMatchs.listematchs,
-  );
-
-  let navigator: string;
+  const router = useRouter();
 
   const _showOptions = () => {
-    navigation.navigate(navigator, {
-      screen: 'ParametresTournoi',
-    });
+    router.navigate('matchs/parametres-tournoi');
   };
 
   const _showJoueurs = () => {
-    navigation.navigate(navigator, {
-      screen: 'ListeJoueur',
-    });
+    router.navigate('matchs/joueurs-tournoi');
   };
 
   const _showPDFExport = () => {
-    navigation.navigate(navigator, {
-      screen: 'PDFExport',
-    });
+    router.navigate('matchs/pdf-export');
   };
 
   const _showAccueil = () => {
-    navigation.reset({
+    router.reset({
       index: 0,
       routes: [
         {
@@ -47,11 +31,6 @@ const BoutonMenuHeaderNav = () => {
     });
   };
 
-  let parametresTournoi = listeMatchs.at(-1) as OptionsTournoi;
-  navigator =
-    parametresTournoi.typeTournoi === TypeTournoi.COUPE
-      ? 'ListeMatchsScreen'
-      : 'ListeMatchsBottom';
   return (
     <Menu
       placement="bottom left"
