@@ -62,11 +62,11 @@ const Accueil = () => {
   }, [appState]);
 
   const _showMatchs = () => {
-    router.navigate('/tournoi/(tabs)');
+    router.navigate('/tournoi/');
     /*
     navigation.dispatch(
       CommonActions.reset({
-        routes: [{ name: '/tournoi/(tabs)/' }],
+        routes: [{ name: '/tournoi/' }],
       }),
     );
     */
