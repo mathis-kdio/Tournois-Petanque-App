@@ -16,8 +16,6 @@ interface ListeMatchsProps {
 const ListeMatchs: React.FC<ListeMatchsProps> = ({ mancheNumber }) => {
   useExitAlertOnBack();
 
-  console.log('mancheNumber', mancheNumber);
-
   const navigation = useNavigation<StackNavigationProp<any, any>>();
   const tournoi = useSelector((state: any) => state.gestionMatchs.listematchs);
 
