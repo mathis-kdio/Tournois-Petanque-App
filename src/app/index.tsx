@@ -62,7 +62,7 @@ const Accueil = () => {
   }, [appState]);
 
   const _showMatchs = () => {
-    router.navigate('/matchs/(tabs)/');
+    router.navigate('/matchs/(tabs)');
     /*
     navigation.dispatch(
       CommonActions.reset({

@@ -6,7 +6,6 @@ export default function TabLayout() {
   const { t } = useTranslation();
   return (
     <Tabs
-      initialRouteName="(top-tabs)"
       backBehavior="none"
       screenOptions={{
         tabBarStyle: { backgroundColor: '#0594ae' },
@@ -16,7 +15,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="liste-resultats"
+        name="resultats"
         options={{
           title: t('resultats_classement_navigation_title'),
           tabBarIcon: ({ color }) => (
@@ -25,8 +24,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="(top-tabs)"
+        name="matchs"
         options={{
+          headerShown: false,
           title: t('matchs_details_navigation_title'),
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="bars" size={28} color={color} />

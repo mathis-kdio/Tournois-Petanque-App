@@ -10,11 +10,13 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import useExitAlertOnBack from '@/app/with-exit-alert/with-exit-alert';
 
 interface ListeMatchsProps {
-  extraData: number;
+  mancheNumber: number;
 }
 
-const ListeMatchs: React.FC<ListeMatchsProps> = ({ extraData }) => {
+const ListeMatchs: React.FC<ListeMatchsProps> = ({ mancheNumber }) => {
   useExitAlertOnBack();
+
+  console.log('mancheNumber', mancheNumber);
 
   const navigation = useNavigation<StackNavigationProp<any, any>>();
   const tournoi = useSelector((state: any) => state.gestionMatchs.listematchs);
@@ -47,13 +49,13 @@ const ListeMatchs: React.FC<ListeMatchsProps> = ({ extraData }) => {
       matchs = tournoi.slice(0, -1); //On retire la config et donc seulement la liste des matchs
     }
     matchs = matchs.filter(
-      (match: Match) => match.manche === extraData,
+      (match: Match) => match.manche === mancheNumber,
     ) as Match[];
     const renderItem: ListRenderItem<Match> = ({ item }) => (
       <MatchItem
         match={item}
         displayDetailForMatch={_displayDetailForMatch}
-        manche={extraData}
+        manche={mancheNumber}
         nbPtVictoire={nbPtVictoire}
       />
     );
