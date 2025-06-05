@@ -20,13 +20,13 @@ import InscriptionsSansNoms from '@/app/inscriptions/inscriptions-sans-noms';
 import OptionsTournoi from '@/app/inscriptions/options-tournoi';
 import ChoixComplement from '@/app/inscriptions/choix-complement';
 import GenerationMatchs from '@/app/inscriptions/generation-matchs';
-import ListeResultats from '@/app/matchs/(tabs)/resultats';
+import ListeResultats from '@/app/tournoi/(tabs)/resultats';
 import ListeMatchs from '@/components/matchs/liste-matchs';
 import ListeTerrains from '@/app/inscriptions/liste-terrains';
-import MatchDetail from '@/app/matchs/match-detail';
-import JoueursTournoi from '@/app/matchs/joueurs-tournoi';
-import ParametresTournoi from '@/app/matchs/parametres-tournoi';
-import PDFExport from '@/app/matchs/pdf-export';
+import MatchDetail from '@/app/tournoi/match-detail';
+import JoueursTournoi from '@/app/tournoi/joueurs-tournoi';
+import ParametresTournoi from '@/app/tournoi/parametres-tournoi';
+import PDFExport from '@/app/tournoi/pdf-export';
 import ConfirmationEmail from '@/app/connexion/confirmation-email';
 import Securite from '@/app/compte/securite';
 
