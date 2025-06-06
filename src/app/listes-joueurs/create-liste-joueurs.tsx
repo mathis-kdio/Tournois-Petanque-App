@@ -12,6 +12,11 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocalSearchParams } from 'expo-router';
 
+type SearchParams = {
+  type?: string;
+  listId?: string;
+};
+
 const CreateListeJoueur = () => {
   const { t } = useTranslation();
   const navigation = useNavigation<StackNavigationProp<any, any>>();
@@ -47,10 +52,7 @@ const CreateListeJoueur = () => {
   };
 
   const _submitButton = () => {
-    const { type, listId } = useLocalSearchParams<{
-      type: string;
-      listId?: string;
-    }>();
+    const { type, listId } = useLocalSearchParams<SearchParams>();
 
     if (type) {
       let nbPlayers = listesJoueurs.sauvegarde.length;
