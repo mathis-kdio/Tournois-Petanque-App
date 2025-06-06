@@ -5,9 +5,8 @@ import { Match } from '@/types/interfaces/match';
 import { ListRenderItem } from 'react-native';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import useExitAlertOnBack from '@/app/with-exit-alert/with-exit-alert';
+import { useRouter } from 'expo-router';
 
 interface ListeMatchsProps {
   mancheNumber: number;
@@ -16,20 +15,14 @@ interface ListeMatchsProps {
 const ListeMatchs: React.FC<ListeMatchsProps> = ({ mancheNumber }) => {
   useExitAlertOnBack();
 
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const router = useRouter();
   const tournoi = useSelector((state: any) => state.gestionMatchs.listematchs);
 
-  const _displayDetailForMatch = (
-    idMatch: number,
-    match: Match,
-    nbPtVictoire: number,
-  ) => {
-    navigation.navigate({
-      name: 'MatchDetailStack',
+  const _displayDetailForMatch = (idMatch: number) => {
+    router.navigate({
+      pathname: '/tournoi/match-detail',
       params: {
         idMatch: idMatch,
-        match: match,
-        nbPtVictoire: nbPtVictoire,
       },
     });
   };
