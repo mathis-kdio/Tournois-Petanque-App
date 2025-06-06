@@ -14,12 +14,11 @@ import { _adsConsentForm } from '../utils/adMob/consentForm';
 import CardButton from '@components/buttons/CardButton';
 import { AppState, AppStateStatus, Platform } from 'react-native';
 import { _requestTrackingPermissions } from '../utils/expoTrackingTransparency/requestTrackingPermission';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { useAuth } from '@/components/supabase/SessionProvider';
+import { useRouter } from 'expo-router';
 
 const googleMarketReviews =
   'market://details?id=com.MK.PetanqueGCU&showAllReviews=true';
@@ -32,7 +31,7 @@ const website = 'https://tournoispetanqueapp.fr/';
 
 const Accueil = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const router = useRouter();
   const { session } = useAuth();
 
   const listeMatchs = useSelector(
@@ -63,14 +62,14 @@ const Accueil = () => {
   }, [appState]);
 
   const _showMatchs = () => {
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'ListeMatchsStack' }],
-    });
-  };
-
-  const _navigate = (name: string) => {
-    navigation.navigate(name);
+    router.navigate('/tournoi/');
+    /*
+    navigation.dispatch(
+      CommonActions.reset({
+        routes: [{ name: '/tournoi/' }],
+      }),
+    );
+    */
   };
 
   const _buttonShowMatchs = () => {
@@ -98,19 +97,13 @@ const Accueil = () => {
   const boutonConnexion = () => {
     if (session) {
       return (
-        <Button
-          onPress={() =>
-            navigation.navigate('ConnexionStack', {
-              screen: 'Compte',
-            })
-          }
-        >
+        <Button onPress={() => router.navigate('/compte')}>
           <ButtonText>{t('mon_compte')}</ButtonText>
         </Button>
       );
     } else {
       return (
-        <Button onPress={() => navigation.navigate('ConnexionStack')}>
+        <Button onPress={() => router.navigate('ConnexionStack')}>
           <ButtonText>{t('authentification')}</ButtonText>
         </Button>
       );
@@ -136,7 +129,9 @@ const Accueil = () => {
                 <CardButton
                   text={t('nouveau_tournoi')}
                   icons={['plus']}
-                  navigate={() => _navigate('InscriptionStack')}
+                  navigate={() =>
+                    router.navigate('/inscriptions/choix-type-tournoi')
+                  }
                   newBadge={false}
                 />
               </HStack>
@@ -144,13 +139,13 @@ const Accueil = () => {
                 <CardButton
                   text={t('mes_anciens_tournois')}
                   icons={['list']}
-                  navigate={() => _navigate('ListeTournois')}
+                  navigate={() => router.navigate('/liste-tournois')}
                   newBadge={false}
                 />
                 <CardButton
                   text={t('mes_listes_joueurs')}
                   icons={['users']}
-                  navigate={() => _navigate('ListesJoueurs')}
+                  navigate={() => router.navigate('/listes-joueurs')}
                   newBadge={false}
                 />
               </HStack>
@@ -188,7 +183,7 @@ const Accueil = () => {
                   <FontAwesome5 name="envelope" color="white" size={20} />
                 </Pressable>
                 <Pressable
-                  onPress={() => navigation.navigate('ParametresStack')}
+                  onPress={() => router.navigate('/parametres')}
                   className="flex-1 items-center bg-[#1c3969] rounded-3xl p-2"
                 >
                   <FontAwesome5 name="wrench" color="white" size={20} />

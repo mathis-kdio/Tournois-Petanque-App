@@ -6,33 +6,25 @@ import Inscriptions from '@components/Inscriptions';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
-import {
-  StackActions,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 
-type CreateListeJoueurRouteProp = {
-  params: {
-    type: string;
-    listId: number;
-  };
+type SearchParams = {
+  type?: string;
+  listId?: string;
 };
 
 const CreateListeJoueur = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
-  const route = useRoute<CreateListeJoueurRouteProp>();
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const listesJoueurs = useSelector(
     (state: any) => state.listesJoueurs.listesJoueurs,
   );
 
-  const _dispatch = (type: string, listId: number) => {
+  const _dispatch = (type: string, listId?: number) => {
     if (type === 'create') {
       const addSavedList = {
         type: 'ADD_SAVED_LIST',
@@ -54,24 +46,28 @@ const CreateListeJoueur = () => {
       dispatch(updateSavedList);
     }
 
-    navigation.dispatch(StackActions.pop(1));
+    router.back();
   };
 
   const _submitButton = () => {
-    let params = route.params;
-    if (params) {
+    const { type, listId } = useLocalSearchParams<SearchParams>();
+
+    if (type) {
       let nbPlayers = listesJoueurs.sauvegarde.length;
       let title = 'error';
-      if (params.type === 'create') {
+      if (type === 'create') {
         title = t('creer_liste');
-      } else if (params.type === 'edit') {
+      } else if (type === 'edit') {
         title = t('valider_modification');
       }
+
+      const idList = listId ? parseInt(listId) : undefined;
+
       return (
         <Button
           isDisabled={nbPlayers === 0}
           action="positive"
-          onPress={() => _dispatch(params.type, params.listId)}
+          onPress={() => _dispatch(type, idList)}
         >
           <ButtonText>{title}</ButtonText>
         </Button>
@@ -86,15 +82,12 @@ const CreateListeJoueur = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <VStack className="flex-1 bg-[#0594ae]">
-        <TopBarBack
-          title={t('creation_liste_joueurs_navigation_title')}
-          navigation={navigation}
-        />
+        <TopBarBack title={t('creation_liste_joueurs_navigation_title')} />
         <VStack className="flex-1 justify-between">
           <Text className="text-white text-xl text-center">
             {t('nombre_joueurs', { nb: nbJoueurs })}
           </Text>
-          <Inscriptions navigation={navigation} loadListScreen={true} />
+          <Inscriptions loadListScreen={true} />
           <Box className="px-10">{_submitButton()}</Box>
         </VStack>
       </VStack>

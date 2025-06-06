@@ -20,10 +20,8 @@ import { useTranslation } from 'react-i18next';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import ChangelogData from '@assets/ChangelogData.json';
 import Item from '@components/Item';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { Changelog as ChangelogInterface } from '@/types/interfaces/changelog';
 import { ListRenderItem } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
 const Changelog = () => {
   const [modalChangelogOpen, openModalChangelog] = useState(false);
@@ -31,7 +29,6 @@ const Changelog = () => {
     useState<ChangelogInterface>();
 
   const { t } = useTranslation(['common', 'changelog']);
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
 
   const _modalChangelog = () => {
     if (modalChangelogItem) {
@@ -91,7 +88,7 @@ const Changelog = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <VStack className="flex-1 bg-[#0594ae]">
-        <TopBarBack title={t('nouveautes')} navigation={navigation} />
+        <TopBarBack title={t('nouveautes')} />
         <VStack className="flex-1 px-10">
           <Text className="text-xl text-white mb-1">{t('nouveautes')}</Text>
           <FlatList

@@ -7,8 +7,6 @@ import React, { useState } from 'react';
 import { AppState } from 'react-native';
 import { supabaseClient } from '@/utils/supabase';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-import { StackNavigationProp } from '@react-navigation/stack';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { Divider } from '@/components/ui/divider';
 import { HStack } from '@/components/ui/hstack';
@@ -23,7 +21,7 @@ import {
 } from '@/components/ui/form-control';
 import { AlertCircleIcon } from '@/components/ui/icon';
 import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
@@ -39,7 +37,7 @@ AppState.addEventListener('change', (state) => {
 
 const Authentification = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const router = useRouter();
 
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
@@ -62,18 +60,18 @@ const Authentification = () => {
     if (error) {
       setLoginIncorrect(true);
     } else {
-      navigation.navigate('AccueilGeneral');
+      router.navigate('/');
     }
   };
 
   const inscription = () => {
-    navigation.navigate('Inscription');
+    router.navigate('/connexion/inscription');
   };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView className="h-1 bg-[#0594ae]">
-        <TopBarBack title={t('authentification')} navigation={navigation} />
+        <TopBarBack title={t('authentification')} />
         <VStack className="flex-1 px-10 justify-between">
           <VStack className="mb-5">
             <FormControl

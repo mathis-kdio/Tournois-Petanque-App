@@ -30,8 +30,7 @@ import { Joueur } from '@/types/interfaces/joueur';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { ListRenderItem, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { useRouter } from 'expo-router';
 
 export interface Props {
   loadListScreen: boolean;
@@ -39,7 +38,7 @@ export interface Props {
 
 const Inscription: React.FC<Props> = ({ loadListScreen }) => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const [joueurType, setJoueurType] = useState('');
@@ -173,10 +172,10 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
   };
 
   const _loadSavedList = () => {
-    navigation.navigate({
-      name: 'ListesJoueurs',
+    router.navigate({
+      pathname: '/listes-joueurs',
       params: {
-        loadListScreen: true,
+        loadListScreen: 'true',
       },
     });
   };

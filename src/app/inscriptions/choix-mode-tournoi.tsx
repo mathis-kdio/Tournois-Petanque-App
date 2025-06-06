@@ -14,18 +14,17 @@ import { VStack } from '@/components/ui/vstack';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { useTranslation } from 'react-i18next';
-import AdMobInscriptionsBanner from '../../components/adMob/AdMobInscriptionsBanner';
-import { StackNavigationProp } from '@react-navigation/stack';
+import AdMobInscriptionsBanner from '@/components/adMob/AdMobInscriptionsBanner';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
+import { useRouter } from 'expo-router';
 
 const ChoixModeTournoi = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const optionsTournoi = useSelector(
@@ -59,16 +58,16 @@ const ChoixModeTournoi = () => {
     ) {
       let screenName =
         modeTournoi === ModeTournoi.SANSNOMS
-          ? 'InscriptionsSansNoms'
-          : 'InscriptionsAvecNoms';
-      navigation.navigate({
-        name: 'OptionsTournoi',
+          ? 'inscriptions-sans-noms'
+          : 'inscriptions-avec-noms';
+      router.navigate({
+        pathname: '/inscriptions/options-tournoi',
         params: {
           screenStackName: screenName,
         },
       });
     } else {
-      navigation.navigate('InscriptionsAvecNoms');
+      router.navigate('/inscriptions/inscriptions-avec-noms');
     }
   };
 
@@ -160,7 +159,7 @@ const ChoixModeTournoi = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView className="h-1 bg-[#0594ae]">
-        <TopBarBack title={t('mode_tournoi')} navigation={navigation} />
+        <TopBarBack title={t('mode_tournoi')} />
         <VStack className="flex-1 px-10 justify-between">
           <VStack space="4xl">
             <Text className="text-white text-2xl text-center">
