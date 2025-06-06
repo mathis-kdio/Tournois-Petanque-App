@@ -15,31 +15,26 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { _adMobGenerationTournoiInterstitiel } from '@components/adMob/AdMobGenerationTournoiInterstitiel';
 import { Platform } from 'react-native';
 import { EventRegister } from 'react-native-event-listeners';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { Match } from '@/types/interfaces/match';
-import {
-  StackActions,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
+import { StackActions } from '@react-navigation/native';
 import { InterstitialAd } from 'react-native-google-mobile-ads';
 import TopBar from '@/components/topBar/TopBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import Loading from '@/components/Loading';
 
-type GenerationMatchsRouteProp = {
-  params: {
-    screenStackName: string;
-  };
+type SearchParams = {
+  screenStackName: string;
 };
 
 const GenerationMatchs = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
-  const route = useRoute<GenerationMatchsRouteProp>();
+  const router = useRouter();
+  const { screenStackName } = useLocalSearchParams<SearchParams>();
   const dispatch = useDispatch();
 
   const optionsTournoi = useSelector(
@@ -120,13 +115,14 @@ const GenerationMatchs = () => {
     }
 
     if (Platform.OS === 'web' || adClosed) {
-      navigation.reset({
+      router.replace('/tournoi')
+      /*navigation.reset({
         index: 0,
         routes: [{ name: 'ListeMatchsInscription' }],
-      });
+      });*/
       return;
     }
-  }, [isGenerationEnd, adLoaded, adClosed, interstitial, navigation]);
+  }, [isGenerationEnd, adLoaded, adClosed, interstitial, router]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -339,11 +335,15 @@ const GenerationMatchs = () => {
   };
 
   const _retourInscription = () => {
-    const popToAction = StackActions.popTo(
-      route.params.screenStackName,
-    );
-    navigation.dispatch(popToAction);
+    router.replace(screenStackName);
   };
+
+  if (
+    screenStackName !== 'inscriptions-avec-noms' &&
+    screenStackName !== 'inscriptions-sans-noms'
+  ) {
+    return <Loading />;
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
