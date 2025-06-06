@@ -21,6 +21,7 @@ const BoutonMenuHeaderNav = () => {
   };
 
   const _showAccueil = () => {
+    /*
     router.reset({
       index: 0,
       routes: [
@@ -28,7 +29,9 @@ const BoutonMenuHeaderNav = () => {
           name: 'AccueilGeneral',
         },
       ],
-    });
+    });*/
+    router.dismissAll();
+    router.replace('/');
   };
 
   return (
