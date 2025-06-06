@@ -6,11 +6,9 @@ import Inscriptions from '@components/Inscriptions';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { StackActions, useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 
 type SearchParams = {
   type?: string;
@@ -19,7 +17,7 @@ type SearchParams = {
 
 const CreateListeJoueur = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const listesJoueurs = useSelector(
@@ -48,7 +46,7 @@ const CreateListeJoueur = () => {
       dispatch(updateSavedList);
     }
 
-    navigation.dispatch(StackActions.pop(1));
+    router.back();
   };
 
   const _submitButton = () => {
@@ -89,7 +87,7 @@ const CreateListeJoueur = () => {
           <Text className="text-white text-xl text-center">
             {t('nombre_joueurs', { nb: nbJoueurs })}
           </Text>
-          <Inscriptions navigation={navigation} loadListScreen={true} />
+          <Inscriptions loadListScreen={true} />
           <Box className="px-10">{_submitButton()}</Box>
         </VStack>
       </VStack>
