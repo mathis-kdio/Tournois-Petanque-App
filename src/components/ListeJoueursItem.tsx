@@ -19,24 +19,22 @@ import { Box } from '@/components/ui/box';
 import React, { useState } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import {
   ListeJoueurs,
   ListeJoueursInfos,
 } from '@/types/interfaces/listeJoueurs';
-import { RouteProp, useNavigation } from '@react-navigation/native';
-import { GeneralStackParamList } from '@/navigation/Navigation';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'expo-router';
 
 export interface Props {
   list: ListeJoueurs;
-  route: RouteProp<GeneralStackParamList, 'ListesJoueurs'>;
+  loadListScreen: boolean;
 }
 
-const ListeJoueursItem: React.FC<Props> = ({ list, route }) => {
+const ListeJoueursItem: React.FC<Props> = ({ list, loadListScreen }) => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const [renommerOn, setRenommerOn] = useState(false);
@@ -67,8 +65,8 @@ const ListeJoueursItem: React.FC<Props> = ({ list, route }) => {
       value: ['mode', ModeTournoi.SAUVEGARDE],
     };
     dispatch(updateOptionModeTournoi);
-    navigation.navigate({
-      name: 'CreateListeJoueurs',
+    router.navigate({
+      pathname: '/liste-joueurs/create-liste-joueurs',
       params: {
         type: 'edit',
         listId: listId,
@@ -178,7 +176,7 @@ const ListeJoueursItem: React.FC<Props> = ({ list, route }) => {
   };
 
   const _buttons = (listId: number) => {
-    if (route && route.params && route.params.loadListScreen) {
+    if (loadListScreen) {
       return (
         <Button action="positive" onPress={() => _loadList(listId)}>
           <ButtonText>{t('charger')}</ButtonText>
@@ -211,7 +209,7 @@ const ListeJoueursItem: React.FC<Props> = ({ list, route }) => {
       },
     };
     dispatch(actionLoadList);
-    navigation.goBack();
+    router.back();
   };
 
   const _listName = (listeJoueursInfos: ListeJoueursInfos) => {
