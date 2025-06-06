@@ -19,8 +19,7 @@ import { requestReview } from '@/utils/storeReview/StoreReview';
 import { useDispatch, useSelector } from 'react-redux';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Spinner } from '@/components/ui/spinner';
-import colors from 'tailwindcss/colors';
+import Loading from '@/components/Loading';
 
 type SearchParams = {
   idMatch?: string;
@@ -29,7 +28,7 @@ type SearchParams = {
 const MatchDetail = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const { idMatch } = useLocalSearchParams<SearchParams>();
+  const param = useLocalSearchParams<SearchParams>();
   const dispatch = useDispatch();
 
   const tournoi = useSelector((state: any) => state.gestionMatchs.listematchs);
@@ -41,17 +40,14 @@ const MatchDetail = () => {
 
   const optionsTournoi = tournoi.slice(-1)[0] as OptionsTournoi;
 
-  if (!idMatch) {
-    return (
-      <Box className="flex-1 bg-[#0594ae] justify-center">
-        <Spinner size="large" color={colors.white} />
-      </Box>
-    );
+  let idMatch = parseInt(param.idMatch ?? '');
+  if (isNaN(idMatch)) {
+    return <Loading />;
   }
-
-  const match = tournoi.find(
-    (match: Match) => match.id === parseInt(idMatch),
-  ) as Match;
+  const match = tournoi.find((match: Match) => match.id === idMatch) as Match;
+  if (!match) {
+    return <Loading />;
+  }
 
   const _ajoutScoreTextInputChanged = (score: string, equipe: number) => {
     if (equipe === 1) {
