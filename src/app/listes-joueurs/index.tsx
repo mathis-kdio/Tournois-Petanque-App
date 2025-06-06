@@ -9,7 +9,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { ListRenderItem } from 'react-native';
 import {
@@ -17,21 +16,16 @@ import {
   ListeJoueurs as ListeJoueursInterface,
 } from '@/types/interfaces/listeJoueurs';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation, useRouter } from 'expo-router';
-import { useRoute } from '@react-navigation/native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 
-type ListesJoueursRouteProp = {
-  params: {
-    loadListScreen: boolean;
-  };
+type SearchParams = {
+  loadListScreen?: string;
 };
 
 const ListesJoueurs = () => {
   const { t } = useTranslation();
   const router = useRouter();
-
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
-  const route = useRoute<ListesJoueursRouteProp>();
+  const { loadListScreen = 'false' } = useLocalSearchParams<SearchParams>();
   const dispatch = useDispatch();
 
   const savedLists = useSelector(
@@ -68,7 +62,7 @@ const ListesJoueurs = () => {
   };
 
   const _addListButton = () => {
-    if (route.params === undefined || route.params.loadListScreen !== true) {
+    if (loadListScreen !== 'true') {
       return (
         <Button action="positive" onPress={() => _addList()}>
           <ButtonText>{t('creer_liste')}</ButtonText>
@@ -84,7 +78,7 @@ const ListesJoueurs = () => {
     nbLists += savedLists.sansNoms.length;
   }
   const renderItem: ListRenderItem<ListeJoueursInterface> = ({ item }) => (
-    <ListeJoueursItem list={item} navigation={navigation} route={route} />
+    <ListeJoueursItem list={item} loadListScreen={loadListScreen === 'true'} />
   );
   return (
     <SafeAreaView style={{ flex: 1 }}>
