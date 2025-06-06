@@ -23,11 +23,9 @@ import { ListRenderItem } from 'react-native';
 import { dateFormatDateHeure } from '@/utils/date';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigation } from 'expo-router';
 
 const ListeTournois = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation();
 
   const [modalTournoiInfosIsOpen, setModalTournoiInfosIsOpen] = useState(false);
   const [infosTournoi, setInfosTournoi] = useState<Tournoi | undefined>(
@@ -142,7 +140,6 @@ const ListeTournois = () => {
   const renderItem: ListRenderItem<Tournoi> = ({ item }) => (
     <ListeTournoiItem
       tournoi={item}
-      navigation={navigation}
       _showModalTournoiInfos={(tournoi: Tournoi) =>
         _showModalTournoiInfos(tournoi)
       }
