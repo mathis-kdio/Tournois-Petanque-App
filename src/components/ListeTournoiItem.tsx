@@ -21,7 +21,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { Tournoi } from '@/types/interfaces/tournoi';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation, useRouter } from 'expo-router';
+import { useNavigation } from 'expo-router';
 import { CommonActions } from '@react-navigation/native';
 
 export interface Props {
@@ -34,7 +34,6 @@ const ListeTournoiItem: React.FC<Props> = ({
   _showModalTournoiInfos,
 }) => {
   const { t } = useTranslation();
-  const router = useRouter();
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
