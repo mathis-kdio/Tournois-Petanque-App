@@ -19,13 +19,13 @@ import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { Match } from '@/types/interfaces/match';
-import { StackActions } from '@react-navigation/native';
 import { InterstitialAd } from 'react-native-google-mobile-ads';
 import TopBar from '@/components/topBar/TopBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
 import Loading from '@/components/Loading';
+import { CommonActions } from '@react-navigation/native';
 
 type SearchParams = {
   screenStackName: string;
@@ -34,6 +34,7 @@ type SearchParams = {
 const GenerationMatchs = () => {
   const { t } = useTranslation();
   const router = useRouter();
+  const navigation = useNavigation();
   const { screenStackName } = useLocalSearchParams<SearchParams>();
   const dispatch = useDispatch();
 
@@ -115,11 +116,11 @@ const GenerationMatchs = () => {
     }
 
     if (Platform.OS === 'web' || adClosed) {
-      router.replace('/tournoi')
-      /*navigation.reset({
-        index: 0,
-        routes: [{ name: 'ListeMatchsInscription' }],
-      });*/
+      navigation.dispatch(
+        CommonActions.reset({
+          routes: [{ key: '/tournoi', name: '/tournoi' }],
+        }),
+      );
       return;
     }
   }, [isGenerationEnd, adLoaded, adClosed, interstitial, router]);

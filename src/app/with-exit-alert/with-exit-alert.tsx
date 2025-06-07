@@ -1,25 +1,15 @@
-import {
-  CommonActions,
-  useFocusEffect,
-  useNavigation,
-} from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, BackHandler } from 'react-native';
 
 const useExitAlertOnBack = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const router = useRouter();
 
   useFocusEffect(
     useCallback(() => {
       const onBackPress = () => {
-        const resetAccueil = CommonActions.reset({
-          index: 0,
-          routes: [{ name: 'AccueilGeneral' }],
-        });
-
         Alert.alert(
           t('quitter_tournoi'),
           t('quitter_tournoi_question'),
@@ -27,7 +17,7 @@ const useExitAlertOnBack = () => {
             { text: t('rester'), onPress: () => null, style: 'cancel' },
             {
               text: t('retour_accueil'),
-              onPress: () => navigation.dispatch(resetAccueil),
+              onPress: () => router.replace('/'),
             },
           ],
           { cancelable: true },
@@ -40,7 +30,7 @@ const useExitAlertOnBack = () => {
         onBackPress,
       );
       return () => subscription.remove();
-    }, [navigation, t]),
+    }, [router, t]),
   );
 };
 

@@ -66,7 +66,7 @@ const ListeJoueursItem: React.FC<Props> = ({ list, loadListScreen }) => {
     };
     dispatch(updateOptionModeTournoi);
     router.navigate({
-      pathname: '/liste-joueurs/create-liste-joueurs',
+      pathname: '/listes-joueurs/create-liste-joueurs',
       params: {
         type: 'edit',
         listId: listId,

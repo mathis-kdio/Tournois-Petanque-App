@@ -18,7 +18,8 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useAuth } from '@/components/supabase/SessionProvider';
-import { useRouter } from 'expo-router';
+import { useNavigation, useRouter } from 'expo-router';
+import { CommonActions } from '@react-navigation/native';
 
 const googleMarketReviews =
   'market://details?id=com.MK.PetanqueGCU&showAllReviews=true';
@@ -32,6 +33,7 @@ const website = 'https://tournoispetanqueapp.fr/';
 const Accueil = () => {
   const { t } = useTranslation();
   const router = useRouter();
+  const navigation = useNavigation();
   const { session } = useAuth();
 
   const listeMatchs = useSelector(
@@ -62,14 +64,11 @@ const Accueil = () => {
   }, [appState]);
 
   const _showMatchs = () => {
-    router.navigate('/tournoi/');
-    /*
     navigation.dispatch(
       CommonActions.reset({
-        routes: [{ name: '/tournoi/' }],
+        routes: [{ key: '/tournoi', name: '/tournoi' }],
       }),
     );
-    */
   };
 
   const _buttonShowMatchs = () => {

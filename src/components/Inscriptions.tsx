@@ -95,6 +95,13 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
     }
   };
 
+  useEffect(() => {
+    if (etatBouton === false && addPlayerTextInput.current) {
+      addPlayerTextInput.current.clear();
+      addPlayerTextInput.current.focus();
+    }
+  }, [addPlayerTextInput, etatBouton]);
+
   const _ajoutJoueur = () => {
     //Test si au moins 1 caractère
     if (joueurText !== '') {
@@ -110,13 +117,10 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
         value: [optionsTournoi.mode, joueurText, joueurType, equipe],
       };
       dispatch(action);
-      addPlayerTextInput.current.clear();
       setJoueurText('');
 
       setJoueurType('');
       setEtatBouton(false);
-      //Ne fonctionne pas avec: "this.addPlayerTextInput.current.focus()" quand validation avec clavier donc "hack" ci-dessous
-      setTimeout(() => addPlayerTextInput.current.focus(), 0);
     }
   };
 

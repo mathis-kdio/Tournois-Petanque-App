@@ -21,7 +21,8 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { Tournoi } from '@/types/interfaces/tournoi';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'expo-router';
+import { useNavigation, useRouter } from 'expo-router';
+import { CommonActions } from '@react-navigation/native';
 
 export interface Props {
   tournoi: Tournoi;
@@ -34,6 +35,7 @@ const ListeTournoiItem: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const [renommerOn, setRenommerOn] = useState(false);
@@ -50,19 +52,11 @@ const ListeTournoiItem: React.FC<Props> = ({
       value: tournoi.tournoi,
     };
     dispatch(actionUpdateListeMatchs);
-    /*navigation.reset({
-      index: 0,
-      routes: [
-        {
-          name: 'ListeMatchsStack',
-          params: {
-            tournoiId: tournoi.tournoiId,
-            tournoi: tournoi,
-          },
-        },
-      ],
-    });*/
-    router.replace('/tournoi');
+    navigation.dispatch(
+      CommonActions.reset({
+        routes: [{ key: '/tournoi', name: '/tournoi' }],
+      }),
+    );
   };
 
   const _supprimerTournoi = (tournoiId: number) => {

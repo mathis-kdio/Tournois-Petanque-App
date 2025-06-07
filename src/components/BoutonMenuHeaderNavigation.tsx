@@ -2,11 +2,13 @@ import { Button } from '@/components/ui/button';
 import { Menu, MenuItem, MenuItemLabel } from '@/components/ui/menu';
 import { useTranslation } from 'react-i18next';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { useNavigation, useRouter } from 'expo-router';
+import { CommonActions } from '@react-navigation/native';
 
 const BoutonMenuHeaderNav = () => {
   const { t } = useTranslation();
   const router = useRouter();
+  const navigation = useNavigation();
 
   const _showOptions = () => {
     router.navigate('/tournoi/parametres-tournoi');
@@ -21,17 +23,11 @@ const BoutonMenuHeaderNav = () => {
   };
 
   const _showAccueil = () => {
-    /*
-    router.reset({
-      index: 0,
-      routes: [
-        {
-          name: 'AccueilGeneral',
-        },
-      ],
-    });*/
-    router.dismissAll();
-    router.replace('/');
+    navigation.dispatch(
+      CommonActions.reset({
+        routes: [{ key: '/', name: '/' }],
+      }),
+    );
   };
 
   return (

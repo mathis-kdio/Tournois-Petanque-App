@@ -19,14 +19,15 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { CommonActions } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
-import { useRouter } from 'expo-router';
+import { useNavigation, useRouter } from 'expo-router';
+import { CommonActions } from '@react-navigation/native';
 
 const ParametresTournoi = () => {
   const { t } = useTranslation();
   const router = useRouter();
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const tournoi = useSelector((state: any) => state.gestionMatchs.listematchs);
 
@@ -38,10 +39,9 @@ const ParametresTournoi = () => {
 
   const _supprimerTournoi = () => {
     setModalDeleteIsOpen(false);
-    router.dispatch(
+    navigation.dispatch(
       CommonActions.reset({
-        index: 0,
-        routes: [{ name: 'AccueilGeneral' }],
+        routes: [{ key: '/', name: '/' }],
       }),
     );
 

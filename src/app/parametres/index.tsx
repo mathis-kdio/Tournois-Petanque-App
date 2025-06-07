@@ -284,7 +284,7 @@ const Parametres = () => {
               <Box className="border border-white rounded-lg">
                 <Item
                   text={t('voir_nouveautes')}
-                  action={() => router.navigate('./changelog')}
+                  action={() => router.navigate('/parametres/changelog')}
                   icon="certificate"
                   type={''}
                   drapeau={undefined}
