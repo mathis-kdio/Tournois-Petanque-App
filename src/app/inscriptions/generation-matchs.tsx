@@ -123,7 +123,7 @@ const GenerationMatchs = () => {
       );
       return;
     }
-  }, [isGenerationEnd, adLoaded, adClosed, interstitial, router]);
+  }, [isGenerationEnd, adLoaded, adClosed, interstitial, navigation]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
