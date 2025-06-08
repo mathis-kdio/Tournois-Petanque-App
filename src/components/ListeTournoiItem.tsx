@@ -53,7 +53,7 @@ const ListeTournoiItem: React.FC<Props> = ({
     dispatch(actionUpdateListeMatchs);
     navigation.dispatch(
       CommonActions.reset({
-        routes: [{ key: '/tournoi', name: '/tournoi' }],
+        routes: [{ key: 'tournoi', name: 'tournoi' }],
       }),
     );
   };

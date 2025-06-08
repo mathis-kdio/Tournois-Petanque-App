@@ -66,7 +66,7 @@ const Accueil = () => {
   const _showMatchs = () => {
     navigation.dispatch(
       CommonActions.reset({
-        routes: [{ key: '/tournoi', name: '/tournoi' }],
+        routes: [{ key: 'tournoi', name: 'tournoi' }],
       }),
     );
   };
