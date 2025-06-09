@@ -203,7 +203,7 @@
     "inscription_avec_noms_navigation_title": "Registration with names",
     "inscription_sans_noms_navigation_title": "Registration without names",
     "liste_terrains_navigation_title": "List of terrains",
-    "choix_complement_navigation_title": "Choix compléments",
+    "choix_complement_navigation_title": "Complementary choice",
     "generation_matchs_navigation_title": "Generations of games in progress",
     "checkbox_inscription_joueuritem": "Player's checkbox",
     "afficher": "Show",
@@ -254,9 +254,9 @@
     "3contre2": "3 against 2",
     "4contre3": "4 against 3",
     "choix_complement_title_1": "The number of registered players is not a multiple of {{nbModulo}}. It is therefore necessary to choose the distribution of additional players.",
-    "choix_complement_title_2": "Vous pouvez choisir que le dernier match de chaque tour sera un :",
-    "quitter_tournoi": "Quitter le tournoi",
-    "quitter_tournoi_question": "Voulez-vous quitter le tournoi ? Vous pourrez toujours le recharger plus tard.",
-    "rester": "Rester"
+    "choix_complement_title_2": "You can choose that the last match of each round will be a:",
+    "quitter_tournoi": "Leave the tournament",
+    "quitter_tournoi_question": "Do you want to leave the tournament? You can always reload it later.",
+    "rester": "Stay"
   }
 }
