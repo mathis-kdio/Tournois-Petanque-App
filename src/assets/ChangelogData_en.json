@@ -86,155 +86,155 @@
             "- Improved display of tabs and winning teams in the match list.",
             "- Thanks for the translation.",
             "- Fixed display issues.",
-            "- Corrections de bugs de générations.",
-            "- Mise à jour des dépendances."
+            "- Generation bug fixes.",
+            "- Updated dependencies."
         ]
     },
     "23": {
         "id": "23",
         "version": "1.15.0",
         "infos": [
-            "- L'ensemble de l'application dispose du nouveau design.",
-            "- Traduction de l'application en polonais.",
-            "- Corrections de bugs."
+            "- The entire application has the new design.",
+            "- Translation of the application into Polish.",
+            "- Correction of errors."
         ]
     },
     "22": {
         "id": "22",
         "version": "1.14.0",
         "infos": [
-            "- Traduction de l'application.",
-            "- Export en PDF des Coupes.",
-            "- Possibilité d'afficher des cases à cocher à l'inscription.",
-            "- Nouvelles pages d'inscription.",
-            "- Correction de libellés.",
-            "- Corrections de bugs."
+            "- Translation of the application.",
+            "- Export of Sections to PDF.",
+            "- Ability to display checkboxes upon registration.",
+            "- New registration pages.",
+            "- Correction of labels.",
+            "- Correction of errors."
         ]
     },
     "21": {
         "id": "21",
         "version": "1.13.0",
         "infos": [
-            "- Options pour affecter les matchs à des terrains.",
-            "- Nouvelles pages de : Paramètres, Type de tournoi, Mode de tournoi, Options de tournoi.",
-            "- Amélioration de l'option « Sans mêmes adversaires ».",
-            "- Correction de la génération des tournois en mêlée-démêlée.",
-            "- Corrections de l'affichage du type de joueur."
+            "- Options to assign matches to fields.",
+            "- New pages for: Settings, Tournament Type, Tournament Mode, Tournament Options.",
+            "- Improved the “Without Same Opponents” option.",
+            "- Fixed tournament generation in unraveled melee.",
+            "- Fixed player type display issues."
         ]
     },
     "20": {
         "id": "20",
         "version": "1.12.0",
         "infos": [
-            "- Possibilité d'attribuer aux joueurs les rôles Pointeur/Tireur/Milieu en doublette pour améliorer l'équilibrage des équipes.",
-            "- Nouvelle page d'accueil.",
-            "- Choix nombre de points pour victoire.",
-            "- Ecran de paramétrage déplacé.",
-            "- Amélioration du renommage des joueurs."
+            "- Ability to assign players the roles of Pointer/Shooter/Midfielder in pairs to improve team balancing.",
+            "- New home page.",
+            "- Choose the number of points for victory.",
+            "- Moved settings screen.",
+            "- Improved player renaming."
         ]
     },
     "19": {
         "id": "19",
         "version": "1.11.0",
         "infos": [
-            "- Application disponible sur iOS !",
-            "- Création d'une page Facebook communautaire et ajout d'un bouton sur la page d'accueil.",
-            "- Ajout de la date de création et de modification d'un tournoi.",
-            "- Amélioration de l'affichage des informations de tournoi.",
-            "- Possibilité de renommer une liste de joueurs.",
-            "- Correction de bugs liés aux listes de joueurs.",
-            "- Correction de l'affichage du mode clair de l'application."
+            "- Application available on iOS!",
+            "- Creation of a community Facebook page and addition of a button on the home page.",
+            "- Added creation and modification date of a tournament.",
+            "- Improved display of tournament information.",
+            "- Ability to rename a player list.",
+            "- Fixed bugs related to player lists.",
+            "- Fixed the display of the application's light mode."
         ]
     },
     "18": {
         "id": "18",
         "version": "1.10.1",
         "infos": [
-            "- Avertissement lorsqu'une nouvelle mise à jour est disponible.",
-            "- Correction d'un bug qui empêchait de charger un tournoi."
+            "- Warning when a new update is available.",
+            "- Fixed a bug that prevented a tournament from loading."
         ]
     },
     "17": {
         "id": "17",
         "version": "1.10.0",
         "infos": [
-            "- Ajout de création de listes de joueurs pouvant être chargées pendant l'inscription afin de gagner du temps.",
-            "- Ajout de l'affichage de + de suggestions de joueurs.",
-            "- Ajout de la suppression de joueurs suggérés.",
-            "- Ajout de l'affichage d'informations des anciens tournois.",
-            "- Ajout du renommage des tournois.",
-            "- Ajustements de l'interface.",
-            "- Amélioration de la stabilité.",
-            "- Correction de bugs."
+            "- Added creation of player lists that can be loaded during registration to save time.",
+            "- Added display of more player suggestions.",
+            "- Added removal of suggested players.",
+            "- Added display of information from old tournaments.",
+            "- Added tournament renaming.",
+            "- Interface adjustments.",
+            "*Improved stability.",
+            "- Correction of errors."
         ]
     },
     "16": {
         "id": "16",
         "version": "1.9.0",
         "infos": [
-            "- Ajout du mode coupe.",
-            "- Nouvelle page d'accueil.",
-            "- Correction de bugs."
+            "- Added cutting mode.",
+            "- New home page.",
+            "- Correction of errors."
         ]
     },
     "15": {
         "id": "15",
         "version": "1.8.3",
         "infos": [
-            "- Ajout de boutons de chargement lors de l'export en PDF.",
-            "- Amélioration de la génération des parties sans équipes."
+            "- Added loading buttons when exporting to PDF.",
+            "- Improved generation of games without teams."
         ]
     },
     "14": {
         "id": "14",
         "version": "1.8.2",
         "infos": [
-            "- Status et Navigation bar de couleur.",
-            "- Thème light par défaut.",
-            "- Correction de problèmes de navigation.",
-            "- Correction de fautes de textes."
+            "- Colored Status and Navigation bar.",
+            "- Light theme by default.",
+            "- Fixed navigation issues.",
+            "- Correction of text errors."
         ]
     },
     "13": {
         "id": "13",
         "version": "1.8.1",
         "infos": [
-            "- Alerte de confirmation lors de la suppression d'un tournoi.",
-            "- Suppression du tournoi en cours."
+            "- Confirmation alert when deleting a tournament.",
+            "- Deletion of the current tournament."
         ]
     },
     "12": {
         "id": "12",
         "version": "1.8.0",
         "infos": [
-            "- Ajout du mode championnat !.",
-            "- Ajout d'un rapport automatique en cas de plantage.",
-            "- Ajout d'un bouton de mail sur l'accueil.",
-            "- Bouton pour commencer un tournoi avec 7 joueurs désactivé, car mode non pris en charge.",
-            "- Fix chargement et sauvegarde des anciens tournois.",
-            "- Fix suppression d'un tournoi.",
-            "- Fix génération des triplettes.",
-            "- Fix affichage tête-à-tête."
+            "- Added Championship Mode!.",
+            "- Added automatic crash reporting.",
+            "- Added a mail button on the home page.",
+            "- Button to start a tournament with 7 players disabled, because mode not supported.",
+            "- Fixed loading and saving of old tournaments.",
+            "- Fixed tournament deletion.",
+            "- Fixed generation of triplets.",
+            "- Fix head-to-head display."
         ]
     },
     "11": {
         "id": "11",
         "version": "1.7.1",
         "infos": [
-            "- Correction de la génération des tournois avec un nombre impair de joueurs."
+            "- Fixed tournament generation with odd number of players."
         ]
     },
     "10": {
         "id": "10",
         "version": "1.7.0",
         "infos": [
-            "- Ajout de l'export des tournois en PDF.",
-            "- Ajout de la suggestion de noms de joueurs lors de l'inscription.",
-            "- Ajout d'un bouton pour supprimer tous les joueurs lors de l'inscription.",
-            "- Correction de l'affichages des anciens tournois.",
-            "- Correction du focus sur le champ champ pour inscription sans noms.",
-            "- Correction du renommage à l'inscription.",
-            "- Modification des listes des joueurs entre les différentes inscriptions.",
+            "- Added export of tournaments to PDF.",
+            "- Added player name suggestion during registration.",
+            "- Added a button to remove all players when registering.",
+            "- Fixed the display of old tournaments.",
+            "- Fixed focus on field for registration without names.",
+            "- Fixed renaming on registration.",
+            "- Modification of player lists between different registrations.",
             "- Changed the display of the ranking in the case of a match without a name.",
             "- Expo update.",
             "- Updated modules."
