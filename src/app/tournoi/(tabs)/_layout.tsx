@@ -51,7 +51,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="resultats"
         options={{
-          title: t('resultats_classement_navigation_title'),
+          headerTitle: '',
+          headerLeft: () => (
+            <Text className="text-white text-xl ml-2">
+              {t('tournoi')} {tournoiName}
+            </Text>
+          ),
+          headerRight: () => <BoutonMenuHeaderNav />,
+          tabBarLabel: t('resultats_classement_navigation_title'),
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="trophy" size={28} color={color} />
           ),
@@ -61,13 +68,13 @@ export default function TabLayout() {
         name="matchs"
         options={{
           headerTitle: '',
-          tabBarLabel: t('matchs_details_navigation_title'),
           headerLeft: () => (
             <Text className="text-white text-xl ml-2">
               {t('tournoi')} {tournoiName}
             </Text>
           ),
           headerRight: () => <BoutonMenuHeaderNav />,
+          tabBarLabel: t('matchs_details_navigation_title'),
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="bars" size={28} color={color} />
           ),
