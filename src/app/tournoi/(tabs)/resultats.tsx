@@ -11,7 +11,7 @@ import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { Victoire } from '@/types/interfaces/victoire';
 import { useSelector } from 'react-redux';
 import { Match } from '@/types/interfaces/match';
-import useExitAlertOnBack from '@/app/with-exit-alert/with-exit-alert';
+import useExitAlertOnBack from '@/components/with-exit-alert/with-exit-alert';
 
 const ListeResultats = () => {
   useExitAlertOnBack();

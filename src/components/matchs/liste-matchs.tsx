@@ -5,7 +5,7 @@ import { Match } from '@/types/interfaces/match';
 import { ListRenderItem } from 'react-native';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { useSelector } from 'react-redux';
-import useExitAlertOnBack from '@/app/with-exit-alert/with-exit-alert';
+import useExitAlertOnBack from '@/components/with-exit-alert/with-exit-alert';
 import { useRouter } from 'expo-router';
 
 interface ListeMatchsProps {
