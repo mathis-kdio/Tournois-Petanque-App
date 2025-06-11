@@ -2,7 +2,6 @@ import { VStack } from '@/components/ui/vstack';
 import { ScrollView } from '@/components/ui/scroll-view';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { Input, InputField, InputSlot } from '@/components/ui/input';
@@ -16,11 +15,9 @@ import {
 } from '@/components/ui/form-control';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Heading } from '@/components/ui/heading';
-import { useNavigation } from '@react-navigation/native';
 
 const Securite = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
 
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -94,7 +91,7 @@ const Securite = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView className="h-1 bg-[#0594ae]">
-        <TopBarBack title={t('securite')} navigation={navigation} />
+        <TopBarBack title={t('securite')} />
         <VStack className="flex-1 px-10">
           <VStack className="flex-1">
             <Heading className="text-white">Changer le mot de passe</Heading>

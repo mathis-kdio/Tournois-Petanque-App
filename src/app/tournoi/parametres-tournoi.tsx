@@ -19,29 +19,29 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { CommonActions, useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
+import { useNavigation, useRouter } from 'expo-router';
+import { CommonActions } from '@react-navigation/native';
 
 const ParametresTournoi = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const router = useRouter();
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const tournoi = useSelector((state: any) => state.gestionMatchs.listematchs);
 
   const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false);
 
   const _showMatchs = () => {
-    navigation.navigate('ListeMatchsStack');
+    router.navigate('/tournoi');
   };
 
   const _supprimerTournoi = () => {
     setModalDeleteIsOpen(false);
     navigation.dispatch(
       CommonActions.reset({
-        index: 0,
-        routes: [{ name: 'AccueilGeneral' }],
+        routes: [{ name: 'index' }],
       }),
     );
 
@@ -122,10 +122,7 @@ const ParametresTournoi = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView className="h-1 bg-[#0594ae]">
-        <TopBarBack
-          title={t('parametres_tournoi_navigation_title')}
-          navigation={navigation}
-        />
+        <TopBarBack title={t('parametres_tournoi_navigation_title')} />
         <VStack className="flex-1 px-10 justify-around">
           <VStack>
             <Text className="text-white text-xl text-center">

@@ -6,23 +6,22 @@ import ListeTerrainItem from '@components/ListeTerrainItem';
 import { calcNbMatchsParTour } from '@utils/generations/generation';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { Terrain } from '@/types/interfaces/terrain';
 import { ListRenderItem } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import Loading from '@/components/Loading';
+import { screenStackNameType } from '@/types/types/searchParams';
 
-type ListeTerrainsRouteProp = {
-  params: {
-    screenStackName: string;
-  };
+type SearchParams = {
+  screenStackName?: string;
 };
 
 const ListeTerrains = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
-  const route = useRoute<ListeTerrainsRouteProp>();
+  const router = useRouter();
+  const param = useLocalSearchParams<SearchParams>();
   const dispatch = useDispatch();
 
   const listesJoueurs = useSelector(
@@ -48,7 +47,7 @@ const ListeTerrains = () => {
     );
   };
 
-  const _commencerButton = () => {
+  const _commencerButton = (screenStackName: screenStackNameType) => {
     const { typeEquipes, mode, typeTournoi, complement } = optionsTournoi;
     const nbJoueurs = listesJoueurs[mode].length;
     const nbTerrainsNecessaires = calcNbMatchsParTour(
@@ -64,18 +63,18 @@ const ListeTerrains = () => {
       <Button
         isDisabled={disabled}
         action="positive"
-        onPress={() => _commencer()}
+        onPress={() => _commencer(screenStackName)}
       >
         <ButtonText>{title}</ButtonText>
       </Button>
     );
   };
 
-  const _commencer = () => {
-    navigation.navigate({
-      name: 'GenerationMatchs',
+  const _commencer = (screenStackName: screenStackNameType) => {
+    router.navigate({
+      pathname: '/inscriptions/generation-matchs',
       params: {
-        screenStackName: route.params.screenStackName,
+        screenStackName: screenStackName,
       },
     });
   };
@@ -84,13 +83,17 @@ const ListeTerrains = () => {
     <ListeTerrainItem terrain={item} />
   );
 
+  if (
+    param.screenStackName !== 'inscriptions-avec-noms' &&
+    param.screenStackName !== 'inscriptions-sans-noms'
+  ) {
+    return <Loading />;
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <VStack className="flex-1 bg-[#0594ae]">
-        <TopBarBack
-          title={t('liste_terrains_navigation_title')}
-          navigation={navigation}
-        />
+        <TopBarBack title={t('liste_terrains_navigation_title')} />
         <Text className="text-white text-xl text-center">
           {t('nombre_terrains', { nb: listeTerrains.length })}
         </Text>
@@ -106,7 +109,7 @@ const ListeTerrains = () => {
         </VStack>
         <VStack space="lg" className="px-10">
           {_ajoutTerrainButton()}
-          {_commencerButton()}
+          {_commencerButton(param.screenStackName)}
         </VStack>
       </VStack>
     </SafeAreaView>

@@ -1,25 +1,19 @@
-import {
-  CommonActions,
-  useFocusEffect,
-  useNavigation,
-} from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { CommonActions } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from 'expo-router';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, BackHandler } from 'react-native';
 
 const useExitAlertOnBack = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const navigation = useNavigation();
 
   useFocusEffect(
     useCallback(() => {
       const onBackPress = () => {
         const resetAccueil = CommonActions.reset({
-          index: 0,
-          routes: [{ name: 'AccueilGeneral' }],
+          routes: [{ name: 'index' }],
         });
-
         Alert.alert(
           t('quitter_tournoi'),
           t('quitter_tournoi_question'),

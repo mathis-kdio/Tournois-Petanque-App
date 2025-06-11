@@ -20,15 +20,14 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import CardButton from '@components/buttons/CardButton';
 import { useTranslation } from 'react-i18next';
-import AdMobInscriptionsBanner from '../../components/adMob/AdMobInscriptionsBanner';
-import { StackNavigationProp } from '@react-navigation/stack';
+import AdMobInscriptionsBanner from '@/components/adMob/AdMobInscriptionsBanner';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
+import { useRouter } from 'expo-router';
 
 const ChoixTypeTournoi = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const [showModal, setShowModal] = useState(false);
@@ -84,7 +83,7 @@ const ChoixTypeTournoi = () => {
       value: ['typeTournoi', typeTournoi],
     };
     dispatch(updateOptionTypeTournoi);
-    return navigation.navigate('ChoixModeTournoi');
+    return router.navigate('inscriptions/choix-mode-tournoi');
   };
 
   const _setState = (modalType: TypeTournoi) => {
@@ -95,7 +94,7 @@ const ChoixTypeTournoi = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView className="h-1 bg-[#0594ae]">
-        <TopBarBack title={t('type_tournoi')} navigation={navigation} />
+        <TopBarBack title={t('type_tournoi')} />
         <VStack space="2xl" className="flex-1 px-10">
           <VStack className="flex-1">
             <CardButton

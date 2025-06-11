@@ -8,8 +8,6 @@ import { Alert, AppState } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { supabaseClient } from '@/utils/supabase';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-import { StackNavigationProp } from '@react-navigation/stack';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import {
   FormControl,
@@ -30,7 +28,7 @@ import {
   CheckboxIndicator,
   CheckboxLabel,
 } from '@/components/ui/checkbox';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
@@ -46,7 +44,7 @@ AppState.addEventListener('change', (state) => {
 
 const Inscription = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const router = useRouter();
 
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
@@ -100,8 +98,11 @@ const Inscription = () => {
       Alert.alert(error.message);
     } else {
       if (!session) {
-        navigation.navigate('ConfirmationEmail', {
-          email: email,
+        router.navigate({
+          pathname: '/connexion/confirmation-email',
+          params: {
+            email: email,
+          },
         });
       }
     }
@@ -120,7 +121,7 @@ const Inscription = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView className="h-1 bg-[#0594ae]">
-        <TopBarBack title={t('inscription')} navigation={navigation} />
+        <TopBarBack title={t('inscription')} />
         <VStack className="flex-1 px-10 justify-between">
           <VStack className="mb-5">
             <FormControl

@@ -7,21 +7,20 @@ import ListeJoueurItem from '@components/ListeJoueurItem';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { Joueur } from '@/types/interfaces/joueur';
 import { ListRenderItem } from 'react-native';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
-import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import { useRouter } from 'expo-router';
 
 const JoueursTournoi = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const router = useRouter();
   const tournoi = useSelector((state: any) => state.gestionMatchs.listematchs);
 
   const _retourMatchs = () => {
-    navigation.navigate('ListeMatchsStack');
+    router.navigate('/tournoi');
   };
 
   const _displayListeJoueur = (optionsTournoi: OptionsTournoi) => {
@@ -54,10 +53,7 @@ const JoueursTournoi = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <VStack className="flex-1 bg-[#0594ae]">
-        <TopBarBack
-          title={t('liste_joueurs_inscrits_navigation_title')}
-          navigation={navigation}
-        />
+        <TopBarBack title={t('liste_joueurs_inscrits_navigation_title')} />
         <Text className="text-white text-xl text-center">
           {t('nombre_joueurs', { nb: optionsTournoi.listeJoueurs.length })}
         </Text>

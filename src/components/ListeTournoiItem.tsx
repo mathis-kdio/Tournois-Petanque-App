@@ -19,10 +19,10 @@ import { Box } from '@/components/ui/box';
 import React, { useState } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { Tournoi } from '@/types/interfaces/tournoi';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from 'expo-router';
+import { CommonActions } from '@react-navigation/native';
 
 export interface Props {
   tournoi: Tournoi;
@@ -34,7 +34,7 @@ const ListeTournoiItem: React.FC<Props> = ({
   _showModalTournoiInfos,
 }) => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const [renommerOn, setRenommerOn] = useState(false);
@@ -51,18 +51,11 @@ const ListeTournoiItem: React.FC<Props> = ({
       value: tournoi.tournoi,
     };
     dispatch(actionUpdateListeMatchs);
-    navigation.reset({
-      index: 0,
-      routes: [
-        {
-          name: 'ListeMatchsStack',
-          params: {
-            tournoiId: tournoi.tournoiId,
-            tournoi: tournoi,
-          },
-        },
-      ],
-    });
+    navigation.dispatch(
+      CommonActions.reset({
+        routes: [{ name: 'tournoi' }],
+      }),
+    );
   };
 
   const _supprimerTournoi = (tournoiId: number) => {

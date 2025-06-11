@@ -6,51 +6,48 @@ import { Button, ButtonText } from '@/components/ui/button';
 import { Input, InputField } from '@/components/ui/input';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import AdMobMatchDetailBanner from '../../components/adMob/AdMobMatchDetailBanner';
-import { nextMatch } from '../../utils/generations/nextMatch/nextMatch';
+import AdMobMatchDetailBanner from '@components/adMob/AdMobMatchDetailBanner';
+import { nextMatch } from '@utils/generations/nextMatch/nextMatch';
 import { Platform } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { Joueur } from '@/types/interfaces/joueur';
 import { Match } from '@/types/interfaces/match';
-import {
-  StackActions,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
 import { requestReview } from '@/utils/storeReview/StoreReview';
 import { useDispatch, useSelector } from 'react-redux';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import Loading from '@/components/Loading';
 
-type DetailsScreenRouteProp = {
-  params: {
-    idMatch: number;
-    match: Match;
-    nbPtVictoire: number;
-  };
+type SearchParams = {
+  idMatch?: string;
 };
 
 const MatchDetail = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
-  const route = useRoute<DetailsScreenRouteProp>();
+  const router = useRouter();
+  const param = useLocalSearchParams<SearchParams>();
   const dispatch = useDispatch();
 
   const tournoi = useSelector((state: any) => state.gestionMatchs.listematchs);
 
-  const [idMatch, setIdMatch] = useState<number | undefined>(undefined);
   const [score1, setScore1] = useState<string | undefined>(undefined);
   const [score2, setScore2] = useState<string | undefined>(undefined);
 
   const secondInput = React.createRef<any>();
 
-  useEffect(() => {
-    const idMatch = route.params?.idMatch;
-    setIdMatch(idMatch);
-  }, [route.params?.idMatch]); // Le tableau de dépendances signifie que cet effet s'exécute lorsque idMatch change
+  const optionsTournoi = tournoi.slice(-1)[0] as OptionsTournoi;
+
+  let idMatch = parseInt(param.idMatch ?? '');
+  if (isNaN(idMatch)) {
+    return <Loading />;
+  }
+  const match = tournoi.find((match: Match) => match.id === idMatch) as Match;
+  if (!match) {
+    return <Loading />;
+  }
 
   const _ajoutScoreTextInputChanged = (score: string, equipe: number) => {
     if (equipe === 1) {
@@ -68,7 +65,7 @@ const MatchDetail = () => {
   };
 
   const _displayName = (joueurNumber: number, equipe: number) => {
-    let listeJoueurs = tournoi.at(-1).listeJoueurs;
+    let listeJoueurs = optionsTournoi.listeJoueurs;
     let joueur = listeJoueurs.find((item: Joueur) => item.id === joueurNumber);
     if (joueur) {
       if (equipe === 1) {
@@ -107,7 +104,6 @@ const MatchDetail = () => {
       const actionAjoutScore = { type: 'AJOUT_SCORE', value: info };
       dispatch(actionAjoutScore);
       //Si tournoi type coupe et pas le dernier match, alors on ajoute les gagnants au match suivant
-      let optionsTournoi = tournoi.at(-1) as OptionsTournoi;
       let nbMatchs = optionsTournoi.nbMatchs;
       let typeTournoi = optionsTournoi.typeTournoi;
       let nbTours = optionsTournoi.nbTours;
@@ -124,7 +120,7 @@ const MatchDetail = () => {
       };
       dispatch(actionUpdateTournoi);
 
-      navigation.dispatch(StackActions.pop(1));
+      router.back();
     }
   };
 
@@ -144,7 +140,7 @@ const MatchDetail = () => {
       },
     };
     dispatch(actionUpdateTournoi);
-    navigation.navigate('ListeMatchsStack');
+    router.navigate('/tournoi');
   };
 
   const _boutonValider = (match: Match) => {
@@ -160,7 +156,6 @@ const MatchDetail = () => {
     );
   };
 
-  let { match, nbPtVictoire } = route.params;
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'height' : 'height'}
@@ -169,10 +164,7 @@ const MatchDetail = () => {
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView className="h-1 bg-[#0594ae]">
           <VStack>
-            <TopBarBack
-              title={t('detail_match_navigation_title')}
-              navigation={navigation}
-            />
+            <TopBarBack title={t('detail_match_navigation_title')} />
             <VStack className="px-10 justify-between">
               <VStack space="xl">
                 {_displayTitle(match)}
@@ -192,7 +184,7 @@ const MatchDetail = () => {
                       <InputField
                         className="text-white placeholder:text-white"
                         placeholder={t('score_placeholder', {
-                          scoreVictoire: nbPtVictoire,
+                          scoreVictoire: optionsTournoi.nbPtVictoire,
                         })}
                         autoFocus={true}
                         defaultValue={
@@ -218,7 +210,7 @@ const MatchDetail = () => {
                       <InputField
                         className="text-white placeholder:text-white"
                         placeholder={t('score_placeholder', {
-                          scoreVictoire: nbPtVictoire,
+                          scoreVictoire: optionsTournoi.nbPtVictoire,
                         })}
                         defaultValue={
                           match.score2 !== undefined

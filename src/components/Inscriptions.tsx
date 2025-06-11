@@ -30,8 +30,7 @@ import { Joueur } from '@/types/interfaces/joueur';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { ListRenderItem, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { useRouter } from 'expo-router';
 
 export interface Props {
   loadListScreen: boolean;
@@ -39,7 +38,7 @@ export interface Props {
 
 const Inscription: React.FC<Props> = ({ loadListScreen }) => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const [joueurType, setJoueurType] = useState('');
@@ -96,6 +95,13 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
     }
   };
 
+  useEffect(() => {
+    if (etatBouton === false && addPlayerTextInput.current) {
+      addPlayerTextInput.current.clear();
+      addPlayerTextInput.current.focus();
+    }
+  }, [addPlayerTextInput, etatBouton]);
+
   const _ajoutJoueur = () => {
     //Test si au moins 1 caractère
     if (joueurText !== '') {
@@ -111,13 +117,10 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
         value: [optionsTournoi.mode, joueurText, joueurType, equipe],
       };
       dispatch(action);
-      addPlayerTextInput.current.clear();
       setJoueurText('');
 
       setJoueurType('');
       setEtatBouton(false);
-      //Ne fonctionne pas avec: "this.addPlayerTextInput.current.focus()" quand validation avec clavier donc "hack" ci-dessous
-      setTimeout(() => addPlayerTextInput.current.focus(), 0);
     }
   };
 
@@ -173,10 +176,10 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
   };
 
   const _loadSavedList = () => {
-    navigation.navigate({
-      name: 'ListesJoueurs',
+    router.navigate({
+      pathname: '/listes-joueurs',
       params: {
-        loadListScreen: true,
+        loadListScreen: 'true',
       },
     });
   };

@@ -17,18 +17,15 @@ import ListeTournoiItem from '@components/ListeTournoiItem';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { Tournoi } from '@/types/interfaces/tournoi';
 import { ListRenderItem } from 'react-native';
-import { dateFormatDateHeure } from '../../utils/date';
-import { useNavigation } from '@react-navigation/native';
+import { dateFormatDateHeure } from '@/utils/date';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 const ListeTournois = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
 
   const [modalTournoiInfosIsOpen, setModalTournoiInfosIsOpen] = useState(false);
   const [infosTournoi, setInfosTournoi] = useState<Tournoi | undefined>(
@@ -143,7 +140,6 @@ const ListeTournois = () => {
   const renderItem: ListRenderItem<Tournoi> = ({ item }) => (
     <ListeTournoiItem
       tournoi={item}
-      navigation={navigation}
       _showModalTournoiInfos={(tournoi: Tournoi) =>
         _showModalTournoiInfos(tournoi)
       }
@@ -152,10 +148,7 @@ const ListeTournois = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <VStack className="flex-1 bg-[#0594ae]">
-        <TopBarBack
-          title={t('choix_tournoi_navigation_title')}
-          navigation={navigation}
-        />
+        <TopBarBack title={t('choix_tournoi_navigation_title')} />
         <Text className="text-white text-xl text-center px-10">
           {t('nombre_tournois', { nb: listeTournois.length })}
         </Text>

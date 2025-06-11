@@ -23,21 +23,21 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { useTranslation } from 'react-i18next';
 import { Platform } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation, useRoute } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import Loading from '@/components/Loading';
+import { screenStackNameType } from '@/types/types/searchParams';
 
-type CreateListeJoueurRouteProp = {
-  params: {
-    screenStackName: string;
-  };
+type SearchParams = {
+  screenStackName?: string;
 };
 
 const OptionsTournoi = () => {
+  const router = useRouter();
+  const param = useLocalSearchParams<SearchParams>();
+
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
-  const route = useRoute<CreateListeJoueurRouteProp>();
   const dispatch = useDispatch();
 
   const [speciauxIncompatibles, setSpeciauxIncompatibles] = useState(true);
@@ -60,7 +60,7 @@ const OptionsTournoi = () => {
     setNbPtVictoire(nbPtVictoireTxt ? parseInt(nbPtVictoireTxt) : undefined);
   };
 
-  const _nextStep = () => {
+  const _nextStep = (screenStackName: screenStackNameType) => {
     const updateOptionNbTours = {
       type: 'UPDATE_OPTION_TOURNOI',
       value: ['nbTours', nbTours],
@@ -97,10 +97,10 @@ const OptionsTournoi = () => {
     };
     dispatch(updateOptionAvecTerrains);
 
-    navigation.navigate(route.params.screenStackName);
+    router.navigate(`/inscriptions/${screenStackName}`);
   };
 
-  const _boutonValider = () => {
+  const _boutonValider = (screenStackName: screenStackNameType) => {
     let btnDisabled = true;
     let btnTitle = t('champ_invalide');
     if (
@@ -118,13 +118,20 @@ const OptionsTournoi = () => {
       <Button
         action="primary"
         isDisabled={btnDisabled}
-        onPress={() => _nextStep()}
+        onPress={() => _nextStep(screenStackName)}
         size="md"
       >
         <ButtonText>{btnTitle}</ButtonText>
       </Button>
     );
   };
+
+  if (
+    param.screenStackName !== 'inscriptions-avec-noms' &&
+    param.screenStackName !== 'inscriptions-sans-noms'
+  ) {
+    return <Loading />;
+  }
 
   return (
     <KeyboardAvoidingView
@@ -134,10 +141,7 @@ const OptionsTournoi = () => {
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView className="h-1 bg-[#0594ae]">
           <VStack className="flex-1">
-            <TopBarBack
-              title={t('options_tournoi_title')}
-              navigation={navigation}
-            />
+            <TopBarBack title={t('options_tournoi_title')} />
             <VStack space="4xl" className="px-10">
               <VStack space="md">
                 <VStack>
@@ -256,7 +260,7 @@ const OptionsTournoi = () => {
                   </CheckboxLabel>
                 </Checkbox>
               </VStack>
-              <VStack>{_boutonValider()}</VStack>
+              <VStack>{_boutonValider(param.screenStackName)}</VStack>
             </VStack>
           </VStack>
         </ScrollView>

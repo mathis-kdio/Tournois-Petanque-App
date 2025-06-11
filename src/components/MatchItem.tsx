@@ -13,11 +13,7 @@ import { useSelector } from 'react-redux';
 
 export interface Props {
   match: Match;
-  displayDetailForMatch: (
-    idMatch: number,
-    match: Match,
-    nbPtVictoire: number,
-  ) => void;
+  displayDetailForMatch: (idMatch: number) => void;
   manche: number;
   nbPtVictoire: number;
 }
@@ -101,9 +97,7 @@ const MatchItem: React.FC<Props> = ({
 
   if (match.manche === manche) {
     return (
-      <TouchableOpacity
-        onPress={() => displayDetailForMatch(match.id, match, nbPtVictoire)}
-      >
+      <TouchableOpacity onPress={() => displayDetailForMatch(match.id)}>
         <VStack className="m-2">
           {_displayTitle(match, nbPtVictoire)}
           <HStack className="items-center">

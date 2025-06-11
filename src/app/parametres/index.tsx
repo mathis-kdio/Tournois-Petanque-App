@@ -32,15 +32,14 @@ import { useState } from 'react';
 import { expo } from '../../../app.json';
 import { _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { _adsConsentShowForm } from '../../utils/adMob/consentForm';
+import { _adsConsentShowForm } from '@utils/adMob/consentForm';
 import { useTranslation } from 'react-i18next';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import Item from '@components/Item';
 import i18n from 'i18next';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { Pressable } from '@/components/ui/pressable';
-import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
+import { useRouter } from 'expo-router';
 
 const Parametres = () => {
   const githubRepository =
@@ -52,7 +51,7 @@ const Parametres = () => {
   const [modalLanguagesOpen, openModalLanguages] = useState(false);
 
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const _alertDialogClearData = () => {
@@ -229,7 +228,7 @@ const Parametres = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <VStack className="flex-1 bg-[#0594ae]">
-        <TopBarBack title={t('parametres')} navigation={navigation} />
+        <TopBarBack title={t('parametres')} />
         <ScrollView className="h-1">
           <VStack space="lg" className="flex-1 px-10">
             <VStack>
@@ -285,7 +284,7 @@ const Parametres = () => {
               <Box className="border border-white rounded-lg">
                 <Item
                   text={t('voir_nouveautes')}
-                  action={() => navigation.navigate('Changelog')}
+                  action={() => router.navigate('/parametres/changelog')}
                   icon="certificate"
                   type={''}
                   drapeau={undefined}

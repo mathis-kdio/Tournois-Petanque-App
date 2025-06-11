@@ -6,16 +6,22 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import CardButton from '@components/buttons/CardButton';
 import { useTranslation } from 'react-i18next';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { Divider } from '@/components/ui/divider';
 import { Complement } from '@/types/enums/complement';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { screenStackNameType } from '@/types/types/searchParams';
+import Loading from '@/components/Loading';
+
+type SearchParams = {
+  screenStackName?: string;
+};
 
 const ChoixComplement = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
+  const router = useRouter();
+  const param = useLocalSearchParams<SearchParams>();
   const dispatch = useDispatch();
 
   const optionsTournoi = useSelector(
@@ -27,7 +33,10 @@ const ChoixComplement = () => {
 
   const [options, setOptions] = useState<Complement[]>([]);
 
-  const _navigate = (complement: Complement) => {
+  const _navigate = (
+    complement: Complement,
+    screenStackName: screenStackNameType,
+  ) => {
     const updateOptionComplement = {
       type: 'UPDATE_OPTION_TOURNOI',
       value: ['complement', complement],
@@ -35,11 +44,11 @@ const ChoixComplement = () => {
     dispatch(updateOptionComplement);
 
     const { avecTerrains } = optionsTournoi;
-    let screenName = avecTerrains ? 'ListeTerrains' : 'GenerationMatchs';
-    navigation.navigate({
-      name: screenName,
+    let screenName = avecTerrains ? 'liste-terrains' : 'generation-matchs';
+    router.navigate({
+      pathname: `/inscriptions/${screenName}`,
       params: {
-        screenStackName: 'InscriptionsAvecNoms',
+        screenStackName: screenStackName,
       },
     });
   };
@@ -98,7 +107,10 @@ const ChoixComplement = () => {
     prepareComplements(typeEquipes, nbJoueurs);
   }, [listesJoueurs, optionsTournoi, prepareComplements]);
 
-  const card = (complement: Complement) => {
+  const card = (
+    complement: Complement,
+    screenStackName: screenStackNameType,
+  ) => {
     const complementTextMap: Record<
       Complement,
       { text: string; icons: string[] }
@@ -134,7 +146,7 @@ const ChoixComplement = () => {
         <CardButton
           text={item.text}
           icons={item.icons}
-          navigate={() => _navigate(complement)}
+          navigate={() => _navigate(complement, screenStackName)}
           newBadge={false}
         />
       </VStack>
@@ -144,10 +156,18 @@ const ChoixComplement = () => {
   const { typeEquipes } = optionsTournoi;
   let nbModulo = typeEquipes === TypeEquipes.DOUBLETTE ? '4' : '6';
 
+  let screenStackName = param.screenStackName;
+  if (
+    screenStackName !== 'inscriptions-avec-noms' &&
+    screenStackName !== 'inscriptions-sans-noms'
+  ) {
+    return <Loading />;
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView className="h-1 bg-[#0594ae]">
-        <TopBarBack title={t('choix_complement')} navigation={navigation} />
+        <TopBarBack title={t('choix_complement')} />
         <VStack space="2xl" className="flex-1 px-10">
           <Text size={'lg'} className="text-white text-center">
             {t('choix_complement_title_1', { nbModulo: nbModulo })}
@@ -157,7 +177,7 @@ const ChoixComplement = () => {
           </Text>
           {options.map((complement, index) => (
             <VStack key={index}>
-              {card(complement)}
+              {card(complement, screenStackName)}
               {index + 1 !== options.length && <Divider className="mt-5 h-1" />}
             </VStack>
           ))}

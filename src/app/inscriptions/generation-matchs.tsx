@@ -12,34 +12,31 @@ import { generationTriplettes } from '@utils/generations/tournoiTriplettes';
 import { uniqueValueArrayRandOrder } from '@utils/generations/generation';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { _adMobGenerationTournoiInterstitiel } from '../../components/adMob/AdMobGenerationTournoiInterstitiel';
+import { _adMobGenerationTournoiInterstitiel } from '@components/adMob/AdMobGenerationTournoiInterstitiel';
 import { Platform } from 'react-native';
 import { EventRegister } from 'react-native-event-listeners';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { Match } from '@/types/interfaces/match';
-import {
-  StackActions,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
 import { InterstitialAd } from 'react-native-google-mobile-ads';
 import TopBar from '@/components/topBar/TopBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
+import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
+import Loading from '@/components/Loading';
+import { CommonActions } from '@react-navigation/native';
+import { screenStackNameType } from '@/types/types/searchParams';
 
-type GenerationMatchsRouteProp = {
-  params: {
-    screenStackName: string;
-  };
+type SearchParams = {
+  screenStackName?: string;
 };
 
 const GenerationMatchs = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<any, any>>();
-  const route = useRoute<GenerationMatchsRouteProp>();
+  const router = useRouter();
+  const navigation = useNavigation();
+  const param = useLocalSearchParams<SearchParams>();
   const dispatch = useDispatch();
 
   const optionsTournoi = useSelector(
@@ -120,10 +117,11 @@ const GenerationMatchs = () => {
     }
 
     if (Platform.OS === 'web' || adClosed) {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'ListeMatchsInscription' }],
-      });
+      navigation.dispatch(
+        CommonActions.reset({
+          routes: [{ name: 'tournoi' }],
+        }),
+      );
       return;
     }
   }, [isGenerationEnd, adLoaded, adClosed, interstitial, navigation]);
@@ -306,7 +304,7 @@ const GenerationMatchs = () => {
     return 2;
   };
 
-  const _displayLoading = () => {
+  const _displayLoading = (screenStackName: screenStackNameType) => {
     if (isLoading) {
       return (
         <VStack>
@@ -330,7 +328,10 @@ const GenerationMatchs = () => {
         <VStack>
           <Text className="text-white">{textInfo}</Text>
           <Text className="text-white">{textError}</Text>
-          <Button action="primary" onPress={() => _retourInscription()}>
+          <Button
+            action="primary"
+            onPress={() => _retourInscription(screenStackName)}
+          >
             <ButtonText>{t('retour_inscription')}</ButtonText>
           </Button>
         </VStack>
@@ -338,19 +339,23 @@ const GenerationMatchs = () => {
     }
   };
 
-  const _retourInscription = () => {
-    const popToAction = StackActions.popTo(
-      route.params.screenStackName,
-    );
-    navigation.dispatch(popToAction);
+  const _retourInscription = (screenStackName: screenStackNameType) => {
+    router.replace(`/inscriptions/${screenStackName}`);
   };
+
+  if (
+    param.screenStackName !== 'inscriptions-avec-noms' &&
+    param.screenStackName !== 'inscriptions-sans-noms'
+  ) {
+    return <Loading />;
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <VStack className="flex-1 bg-[#0594ae]">
         <TopBar title={t('generation_matchs_navigation_title')} />
         <VStack className="flex-1 px-10 justify-center items-center">
-          {_displayLoading()}
+          {_displayLoading(param.screenStackName)}
         </VStack>
       </VStack>
     </SafeAreaView>
