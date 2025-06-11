@@ -1,12 +1,11 @@
 import { CommonActions } from '@react-navigation/native';
-import { useFocusEffect, useNavigation, useRouter } from 'expo-router';
+import { useFocusEffect, useNavigation } from 'expo-router';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, BackHandler } from 'react-native';
 
 const useExitAlertOnBack = () => {
   const { t } = useTranslation();
-  const router = useRouter();
   const navigation = useNavigation();
 
   useFocusEffect(
@@ -35,7 +34,7 @@ const useExitAlertOnBack = () => {
         onBackPress,
       );
       return () => subscription.remove();
-    }, [router, t]),
+    }, [navigation, t]),
   );
 };
 
