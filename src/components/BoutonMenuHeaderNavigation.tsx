@@ -25,7 +25,7 @@ const BoutonMenuHeaderNav = () => {
   const _showAccueil = () => {
     navigation.dispatch(
       CommonActions.reset({
-        routes: [{ key: '/', name: '/' }],
+        routes: [{ name: 'index' }],
       }),
     );
   };

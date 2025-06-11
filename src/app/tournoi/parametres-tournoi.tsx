@@ -41,7 +41,7 @@ const ParametresTournoi = () => {
     setModalDeleteIsOpen(false);
     navigation.dispatch(
       CommonActions.reset({
-        routes: [{ key: '/', name: '/' }],
+        routes: [{ name: 'index' }],
       }),
     );
 

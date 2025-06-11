@@ -118,7 +118,7 @@ const GenerationMatchs = () => {
     if (Platform.OS === 'web' || adClosed) {
       navigation.dispatch(
         CommonActions.reset({
-          routes: [{ key: '/tournoi', name: '/tournoi' }],
+          routes: [{ name: 'tournoi' }],
         }),
       );
       return;
