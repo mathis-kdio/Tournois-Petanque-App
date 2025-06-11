@@ -11,6 +11,8 @@ import { Complement } from '@/types/enums/complement';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { screenStackNameType } from '@/types/types/searchParams';
+import Loading from '@/components/Loading';
 
 type SearchParams = {
   screenStackName?: string;
@@ -19,7 +21,7 @@ type SearchParams = {
 const ChoixComplement = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const { screenStackName } = useLocalSearchParams<SearchParams>();
+  const param = useLocalSearchParams<SearchParams>();
   const dispatch = useDispatch();
 
   const optionsTournoi = useSelector(
@@ -31,7 +33,10 @@ const ChoixComplement = () => {
 
   const [options, setOptions] = useState<Complement[]>([]);
 
-  const _navigate = (complement: Complement) => {
+  const _navigate = (
+    complement: Complement,
+    screenStackName: screenStackNameType,
+  ) => {
     const updateOptionComplement = {
       type: 'UPDATE_OPTION_TOURNOI',
       value: ['complement', complement],
@@ -102,7 +107,10 @@ const ChoixComplement = () => {
     prepareComplements(typeEquipes, nbJoueurs);
   }, [listesJoueurs, optionsTournoi, prepareComplements]);
 
-  const card = (complement: Complement) => {
+  const card = (
+    complement: Complement,
+    screenStackName: screenStackNameType,
+  ) => {
     const complementTextMap: Record<
       Complement,
       { text: string; icons: string[] }
@@ -138,7 +146,7 @@ const ChoixComplement = () => {
         <CardButton
           text={item.text}
           icons={item.icons}
-          navigate={() => _navigate(complement)}
+          navigate={() => _navigate(complement, screenStackName)}
           newBadge={false}
         />
       </VStack>
@@ -147,6 +155,14 @@ const ChoixComplement = () => {
 
   const { typeEquipes } = optionsTournoi;
   let nbModulo = typeEquipes === TypeEquipes.DOUBLETTE ? '4' : '6';
+
+  let screenStackName = param.screenStackName;
+  if (
+    screenStackName !== 'inscriptions-avec-noms' &&
+    screenStackName !== 'inscriptions-sans-noms'
+  ) {
+    return <Loading />;
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -161,7 +177,7 @@ const ChoixComplement = () => {
           </Text>
           {options.map((complement, index) => (
             <VStack key={index}>
-              {card(complement)}
+              {card(complement, screenStackName)}
               {index + 1 !== options.length && <Divider className="mt-5 h-1" />}
             </VStack>
           ))}
