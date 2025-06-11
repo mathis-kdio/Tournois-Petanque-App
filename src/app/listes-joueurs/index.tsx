@@ -57,7 +57,9 @@ const ListesJoueurs = () => {
 
     router.navigate({
       pathname: '/listes-joueurs/create-liste-joueurs',
-      params: { type: 'create' },
+      params: {
+        type: 'create',
+      },
     });
   };
 
