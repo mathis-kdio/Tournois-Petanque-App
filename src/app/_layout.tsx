@@ -27,7 +27,7 @@ Sentry.init({
   tracesSampleRate: 0.3,
   replaysSessionSampleRate: 0,
   replaysOnErrorSampleRate: 1.0,
-  integrations: [navigationIntegration],
+  integrations: [navigationIntegration, Sentry.mobileReplayIntegration()],
   enableNativeFramesTracking: !isRunningInExpoGo(),
   attachStacktrace: true,
 });
