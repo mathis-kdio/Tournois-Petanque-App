@@ -9,7 +9,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { FontAwesome5 } from '@expo/vector-icons';
 
 import Accueil from '@/app';
-import Authentification from '@/app/connexion/authentification';
+import Authentification from '@/app/connexion';
 import Compte from '@/app/compte';
 import InfosPerso from '@/app/compte/infos-perso';
 import ChoixTypeTournoi from '@/app/inscriptions/choix-type-tournoi';
