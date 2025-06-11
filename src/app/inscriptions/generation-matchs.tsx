@@ -26,6 +26,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
 import Loading from '@/components/Loading';
 import { CommonActions } from '@react-navigation/native';
+import { screenStackNameType } from '@/types/types/searchParams';
 
 type SearchParams = {
   screenStackName?: string;
