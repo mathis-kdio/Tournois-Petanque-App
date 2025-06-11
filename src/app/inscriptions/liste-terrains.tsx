@@ -11,6 +11,8 @@ import { ListRenderItem } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import Loading from '@/components/Loading';
+import { screenStackNameType } from '@/types/types/searchParams';
 
 type SearchParams = {
   screenStackName?: string;
@@ -19,7 +21,7 @@ type SearchParams = {
 const ListeTerrains = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const { screenStackName } = useLocalSearchParams<SearchParams>();
+  const param = useLocalSearchParams<SearchParams>();
   const dispatch = useDispatch();
 
   const listesJoueurs = useSelector(
@@ -45,7 +47,7 @@ const ListeTerrains = () => {
     );
   };
 
-  const _commencerButton = () => {
+  const _commencerButton = (screenStackName: screenStackNameType) => {
     const { typeEquipes, mode, typeTournoi, complement } = optionsTournoi;
     const nbJoueurs = listesJoueurs[mode].length;
     const nbTerrainsNecessaires = calcNbMatchsParTour(
@@ -61,14 +63,14 @@ const ListeTerrains = () => {
       <Button
         isDisabled={disabled}
         action="positive"
-        onPress={() => _commencer()}
+        onPress={() => _commencer(screenStackName)}
       >
         <ButtonText>{title}</ButtonText>
       </Button>
     );
   };
 
-  const _commencer = () => {
+  const _commencer = (screenStackName: screenStackNameType) => {
     router.navigate({
       pathname: '/inscriptions/generation-matchs',
       params: {
@@ -80,6 +82,13 @@ const ListeTerrains = () => {
   const renderItem: ListRenderItem<Terrain> = ({ item }) => (
     <ListeTerrainItem terrain={item} />
   );
+
+  if (
+    param.screenStackName !== 'inscriptions-avec-noms' &&
+    param.screenStackName !== 'inscriptions-sans-noms'
+  ) {
+    return <Loading />;
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -100,7 +109,7 @@ const ListeTerrains = () => {
         </VStack>
         <VStack space="lg" className="px-10">
           {_ajoutTerrainButton()}
-          {_commencerButton()}
+          {_commencerButton(param.screenStackName)}
         </VStack>
       </VStack>
     </SafeAreaView>
