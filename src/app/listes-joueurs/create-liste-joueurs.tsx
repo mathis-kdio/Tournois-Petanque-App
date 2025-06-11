@@ -9,6 +9,8 @@ import TopBarBack from '@/components/topBar/TopBarBack';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import Loading from '@/components/Loading';
+import { listeType } from '@/types/types/searchParams';
 
 type SearchParams = {
   type?: string;
@@ -18,6 +20,7 @@ type SearchParams = {
 const CreateListeJoueur = () => {
   const { t } = useTranslation();
   const router = useRouter();
+  const param = useLocalSearchParams<SearchParams>();
   const dispatch = useDispatch();
 
   const listesJoueurs = useSelector(
@@ -49,36 +52,36 @@ const CreateListeJoueur = () => {
     router.back();
   };
 
-  const _submitButton = () => {
-    const { type, listId } = useLocalSearchParams<SearchParams>();
-
-    if (type) {
-      let nbPlayers = listesJoueurs.sauvegarde.length;
-      let title = 'error';
-      if (type === 'create') {
-        title = t('creer_liste');
-      } else if (type === 'edit') {
-        title = t('valider_modification');
-      }
-
-      const idList = listId ? parseInt(listId) : undefined;
-
-      return (
-        <Button
-          isDisabled={nbPlayers === 0}
-          action="positive"
-          onPress={() => _dispatch(type, idList)}
-        >
-          <ButtonText>{title}</ButtonText>
-        </Button>
-      );
+  const _submitButton = (type: listeType, listId: number) => {
+    let nbPlayers = listesJoueurs.sauvegarde.length;
+    let title = 'error';
+    if (type === 'create') {
+      title = t('creer_liste');
+    } else if (type === 'edit') {
+      title = t('valider_modification');
     }
+
+    return (
+      <Button
+        isDisabled={nbPlayers === 0}
+        action="positive"
+        onPress={() => _dispatch(type, listId)}
+      >
+        <ButtonText>{title}</ButtonText>
+      </Button>
+    );
   };
 
   let nbJoueurs = 0;
   if (listesJoueurs.sauvegarde) {
     nbJoueurs = listesJoueurs.sauvegarde.length;
   }
+
+  let idList = parseInt(param.listId ?? '');
+  if (isNaN(idList) || (param.type !== 'create' && param.type !== 'edit')) {
+    return <Loading />;
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <VStack className="flex-1 bg-[#0594ae]">
@@ -88,7 +91,7 @@ const CreateListeJoueur = () => {
             {t('nombre_joueurs', { nb: nbJoueurs })}
           </Text>
           <Inscriptions loadListScreen={true} />
-          <Box className="px-10">{_submitButton()}</Box>
+          <Box className="px-10">{_submitButton(param.type, idList)}</Box>
         </VStack>
       </VStack>
     </SafeAreaView>
