@@ -102,7 +102,7 @@ const Accueil = () => {
       );
     } else {
       return (
-        <Button onPress={() => router.navigate('ConnexionStack')}>
+        <Button onPress={() => router.navigate('/connexion')}>
           <ButtonText>{t('authentification')}</ButtonText>
         </Button>
       );
