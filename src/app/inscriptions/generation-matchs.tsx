@@ -336,7 +336,7 @@ const GenerationMatchs = () => {
   };
 
   const _retourInscription = () => {
-    router.replace(screenStackName);
+    router.replace(`/inscriptions/${screenStackName}`);
   };
 
   if (
