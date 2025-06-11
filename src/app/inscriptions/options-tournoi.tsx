@@ -26,6 +26,8 @@ import { Platform } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import Loading from '@/components/Loading';
+import { screenStackNameType } from '@/types/types/searchParams';
 
 type SearchParams = {
   screenStackName?: string;
@@ -33,7 +35,7 @@ type SearchParams = {
 
 const OptionsTournoi = () => {
   const router = useRouter();
-  const { screenStackName } = useLocalSearchParams<SearchParams>();
+  const param = useLocalSearchParams<SearchParams>();
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -58,7 +60,7 @@ const OptionsTournoi = () => {
     setNbPtVictoire(nbPtVictoireTxt ? parseInt(nbPtVictoireTxt) : undefined);
   };
 
-  const _nextStep = () => {
+  const _nextStep = (screenStackName: screenStackNameType) => {
     const updateOptionNbTours = {
       type: 'UPDATE_OPTION_TOURNOI',
       value: ['nbTours', nbTours],
@@ -98,7 +100,7 @@ const OptionsTournoi = () => {
     router.navigate(`/inscriptions/${screenStackName}`);
   };
 
-  const _boutonValider = () => {
+  const _boutonValider = (screenStackName: screenStackNameType) => {
     let btnDisabled = true;
     let btnTitle = t('champ_invalide');
     if (
@@ -116,13 +118,20 @@ const OptionsTournoi = () => {
       <Button
         action="primary"
         isDisabled={btnDisabled}
-        onPress={() => _nextStep()}
+        onPress={() => _nextStep(screenStackName)}
         size="md"
       >
         <ButtonText>{btnTitle}</ButtonText>
       </Button>
     );
   };
+
+  if (
+    param.screenStackName !== 'inscriptions-avec-noms' &&
+    param.screenStackName !== 'inscriptions-sans-noms'
+  ) {
+    return <Loading />;
+  }
 
   return (
     <KeyboardAvoidingView
@@ -251,7 +260,7 @@ const OptionsTournoi = () => {
                   </CheckboxLabel>
                 </Checkbox>
               </VStack>
-              <VStack>{_boutonValider()}</VStack>
+              <VStack>{_boutonValider(param.screenStackName)}</VStack>
             </VStack>
           </VStack>
         </ScrollView>
