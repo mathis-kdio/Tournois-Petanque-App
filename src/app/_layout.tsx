@@ -12,10 +12,12 @@ import i18n from '../../i18n';
 import '../../global.css';
 import '@expo/metro-runtime'; //Fast-refresh web
 import { AuthProvider } from '@/components/supabase/SessionProvider';
-import { Stack } from 'expo-router';
+import { Stack, useNavigationContainerRef } from 'expo-router';
+import { isRunningInExpoGo } from 'expo';
+import React from 'react';
 
-const reactNavigationIntegration = Sentry.reactNavigationIntegration({
-  enableTimeToInitialDisplay: true,
+const navigationIntegration = Sentry.reactNavigationIntegration({
+  enableTimeToInitialDisplay: !isRunningInExpoGo(),
 });
 
 Sentry.init({
@@ -25,12 +27,20 @@ Sentry.init({
   tracesSampleRate: 0.3,
   replaysSessionSampleRate: 0,
   replaysOnErrorSampleRate: 1.0,
-  integrations: [reactNavigationIntegration, Sentry.mobileReplayIntegration()],
+  integrations: [navigationIntegration],
+  enableNativeFramesTracking: !isRunningInExpoGo(),
   attachStacktrace: true,
 });
 
 export default function RootLayout() {
   let persistor = persistStore(Store);
+
+  const ref = useNavigationContainerRef();
+  React.useEffect(() => {
+    if (ref) {
+      navigationIntegration.registerNavigationContainer(ref);
+    }
+  }, [ref]);
 
   return (
     <Provider store={Store}>
@@ -48,6 +58,6 @@ export default function RootLayout() {
   );
 }
 
-/*Sentry.wrap(App, {
+Sentry.wrap(RootLayout, {
   touchEventBoundaryProps: { labelName: 'accessibilityLabel' },
-});*/
+});
