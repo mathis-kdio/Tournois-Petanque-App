@@ -28,14 +28,14 @@ import Loading from '@/components/Loading';
 import { CommonActions } from '@react-navigation/native';
 
 type SearchParams = {
-  screenStackName: string;
+  screenStackName?: string;
 };
 
 const GenerationMatchs = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const navigation = useNavigation();
-  const { screenStackName } = useLocalSearchParams<SearchParams>();
+  const param = useLocalSearchParams<SearchParams>();
   const dispatch = useDispatch();
 
   const optionsTournoi = useSelector(
@@ -303,7 +303,7 @@ const GenerationMatchs = () => {
     return 2;
   };
 
-  const _displayLoading = () => {
+  const _displayLoading = (screenStackName: screenStackNameType) => {
     if (isLoading) {
       return (
         <VStack>
@@ -327,7 +327,10 @@ const GenerationMatchs = () => {
         <VStack>
           <Text className="text-white">{textInfo}</Text>
           <Text className="text-white">{textError}</Text>
-          <Button action="primary" onPress={() => _retourInscription()}>
+          <Button
+            action="primary"
+            onPress={() => _retourInscription(screenStackName)}
+          >
             <ButtonText>{t('retour_inscription')}</ButtonText>
           </Button>
         </VStack>
@@ -335,13 +338,13 @@ const GenerationMatchs = () => {
     }
   };
 
-  const _retourInscription = () => {
+  const _retourInscription = (screenStackName: screenStackNameType) => {
     router.replace(`/inscriptions/${screenStackName}`);
   };
 
   if (
-    screenStackName !== 'inscriptions-avec-noms' &&
-    screenStackName !== 'inscriptions-sans-noms'
+    param.screenStackName !== 'inscriptions-avec-noms' &&
+    param.screenStackName !== 'inscriptions-sans-noms'
   ) {
     return <Loading />;
   }
@@ -351,7 +354,7 @@ const GenerationMatchs = () => {
       <VStack className="flex-1 bg-[#0594ae]">
         <TopBar title={t('generation_matchs_navigation_title')} />
         <VStack className="flex-1 px-10 justify-center items-center">
-          {_displayLoading()}
+          {_displayLoading(param.screenStackName)}
         </VStack>
       </VStack>
     </SafeAreaView>
