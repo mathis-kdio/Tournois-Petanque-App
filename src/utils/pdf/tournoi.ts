@@ -42,6 +42,23 @@ export const generationPDFTournoi = (
       } else if (listeMatchs[i].equipe[0][1] !== -1) {
         matchNbJoueur = 2;
       }
+
+      // Affichage du numéro du match ou du nom du terrain
+      html += '<tr class="border-top">';
+      for (let nb = 0; nb < nbTourTable; nb++) {
+        let matchId =
+          tableIdx * (toursParLigne * nbMatchsParTour) +
+          nb * nbMatchsParTour +
+          i;
+        let nomMatch = 'Match n°' + listeMatchs[matchId].id + 1;
+        let terrainMatch = listeMatchs[matchId].terrain;
+        if (terrainMatch && terrainMatch.name) {
+          nomMatch = terrainMatch.name;
+        }
+        html += '<td colspan="4" class="text-center">' + nomMatch + '</td>';
+      }
+      html += '</tr>';
+
       for (let jidx = 0; jidx < matchNbJoueur; jidx++) {
         if (jidx === 0) {
           html += '<tr class="border-top">';
