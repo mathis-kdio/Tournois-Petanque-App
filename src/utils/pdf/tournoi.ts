@@ -34,15 +34,6 @@ export const generationPDFTournoi = (
     html += '</tr>';
 
     for (let i = 0; i < nbMatchsParTour; i++) {
-      let matchNbJoueur = 1;
-      if (listeMatchs[i].equipe[0][3] !== -1) {
-        matchNbJoueur = 4;
-      } else if (listeMatchs[i].equipe[0][2] !== -1) {
-        matchNbJoueur = 3;
-      } else if (listeMatchs[i].equipe[0][1] !== -1) {
-        matchNbJoueur = 2;
-      }
-
       // Affichage du numéro du match ou du nom du terrain
       html += '<tr class="border-top">';
       for (let nb = 0; nb < nbTourTable; nb++) {
@@ -58,6 +49,15 @@ export const generationPDFTournoi = (
         html += '<td colspan="4" class="text-center">' + nomMatch + '</td>';
       }
       html += '</tr>';
+
+      let matchNbJoueur = 1;
+      if (listeMatchs[i].equipe[0][3] !== -1) {
+        matchNbJoueur = 4;
+      } else if (listeMatchs[i].equipe[0][2] !== -1) {
+        matchNbJoueur = 3;
+      } else if (listeMatchs[i].equipe[0][1] !== -1) {
+        matchNbJoueur = 2;
+      }
 
       for (let jidx = 0; jidx < matchNbJoueur; jidx++) {
         if (jidx === 0) {
