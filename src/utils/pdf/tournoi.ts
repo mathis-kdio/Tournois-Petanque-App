@@ -133,6 +133,11 @@ export const generationPDFTournoi = (
     }
   }
   if (affichageClassement === true) {
+    // Saut de ligne dans le cas compact
+    if (toursParLigne !== 1) {
+      html += '<div class="pagebreak"></div>';
+    }
+
     html += '<br><table><tr>';
     html +=
       '<th>Place</th><th>Victoires</th><th>Matchs Joués</th><th>Points</th>';
