@@ -35,6 +35,31 @@ export const generationPDFCoupe = (
     }
     html += '</tr>';
     for (let i = 0; i < nbMatchTourEnCours; i++) {
+      // Affichage du numéro du match ou du nom du terrain
+      html += '<tr class="border-top">';
+
+      let nbMatchsTour = nbMatchsParTour;
+      let idxFirstMatchsTour = idxFirstMatchsTable;
+      for (let nb = 0; nb < nbTourTable; nb++) {
+        if (nb !== 0) {
+          idxFirstMatchsTour += nbMatchsTour;
+          nbMatchsTour = nbMatchsTour / 2;
+        }
+        let matchId = idxFirstMatchsTour + i;
+        if (matchId < idxFirstMatchsTour + nbMatchsTour) {
+          let nomMatch = `Match n°' ${listeMatchs[matchId].id + 1}`;
+          let terrainMatch = listeMatchs[matchId].terrain;
+          if (terrainMatch && terrainMatch.name) {
+            nomMatch = terrainMatch.name;
+          }
+          html += '<td colspan="4" class="text-center">' + nomMatch + '</td>';
+        } else {
+          html +=
+            '<td colspan="4" class="no-border-bottom no-border-top"></td>';
+        }
+      }
+      html += '</tr>';
+
       let matchNbJoueur = 1;
       if (listeMatchs[i].equipe[0][2] !== -1) {
         matchNbJoueur = 3;
@@ -112,22 +137,8 @@ export const generationPDFCoupe = (
             }
             html += '</td>';
           } else {
-            html += '<td class="no-border-bottom no-border-top">';
-            html += '</td>';
-            if (jidx === 0) {
-              html +=
-                '<td rowspan="' +
-                matchNbJoueur +
-                '" class="td-score text-center">';
-              html += '</td>';
-              html +=
-                '<td rowspan="' +
-                matchNbJoueur +
-                '" class="td-score text-center">';
-              html += '</td>';
-            }
-            html += '<td class="text-right no-border-bottom no-border-top">';
-            html += '</td>';
+            html +=
+              '<td colspan="4" class="no-border-bottom no-border-top"></td>';
           }
         }
         html += '</tr>';
