@@ -40,6 +40,9 @@ import i18n from 'i18next';
 import { Pressable } from '@/components/ui/pressable';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const SELECTED_LANGUAGE_KEY = 'selectedLanguageKey';
 
 const Parametres = () => {
   const githubRepository =
@@ -220,8 +223,9 @@ const Parametres = () => {
     );
   };
 
-  const _changeLanguage = (language: string) => {
-    i18n.changeLanguage(language);
+  const _changeLanguage = async (language: string) => {
+    await i18n.changeLanguage(language);
+    await AsyncStorage.setItem(SELECTED_LANGUAGE_KEY, language);
     openModalLanguages(false);
   };
 

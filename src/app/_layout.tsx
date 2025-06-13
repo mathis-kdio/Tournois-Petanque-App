@@ -15,6 +15,7 @@ import { AuthProvider } from '@/components/supabase/SessionProvider';
 import { Stack, useNavigationContainerRef } from 'expo-router';
 import { isRunningInExpoGo } from 'expo';
 import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const navigationIntegration = Sentry.reactNavigationIntegration({
   enableTimeToInitialDisplay: !isRunningInExpoGo(),
@@ -32,6 +33,8 @@ Sentry.init({
   attachStacktrace: true,
 });
 
+const SELECTED_LANGUAGE_KEY = 'selectedLanguageKey';
+
 export default function RootLayout() {
   let persistor = persistStore(Store);
 
@@ -41,6 +44,18 @@ export default function RootLayout() {
       navigationIntegration.registerNavigationContainer(ref);
     }
   }, [ref]);
+
+  React.useEffect(() => {
+    const fetchLanguage = async () => {
+      const selectedLanguage = await AsyncStorage.getItem(
+        SELECTED_LANGUAGE_KEY,
+      );
+      if (selectedLanguage) {
+        i18n.changeLanguage(selectedLanguage);
+      }
+    };
+    fetchLanguage();
+  }, []);
 
   return (
     <Provider store={Store}>
