@@ -19,7 +19,7 @@ export const generationPDFTournoi = (
 ) => {
   let date = dateFormatDateCompact(infosTournoi.updateDate);
   let html = `<!DOCTYPE html><html><head><style>@page{margin: 10px;} table{width: 100%;} table,th,td{border: 1px solid black;border-collapse: collapse;} td{min-width: 50px; word-break:break-all;} .td-score{min-width: 20px;} .text-right{text-align: right;} .text-center{text-align: center;} .no-border-top{border-top: none;} .no-border-bottom{border-bottom: none;} .border-top{border-top: 1px solid;}</style></head><body>`;
-  html += '<h1 class="text-center">Tournoi ' + date + '</h1>';
+  html += `<h1 class="text-center">Tournoi ${date}</h1>`;
   for (let tableIdx = 0; tableIdx < nbTables; tableIdx++) {
     let minTourTable = tableIdx * toursParLigne;
     html += '<table><tr>';
@@ -29,7 +29,7 @@ export const generationPDFTournoi = (
     }
     nbToursRestants -= toursParLigne;
     for (let i = 1; i <= nbTourTable; i++) {
-      html += '<th colspan="4">Tour n°' + (minTourTable + i) + '</th>';
+      html += `<th colspan="4">Tour n°${minTourTable + i}</th>`;
     }
     html += '</tr>';
 
@@ -46,7 +46,7 @@ export const generationPDFTournoi = (
         if (terrainMatch && terrainMatch.name) {
           nomMatch = terrainMatch.name;
         }
-        html += '<td colspan="4" class="text-center">' + nomMatch + '</td>';
+        html += `<td colspan="4" class="text-center">${nomMatch}</td>`;
       }
       html += '</tr>';
 
@@ -77,11 +77,11 @@ export const generationPDFTournoi = (
             if (joueur === undefined) {
               html += '';
             } else if (joueur.name === undefined) {
-              html += 'Sans Nom (' + (joueur.id + 1) + ')';
+              html += `Sans Nom (${joueur.id + 1})`;
             } else if (joueur.name === '') {
-              html += 'Joueur ' + (joueur.id + 1);
+              html += `Joueur ${joueur.id + 1}`;
             } else {
-              html += joueur.name + ' (' + (joueur.id + 1) + ')';
+              html += `${joueur.name} (${joueur.id + 1})`;
             }
           }
           html += '</td>';
@@ -89,10 +89,7 @@ export const generationPDFTournoi = (
           if (jidx === 0) {
             //Cases scores
             //score equipe 1
-            html +=
-              '<td rowspan="' +
-              matchNbJoueur +
-              '" class="td-score text-center">';
+            html += `<td rowspan="${matchNbJoueur}" class="td-score text-center">`;
             if (
               affichageScore === true &&
               listeMatchs[matchId].score1 !== undefined
@@ -101,10 +98,7 @@ export const generationPDFTournoi = (
             }
             html += '</td>';
             //score equipe 2
-            html +=
-              '<td rowspan="' +
-              matchNbJoueur +
-              '" class="td-score text-center">';
+            html += `<td rowspan="${matchNbJoueur}" class="td-score text-center">`;
             if (
               affichageScore === true &&
               listeMatchs[matchId].score2 !== undefined
@@ -121,11 +115,11 @@ export const generationPDFTournoi = (
             if (joueur === undefined) {
               html += '';
             } else if (joueur.name === undefined) {
-              html += 'Sans Nom (' + (joueur.id + 1) + ')';
+              html += `Sans Nom (${joueur.id + 1})`;
             } else if (joueur.name === '') {
-              html += 'Joueur ' + (joueur.id + 1);
+              html += `Joueur ${joueur.id + 1}`;
             } else {
-              html += joueur.name + ' (' + (joueur.id + 1) + ')';
+              html += `${joueur.name} (${joueur.id + 1})`;
             }
           }
           html += '</td>';
@@ -148,16 +142,16 @@ export const generationPDFTournoi = (
       html += '<td>' + classement[i].position + ' - ';
       let joueur = listeJoueurs[classement[i].joueurId];
       if (joueur.name === undefined) {
-        html += 'Sans Nom (' + (joueur.id + 1) + ')';
+        html += `Sans Nom (${joueur.id + 1})`;
       } else if (joueur.name === '') {
-        html += 'Joueur ' + (joueur.id + 1);
+        html += `Joueur ${joueur.id + 1}`;
       } else {
-        html += joueur.name + ' (' + (joueur.id + 1) + ')';
+        html += `${joueur.name} (${joueur.id + 1})`;
       }
       html += '</td>';
-      html += '<td class="text-center">' + classement[i].victoires + '</td>';
-      html += '<td class="text-center">' + classement[i].nbMatchs + '</td>';
-      html += '<td class="text-center">' + classement[i].points + '</td>';
+      html += `<td class="text-center">${classement[i].victoires}</td>`;
+      html += `<td class="text-center">${classement[i].nbMatchs}</td>`;
+      html += `<td class="text-center">${classement[i].points}</td>`;
       html += '</tr>';
     }
     html += '</tr></table>';
