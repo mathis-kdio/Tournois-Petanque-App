@@ -47,7 +47,7 @@ export const generationPDFCoupe = (
         }
         let matchId = idxFirstMatchsTour + i;
         if (matchId < idxFirstMatchsTour + nbMatchsTour) {
-          let nomMatch = 'Match n°' + listeMatchs[matchId].id + 1;
+          let nomMatch = `Match n°' ${listeMatchs[matchId].id + 1}`;
           let terrainMatch = listeMatchs[matchId].terrain;
           if (terrainMatch && terrainMatch.name) {
             nomMatch = terrainMatch.name;
