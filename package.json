@@ -12,8 +12,10 @@
     "build-android-development": "npx eas-cli build --profile development",
     "build-web": "npx expo export --platform web",
     "build-desktop": "npx tauri build",
+    "build:plugins": "tsc -p tsconfig.plugins.json",
     "ts:check": "tsc",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "prebuild": "npm run build:plugins"
   },
   "dependencies": {
     "@expo/html-elements": "^0.4.3",

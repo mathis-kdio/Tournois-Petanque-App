@@ -1,8 +1,6 @@
 // disable forced dark mode to prevent weird color changes on
 // certain android devices (Xiaomi MIUI and others enforcing dark mode with view analyzing)
-import configPlugins, { ConfigPlugin } from '@expo/config-plugins';
-
-const { AndroidConfig, withAndroidStyles } = configPlugins;
+import { AndroidConfig, withAndroidStyles, ConfigPlugin } from '@expo/config-plugins';
 
 const withDisableForcedDarkModeAndroid: ConfigPlugin = config => {
   return withAndroidStyles(config, androidStylesConfig => {

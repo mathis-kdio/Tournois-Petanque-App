@@ -1,5 +1,4 @@
-import 'ts-node/register';
-import { ConfigContext, ExpoConfig } from "expo/config"
+import { ConfigContext, ExpoConfig } from "@expo/config"
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   name: "Tournois Pétanque App",
@@ -65,7 +64,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       backgroundColor: "#FFFFFF"
     },
     package: "com.MK.PetanqueGCU",
-    versionCode: 121,
     permissions: [
       "com.google.android.gms.permission.AD_ID"
     ],
@@ -108,7 +106,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       }
     ],
     [
-      "./src/plugins/withDisableForcedDarkModeAndroid.ts",
+      "./plugins-build/withDisableForcedDarkModeAndroid.js"
     ],
     [
       "expo-dev-launcher",
