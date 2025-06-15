@@ -29,7 +29,7 @@ import { Divider } from '@/components/ui/divider';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { useState } from 'react';
-import { expo } from '../../../app.json';
+import { expo } from '../../../app.config';
 import { _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { _adsConsentShowForm } from '@utils/adMob/consentForm';
