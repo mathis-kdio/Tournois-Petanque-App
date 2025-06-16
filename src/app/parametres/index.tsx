@@ -29,7 +29,6 @@ import { Divider } from '@/components/ui/divider';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { useState } from 'react';
-import { expo } from '../../../app.json';
 import { _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { _adsConsentShowForm } from '@utils/adMob/consentForm';
@@ -41,6 +40,7 @@ import { Pressable } from '@/components/ui/pressable';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Application from 'expo-application';
 
 const SELECTED_LANGUAGE_KEY = 'selectedLanguageKey';
 
@@ -299,7 +299,7 @@ const Parametres = () => {
         </ScrollView>
         <Center>
           <Text className="text-center text-md text-white">
-            {t('version')} {expo.version}
+            {t('version')} {Application.nativeApplicationVersion}
           </Text>
         </Center>
         {_alertDialogClearData()}
