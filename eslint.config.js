@@ -12,6 +12,7 @@ module.exports = defineConfig([
       'node_modules/*',
       'src-tauri/*',
       'src/components/ui/*',
+      'plugins-build/*',
     ],
   },
 ]);
