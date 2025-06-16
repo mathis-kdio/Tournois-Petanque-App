@@ -6,7 +6,6 @@ import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { HStack } from '@/components/ui/hstack';
 import { Box } from '@/components/ui/box';
-import { expo } from '../../app.config';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { _openPlateformLink, _openURL } from '@utils/link';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -20,6 +19,7 @@ import { useSelector } from 'react-redux';
 import { useAuth } from '@/components/supabase/SessionProvider';
 import { useNavigation, useRouter } from 'expo-router';
 import { CommonActions } from '@react-navigation/native';
+import * as Application from 'expo-application';
 
 const googleMarketReviews =
   'market://details?id=com.MK.PetanqueGCU&showAllReviews=true';
@@ -206,7 +206,7 @@ const Accueil = () => {
             {t('developpe_par')} Mathis Cadio
           </Text>
           <Text className="text-center text-white text-md">
-            {t('version')} {expo.version}
+            {t('version')} {Application.nativeApplicationVersion}
           </Text>
         </VStack>
       </VStack>
