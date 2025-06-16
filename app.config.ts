@@ -3,7 +3,7 @@ import { ConfigContext, ExpoConfig } from '@expo/config';
 export default ({ config }: ConfigContext): ExpoConfig => ({
   name: 'Tournois Pétanque App',
   slug: 'PetanqueGCU',
-  version: '2.2.0-beta-1',
+  version: '2.2.0-beta-2',
   orientation: 'portrait',
   icon: './src/assets/icon.png',
   userInterfaceStyle: 'light',
