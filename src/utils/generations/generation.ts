@@ -28,7 +28,7 @@ export const calcNbMatchsParTour = (
   modeTournoi: ModeTournoi,
   typeTournoi: TypeTournoi,
   complement: Complement,
-): number | undefined => {
+): number => {
   if (
     modeTournoi === ModeTournoi.AVECEQUIPES ||
     typeTournoi === TypeTournoi.CHAMPIONNAT
@@ -53,7 +53,8 @@ export const calcNbMatchsParTour = (
         return Math.ceil(nbjoueurs / 4);
       } else if (
         complement === Complement.TRIPLETTE ||
-        complement === Complement.TROISVSDEUX
+        complement === Complement.TROISVSDEUX ||
+        complement === Complement.TROIS_VS_TROIS_ET_TROIS_VS_DEUX
       ) {
         return Math.floor(nbjoueurs / 4);
       } else if (complement === undefined) {

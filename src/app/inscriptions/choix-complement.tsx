@@ -78,7 +78,13 @@ const ChoixComplement = () => {
       case 2:
         return [Complement.TETEATETE, Complement.TRIPLETTE];
       case 3:
-        return [Complement.DEUXVSUN];
+        if (nbJoueurs === 7) {
+          return [Complement.DEUXVSUN];
+        }
+        return [
+          Complement.DEUXVSUN,
+          Complement.TROIS_VS_TROIS_ET_TROIS_VS_DEUX,
+        ];
       default:
         throw new Error('Nombre de joueurs ne nécessitant pas un complément');
     }
@@ -138,6 +144,18 @@ const ChoixComplement = () => {
       [Complement.QUATREVSTROIS]: {
         text: t('4contre3'),
         icons: ['users', 'handshake', 'users'],
+      },
+      [Complement.TROIS_VS_TROIS_ET_TROIS_VS_DEUX]: {
+        text: t('3contre3_et_3contre2'),
+        icons: [
+          'users',
+          'handshake',
+          'users',
+          'plus',
+          'users',
+          'handshake',
+          'user-friends',
+        ],
       },
     };
     const item = complementTextMap[complement];

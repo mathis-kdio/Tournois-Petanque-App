@@ -338,18 +338,23 @@ export const generationDoublettes = (
         if (
           nbjoueurs % 4 !== 0 &&
           (complement === Complement.TRIPLETTE ||
-            complement === Complement.TROISVSDEUX) &&
+            complement === Complement.TROISVSDEUX ||
+            complement === Complement.TROIS_VS_TROIS_ET_TROIS_VS_DEUX) &&
           match.equipe[0][2] === -1
         ) {
           const joueursEnTrop = nbjoueurs % 4;
           if (joueursEnTrop === 1) {
+            // Cas TROISVSDEUX
             match.equipe[0][2] = joueurId;
           } else if (joueursEnTrop === 2) {
+            // Cas TRIPLETTE
             match.equipe[0][2] = joueurId;
             match.equipe[1][2] = random[j + 1];
           } else if (joueursEnTrop === 3) {
-            match.equipe[1][2] = random[j + 1];
-            matchs[idMatch - 1].equipe[0][2] = random[j + 2];
+            // Cas TROIS_VS_TROIS_ET_TROIS_VS_DEUX
+            match.equipe[0][2] = joueurId;
+            matchs[idMatch - 1].equipe[0][2] = random[j + 1];
+            matchs[idMatch - 1].equipe[1][2] = random[j + 2];
           }
           j += joueursEnTrop;
           breaker = 0;
