@@ -28,7 +28,7 @@ export const calcNbMatchsParTour = (
   modeTournoi: ModeTournoi,
   typeTournoi: TypeTournoi,
   complement: Complement,
-): number | undefined => {
+): number => {
   if (
     modeTournoi === ModeTournoi.AVECEQUIPES ||
     typeTournoi === TypeTournoi.CHAMPIONNAT
