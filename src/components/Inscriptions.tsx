@@ -298,7 +298,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
       >
         <FontAwesome5 name={icon} size={15} color="white" />
         <Text className="text-white text-md">
-          {text} {t('case_a_cocher')}
+          {` ${text} ${t('case_a_cocher')}`}
         </Text>
       </Pressable>
     );
@@ -337,8 +337,8 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
           </Button>
         </Box>
       </HStack>
-      {_showCheckboxSection()}
       <Divider className="bg-white h-0.5 my-2" />
+      <Box className="w-fit">{_showCheckboxSection()}</Box>
       <VStack className="flex-1">{_displayListeJoueur()}</VStack>
       {_modalRemoveAllPlayers()}
     </VStack>
