@@ -31,6 +31,7 @@ import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { ListRenderItem, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'expo-router';
+import TriListeJoueurs from './inscriptions/TriListeJoueurs';
 
 export interface Props {
   loadListScreen: boolean;
@@ -48,6 +49,8 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
   const [nbSuggestions, setNbSuggestions] = useState(5);
   const [modalRemoveIsOpen, setModalRemoveIsOpen] = useState(false);
   const [showCheckbox, setShowCheckbox] = useState(false);
+  const [showTri, setshowTri] = useState(false);
+  const [triType, setTriType] = useState('');
 
   const optionsTournoi = useSelector(
     (state: any) => state.optionsTournoi.options,
@@ -304,6 +307,25 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
     );
   };
 
+  const _showTriSection = () => {
+    return (
+      <Box>
+        <Pressable
+          onPress={() => setshowTri(!showTri)}
+          className="my-1 flex-row items-center"
+        >
+          <FontAwesome5 name={'sort'} size={15} color="white" />
+          <Text className="text-white text-md">{`Trier les joueurs`}</Text>
+        </Pressable>
+        <TriListeJoueurs
+          isOpen={showTri}
+          onClose={() => setshowTri(false)}
+          setTriType={setTriType}
+        />
+      </Box>
+    );
+  };
+
   return (
     <VStack className="flex-1">
       <HStack space="md" className="items-center mx-1">
@@ -338,7 +360,10 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
         </Box>
       </HStack>
       <Divider className="bg-white h-0.5 my-2" />
-      <Box className="w-fit">{_showCheckboxSection()}</Box>
+      <HStack>
+        <Box className="w-fit">{_showCheckboxSection()}</Box>
+        <Box className="w-fit">{_showTriSection()}</Box>
+      </HStack>
       <VStack className="flex-1">{_displayListeJoueur()}</VStack>
       {_modalRemoveAllPlayers()}
     </VStack>
