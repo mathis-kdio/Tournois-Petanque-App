@@ -50,7 +50,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
   const [modalRemoveIsOpen, setModalRemoveIsOpen] = useState(false);
   const [showCheckbox, setShowCheckbox] = useState(false);
   const [showTri, setshowTri] = useState(false);
-  const [triType, setTriType] = useState('');
+  const [triType, setTriType] = useState('id');
 
   const optionsTournoi = useSelector(
     (state: any) => state.optionsTournoi.options,
@@ -192,7 +192,14 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
       return;
     }
 
-    const listeJoueur = listesJoueurs[optionsTournoi.mode];
+    const listeJoueur = listesJoueurs[optionsTournoi.mode] as Joueur[];
+    if (triType === 'id') {
+      listeJoueur.sort((a, b) => a.id - b.id);
+    } else if (triType === 'alpha') {
+      listeJoueur.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (triType === 'alphaDesc') {
+      listeJoueur.sort((a, b) => b.name.localeCompare(a.name));
+    }
     let nbJoueurs = listeJoueur.length;
     let avecEquipes = optionsTournoi.mode === ModeTournoi.AVECEQUIPES;
     const renderItem: ListRenderItem<Joueur> = ({ item }) => (

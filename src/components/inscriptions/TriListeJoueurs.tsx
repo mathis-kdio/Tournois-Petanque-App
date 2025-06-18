@@ -27,13 +27,13 @@ const TriListeJoueurs: React.FC<Props> = ({ isOpen, onClose, setTriType }) => {
         <ActionsheetDragIndicatorWrapper>
           <ActionsheetDragIndicator />
         </ActionsheetDragIndicatorWrapper>
-        <ActionsheetItem onPress={() => onPress('default')}>
+        <ActionsheetItem onPress={() => onPress('id')}>
           <ActionsheetItemText>Par défaut</ActionsheetItemText>
         </ActionsheetItem>
-        <ActionsheetItem onPress={() => onPress('default')}>
+        <ActionsheetItem onPress={() => onPress('alpha')}>
           <ActionsheetItemText>Alphabétique A  Z</ActionsheetItemText>
         </ActionsheetItem>
-        <ActionsheetItem onPress={() => onPress('default')}>
+        <ActionsheetItem onPress={() => onPress('alphaDesc')}>
           <ActionsheetItemText>Alphabétique Z  A</ActionsheetItemText>
         </ActionsheetItem>
       </ActionsheetContent>
