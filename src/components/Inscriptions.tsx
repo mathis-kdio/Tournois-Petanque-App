@@ -32,6 +32,7 @@ import { ListRenderItem, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'expo-router';
 import TriListeJoueurs from './inscriptions/TriListeJoueurs';
+import { Tri } from '@/types/enums/tri';
 
 export interface Props {
   loadListScreen: boolean;
@@ -50,7 +51,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
   const [modalRemoveIsOpen, setModalRemoveIsOpen] = useState(false);
   const [showCheckbox, setShowCheckbox] = useState(false);
   const [showTri, setshowTri] = useState(false);
-  const [triType, setTriType] = useState('id');
+  const [triType, setTriType] = useState<Tri>(Tri.ID);
 
   const optionsTournoi = useSelector(
     (state: any) => state.optionsTournoi.options,
@@ -193,11 +194,11 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
     }
 
     const listeJoueur = listesJoueurs[optionsTournoi.mode] as Joueur[];
-    if (triType === 'id') {
+    if (triType === Tri.ID) {
       listeJoueur.sort((a, b) => a.id - b.id);
-    } else if (triType === 'alpha') {
+    } else if (triType === Tri.ALPHA_ASC) {
       listeJoueur.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (triType === 'alphaDesc') {
+    } else if (triType === Tri.ALPHA_DESC) {
       listeJoueur.sort((a, b) => b.name.localeCompare(a.name));
     }
     let nbJoueurs = listeJoueur.length;
