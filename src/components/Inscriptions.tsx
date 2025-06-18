@@ -323,7 +323,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
           className="my-1 flex-row items-center"
         >
           <FontAwesome5 name={'sort'} size={15} color="white" />
-          <Text className="text-white text-md">{`Trier les joueurs`}</Text>
+          <Text className="text-white text-md">{t('trier_joueurs')}</Text>
         </Pressable>
         <TriListeJoueurs
           isOpen={showTri}

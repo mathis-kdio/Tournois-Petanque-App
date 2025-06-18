@@ -7,6 +7,7 @@ import {
   ActionsheetItem,
   ActionsheetItemText,
 } from '@/components/ui/actionsheet';
+import { useTranslation } from 'react-i18next';
 
 export interface Props {
   isOpen: boolean;
@@ -15,6 +16,8 @@ export interface Props {
 }
 
 const TriListeJoueurs: React.FC<Props> = ({ isOpen, onClose, setTriType }) => {
+  const { t } = useTranslation();
+
   const onPress = (type: string) => {
     setTriType(type);
     onClose();
@@ -28,13 +31,13 @@ const TriListeJoueurs: React.FC<Props> = ({ isOpen, onClose, setTriType }) => {
           <ActionsheetDragIndicator />
         </ActionsheetDragIndicatorWrapper>
         <ActionsheetItem onPress={() => onPress('id')}>
-          <ActionsheetItemText>Par défaut</ActionsheetItemText>
+          <ActionsheetItemText>{t('defaut')}</ActionsheetItemText>
         </ActionsheetItem>
         <ActionsheetItem onPress={() => onPress('alpha')}>
-          <ActionsheetItemText>Alphabétique A  Z</ActionsheetItemText>
+          <ActionsheetItemText>{t('alphaAZ')}</ActionsheetItemText>
         </ActionsheetItem>
         <ActionsheetItem onPress={() => onPress('alphaDesc')}>
-          <ActionsheetItemText>Alphabétique Z  A</ActionsheetItemText>
+          <ActionsheetItemText>{t('alphaZA')}</ActionsheetItemText>
         </ActionsheetItem>
       </ActionsheetContent>
     </Actionsheet>
