@@ -188,43 +188,44 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
   };
 
   const _displayListeJoueur = () => {
-    if (listesJoueurs[optionsTournoi.mode] !== undefined) {
-      let avecEquipes = false;
-      if (optionsTournoi.mode === ModeTournoi.AVECEQUIPES) {
-        avecEquipes = true;
-      }
-      const renderItem: ListRenderItem<Joueur> = ({ item }) => (
-        <ListeJoueurItem
-          joueur={item}
-          isInscription={true}
-          avecEquipes={avecEquipes}
-          typeEquipes={optionsTournoi.typeEquipes}
-          modeTournoi={optionsTournoi.mode}
-          typeTournoi={optionsTournoi.typeTournoi}
-          nbJoueurs={listesJoueurs[optionsTournoi.mode].length}
-          showCheckbox={showCheckbox}
-        />
-      );
-      return (
-        <FlatList
-          removeClippedSubviews={false}
-          persistentScrollbar={true}
-          data={listesJoueurs[optionsTournoi.mode]}
-          keyExtractor={(item: Joueur) => item.id.toString()}
-          renderItem={renderItem}
-          ListFooterComponent={
-            <VStack space="md" className="flex-1">
-              <VStack space="sm" className="px-10">
-                {_buttonRemoveAllPlayers()}
-                {_buttonLoadSavedList()}
-              </VStack>
-              {_displayListeJoueursSuggeres()}
-            </VStack>
-          }
-          className="h-1"
-        />
-      );
+    if (listesJoueurs[optionsTournoi.mode] === undefined) {
+      return;
     }
+
+    const listeJoueur = listesJoueurs[optionsTournoi.mode];
+    let nbJoueurs = listeJoueur.length;
+    let avecEquipes = optionsTournoi.mode === ModeTournoi.AVECEQUIPES;
+    const renderItem: ListRenderItem<Joueur> = ({ item }) => (
+      <ListeJoueurItem
+        joueur={item}
+        isInscription={true}
+        avecEquipes={avecEquipes}
+        typeEquipes={optionsTournoi.typeEquipes}
+        modeTournoi={optionsTournoi.mode}
+        typeTournoi={optionsTournoi.typeTournoi}
+        nbJoueurs={nbJoueurs}
+        showCheckbox={showCheckbox}
+      />
+    );
+    return (
+      <FlatList
+        removeClippedSubviews={false}
+        persistentScrollbar={true}
+        data={listeJoueur}
+        keyExtractor={(item: Joueur) => item.id.toString()}
+        renderItem={renderItem}
+        ListFooterComponent={
+          <VStack space="md" className="flex-1">
+            <VStack space="sm" className="px-10">
+              {_buttonRemoveAllPlayers()}
+              {_buttonLoadSavedList()}
+            </VStack>
+            {_displayListeJoueursSuggeres()}
+          </VStack>
+        }
+        className="h-1"
+      />
+    );
   };
 
   const _displayListeJoueursSuggeres = () => {
