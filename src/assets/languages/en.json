@@ -258,6 +258,10 @@
     "choix_complement_title_2": "You can choose that the last match of each round will be a:",
     "quitter_tournoi": "Leave the tournament",
     "quitter_tournoi_question": "Do you want to leave the tournament? You can always reload it later.",
-    "rester": "Stay"
+    "rester": "Stay",
+    "defaut": "Par défaut",
+    "alphaAZ": "Alphabétique A -> Z",
+    "alphaZA": "Alphabétique Z -> A",
+    "trier_joueurs": "Trier les joueurs"
   }
 }
