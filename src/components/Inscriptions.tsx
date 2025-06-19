@@ -23,7 +23,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import ListeJoueurItem from '@components/ListeJoueurItem';
 import JoueurSuggere from '@components/JoueurSuggere';
 import JoueurType from '@components/JoueurType';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { Joueur } from '@/types/interfaces/joueur';
@@ -323,8 +323,8 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
           onPress={() => setshowTri(!showTri)}
           className="my-1 flex-row items-center"
         >
-          <FontAwesome5 name={'sort'} size={15} color="white" />
-          <Text className="text-white text-md">{t('trier_joueurs')}</Text>
+          <MaterialCommunityIcons name="sort" size={24} color="white" />
+          <Text className="text-white text-md">{` ${t('trier_joueurs')}`}</Text>
         </Pressable>
         <TriListeJoueurs
           isOpen={showTri}
