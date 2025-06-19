@@ -369,10 +369,10 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
         </Box>
       </HStack>
       <Divider className="bg-white h-0.5 my-2" />
-      <HStack>
+      <VStack className="px-1">
         <Box className="w-fit">{_showCheckboxSection()}</Box>
         <Box className="w-fit">{_showTriSection()}</Box>
-      </HStack>
+      </VStack>
       <VStack className="flex-1">{_displayListeJoueur()}</VStack>
       {_modalRemoveAllPlayers()}
     </VStack>
