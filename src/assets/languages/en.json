@@ -253,10 +253,15 @@
     "2contre1": "2 against 1",
     "3contre2": "3 against 2",
     "4contre3": "4 against 3",
+    "3contre3_et_3contre2": "3 contre 3 et 3 contre 2",
     "choix_complement_title_1": "The number of registered players is not a multiple of {{nbModulo}}. It is therefore necessary to choose the distribution of additional players.",
     "choix_complement_title_2": "You can choose that the last match of each round will be a:",
     "quitter_tournoi": "Leave the tournament",
     "quitter_tournoi_question": "Do you want to leave the tournament? You can always reload it later.",
-    "rester": "Stay"
+    "rester": "Stay",
+    "defaut": "Par défaut",
+    "alphaAZ": "Alphabétique A -> Z",
+    "alphaZA": "Alphabétique Z -> A",
+    "trier_joueurs": "Trier les joueurs"
   }
 }
