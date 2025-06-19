@@ -193,7 +193,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
       return;
     }
 
-    const listeJoueur = listesJoueurs[optionsTournoi.mode] as Joueur[];
+    let listeJoueur = [...(listesJoueurs[optionsTournoi.mode] as Joueur[])];
     if (triType === Tri.ID) {
       listeJoueur.sort((a, b) => a.id - b.id);
     } else if (triType === Tri.ALPHA_ASC) {
