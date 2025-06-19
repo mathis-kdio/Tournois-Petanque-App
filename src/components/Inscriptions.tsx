@@ -23,7 +23,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import ListeJoueurItem from '@components/ListeJoueurItem';
 import JoueurSuggere from '@components/JoueurSuggere';
 import JoueurType from '@components/JoueurType';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { Joueur } from '@/types/interfaces/joueur';
@@ -31,6 +31,8 @@ import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { ListRenderItem, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'expo-router';
+import TriListeJoueurs from './inscriptions/TriListeJoueurs';
+import { Tri } from '@/types/enums/tri';
 
 export interface Props {
   loadListScreen: boolean;
@@ -48,6 +50,8 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
   const [nbSuggestions, setNbSuggestions] = useState(5);
   const [modalRemoveIsOpen, setModalRemoveIsOpen] = useState(false);
   const [showCheckbox, setShowCheckbox] = useState(false);
+  const [showTri, setshowTri] = useState(false);
+  const [triType, setTriType] = useState<Tri>(Tri.ID);
 
   const optionsTournoi = useSelector(
     (state: any) => state.optionsTournoi.options,
@@ -185,43 +189,51 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
   };
 
   const _displayListeJoueur = () => {
-    if (listesJoueurs[optionsTournoi.mode] !== undefined) {
-      let avecEquipes = false;
-      if (optionsTournoi.mode === ModeTournoi.AVECEQUIPES) {
-        avecEquipes = true;
-      }
-      const renderItem: ListRenderItem<Joueur> = ({ item }) => (
-        <ListeJoueurItem
-          joueur={item}
-          isInscription={true}
-          avecEquipes={avecEquipes}
-          typeEquipes={optionsTournoi.typeEquipes}
-          modeTournoi={optionsTournoi.mode}
-          typeTournoi={optionsTournoi.typeTournoi}
-          nbJoueurs={listesJoueurs[optionsTournoi.mode].length}
-          showCheckbox={showCheckbox}
-        />
-      );
-      return (
-        <FlatList
-          removeClippedSubviews={false}
-          persistentScrollbar={true}
-          data={listesJoueurs[optionsTournoi.mode]}
-          keyExtractor={(item: Joueur) => item.id.toString()}
-          renderItem={renderItem}
-          ListFooterComponent={
-            <VStack space="md" className="flex-1">
-              <VStack space="sm" className="px-10">
-                {_buttonRemoveAllPlayers()}
-                {_buttonLoadSavedList()}
-              </VStack>
-              {_displayListeJoueursSuggeres()}
-            </VStack>
-          }
-          className="h-1"
-        />
-      );
+    if (listesJoueurs[optionsTournoi.mode] === undefined) {
+      return;
     }
+
+    let listeJoueur = [...(listesJoueurs[optionsTournoi.mode] as Joueur[])];
+    if (triType === Tri.ID) {
+      listeJoueur.sort((a, b) => a.id - b.id);
+    } else if (triType === Tri.ALPHA_ASC) {
+      listeJoueur.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (triType === Tri.ALPHA_DESC) {
+      listeJoueur.sort((a, b) => b.name.localeCompare(a.name));
+    }
+    let nbJoueurs = listeJoueur.length;
+    let avecEquipes = optionsTournoi.mode === ModeTournoi.AVECEQUIPES;
+    const renderItem: ListRenderItem<Joueur> = ({ item }) => (
+      <ListeJoueurItem
+        joueur={item}
+        isInscription={true}
+        avecEquipes={avecEquipes}
+        typeEquipes={optionsTournoi.typeEquipes}
+        modeTournoi={optionsTournoi.mode}
+        typeTournoi={optionsTournoi.typeTournoi}
+        nbJoueurs={nbJoueurs}
+        showCheckbox={showCheckbox}
+      />
+    );
+    return (
+      <FlatList
+        removeClippedSubviews={false}
+        persistentScrollbar={true}
+        data={listeJoueur}
+        keyExtractor={(item: Joueur) => item.id.toString()}
+        renderItem={renderItem}
+        ListFooterComponent={
+          <VStack space="md" className="flex-1">
+            <VStack space="sm" className="px-10">
+              {_buttonRemoveAllPlayers()}
+              {_buttonLoadSavedList()}
+            </VStack>
+            {_displayListeJoueursSuggeres()}
+          </VStack>
+        }
+        className="h-1"
+      />
+    );
   };
 
   const _displayListeJoueursSuggeres = () => {
@@ -298,9 +310,28 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
       >
         <FontAwesome5 name={icon} size={15} color="white" />
         <Text className="text-white text-md">
-          {text} {t('case_a_cocher')}
+          {` ${text} ${t('case_a_cocher')}`}
         </Text>
       </Pressable>
+    );
+  };
+
+  const _showTriSection = () => {
+    return (
+      <Box>
+        <Pressable
+          onPress={() => setshowTri(!showTri)}
+          className="my-1 flex-row items-center"
+        >
+          <MaterialCommunityIcons name="sort" size={24} color="white" />
+          <Text className="text-white text-md">{` ${t('trier_joueurs')}`}</Text>
+        </Pressable>
+        <TriListeJoueurs
+          isOpen={showTri}
+          onClose={() => setshowTri(false)}
+          setTriType={setTriType}
+        />
+      </Box>
     );
   };
 
@@ -337,8 +368,11 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
           </Button>
         </Box>
       </HStack>
-      {_showCheckboxSection()}
       <Divider className="bg-white h-0.5 my-2" />
+      <HStack className="px-1 items-center justify-between">
+        <Box className="w-fit">{_showTriSection()}</Box>
+        <Box className="w-fit">{_showCheckboxSection()}</Box>
+      </HStack>
       <VStack className="flex-1">{_displayListeJoueur()}</VStack>
       {_modalRemoveAllPlayers()}
     </VStack>

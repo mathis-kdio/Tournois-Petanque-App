@@ -110,7 +110,11 @@ function listesJoueurs(state = initialState, action) {
         action.value[2] !== ''
       ) {
         const listes = { ...state.listesJoueurs };
-        listes[action.value[0]][action.value[1]].isChecked = action.value[2];
+        let liste = listes[action.value[0]] as Joueur[];
+        let joueur = liste.find((joueur) => joueur.id === action.value[1]);
+        if (joueur) {
+          joueur.isChecked = action.value[2];
+        }
         nextState = {
           ...state,
           listesJoueurs: listes,
