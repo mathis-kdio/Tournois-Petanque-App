@@ -1,9 +1,11 @@
 import { ConfigContext, ExpoConfig } from '@expo/config';
 
+const version = '2.2.0-beta-2';
+
 export default ({ config }: ConfigContext): ExpoConfig => ({
   name: 'Tournois Pétanque App',
   slug: 'PetanqueGCU',
-  version: '2.2.0-beta-2',
+  version: version,
   orientation: 'portrait',
   icon: './src/assets/icon.png',
   userInterfaceStyle: 'light',
@@ -166,5 +168,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     eas: {
       projectId: 'a9524187-3720-46fc-8d6e-6e9e7211bda7',
     },
+    appVersion: version,
   },
 });
