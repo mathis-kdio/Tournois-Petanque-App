@@ -18,7 +18,7 @@
     "prebuild": "npm run build:plugins"
   },
   "dependencies": {
-    "@expo/html-elements": "^0.4.3",
+    "@expo/html-elements": "^0.4.2",
     "@gluestack-ui/accordion": "^1.0.14",
     "@gluestack-ui/actionsheet": "^0.2.53",
     "@gluestack-ui/alert": "^0.1.16",
