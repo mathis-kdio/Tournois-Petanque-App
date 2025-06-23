@@ -78,7 +78,10 @@ const CreateListeJoueur = () => {
   }
 
   let idList = parseInt(param.listId ?? '');
-  if (isNaN(idList) || (param.type !== 'create' && param.type !== 'edit')) {
+  if (
+    (param.type !== 'create' && param.type !== 'edit') ||
+    (param.type === 'edit' && isNaN(idList))
+  ) {
     return <Loading />;
   }
 

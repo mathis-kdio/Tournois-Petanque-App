@@ -19,7 +19,7 @@ import { useSelector } from 'react-redux';
 import { useAuth } from '@/components/supabase/SessionProvider';
 import { useNavigation, useRouter } from 'expo-router';
 import { CommonActions } from '@react-navigation/native';
-import * as Application from 'expo-application';
+import Constants from 'expo-constants';
 
 const googleMarketReviews =
   'market://details?id=com.MK.PetanqueGCU&showAllReviews=true';
@@ -108,6 +108,8 @@ const Accueil = () => {
       );
     }
   };
+
+  const version = Constants.expoConfig?.extra?.appVersion;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -206,7 +208,7 @@ const Accueil = () => {
             {t('developpe_par')} Mathis Cadio
           </Text>
           <Text className="text-center text-white text-md">
-            {t('version')} {Application.nativeApplicationVersion}
+            {t('version')} {version}
           </Text>
         </VStack>
       </VStack>

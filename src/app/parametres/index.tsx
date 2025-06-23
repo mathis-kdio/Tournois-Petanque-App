@@ -40,7 +40,7 @@ import { Pressable } from '@/components/ui/pressable';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Application from 'expo-application';
+import Constants from 'expo-constants';
 
 const SELECTED_LANGUAGE_KEY = 'selectedLanguageKey';
 
@@ -229,6 +229,8 @@ const Parametres = () => {
     openModalLanguages(false);
   };
 
+  const version = Constants.expoConfig?.extra?.appVersion;
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <VStack className="flex-1 bg-[#0594ae]">
@@ -299,7 +301,7 @@ const Parametres = () => {
         </ScrollView>
         <Center>
           <Text className="text-center text-md text-white">
-            {t('version')} {Application.nativeApplicationVersion}
+            {t('version')} {version}
           </Text>
         </Center>
         {_alertDialogClearData()}
