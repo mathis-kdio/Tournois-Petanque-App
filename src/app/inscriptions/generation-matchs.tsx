@@ -12,21 +12,25 @@ import { generationTriplettes } from '@utils/generations/tournoiTriplettes';
 import { uniqueValueArrayRandOrder } from '@utils/generations/generation';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { _adMobGenerationTournoiInterstitiel } from '@components/adMob/AdMobGenerationTournoiInterstitiel';
 import { Platform } from 'react-native';
-import { EventRegister } from 'react-native-event-listeners';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { Match } from '@/types/interfaces/match';
-import { InterstitialAd } from 'react-native-google-mobile-ads';
 import TopBar from '@/components/topBar/TopBar';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
 import Loading from '@/components/Loading';
 import { CommonActions } from '@react-navigation/native';
 import { screenStackNameType } from '@/types/types/searchParams';
+import {
+  initInterstitial,
+  onAdLoaded,
+  showInterstitialAd,
+  onAdError,
+  onAdClosed,
+} from '@/components/adMob/AdMobGenerationTournoiInterstitiel';
 
 type SearchParams = {
   screenStackName?: string;
@@ -57,9 +61,6 @@ const GenerationMatchs = () => {
   const [adLoaded, setAdLoaded] = useState(false);
   const [adClosed, setAdClosed] = useState(false);
 
-  const interstitial = useRef<InterstitialAd | void>(undefined);
-  let listener: string | boolean;
-
   const _ajoutMatchs = (matchs) => {
     const actionAjoutMatchs = { type: 'AJOUT_MATCHS', value: matchs };
     dispatch(actionAjoutMatchs);
@@ -70,49 +71,30 @@ const GenerationMatchs = () => {
     dispatch(actionAjoutTournoi);
   };
 
-  listener = EventRegister.addEventListener('interstitialAdEvent', (data) => {
-    setAdLoaded(data.adLoaded);
-    setAdClosed(data.adClosed);
-  });
-
-  const timeout = (ms: number): Promise<void> => {
-    return new Promise((_, reject) => {
-      setTimeout(() => {
-        reject(new Error('Timeout'));
-      }, ms);
-    });
-  };
-
   useEffect(() => {
-    try {
-      Promise.race([_adMobGenerationTournoiInterstitiel(), timeout(5000)]).then(
-        (a) => {
-          interstitial.current = a;
-        },
-      );
-    } catch (error) {
-      if (error instanceof Error && error.message === 'Timeout') {
-        setAdClosed(true);
-      }
-    }
+    initInterstitial();
 
-    return () => {
-      if (typeof listener === 'string') {
-        EventRegister.removeEventListener(listener);
-      }
-    };
-  }, [listener, interstitial]);
+    onAdLoaded(() => {
+      setAdLoaded(true);
+      setAdClosed(false);
+    });
+
+    onAdError((err) => {
+      setAdLoaded(false);
+      setAdClosed(true);
+    });
+
+    onAdClosed(() => {
+      setAdLoaded(false);
+      setAdClosed(true);
+    });
+  }, []);
 
   useEffect(() => {
     if (!isGenerationEnd) return;
 
-    if (
-      Platform.OS !== 'web' &&
-      interstitial &&
-      interstitial.current &&
-      adLoaded
-    ) {
-      interstitial.current.show();
+    if (Platform.OS !== 'web' && adLoaded) {
+      showInterstitialAd();
       return;
     }
 
@@ -124,7 +106,7 @@ const GenerationMatchs = () => {
       );
       return;
     }
-  }, [isGenerationEnd, adLoaded, adClosed, interstitial, navigation]);
+  }, [isGenerationEnd, adLoaded, adClosed, navigation]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
