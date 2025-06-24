@@ -30,17 +30,11 @@ const closedListeners: (() => void)[] = [];
 let timeoutId: number | null = null;
 
 export const initInterstitial = async () => {
-  let requestNonPersonalizedAdsOnly = false;
-
   const { createAPersonalisedAdsProfile, selectPersonalisedAds } =
     await AdsConsent.getUserChoices();
 
-  if (
-    selectPersonalisedAds === false ||
-    createAPersonalisedAdsProfile === false
-  ) {
-    requestNonPersonalizedAdsOnly = true;
-  }
+  const requestNonPersonalizedAdsOnly =
+    selectPersonalisedAds === false || createAPersonalisedAdsProfile === false;
 
   interstitialAd = InterstitialAd.createForAdRequest(getUnitId(), {
     requestNonPersonalizedAdsOnly,
