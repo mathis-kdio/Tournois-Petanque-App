@@ -6,16 +6,21 @@ import {
 } from 'react-native-google-mobile-ads';
 import { Platform } from 'react-native';
 
-let unitId = '';
-if (__DEV__) {
-  unitId = TestIds.INTERSTITIAL;
-} else if (Platform.OS === 'android') {
-  unitId = 'ca-app-pub-4863676282747598/6377550900';
-} else if (Platform.OS === 'ios') {
-  unitId = 'ca-app-pub-4863676282747598/2014213186';
-} else {
-  console.log('Plateforme non prise en charge pour admob banner');
-}
+const getUnitId = (): string => {
+  if (__DEV__) {
+    return TestIds.INTERSTITIAL;
+  }
+  switch (Platform.OS) {
+    case 'android':
+      return 'ca-app-pub-4863676282747598/6377550900';
+    case 'ios':
+      return 'ca-app-pub-4863676282747598/2014213186';
+    default:
+      console.warn('Plateforme non prise en charge pour admob interstitial');
+      return '';
+  }
+};
+
 let interstitialAd: InterstitialAd | null = null;
 let isLoaded = false;
 const loadedListeners: (() => void)[] = [];
@@ -37,7 +42,7 @@ export const initInterstitial = async () => {
     requestNonPersonalizedAdsOnly = true;
   }
 
-  interstitialAd = InterstitialAd.createForAdRequest(unitId, {
+  interstitialAd = InterstitialAd.createForAdRequest(getUnitId(), {
     requestNonPersonalizedAdsOnly,
   });
 
