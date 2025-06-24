@@ -1,5 +1,19 @@
 # Change Log
 
+## [2.2.0] - 23-06-2025
+### Ajouté
+- Ajout du numéro terrain/match dans les PDF
+- Ajout d'un saut de page avant le classement dans les PDF
+- Sauvegarde de la langue choisie
+- Ajout complément en doublette 3vs3 + 3vs2
+- Tri alphabétique des joueurs dans les listes
+
+### Changement
+- Migrations techniques importantes
+
+### Corrigé
+- Correction génération melee-demelee en 1 tour
+
 ## [2.1.1] - 14-05-2025
 ### Ajouté
 

@@ -1,5 +1,18 @@
 {
-    "31": {
+  "32": {
+    "id":"32",
+    "version": "2.2.0",
+    "infos": [
+      "- Ajout du numéro terrain/match dans les PDF",
+      "- Ajout d'un saut de page avant le classement dans les PDF",
+      "- Sauvegarde de la langue choisie",
+      "- Ajout complément en doublette 3vs3 + 3vs2",
+      "- Tri alphabétique des joueurs dans les listes",
+      "- Migrations techniques importantes",
+      "- Correction génération melee-demelee en 1 tour"
+    ]
+  },
+  "31": {
     "id":"31",
     "version": "2.1.1",
     "infos": [
