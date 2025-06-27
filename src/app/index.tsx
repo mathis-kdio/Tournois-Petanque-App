@@ -96,13 +96,19 @@ const Accueil = () => {
   const boutonConnexion = () => {
     if (session) {
       return (
-        <Button onPress={() => router.navigate('/compte')}>
+        <Button
+          className="bg-custom-dark-blue"
+          onPress={() => router.navigate('/compte')}
+        >
           <ButtonText>{t('mon_compte')}</ButtonText>
         </Button>
       );
     } else {
       return (
-        <Button onPress={() => router.navigate('/connexion')}>
+        <Button
+          className="bg-custom-dark-blue"
+          onPress={() => router.navigate('/connexion')}
+        >
           <ButtonText>{t('authentification')}</ButtonText>
         </Button>
       );
@@ -113,7 +119,7 @@ const Accueil = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <VStack className="flex-1 px-5 bg-[#0594ae]">
+      <VStack className="flex-1 px-5 bg-custom-background">
         <ScrollView className="h-1">
           <VStack space="4xl">
             <VStack className="items-end">{boutonConnexion()}</VStack>
@@ -155,17 +161,29 @@ const Accueil = () => {
               <HStack space="sm" className="justify-center">
                 <Pressable
                   onPress={() => _openURL(facebook)}
-                  className="items-center bg-[#1c3969] rounded-3xl p-3"
+                  className="items-center bg-custom-dark-blue rounded-3xl p-3"
                 >
-                  <FontAwesome5 name="facebook" color="white" size={20} />
-                  <Text className="text-white">{t('rejoindre_page_fb')}</Text>
+                  <FontAwesome5
+                    name="facebook"
+                    color="color-custom-text-button"
+                    size={20}
+                  />
+                  <Text className="color-custom-text-button">
+                    {t('rejoindre_page_fb')}
+                  </Text>
                 </Pressable>
                 <Pressable
                   onPress={() => _openURL(website)}
-                  className="items-center bg-[#1c3969] rounded-3xl p-3"
+                  className="items-center bg-custom-dark-blue rounded-3xl p-3"
                 >
-                  <FontAwesome5 name="globe" color="white" size={20} />
-                  <Text className="text-white">{t('voir_website')}</Text>
+                  <FontAwesome5
+                    name="globe"
+                    color="color-custom-text-button"
+                    size={20}
+                  />
+                  <Text className="color-custom-text-button">
+                    {t('voir_website')}
+                  </Text>
                 </Pressable>
               </HStack>
               <HStack space="sm" className="justify-center">
@@ -173,29 +191,41 @@ const Accueil = () => {
                   onPress={() =>
                     _openPlateformLink(googleMarketReviews, appleMarketReviews)
                   }
-                  className="flex-1 items-center bg-[#1c3969] rounded-3xl p-2"
+                  className="flex-1 items-center bg-custom-dark-blue rounded-3xl p-2"
                 >
-                  <FontAwesome5 name="star" color="white" size={20} />
+                  <FontAwesome5
+                    name="star"
+                    color="color-custom-text-button"
+                    size={20}
+                  />
                 </Pressable>
                 <Pressable
                   onPress={() => _openURL(encodeURI(mail))}
-                  className="flex-1 items-center bg-[#1c3969] rounded-3xl p-2"
+                  className="flex-1 items-center bg-custom-dark-blue rounded-3xl p-2"
                 >
-                  <FontAwesome5 name="envelope" color="white" size={20} />
+                  <FontAwesome5
+                    name="envelope"
+                    color="color-custom-text-button"
+                    size={20}
+                  />
                 </Pressable>
                 <Pressable
                   onPress={() => router.navigate('/parametres')}
-                  className="flex-1 items-center bg-[#1c3969] rounded-3xl p-2"
+                  className="flex-1 items-center bg-custom-dark-blue rounded-3xl p-2"
                 >
-                  <FontAwesome5 name="wrench" color="white" size={20} />
+                  <FontAwesome5
+                    name="wrench"
+                    color="color-custom-text-button"
+                    size={20}
+                  />
                 </Pressable>
               </HStack>
               <HStack className="justify-center">
                 <Pressable
                   onPress={() => _openURL(gcuWebsite)}
-                  className="items-center bg-[#1c3969] rounded-3xl p-3"
+                  className="items-center bg-custom-dark-blue rounded-3xl p-3"
                 >
-                  <Text className="text-white text-md">
+                  <Text className="color-custom-text-button text-md">
                     {t('decouvrir_gcu')}
                   </Text>
                 </Pressable>

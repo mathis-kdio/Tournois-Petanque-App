@@ -188,7 +188,7 @@ const OptionsTournoi = () => {
                   <CheckboxIndicator className="mr-2 border-white">
                     <CheckboxIcon
                       as={CheckIcon}
-                      className="text-white bg-[#0594ae]"
+                      className="text-white bg-custom-background"
                     />
                   </CheckboxIndicator>
                   <CheckboxLabel className="text-white">
@@ -205,7 +205,7 @@ const OptionsTournoi = () => {
                   <CheckboxIndicator className="mr-2 border-white">
                     <CheckboxIcon
                       as={CheckIcon}
-                      className="text-white bg-[#0594ae]"
+                      className="text-white bg-custom-background"
                     />
                   </CheckboxIndicator>
                   <CheckboxLabel className="text-white">
@@ -252,7 +252,7 @@ const OptionsTournoi = () => {
                   <CheckboxIndicator className="mr-2 border-white">
                     <CheckboxIcon
                       as={CheckIcon}
-                      className="text-white bg-[#0594ae]"
+                      className="text-white bg-custom-background"
                     />
                   </CheckboxIndicator>
                   <CheckboxLabel className="text-white">

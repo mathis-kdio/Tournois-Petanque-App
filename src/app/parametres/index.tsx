@@ -63,7 +63,7 @@ const Parametres = () => {
         <AlertDialogBackdrop />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <Heading className="text-black">
+            <Heading className="color-custom-text">
               {t('supprimer_donnees_modal_titre')}
             </Heading>
             <AlertDialogCloseButton>
@@ -149,7 +149,7 @@ const Parametres = () => {
         <ModalBackdrop />
         <ModalContent className="max-h-5/6">
           <ModalHeader>
-            <Heading className="text-black">
+            <Heading className="color-custom-text">
               {t('languages_disponibles')}
             </Heading>
             <ModalCloseButton>

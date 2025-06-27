@@ -41,7 +41,7 @@ const Changelog = () => {
           <ModalBackdrop />
           <ModalContent className="max-h-5/6">
             <ModalHeader>
-              <Heading className="text-black">{title}</Heading>
+              <Heading className="color-custom-text">{title}</Heading>
               <ModalCloseButton>
                 <Icon
                   as={CloseIcon}
