@@ -23,7 +23,7 @@ const Compte = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView className="h-1 bg-[#0594ae]">
+      <ScrollView className="h-1 bg-custom-background">
         <TopBarBack title={t('mon_compte')} />
         <VStack className="flex-1 px-10 justify-between">
           <VStack className="border border-white rounded-lg">

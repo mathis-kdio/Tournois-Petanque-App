@@ -48,7 +48,7 @@ const InfosPerso = () => {
   const detailsArray = Object.entries(userDetails);
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView className="h-1 bg-[#0594ae]">
+      <ScrollView className="h-1 bg-custom-background">
         <TopBarBack title={t('informations_personnelles')} />
         <VStack className="flex-1 px-10">
           {detailsArray.map(([key, detail], index) => (

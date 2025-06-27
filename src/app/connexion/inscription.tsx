@@ -120,7 +120,7 @@ const Inscription = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView className="h-1 bg-[#0594ae]">
+      <ScrollView className="h-1 bg-custom-background">
         <TopBarBack title={t('inscription')} />
         <VStack className="flex-1 px-10 justify-between">
           <VStack className="mb-5">

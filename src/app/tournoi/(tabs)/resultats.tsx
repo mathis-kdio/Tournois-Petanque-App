@@ -27,7 +27,7 @@ const ListeResultats = () => {
   );
 
   return (
-    <VStack className="flex-1 bg-[#0594ae]">
+    <VStack className="flex-1 bg-custom-background">
       <VStack className="flex-1 justify-between">
         <HStack className="flex px-2">
           <Text className="basis-2/5 text-white text-lg">{t('place')}</Text>

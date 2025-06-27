@@ -9,6 +9,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        custom: {
+          background: 'var(--color-custom-background)',
+          'dark-blue': 'var(--color-custom-dark-blue)',
+          text: 'var(--color-custom-text)',
+          'text-button': 'var(--color-custom-text-button)',
+        },
         primary: {
           0: 'rgb(var(--color-primary-0)/<alpha-value>)',
           50: 'rgb(var(--color-primary-50)/<alpha-value>)',
