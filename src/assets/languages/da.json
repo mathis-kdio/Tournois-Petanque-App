@@ -254,7 +254,7 @@
     "3contre2": "3 mod 2",
     "4contre3": "4 mod 3",
     "3contre3_et_3contre2": "3 mod 3 og 3 mod 2",
-    "choix_complement_title_1": "Antallet af registrerede spillere er ikke deleligt med {{nbModulo}}. Det er derfor nødvendigt at vælge fordelingen af ​​yderligere spillere.",
+    "choix_complement_title_1": "Antallet af registrerede spillere er ikke deleligt med {{nbModulo}}. Det er derfor nødvendigt at vælge fordelingen af yderligere spillere.",
     "choix_complement_title_2": "Du kan vælge, at den sidste kamp i hver runde skal være en:",
     "quitter_tournoi": "Forlad turneringen",
     "quitter_tournoi_question": "Vil du forlade turneringen? Du kan altid genindlæse den senere.",
