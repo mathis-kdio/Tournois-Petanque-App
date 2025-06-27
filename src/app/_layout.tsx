@@ -14,7 +14,7 @@ import '@expo/metro-runtime'; //Fast-refresh web
 import { AuthProvider } from '@/components/supabase/SessionProvider';
 import { Stack, useNavigationContainerRef } from 'expo-router';
 import { isRunningInExpoGo } from 'expo';
-import React from 'react';
+import React, { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const navigationIntegration = Sentry.reactNavigationIntegration({
@@ -34,6 +34,7 @@ Sentry.init({
 });
 
 const SELECTED_LANGUAGE_KEY = 'selectedLanguageKey';
+const SELECTED_THEME_KEY = 'selectedThemeKey';
 
 export default function RootLayout() {
   let persistor = persistStore(Store);
@@ -57,11 +58,26 @@ export default function RootLayout() {
     fetchLanguage();
   }, []);
 
+  React.useEffect(() => {
+    const fetchTheme = async () => {
+      const selectedTheme = await AsyncStorage.getItem(SELECTED_THEME_KEY);
+      if (
+        selectedTheme &&
+        (selectedTheme === 'light' || selectedTheme === 'dark')
+      ) {
+        setColorMode(selectedTheme);
+      }
+    };
+    fetchTheme();
+  }, []);
+
+  const [colorMode, setColorMode] = useState<'light' | 'dark'>('light');
+
   return (
     <Provider store={Store}>
       <PersistGate persistor={persistor}>
         <AuthProvider>
-          <GluestackUIProvider mode="light">
+          <GluestackUIProvider mode={colorMode}>
             <I18nextProvider i18n={i18n} defaultNS={'common'}>
               <Stack screenOptions={{ headerShown: false }} />
               <StatusBar style="light" backgroundColor="#0594ae" />

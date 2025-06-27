@@ -21,8 +21,8 @@ const Item: React.FC<Props> = ({ text, action, icon, type, drapeau }) => {
     colorTxt = 'text-red-500';
     btnColor = 'red';
   } else if (type === 'modal') {
-    colorTxt = 'text-typography-black';
-    btnColor = 'black';
+    colorTxt = 'color-custom-text';
+    btnColor = 'color-custom-text';
   }
   return (
     <Pressable onPress={() => action()}>

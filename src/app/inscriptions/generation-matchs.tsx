@@ -334,7 +334,7 @@ const GenerationMatchs = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <VStack className="flex-1 bg-[#0594ae]">
+      <VStack className="flex-1 bg-custom-background">
         <TopBar title={t('generation_matchs_navigation_title')} />
         <VStack className="flex-1 px-10 justify-center items-center">
           {_displayLoading(param.screenStackName)}

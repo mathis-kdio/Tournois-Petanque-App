@@ -52,7 +52,7 @@ const JoueursTournoi = () => {
   const optionsTournoi = tournoi.at(-1) as OptionsTournoi;
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <VStack className="flex-1 bg-[#0594ae]">
+      <VStack className="flex-1 bg-custom-background">
         <TopBarBack title={t('liste_joueurs_inscrits_navigation_title')} />
         <Text className="text-white text-xl text-center">
           {t('nombre_joueurs', { nb: optionsTournoi.listeJoueurs.length })}

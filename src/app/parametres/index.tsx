@@ -43,6 +43,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
 
 const SELECTED_LANGUAGE_KEY = 'selectedLanguageKey';
+const SELECTED_THEME_KEY = 'selectedThemeKey';
 
 const Parametres = () => {
   const githubRepository =
@@ -52,6 +53,7 @@ const Parametres = () => {
 
   const [alertOpen, openAlert] = useState(false);
   const [modalLanguagesOpen, openModalLanguages] = useState(false);
+  const [modalThemeOpen, setModalTheme] = useState(false);
 
   const { t } = useTranslation();
   const router = useRouter();
@@ -63,7 +65,7 @@ const Parametres = () => {
         <AlertDialogBackdrop />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <Heading className="text-black">
+            <Heading className="color-custom-text">
               {t('supprimer_donnees_modal_titre')}
             </Heading>
             <AlertDialogCloseButton>
@@ -149,7 +151,7 @@ const Parametres = () => {
         <ModalBackdrop />
         <ModalContent className="max-h-5/6">
           <ModalHeader>
-            <Heading className="text-black">
+            <Heading className="color-custom-text">
               {t('languages_disponibles')}
             </Heading>
             <ModalCloseButton>
@@ -229,11 +231,64 @@ const Parametres = () => {
     openModalLanguages(false);
   };
 
+  const _modalTheme = () => {
+    let drapeauFrance = require('@assets/images/drapeau-france.png');
+    return (
+      <Modal isOpen={modalThemeOpen} onClose={() => setModalTheme(false)}>
+        <ModalBackdrop />
+        <ModalContent className="max-h-5/6">
+          <ModalHeader>
+            <Heading className="color-custom-text">
+              {t('themes_disponibles')}
+            </Heading>
+            <ModalCloseButton>
+              <Icon
+                as={CloseIcon}
+                size="md"
+                className="stroke-background-400 group-[:hover]/modal-close-button:stroke-background-700 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900"
+              />
+            </ModalCloseButton>
+          </ModalHeader>
+          <ModalBody>
+            <Item
+              text={t('defaut')}
+              action={() => _changeTheme('light')}
+              icon={''}
+              type="modal"
+              drapeau={drapeauFrance}
+            />
+            <Divider />
+            <Item
+              text={t('clair')}
+              action={() => _changeTheme('light')}
+              icon={''}
+              type="modal"
+              drapeau={drapeauFrance}
+            />
+            <Divider />
+            <Item
+              text={t('sombre')}
+              action={() => _changeTheme('dark')}
+              icon={''}
+              type="modal"
+              drapeau={drapeauFrance}
+            />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    );
+  };
+
+  const _changeTheme = async (language: string) => {
+    await AsyncStorage.setItem(SELECTED_THEME_KEY, language);
+    setModalTheme(false);
+  };
+
   const version = Constants.expoConfig?.extra?.appVersion;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <VStack className="flex-1 bg-[#0594ae]">
+      <VStack className="flex-1 bg-custom-background">
         <TopBarBack title={t('parametres')} />
         <ScrollView className="h-1">
           <VStack space="lg" className="flex-1 px-10">
@@ -260,6 +315,14 @@ const Parametres = () => {
             <VStack>
               <Text className="text-xl text-white mb-1">{t('reglages')}</Text>
               <Box className="border border-white rounded-lg">
+                <Item
+                  text={t('changer_theme')}
+                  action={() => setModalTheme(true)}
+                  icon="language"
+                  type={''}
+                  drapeau={undefined}
+                />
+                <Divider />
                 <Item
                   text={t('changer_langue')}
                   action={() => openModalLanguages(true)}
@@ -306,6 +369,7 @@ const Parametres = () => {
         </Center>
         {_alertDialogClearData()}
         {_modalLanguages()}
+        {_modalTheme()}
       </VStack>
     </SafeAreaView>
   );

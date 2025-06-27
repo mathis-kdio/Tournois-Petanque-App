@@ -3,6 +3,13 @@ import { vars } from 'nativewind';
 
 export const config = {
   light: vars({
+    /* Custom */
+    '--color-custom-background': '#0594ae',
+    '--color-custom-dark-blue': '#1c3969',
+    '--color-custom-text': '#181718', //230 230 230
+    '--color-custom-text-button': '#FFFFFF', //18 18 18
+
+    /* Primary */
     '--color-primary-0': '179 179 179',
     '--color-primary-50': '153 153 153',
     '--color-primary-100': '128 128 128',
@@ -155,6 +162,13 @@ export const config = {
     '--color-indicator-error': '185 28 28',
   }),
   dark: vars({
+    /* Custom */
+    '--color-custom-background': '#121212', // 18 18 18
+    '--color-custom-dark-blue': '#E6E6E6', //230 230 230
+    '--color-custom-text': '#E6E6E6', //230 230 230
+    '--color-custom-text-button': '#121212', //18 18 18
+
+    /* Primary */
     '--color-primary-0': '130 130 130',
     '--color-primary-50': '148 148 148',
     '--color-primary-100': '158 158 158',

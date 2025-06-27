@@ -140,7 +140,7 @@ const PDFExport = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView className="h-1 bg-[#0594ae]">
+      <ScrollView className="h-1 bg-custom-background">
         <TopBarBack title={t('exporter_pdf_navigation_title')} />
         <VStack space="xl" className="flex-1 px-10 justify-center">
           <HStack>
