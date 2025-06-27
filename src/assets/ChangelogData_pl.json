@@ -7,37 +7,37 @@
       "- Dodano podział strony przed sortowaniem w plikach PDF",
       "- Zapisywanie wybranego języka",
       "- Dodanie podwójnych 3vs3 + 3vs2",
-      "- Tri alphabétique des joueurs dans les listes",
-      "- Migrations techniques importantes",
-      "- Correction génération melee-demelee en 1 tour"
+      "- Sortowanie alfabetyczne graczy na listach",
+      "- Istotne migracje techniczne",
+      "-Korekta wczytywania turniejów typu Solo/miks w 1 turze"
     ]
   },
   "31": {
     "id": "31",
     "version": "2.1.1",
     "infos": [
-      "- Correction de l'export PDF sur iOS"
+      "- Naprawiono eksportowanie plików PDF na iOS"
     ]
   },
   "30": {
     "id": "30",
     "version": "2.1.0",
     "infos": [
-      "- Ajout écran de sélection du complément lorsque le nombre de joueurs ne permet pas de faire des matchs complets",
-      "- Ajout pointeur, Tireur et Milieu en Triplette",
-      "- Ajout de la prise en compte des règles (jamais même coéquipier, etc) en Triplette",
-      "- Ajout Store Review",
-      "- Amélioration de l'export et de la mise en page des PDF",
-      "- Amélioration de la génération des matchs mêlée-démêlée doublette",
-      "- Amélioration de la navigation en arrière sur les écrans",
-      "- Mise à jour des traductions",
-      "- Mise à jour des dépendances",
-      "- Correction affichage du champ pour renommer un joueur",
-      "- Correction bug pub bloquante",
-      "- Correction sélection type du joueur",
-      "- Correction popup suppression joueur suggéré",
-      "- Correction crash après suppression du tournoi en cours",
-      "- Correction nom d'une liste de joueur n'était conservée après une modification de la liste"
+      "- Dodano ekran wyboru dodatku, gdy liczba graczy nie pozwala na rozegranie pełnych meczów",
+      "- Dodano Pointera, Strzelca i Pomocnika w Triplet",
+      "- Dodano uwzględnianie zasad (nigdy ten sam członek drużyny itp.) w Triplet",
+      "- Dodano recenzję sklepu",
+      "- Ulepszony eksport i układ plików PDF",
+      "- Ulepszone generowanie turniejów typu Solo/miks dublet",
+      "- Ulepszona nawigacja wsteczna na ekranach",
+      "-Aktualizacja tłumaczenia",
+      "-Aktualizacja zależnych",
+      "- Naprawiono wyświetlanie pola umożliwiającego zmianę nazwy gracza",
+      "- Naprawiono błąd blokowania reklam",
+      "- Naprawiono wybór typu gracza",
+      "- Naprawiono wyskakujące okienko usuwania sugerowanego gracza",
+      "- Naprawiono błąd powodujący awarię po usunięciu bieżącego turnieju",
+      "- Naprawiono błąd powodujący, że nazwa listy graczy nie była zachowywana po modyfikacji listy"
     ]
   },
   "29": {
