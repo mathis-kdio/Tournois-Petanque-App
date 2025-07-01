@@ -5,6 +5,7 @@ import { Text } from '@/components/ui/text';
 import * as React from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { ImageSourcePropType } from 'react-native';
+import { useTheme } from './ui/theme-provider/ThemeProvider';
 
 export interface Props {
   text: string;
@@ -15,6 +16,8 @@ export interface Props {
 }
 
 const Item: React.FC<Props> = ({ text, action, icon, type, drapeau }) => {
+  const { theme } = useTheme();
+
   let colorTxt = 'text-typography-white';
   let btnColor = 'white';
   if (type === 'danger') {
@@ -22,7 +25,7 @@ const Item: React.FC<Props> = ({ text, action, icon, type, drapeau }) => {
     btnColor = 'red';
   } else if (type === 'modal') {
     colorTxt = 'color-custom-text';
-    btnColor = 'color-custom-text';
+    btnColor = theme === 'dark' ? 'white' : 'black';
   }
   return (
     <Pressable onPress={() => action()}>
