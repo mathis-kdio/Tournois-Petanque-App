@@ -41,9 +41,8 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
-
-const SELECTED_LANGUAGE_KEY = 'selectedLanguageKey';
-const SELECTED_THEME_KEY = 'selectedThemeKey';
+import { Theme, useTheme } from '@/components/ui/theme-provider/ThemeProvider';
+import { SELECTED_LANGUAGE_KEY } from '@/utils/async-storage/key';
 
 const Parametres = () => {
   const githubRepository =
@@ -58,6 +57,7 @@ const Parametres = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const dispatch = useDispatch();
+  const { setTheme } = useTheme();
 
   const _alertDialogClearData = () => {
     return (
@@ -252,7 +252,7 @@ const Parametres = () => {
           <ModalBody>
             <Item
               text={t('defaut')}
-              action={() => _changeTheme('light')}
+              action={() => _changeTheme('default')}
               icon={''}
               type="modal"
               drapeau={drapeauFrance}
@@ -279,8 +279,8 @@ const Parametres = () => {
     );
   };
 
-  const _changeTheme = async (language: string) => {
-    await AsyncStorage.setItem(SELECTED_THEME_KEY, language);
+  const _changeTheme = async (theme: Theme) => {
+    setTheme(theme);
     setModalTheme(false);
   };
 
