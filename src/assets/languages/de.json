@@ -105,7 +105,7 @@
     "nombre_tournois": "Vous avez {{nb}} tournois",
     "informations_tournoi_modal_titre": "Informations concernant le tournoi :",
     "id_modal_informations_tournoi": "Id :",
-    "nom_modal_informations_tournoi": "Nom :",
+    "nom_modal_informations_tournoi": "Name :",
     "creation_modal_informations_tournoi": "Création :",
     "derniere_modification_modal_informations_tournoi": "Dernière modification :",
     "nombre_joueurs_modal_informations_tournoi": "Nombre de joueurs :",
