@@ -279,7 +279,7 @@ const Parametres = () => {
     );
   };
 
-  const _changeTheme = async (theme: Theme) => {
+  const _changeTheme = (theme: Theme) => {
     setTheme(theme);
     setModalTheme(false);
   };
