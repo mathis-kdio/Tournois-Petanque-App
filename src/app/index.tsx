@@ -20,6 +20,7 @@ import { useAuth } from '@/components/supabase/SessionProvider';
 import { useNavigation, useRouter } from 'expo-router';
 import { CommonActions } from '@react-navigation/native';
 import Constants from 'expo-constants';
+import { useTheme } from '@/components/ui/theme-provider/ThemeProvider';
 
 const googleMarketReviews =
   'market://details?id=com.MK.PetanqueGCU&showAllReviews=true';
@@ -117,6 +118,9 @@ const Accueil = () => {
 
   const version = Constants.expoConfig?.extra?.appVersion;
 
+  const { theme } = useTheme();
+  const iconColor = theme === 'dark' ? 'black' : 'white';
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <VStack className="flex-1 px-5 bg-custom-background">
@@ -163,11 +167,7 @@ const Accueil = () => {
                   onPress={() => _openURL(facebook)}
                   className="items-center bg-custom-dark-blue rounded-3xl p-3"
                 >
-                  <FontAwesome5
-                    name="facebook"
-                    color="color-custom-text-button"
-                    size={20}
-                  />
+                  <FontAwesome5 name="facebook" color={iconColor} size={20} />
                   <Text className="color-custom-text-button">
                     {t('rejoindre_page_fb')}
                   </Text>
@@ -176,11 +176,7 @@ const Accueil = () => {
                   onPress={() => _openURL(website)}
                   className="items-center bg-custom-dark-blue rounded-3xl p-3"
                 >
-                  <FontAwesome5
-                    name="globe"
-                    color="color-custom-text-button"
-                    size={20}
-                  />
+                  <FontAwesome5 name="globe" color={iconColor} size={20} />
                   <Text className="color-custom-text-button">
                     {t('voir_website')}
                   </Text>
@@ -193,31 +189,19 @@ const Accueil = () => {
                   }
                   className="flex-1 items-center bg-custom-dark-blue rounded-3xl p-2"
                 >
-                  <FontAwesome5
-                    name="star"
-                    color="color-custom-text-button"
-                    size={20}
-                  />
+                  <FontAwesome5 name="star" color={iconColor} size={20} />
                 </Pressable>
                 <Pressable
                   onPress={() => _openURL(encodeURI(mail))}
                   className="flex-1 items-center bg-custom-dark-blue rounded-3xl p-2"
                 >
-                  <FontAwesome5
-                    name="envelope"
-                    color="color-custom-text-button"
-                    size={20}
-                  />
+                  <FontAwesome5 name="envelope" color={iconColor} size={20} />
                 </Pressable>
                 <Pressable
                   onPress={() => router.navigate('/parametres')}
                   className="flex-1 items-center bg-custom-dark-blue rounded-3xl p-2"
                 >
-                  <FontAwesome5
-                    name="wrench"
-                    color="color-custom-text-button"
-                    size={20}
-                  />
+                  <FontAwesome5 name="wrench" color={iconColor} size={20} />
                 </Pressable>
               </HStack>
               <HStack className="justify-center">
