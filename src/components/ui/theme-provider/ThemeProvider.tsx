@@ -11,18 +11,14 @@ interface ThemeContextType {
   setTheme: (theme: Theme) => void;
 }
 
-export const ThemeContext = createContext<ThemeContextType | undefined>(
-  undefined
-);
+export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setTheme] = useState<Theme>("default");
 
   useEffect(() => {
     (async () => {
-      const savedTheme = (await AsyncStorage.getItem(SELECTED_THEME_KEY)) as
-        | Theme
-        | "light";
+      const savedTheme = (await AsyncStorage.getItem(SELECTED_THEME_KEY)) as | Theme | "light";
       if (savedTheme) {
         setTheme(savedTheme);
         AsyncStorage.setItem(SELECTED_THEME_KEY, savedTheme);
@@ -32,7 +28,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
   const handleSetTheme = (newTheme: Theme) => {
     setTheme(newTheme);
-    AsyncStorage.setItem('theme', newTheme);
+    AsyncStorage.setItem(SELECTED_THEME_KEY, newTheme);
   };
 
   return (
