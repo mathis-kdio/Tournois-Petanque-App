@@ -6,6 +6,8 @@ import { ToastProvider } from '@gluestack-ui/toast';
 import { setFlushStyles } from '@gluestack-ui/nativewind-utils/flush';
 import { script } from './script';
 
+export type ModeType = 'light' | 'dark' | 'system';
+
 const variableStyleTagId = 'nativewind-style';
 const createStyle = (styleTagId: string) => {
   const style = document.createElement('style');
@@ -21,7 +23,7 @@ export function GluestackUIProvider({
   mode = 'light',
   ...props
 }: {
-  mode?: 'light' | 'dark' | 'system';
+  mode?: ModeType;
   children?: React.ReactNode;
 }) {
   let cssVariablesWithMode = ``;
