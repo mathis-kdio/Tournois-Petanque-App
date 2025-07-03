@@ -41,11 +41,14 @@ export default function TabLayout() {
       initialRouteName="matchs"
       backBehavior="none"
       screenOptions={{
-        tabBarStyle: { backgroundColor: '#0594ae' },
+        tabBarStyle: { backgroundColor: 'var(--color-custom-background)' },
         tabBarActiveTintColor: 'white',
         tabBarInactiveTintColor: 'black',
         tabBarLabelStyle: { fontSize: 15 },
-        headerStyle: { backgroundColor: '#0594ae', elevation: 0 },
+        headerStyle: {
+          backgroundColor: 'var(--color-custom-background)',
+          elevation: 0,
+        },
       }}
     >
       <Tabs.Screen

@@ -90,7 +90,7 @@ export default function MatchsPage() {
       screenOptions={{
         title: t('liste_matchs_navigation_title'),
         tabBarScrollEnabled: true,
-        tabBarStyle: { backgroundColor: '#0594ae' },
+        tabBarStyle: { backgroundColor: 'var(--color-custom-background)' },
         tabBarIndicatorStyle: { backgroundColor: 'white' },
       }}
     >
