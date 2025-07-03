@@ -18,7 +18,7 @@ export interface Props {
 const Item: React.FC<Props> = ({ text, action, icon, type, drapeau }) => {
   const { theme } = useTheme();
 
-  let colorTxt = 'text-typography-white';
+  let colorTxt = 'text-white';
   let btnColor = 'white';
   if (type === 'danger') {
     colorTxt = 'text-red-500';
