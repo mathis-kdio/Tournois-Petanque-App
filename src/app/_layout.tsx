@@ -62,10 +62,19 @@ export default function RootLayout() {
 
   const GluestackWrapper = ({ children }: { children: React.ReactNode }) => {
     const { theme } = useTheme();
-    // Gluestack ne comprend que 'light' ou 'dark'
-    const colorMode = theme === 'dark' ? 'dark' : 'light';
+    let globalTheme: 'basic' | 'original';
+    let colorMode: 'light' | 'dark' | 'system';
+    if (theme === 'default') {
+      globalTheme = 'original';
+      colorMode = 'light';
+    } else {
+      globalTheme = 'basic';
+      colorMode = theme === 'dark' ? 'dark' : 'light';
+    }
     return (
-      <GluestackUIProvider mode={colorMode}>{children}</GluestackUIProvider>
+      <GluestackUIProvider theme={globalTheme} mode={colorMode}>
+        {children}
+      </GluestackUIProvider>
     );
   };
 

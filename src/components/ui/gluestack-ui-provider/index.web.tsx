@@ -6,6 +6,7 @@ import { ToastProvider } from '@gluestack-ui/toast';
 import { setFlushStyles } from '@gluestack-ui/nativewind-utils/flush';
 import { script } from './script';
 
+export type ThemeType = 'basic' | 'original';
 export type ModeType = 'light' | 'dark' | 'system';
 
 const variableStyleTagId = 'nativewind-style';
@@ -20,20 +21,22 @@ export const useSafeLayoutEffect =
   typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 export function GluestackUIProvider({
+  theme,
   mode = 'light',
   ...props
 }: {
+  theme: ThemeType; 
   mode?: ModeType;
   children?: React.ReactNode;
 }) {
   let cssVariablesWithMode = ``;
-  Object.keys(config).forEach((configKey) => {
-    cssVariablesWithMode +=
-      configKey === 'dark' ? `\n .dark {\n ` : `\n:root {\n`;
+  let themeConfig = config[theme]
+  Object.keys(themeConfig).forEach((configKey) => {
+    cssVariablesWithMode += configKey === 'dark' ? `\n .dark {\n ` : `\n:root {\n`;
     const cssVariables = Object.keys(
-      config[configKey as keyof typeof config]
+      themeConfig[configKey as keyof typeof themeConfig]
     ).reduce((acc: string, curr: string) => {
-      acc += `${curr}:${config[configKey as keyof typeof config][curr]}; `;
+      acc += `${curr}:${themeConfig[configKey as keyof typeof themeConfig][curr]}; `;
       return acc;
     }, '');
     cssVariablesWithMode += `${cssVariables} \n}`;
@@ -54,7 +57,7 @@ export function GluestackUIProvider({
         documentElement.style.colorScheme = mode;
       }
     }
-  }, [mode]);
+  }, [mode, theme]);
 
   useSafeLayoutEffect(() => {
     if (mode !== 'system') return;
@@ -71,14 +74,12 @@ export function GluestackUIProvider({
       if (documentElement) {
         const head = documentElement.querySelector('head');
         let style = head?.querySelector(`[id='${variableStyleTagId}']`);
-        if (!style) {
-          style = createStyle(variableStyleTagId);
-          style.innerHTML = cssVariablesWithMode;
-          if (head) head.appendChild(style);
-        }
+        style = createStyle(variableStyleTagId);
+        style.innerHTML = cssVariablesWithMode;
+        if (head) head.appendChild(style);
       }
     }
-  }, []);
+  }, [mode, theme]);
 
   return (
     <>
