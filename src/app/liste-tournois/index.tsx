@@ -64,7 +64,7 @@ const ListeTournois = () => {
           <ModalBackdrop />
           <ModalContent className="max-h-5/6">
             <ModalHeader>
-              <Heading className="text-black" size="lg">
+              <Heading className="text-custom-text" size="lg">
                 {t('informations_tournoi_modal_titre')}
               </Heading>
               <ModalCloseButton>
