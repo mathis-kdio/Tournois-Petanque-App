@@ -232,9 +232,9 @@ const OptionsTournoi = () => {
                   onChangeEnd={(v) => setMemesAdversaires(v)}
                 >
                   <SliderTrack>
-                    <SliderFilledTrack className="bg-[#1c3969]" />
+                    <SliderFilledTrack />
                   </SliderTrack>
-                  <SliderThumb className="bg-[#1c3969]" />
+                  <SliderThumb />
                 </Slider>
                 <HStack className="justify-center">
                   <Text className="text-white">
