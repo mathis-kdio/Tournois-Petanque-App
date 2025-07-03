@@ -232,7 +232,7 @@ const ListeJoueursItem: React.FC<Props> = ({ list, loadListScreen }) => {
       );
     } else {
       return (
-        <Text className="text-white">
+        <Text className="text-typography-white">
           {t('liste')} {listName}
         </Text>
       );

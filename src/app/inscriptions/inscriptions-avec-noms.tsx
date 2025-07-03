@@ -167,7 +167,7 @@ const InscriptionsAvecNoms = () => {
       <VStack className="flex-1 bg-custom-background">
         <TopBarBack title={t('inscription_avec_noms_navigation_title')} />
         <VStack className="flex-1">
-          <Text className="text-white text-xl text-center">
+          <Text className="text-typography-white text-xl text-center">
             {t('nombre_joueurs', { nb: nbJoueur })}
           </Text>
           <Inscriptions loadListScreen={false} />

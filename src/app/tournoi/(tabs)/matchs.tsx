@@ -76,7 +76,7 @@ export default function MatchsPage() {
 
     return (
       <HStack className="items-center">
-        <Text className="text-white text-lg mr-2">{title}</Text>
+        <Text className="text-typography-white text-lg mr-2">{title}</Text>
         <FontAwesome5 name={iconName} size={20} color={iconColor} />
         <Text className={`${textColor} ml-1`} size="xl">
           {matchsRestant.toString()}

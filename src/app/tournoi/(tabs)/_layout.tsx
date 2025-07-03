@@ -46,7 +46,7 @@ export default function TabLayout() {
       backBehavior="none"
       screenOptions={{
         tabBarStyle: { backgroundColor: 'var(--color-custom-background)' },
-        tabBarActiveTintColor: 'white',
+        tabBarActiveTintColor: 'var(--color-custom-bg-inverse)',
         tabBarInactiveTintColor,
         tabBarLabelStyle: { fontSize: 15 },
         headerStyle: {

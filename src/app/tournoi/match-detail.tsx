@@ -61,7 +61,9 @@ const MatchDetail = () => {
     let title = match.terrain
       ? match.terrain.name
       : t('match_numero') + (match.id + 1);
-    return <Text className="text-white text-xl text-center">{title}</Text>;
+    return (
+      <Text className="text-typography-white text-xl text-center">{title}</Text>
+    );
   };
 
   const _displayName = (joueurNumber: number, equipe: number) => {
@@ -70,13 +72,19 @@ const MatchDetail = () => {
     if (joueur) {
       if (equipe === 1) {
         return (
-          <Text key={joueur.id} className="text-white text-md text-left">
+          <Text
+            key={joueur.id}
+            className="text-typography-white text-md text-left"
+          >
             {joueur.id + 1 + ' ' + joueur.name}
           </Text>
         );
       } else {
         return (
-          <Text key={joueur.id} className="text-white text-md text-right">
+          <Text
+            key={joueur.id}
+            className="text-typography-white text-md text-right"
+          >
             {joueur.name + ' ' + (joueur.id + 1)}
           </Text>
         );
@@ -171,16 +179,16 @@ const MatchDetail = () => {
                 <HStack className="items-center">
                   <Box className="flex-2">{_displayEquipe(1, match)}</Box>
                   <Box className="flex-1 items-center">
-                    <Text className="text-white text-xl">VS</Text>
+                    <Text className="text-typography-white text-xl">VS</Text>
                   </Box>
                   <Box className="flex-2">{_displayEquipe(2, match)}</Box>
                 </HStack>
                 <HStack space="lg">
                   <Box className="flex-1">
-                    <Text className="text-white text-md">
+                    <Text className="text-typography-white text-md">
                       {t('score_equipe_1')}{' '}
                     </Text>
-                    <Input className="border-white">
+                    <Input className="border-custom-bg-inverse">
                       <InputField
                         className="text-white placeholder:text-white"
                         placeholder={t('score_placeholder', {
@@ -203,10 +211,10 @@ const MatchDetail = () => {
                     </Input>
                   </Box>
                   <Box className="flex-1">
-                    <Text className="text-white text-md self-end">
+                    <Text className="text-typography-white text-md self-end">
                       {t('score_equipe_2')}{' '}
                     </Text>
-                    <Input className="border-white">
+                    <Input className="border-custom-bg-inverse">
                       <InputField
                         className="text-white placeholder:text-white"
                         placeholder={t('score_placeholder', {

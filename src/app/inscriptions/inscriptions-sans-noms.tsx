@@ -132,14 +132,14 @@ const InscriptionsSansNoms = () => {
       <ScrollView className="h-1 bg-custom-background">
         <TopBarBack title={t('inscription_sans_noms_navigation_title')} />
         <VStack space="2xl" className="flex-1 px-10">
-          <Text className="text-white text-center text-xl">
+          <Text className="text-typography-white text-center text-xl">
             {t('nombre_joueurs', { nb: _nbJoueurs() })}
           </Text>
           <VStack>
-            <Text className="text-white text-md">
+            <Text className="text-typography-white text-md">
               {t('nombre_joueurs_adultes')}{' '}
             </Text>
-            <Input className="border-white">
+            <Input className="border-custom-bg-inverse">
               <InputField
                 placeholder={t('nombre_placeholder')}
                 keyboardType="number-pad"
@@ -152,10 +152,10 @@ const InscriptionsSansNoms = () => {
             </Input>
           </VStack>
           <VStack>
-            <Text className="text-white text-md">
+            <Text className="text-typography-white text-md">
               {t('nombre_joueurs_enfants')}{' '}
             </Text>
-            <Input className="border-white">
+            <Input className="border-custom-bg-inverse">
               <InputField
                 placeholder={t('nombre_placeholder')}
                 keyboardType="number-pad"
@@ -164,7 +164,9 @@ const InscriptionsSansNoms = () => {
               />
             </Input>
           </VStack>
-          <Text className="text-white">{t('joueurs_enfants_explication')}</Text>
+          <Text className="text-typography-white">
+            {t('joueurs_enfants_explication')}
+          </Text>
           {_boutonCommencer()}
         </VStack>
       </ScrollView>

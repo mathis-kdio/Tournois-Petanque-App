@@ -109,9 +109,9 @@ const JoueurSuggere: React.FC<Props> = ({ joueur }) => {
   };
 
   return (
-    <HStack className="border border-white rounded-xl m-1 px-1 items-center">
+    <HStack className="border border-custom-bg-inverse rounded-xl m-1 px-1 items-center">
       <Box className="flex-1">
-        <Text className="text-white text-xl font-bold break-words">
+        <Text className="text-typography-white text-xl font-bold break-words">
           {joueur.name}
         </Text>
       </Box>

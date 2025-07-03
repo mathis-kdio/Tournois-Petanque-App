@@ -86,7 +86,7 @@ const ListesJoueurs = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <VStack className="flex-1 bg-custom-background">
         <TopBarBack title={t('listes_joueurs_navigation_title')} />
-        <Text className="text-white text-xl text-center">
+        <Text className="text-typography-white text-xl text-center">
           {t('nombre_listes', { nb: nbLists })}
         </Text>
         <Box className="px-10">{_addListButton()}</Box>

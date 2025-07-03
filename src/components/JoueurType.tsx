@@ -83,13 +83,16 @@ const JoueurType: React.FC<Props> = ({ joueurType, _setJoueurType }) => {
       aria-label={t('choisir_poste')}
       onValueChange={(itemValue: JoueurTypeEnum) => _setJoueurType(itemValue)}
     >
-      <SelectTrigger variant="rounded" className="border-white">
+      <SelectTrigger variant="rounded" className="border-custom-bg-inverse">
         <SelectInput
-          className="text-white"
+          className="text-typography-white"
           placeholder={t('choisir_poste')}
           value={joueurType}
         />
-        <SelectIcon className="mr-3 text-white" as={ChevronDownIcon} />
+        <SelectIcon
+          className="mr-3 text-typography-white"
+          as={ChevronDownIcon}
+        />
       </SelectTrigger>
       <SelectPortal>
         <SelectBackdrop />

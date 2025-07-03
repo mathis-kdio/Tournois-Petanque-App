@@ -168,7 +168,7 @@ const ListeTournoiItem: React.FC<Props> = ({
       return (
         <Input className="border-white">
           <InputField
-            className="text-white placeholder:text-black"
+            className="text-typography-white placeholder:text-black"
             placeholder={tournoiName}
             autoFocus={true}
             onChangeText={(text: string) => _tournoiTextInputChanged(text)}
@@ -178,7 +178,7 @@ const ListeTournoiItem: React.FC<Props> = ({
       );
     } else {
       return (
-        <Text className="text-white">
+        <Text className="text-typography-white">
           {t('tournoi')} {tournoiName}
         </Text>
       );

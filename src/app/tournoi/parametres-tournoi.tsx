@@ -127,25 +127,25 @@ const ParametresTournoi = () => {
         <TopBarBack title={t('parametres_tournoi_navigation_title')} />
         <VStack className="flex-1 px-10 justify-around">
           <VStack>
-            <Text className="text-white text-xl text-center">
+            <Text className="text-typography-white text-xl text-center">
               {t('options_tournoi')}
             </Text>
-            <Text className="text-white">
+            <Text className="text-typography-white">
               {t('nombre_tours')} {parametresTournoi.nbTours.toString()}
             </Text>
-            <Text className="text-white">
+            <Text className="text-typography-white">
               {t('nombre_points_victoire')}{' '}
               {parametresTournoi.nbPtVictoire.toString()}
             </Text>
-            <Text className="text-white">
+            <Text className="text-typography-white">
               {t('regle_speciaux')}{' '}
               {parametresTournoi.speciauxIncompatibles ? 'Activé' : 'Désactivé'}
             </Text>
-            <Text className="text-white">
+            <Text className="text-typography-white">
               {t('regle_equipes_differentes')}{' '}
               {parametresTournoi.memesEquipes ? 'Activé' : 'Désactivé'}
             </Text>
-            <Text className="text-white">
+            <Text className="text-typography-white">
               {t('regle_adversaires')}{' '}
               {parametresTournoi.memesAdversaires === 0
                 ? '1 match'

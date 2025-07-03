@@ -80,13 +80,13 @@ const Authentification = () => {
               className="mb-5"
             >
               <FormControlLabel className="mb-1">
-                <FormControlLabelText className="text-white">
+                <FormControlLabelText className="text-typography-white">
                   {t('email')}
                 </FormControlLabelText>
               </FormControlLabel>
               <Input>
                 <InputField
-                  className="text-white placeholder:text-white"
+                  className="text-typography-white placeholder:text-typography-white"
                   placeholder={t('email_adresse')}
                   keyboardType="email-address"
                   returnKeyType="next"
@@ -108,13 +108,13 @@ const Authentification = () => {
               className="mb-5"
             >
               <FormControlLabel className="mb-1">
-                <FormControlLabelText className="text-white">
+                <FormControlLabelText className="text-typography-white">
                   {t('mot_de_passe')}
                 </FormControlLabelText>
               </FormControlLabel>
               <Input>
                 <InputField
-                  className="text-white placeholder:text-white"
+                  className="text-typography-white placeholder:text-typography-white"
                   placeholder={t('mot_de_passe')}
                   secureTextEntry={!showPassword}
                   autoCapitalize={'none'}
@@ -175,7 +175,7 @@ const Authentification = () => {
                   size={18}
                   style={{ marginRight: 5 }}
                 />
-                <ButtonText className="text-white">Apple</ButtonText>
+                <ButtonText className="text-typography-white">Apple</ButtonText>
               </Button>
               <Button
                 className="grow"
@@ -189,13 +189,15 @@ const Authentification = () => {
                   size={14}
                   className="mr-2"
                 />
-                <ButtonText className="text-white">Google</ButtonText>
+                <ButtonText className="text-typography-white">
+                  Google
+                </ButtonText>
               </Button>
             </HStack>
           </VStack>
           <Divider className="my-5" />
           <VStack space="md">
-            <Text className="text-white self-center" size="lg">
+            <Text className="text-typography-white self-center" size="lg">
               {t('pas_encore_compte')}
             </Text>
             <Button
