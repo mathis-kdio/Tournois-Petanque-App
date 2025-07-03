@@ -64,7 +64,7 @@ const ListeTournois = () => {
           <ModalBackdrop />
           <ModalContent className="max-h-5/6">
             <ModalHeader>
-              <Heading className="text-black" size="lg">
+              <Heading className="text-custom-text" size="lg">
                 {t('informations_tournoi_modal_titre')}
               </Heading>
               <ModalCloseButton>
@@ -147,9 +147,9 @@ const ListeTournois = () => {
   );
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <VStack className="flex-1 bg-[#0594ae]">
+      <VStack className="flex-1 bg-custom-background">
         <TopBarBack title={t('choix_tournoi_navigation_title')} />
-        <Text className="text-white text-xl text-center px-10">
+        <Text className="text-typography-white text-xl text-center px-10">
           {t('nombre_tournois', { nb: listeTournois.length })}
         </Text>
         <VStack className="flex-1 my-2">

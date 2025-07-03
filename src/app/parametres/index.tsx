@@ -41,8 +41,8 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
-
-const SELECTED_LANGUAGE_KEY = 'selectedLanguageKey';
+import { Theme, useTheme } from '@/components/ui/theme-provider/ThemeProvider';
+import { SELECTED_LANGUAGE_KEY } from '@/utils/async-storage/key';
 
 const Parametres = () => {
   const githubRepository =
@@ -52,10 +52,12 @@ const Parametres = () => {
 
   const [alertOpen, openAlert] = useState(false);
   const [modalLanguagesOpen, openModalLanguages] = useState(false);
+  const [modalThemeOpen, setModalTheme] = useState(false);
 
   const { t } = useTranslation();
   const router = useRouter();
   const dispatch = useDispatch();
+  const { setTheme } = useTheme();
 
   const _alertDialogClearData = () => {
     return (
@@ -63,7 +65,7 @@ const Parametres = () => {
         <AlertDialogBackdrop />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <Heading className="text-black">
+            <Heading className="color-custom-text">
               {t('supprimer_donnees_modal_titre')}
             </Heading>
             <AlertDialogCloseButton>
@@ -84,7 +86,9 @@ const Parametres = () => {
                 action="secondary"
                 onPress={() => openAlert(false)}
               >
-                <ButtonText className="text-black">{t('annuler')}</ButtonText>
+                <ButtonText className="text-custom-text">
+                  {t('annuler')}
+                </ButtonText>
               </Button>
               <Button action="negative" onPress={() => _clearData()}>
                 <ButtonText>{t('oui')}</ButtonText>
@@ -149,7 +153,7 @@ const Parametres = () => {
         <ModalBackdrop />
         <ModalContent className="max-h-5/6">
           <ModalHeader>
-            <Heading className="text-black">
+            <Heading className="color-custom-text">
               {t('languages_disponibles')}
             </Heading>
             <ModalCloseButton>
@@ -229,17 +233,72 @@ const Parametres = () => {
     openModalLanguages(false);
   };
 
+  const _modalTheme = () => {
+    let drapeauFrance = require('@assets/images/drapeau-france.png');
+    return (
+      <Modal isOpen={modalThemeOpen} onClose={() => setModalTheme(false)}>
+        <ModalBackdrop />
+        <ModalContent className="max-h-5/6">
+          <ModalHeader>
+            <Heading className="color-custom-text">
+              {t('themes_disponibles')}
+            </Heading>
+            <ModalCloseButton>
+              <Icon
+                as={CloseIcon}
+                size="md"
+                className="stroke-background-400 group-[:hover]/modal-close-button:stroke-background-700 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900"
+              />
+            </ModalCloseButton>
+          </ModalHeader>
+          <ModalBody>
+            <Item
+              text={t('defaut')}
+              action={() => _changeTheme('default')}
+              icon={''}
+              type="modal"
+              drapeau={drapeauFrance}
+            />
+            <Divider />
+            <Item
+              text={t('clair')}
+              action={() => _changeTheme('light')}
+              icon={''}
+              type="modal"
+              drapeau={drapeauFrance}
+            />
+            <Divider />
+            <Item
+              text={t('sombre')}
+              action={() => _changeTheme('dark')}
+              icon={''}
+              type="modal"
+              drapeau={drapeauFrance}
+            />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    );
+  };
+
+  const _changeTheme = (theme: Theme) => {
+    setTheme(theme);
+    setModalTheme(false);
+  };
+
   const version = Constants.expoConfig?.extra?.appVersion;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <VStack className="flex-1 bg-[#0594ae]">
+      <VStack className="flex-1 bg-custom-background">
         <TopBarBack title={t('parametres')} />
         <ScrollView className="h-1">
           <VStack space="lg" className="flex-1 px-10">
             <VStack>
-              <Text className="text-xl text-white mb-1">{t('a_propos')}</Text>
-              <Box className="border border-white rounded-lg">
+              <Text className="text-xl text-typography-white mb-1">
+                {t('a_propos')}
+              </Text>
+              <Box className="border text-custom-bg-inverse rounded-lg">
                 <Item
                   text={t('voir_source_code')}
                   action={() => _openURL(githubRepository)}
@@ -258,8 +317,18 @@ const Parametres = () => {
               </Box>
             </VStack>
             <VStack>
-              <Text className="text-xl text-white mb-1">{t('reglages')}</Text>
-              <Box className="border border-white rounded-lg">
+              <Text className="text-xl text-typography-white mb-1">
+                {t('reglages')}
+              </Text>
+              <Box className="border text-custom-bg-inverse rounded-lg">
+                <Item
+                  text={t('changer_theme')}
+                  action={() => setModalTheme(true)}
+                  icon="language"
+                  type={''}
+                  drapeau={undefined}
+                />
+                <Divider />
                 <Item
                   text={t('changer_langue')}
                   action={() => openModalLanguages(true)}
@@ -286,8 +355,10 @@ const Parametres = () => {
               </Box>
             </VStack>
             <VStack>
-              <Text className="text-xl text-white mb-1">{t('nouveautes')}</Text>
-              <Box className="border border-white rounded-lg">
+              <Text className="text-xl text-typography-white mb-1">
+                {t('nouveautes')}
+              </Text>
+              <Box className="border text-custom-bg-inverse rounded-lg">
                 <Item
                   text={t('voir_nouveautes')}
                   action={() => router.navigate('/parametres/changelog')}
@@ -300,12 +371,13 @@ const Parametres = () => {
           </VStack>
         </ScrollView>
         <Center>
-          <Text className="text-center text-md text-white">
+          <Text className="text-center text-md text-typography-white">
             {t('version')} {version}
           </Text>
         </Center>
         {_alertDialogClearData()}
         {_modalLanguages()}
+        {_modalTheme()}
       </VStack>
     </SafeAreaView>
   );

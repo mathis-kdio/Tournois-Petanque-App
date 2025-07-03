@@ -48,13 +48,17 @@ const InfosPerso = () => {
   const detailsArray = Object.entries(userDetails);
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView className="h-1 bg-[#0594ae]">
+      <ScrollView className="h-1 bg-custom-background">
         <TopBarBack title={t('informations_personnelles')} />
         <VStack className="flex-1 px-10">
           {detailsArray.map(([key, detail], index) => (
             <HStack key={index} className="mb-5">
-              <Text className="text-white flex-1">{t(detail.label)} :</Text>
-              <Text className="text-white flex-1">{detail.value}</Text>
+              <Text className="text-typography-white flex-1">
+                {t(detail.label)} :
+              </Text>
+              <Text className="text-typography-white flex-1">
+                {detail.value}
+              </Text>
             </HStack>
           ))}
         </VStack>

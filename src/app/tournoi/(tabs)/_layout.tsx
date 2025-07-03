@@ -6,6 +6,7 @@ import { Text } from '@/components/ui/text';
 import { Tournoi } from '@/types/interfaces/tournoi';
 import { captureMessage } from '@sentry/react-native';
 import { useSelector } from 'react-redux';
+import { useTheme } from '@/components/ui/theme-provider/ThemeProvider';
 
 export default function TabLayout() {
   const { t } = useTranslation();
@@ -36,16 +37,22 @@ export default function TabLayout() {
 
   let tournoiName = getTournoiName();
 
+  const { theme } = useTheme();
+  const tabBarInactiveTintColor = theme === 'dark' ? 'grey' : 'black';
+
   return (
     <Tabs
       initialRouteName="matchs"
       backBehavior="none"
       screenOptions={{
-        tabBarStyle: { backgroundColor: '#0594ae' },
-        tabBarActiveTintColor: 'white',
-        tabBarInactiveTintColor: 'black',
+        tabBarStyle: { backgroundColor: 'var(--color-custom-background)' },
+        tabBarActiveTintColor: 'var(--color-custom-bg-inverse)',
+        tabBarInactiveTintColor,
         tabBarLabelStyle: { fontSize: 15 },
-        headerStyle: { backgroundColor: '#0594ae', elevation: 0 },
+        headerStyle: {
+          backgroundColor: 'var(--color-custom-background)',
+          elevation: 0,
+        },
       }}
     >
       <Tabs.Screen

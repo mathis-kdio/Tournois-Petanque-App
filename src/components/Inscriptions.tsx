@@ -137,7 +137,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
         <AlertDialogBackdrop />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <Heading className="text-black">
+            <Heading className="color-custom-text">
               {t('supprimer_joueurs_modal_titre')}
             </Heading>
             <AlertDialogCloseButton>
@@ -158,7 +158,9 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
                 action="secondary"
                 onPress={() => setModalRemoveIsOpen(false)}
               >
-                <ButtonText className="text-black">{t('annuler')}</ButtonText>
+                <ButtonText className="color-custom-text">
+                  {t('annuler')}
+                </ButtonText>
               </Button>
               <Button action="negative" onPress={() => _removeAllPlayers()}>
                 <ButtonText>{t('oui')}</ButtonText>
@@ -244,7 +246,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
       );
       return (
         <VStack>
-          <Text className="text-white text-xl text-center">
+          <Text className="text-typography-white text-xl text-center">
             {t('suggestions_joueurs')}
           </Text>
           <FlatList
@@ -309,7 +311,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
         className="my-1 flex-row items-center"
       >
         <FontAwesome5 name={icon} size={15} color="white" />
-        <Text className="text-white text-md">
+        <Text className="text-typography-white text-md">
           {` ${text} ${t('case_a_cocher')}`}
         </Text>
       </Pressable>
@@ -324,7 +326,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
           className="my-1 flex-row items-center"
         >
           <MaterialCommunityIcons name="sort" size={24} color="white" />
-          <Text className="text-white text-md">{` ${t('trier_joueurs')}`}</Text>
+          <Text className="text-typography-white text-md">{` ${t('trier_joueurs')}`}</Text>
         </Pressable>
         <TriListeJoueurs
           isOpen={showTri}
@@ -339,9 +341,9 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
     <VStack className="flex-1">
       <HStack space="md" className="items-center mx-1">
         <Box className="flex-1">
-          <Input className="border-white">
+          <Input className="border-custom-bg-inverse">
             <InputField
-              className="text-white placeholder:text-white"
+              className="text-typography-white placeholder:text-typography-white"
               placeholder={t('nom')}
               autoFocus={true}
               keyboardType="default"

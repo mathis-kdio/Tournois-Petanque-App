@@ -4,7 +4,7 @@ import colors from 'tailwindcss/colors';
 
 const Loading = () => {
   return (
-    <Box className="flex-1 bg-[#0594ae] justify-center">
+    <Box className="flex-1 bg-custom-background justify-center">
       <Spinner size="large" color={colors.white} />
     </Box>
   );

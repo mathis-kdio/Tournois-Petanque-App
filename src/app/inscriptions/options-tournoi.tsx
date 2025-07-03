@@ -139,18 +139,18 @@ const OptionsTournoi = () => {
       style={{ flex: 1, zIndex: 999 }}
     >
       <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView className="h-1 bg-[#0594ae]">
+        <ScrollView className="h-1 bg-custom-background">
           <VStack className="flex-1">
             <TopBarBack title={t('options_tournoi_title')} />
             <VStack space="4xl" className="px-10">
               <VStack space="md">
                 <VStack>
-                  <Text className="text-white text-md">
+                  <Text className="text-typography-white text-md">
                     {t('indiquer_nombre_tours')}{' '}
                   </Text>
                   <Input className="border-white">
                     <InputField
-                      className="text-white placeholder:text-white"
+                      className="text-typography-white"
                       placeholder={t('nombre_placeholder')}
                       keyboardType="numeric"
                       defaultValue={nbToursTxt}
@@ -159,12 +159,12 @@ const OptionsTournoi = () => {
                   </Input>
                 </VStack>
                 <VStack>
-                  <Text className="text-white text-md">
+                  <Text className="text-typography-white text-md">
                     {t('indiquer_nombre_points_victoire')}{' '}
                   </Text>
                   <Input className="border-white">
                     <InputField
-                      className="text-white placeholder:text-white"
+                      className="text-typography-white"
                       placeholder={t('nombre_placeholder')}
                       keyboardType="numeric"
                       defaultValue={nbPtVictoireTxt}
@@ -188,10 +188,10 @@ const OptionsTournoi = () => {
                   <CheckboxIndicator className="mr-2 border-white">
                     <CheckboxIcon
                       as={CheckIcon}
-                      className="text-white bg-[#0594ae]"
+                      className="text-typography-white bg-custom-background"
                     />
                   </CheckboxIndicator>
-                  <CheckboxLabel className="text-white">
+                  <CheckboxLabel className="text-typography-white">
                     {t('options_regle_speciaux')}
                   </CheckboxLabel>
                 </Checkbox>
@@ -205,21 +205,23 @@ const OptionsTournoi = () => {
                   <CheckboxIndicator className="mr-2 border-white">
                     <CheckboxIcon
                       as={CheckIcon}
-                      className="text-white bg-[#0594ae]"
+                      className="text-typography-white bg-custom-background"
                     />
                   </CheckboxIndicator>
-                  <CheckboxLabel className="text-white">
+                  <CheckboxLabel className="text-typography-white">
                     {t('options_regle_equipes')}
                   </CheckboxLabel>
                 </Checkbox>
               </VStack>
               <VStack>
-                <Text className="text-white text-md">
+                <Text className="text-typography-white text-md">
                   {t('options_regle_adversaires')}
                 </Text>
                 <HStack className="justify-between">
-                  <Text className="text-white">{t('1_seul_match')}</Text>
-                  <Text className="text-white">
+                  <Text className="text-typography-white">
+                    {t('1_seul_match')}
+                  </Text>
+                  <Text className="text-typography-white">
                     {t('pourcent_matchs', { pourcent: '100' })}
                   </Text>
                 </HStack>
@@ -232,12 +234,12 @@ const OptionsTournoi = () => {
                   onChangeEnd={(v) => setMemesAdversaires(v)}
                 >
                   <SliderTrack>
-                    <SliderFilledTrack className="bg-[#1c3969]" />
+                    <SliderFilledTrack />
                   </SliderTrack>
-                  <SliderThumb className="bg-[#1c3969]" />
+                  <SliderThumb />
                 </Slider>
                 <HStack className="justify-center">
-                  <Text className="text-white">
+                  <Text className="text-typography-white">
                     {t('pourcent_matchs', { pourcent: '50' })}
                   </Text>
                 </HStack>
@@ -252,10 +254,10 @@ const OptionsTournoi = () => {
                   <CheckboxIndicator className="mr-2 border-white">
                     <CheckboxIcon
                       as={CheckIcon}
-                      className="text-white bg-[#0594ae]"
+                      className="text-typography-white bg-custom-background"
                     />
                   </CheckboxIndicator>
-                  <CheckboxLabel className="text-white">
+                  <CheckboxLabel className="text-typography-white">
                     {t('options_terrains_explications')}
                   </CheckboxLabel>
                 </Checkbox>

@@ -16,6 +16,11 @@ import { Stack, useNavigationContainerRef } from 'expo-router';
 import { isRunningInExpoGo } from 'expo';
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SELECTED_LANGUAGE_KEY } from '@/utils/async-storage/key';
+import {
+  ThemeProvider,
+  useTheme,
+} from '@/components/ui/theme-provider/ThemeProvider';
 
 const navigationIntegration = Sentry.reactNavigationIntegration({
   enableTimeToInitialDisplay: !isRunningInExpoGo(),
@@ -32,8 +37,6 @@ Sentry.init({
   enableNativeFramesTracking: !isRunningInExpoGo(),
   attachStacktrace: true,
 });
-
-const SELECTED_LANGUAGE_KEY = 'selectedLanguageKey';
 
 export default function RootLayout() {
   let persistor = persistStore(Store);
@@ -57,16 +60,36 @@ export default function RootLayout() {
     fetchLanguage();
   }, []);
 
+  const GluestackWrapper = ({ children }: { children: React.ReactNode }) => {
+    const { theme } = useTheme();
+    let globalTheme: 'basic' | 'original';
+    let colorMode: 'light' | 'dark' | 'system';
+    if (theme === 'default') {
+      globalTheme = 'original';
+      colorMode = 'light';
+    } else {
+      globalTheme = 'basic';
+      colorMode = theme === 'dark' ? 'dark' : 'light';
+    }
+    return (
+      <GluestackUIProvider theme={globalTheme} mode={colorMode}>
+        {children}
+      </GluestackUIProvider>
+    );
+  };
+
   return (
     <Provider store={Store}>
       <PersistGate persistor={persistor}>
         <AuthProvider>
-          <GluestackUIProvider mode="light">
-            <I18nextProvider i18n={i18n} defaultNS={'common'}>
-              <Stack screenOptions={{ headerShown: false }} />
-              <StatusBar style="light" backgroundColor="#0594ae" />
-            </I18nextProvider>
-          </GluestackUIProvider>
+          <ThemeProvider>
+            <GluestackWrapper>
+              <I18nextProvider i18n={i18n} defaultNS={'common'}>
+                <Stack screenOptions={{ headerShown: false }} />
+                <StatusBar style="light" backgroundColor="#0594ae" />
+              </I18nextProvider>
+            </GluestackWrapper>
+          </ThemeProvider>
         </AuthProvider>
       </PersistGate>
     </Provider>

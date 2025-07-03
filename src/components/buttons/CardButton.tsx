@@ -4,6 +4,7 @@ import { VStack } from '@/components/ui/vstack';
 import { Pressable } from '@/components/ui/pressable';
 import { Text } from '@/components/ui/text';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { useTheme } from '../ui/theme-provider/ThemeProvider';
 
 interface Props {
   text: string;
@@ -13,10 +14,12 @@ interface Props {
 }
 
 const CardButton: React.FC<Props> = ({ text, icons, navigate, newBadge }) => {
+  const { theme } = useTheme();
+  const iconColor = theme === 'dark' ? 'black' : 'white';
   return (
     <Pressable
       onPress={() => navigate()}
-      className="bg-primary-500 flex-1 py-5 rounded-3xl justify-center"
+      className="bg-custom-dark-blue flex-1 py-5 rounded-3xl justify-center"
     >
       {newBadge ? (
         <HStack className="mt-20">
@@ -37,10 +40,10 @@ const CardButton: React.FC<Props> = ({ text, icons, navigate, newBadge }) => {
       <VStack className="items-center">
         <HStack space="md">
           {icons.map((icon, index) => (
-            <FontAwesome5 key={index} name={icon} color="white" size={24} />
+            <FontAwesome5 key={index} name={icon} color={iconColor} size={24} />
           ))}
         </HStack>
-        <Text className="text-white">{text}</Text>
+        <Text className="color-custom-text-button">{text}</Text>
       </VStack>
     </Pressable>
   );

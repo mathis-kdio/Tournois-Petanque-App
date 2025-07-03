@@ -62,7 +62,9 @@ const ListeMatchs: React.FC<ListeMatchsProps> = ({ mancheNumber }) => {
   };
 
   return (
-    <VStack className="flex-1 bg-[#0594ae]">{_displayListeMatch()}</VStack>
+    <VStack className="flex-1 bg-custom-background">
+      {_displayListeMatch()}
+    </VStack>
   );
 };
 

@@ -35,7 +35,7 @@ const BoutonMenuHeaderNav = () => {
       placement="bottom left"
       trigger={({ ...triggerProps }) => {
         return (
-          <Button {...triggerProps} className="bg-[#0594ae]">
+          <Button {...triggerProps} className="bg-custom-background">
             <FontAwesome5 name="bars" size={28} color="white" />
           </Button>
         );

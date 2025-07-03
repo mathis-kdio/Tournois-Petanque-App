@@ -90,14 +90,16 @@ const Securite = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView className="h-1 bg-[#0594ae]">
+      <ScrollView className="h-1 bg-custom-background">
         <TopBarBack title={t('securite')} />
         <VStack className="flex-1 px-10">
           <VStack className="flex-1">
-            <Heading className="text-white">Changer le mot de passe</Heading>
+            <Heading className="text-typography-white">
+              Changer le mot de passe
+            </Heading>
             <FormControl isInvalid={error} isRequired={true} className="mb-5">
               <FormControlLabel className="mb-1">
-                <FormControlLabelText className="text-white">
+                <FormControlLabelText className="text-typography-white">
                   {t('ancien_mdp')}
                 </FormControlLabelText>
               </FormControlLabel>
@@ -124,7 +126,7 @@ const Securite = () => {
             </FormControl>
             <FormControl isInvalid={error} isRequired={true} className="mb-5">
               <FormControlLabel className="mb-1">
-                <FormControlLabelText className="text-white">
+                <FormControlLabelText className="text-typography-white">
                   {t('nouveau_mdp')}
                 </FormControlLabelText>
               </FormControlLabel>
@@ -151,7 +153,7 @@ const Securite = () => {
             </FormControl>
             <FormControl isInvalid={error} isRequired={true} className="mb-5">
               <FormControlLabel className="mb-1">
-                <FormControlLabelText className="text-white">
+                <FormControlLabelText className="text-typography-white">
                   {t('mot_de_passe_confirmation')}
                 </FormControlLabelText>
               </FormControlLabel>
