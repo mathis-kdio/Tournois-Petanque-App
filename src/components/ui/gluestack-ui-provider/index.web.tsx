@@ -69,16 +69,19 @@ export function GluestackUIProvider({
   }, [handleMediaQuery]);
 
   useSafeLayoutEffect(() => {
-    if (typeof window !== 'undefined') {
-      const documentElement = document.documentElement;
-      if (documentElement) {
-        const head = documentElement.querySelector('head');
-        let style = head?.querySelector(`[id='${variableStyleTagId}']`);
-        style = createStyle(variableStyleTagId);
-        style.innerHTML = cssVariablesWithMode;
-        if (head) head.appendChild(style);
-      }
+    if (typeof window === 'undefined') return;
+    const documentElement = document.documentElement;
+    if (!documentElement) return
+    const head = documentElement.querySelector('head');
+    if (!head) return;
+
+    const nodeToRemove = document.querySelector(`[id='${variableStyleTagId}']`);
+    if (nodeToRemove) {
+      head.removeChild(nodeToRemove)
     }
+    let style = createStyle(variableStyleTagId);
+    style.innerHTML = cssVariablesWithMode;
+    head.appendChild(style);
   }, [mode, theme]);
 
   return (
