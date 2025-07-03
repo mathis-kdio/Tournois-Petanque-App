@@ -398,7 +398,7 @@ const ListeJoueurItem: React.FC<Props> = ({
         <AlertDialogBackdrop />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <Heading className="text-black">
+            <Heading className="color-custom-text">
               {t('confirmer_uncheck_modal_titre')}
             </Heading>
             <AlertDialogCloseButton>
@@ -419,7 +419,9 @@ const ListeJoueurItem: React.FC<Props> = ({
                 action="secondary"
                 onPress={() => setModalConfirmUncheckIsOpen(false)}
               >
-                <ButtonText className="text-black">{t('annuler')}</ButtonText>
+                <ButtonText className="color-custom-text">
+                  {t('annuler')}
+                </ButtonText>
               </Button>
               <Button
                 action="negative"

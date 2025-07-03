@@ -75,7 +75,7 @@ const ListeTournoiItem: React.FC<Props> = ({
         <AlertDialogBackdrop />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <Heading className="text-black">
+            <Heading className="color-custom-text">
               {t('supprimer_tournoi_modal_titre')}
             </Heading>
             <AlertDialogCloseButton>
@@ -98,7 +98,9 @@ const ListeTournoiItem: React.FC<Props> = ({
                 action="secondary"
                 onPress={() => setModalDeleteIsOpen(false)}
               >
-                <ButtonText className="text-black">{t('annuler')}</ButtonText>
+                <ButtonText className="color-custom-text">
+                  {t('annuler')}
+                </ButtonText>
               </Button>
               <Button
                 action="negative"

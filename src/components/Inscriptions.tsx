@@ -137,7 +137,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
         <AlertDialogBackdrop />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <Heading className="text-black">
+            <Heading className="color-custom-text">
               {t('supprimer_joueurs_modal_titre')}
             </Heading>
             <AlertDialogCloseButton>
@@ -158,7 +158,9 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
                 action="secondary"
                 onPress={() => setModalRemoveIsOpen(false)}
               >
-                <ButtonText className="text-black">{t('annuler')}</ButtonText>
+                <ButtonText className="color-custom-text">
+                  {t('annuler')}
+                </ButtonText>
               </Button>
               <Button action="negative" onPress={() => _removeAllPlayers()}>
                 <ButtonText>{t('oui')}</ButtonText>

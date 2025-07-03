@@ -83,7 +83,7 @@ const ListeJoueursItem: React.FC<Props> = ({ list, loadListScreen }) => {
         <AlertDialogBackdrop />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <Heading className="text-black">
+            <Heading className="color-custom-text">
               {t('supprimer_liste_modal_titre')}
             </Heading>
             <AlertDialogCloseButton>
@@ -104,7 +104,9 @@ const ListeJoueursItem: React.FC<Props> = ({ list, loadListScreen }) => {
                 action="secondary"
                 onPress={() => setModalDeleteIsOpen(false)}
               >
-                <ButtonText className="text-black">{t('annuler')}</ButtonText>
+                <ButtonText className="color-custom-text">
+                  {t('annuler')}
+                </ButtonText>
               </Button>
               <Button action="negative" onPress={() => _removeList(listId)}>
                 <ButtonText>{t('oui')}</ButtonText>

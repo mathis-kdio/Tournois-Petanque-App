@@ -86,7 +86,9 @@ const Parametres = () => {
                 action="secondary"
                 onPress={() => openAlert(false)}
               >
-                <ButtonText className="text-black">{t('annuler')}</ButtonText>
+                <ButtonText className="text-custom-text">
+                  {t('annuler')}
+                </ButtonText>
               </Button>
               <Button action="negative" onPress={() => _clearData()}>
                 <ButtonText>{t('oui')}</ButtonText>
