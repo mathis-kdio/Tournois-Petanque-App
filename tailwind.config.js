@@ -12,8 +12,9 @@ module.exports = {
         custom: {
           background: 'var(--color-custom-background)',
           'dark-blue': 'var(--color-custom-dark-blue)',
-          text: 'var(--color-custom-text)',
+          'text-modal': 'var(--color-custom-text-modal)',
           'text-button': 'var(--color-custom-text-button)',
+          'bg-inverse': 'var(--color-custom-bg-inverse)',
         },
         primary: {
           0: 'rgb(var(--color-primary-0)/<alpha-value>)',
@@ -125,7 +126,7 @@ module.exports = {
           800: 'rgb(var(--color-typography-800)/<alpha-value>)',
           900: 'rgb(var(--color-typography-900)/<alpha-value>)',
           950: 'rgb(var(--color-typography-950)/<alpha-value>)',
-          white: '#FFFFFF',
+          white: 'rgb(var(--color-typography-white)/<alpha-value>)',
           gray: '#D4D4D4',
           black: '#181718',
         },

@@ -108,7 +108,7 @@ const ChoixModeTournoi = () => {
     }
     return (
       <VStack>
-        <Text className="text-white text-2xl text-center">
+        <Text className="text-typography-white text-2xl text-center">
           {t('mode_tournoi')}
         </Text>
         <RadioGroup
@@ -124,7 +124,7 @@ const ChoixModeTournoi = () => {
                   className="fill-white text-background-white"
                 />
               </RadioIndicator>
-              <RadioLabel className="text-white">
+              <RadioLabel className="text-typography-white">
                 {t('melee_demelee_avec_nom')}
               </RadioLabel>
             </Radio>
@@ -135,7 +135,7 @@ const ChoixModeTournoi = () => {
                   className="fill-white text-background-white"
                 />
               </RadioIndicator>
-              <RadioLabel className="text-white">
+              <RadioLabel className="text-typography-white">
                 {t('melee_demelee_sans_nom')}
               </RadioLabel>
             </Radio>
@@ -146,7 +146,7 @@ const ChoixModeTournoi = () => {
                   className="fill-white text-background-white"
                 />
               </RadioIndicator>
-              <RadioLabel className="text-white">
+              <RadioLabel className="text-typography-white">
                 {t('melee_avec_equipes_constituees')}
               </RadioLabel>
             </Radio>
@@ -162,7 +162,7 @@ const ChoixModeTournoi = () => {
         <TopBarBack title={t('mode_tournoi')} />
         <VStack className="flex-1 px-10 justify-between">
           <VStack space="4xl">
-            <Text className="text-white text-2xl text-center">
+            <Text className="text-typography-white text-2xl text-center">
               {t('type_equipes')}
             </Text>
             <RadioGroup
@@ -178,7 +178,7 @@ const ChoixModeTournoi = () => {
                       className="fill-white text-background-white"
                     />
                   </RadioIndicator>
-                  <RadioLabel className="text-white">
+                  <RadioLabel className="text-typography-white">
                     {t('tete_a_tete')}
                   </RadioLabel>
                 </Radio>
@@ -189,7 +189,7 @@ const ChoixModeTournoi = () => {
                       className="fill-white text-background-white"
                     />
                   </RadioIndicator>
-                  <RadioLabel className="text-white">
+                  <RadioLabel className="text-typography-white">
                     {t('doublettes')}
                   </RadioLabel>
                 </Radio>
@@ -200,7 +200,7 @@ const ChoixModeTournoi = () => {
                       className="fill-white text-background-white"
                     />
                   </RadioIndicator>
-                  <RadioLabel className="text-white">
+                  <RadioLabel className="text-typography-white">
                     {t('triplettes')}
                   </RadioLabel>
                 </Radio>

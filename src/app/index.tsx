@@ -218,10 +218,10 @@ const Accueil = () => {
           </VStack>
         </ScrollView>
         <VStack>
-          <Text className="text-center text-white text-md">
+          <Text className="text-center text-typography-white text-md">
             {t('developpe_par')} Mathis Cadio
           </Text>
-          <Text className="text-center text-white text-md">
+          <Text className="text-center text-typography-white text-md">
             {t('version')} {version}
           </Text>
         </VStack>

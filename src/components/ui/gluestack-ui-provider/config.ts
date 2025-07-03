@@ -6,9 +6,10 @@ export const config = {
     light: vars({
       /* Custom */
       '--color-custom-background': '#FFFFFF',
-      '--color-custom-dark-blue': '#1c3969',
-      '--color-custom-text': '#181718', //230 230 230
+      '--color-custom-dark-blue': '#000000',
+      '--color-custom-text-modal': '#000000',
       '--color-custom-text-button': '#FFFFFF', //18 18 18
+      '--color-custom-bg-inverse': '#000000',
 
       /* Primary */
       '--color-primary-0': '179 179 179',
@@ -17,7 +18,7 @@ export const config = {
       '--color-primary-200': '115 115 115',
       '--color-primary-300': '28 57 105', //valeur modifiée
       '--color-primary-400': '82 82 82',
-      '--color-primary-500': '28 57 105', //valeur modifiée cas primary
+      '--color-primary-500': '0 0 0', //valeur modifiée cas primary
       '--color-primary-600': '8 16 105', //valeur modifiée cas primary hover
       '--color-primary-700': '31 31 31',
       '--color-primary-800': '13 13 13',
@@ -121,6 +122,7 @@ export const config = {
       '--color-typography-800': '64 64 64',
       '--color-typography-900': '255 255 255', //valeur modifiée pour éviter data-[checked=true]:text-white sur checkbox label
       '--color-typography-950': '23 23 23',
+      '--color-typography-white': '0 0 0',
 
       /* Outline */
       '--color-outline-0': '253 254 254',
@@ -166,8 +168,9 @@ export const config = {
       /* Custom */
       '--color-custom-background': '#121212', // 18 18 18
       '--color-custom-dark-blue': '#E6E6E6', //230 230 230
-      '--color-custom-text': '#E6E6E6', //230 230 230
+      '--color-custom-text-modal': '#E6E6E6', //230 230 230
       '--color-custom-text-button': '#121212', //18 18 18
+      '--color-custom-bg-inverse': '#FFFFFF',
 
       /* Primary */
       '--color-primary-0': '130 130 130',
@@ -280,6 +283,7 @@ export const config = {
       '--color-typography-800': '229 229 229',
       '--color-typography-900': '245 245 245',
       '--color-typography-950': '254 254 255',
+      '--color-typography-white': '255 255 255',
 
       /* Outline */
       '--color-outline-0': '26 23 23',
@@ -327,8 +331,9 @@ export const config = {
       /* Custom */
       '--color-custom-background': '#0594ae',
       '--color-custom-dark-blue': '#1c3969',
-      '--color-custom-text': '#181718', //230 230 230
+      '--color-custom-text-modal': '#000000',
       '--color-custom-text-button': '#FFFFFF', //18 18 18
+      '--color-custom-bg-inverse': '#FFFFFF',
 
       /* Primary */
       '--color-primary-0': '179 179 179',
@@ -441,6 +446,7 @@ export const config = {
       '--color-typography-800': '64 64 64',
       '--color-typography-900': '255 255 255', //valeur modifiée pour éviter data-[checked=true]:text-white sur checkbox label
       '--color-typography-950': '23 23 23',
+      '--color-typography-white': '255 255 255',
 
       /* Outline */
       '--color-outline-0': '253 254 254',
@@ -486,8 +492,9 @@ export const config = {
       /* Custom */
       '--color-custom-background': '#121212', // 18 18 18
       '--color-custom-dark-blue': '#E6E6E6', //230 230 230
-      '--color-custom-text': '#E6E6E6', //230 230 230
+      '--color-custom-text-modal': '#E6E6E6', //230 230 230
       '--color-custom-text-button': '#121212', //18 18 18
+      '--color-custom-bg-inverse': '#000000',
 
       /* Primary */
       '--color-primary-0': '130 130 130',
@@ -600,6 +607,7 @@ export const config = {
       '--color-typography-800': '229 229 229',
       '--color-typography-900': '245 245 245',
       '--color-typography-950': '254 254 255',
+      '--color-typography-white': '255 255 255',
 
       /* Outline */
       '--color-outline-0': '26 23 23',

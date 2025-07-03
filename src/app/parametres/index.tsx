@@ -295,8 +295,10 @@ const Parametres = () => {
         <ScrollView className="h-1">
           <VStack space="lg" className="flex-1 px-10">
             <VStack>
-              <Text className="text-xl text-white mb-1">{t('a_propos')}</Text>
-              <Box className="border border-white rounded-lg">
+              <Text className="text-xl text-typography-white mb-1">
+                {t('a_propos')}
+              </Text>
+              <Box className="border text-custom-bg-inverse rounded-lg">
                 <Item
                   text={t('voir_source_code')}
                   action={() => _openURL(githubRepository)}
@@ -315,8 +317,10 @@ const Parametres = () => {
               </Box>
             </VStack>
             <VStack>
-              <Text className="text-xl text-white mb-1">{t('reglages')}</Text>
-              <Box className="border border-white rounded-lg">
+              <Text className="text-xl text-typography-white mb-1">
+                {t('reglages')}
+              </Text>
+              <Box className="border text-custom-bg-inverse rounded-lg">
                 <Item
                   text={t('changer_theme')}
                   action={() => setModalTheme(true)}
@@ -351,8 +355,10 @@ const Parametres = () => {
               </Box>
             </VStack>
             <VStack>
-              <Text className="text-xl text-white mb-1">{t('nouveautes')}</Text>
-              <Box className="border border-white rounded-lg">
+              <Text className="text-xl text-typography-white mb-1">
+                {t('nouveautes')}
+              </Text>
+              <Box className="border text-custom-bg-inverse rounded-lg">
                 <Item
                   text={t('voir_nouveautes')}
                   action={() => router.navigate('/parametres/changelog')}
@@ -365,7 +371,7 @@ const Parametres = () => {
           </VStack>
         </ScrollView>
         <Center>
-          <Text className="text-center text-md text-white">
+          <Text className="text-center text-md text-typography-white">
             {t('version')} {version}
           </Text>
         </Center>

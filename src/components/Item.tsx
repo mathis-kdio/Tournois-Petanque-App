@@ -18,13 +18,13 @@ export interface Props {
 const Item: React.FC<Props> = ({ text, action, icon, type, drapeau }) => {
   const { theme } = useTheme();
 
-  let colorTxt = 'text-white';
+  let colorTxt = 'text-typography-white';
   let btnColor = 'white';
   if (type === 'danger') {
     colorTxt = 'text-red-500';
     btnColor = 'red';
   } else if (type === 'modal') {
-    colorTxt = 'color-custom-text';
+    colorTxt = 'color-custom-text-modal';
     btnColor = theme === 'dark' ? 'white' : 'black';
   }
   return (

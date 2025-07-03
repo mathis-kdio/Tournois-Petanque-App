@@ -107,8 +107,12 @@ const ChoixTypeTournoi = () => {
               onPress={() => _setState(TypeTournoi.MELEDEMELE)}
               className="flex-row justify-center mt-2"
             >
-              <FontAwesome5 name="info-circle" color="white" size={24} />
-              <Text className="text-white"> {t('savoir_plus')}</Text>
+              <FontAwesome5
+                name="info-circle"
+                color="var(--color-custom-bg-inverse)"
+                size={24}
+              />
+              <Text className="text-typography-white"> {t('savoir_plus')}</Text>
             </Pressable>
           </VStack>
           <VStack className="flex-1">
@@ -122,8 +126,12 @@ const ChoixTypeTournoi = () => {
               onPress={() => _setState(TypeTournoi.CHAMPIONNAT)}
               className="flex-row justify-center mt-2"
             >
-              <FontAwesome5 name="info-circle" color="white" size={24} />
-              <Text className="text-white"> {t('savoir_plus')}</Text>
+              <FontAwesome5
+                name="info-circle"
+                color="var(--color-custom-bg-inverse)"
+                size={24}
+              />
+              <Text className="text-typography-white"> {t('savoir_plus')}</Text>
             </Pressable>
           </VStack>
           <VStack className="flex-1">
@@ -137,8 +145,12 @@ const ChoixTypeTournoi = () => {
               onPress={() => _setState(TypeTournoi.COUPE)}
               className="flex-row justify-center mt-2"
             >
-              <FontAwesome5 name="info-circle" color="white" size={24} />
-              <Text className="text-white"> {t('savoir_plus')}</Text>
+              <FontAwesome5
+                name="info-circle"
+                color="var(--color-custom-bg-inverse)"
+                size={24}
+              />
+              <Text className="text-typography-white"> {t('savoir_plus')}</Text>
             </Pressable>
           </VStack>
           <VStack className="flex-1">
@@ -152,8 +164,12 @@ const ChoixTypeTournoi = () => {
               onPress={() => _setState(TypeTournoi.MULTICHANCES)}
               className="flex-row justify-center mt-2"
             >
-              <FontAwesome5 name="info-circle" color="white" size={24} />
-              <Text className="text-white"> {t('savoir_plus')}</Text>
+              <FontAwesome5
+                name="info-circle"
+                color="var(--color-custom-bg-inverse)"
+                size={24}
+              />
+              <Text className="text-typography-white"> {t('savoir_plus')}</Text>
             </Pressable>
           </VStack>
           <VStack className="m-10">
