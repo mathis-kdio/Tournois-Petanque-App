@@ -5,7 +5,6 @@ import { Text } from '@/components/ui/text';
 import * as React from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { ImageSourcePropType } from 'react-native';
-import { useTheme } from './ui/theme-provider/ThemeProvider';
 
 export interface Props {
   text: string;
@@ -16,16 +15,13 @@ export interface Props {
 }
 
 const Item: React.FC<Props> = ({ text, action, icon, type, drapeau }) => {
-  const { theme } = useTheme();
-
   let colorTxt = 'text-typography-white';
-  let btnColor = 'white';
+  let iconColor = 'var(--color-custom-bg-inverse)';
   if (type === 'danger') {
     colorTxt = 'text-red-500';
-    btnColor = 'red';
+    iconColor = 'red';
   } else if (type === 'modal') {
     colorTxt = 'color-custom-text-modal';
-    btnColor = theme === 'dark' ? 'white' : 'black';
   }
   return (
     <Pressable onPress={() => action()}>
@@ -35,7 +31,7 @@ const Item: React.FC<Props> = ({ text, action, icon, type, drapeau }) => {
             <FontAwesome5
               name={icon}
               size={16}
-              color={btnColor}
+              color={iconColor}
               style={{ marginRight: 5 }}
             />
           ) : (
@@ -43,7 +39,7 @@ const Item: React.FC<Props> = ({ text, action, icon, type, drapeau }) => {
           )}
           <Text className={`${colorTxt} text-md`}>{text}</Text>
         </HStack>
-        <FontAwesome5 name="arrow-right" size={20} color={btnColor} />
+        <FontAwesome5 name="arrow-right" size={20} color={iconColor} />
       </HStack>
     </Pressable>
   );

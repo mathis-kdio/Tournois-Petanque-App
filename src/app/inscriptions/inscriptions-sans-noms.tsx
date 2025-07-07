@@ -141,6 +141,7 @@ const InscriptionsSansNoms = () => {
             </Text>
             <Input className="border-custom-bg-inverse">
               <InputField
+                className="text-typography-white placeholder:text-typography-white"
                 placeholder={t('nombre_placeholder')}
                 keyboardType="number-pad"
                 returnKeyType="next"
@@ -157,6 +158,7 @@ const InscriptionsSansNoms = () => {
             </Text>
             <Input className="border-custom-bg-inverse">
               <InputField
+                className="text-typography-white placeholder:text-typography-white"
                 placeholder={t('nombre_placeholder')}
                 keyboardType="number-pad"
                 onChangeText={(text) => _textInputJoueursEnfants(text)}

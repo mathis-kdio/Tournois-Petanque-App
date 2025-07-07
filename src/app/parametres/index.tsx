@@ -65,7 +65,7 @@ const Parametres = () => {
         <AlertDialogBackdrop />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <Heading className="color-custom-text">
+            <Heading className="color-custom-text-modal">
               {t('supprimer_donnees_modal_titre')}
             </Heading>
             <AlertDialogCloseButton>
@@ -153,7 +153,7 @@ const Parametres = () => {
         <ModalBackdrop />
         <ModalContent className="max-h-5/6">
           <ModalHeader>
-            <Heading className="color-custom-text">
+            <Heading className="color-custom-text-modal">
               {t('languages_disponibles')}
             </Heading>
             <ModalCloseButton>
@@ -240,7 +240,7 @@ const Parametres = () => {
         <ModalBackdrop />
         <ModalContent className="max-h-5/6">
           <ModalHeader>
-            <Heading className="color-custom-text">
+            <Heading className="color-custom-text-modal">
               {t('themes_disponibles')}
             </Heading>
             <ModalCloseButton>
@@ -298,7 +298,7 @@ const Parametres = () => {
               <Text className="text-xl text-typography-white mb-1">
                 {t('a_propos')}
               </Text>
-              <Box className="border text-custom-bg-inverse rounded-lg">
+              <Box className="border border-custom-bg-inverse rounded-lg">
                 <Item
                   text={t('voir_source_code')}
                   action={() => _openURL(githubRepository)}
@@ -320,7 +320,7 @@ const Parametres = () => {
               <Text className="text-xl text-typography-white mb-1">
                 {t('reglages')}
               </Text>
-              <Box className="border text-custom-bg-inverse rounded-lg">
+              <Box className="border border-custom-bg-inverse rounded-lg">
                 <Item
                   text={t('changer_theme')}
                   action={() => setModalTheme(true)}
@@ -358,7 +358,7 @@ const Parametres = () => {
               <Text className="text-xl text-typography-white mb-1">
                 {t('nouveautes')}
               </Text>
-              <Box className="border text-custom-bg-inverse rounded-lg">
+              <Box className="border border-custom-bg-inverse rounded-lg">
                 <Item
                   text={t('voir_nouveautes')}
                   action={() => router.navigate('/parametres/changelog')}

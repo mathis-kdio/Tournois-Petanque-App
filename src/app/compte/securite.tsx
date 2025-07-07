@@ -103,8 +103,9 @@ const Securite = () => {
                   {t('ancien_mdp')}
                 </FormControlLabelText>
               </FormControlLabel>
-              <Input>
+              <Input className="border-custom-bg-inverse">
                 <InputField
+                  className="text-typography-white placeholder:text-typography-white"
                   placeholder={t('ancien_mdp')}
                   secureTextEntry={!showOldPassword}
                   returnKeyType="next"
@@ -130,8 +131,9 @@ const Securite = () => {
                   {t('nouveau_mdp')}
                 </FormControlLabelText>
               </FormControlLabel>
-              <Input>
+              <Input className="border-custom-bg-inverse">
                 <InputField
+                  className="text-typography-white placeholder:text-typography-white"
                   placeholder={t('nouveau_mdp')}
                   secureTextEntry={!showNewPassword}
                   returnKeyType="next"
@@ -157,8 +159,9 @@ const Securite = () => {
                   {t('mot_de_passe_confirmation')}
                 </FormControlLabelText>
               </FormControlLabel>
-              <Input>
+              <Input className="border-custom-bg-inverse">
                 <InputField
+                  className="text-typography-white placeholder:text-typography-white"
                   placeholder={t('confirmer_mdp')}
                   secureTextEntry={!showConfirmPassword}
                   autoCapitalize={'none'}

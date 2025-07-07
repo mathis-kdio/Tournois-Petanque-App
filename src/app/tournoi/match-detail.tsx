@@ -190,7 +190,7 @@ const MatchDetail = () => {
                     </Text>
                     <Input className="border-custom-bg-inverse">
                       <InputField
-                        className="text-white placeholder:text-white"
+                        className="text-typography-white placeholder:text-typography-white"
                         placeholder={t('score_placeholder', {
                           scoreVictoire: optionsTournoi.nbPtVictoire,
                         })}
@@ -216,7 +216,7 @@ const MatchDetail = () => {
                     </Text>
                     <Input className="border-custom-bg-inverse">
                       <InputField
-                        className="text-white placeholder:text-white"
+                        className="text-typography-white placeholder:text-typography-white"
                         placeholder={t('score_placeholder', {
                           scoreVictoire: optionsTournoi.nbPtVictoire,
                         })}

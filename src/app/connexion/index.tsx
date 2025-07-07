@@ -84,7 +84,7 @@ const Authentification = () => {
                   {t('email')}
                 </FormControlLabelText>
               </FormControlLabel>
-              <Input>
+              <Input className="border-custom-bg-inverse">
                 <InputField
                   className="text-typography-white placeholder:text-typography-white"
                   placeholder={t('email_adresse')}
@@ -112,7 +112,7 @@ const Authentification = () => {
                   {t('mot_de_passe')}
                 </FormControlLabelText>
               </FormControlLabel>
-              <Input>
+              <Input className="border-custom-bg-inverse">
                 <InputField
                   className="text-typography-white placeholder:text-typography-white"
                   placeholder={t('mot_de_passe')}

@@ -134,9 +134,9 @@ const Inscription = () => {
                   {t('email')}
                 </FormControlLabelText>
               </FormControlLabel>
-              <Input>
+              <Input className="border-custom-bg-inverse">
                 <InputField
-                  className="text-white placeholder:text-white"
+                  className="text-typography-white placeholder:text-typography-white"
                   placeholder={t('email_adresse')}
                   keyboardType="email-address"
                   returnKeyType="next"
@@ -162,9 +162,9 @@ const Inscription = () => {
                   {t('mot_de_passe')}
                 </FormControlLabelText>
               </FormControlLabel>
-              <Input>
+              <Input className="border-custom-bg-inverse">
                 <InputField
-                  className="text-white placeholder:text-white"
+                  className="text-typography-white placeholder:text-typography-white"
                   placeholder={t('mot_de_passe')}
                   secureTextEntry={!showPassword1}
                   returnKeyType="next"
@@ -205,9 +205,9 @@ const Inscription = () => {
                   {t('mot_de_passe_confirmation')}
                 </FormControlLabelText>
               </FormControlLabel>
-              <Input>
+              <Input className="border-custom-bg-inverse">
                 <InputField
-                  className="text-white placeholder:text-white"
+                  className="text-typography-white placeholder:text-typography-white"
                   placeholder={t('mot_de_passe')}
                   secureTextEntry={!showPassword2}
                   autoCapitalize={'none'}

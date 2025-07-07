@@ -76,9 +76,9 @@ const ListeTerrainItem: React.FC<Props> = ({ terrain }) => {
   const _terrainName = (terrain: Terrain) => {
     if (renommerOn) {
       return (
-        <Input>
+        <Input className="border-custom-bg-inverse">
           <InputField
-            className="text-white placeholder:text-white"
+            className="text-typography-white placeholder:text-typography-white"
             placeholder={terrain.name}
             autoFocus={true}
             onChangeText={(text) => _terrainTxtInputChanged(text)}
@@ -88,7 +88,7 @@ const ListeTerrainItem: React.FC<Props> = ({ terrain }) => {
       );
     } else {
       return (
-        <Text className="text-white">
+        <Text className="text-typography-white">
           {terrain.id + 1}- {terrain.name}
         </Text>
       );

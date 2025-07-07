@@ -208,6 +208,7 @@ const ListeJoueurItem: React.FC<Props> = ({
       return (
         <Input variant="underlined">
           <InputField
+            className="text-typography-white placeholder:text-typography-white"
             placeholder={joueur.name}
             autoFocus={true}
             onChangeText={(text: string) => _joueurTxtInputChanged(text)}
@@ -398,7 +399,7 @@ const ListeJoueurItem: React.FC<Props> = ({
         <AlertDialogBackdrop />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <Heading className="color-custom-text">
+            <Heading className="color-custom-text-modal">
               {t('confirmer_uncheck_modal_titre')}
             </Heading>
             <AlertDialogCloseButton>
@@ -419,7 +420,7 @@ const ListeJoueurItem: React.FC<Props> = ({
                 action="secondary"
                 onPress={() => setModalConfirmUncheckIsOpen(false)}
               >
-                <ButtonText className="color-custom-text">
+                <ButtonText className="color-custom-text-modal">
                   {t('annuler')}
                 </ButtonText>
               </Button>

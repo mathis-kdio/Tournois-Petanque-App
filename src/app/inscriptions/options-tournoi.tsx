@@ -148,9 +148,9 @@ const OptionsTournoi = () => {
                   <Text className="text-typography-white text-md">
                     {t('indiquer_nombre_tours')}{' '}
                   </Text>
-                  <Input className="border-white">
+                  <Input className="border-custom-bg-inverse">
                     <InputField
-                      className="text-typography-white"
+                      className="text-typography-white placeholder:text-typography-white"
                       placeholder={t('nombre_placeholder')}
                       keyboardType="numeric"
                       defaultValue={nbToursTxt}
@@ -162,9 +162,9 @@ const OptionsTournoi = () => {
                   <Text className="text-typography-white text-md">
                     {t('indiquer_nombre_points_victoire')}{' '}
                   </Text>
-                  <Input className="border-white">
+                  <Input className="border-custom-bg-inverse">
                     <InputField
-                      className="text-typography-white"
+                      className="text-typography-white placeholder:text-typography-white"
                       placeholder={t('nombre_placeholder')}
                       keyboardType="numeric"
                       defaultValue={nbPtVictoireTxt}

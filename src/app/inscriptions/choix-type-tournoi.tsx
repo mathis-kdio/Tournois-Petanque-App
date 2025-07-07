@@ -60,7 +60,7 @@ const ChoixTypeTournoi = () => {
         <ModalBackdrop />
         <ModalContent className="max-h-5/6">
           <ModalHeader>
-            <Heading className="color-custom-text">{infos.title}</Heading>
+            <Heading className="color-custom-text-modal">{infos.title}</Heading>
             <ModalCloseButton>
               <Icon
                 as={CloseIcon}

@@ -71,7 +71,7 @@ const ParametresTournoi = () => {
         <AlertDialogBackdrop />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <Heading className="color-custom-text">
+            <Heading className="color-custom-text-modal">
               {t('supprimer_tournoi_actuel_modal_titre')}
             </Heading>
             <AlertDialogCloseButton>
@@ -94,7 +94,7 @@ const ParametresTournoi = () => {
                 action="secondary"
                 onPress={() => setModalDeleteIsOpen(false)}
               >
-                <ButtonText className="color-custom-text">
+                <ButtonText className="color-custom-text-modal">
                   {t('annuler')}
                 </ButtonText>
               </Button>

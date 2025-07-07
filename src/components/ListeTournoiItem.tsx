@@ -75,7 +75,7 @@ const ListeTournoiItem: React.FC<Props> = ({
         <AlertDialogBackdrop />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <Heading className="color-custom-text">
+            <Heading className="color-custom-text-modal">
               {t('supprimer_tournoi_modal_titre')}
             </Heading>
             <AlertDialogCloseButton>
@@ -98,7 +98,7 @@ const ListeTournoiItem: React.FC<Props> = ({
                 action="secondary"
                 onPress={() => setModalDeleteIsOpen(false)}
               >
-                <ButtonText className="color-custom-text">
+                <ButtonText className="color-custom-text-modal">
                   {t('annuler')}
                 </ButtonText>
               </Button>
@@ -166,9 +166,9 @@ const ListeTournoiItem: React.FC<Props> = ({
     let tournoiName = tournoi.name ? tournoi.name : 'n°' + tournoi.tournoiId;
     if (renommerOn) {
       return (
-        <Input className="border-white">
+        <Input className="border-custom-bg-inverse">
           <InputField
-            className="text-typography-white placeholder:text-black"
+            className="text-typography-white placeholder:text-typography-white"
             placeholder={tournoiName}
             autoFocus={true}
             onChangeText={(text: string) => _tournoiTextInputChanged(text)}

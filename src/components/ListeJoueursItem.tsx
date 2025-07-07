@@ -83,7 +83,7 @@ const ListeJoueursItem: React.FC<Props> = ({ list, loadListScreen }) => {
         <AlertDialogBackdrop />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <Heading className="color-custom-text">
+            <Heading className="color-custom-text-modal">
               {t('supprimer_liste_modal_titre')}
             </Heading>
             <AlertDialogCloseButton>
@@ -104,7 +104,7 @@ const ListeJoueursItem: React.FC<Props> = ({ list, loadListScreen }) => {
                 action="secondary"
                 onPress={() => setModalDeleteIsOpen(false)}
               >
-                <ButtonText className="color-custom-text">
+                <ButtonText className="color-custom-text-modal">
                   {t('annuler')}
                 </ButtonText>
               </Button>
@@ -220,9 +220,9 @@ const ListeJoueursItem: React.FC<Props> = ({ list, loadListScreen }) => {
       : 'n°' + listeJoueursInfos.listId;
     if (renommerOn) {
       return (
-        <Input className="border-white">
+        <Input className="border-custom-bg-inverse">
           <InputField
-            className="text-white placeholder:text-black"
+            className="text-typography-white placeholder:text-typography-white"
             placeholder={listName}
             autoFocus={true}
             onChangeText={(text) => _listTextInputChanged(text)}
