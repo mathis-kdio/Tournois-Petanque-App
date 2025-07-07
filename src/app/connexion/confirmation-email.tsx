@@ -35,9 +35,13 @@ const ConfirmationEmail = () => {
               color="white"
             />
           </HStack>
-          <Text className="text-white">{t('confirmation_email_text_1')}</Text>
-          <Text className="text-white">{email}</Text>
-          <Text className="text-white">{t('confirmation_email_text_2')}</Text>
+          <Text className="text-typography-white">
+            {t('confirmation_email_text_1')}
+          </Text>
+          <Text className="text-typography-white">{email}</Text>
+          <Text className="text-typography-white">
+            {t('confirmation_email_text_2')}
+          </Text>
           <Button onPress={() => router.navigate('/')} className="mt-2">
             <ButtonText>{t('retour_accueil')}</ButtonText>
           </Button>

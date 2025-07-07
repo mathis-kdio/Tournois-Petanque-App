@@ -60,7 +60,7 @@ export default function TabLayout() {
         options={{
           headerTitle: '',
           headerLeft: () => (
-            <Text className="text-white text-xl ml-2">
+            <Text className="text-typography-white text-xl ml-2">
               {t('tournoi')} {tournoiName}
             </Text>
           ),
@@ -76,7 +76,7 @@ export default function TabLayout() {
         options={{
           headerTitle: '',
           headerLeft: () => (
-            <Text className="text-white text-xl ml-2">
+            <Text className="text-typography-white text-xl ml-2">
               {t('tournoi')} {tournoiName}
             </Text>
           ),

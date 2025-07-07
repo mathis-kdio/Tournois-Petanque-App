@@ -94,7 +94,7 @@ const ListeTerrains = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <VStack className="flex-1 bg-custom-background">
         <TopBarBack title={t('liste_terrains_navigation_title')} />
-        <Text className="text-white text-xl text-center">
+        <Text className="text-typography-white text-xl text-center">
           {t('nombre_terrains', { nb: listeTerrains.length })}
         </Text>
         <VStack className="flex-1 my-2">

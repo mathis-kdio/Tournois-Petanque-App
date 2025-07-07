@@ -138,12 +138,12 @@ const Authentification = () => {
                 </FormControlErrorText>
               </FormControlError>
               <Button
-                className="text-white self-end"
+                className="text-typography-white self-end"
                 size="sm"
                 variant="link"
                 isDisabled={true}
               >
-                <ButtonText className="text-white">
+                <ButtonText className="text-typography-white">
                   {t('mot_de_passe_oublie')}
                 </ButtonText>
               </Button>
@@ -159,7 +159,7 @@ const Authentification = () => {
             </FormControl>
           </VStack>
           <VStack space="md">
-            <Text className="text-white self-center" size="lg">
+            <Text className="text-typography-white self-center" size="lg">
               {t('ou_connecter_avec')}
             </Text>
             <HStack className="flex" space="lg">

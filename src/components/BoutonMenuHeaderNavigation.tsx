@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Pressable } from '@/components/ui/pressable';
 import { Menu, MenuItem, MenuItemLabel } from '@/components/ui/menu';
 import { useTranslation } from 'react-i18next';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -35,9 +35,13 @@ const BoutonMenuHeaderNav = () => {
       placement="bottom left"
       trigger={({ ...triggerProps }) => {
         return (
-          <Button {...triggerProps} className="bg-custom-background">
-            <FontAwesome5 name="bars" size={28} color="white" />
-          </Button>
+          <Pressable {...triggerProps} className="mr-10">
+            <FontAwesome5
+              name="bars"
+              size={28}
+              color="var(--color-custom-bg-inverse)"
+            />
+          </Pressable>
         );
       }}
     >

@@ -291,7 +291,9 @@ const GenerationMatchs = () => {
       return (
         <VStack>
           <Spinner size={'large'} className="text-[#ffda00]" />
-          <Text className="text-white">{t('attente_generation_matchs')}</Text>
+          <Text className="text-typography-white">
+            {t('attente_generation_matchs')}
+          </Text>
         </VStack>
       );
     } else {
@@ -308,8 +310,8 @@ const GenerationMatchs = () => {
       }
       return (
         <VStack>
-          <Text className="text-white">{textInfo}</Text>
-          <Text className="text-white">{textError}</Text>
+          <Text className="text-typography-white">{textInfo}</Text>
+          <Text className="text-typography-white">{textError}</Text>
           <Button
             action="primary"
             onPress={() => _retourInscription(screenStackName)}

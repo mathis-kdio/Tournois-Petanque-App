@@ -130,7 +130,7 @@ const Inscription = () => {
               className="mb-5"
             >
               <FormControlLabel className="mb-1">
-                <FormControlLabelText className="text-white">
+                <FormControlLabelText className="text-typography-white">
                   {t('email')}
                 </FormControlLabelText>
               </FormControlLabel>
@@ -158,7 +158,7 @@ const Inscription = () => {
               className="mb-5"
             >
               <FormControlLabel className="mb-1">
-                <FormControlLabelText className="text-white">
+                <FormControlLabelText className="text-typography-white">
                   {t('mot_de_passe')}
                 </FormControlLabelText>
               </FormControlLabel>
@@ -201,7 +201,7 @@ const Inscription = () => {
               className="mb-5"
             >
               <FormControlLabel className="mb-1">
-                <FormControlLabelText className="text-white">
+                <FormControlLabelText className="text-typography-white">
                   {t('mot_de_passe_confirmation')}
                 </FormControlLabelText>
               </FormControlLabel>
@@ -264,7 +264,7 @@ const Inscription = () => {
             </FormControl>
           </VStack>
           <VStack space="md">
-            <Text className="text-white self-center" size="lg">
+            <Text className="text-typography-white self-center" size="lg">
               {t('ou_creer_compte_avec')}
             </Text>
             <HStack className="flex" space="lg">
@@ -280,7 +280,7 @@ const Inscription = () => {
                   size={18}
                   style={{ marginRight: 5 }}
                 />
-                <ButtonText className="text-white">Apple</ButtonText>
+                <ButtonText className="text-typography-white">Apple</ButtonText>
               </Button>
               <Button
                 className="grow"
@@ -294,7 +294,7 @@ const Inscription = () => {
                   size={14}
                   className="mr-2"
                 />
-                <ButtonText className="text-white">Google</ButtonText>
+                <ButtonText className="text-typography-white">Google</ButtonText>
               </Button>
             </HStack>
           </VStack>

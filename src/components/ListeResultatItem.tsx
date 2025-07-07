@@ -32,7 +32,7 @@ const ListeResultatItem: React.FC<Props> = ({ joueur }) => {
       joueurName = joueur.name + ' (' + (joueur.id + 1) + ')';
     }
 
-    return <Text className="text-white text-lg">{joueurName}</Text>;
+    return <Text className="text-typography-white text-lg">{joueurName}</Text>;
   };
 
   const _fanny = (joueurNumber: number) => {
@@ -61,7 +61,7 @@ const ListeResultatItem: React.FC<Props> = ({ joueur }) => {
             alt="Fanny"
             source={require('@assets/images/fanny.png')}
           />
-          <Text className="text-white text-lg">X{nbFanny}</Text>
+          <Text className="text-typography-white text-lg">X{nbFanny}</Text>
         </HStack>
       );
     }
@@ -71,18 +71,20 @@ const ListeResultatItem: React.FC<Props> = ({ joueur }) => {
     <VStack>
       <HStack className="flex px-2 py-0.5">
         <HStack className="basis-2/5">
-          <Text className="text-white text-lg">{joueur.position} - </Text>
+          <Text className="text-typography-white text-lg">
+            {`${joueur.position} - `}
+          </Text>
           {_displayName(joueur.joueurId)}
         </HStack>
-        <Text className="basis-1/5 text-center text-white text-lg">
+        <Text className="basis-1/5 text-center text-typography-white text-lg">
           {joueur.victoires}
         </Text>
-        <Text className="basis-1/5 text-center text-white text-lg">
+        <Text className="basis-1/5 text-center text-typography-white text-lg">
           {joueur.nbMatchs}
         </Text>
         <HStack className="basis-1/5 justify-end">
           {_fanny(joueur.joueurId)}
-          <Text className="text-white text-lg"> {joueur.points}</Text>
+          <Text className="text-typography-white text-lg">{` ${joueur.points}`}</Text>
         </HStack>
       </HStack>
       <Divider />

@@ -88,7 +88,7 @@ const Accueil = () => {
       return (
         <Box className="bg-secondary-500 flex-1 items-center rounded-3xl py-5">
           <FontAwesome5 name="play" color="white" size={24} />
-          <Text className="text-white">{t('aucun_tournoi')}</Text>
+          <Text className="text-typography-white">{t('aucun_tournoi')}</Text>
         </Box>
       );
     }
