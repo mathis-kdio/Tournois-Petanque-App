@@ -151,8 +151,12 @@ const PDFExport = () => {
               <Switch
                 value={ajoutScore}
                 onValueChange={() => setAjoutScore(!ajoutScore)}
-                trackColor={{ false: '#ffffff', true: '#1c3969' }}
+                trackColor={{
+                  false: '#ffffff',
+                  true: 'var(--color-custom-dark-blue)',
+                }}
                 thumbColor={'#ffffff'}
+                activeThumbColor={'#ffffff'}
                 ios_backgroundColor={'#ffffff'}
               />
             </Box>
@@ -165,8 +169,12 @@ const PDFExport = () => {
               <Switch
                 value={ajoutClassement}
                 onValueChange={() => setAjoutClassement(!ajoutClassement)}
-                trackColor={{ false: '#ffffff', true: '#1c3969' }}
+                trackColor={{
+                  false: '#ffffff',
+                  true: 'var(--color-custom-dark-blue)',
+                }}
                 thumbColor={'#ffffff'}
+                activeThumbColor={'#ffffff'}
                 ios_backgroundColor={'#ffffff'}
               />
             </Box>
@@ -179,8 +187,12 @@ const PDFExport = () => {
               <Switch
                 value={affichageCompact}
                 onValueChange={() => setAffichageCompact(!affichageCompact)}
-                trackColor={{ false: '#ffffff', true: '#1c3969' }}
+                trackColor={{
+                  false: '#ffffff',
+                  true: 'var(--color-custom-dark-blue)',
+                }}
                 thumbColor={'#ffffff'}
+                activeThumbColor={'#ffffff'}
                 ios_backgroundColor={'#ffffff'}
               />
             </Box>

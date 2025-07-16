@@ -86,7 +86,7 @@ const Parametres = () => {
                 action="secondary"
                 onPress={() => openAlert(false)}
               >
-                <ButtonText className="text-custom-text">
+                <ButtonText className="color-custom-text-modal">
                   {t('annuler')}
                 </ButtonText>
               </Button>
