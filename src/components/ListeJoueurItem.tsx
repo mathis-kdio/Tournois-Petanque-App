@@ -369,10 +369,10 @@ const ListeJoueurItem: React.FC<Props> = ({
             size="md"
             isChecked={isChecked}
           >
-            <CheckboxIndicator className="mr-2 border-text-typography-white">
+            <CheckboxIndicator className="mr-2 border-typography-white data-[checked=true]:bg-custom-background data-[checked=true]:border-typography-white">
               <CheckboxIcon
                 as={CheckIcon}
-                className="text-text-typography-white bg-custom-background"
+                className="text-typography-white bg-custom-background"
               />
             </CheckboxIndicator>
             <CheckboxLabel />
