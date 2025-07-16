@@ -1,4 +1,3 @@
-import { Spinner } from '@/components/ui/spinner';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
@@ -290,7 +289,7 @@ const GenerationMatchs = () => {
     if (isLoading) {
       return (
         <VStack>
-          <Spinner size={'large'} className="text-[#ffda00]" />
+          <Loading />
           <Text className="text-typography-white">
             {t('attente_generation_matchs')}
           </Text>
