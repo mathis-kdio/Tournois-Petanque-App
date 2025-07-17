@@ -20,7 +20,6 @@ import { useAuth } from '@/components/supabase/SessionProvider';
 import { useNavigation, useRouter } from 'expo-router';
 import { CommonActions } from '@react-navigation/native';
 import Constants from 'expo-constants';
-import { useTheme } from '@/components/ui/theme-provider/ThemeProvider';
 
 const googleMarketReviews =
   'market://details?id=com.MK.PetanqueGCU&showAllReviews=true';
@@ -87,8 +86,12 @@ const Accueil = () => {
     } else {
       return (
         <Box className="bg-secondary-500 flex-1 items-center rounded-3xl py-5">
-          <FontAwesome5 name="play" color="white" size={24} />
-          <Text className="text-typography-white">{t('aucun_tournoi')}</Text>
+          <FontAwesome5
+            name="play"
+            color="var(--color-custom-text-button)"
+            size={24}
+          />
+          <Text className="color-custom-text-button">{t('aucun_tournoi')}</Text>
         </Box>
       );
     }
@@ -117,9 +120,6 @@ const Accueil = () => {
   };
 
   const version = Constants.expoConfig?.extra?.appVersion;
-
-  const { theme } = useTheme();
-  const iconColor = theme === 'dark' ? 'black' : 'white';
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -167,7 +167,11 @@ const Accueil = () => {
                   onPress={() => _openURL(facebook)}
                   className="items-center bg-custom-dark-blue rounded-3xl p-3"
                 >
-                  <FontAwesome5 name="facebook" color={iconColor} size={20} />
+                  <FontAwesome5
+                    name="facebook"
+                    color={'var(--color-custom-text-button)'}
+                    size={20}
+                  />
                   <Text className="color-custom-text-button">
                     {t('rejoindre_page_fb')}
                   </Text>
@@ -176,7 +180,11 @@ const Accueil = () => {
                   onPress={() => _openURL(website)}
                   className="items-center bg-custom-dark-blue rounded-3xl p-3"
                 >
-                  <FontAwesome5 name="globe" color={iconColor} size={20} />
+                  <FontAwesome5
+                    name="globe"
+                    color={'var(--color-custom-text-button)'}
+                    size={20}
+                  />
                   <Text className="color-custom-text-button">
                     {t('voir_website')}
                   </Text>
@@ -189,19 +197,31 @@ const Accueil = () => {
                   }
                   className="flex-1 items-center bg-custom-dark-blue rounded-3xl p-2"
                 >
-                  <FontAwesome5 name="star" color={iconColor} size={20} />
+                  <FontAwesome5
+                    name="star"
+                    color={'var(--color-custom-text-button)'}
+                    size={20}
+                  />
                 </Pressable>
                 <Pressable
                   onPress={() => _openURL(encodeURI(mail))}
                   className="flex-1 items-center bg-custom-dark-blue rounded-3xl p-2"
                 >
-                  <FontAwesome5 name="envelope" color={iconColor} size={20} />
+                  <FontAwesome5
+                    name="envelope"
+                    color={'var(--color-custom-text-button)'}
+                    size={20}
+                  />
                 </Pressable>
                 <Pressable
                   onPress={() => router.navigate('/parametres')}
                   className="flex-1 items-center bg-custom-dark-blue rounded-3xl p-2"
                 >
-                  <FontAwesome5 name="wrench" color={iconColor} size={20} />
+                  <FontAwesome5
+                    name="wrench"
+                    color={'var(--color-custom-text-button)'}
+                    size={20}
+                  />
                 </Pressable>
               </HStack>
               <HStack className="justify-center">

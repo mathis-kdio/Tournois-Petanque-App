@@ -234,7 +234,6 @@ const Parametres = () => {
   };
 
   const _modalTheme = () => {
-    let drapeauFrance = require('@assets/images/drapeau-france.png');
     return (
       <Modal isOpen={modalThemeOpen} onClose={() => setModalTheme(false)}>
         <ModalBackdrop />

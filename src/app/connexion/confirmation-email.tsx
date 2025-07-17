@@ -32,7 +32,7 @@ const ConfirmationEmail = () => {
             <MaterialCommunityIcons
               name="email-check-outline"
               size={128}
-              color="white"
+              color="var(--color-custom-bg-inverse)"
             />
           </HStack>
           <Text className="text-typography-white">

@@ -384,7 +384,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
           </Button>
         </Box>
       </HStack>
-      <Divider className="bg-white h-0.5 my-2" />
+      <Divider className="bg-custom-bg-inverse h-0.5 my-2" />
       <HStack className="px-1 items-center justify-between">
         <Box className="w-fit">{_showTriSection()}</Box>
         <Box className="w-fit">{_showCheckboxSection()}</Box>
