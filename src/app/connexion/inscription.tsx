@@ -129,10 +129,8 @@ const Inscription = () => {
               isRequired={true}
               className="mb-5"
             >
-              <FormControlLabel className="mb-1">
-                <FormControlLabelText className="text-typography-white">
-                  {t('email')}
-                </FormControlLabelText>
+              <FormControlLabel className="mb-1 *:text-typography-white">
+                <FormControlLabelText>{t('email')}</FormControlLabelText>
               </FormControlLabel>
               <Input className="border-custom-bg-inverse">
                 <InputField
@@ -157,10 +155,8 @@ const Inscription = () => {
               isRequired={true}
               className="mb-5"
             >
-              <FormControlLabel className="mb-1">
-                <FormControlLabelText className="text-typography-white">
-                  {t('mot_de_passe')}
-                </FormControlLabelText>
+              <FormControlLabel className="mb-1 *:text-typography-white">
+                <FormControlLabelText>{t('mot_de_passe')}</FormControlLabelText>
               </FormControlLabel>
               <Input className="border-custom-bg-inverse">
                 <InputField
@@ -177,6 +173,7 @@ const Inscription = () => {
                   <FontAwesome5.Button
                     name={showPassword1 ? 'eye' : 'eye-slash'}
                     backgroundColor="#00000000"
+                    color="var(--color-custom-bg-inverse)"
                     iconStyle={{ marginRight: 0 }}
                     size={16}
                     onPress={() => setShowPassword1(!showPassword1)}
@@ -190,7 +187,7 @@ const Inscription = () => {
                 </FormControlErrorText>
               </FormControlError>
               <FormControlHelper>
-                <FormControlHelperText>
+                <FormControlHelperText className="text-typography-white">
                   {t('mdp_consignes')}
                 </FormControlHelperText>
               </FormControlHelper>
@@ -200,8 +197,8 @@ const Inscription = () => {
               isRequired={true}
               className="mb-5"
             >
-              <FormControlLabel className="mb-1">
-                <FormControlLabelText className="text-typography-white">
+              <FormControlLabel className="mb-1 *:text-typography-white">
+                <FormControlLabelText>
                   {t('mot_de_passe_confirmation')}
                 </FormControlLabelText>
               </FormControlLabel>
@@ -218,6 +215,7 @@ const Inscription = () => {
                   <FontAwesome5.Button
                     name={showPassword2 ? 'eye' : 'eye-slash'}
                     backgroundColor="#00000000"
+                    color="var(--color-custom-bg-inverse)"
                     iconStyle={{ marginRight: 0 }}
                     size={16}
                     onPress={() => setShowPassword2(!showPassword2)}
@@ -231,7 +229,7 @@ const Inscription = () => {
                 </FormControlErrorText>
               </FormControlError>
               <FormControlHelper>
-                <FormControlHelperText>
+                <FormControlHelperText className="text-typography-white">
                   {t('mdp_non_identique')}
                 </FormControlHelperText>
               </FormControlHelper>
@@ -246,11 +244,14 @@ const Inscription = () => {
                 onChange={() => setConditionsCheckbox(!conditionsCheckbox)}
               >
                 <CheckboxIndicator className="mr-2">
-                  <CheckboxIcon>
-                    <CheckIcon />
-                  </CheckboxIcon>
+                  <CheckboxIcon
+                    as={CheckIcon}
+                    className="text-typography-white bg-custom-background"
+                  />
                 </CheckboxIndicator>
-                <CheckboxLabel>{t('accepte_termes_conditions')}</CheckboxLabel>
+                <CheckboxLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white data-[hover=true]:data-[checked=true]:text-typography-white">
+                  {t('accepte_termes_conditions')}
+                </CheckboxLabel>
               </Checkbox>
             </FormControl>
             <FormControl>
@@ -276,7 +277,7 @@ const Inscription = () => {
               >
                 <FontAwesome5
                   name="apple"
-                  color="white"
+                  color="var(--color-custom-bg-inverse)"
                   size={18}
                   style={{ marginRight: 5 }}
                 />
@@ -290,11 +291,13 @@ const Inscription = () => {
               >
                 <FontAwesome5
                   name="google"
-                  color="white"
+                  color="var(--color-custom-bg-inverse)"
                   size={14}
                   className="mr-2"
                 />
-                <ButtonText className="text-typography-white">Google</ButtonText>
+                <ButtonText className="text-typography-white">
+                  Google
+                </ButtonText>
               </Button>
             </HStack>
           </VStack>

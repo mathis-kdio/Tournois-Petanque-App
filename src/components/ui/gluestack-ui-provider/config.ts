@@ -332,7 +332,7 @@ export const config = {
       '--color-custom-background': '#0594ae',
       '--color-custom-dark-blue': '#1c3969',
       '--color-custom-text-modal': '#000000',
-      '--color-custom-text-button': '#FFFFFF', //18 18 18
+      '--color-custom-text-button': '#FFFFFF',
       '--color-custom-bg-inverse': '#FFFFFF',
 
       /* Primary */

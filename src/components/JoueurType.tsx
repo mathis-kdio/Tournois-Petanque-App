@@ -85,7 +85,7 @@ const JoueurType: React.FC<Props> = ({ joueurType, _setJoueurType }) => {
     >
       <SelectTrigger variant="rounded" className="border-custom-bg-inverse">
         <SelectInput
-          className="text-typography-white"
+          className="text-typography-white placeholder:text-typography-white"
           placeholder={t('choisir_poste')}
           value={joueurType}
         />

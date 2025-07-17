@@ -279,7 +279,7 @@ const ListeJoueurItem: React.FC<Props> = ({
             _ajoutEquipe(joueur.id, parseInt(itemValue))
           }
         >
-          <SelectTrigger className="flex flex-row">
+          <SelectTrigger className="flex flex-row border-custom-bg-inverse">
             <SelectInput
               className="basis-5/6 text-typography-white placeholder:text-typography-white"
               placeholder={t('choix_equipe')}

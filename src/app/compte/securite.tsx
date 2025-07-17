@@ -98,10 +98,8 @@ const Securite = () => {
               Changer le mot de passe
             </Heading>
             <FormControl isInvalid={error} isRequired={true} className="mb-5">
-              <FormControlLabel className="mb-1">
-                <FormControlLabelText className="text-typography-white">
-                  {t('ancien_mdp')}
-                </FormControlLabelText>
+              <FormControlLabel className="mb-1 *:text-typography-white">
+                <FormControlLabelText>{t('ancien_mdp')}</FormControlLabelText>
               </FormControlLabel>
               <Input className="border-custom-bg-inverse">
                 <InputField
@@ -118,6 +116,7 @@ const Securite = () => {
                   <FontAwesome5.Button
                     name={showOldPassword ? 'eye' : 'eye-slash'}
                     backgroundColor="#00000000"
+                    color="var(--color-custom-bg-inverse)"
                     iconStyle={{ marginRight: 0 }}
                     size={16}
                     onPress={() => setShowOldPassword(!showOldPassword)}
@@ -126,10 +125,8 @@ const Securite = () => {
               </Input>
             </FormControl>
             <FormControl isInvalid={error} isRequired={true} className="mb-5">
-              <FormControlLabel className="mb-1">
-                <FormControlLabelText className="text-typography-white">
-                  {t('nouveau_mdp')}
-                </FormControlLabelText>
+              <FormControlLabel className="mb-1 *:text-typography-white">
+                <FormControlLabelText>{t('nouveau_mdp')}</FormControlLabelText>
               </FormControlLabel>
               <Input className="border-custom-bg-inverse">
                 <InputField
@@ -146,6 +143,7 @@ const Securite = () => {
                   <FontAwesome5.Button
                     name={showNewPassword ? 'eye' : 'eye-slash'}
                     backgroundColor="#00000000"
+                    color="var(--color-custom-bg-inverse)"
                     iconStyle={{ marginRight: 0 }}
                     size={16}
                     onPress={() => setShowNewPassword(!showNewPassword)}
@@ -154,8 +152,8 @@ const Securite = () => {
               </Input>
             </FormControl>
             <FormControl isInvalid={error} isRequired={true} className="mb-5">
-              <FormControlLabel className="mb-1">
-                <FormControlLabelText className="text-typography-white">
+              <FormControlLabel className="mb-1 *:text-typography-white">
+                <FormControlLabelText>
                   {t('mot_de_passe_confirmation')}
                 </FormControlLabelText>
               </FormControlLabel>
@@ -172,6 +170,7 @@ const Securite = () => {
                   <FontAwesome5.Button
                     name={showConfirmPassword ? 'eye' : 'eye-slash'}
                     backgroundColor="#00000000"
+                    color="var(--color-custom-bg-inverse)"
                     iconStyle={{ marginRight: 0 }}
                     size={16}
                     onPress={() => setShowConfirmPassword(!showConfirmPassword)}

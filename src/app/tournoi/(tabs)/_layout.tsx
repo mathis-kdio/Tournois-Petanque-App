@@ -38,7 +38,7 @@ export default function TabLayout() {
   let tournoiName = getTournoiName();
 
   const { theme } = useTheme();
-  const tabBarInactiveTintColor = theme === 'dark' ? 'grey' : 'black';
+  const tabBarInactiveTintColor = theme === 'default' ? 'black' : 'grey';
 
   return (
     <Tabs

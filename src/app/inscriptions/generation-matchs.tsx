@@ -309,6 +309,7 @@ const GenerationMatchs = () => {
       }
       return (
         <VStack>
+          <Loading />
           <Text className="text-typography-white">{textInfo}</Text>
           <Text className="text-typography-white">{textError}</Text>
           <Button

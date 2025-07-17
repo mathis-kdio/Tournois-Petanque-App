@@ -79,10 +79,8 @@ const Authentification = () => {
               isRequired={true}
               className="mb-5"
             >
-              <FormControlLabel className="mb-1">
-                <FormControlLabelText className="text-typography-white">
-                  {t('email')}
-                </FormControlLabelText>
+              <FormControlLabel className="mb-1 *:text-typography-white">
+                <FormControlLabelText>{t('email')}</FormControlLabelText>
               </FormControlLabel>
               <Input className="border-custom-bg-inverse">
                 <InputField
@@ -107,10 +105,8 @@ const Authentification = () => {
               isRequired={true}
               className="mb-5"
             >
-              <FormControlLabel className="mb-1">
-                <FormControlLabelText className="text-typography-white">
-                  {t('mot_de_passe')}
-                </FormControlLabelText>
+              <FormControlLabel className="mb-1 *:text-typography-white">
+                <FormControlLabelText>{t('mot_de_passe')}</FormControlLabelText>
               </FormControlLabel>
               <Input className="border-custom-bg-inverse">
                 <InputField
@@ -125,6 +121,7 @@ const Authentification = () => {
                   <FontAwesome5.Button
                     name={showPassword ? 'eye' : 'eye-slash'}
                     backgroundColor="#00000000"
+                    color="var(--color-custom-bg-inverse)"
                     iconStyle={{ marginRight: 0 }}
                     size={16}
                     onPress={() => setShowPassword(!showPassword)}
@@ -171,7 +168,7 @@ const Authentification = () => {
               >
                 <FontAwesome5
                   name="apple"
-                  color="white"
+                  color="var(--color-custom-bg-inverse)"
                   size={18}
                   style={{ marginRight: 5 }}
                 />
@@ -185,7 +182,7 @@ const Authentification = () => {
               >
                 <FontAwesome5
                   name="google"
-                  color="white"
+                  color="var(--color-custom-bg-inverse)"
                   size={14}
                   className="mr-2"
                 />

@@ -266,9 +266,15 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
     if (nbSuggestions < suggestions.length) {
       return (
         <Button action="primary" onPress={() => _showMoreSuggestedPlayers()}>
-          <FontAwesome5 name="chevron-down" />
+          <FontAwesome5
+            name="chevron-down"
+            color="var(--color-custom-text-button)"
+          />
           <ButtonText>{t('plus_suggestions_joueurs_bouton')}</ButtonText>
-          <FontAwesome5 name="chevron-down" />
+          <FontAwesome5
+            name="chevron-down"
+            color="var(--color-custom-text-button)"
+          />
         </Button>
       );
     }
@@ -310,7 +316,11 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
         onPress={() => setShowCheckbox(!showCheckbox)}
         className="my-1 flex-row items-center"
       >
-        <FontAwesome5 name={icon} size={15} color="white" />
+        <FontAwesome5
+          name={icon}
+          size={15}
+          color="var(--color-custom-bg-inverse)"
+        />
         <Text className="text-typography-white text-md">
           {` ${text} ${t('case_a_cocher')}`}
         </Text>
@@ -325,7 +335,11 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
           onPress={() => setshowTri(!showTri)}
           className="my-1 flex-row items-center"
         >
-          <MaterialCommunityIcons name="sort" size={24} color="white" />
+          <MaterialCommunityIcons
+            name="sort"
+            size={24}
+            color="var(--color-custom-bg-inverse)"
+          />
           <Text className="text-typography-white text-md">{` ${t('trier_joueurs')}`}</Text>
         </Pressable>
         <TriListeJoueurs

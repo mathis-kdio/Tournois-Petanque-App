@@ -185,13 +185,13 @@ const OptionsTournoi = () => {
                   defaultIsChecked
                   size="md"
                 >
-                  <CheckboxIndicator className="mr-2 border-white">
+                  <CheckboxIndicator className="mr-2 border-custom-bg-inverse">
                     <CheckboxIcon
                       as={CheckIcon}
                       className="text-typography-white bg-custom-background"
                     />
                   </CheckboxIndicator>
-                  <CheckboxLabel className="text-typography-white">
+                  <CheckboxLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white data-[hover=true]:data-[checked=true]:text-typography-white">
                     {t('options_regle_speciaux')}
                   </CheckboxLabel>
                 </Checkbox>
@@ -202,13 +202,13 @@ const OptionsTournoi = () => {
                   defaultIsChecked
                   size="md"
                 >
-                  <CheckboxIndicator className="mr-2 border-white">
+                  <CheckboxIndicator className="mr-2 border-custom-bg-inverse">
                     <CheckboxIcon
                       as={CheckIcon}
                       className="text-typography-white bg-custom-background"
                     />
                   </CheckboxIndicator>
-                  <CheckboxLabel className="text-typography-white">
+                  <CheckboxLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white data-[hover=true]:data-[checked=true]:text-typography-white">
                     {t('options_regle_equipes')}
                   </CheckboxLabel>
                 </Checkbox>
@@ -251,13 +251,13 @@ const OptionsTournoi = () => {
                   aria-label={t('choix_option_terrains')}
                   size="md"
                 >
-                  <CheckboxIndicator className="mr-2 border-white">
+                  <CheckboxIndicator className="mr-2 border-custom-bg-inverse">
                     <CheckboxIcon
                       as={CheckIcon}
                       className="text-typography-white bg-custom-background"
                     />
                   </CheckboxIndicator>
-                  <CheckboxLabel className="text-typography-white">
+                  <CheckboxLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white data-[hover=true]:data-[checked=true]:text-typography-white">
                     {t('options_terrains_explications')}
                   </CheckboxLabel>
                 </Checkbox>

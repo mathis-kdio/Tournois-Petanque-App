@@ -91,7 +91,9 @@ export default function MatchsPage() {
         title: t('liste_matchs_navigation_title'),
         tabBarScrollEnabled: true,
         tabBarStyle: { backgroundColor: 'var(--color-custom-background)' },
-        tabBarIndicatorStyle: { backgroundColor: 'white' },
+        tabBarIndicatorStyle: {
+          backgroundColor: 'var(--color-custom-bg-inverse)',
+        },
       }}
     >
       {TopTabScreens()}
