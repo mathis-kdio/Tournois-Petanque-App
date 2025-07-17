@@ -255,25 +255,25 @@ const Parametres = () => {
             <Item
               text={t('defaut')}
               action={() => _changeTheme('default')}
-              icon={''}
+              icon={'copyright'}
               type="modal"
-              drapeau={drapeauFrance}
+              drapeau={undefined}
             />
             <Divider />
             <Item
               text={t('clair')}
               action={() => _changeTheme('light')}
-              icon={''}
+              icon={'sun'}
               type="modal"
-              drapeau={drapeauFrance}
+              drapeau={undefined}
             />
             <Divider />
             <Item
               text={t('sombre')}
               action={() => _changeTheme('dark')}
-              icon={''}
+              icon={'moon'}
               type="modal"
-              drapeau={drapeauFrance}
+              drapeau={undefined}
             />
           </ModalBody>
         </ModalContent>
@@ -324,7 +324,7 @@ const Parametres = () => {
                 <Item
                   text={t('changer_theme')}
                   action={() => setModalTheme(true)}
-                  icon="language"
+                  icon="palette"
                   type={''}
                   drapeau={undefined}
                 />
