@@ -15,10 +15,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     resizeMode: 'contain',
     backgroundColor: '#0594ae',
   },
-  androidStatusBar: {
-    backgroundColor: '#0594ae',
-    translucent: false,
-  },
   androidNavigationBar: {
     backgroundColor: '#0594ae',
   },
