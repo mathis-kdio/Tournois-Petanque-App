@@ -41,10 +41,12 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
-import { Theme, useTheme } from '@/components/ui/theme-provider/ThemeProvider';
+import { useTheme } from '@/components/ui/theme-provider/ThemeProvider';
 import { SELECTED_LANGUAGE_KEY } from '@/utils/async-storage/key';
 import { setStatusBarBackgroundColor } from 'expo-status-bar';
+import { setBackgroundColorAsync } from 'expo-navigation-bar';
 import { Platform } from 'react-native';
+import { AppTheme, getThemeColor } from '@/utils/theme/theme';
 
 const Parametres = () => {
   const githubRepository =
@@ -282,16 +284,12 @@ const Parametres = () => {
     );
   };
 
-  const _changeTheme = (theme: Theme) => {
-    const color: { [key in Theme]: string } = {
-      light: '#ffffff',
-      dark: '#121212',
-      default: '#0594AE',
-    };
-
+  const _changeTheme = (theme: AppTheme) => {
     if (Platform.OS === 'android') {
       setTimeout(() => {
-        setStatusBarBackgroundColor(color[theme]);
+        const color = getThemeColor(theme);
+        setStatusBarBackgroundColor(color);
+        setBackgroundColorAsync(color);
       }, 200);
     }
     setTheme(theme);

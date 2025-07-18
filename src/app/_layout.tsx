@@ -21,6 +21,9 @@ import {
   ThemeProvider,
   useTheme,
 } from '@/components/ui/theme-provider/ThemeProvider';
+import { getTheme, getThemeColor } from '@/utils/theme/theme';
+import { setBackgroundColorAsync } from 'expo-navigation-bar';
+import { Platform } from 'react-native';
 
 const navigationIntegration = Sentry.reactNavigationIntegration({
   enableTimeToInitialDisplay: !isRunningInExpoGo(),
@@ -62,20 +65,21 @@ export default function RootLayout() {
 
   const GluestackWrapper = ({ children }: { children: React.ReactNode }) => {
     const { theme } = useTheme();
-    let globalTheme: 'basic' | 'original';
-    let colorMode: 'light' | 'dark' | 'system';
-    if (theme === 'default') {
-      globalTheme = 'original';
-      colorMode = 'light';
-    } else {
-      globalTheme = 'basic';
-      colorMode = theme === 'dark' ? 'dark' : 'light';
-    }
+    const { globalTheme, style } = getTheme(theme);
     return (
-      <GluestackUIProvider theme={globalTheme} mode={colorMode}>
+      <GluestackUIProvider theme={globalTheme} mode={style}>
         {children}
       </GluestackUIProvider>
     );
+  };
+
+  const StatusBarWrapper = () => {
+    const { theme } = useTheme();
+    const color = getThemeColor(theme);
+    if (Platform.OS === 'android') {
+      setBackgroundColorAsync(color);
+    }
+    return <StatusBar backgroundColor={color} />;
   };
 
   return (
@@ -86,7 +90,7 @@ export default function RootLayout() {
             <GluestackWrapper>
               <I18nextProvider i18n={i18n} defaultNS={'common'}>
                 <Stack screenOptions={{ headerShown: false }} />
-                <StatusBar style="light" backgroundColor="#0594ae" />
+                <StatusBarWrapper />
               </I18nextProvider>
             </GluestackWrapper>
           </ThemeProvider>

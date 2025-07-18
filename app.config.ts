@@ -15,9 +15,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     resizeMode: 'contain',
     backgroundColor: '#0594ae',
   },
-  androidNavigationBar: {
-    backgroundColor: '#0594ae',
-  },
   updates: {
     fallbackToCacheTimeout: 0,
     url: 'https://u.expo.dev/a9524187-3720-46fc-8d6e-6e9e7211bda7',

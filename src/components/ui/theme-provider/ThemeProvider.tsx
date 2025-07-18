@@ -3,22 +3,21 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SELECTED_THEME_KEY } from "@/utils/async-storage/key";
-
-export type Theme = "light" | "dark" | "default";
+import { AppTheme } from "@/utils/theme/theme";
 
 interface ThemeContextType {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
+  theme: AppTheme;
+  setTheme: (theme: AppTheme) => void;
 }
 
 export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setTheme] = useState<Theme>("default");
+  const [theme, setTheme] = useState<AppTheme>("default");
 
   useEffect(() => {
     (async () => {
-      const savedTheme = (await AsyncStorage.getItem(SELECTED_THEME_KEY)) as | Theme | "light";
+      const savedTheme = (await AsyncStorage.getItem(SELECTED_THEME_KEY)) as | AppTheme | "light";
       if (savedTheme) {
         setTheme(savedTheme);
         AsyncStorage.setItem(SELECTED_THEME_KEY, savedTheme);
@@ -26,7 +25,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     })();
   }, []);
 
-  const handleSetTheme = (newTheme: Theme) => {
+  const handleSetTheme = (newTheme: AppTheme) => {
     setTheme(newTheme);
     AsyncStorage.setItem(SELECTED_THEME_KEY, newTheme);
   };
