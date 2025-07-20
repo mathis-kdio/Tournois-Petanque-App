@@ -88,7 +88,7 @@ const Accueil = () => {
         <Box className="bg-secondary-500 flex-1 items-center rounded-3xl py-5">
           <FontAwesome5
             name="play"
-            color="var(--color-custom-text-button)"
+            className="text-custom-text-button"
             size={24}
           />
           <Text className="color-custom-text-button">{t('aucun_tournoi')}</Text>
@@ -169,7 +169,7 @@ const Accueil = () => {
                 >
                   <FontAwesome5
                     name="facebook"
-                    color={'var(--color-custom-text-button)'}
+                    className="text-custom-text-button"
                     size={20}
                   />
                   <Text className="color-custom-text-button">
@@ -182,7 +182,7 @@ const Accueil = () => {
                 >
                   <FontAwesome5
                     name="globe"
-                    color={'var(--color-custom-text-button)'}
+                    className="text-custom-text-button"
                     size={20}
                   />
                   <Text className="color-custom-text-button">
@@ -199,7 +199,7 @@ const Accueil = () => {
                 >
                   <FontAwesome5
                     name="star"
-                    color={'var(--color-custom-text-button)'}
+                    className="text-custom-text-button"
                     size={20}
                   />
                 </Pressable>
@@ -209,7 +209,7 @@ const Accueil = () => {
                 >
                   <FontAwesome5
                     name="envelope"
-                    color={'var(--color-custom-text-button)'}
+                    className="text-custom-text-button"
                     size={20}
                   />
                 </Pressable>
@@ -219,7 +219,7 @@ const Accueil = () => {
                 >
                   <FontAwesome5
                     name="wrench"
-                    color={'var(--color-custom-text-button)'}
+                    className="text-custom-text-button"
                     size={20}
                   />
                 </Pressable>

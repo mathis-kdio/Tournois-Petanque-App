@@ -121,7 +121,7 @@ const Authentification = () => {
                   <FontAwesome5.Button
                     name={showPassword ? 'eye' : 'eye-slash'}
                     backgroundColor="#00000000"
-                    color="var(--color-custom-bg-inverse)"
+                    className="text-custom-bg-inverse"
                     iconStyle={{ marginRight: 0 }}
                     size={16}
                     onPress={() => setShowPassword(!showPassword)}
@@ -168,7 +168,7 @@ const Authentification = () => {
               >
                 <FontAwesome5
                   name="apple"
-                  color="var(--color-custom-bg-inverse)"
+                  className="text-custom-bg-inverse"
                   size={18}
                   style={{ marginRight: 5 }}
                 />
@@ -182,9 +182,8 @@ const Authentification = () => {
               >
                 <FontAwesome5
                   name="google"
-                  color="var(--color-custom-bg-inverse)"
                   size={14}
-                  className="mr-2"
+                  className="text-custom-bg-inverse mr-2"
                 />
                 <ButtonText className="text-typography-white">
                   Google

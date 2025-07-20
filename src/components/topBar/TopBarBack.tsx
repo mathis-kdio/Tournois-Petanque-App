@@ -17,7 +17,7 @@ const TopBarBack: React.FC<Props> = ({ title }) => {
         <FontAwesome5
           name="arrow-left"
           size={15}
-          color="var(--color-custom-bg-inverse)"
+          className="text-custom-bg-inverse"
         />
       </Pressable>
       <Text className="text-xl text-typography-white">{title}</Text>

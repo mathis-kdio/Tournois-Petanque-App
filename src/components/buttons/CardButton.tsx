@@ -40,8 +40,8 @@ const CardButton: React.FC<Props> = ({ text, icons, navigate, newBadge }) => {
             <FontAwesome5
               key={index}
               name={icon}
-              color={'var(--color-custom-text-button)'}
               size={24}
+              className="text-custom-text-button"
             />
           ))}
         </HStack>

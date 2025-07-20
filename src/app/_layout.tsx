@@ -24,6 +24,11 @@ import {
 import { getTheme, getThemeColor } from '@/utils/theme/theme';
 import { setBackgroundColorAsync } from 'expo-navigation-bar';
 import { Platform } from 'react-native';
+import { cssInterop } from 'nativewind';
+import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+
+cssInterop(FontAwesome5, { className: 'style' });
+cssInterop(MaterialCommunityIcons, { className: 'style' });
 
 const navigationIntegration = Sentry.reactNavigationIntegration({
   enableTimeToInitialDisplay: !isRunningInExpoGo(),

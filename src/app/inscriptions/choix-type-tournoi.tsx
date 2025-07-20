@@ -109,7 +109,7 @@ const ChoixTypeTournoi = () => {
             >
               <FontAwesome5
                 name="info-circle"
-                color="var(--color-custom-bg-inverse)"
+                className="text-custom-bg-inverse"
                 size={24}
               />
               <Text className="text-typography-white"> {t('savoir_plus')}</Text>
@@ -128,7 +128,7 @@ const ChoixTypeTournoi = () => {
             >
               <FontAwesome5
                 name="info-circle"
-                color="var(--color-custom-bg-inverse)"
+                className="text-custom-bg-inverse"
                 size={24}
               />
               <Text className="text-typography-white"> {t('savoir_plus')}</Text>
@@ -147,7 +147,7 @@ const ChoixTypeTournoi = () => {
             >
               <FontAwesome5
                 name="info-circle"
-                color="var(--color-custom-bg-inverse)"
+                className="text-custom-bg-inverse"
                 size={24}
               />
               <Text className="text-typography-white"> {t('savoir_plus')}</Text>
@@ -166,7 +166,7 @@ const ChoixTypeTournoi = () => {
             >
               <FontAwesome5
                 name="info-circle"
-                color="var(--color-custom-bg-inverse)"
+                className="text-custom-bg-inverse"
                 size={24}
               />
               <Text className="text-typography-white"> {t('savoir_plus')}</Text>

@@ -16,13 +16,13 @@ export interface Props {
 
 const Item: React.FC<Props> = ({ text, action, icon, type, drapeau }) => {
   let colorTxt = 'text-typography-white';
-  let iconColor = 'var(--color-custom-bg-inverse)';
+  let iconColor = 'text-custom-bg-inverse';
   if (type === 'danger') {
     colorTxt = 'text-red-500';
-    iconColor = 'red';
+    iconColor = 'text-red-500';
   } else if (type === 'modal') {
-    colorTxt = 'color-custom-text-modal';
-    iconColor = 'var(--color-custom-text-modal)';
+    colorTxt = 'text-custom-text-modal';
+    iconColor = 'text-custom-text-modal';
   }
   return (
     <Pressable onPress={() => action()}>
@@ -32,15 +32,15 @@ const Item: React.FC<Props> = ({ text, action, icon, type, drapeau }) => {
             <FontAwesome5
               name={icon}
               size={16}
-              color={iconColor}
               style={{ marginRight: 5 }}
+              className={iconColor}
             />
           ) : (
             <Image source={drapeau} alt="drapeau" size="xs" />
           )}
           <Text className={`${colorTxt} text-md`}>{text}</Text>
         </HStack>
-        <FontAwesome5 name="arrow-right" size={20} color={iconColor} />
+        <FontAwesome5 name="arrow-right" size={20} className={iconColor} />
       </HStack>
     </Pressable>
   );

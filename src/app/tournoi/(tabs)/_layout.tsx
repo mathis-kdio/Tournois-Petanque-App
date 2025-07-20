@@ -7,6 +7,7 @@ import { Tournoi } from '@/types/interfaces/tournoi';
 import { captureMessage } from '@sentry/react-native';
 import { useSelector } from 'react-redux';
 import { useTheme } from '@/components/ui/theme-provider/ThemeProvider';
+import colors from 'tailwindcss/colors';
 
 export default function TabLayout() {
   const { t } = useTranslation();
@@ -45,7 +46,7 @@ export default function TabLayout() {
       initialRouteName="matchs"
       backBehavior="none"
       screenOptions={{
-        tabBarStyle: { backgroundColor: 'var(--color-custom-background)' },
+        tabBarStyle: { backgroundColor: 'text-custom-background' },
         tabBarActiveTintColor: 'var(--color-custom-bg-inverse)',
         tabBarInactiveTintColor,
         tabBarLabelStyle: { fontSize: 15 },

@@ -268,12 +268,12 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
         <Button action="primary" onPress={() => _showMoreSuggestedPlayers()}>
           <FontAwesome5
             name="chevron-down"
-            color="var(--color-custom-text-button)"
+            className="text-custom-text-button"
           />
           <ButtonText>{t('plus_suggestions_joueurs_bouton')}</ButtonText>
           <FontAwesome5
             name="chevron-down"
-            color="var(--color-custom-text-button)"
+            className="text-custom-text-button"
           />
         </Button>
       );
@@ -319,7 +319,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
         <FontAwesome5
           name={icon}
           size={15}
-          color="var(--color-custom-bg-inverse)"
+          className="text-custom-bg-inverse"
         />
         <Text className="text-typography-white text-md">
           {` ${text} ${t('case_a_cocher')}`}
@@ -338,7 +338,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
           <MaterialCommunityIcons
             name="sort"
             size={24}
-            color="var(--color-custom-bg-inverse)"
+            className="text-custom-bg-inverse"
           />
           <Text className="text-typography-white text-md">{` ${t('trier_joueurs')}`}</Text>
         </Pressable>

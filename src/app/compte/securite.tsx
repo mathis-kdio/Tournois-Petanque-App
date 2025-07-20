@@ -116,7 +116,7 @@ const Securite = () => {
                   <FontAwesome5.Button
                     name={showOldPassword ? 'eye' : 'eye-slash'}
                     backgroundColor="#00000000"
-                    color="var(--color-custom-bg-inverse)"
+                    className="text-custom-bg-inverse"
                     iconStyle={{ marginRight: 0 }}
                     size={16}
                     onPress={() => setShowOldPassword(!showOldPassword)}
@@ -143,7 +143,7 @@ const Securite = () => {
                   <FontAwesome5.Button
                     name={showNewPassword ? 'eye' : 'eye-slash'}
                     backgroundColor="#00000000"
-                    color="var(--color-custom-bg-inverse)"
+                    className="text-custom-bg-inverse"
                     iconStyle={{ marginRight: 0 }}
                     size={16}
                     onPress={() => setShowNewPassword(!showNewPassword)}
@@ -170,7 +170,7 @@ const Securite = () => {
                   <FontAwesome5.Button
                     name={showConfirmPassword ? 'eye' : 'eye-slash'}
                     backgroundColor="#00000000"
-                    color="var(--color-custom-bg-inverse)"
+                    className="text-custom-bg-inverse"
                     iconStyle={{ marginRight: 0 }}
                     size={16}
                     onPress={() => setShowConfirmPassword(!showConfirmPassword)}
