@@ -1,28 +1,27 @@
-import { TextStyle, ViewStyle } from 'react-native';
-import { Tabs } from 'expo-router';
+import { SwitchProps, } from 'react-native';
 import { cssInterop } from 'nativewind';
+import { Switch } from '.';
 
-const StyledTabsImpl = ({
-  tabBarStyle,
-  tabBarActiveTintColor,
-  headerStyle,
-  ...props
-}: React.ComponentProps<typeof Tabs> & {
-  tabBarStyle?: ViewStyle;
-  tabBarActiveTintColor?: TextStyle;
-  headerStyle?: ViewStyle;
-}) => {
-  props.screenOptions = {
-    ...props.screenOptions,
-    tabBarStyle,
-    tabBarActiveTintColor: tabBarActiveTintColor?.color?.toString(),
-    headerStyle,
-  };
-  return <Tabs {...props} />;
+type TrackColorInput = {
+  backgroundColor?: string;
 };
 
-export const StyledTabs = cssInterop(StyledTabsImpl, {
-  tabBarClassName: 'tabBarStyle',
-  tabBarActiveTintColorClassName: 'tabBarActiveTintColor',
-  headerClassName: 'headerStyle',
+type CustomSwitchProps = SwitchProps & {
+  trackColor?: TrackColorInput;
+};
+
+const StyledSwitchImpl = ({ trackColor, ...props }: CustomSwitchProps) => {
+  return (
+    <Switch
+      {...props}
+      trackColor={{
+        true: trackColor?.backgroundColor,
+        false: '#ffffff',
+      }}
+    />
+  );
+};
+
+export const StyledSwitch = cssInterop(StyledSwitchImpl, {
+  trackColorclassName: 'trackColor'  
 });

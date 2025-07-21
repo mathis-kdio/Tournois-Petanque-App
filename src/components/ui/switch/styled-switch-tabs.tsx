@@ -15,7 +15,7 @@ const StyledSwitchImpl = ({ trackColor, ...props }: CustomSwitchProps) => {
     <Switch
       {...props}
       trackColor={{
-        true: 'var(--color-custom-dark-blue)',
+        true: trackColor?.backgroundColor,
         false: '#ffffff',
       }}
     />
