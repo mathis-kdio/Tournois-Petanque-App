@@ -7,11 +7,12 @@ import { useSelector } from 'react-redux';
 import ListeMatchs from '@components/matchs/liste-matchs';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { StyledTopTabs } from '@/components/navigation/styled-top-tabs';
 
 export default function MatchsPage() {
   const { t } = useTranslation();
 
-  const { Navigator, Screen } = createMaterialTopTabNavigator();
+  const { Screen } = createMaterialTopTabNavigator();
 
   const listeMatchs = useSelector(
     (state: any) => state.gestionMatchs.listematchs,
@@ -86,17 +87,15 @@ export default function MatchsPage() {
   };
 
   return (
-    <Navigator
+    <StyledTopTabs
       screenOptions={{
         title: t('liste_matchs_navigation_title'),
         tabBarScrollEnabled: true,
-        tabBarStyle: { backgroundColor: 'var(--color-custom-background)' },
-        tabBarIndicatorStyle: {
-          backgroundColor: 'var(--color-custom-bg-inverse)',
-        },
       }}
+      tabBarClassName="bg-custom-background"
+      tabBarIndicatorClassName="bg-custom-bg-inverse"
     >
       {TopTabScreens()}
-    </Navigator>
+    </StyledTopTabs>
   );
 }
