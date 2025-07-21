@@ -41,7 +41,7 @@ const Changelog = () => {
           <ModalBackdrop />
           <ModalContent className="max-h-5/6">
             <ModalHeader>
-              <Heading className="text-black">{title}</Heading>
+              <Heading className="color-custom-text-modal">{title}</Heading>
               <ModalCloseButton>
                 <Icon
                   as={CloseIcon}
@@ -87,15 +87,17 @@ const Changelog = () => {
     _changelogItem(item);
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <VStack className="flex-1 bg-[#0594ae]">
+      <VStack className="flex-1 bg-custom-background">
         <TopBarBack title={t('nouveautes')} />
         <VStack className="flex-1 px-10">
-          <Text className="text-xl text-white mb-1">{t('nouveautes')}</Text>
+          <Text className="text-xl text-typography-white mb-1">
+            {t('nouveautes')}
+          </Text>
           <FlatList
             data={Object.values(ChangelogData).reverse()}
             keyExtractor={(item: ChangelogInterface) => item.id.toString()}
             renderItem={renderItem}
-            className="h-1 border border-white rounded-lg"
+            className="h-1 border border-custom-bg-inverse rounded-lg"
           />
         </VStack>
       </VStack>

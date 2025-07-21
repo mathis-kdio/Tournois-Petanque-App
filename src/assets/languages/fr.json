@@ -262,6 +262,10 @@
     "defaut": "Par défaut",
     "alphaAZ": "Alphabétique A -> Z",
     "alphaZA": "Alphabétique Z -> A",
-    "trier_joueurs": "Trier les joueurs"
+    "trier_joueurs": "Trier les joueurs",
+    "changer_theme": "Changer le thème de l'application",
+    "themes_disponibles": "Thèmes disponibles",
+    "clair": "Clair",
+    "sombre": "Sombre"
   }
 }

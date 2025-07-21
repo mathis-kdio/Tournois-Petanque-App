@@ -87,10 +87,10 @@ const CreateListeJoueur = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <VStack className="flex-1 bg-[#0594ae]">
+      <VStack className="flex-1 bg-custom-background">
         <TopBarBack title={t('creation_liste_joueurs_navigation_title')} />
         <VStack className="flex-1 justify-between">
-          <Text className="text-white text-xl text-center">
+          <Text className="text-typography-white text-xl text-center">
             {t('nombre_joueurs', { nb: nbJoueurs })}
           </Text>
           <Inscriptions loadListScreen={true} />

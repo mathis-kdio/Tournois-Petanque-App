@@ -120,7 +120,7 @@ const Inscription = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView className="h-1 bg-[#0594ae]">
+      <ScrollView className="h-1 bg-custom-background">
         <TopBarBack title={t('inscription')} />
         <VStack className="flex-1 px-10 justify-between">
           <VStack className="mb-5">
@@ -129,14 +129,12 @@ const Inscription = () => {
               isRequired={true}
               className="mb-5"
             >
-              <FormControlLabel className="mb-1">
-                <FormControlLabelText className="text-white">
-                  {t('email')}
-                </FormControlLabelText>
+              <FormControlLabel className="mb-1 *:text-typography-white">
+                <FormControlLabelText>{t('email')}</FormControlLabelText>
               </FormControlLabel>
-              <Input>
+              <Input className="border-custom-bg-inverse">
                 <InputField
-                  className="text-white placeholder:text-white"
+                  className="text-typography-white placeholder:text-typography-white"
                   placeholder={t('email_adresse')}
                   keyboardType="email-address"
                   returnKeyType="next"
@@ -157,14 +155,12 @@ const Inscription = () => {
               isRequired={true}
               className="mb-5"
             >
-              <FormControlLabel className="mb-1">
-                <FormControlLabelText className="text-white">
-                  {t('mot_de_passe')}
-                </FormControlLabelText>
+              <FormControlLabel className="mb-1 *:text-typography-white">
+                <FormControlLabelText>{t('mot_de_passe')}</FormControlLabelText>
               </FormControlLabel>
-              <Input>
+              <Input className="border-custom-bg-inverse">
                 <InputField
-                  className="text-white placeholder:text-white"
+                  className="text-typography-white placeholder:text-typography-white"
                   placeholder={t('mot_de_passe')}
                   secureTextEntry={!showPassword1}
                   returnKeyType="next"
@@ -177,6 +173,7 @@ const Inscription = () => {
                   <FontAwesome5.Button
                     name={showPassword1 ? 'eye' : 'eye-slash'}
                     backgroundColor="#00000000"
+                    className="text-custom-bg-inverse"
                     iconStyle={{ marginRight: 0 }}
                     size={16}
                     onPress={() => setShowPassword1(!showPassword1)}
@@ -190,7 +187,7 @@ const Inscription = () => {
                 </FormControlErrorText>
               </FormControlError>
               <FormControlHelper>
-                <FormControlHelperText>
+                <FormControlHelperText className="text-typography-white">
                   {t('mdp_consignes')}
                 </FormControlHelperText>
               </FormControlHelper>
@@ -200,14 +197,14 @@ const Inscription = () => {
               isRequired={true}
               className="mb-5"
             >
-              <FormControlLabel className="mb-1">
-                <FormControlLabelText className="text-white">
+              <FormControlLabel className="mb-1 *:text-typography-white">
+                <FormControlLabelText>
                   {t('mot_de_passe_confirmation')}
                 </FormControlLabelText>
               </FormControlLabel>
-              <Input>
+              <Input className="border-custom-bg-inverse">
                 <InputField
-                  className="text-white placeholder:text-white"
+                  className="text-typography-white placeholder:text-typography-white"
                   placeholder={t('mot_de_passe')}
                   secureTextEntry={!showPassword2}
                   autoCapitalize={'none'}
@@ -218,6 +215,7 @@ const Inscription = () => {
                   <FontAwesome5.Button
                     name={showPassword2 ? 'eye' : 'eye-slash'}
                     backgroundColor="#00000000"
+                    className="text-custom-bg-inverse"
                     iconStyle={{ marginRight: 0 }}
                     size={16}
                     onPress={() => setShowPassword2(!showPassword2)}
@@ -231,7 +229,7 @@ const Inscription = () => {
                 </FormControlErrorText>
               </FormControlError>
               <FormControlHelper>
-                <FormControlHelperText>
+                <FormControlHelperText className="text-typography-white">
                   {t('mdp_non_identique')}
                 </FormControlHelperText>
               </FormControlHelper>
@@ -246,11 +244,14 @@ const Inscription = () => {
                 onChange={() => setConditionsCheckbox(!conditionsCheckbox)}
               >
                 <CheckboxIndicator className="mr-2">
-                  <CheckboxIcon>
-                    <CheckIcon />
-                  </CheckboxIcon>
+                  <CheckboxIcon
+                    as={CheckIcon}
+                    className="text-typography-white bg-custom-background"
+                  />
                 </CheckboxIndicator>
-                <CheckboxLabel>{t('accepte_termes_conditions')}</CheckboxLabel>
+                <CheckboxLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white data-[hover=true]:data-[checked=true]:text-typography-white">
+                  {t('accepte_termes_conditions')}
+                </CheckboxLabel>
               </Checkbox>
             </FormControl>
             <FormControl>
@@ -264,7 +265,7 @@ const Inscription = () => {
             </FormControl>
           </VStack>
           <VStack space="md">
-            <Text className="text-white self-center" size="lg">
+            <Text className="text-typography-white self-center" size="lg">
               {t('ou_creer_compte_avec')}
             </Text>
             <HStack className="flex" space="lg">
@@ -276,11 +277,11 @@ const Inscription = () => {
               >
                 <FontAwesome5
                   name="apple"
-                  color="white"
+                  className="text-custom-bg-inverse"
                   size={18}
                   style={{ marginRight: 5 }}
                 />
-                <ButtonText className="text-white">Apple</ButtonText>
+                <ButtonText className="text-typography-white">Apple</ButtonText>
               </Button>
               <Button
                 className="grow"
@@ -290,11 +291,12 @@ const Inscription = () => {
               >
                 <FontAwesome5
                   name="google"
-                  color="white"
                   size={14}
-                  className="mr-2"
+                  className="text-custom-bg-inverse mr-2"
                 />
-                <ButtonText className="text-white">Google</ButtonText>
+                <ButtonText className="text-typography-white">
+                  Google
+                </ButtonText>
               </Button>
             </HStack>
           </VStack>

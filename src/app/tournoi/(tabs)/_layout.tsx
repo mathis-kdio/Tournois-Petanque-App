@@ -6,6 +6,8 @@ import { Text } from '@/components/ui/text';
 import { Tournoi } from '@/types/interfaces/tournoi';
 import { captureMessage } from '@sentry/react-native';
 import { useSelector } from 'react-redux';
+import { useTheme } from '@/components/ui/theme-provider/ThemeProvider';
+import { StyledTabs } from '@/components/navigation/styled-tabs';
 
 export default function TabLayout() {
   const { t } = useTranslation();
@@ -36,24 +38,27 @@ export default function TabLayout() {
 
   let tournoiName = getTournoiName();
 
+  const { theme } = useTheme();
+  const tabBarInactiveTintColor = theme === 'default' ? 'black' : 'grey';
+
   return (
-    <Tabs
+    <StyledTabs
       initialRouteName="matchs"
       backBehavior="none"
       screenOptions={{
-        tabBarStyle: { backgroundColor: '#0594ae' },
-        tabBarActiveTintColor: 'white',
-        tabBarInactiveTintColor: 'black',
+        tabBarInactiveTintColor,
         tabBarLabelStyle: { fontSize: 15 },
-        headerStyle: { backgroundColor: '#0594ae', elevation: 0 },
       }}
+      headerClassName="bg-custom-background"
+      tabBarActiveTintColorClassName="color-custom-bg-inverse"
+      tabBarClassName="bg-custom-background"
     >
       <Tabs.Screen
         name="resultats"
         options={{
           headerTitle: '',
           headerLeft: () => (
-            <Text className="text-white text-xl ml-2">
+            <Text className="text-typography-white text-xl ml-2">
               {t('tournoi')} {tournoiName}
             </Text>
           ),
@@ -69,7 +74,7 @@ export default function TabLayout() {
         options={{
           headerTitle: '',
           headerLeft: () => (
-            <Text className="text-white text-xl ml-2">
+            <Text className="text-typography-white text-xl ml-2">
               {t('tournoi')} {tournoiName}
             </Text>
           ),
@@ -80,6 +85,6 @@ export default function TabLayout() {
           ),
         }}
       />
-    </Tabs>
+    </StyledTabs>
   );
 }

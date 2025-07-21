@@ -1,4 +1,3 @@
-import { Spinner } from '@/components/ui/spinner';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
@@ -290,8 +289,10 @@ const GenerationMatchs = () => {
     if (isLoading) {
       return (
         <VStack>
-          <Spinner size={'large'} className="text-[#ffda00]" />
-          <Text className="text-white">{t('attente_generation_matchs')}</Text>
+          <Loading />
+          <Text className="text-typography-white">
+            {t('attente_generation_matchs')}
+          </Text>
         </VStack>
       );
     } else {
@@ -308,8 +309,9 @@ const GenerationMatchs = () => {
       }
       return (
         <VStack>
-          <Text className="text-white">{textInfo}</Text>
-          <Text className="text-white">{textError}</Text>
+          <Loading />
+          <Text className="text-typography-white">{textInfo}</Text>
+          <Text className="text-typography-white">{textError}</Text>
           <Button
             action="primary"
             onPress={() => _retourInscription(screenStackName)}
@@ -334,7 +336,7 @@ const GenerationMatchs = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <VStack className="flex-1 bg-[#0594ae]">
+      <VStack className="flex-1 bg-custom-background">
         <TopBar title={t('generation_matchs_navigation_title')} />
         <VStack className="flex-1 px-10 justify-center items-center">
           {_displayLoading(param.screenStackName)}
