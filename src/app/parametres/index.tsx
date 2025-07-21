@@ -149,6 +149,7 @@ const Parametres = () => {
     let drapeauPologne = require('@assets/images/drapeau-pologne.png');
     let drapeauPaysBas = require('@assets/images/drapeau-pays-bas.png');
     let drapeauAllemagne = require('@assets/images/drapeau-allemagne.png');
+    let drapeauDanemark = require('@assets/images/drapeau-danemark.png');
     return (
       <Modal
         isOpen={modalLanguagesOpen}
@@ -201,13 +202,20 @@ const Parametres = () => {
               drapeau={drapeauPaysBas}
             />
             <Divider />
-            <Divider />
             <Item
               text={t('allemand')}
               action={() => _changeLanguage('de-DE')}
               icon={''}
               type="modal"
               drapeau={drapeauAllemagne}
+            />
+            <Divider />
+            <Item
+              text={t('danois')}
+              action={() => _changeLanguage('dk-DK')}
+              icon={''}
+              type="modal"
+              drapeau={drapeauDanemark}
             />
             <Text className="text-center">{t('envie_aider_traduction')}</Text>
             <Pressable onPress={() => _openURL(crowdin)}>
@@ -217,13 +225,16 @@ const Parametres = () => {
             </Pressable>
             <Text className="text-center">{t('remerciements_traduction')}</Text>
             <Text className="text-center">
-              {`\u2022`} N. Mieczynska ({t('polonais_abreviation')})
+              {`\u2022`} NMieczynska ({t('polonais_abreviation')})
             </Text>
             <Text className="text-center">
               {`\u2022`} GerKos653 ({t('neerlandais_abreviation')})
             </Text>
             <Text className="text-center">
-              {`\u2022`} MarcoHofmann ({t('allemand_abreviation')})
+              {`\u2022`} MHofmann ({t('allemand_abreviation')})
+            </Text>
+            <Text className="text-center">
+              {`\u2022`} tskalshoej ({t('danois_abreviation')})
             </Text>
           </ModalBody>
         </ModalContent>
