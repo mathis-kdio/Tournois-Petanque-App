@@ -14,9 +14,9 @@ const StyledTabsImpl = ({
 }) => {
   props.screenOptions = {
     ...props.screenOptions,
-    tabBarStyle: { backgroundColor: 'var(--color-custom-background)' },
-    tabBarActiveTintColor: 'var(--color-custom-bg-inverse)',
-    headerStyle: { backgroundColor: 'var(--color-custom-background)' },
+    tabBarStyle,
+    tabBarActiveTintColor: tabBarActiveTintColor?.color?.toString(),
+    headerStyle,
   };
   return <Tabs {...props} />;
 };

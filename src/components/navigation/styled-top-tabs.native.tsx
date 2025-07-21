@@ -9,6 +9,8 @@ import { ViewStyle } from 'react-native';
 const TopTab = createMaterialTopTabNavigator();
 
 const StyledTopTabsImpl = ({
+  tabBarStyle,
+  tabBarIndicatorStyle,
   ...props
 }: React.ComponentProps<typeof TopTab.Navigator> & {
   tabBarStyle?: ViewStyle;
@@ -16,10 +18,8 @@ const StyledTopTabsImpl = ({
 }) => {
   props.screenOptions = {
     ...props.screenOptions,
-    tabBarStyle: { backgroundColor: 'var(--color-custom-background)' },
-    tabBarIndicatorStyle: {
-      backgroundColor: 'var(--color-custom-bg-inverse)',
-    },
+    tabBarStyle,
+    tabBarIndicatorStyle,
   } as MaterialTopTabNavigationOptions;
 
   return <TopTab.Navigator {...props} />;

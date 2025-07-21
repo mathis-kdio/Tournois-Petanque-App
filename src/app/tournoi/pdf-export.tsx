@@ -11,25 +11,16 @@ import { generationPDFTournoi } from '@utils/pdf/tournoi';
 import { generationPDFCoupe } from '@utils/pdf/coupe';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { ColorValue, Platform, SwitchProps } from 'react-native';
+import { Platform } from 'react-native';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
-import { Switch } from '@/components/ui/switch';
 import { Box } from '@/components/ui/box';
 import { dateFormatDateFileName } from '@/utils/date';
 import { Tournoi } from '@/types/interfaces/tournoi';
 import { useSelector } from 'react-redux';
-import { cssInterop } from 'nativewind';
-
-type a =
-  | {
-      false?: ColorValue | null | undefined;
-      true?: ColorValue | null | undefined;
-    }
-  | undefined
-  | undefined;
+import { StyledSwitch } from '@/components/ui/switch/styled-switch-tabs';
 
 const PDFExport = () => {
   const { t } = useTranslation();
@@ -147,28 +138,6 @@ const PDFExport = () => {
     _generatePDF(ajoutScore, ajoutClassement, affichageCompact);
   };
 
-  type TrackColorInput = {
-    backgroundColor?: string;
-  };
-
-  type CustomSwitchProps = SwitchProps & {
-    trackColor?: TrackColorInput;
-  };
-
-  const CustomSwitch = ({ trackColor, ...props }: CustomSwitchProps) => {
-    return (
-      <Switch
-        {...props}
-        trackColor={{
-          true: trackColor?.backgroundColor,
-          false: '#ffffff',
-        }}
-      />
-    );
-  };
-
-  cssInterop(CustomSwitch, { trackColorclassName: 'trackColor' });
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView className="h-1 bg-custom-background">
@@ -179,7 +148,7 @@ const PDFExport = () => {
               {t('export_pdf_ajout_scores')}
             </Text>
             <Box className="justify-center">
-              <CustomSwitch
+              <StyledSwitch
                 value={ajoutScore}
                 onValueChange={() => setAjoutScore(!ajoutScore)}
                 thumbColor={'#ffffff'}
@@ -194,7 +163,7 @@ const PDFExport = () => {
               {t('export_pdf_ajout_classement')}
             </Text>
             <Box className="justify-center">
-              <CustomSwitch
+              <StyledSwitch
                 value={ajoutClassement}
                 onValueChange={() => setAjoutClassement(!ajoutClassement)}
                 thumbColor={'#ffffff'}
@@ -209,7 +178,7 @@ const PDFExport = () => {
               {t('export_pdf_affichage_compact')}
             </Text>
             <Box className="justify-center">
-              <CustomSwitch
+              <StyledSwitch
                 value={affichageCompact}
                 onValueChange={() => setAffichageCompact(!affichageCompact)}
                 thumbColor={'#ffffff'}
