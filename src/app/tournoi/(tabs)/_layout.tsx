@@ -7,7 +7,7 @@ import { Tournoi } from '@/types/interfaces/tournoi';
 import { captureMessage } from '@sentry/react-native';
 import { useSelector } from 'react-redux';
 import { useTheme } from '@/components/ui/theme-provider/ThemeProvider';
-import { StyledTabs } from '@/components/expo-router/styled-tabs';
+import { StyledTabs } from '@/components/navigation/styled-tabs';
 
 export default function TabLayout() {
   const { t } = useTranslation();
