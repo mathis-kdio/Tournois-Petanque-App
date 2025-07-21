@@ -41,8 +41,12 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
-
-const SELECTED_LANGUAGE_KEY = 'selectedLanguageKey';
+import { useTheme } from '@/components/ui/theme-provider/ThemeProvider';
+import { SELECTED_LANGUAGE_KEY } from '@/utils/async-storage/key';
+import { setStatusBarBackgroundColor } from 'expo-status-bar';
+import { setBackgroundColorAsync } from 'expo-navigation-bar';
+import { Platform } from 'react-native';
+import { AppTheme, getThemeColor } from '@/utils/theme/theme';
 
 const Parametres = () => {
   const githubRepository =
@@ -52,10 +56,12 @@ const Parametres = () => {
 
   const [alertOpen, openAlert] = useState(false);
   const [modalLanguagesOpen, openModalLanguages] = useState(false);
+  const [modalThemeOpen, setModalTheme] = useState(false);
 
   const { t } = useTranslation();
   const router = useRouter();
   const dispatch = useDispatch();
+  const { setTheme } = useTheme();
 
   const _alertDialogClearData = () => {
     return (
@@ -63,7 +69,7 @@ const Parametres = () => {
         <AlertDialogBackdrop />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <Heading className="text-black">
+            <Heading className="color-custom-text-modal">
               {t('supprimer_donnees_modal_titre')}
             </Heading>
             <AlertDialogCloseButton>
@@ -84,7 +90,9 @@ const Parametres = () => {
                 action="secondary"
                 onPress={() => openAlert(false)}
               >
-                <ButtonText className="text-black">{t('annuler')}</ButtonText>
+                <ButtonText className="color-custom-text-modal">
+                  {t('annuler')}
+                </ButtonText>
               </Button>
               <Button action="negative" onPress={() => _clearData()}>
                 <ButtonText>{t('oui')}</ButtonText>
@@ -149,7 +157,7 @@ const Parametres = () => {
         <ModalBackdrop />
         <ModalContent className="max-h-5/6">
           <ModalHeader>
-            <Heading className="text-black">
+            <Heading className="color-custom-text-modal">
               {t('languages_disponibles')}
             </Heading>
             <ModalCloseButton>
@@ -229,17 +237,78 @@ const Parametres = () => {
     openModalLanguages(false);
   };
 
+  const _modalTheme = () => {
+    return (
+      <Modal isOpen={modalThemeOpen} onClose={() => setModalTheme(false)}>
+        <ModalBackdrop />
+        <ModalContent className="max-h-5/6">
+          <ModalHeader>
+            <Heading className="color-custom-text-modal">
+              {t('themes_disponibles')}
+            </Heading>
+            <ModalCloseButton>
+              <Icon
+                as={CloseIcon}
+                size="md"
+                className="stroke-background-400 group-[:hover]/modal-close-button:stroke-background-700 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900"
+              />
+            </ModalCloseButton>
+          </ModalHeader>
+          <ModalBody>
+            <Item
+              text={t('defaut')}
+              action={() => _changeTheme('default')}
+              icon={'copyright'}
+              type="modal"
+              drapeau={undefined}
+            />
+            <Divider />
+            <Item
+              text={t('clair')}
+              action={() => _changeTheme('light')}
+              icon={'sun'}
+              type="modal"
+              drapeau={undefined}
+            />
+            <Divider />
+            <Item
+              text={t('sombre')}
+              action={() => _changeTheme('dark')}
+              icon={'moon'}
+              type="modal"
+              drapeau={undefined}
+            />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    );
+  };
+
+  const _changeTheme = (theme: AppTheme) => {
+    if (Platform.OS === 'android') {
+      setTimeout(() => {
+        const color = getThemeColor(theme);
+        setStatusBarBackgroundColor(color);
+        setBackgroundColorAsync(color);
+      }, 200);
+    }
+    setTheme(theme);
+    setModalTheme(false);
+  };
+
   const version = Constants.expoConfig?.extra?.appVersion;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <VStack className="flex-1 bg-[#0594ae]">
+      <VStack className="flex-1 bg-custom-background">
         <TopBarBack title={t('parametres')} />
         <ScrollView className="h-1">
           <VStack space="lg" className="flex-1 px-10">
             <VStack>
-              <Text className="text-xl text-white mb-1">{t('a_propos')}</Text>
-              <Box className="border border-white rounded-lg">
+              <Text className="text-xl text-typography-white mb-1">
+                {t('a_propos')}
+              </Text>
+              <Box className="border border-custom-bg-inverse rounded-lg">
                 <Item
                   text={t('voir_source_code')}
                   action={() => _openURL(githubRepository)}
@@ -258,8 +327,18 @@ const Parametres = () => {
               </Box>
             </VStack>
             <VStack>
-              <Text className="text-xl text-white mb-1">{t('reglages')}</Text>
-              <Box className="border border-white rounded-lg">
+              <Text className="text-xl text-typography-white mb-1">
+                {t('reglages')}
+              </Text>
+              <Box className="border border-custom-bg-inverse rounded-lg">
+                <Item
+                  text={t('changer_theme')}
+                  action={() => setModalTheme(true)}
+                  icon="palette"
+                  type={''}
+                  drapeau={undefined}
+                />
+                <Divider />
                 <Item
                   text={t('changer_langue')}
                   action={() => openModalLanguages(true)}
@@ -286,8 +365,10 @@ const Parametres = () => {
               </Box>
             </VStack>
             <VStack>
-              <Text className="text-xl text-white mb-1">{t('nouveautes')}</Text>
-              <Box className="border border-white rounded-lg">
+              <Text className="text-xl text-typography-white mb-1">
+                {t('nouveautes')}
+              </Text>
+              <Box className="border border-custom-bg-inverse rounded-lg">
                 <Item
                   text={t('voir_nouveautes')}
                   action={() => router.navigate('/parametres/changelog')}
@@ -300,12 +381,13 @@ const Parametres = () => {
           </VStack>
         </ScrollView>
         <Center>
-          <Text className="text-center text-md text-white">
+          <Text className="text-center text-md text-typography-white">
             {t('version')} {version}
           </Text>
         </Center>
         {_alertDialogClearData()}
         {_modalLanguages()}
+        {_modalTheme()}
       </VStack>
     </SafeAreaView>
   );

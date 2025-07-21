@@ -137,7 +137,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
         <AlertDialogBackdrop />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <Heading className="text-black">
+            <Heading className="color-custom-text-modal">
               {t('supprimer_joueurs_modal_titre')}
             </Heading>
             <AlertDialogCloseButton>
@@ -158,7 +158,9 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
                 action="secondary"
                 onPress={() => setModalRemoveIsOpen(false)}
               >
-                <ButtonText className="text-black">{t('annuler')}</ButtonText>
+                <ButtonText className="color-custom-text-modal">
+                  {t('annuler')}
+                </ButtonText>
               </Button>
               <Button action="negative" onPress={() => _removeAllPlayers()}>
                 <ButtonText>{t('oui')}</ButtonText>
@@ -244,7 +246,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
       );
       return (
         <VStack>
-          <Text className="text-white text-xl text-center">
+          <Text className="text-typography-white text-xl text-center">
             {t('suggestions_joueurs')}
           </Text>
           <FlatList
@@ -264,9 +266,15 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
     if (nbSuggestions < suggestions.length) {
       return (
         <Button action="primary" onPress={() => _showMoreSuggestedPlayers()}>
-          <FontAwesome5 name="chevron-down" />
+          <FontAwesome5
+            name="chevron-down"
+            className="text-custom-text-button"
+          />
           <ButtonText>{t('plus_suggestions_joueurs_bouton')}</ButtonText>
-          <FontAwesome5 name="chevron-down" />
+          <FontAwesome5
+            name="chevron-down"
+            className="text-custom-text-button"
+          />
         </Button>
       );
     }
@@ -308,8 +316,12 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
         onPress={() => setShowCheckbox(!showCheckbox)}
         className="my-1 flex-row items-center"
       >
-        <FontAwesome5 name={icon} size={15} color="white" />
-        <Text className="text-white text-md">
+        <FontAwesome5
+          name={icon}
+          size={15}
+          className="text-custom-bg-inverse"
+        />
+        <Text className="text-typography-white text-md">
           {` ${text} ${t('case_a_cocher')}`}
         </Text>
       </Pressable>
@@ -323,8 +335,12 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
           onPress={() => setshowTri(!showTri)}
           className="my-1 flex-row items-center"
         >
-          <MaterialCommunityIcons name="sort" size={24} color="white" />
-          <Text className="text-white text-md">{` ${t('trier_joueurs')}`}</Text>
+          <MaterialCommunityIcons
+            name="sort"
+            size={24}
+            className="text-custom-bg-inverse"
+          />
+          <Text className="text-typography-white text-md">{` ${t('trier_joueurs')}`}</Text>
         </Pressable>
         <TriListeJoueurs
           isOpen={showTri}
@@ -339,9 +355,9 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
     <VStack className="flex-1">
       <HStack space="md" className="items-center mx-1">
         <Box className="flex-1">
-          <Input className="border-white">
+          <Input className="border-custom-bg-inverse">
             <InputField
-              className="text-white placeholder:text-white"
+              className="text-typography-white placeholder:text-typography-white"
               placeholder={t('nom')}
               autoFocus={true}
               keyboardType="default"
@@ -368,7 +384,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
           </Button>
         </Box>
       </HStack>
-      <Divider className="bg-white h-0.5 my-2" />
+      <Divider className="bg-custom-bg-inverse h-0.5 my-2" />
       <HStack className="px-1 items-center justify-between">
         <Box className="w-fit">{_showTriSection()}</Box>
         <Box className="w-fit">{_showCheckboxSection()}</Box>

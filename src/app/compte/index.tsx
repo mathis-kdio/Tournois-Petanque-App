@@ -23,10 +23,10 @@ const Compte = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView className="h-1 bg-[#0594ae]">
+      <ScrollView className="h-1 bg-custom-background">
         <TopBarBack title={t('mon_compte')} />
         <VStack className="flex-1 px-10 justify-between">
-          <VStack className="border border-white rounded-lg">
+          <VStack className="border border-custom-bg-inverse rounded-lg">
             <Item
               text={t('informations_personnelles')}
               action={() => router.navigate('/compte/infos-perso')}

@@ -52,7 +52,7 @@ const JoueurSuggere: React.FC<Props> = ({ joueur }) => {
         <AlertDialogBackdrop />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <Heading className="text-black">
+            <Heading className="color-custom-text-modal">
               {t('supprimer_joueur_suggestions_modal_titre')}
             </Heading>
             <AlertDialogCloseButton>
@@ -73,7 +73,9 @@ const JoueurSuggere: React.FC<Props> = ({ joueur }) => {
                 action="secondary"
                 onPress={() => setModalRemoveIsOpen(false)}
               >
-                <ButtonText className="text-black">{t('annuler')}</ButtonText>
+                <ButtonText className="color-custom-text-modal">
+                  {t('annuler')}
+                </ButtonText>
               </Button>
               <Button action="negative" onPress={() => _removePlayer(playerId)}>
                 <ButtonText>{t('oui')}</ButtonText>
@@ -107,9 +109,9 @@ const JoueurSuggere: React.FC<Props> = ({ joueur }) => {
   };
 
   return (
-    <HStack className="border border-white rounded-xl m-1 px-1 items-center">
+    <HStack className="border border-custom-bg-inverse rounded-xl m-1 px-1 items-center">
       <Box className="flex-1">
-        <Text className="text-white text-xl font-bold break-words">
+        <Text className="text-typography-white text-xl font-bold break-words">
           {joueur.name}
         </Text>
       </Box>
