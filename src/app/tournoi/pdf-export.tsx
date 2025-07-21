@@ -11,7 +11,7 @@ import { generationPDFTournoi } from '@utils/pdf/tournoi';
 import { generationPDFCoupe } from '@utils/pdf/coupe';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { Platform } from 'react-native';
+import { ColorValue, Platform, SwitchProps } from 'react-native';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { Text } from '@/components/ui/text';
@@ -21,6 +21,15 @@ import { Box } from '@/components/ui/box';
 import { dateFormatDateFileName } from '@/utils/date';
 import { Tournoi } from '@/types/interfaces/tournoi';
 import { useSelector } from 'react-redux';
+import { cssInterop } from 'nativewind';
+
+type a =
+  | {
+      false?: ColorValue | null | undefined;
+      true?: ColorValue | null | undefined;
+    }
+  | undefined
+  | undefined;
 
 const PDFExport = () => {
   const { t } = useTranslation();
@@ -138,6 +147,28 @@ const PDFExport = () => {
     _generatePDF(ajoutScore, ajoutClassement, affichageCompact);
   };
 
+  type TrackColorInput = {
+    backgroundColor?: string;
+  };
+
+  type CustomSwitchProps = SwitchProps & {
+    trackColor?: TrackColorInput;
+  };
+
+  const CustomSwitch = ({ trackColor, ...props }: CustomSwitchProps) => {
+    return (
+      <Switch
+        {...props}
+        trackColor={{
+          true: trackColor?.backgroundColor,
+          false: '#ffffff',
+        }}
+      />
+    );
+  };
+
+  cssInterop(CustomSwitch, { trackColorclassName: 'trackColor' });
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView className="h-1 bg-custom-background">
@@ -148,16 +179,13 @@ const PDFExport = () => {
               {t('export_pdf_ajout_scores')}
             </Text>
             <Box className="justify-center">
-              <Switch
+              <CustomSwitch
                 value={ajoutScore}
                 onValueChange={() => setAjoutScore(!ajoutScore)}
-                trackColor={{
-                  false: '#ffffff',
-                  true: 'var(--color-custom-dark-blue)',
-                }}
                 thumbColor={'#ffffff'}
                 activeThumbColor={'#ffffff'}
                 ios_backgroundColor={'#ffffff'}
+                trackColorclassName="bg-custom-dark-blue"
               />
             </Box>
           </HStack>
@@ -166,16 +194,13 @@ const PDFExport = () => {
               {t('export_pdf_ajout_classement')}
             </Text>
             <Box className="justify-center">
-              <Switch
+              <CustomSwitch
                 value={ajoutClassement}
                 onValueChange={() => setAjoutClassement(!ajoutClassement)}
-                trackColor={{
-                  false: '#ffffff',
-                  true: 'var(--color-custom-dark-blue)',
-                }}
                 thumbColor={'#ffffff'}
                 activeThumbColor={'#ffffff'}
                 ios_backgroundColor={'#ffffff'}
+                trackColorclassName="bg-custom-dark-blue"
               />
             </Box>
           </HStack>
@@ -184,16 +209,13 @@ const PDFExport = () => {
               {t('export_pdf_affichage_compact')}
             </Text>
             <Box className="justify-center">
-              <Switch
+              <CustomSwitch
                 value={affichageCompact}
                 onValueChange={() => setAffichageCompact(!affichageCompact)}
-                trackColor={{
-                  false: '#ffffff',
-                  true: 'var(--color-custom-dark-blue)',
-                }}
                 thumbColor={'#ffffff'}
                 activeThumbColor={'#ffffff'}
                 ios_backgroundColor={'#ffffff'}
+                trackColorclassName="bg-custom-dark-blue"
               />
             </Box>
           </HStack>
