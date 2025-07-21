@@ -20,7 +20,7 @@ import { Box } from '@/components/ui/box';
 import { dateFormatDateFileName } from '@/utils/date';
 import { Tournoi } from '@/types/interfaces/tournoi';
 import { useSelector } from 'react-redux';
-import { StyledSwitch } from '@/components/ui/switch/styled-switch-tabs';
+import { StyledSwitch } from '@/components/ui/switch/styled-switch';
 
 const PDFExport = () => {
   const { t } = useTranslation();
