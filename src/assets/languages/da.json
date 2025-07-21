@@ -169,6 +169,8 @@
     "neerlandais_abreviation": "NL",
     "allemand": "Tysk",
     "allemand_abreviation": "DE",
+    "danois": "Danois",
+    "danois_abreviation": "DK",
     "envie_aider_traduction": "Vil du hjælpe med oversættelsen?",
     "texte_lien_traduction": "Det er denne vej!",
     "remerciements_traduction": "Tak for deres hjælp:",
@@ -262,6 +264,10 @@
     "defaut": "Som standard",
     "alphaAZ": "Alfabetisk A -> Å",
     "alphaZA": "Alfabetisk Å -> A",
-    "trier_joueurs": "Sortér spillerne"
+    "trier_joueurs": "Sortér spillerne",
+    "changer_theme": "Changer le thème de l'application",
+    "themes_disponibles": "Thèmes disponibles",
+    "clair": "Clair",
+    "sombre": "Sombre"
   }
 }
