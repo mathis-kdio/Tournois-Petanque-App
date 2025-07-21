@@ -7,7 +7,7 @@ import { Tournoi } from '@/types/interfaces/tournoi';
 import { captureMessage } from '@sentry/react-native';
 import { useSelector } from 'react-redux';
 import { useTheme } from '@/components/ui/theme-provider/ThemeProvider';
-import colors from 'tailwindcss/colors';
+import { StyledTabs } from '@/components/expo-router/styled-tabs';
 
 export default function TabLayout() {
   const { t } = useTranslation();
@@ -42,19 +42,16 @@ export default function TabLayout() {
   const tabBarInactiveTintColor = theme === 'default' ? 'black' : 'grey';
 
   return (
-    <Tabs
+    <StyledTabs
       initialRouteName="matchs"
       backBehavior="none"
       screenOptions={{
-        tabBarStyle: { backgroundColor: 'text-custom-background' },
-        tabBarActiveTintColor: 'var(--color-custom-bg-inverse)',
         tabBarInactiveTintColor,
         tabBarLabelStyle: { fontSize: 15 },
-        headerStyle: {
-          backgroundColor: 'var(--color-custom-background)',
-          elevation: 0,
-        },
       }}
+      headerClassName="bg-custom-background"
+      tabBarActiveTintColorClassName="color-custom-bg-inverse"
+      tabBarClassName="bg-custom-background"
     >
       <Tabs.Screen
         name="resultats"
@@ -88,6 +85,6 @@ export default function TabLayout() {
           ),
         }}
       />
-    </Tabs>
+    </StyledTabs>
   );
 }
