@@ -169,7 +169,7 @@
     "neerlandais_abreviation": "NL",
     "allemand": "German",
     "allemand_abreviation": "DE",
-    "danois": "Danois",
+    "danois": "Danish",
     "danois_abreviation": "DK",
     "envie_aider_traduction": "Want to help with the translation?",
     "texte_lien_traduction": "It's over here!",
@@ -265,9 +265,9 @@
     "alphaAZ": "Alphabetical A -> Z",
     "alphaZA": "Alphabetical Z -> A",
     "trier_joueurs": "Sort the players",
-    "changer_theme": "Changer le thème de l'application",
-    "themes_disponibles": "Thèmes disponibles",
-    "clair": "Clair",
-    "sombre": "Sombre"
+    "changer_theme": "Change theme of app",
+    "themes_disponibles": "Available themes",
+    "clair": "Light",
+    "sombre": "Dark"
   }
 }
