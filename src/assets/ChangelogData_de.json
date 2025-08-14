@@ -13,10 +13,10 @@
     "infos": [
       "- Feld-/Übereinstimmungsnummer in PDFs hinzugefügt",
       "- Seitenumbruch vor dem Sortieren in PDFs hinzugefügt",
-      "- Sauvegarde de la langue choisie",
-      "- Ajout complément en doublette 3vs3 + 3vs2",
-      "- Tri alphabétique des joueurs dans les listes",
-      "- Migrations techniques importantes",
+      "- Speicherung der gewählten Sprache",
+      "- Hinzufügung von 3vs3 + 3vs2 Doppel",
+      "- Alphabetische Sortierung der Spieler in Listen",
+      "- Erhebliche technische Migrationen",
       "- Correction génération melee-demelee en 1 tour"
     ]
   },
