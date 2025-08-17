@@ -268,6 +268,14 @@
     "changer_theme": "Appthema wijzigen",
     "themes_disponibles": "Beschikbare thema's",
     "clair": "Licht",
-    "sombre": "Donker"
+    "sombre": "Donker",
+    "non_renseigne": "Non renseigné",
+    "changer_mdp": "Changer le mot de passe",
+    "chargement": "Chargement...",
+    "vs": "VS",
+    "tour": "Tour",
+    "tour_numero": "Tour n°",
+    "active": "Activé",
+    "desactive": "Désactivé"
   }
 }
