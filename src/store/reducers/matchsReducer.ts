@@ -1,4 +1,4 @@
-import { Joueur } from "@/types/interfaces/joueur";
+import { Joueur } from '@/types/interfaces/joueur';
 
 const initialState = { listematchs: undefined };
 
