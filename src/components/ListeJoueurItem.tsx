@@ -438,11 +438,28 @@ const ListeJoueurItem: React.FC<Props> = ({
   };
 
   const _ajoutCheck = (joueurId: number, isChecked: boolean) => {
-    const action = {
-      type: 'CHECK_JOUEUR',
-      value: [modeTournoi, joueurId, isChecked],
-    };
-    dispatch(action);
+    if (isInscription === true) {
+      const action = {
+        type: 'CHECK_JOUEUR',
+        value: [modeTournoi, joueurId, isChecked],
+      };
+      dispatch(action);
+    } else {
+      let data = { playerId: joueurId, isChecked: isChecked };
+      const inGameCheckPlayer = {
+        type: 'INGAME_CHECK_PLAYER',
+        value: data,
+      };
+      dispatch(inGameCheckPlayer);
+      const actionUpdateTournoi = {
+        type: 'UPDATE_TOURNOI',
+        value: {
+          tournoi: listeMatchs,
+          tournoiId: listeMatchs.at(-1).tournoiID,
+        },
+      };
+      dispatch(actionUpdateTournoi);
+    }
     setModalConfirmUncheckIsOpen(false);
   };
 
