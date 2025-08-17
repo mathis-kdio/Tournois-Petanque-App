@@ -95,7 +95,7 @@ const Securite = () => {
         <VStack className="flex-1 px-10">
           <VStack className="flex-1">
             <Heading className="text-typography-white">
-              Changer le mot de passe
+              {t('changer_mdp')}
             </Heading>
             <FormControl isInvalid={error} isRequired={true} className="mb-5">
               <FormControlLabel className="mb-1 *:text-typography-white">
@@ -181,7 +181,7 @@ const Securite = () => {
             <FormControl>
               <Button onPress={handleChangePassword} disabled={isLoading}>
                 <ButtonText>
-                  {isLoading ? 'Chargement...' : 'Changer le mot de passe'}
+                  {isLoading ? t('chargement') : t('changer_mdp')}
                 </ButtonText>
               </Button>
             </FormControl>

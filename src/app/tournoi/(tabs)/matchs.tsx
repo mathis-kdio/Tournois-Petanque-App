@@ -40,7 +40,7 @@ export default function MatchsPage() {
   };
 
   const TopTabItemLabel = (numero: number) => {
-    let title = 'Tour ' + numero;
+    let title = `${t('tour')} ${numero}`;
     if (listeMatchs && listeMatchs.at(-1).typeTournoi === TypeTournoi.COUPE) {
       title = listeMatchs.find((el) => el.manche === numero).mancheName;
     }
