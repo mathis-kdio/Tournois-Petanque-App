@@ -4,6 +4,7 @@ import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { ranking } from '@utils/ranking';
 import { dateFormatDateCompact } from '../date';
 import { Tournoi } from '@/types/interfaces/tournoi';
+import { TFunction } from 'i18next';
 
 export const generationPDFCoupe = (
   affichageScore: boolean,
@@ -16,10 +17,11 @@ export const generationPDFCoupe = (
   toursParLigne: number,
   nbToursRestants: number,
   nbTables: number,
+  t: TFunction<'translation'>,
 ) => {
   let date = dateFormatDateCompact(infosTournoi.updateDate);
   let html = `<!DOCTYPE html><html><head><style>@page{margin: 10px;} table{width: 100%;} table,th,td{border: 1px solid black;border-collapse: collapse;} td{min-width: 50px; word-break:break-all;} .td-score{min-width: 20px;} .text-right{text-align: right;} .text-center{text-align: center;} .no-border-top{border-top: none;} .no-border-bottom{border-bottom: none;} .border-top{border-top: 1px solid;}</style></head><body>`;
-  html += `<h1 class="text-center">Coupe ${date}</h1>`;
+  html += `<h1 class="text-center">${t('coupe')} ${date}</h1>`;
   let idxFirstMatchsTable = 0;
   let nbMatchTourEnCours = nbMatchsParTour;
   for (let tableIdx = 0; tableIdx < nbTables; tableIdx++) {
@@ -31,7 +33,7 @@ export const generationPDFCoupe = (
     }
     nbToursRestants -= toursParLigne;
     for (let i = 1; i <= nbTourTable; i++) {
-      html += `<th colspan="4">Tour n°${minTourTable + i}</th>`;
+      html += `<th colspan="4">${t('tour_numero')}${minTourTable + i}</th>`;
     }
     html += '</tr>';
     for (let i = 0; i < nbMatchTourEnCours; i++) {
@@ -47,7 +49,7 @@ export const generationPDFCoupe = (
         }
         let matchId = idxFirstMatchsTour + i;
         if (matchId < idxFirstMatchsTour + nbMatchsTour) {
-          let nomMatch = `Match n°${listeMatchs[matchId].id + 1}`;
+          let nomMatch = `${t('match_numero')}${listeMatchs[matchId].id + 1}`;
           let terrainMatch = listeMatchs[matchId].terrain;
           if (terrainMatch && terrainMatch.name) {
             nomMatch = terrainMatch.name;
@@ -86,9 +88,9 @@ export const generationPDFCoupe = (
             if (listeMatchs[matchId].equipe[0][jidx] !== -1) {
               let joueur = listeJoueurs[listeMatchs[matchId].equipe[0][jidx]];
               if (joueur.name === undefined) {
-                html += `Sans Nom (${joueur.id + 1})`;
+                html += `${t('sans_nom')} (${joueur.id + 1})`;
               } else if (joueur.name === '') {
-                html += `Joueur ${joueur.id + 1}`;
+                html += `${t('joueur')} ${joueur.id + 1}`;
               } else {
                 html += `${joueur.name} (${joueur.id + 1})`;
               }
@@ -122,9 +124,9 @@ export const generationPDFCoupe = (
             if (listeMatchs[matchId].equipe[1][jidx] !== -1) {
               let joueur = listeJoueurs[listeMatchs[matchId].equipe[1][jidx]];
               if (joueur.name === undefined) {
-                html += `Sans Nom (${joueur.id + 1})`;
+                html += `${t('sans_nom')} (${joueur.id + 1})`;
               } else if (joueur.name === '') {
-                html += `Joueur ${joueur.id + 1}`;
+                html += `${t('joueur')} ${joueur.id + 1}`;
               } else {
                 html += `${joueur.name} (${joueur.id + 1})`;
               }
@@ -152,17 +154,16 @@ export const generationPDFCoupe = (
     }
 
     html += '<br><table><tr>';
-    html +=
-      '<th>Place</th><th>Victoires</th><th>Matchs Joués</th><th>Points</th>';
+    html += `<th>${t('place')}</th><th>${t('victoire')}</th><th>${t('m_j')}</th><th>${t('point')}</th>`;
     let classement = ranking(listeMatchs, optionsTournoi);
     for (let i = 0; i < listeJoueurs.length; i++) {
       html += '<tr>';
       html += `<td>${classement[i].position} - `;
       let joueur = listeJoueurs[classement[i].joueurId];
       if (joueur.name === undefined) {
-        html += `Sans Nom (${joueur.id + 1})`;
+        html += `${t('sans_nom')} (${joueur.id + 1})`;
       } else if (joueur.name === '') {
-        html += `Joueur ${joueur.id + 1}`;
+        html += `${t('joueur')} ${joueur.id + 1}`;
       } else {
         html += `${joueur.name} (${joueur.id + 1})`;
       }
