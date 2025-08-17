@@ -268,6 +268,14 @@
     "changer_theme": "Changer le thème de l'application",
     "themes_disponibles": "Thèmes disponibles",
     "clair": "Clair",
-    "sombre": "Sombre"
+    "sombre": "Sombre",
+    "non_renseigne": "Non renseigné",
+    "changer_mdp": "Changer le mot de passe",
+    "chargement": "Chargement...",
+    "vs": "VS",
+    "tour": "Tour",
+    "tour_numero": "Tour n°",
+    "active": "Activé",
+    "desactive": "Désactivé"
   }
 }
