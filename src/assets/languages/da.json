@@ -269,13 +269,13 @@
     "themes_disponibles": "Tilgængelige temaer",
     "clair": "Lys",
     "sombre": "Mørk",
-    "non_renseigne": "Non renseigné",
-    "changer_mdp": "Changer le mot de passe",
-    "chargement": "Chargement...",
-    "vs": "VS",
-    "tour": "Tour",
-    "tour_numero": "Tour n°",
-    "active": "Activé",
-    "desactive": "Désactivé"
+    "non_renseigne": "Ikke udfyldt",
+    "changer_mdp": "Skift adgangskode",
+    "chargement": "Indlæser...",
+    "vs": "MOD",
+    "tour": "Runde",
+    "tour_numero": "Runde nr.",
+    "active": "Aktiveret",
+    "desactive": "Deaktiveret"
   }
 }
