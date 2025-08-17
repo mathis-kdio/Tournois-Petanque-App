@@ -139,17 +139,21 @@ const ParametresTournoi = () => {
             </Text>
             <Text className="text-typography-white">
               {t('regle_speciaux')}{' '}
-              {parametresTournoi.speciauxIncompatibles ? 'Activé' : 'Désactivé'}
+              {parametresTournoi.speciauxIncompatibles
+                ? t('active')
+                : t('desactive')}
             </Text>
             <Text className="text-typography-white">
               {t('regle_equipes_differentes')}{' '}
-              {parametresTournoi.memesEquipes ? 'Activé' : 'Désactivé'}
+              {parametresTournoi.memesEquipes ? t('active') : t('desactive')}
             </Text>
             <Text className="text-typography-white">
               {t('regle_adversaires')}{' '}
               {parametresTournoi.memesAdversaires === 0
-                ? '1 match'
-                : parametresTournoi.memesAdversaires + '% des matchs'}
+                ? t('1_match')
+                : t('pourcent_matchs', {
+                    pourcent: parametresTournoi.memesAdversaires,
+                  })}
             </Text>
           </VStack>
           <VStack space="xl">

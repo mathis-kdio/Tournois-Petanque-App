@@ -21,11 +21,11 @@ const InfosPerso = () => {
   const { session } = useAuth();
 
   const userDetailsInit: UserDetail = {
-    Nom: { label: 'nom', value: 'Non renseigné' },
-    Prenom: { label: 'prenom', value: 'Non renseigné' },
-    Email: { label: 'email', value: 'Non renseigné' },
-    Pays: { label: 'pays', value: 'Non renseigné' },
-    Club: { label: 'club', value: 'Non renseigné' },
+    Nom: { label: 'nom', value: 'non_renseigne' },
+    Prenom: { label: 'prenom', value: 'non_renseigne' },
+    Email: { label: 'email', value: 'non_renseigne' },
+    Pays: { label: 'pays', value: 'non_renseigne' },
+    Club: { label: 'club', value: 'non_renseigne' },
   };
 
   const [userDetails, setUserDetails] = useState<UserDetail>(userDetailsInit);
@@ -57,7 +57,7 @@ const InfosPerso = () => {
                 {t(detail.label)} :
               </Text>
               <Text className="text-typography-white flex-1">
-                {detail.value}
+                {t(detail.value)}
               </Text>
             </HStack>
           ))}

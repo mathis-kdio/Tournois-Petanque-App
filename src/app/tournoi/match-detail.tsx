@@ -179,7 +179,9 @@ const MatchDetail = () => {
                 <HStack className="items-center">
                   <Box className="flex-2">{_displayEquipe(1, match)}</Box>
                   <Box className="flex-1 items-center">
-                    <Text className="text-typography-white text-xl">VS</Text>
+                    <Text className="text-typography-white text-xl">
+                      {t('vs')}
+                    </Text>
                   </Box>
                   <Box className="flex-2">{_displayEquipe(2, match)}</Box>
                 </HStack>

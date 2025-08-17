@@ -72,6 +72,7 @@ const PDFExport = () => {
         toursParLigne,
         nbToursRestants,
         nbTables,
+        t,
       );
     } else {
       html = generationPDFTournoi(
@@ -85,6 +86,7 @@ const PDFExport = () => {
         toursParLigne,
         nbToursRestants,
         nbTables,
+        t,
       );
     }
     if (Platform.OS === 'web') {
