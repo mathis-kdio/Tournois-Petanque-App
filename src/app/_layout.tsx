@@ -46,6 +46,25 @@ Sentry.init({
   attachStacktrace: true,
 });
 
+const GluestackWrapper = ({ children }: { children: React.ReactNode }) => {
+  const { theme } = useTheme();
+  const { globalTheme, style } = getTheme(theme);
+  return (
+    <GluestackUIProvider theme={globalTheme} mode={style}>
+      {children}
+    </GluestackUIProvider>
+  );
+};
+
+const StatusBarWrapper = () => {
+  const { theme } = useTheme();
+  const color = getThemeColor(theme);
+  if (Platform.OS === 'android') {
+    setBackgroundColorAsync(color);
+  }
+  return <StatusBar backgroundColor={color} />;
+};
+
 export default function RootLayout() {
   let persistor = persistStore(Store);
 
@@ -67,25 +86,6 @@ export default function RootLayout() {
     };
     fetchLanguage();
   }, []);
-
-  const GluestackWrapper = ({ children }: { children: React.ReactNode }) => {
-    const { theme } = useTheme();
-    const { globalTheme, style } = getTheme(theme);
-    return (
-      <GluestackUIProvider theme={globalTheme} mode={style}>
-        {children}
-      </GluestackUIProvider>
-    );
-  };
-
-  const StatusBarWrapper = () => {
-    const { theme } = useTheme();
-    const color = getThemeColor(theme);
-    if (Platform.OS === 'android') {
-      setBackgroundColorAsync(color);
-    }
-    return <StatusBar backgroundColor={color} />;
-  };
 
   return (
     <Provider store={Store}>
