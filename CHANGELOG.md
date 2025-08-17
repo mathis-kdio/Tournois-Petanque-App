@@ -1,5 +1,14 @@
 # Change Log
 
+## [2.3.0] - 22-07-2025
+### Ajouté
+- Ajout des thèmes clair et sombre
+- Ajout traduction en Danois
+
+### Changement
+
+### Corrigé
+
 ## [2.2.0] - 23-06-2025
 ### Ajouté
 - Ajout du numéro terrain/match dans les PDF

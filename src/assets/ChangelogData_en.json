@@ -1,327 +1,348 @@
 {
-    "31": {
-        "id": "31",
-        "version": "2.1.1",
-        "infos": [
-            "- Fixed PDF export on iOS"
-        ]
-    },
-    "30": {
-        "id": "30",
-        "version": "2.1.0",
-        "infos": [
-            "- Added screen for selecting the supplement when the number of players does not allow for full matches",
-            "- Added Pointer, Shooter and Midfielder in Triplet",
-            "- Added consideration of rules (never same teammate, etc.) in Triplet",
-            "- Added Store Review",
-            "- Improved PDF export and layout",
-            "- Improved generation of melee and doubles matches",
-            "- Improved back navigation on screens",
-            "- Updated translations",
-            "- Update dependencies",
-            "- Fixed display of the field to rename a player",
-            "- Fixed blocking ad bug",
-            "- Fixed player type selection",
-            "- Fixed popup deleting suggested player",
-            "- Fixed crash after deleting the current tournament",
-            "- Fixed player list name not being retained after list modification"
-        ]
-    },
-    "29": {
-        "id": "29",
-        "version": "2.0.2",
-        "infos": [
-            "- German translation",
-            "- Updated translations",
-            "- Fixed bug in ranking calculation"
-        ]
-    },
-    "28": {
-        "id": "28",
-        "version": "2.0.1",
-        "infos": [
-            "- Updated translations",
-            "- Update dependencies",
-            "- Fixed bug on the terrain screen",
-            "- Fixed tournament deletion bug"
-        ]
-    },
-    "27": {
-        "id": "27",
-        "version": "2.0.0",
-        "infos": [
-            "- Creation of accounts",
-            "- Account management",
-            "- Technical base migration",
-            "- Update dependencies"
-        ]
-    },
-    "26": {
-        "id": "26",
-        "version": "1.16.2",
-        "infos": [
-            "- Translation into Dutch.",
-            "- Tournament date in PDF.",
-            "- Minor improvement in PDF display.",
-            "- Translation of the update notes.",
-            "- Fixed generation of head-to-head tournaments.",
-            "- Fixed button and modal displays.",
-            "- Bug fixes."
-        ]
-    },
-    "25": {
-        "id": "25",
-        "version": "1.16.1",
-        "infos": [
-            "- Improved display on small screens.",
-            "- Removal of donation pages.",
-            "- Correction of errors."
-        ]
-    },
-    "24": {
-        "id": "24",
-        "version": "1.16.0",
-        "infos": [
-            "- Multi-Chance Tournament.",
-            "- Improved display of tabs and winning teams in the match list.",
-            "- Thanks for the translation.",
-            "- Fixed display issues.",
-            "- Generation bug fixes.",
-            "- Updated dependencies."
-        ]
-    },
-    "23": {
-        "id": "23",
-        "version": "1.15.0",
-        "infos": [
-            "- The entire application has the new design.",
-            "- Translation of the application into Polish.",
-            "- Correction of errors."
-        ]
-    },
-    "22": {
-        "id": "22",
-        "version": "1.14.0",
-        "infos": [
-            "- Translation of the application.",
-            "- Export of Sections to PDF.",
-            "- Ability to display checkboxes upon registration.",
-            "- New registration pages.",
-            "- Correction of labels.",
-            "- Correction of errors."
-        ]
-    },
-    "21": {
-        "id": "21",
-        "version": "1.13.0",
-        "infos": [
-            "- Options to assign matches to fields.",
-            "- New pages for: Settings, Tournament Type, Tournament Mode, Tournament Options.",
-            "- Improved the “Without Same Opponents” option.",
-            "- Fixed tournament generation in unraveled melee.",
-            "- Fixed player type display issues."
-        ]
-    },
-    "20": {
-        "id": "20",
-        "version": "1.12.0",
-        "infos": [
-            "- Ability to assign players the roles of Pointer/Shooter/Midfielder in pairs to improve team balancing.",
-            "- New home page.",
-            "- Choose the number of points for victory.",
-            "- Moved settings screen.",
-            "- Improved player renaming."
-        ]
-    },
-    "19": {
-        "id": "19",
-        "version": "1.11.0",
-        "infos": [
-            "- Application available on iOS!",
-            "- Creation of a community Facebook page and addition of a button on the home page.",
-            "- Added creation and modification date of a tournament.",
-            "- Improved display of tournament information.",
-            "- Ability to rename a player list.",
-            "- Fixed bugs related to player lists.",
-            "- Fixed the display of the application's light mode."
-        ]
-    },
-    "18": {
-        "id": "18",
-        "version": "1.10.1",
-        "infos": [
-            "- Warning when a new update is available.",
-            "- Fixed a bug that prevented a tournament from loading."
-        ]
-    },
-    "17": {
-        "id": "17",
-        "version": "1.10.0",
-        "infos": [
-            "- Added creation of player lists that can be loaded during registration to save time.",
-            "- Added display of more player suggestions.",
-            "- Added removal of suggested players.",
-            "- Added display of information from old tournaments.",
-            "- Added tournament renaming.",
-            "- Interface adjustments.",
-            "*Improved stability.",
-            "- Correction of errors."
-        ]
-    },
-    "16": {
-        "id": "16",
-        "version": "1.9.0",
-        "infos": [
-            "- Added cutting mode.",
-            "- New home page.",
-            "- Correction of errors."
-        ]
-    },
-    "15": {
-        "id": "15",
-        "version": "1.8.3",
-        "infos": [
-            "- Added loading buttons when exporting to PDF.",
-            "- Improved generation of games without teams."
-        ]
-    },
-    "14": {
-        "id": "14",
-        "version": "1.8.2",
-        "infos": [
-            "- Colored Status and Navigation bar.",
-            "- Light theme by default.",
-            "- Fixed navigation issues.",
-            "- Correction of text errors."
-        ]
-    },
-    "13": {
-        "id": "13",
-        "version": "1.8.1",
-        "infos": [
-            "- Confirmation alert when deleting a tournament.",
-            "- Deletion of the current tournament."
-        ]
-    },
-    "12": {
-        "id": "12",
-        "version": "1.8.0",
-        "infos": [
-            "- Added Championship Mode!.",
-            "- Added automatic crash reporting.",
-            "- Added a mail button on the home page.",
-            "- Button to start a tournament with 7 players disabled, because mode not supported.",
-            "- Fixed loading and saving of old tournaments.",
-            "- Fixed tournament deletion.",
-            "- Fixed generation of triplets.",
-            "- Fix head-to-head display."
-        ]
-    },
-    "11": {
-        "id": "11",
-        "version": "1.7.1",
-        "infos": [
-            "- Fixed tournament generation with odd number of players."
-        ]
-    },
-    "10": {
-        "id": "10",
-        "version": "1.7.0",
-        "infos": [
-            "- Added export of tournaments to PDF.",
-            "- Added player name suggestion during registration.",
-            "- Added a button to remove all players when registering.",
-            "- Fixed the display of old tournaments.",
-            "- Fixed focus on field for registration without names.",
-            "- Fixed renaming on registration.",
-            "- Modification of player lists between different registrations.",
-            "- Changed the display of the ranking in the case of a match without a name.",
-            "- Expo update.",
-            "- Updated modules."
-        ]
-    },
-    "9": {
-        "id": "9",
-        "version": "1.6.1",
-        "infos": [
-            "- Fixed application crash on launch."
-        ]
-    },
-    "8": {
-        "id": "8",
-        "version": "1.6",
-        "infos": [
-            "- Ability to load old tournaments.",
-            "- Names of players recorded in the match and no longer separately.",
-            "- Head-to-head and team modes at the same time become impossible.",
-            "- Correction of errors.",
-            "- Bug teams in triplets.",
-            "- Bug in match generation in the case of a doubles tournament with triples complement. The complementary players were always the same."
-        ]
-    },
-    "7": {
-        "id": "7",
-        "version": "1.5.1",
-        "infos": [
-            "- Fixed application crash on launch."
-        ]
-    },
-    "6": {
-        "id": "6",
-        "version": "1.5",
-        "infos": [
-            "- Formed team tournaments available.",
-            "- Head-to-head tournaments available.",
-            "- Unnamed triple tournaments available.",
-            "- Improvements to player distribution for triples tournaments.",
-            "- In doubles, when the number of players is odd, it is possible to choose to have teams in triplets or head-to-head.",
-            "- Alert if update available.",
-            "- Correction of errors."
-        ]
-    },
-    "5": {
-        "id": "5",
-        "version": "1.4",
-        "infos": [
-            "- Triples tournament available.",
-            "- Attention: If you have a tournament in progress, you will no longer be able to access it after this update!.",
-            "- Changelog page.",
-            "- Button to rate and leave a comment.",
-            "- Correction of errors."
-        ]
-    },
-    "4": {
-        "id": "4",
-        "version": "1.3",
-        "infos": [
-            "- Menu to choose tournament modes and doubles or triplets.",
-            "- Please note: Triplet and team modes do not work (for now).",
-            "- Registrations without indicating the names of the players, it is enough to indicate the number of normal and special players.",
-            "- Display of player numbers on the ranking page and on the score entry page.",
-            "- Correction of errors."
-        ]
-    },
-    "3": {
-        "id": "3",
-        "version": "1.2",
-        "infos": [
-            "- Better mix of special players."
-        ]
-    },
-    "2": {
-        "id": "2",
-        "version": "1.1",
-        "infos": [
-            "- Display of the player's number in addition to his name if he has one."
-        ]
-    },
-    "1": {
-        "id": "1",
-        "version": "1.0",
-        "infos": [
-            "- New logo",
-            "- The application is now in the GCU colors.",
-            "- It becomes possible to launch tournaments with a number of players that is a multiple of 2 and only with a multiple of 4."
-        ]
-    }
+  "33": {
+    "id": "33",
+    "version": "2.3.0",
+    "infos": [
+      "- Added light and dark themes",
+      "- Added Danish translation"
+    ]
+  },
+  "32": {
+    "id": "32",
+    "version": "2.2.0",
+    "infos": [
+      "- Added field/match number in PDFs",
+      "- Added a page break before sorting in PDFs",
+      "- Saving the chosen language",
+      "- Addition of 3vs3 + 3vs2 doubles",
+      "- Alphabetical sorting of players in lists",
+      "- Significant technical migrations",
+      "- Fixed melee-demelee generation in 1 turn"
+    ]
+  },
+  "31": {
+    "id": "31",
+    "version": "2.1.1",
+    "infos": [
+      "- Fixed PDF export on iOS"
+    ]
+  },
+  "30": {
+    "id": "30",
+    "version": "2.1.0",
+    "infos": [
+      "- Added screen for selecting the supplement when the number of players does not allow for full matches",
+      "- Added Pointer, Shooter and Midfielder in Triplet",
+      "- Added consideration of rules (never same teammate, etc.) in Triplet",
+      "- Added Store Review",
+      "- Improved PDF export and layout",
+      "- Improved generation of melee and doubles matches",
+      "- Improved back navigation on screens",
+      "- Updated translations",
+      "- Update dependencies",
+      "- Fixed display of the field to rename a player",
+      "- Fixed blocking ad bug",
+      "- Fixed player type selection",
+      "- Fixed popup deleting suggested player",
+      "- Fixed crash after deleting the current tournament",
+      "- Fixed player list name not being retained after list modification"
+    ]
+  },
+  "29": {
+    "id": "29",
+    "version": "2.0.2",
+    "infos": [
+      "- German translation",
+      "- Updated translations",
+      "- Fixed bug in ranking calculation"
+    ]
+  },
+  "28": {
+    "id": "28",
+    "version": "2.0.1",
+    "infos": [
+      "- Updated translations",
+      "- Update dependencies",
+      "- Fixed bug on the terrain screen",
+      "- Fixed tournament deletion bug"
+    ]
+  },
+  "27": {
+    "id": "27",
+    "version": "2.0.0",
+    "infos": [
+      "- Creation of accounts",
+      "- Account management",
+      "- Technical base migration",
+      "- Update dependencies"
+    ]
+  },
+  "26": {
+    "id": "26",
+    "version": "1.16.2",
+    "infos": [
+      "- Translation into Dutch.",
+      "- Tournament date in PDF.",
+      "- Minor improvement in PDF display.",
+      "- Translation of the update notes.",
+      "- Fixed generation of head-to-head tournaments.",
+      "- Fixed button and modal displays.",
+      "- Bug fixes."
+    ]
+  },
+  "25": {
+    "id": "25",
+    "version": "1.16.1",
+    "infos": [
+      "- Improved display on small screens.",
+      "- Removal of donation pages.",
+      "- Correction of errors."
+    ]
+  },
+  "24": {
+    "id": "24",
+    "version": "1.16.0",
+    "infos": [
+      "- Multi-Chance Tournament.",
+      "- Improved display of tabs and winning teams in the match list.",
+      "- Thanks for the translation.",
+      "- Fixed display issues.",
+      "- Generation bug fixes.",
+      "- Updated dependencies."
+    ]
+  },
+  "23": {
+    "id": "23",
+    "version": "1.15.0",
+    "infos": [
+      "- The entire application has the new design.",
+      "- Translation of the application into Polish.",
+      "- Correction of errors."
+    ]
+  },
+  "22": {
+    "id": "22",
+    "version": "1.14.0",
+    "infos": [
+      "- Translation of the application.",
+      "- Export of Sections to PDF.",
+      "- Ability to display checkboxes upon registration.",
+      "- New registration pages.",
+      "- Correction of labels.",
+      "- Correction of errors."
+    ]
+  },
+  "21": {
+    "id": "21",
+    "version": "1.13.0",
+    "infos": [
+      "- Options to assign matches to fields.",
+      "- New pages for: Settings, Tournament Type, Tournament Mode, Tournament Options.",
+      "- Improved the “Without Same Opponents” option.",
+      "- Fixed tournament generation in unraveled melee.",
+      "- Fixed player type display issues."
+    ]
+  },
+  "20": {
+    "id": "20",
+    "version": "1.12.0",
+    "infos": [
+      "- Ability to assign players the roles of Pointer/Shooter/Midfielder in pairs to improve team balancing.",
+      "- New home page.",
+      "- Choose the number of points for victory.",
+      "- Moved settings screen.",
+      "- Improved player renaming."
+    ]
+  },
+  "19": {
+    "id": "19",
+    "version": "1.11.0",
+    "infos": [
+      "- Application available on iOS!",
+      "- Creation of a community Facebook page and addition of a button on the home page.",
+      "- Added creation and modification date of a tournament.",
+      "- Improved display of tournament information.",
+      "- Ability to rename a player list.",
+      "- Fixed bugs related to player lists.",
+      "- Fixed the display of the application's light mode."
+    ]
+  },
+  "18": {
+    "id": "18",
+    "version": "1.10.1",
+    "infos": [
+      "- Warning when a new update is available.",
+      "- Fixed a bug that prevented a tournament from loading."
+    ]
+  },
+  "17": {
+    "id": "17",
+    "version": "1.10.0",
+    "infos": [
+      "- Added creation of player lists that can be loaded during registration to save time.",
+      "- Added display of more player suggestions.",
+      "- Added removal of suggested players.",
+      "- Added display of information from old tournaments.",
+      "- Added tournament renaming.",
+      "- Interface adjustments.",
+      "*Improved stability.",
+      "- Correction of errors."
+    ]
+  },
+  "16": {
+    "id": "16",
+    "version": "1.9.0",
+    "infos": [
+      "- Added cutting mode.",
+      "- New home page.",
+      "- Correction of errors."
+    ]
+  },
+  "15": {
+    "id": "15",
+    "version": "1.8.3",
+    "infos": [
+      "- Added loading buttons when exporting to PDF.",
+      "- Improved generation of games without teams."
+    ]
+  },
+  "14": {
+    "id": "14",
+    "version": "1.8.2",
+    "infos": [
+      "- Colored Status and Navigation bar.",
+      "- Light theme by default.",
+      "- Fixed navigation issues.",
+      "- Correction of text errors."
+    ]
+  },
+  "13": {
+    "id": "13",
+    "version": "1.8.1",
+    "infos": [
+      "- Confirmation alert when deleting a tournament.",
+      "- Deletion of the current tournament."
+    ]
+  },
+  "12": {
+    "id": "12",
+    "version": "1.8.0",
+    "infos": [
+      "- Added Championship Mode!.",
+      "- Added automatic crash reporting.",
+      "- Added a mail button on the home page.",
+      "- Button to start a tournament with 7 players disabled, because mode not supported.",
+      "- Fixed loading and saving of old tournaments.",
+      "- Fixed tournament deletion.",
+      "- Fixed generation of triplets.",
+      "- Fix head-to-head display."
+    ]
+  },
+  "11": {
+    "id": "11",
+    "version": "1.7.1",
+    "infos": [
+      "- Fixed tournament generation with odd number of players."
+    ]
+  },
+  "10": {
+    "id": "10",
+    "version": "1.7.0",
+    "infos": [
+      "- Added export of tournaments to PDF.",
+      "- Added player name suggestion during registration.",
+      "- Added a button to remove all players when registering.",
+      "- Fixed the display of old tournaments.",
+      "- Fixed focus on field for registration without names.",
+      "- Fixed renaming on registration.",
+      "- Modification of player lists between different registrations.",
+      "- Changed the display of the ranking in the case of a match without a name.",
+      "- Expo update.",
+      "- Updated modules."
+    ]
+  },
+  "9": {
+    "id": "9",
+    "version": "1.6.1",
+    "infos": [
+      "- Fixed application crash on launch."
+    ]
+  },
+  "8": {
+    "id": "8",
+    "version": "1.6",
+    "infos": [
+      "- Ability to load old tournaments.",
+      "- Names of players recorded in the match and no longer separately.",
+      "- Head-to-head and team modes at the same time become impossible.",
+      "- Correction of errors.",
+      "- Bug teams in triplets.",
+      "- Bug in match generation in the case of a doubles tournament with triples complement. The complementary players were always the same."
+    ]
+  },
+  "7": {
+    "id": "7",
+    "version": "1.5.1",
+    "infos": [
+      "- Fixed application crash on launch."
+    ]
+  },
+  "6": {
+    "id": "6",
+    "version": "1.5",
+    "infos": [
+      "- Formed team tournaments available.",
+      "- Head-to-head tournaments available.",
+      "- Unnamed triple tournaments available.",
+      "- Improvements to player distribution for triples tournaments.",
+      "- In doubles, when the number of players is odd, it is possible to choose to have teams in triplets or head-to-head.",
+      "- Alert if update available.",
+      "- Correction of errors."
+    ]
+  },
+  "5": {
+    "id": "5",
+    "version": "1.4",
+    "infos": [
+      "- Triples tournament available.",
+      "- Attention: If you have a tournament in progress, you will no longer be able to access it after this update!.",
+      "- Changelog page.",
+      "- Button to rate and leave a comment.",
+      "- Correction of errors."
+    ]
+  },
+  "4": {
+    "id": "4",
+    "version": "1.3",
+    "infos": [
+      "- Menu to choose tournament modes and doubles or triplets.",
+      "- Please note: Triplet and team modes do not work (for now).",
+      "- Registrations without indicating the names of the players, it is enough to indicate the number of normal and special players.",
+      "- Display of player numbers on the ranking page and on the score entry page.",
+      "- Correction of errors."
+    ]
+  },
+  "3": {
+    "id": "3",
+    "version": "1.2",
+    "infos": [
+      "- Better mix of special players."
+    ]
+  },
+  "2": {
+    "id": "2",
+    "version": "1.1",
+    "infos": [
+      "- Display of the player's number in addition to his name if he has one."
+    ]
+  },
+  "1": {
+    "id": "1",
+    "version": "1.0",
+    "infos": [
+      "- New logo",
+      "- The application is now in the GCU colors.",
+      "- It becomes possible to launch tournaments with a number of players that is a multiple of 2 and only with a multiple of 4."
+    ]
+  }
 }

@@ -1,327 +1,348 @@
 {
-    "31": {
-        "id": "31",
-        "version": "2.1.1",
-        "infos": [
-            "- PDF-export op iOS hersteld"
-        ]
-    },
-    "30": {
-        "id": "30",
-        "version": "2.1.0",
-        "infos": [
-            "- Een selectiescherm toegevoegd voor aanvulling wanneer het aantal spelers geen volledige wedstrijden toelaat.\"",
-            "Plaatser, Schutter en allrounder toegevoegd in Triplet",
-            "- Er is rekening gehouden met regels (nooit dezelfde teamgenoot, enz.) in Triplet",
-            "- Recensies toegevoegd",
-            "- Verbeterde PDF-export en -lay-out",
-            "- Verbetering van het genereren van mêlée-démêlée doublette wedstrijden.",
-            "- Verbeterde terug-navigatie op schermen",
-            "- Bijgewerkte vertalingen",
-            "- Update naar nieuwe versies",
-            "- Weergave van het veld voor het hernoemen van een speler is hersteld",
-            "- Bug in blokkerende advertentie opgelost",
-            "- Vaste spelertypeselectie",
-            "- Pop-up die voorgestelde speler verwijderde, opgelost",
-            "- Crash opgelost na het verwijderen van het huidige toernooi",
-            "- Vaste spelerslijstnaam die niet behouden bleef na lijstwijziging"
-        ]
-    },
-    "29": {
-        "id": "29",
-        "version": "2.0.2",
-        "infos": [
-            "- Duitse vertaling",
-            "- Vertalingen bijgewerkt",
-            "- Bug in rangschikkingsberekening opgelost"
-        ]
-    },
-    "28": {
-        "id": "28",
-        "version": "2.0.1",
-        "infos": [
-            "- Vertalingen bijgewerkt",
-            "- Update naar nieuwe versies",
-            "- Bug op het terreinscherm opgelost",
-            "- Bug bij het verwijderen van toernooien opgelost"
-        ]
-    },
-    "27": {
-        "id": "27",
-        "version": "2.0.0",
-        "infos": [
-            "- Aanmaken van accounts",
-            "- voorstel accounts",
-            "- Technische basismigratie",
-            "- Update naar nieuwe versies"
-        ]
-    },
-    "26": {
-        "id": "26",
-        "version": "1.16.2",
-        "infos": [
-            "- Vertaling naar het Nederlands.",
-            "- Toernooidatum in PDF.",
-            "- Kleine verbetering in PDF-weergave.",
-            "- Vertaling van de update-notities.",
-            "- Genereren tête-à-tête-toernooien aangepast.",
-            "- Weergave van knoppen en layout verbeterd.",
-            "- Bugs opgelost"
-        ]
-    },
-    "25": {
-        "id": "25",
-        "version": "1.16.1",
-        "infos": [
-            "- Verbeterde weergave op kleine schermen.",
-            "- Verwijdering van donatiepagina's.",
-            "- Bugs opgelost."
-        ]
-    },
-    "24": {
-        "id": "24",
-        "version": "1.16.0",
-        "infos": [
-            "- Multi-kansentoernooi.",
-            "- Verbeterde weergave van tabbladen en winnende teams in de wedstrijdlijst.",
-            "- Bedankt voor de vertaling.",
-            "- Navigatieproblemen opgelost.",
-            "- Bugs bij genereren opgelost.",
-            "- Update naar nieuwe versies."
-        ]
-    },
-    "23": {
-        "id": "23",
-        "version": "1.15.0",
-        "infos": [
-            "- De gehele applicatie heeft een nieuw ontwerp.",
-            "- Vertaling van de aanvraag in het Pools.",
-            "- Bugs opgelost."
-        ]
-    },
-    "22": {
-        "id": "22",
-        "version": "1.14.0",
-        "infos": [
-            "- Vertaling van de aanvraag in het Pools.",
-            "- Exporteren van secties naar PDF.",
-            "- Mogelijkheid om selectievakjes weer te geven bij registratie.",
-            "- Nieuwe registratiepagina's.",
-            "- Bugs opgelost.",
-            "- Bugs opgelost."
-        ]
-    },
-    "21": {
-        "id": "21",
-        "version": "1.13.0",
-        "infos": [
-            "- Opties om overeenkomsten aan velden toe te wijzen.",
-            "Nieuwe pagina's voor: Instellingen, Toernooitype, Toernooimodus, Toernooiopties.",
-            "- De optie “Zonder dezelfde tegenstanders” is verbeterd.",
-            "- Genereren tête-à-tête-toernooien aangepast.",
-            "- Problemen met de weergave van het spelertype zijn opgelost."
-        ]
-    },
-    "20": {
-        "id": "20",
-        "version": "1.12.0",
-        "infos": [
-            "- Mogelijkheid om spelers de rollen van Aanvaller/Schutter/Middenvelder in paren toe te wijzen om de balans in het team te verbeteren.",
-            "- Nieuwe startpagina.",
-            "- Kies het aantal punten voor de overwinning.",
-            "- Instellingenscherm verplaatst.",
-            "- Verbeterde naamswijziging van spelers."
-        ]
-    },
-    "19": {
-        "id": "19",
-        "version": "1.11.0",
-        "infos": [
-            "- Applicatie beschikbaar op iOS!",
-            "- Aanmaak van een community Facebookpagina en toevoeging van een knop op de homepagina.",
-            "- Datum toegevoegd waarop een toernooi is aangemaakt en gewijzigd.",
-            "- Verbeterde weergave van toernooi-informatie.",
-            "- Mogelijkheid om een ​​spelerslijst te hernoemen.",
-            "- Bugs met betrekking tot spelerslijsten opgelost.",
-            "- De weergave van de lichtmodus van de applicatie is hersteld."
-        ]
-    },
-    "18": {
-        "id": "18",
-        "version": "1.10.1",
-        "infos": [
-            "- Waarschuwing wanneer er een nieuwe update beschikbaar is.",
-            "- Er is een bug opgelost waardoor een toernooi niet kon worden geladen."
-        ]
-    },
-    "17": {
-        "id": "17",
-        "version": "1.10.0",
-        "infos": [
-            "- Er is een spelerslijst toegevoegd die tijdens de registratie kan worden geladen om tijd te besparen.",
-            "- Weergave van meer spelersuggesties toegevoegd.",
-            "- Verwijdering van voorgestelde spelers toegevoegd.",
-            "- Weergave van informatie van oude toernooien toegevoegd.",
-            "- Naamswijziging voor toernooien toegevoegd.",
-            "- Interface-aanpassingen.",
-            "- Bugfixes voor verbeteringen en stabiliteit.",
-            "- Bugs opgelost."
-        ]
-    },
-    "16": {
-        "id": "16",
-        "version": "1.9.0",
-        "infos": [
-            "- Compacte modus toegevoegd.",
-            "- Nieuwe startpagina.",
-            "- Bugs opgelost."
-        ]
-    },
-    "15": {
-        "id": "15",
-        "version": "1.8.3",
-        "infos": [
-            "Laadknoppen toegevoegd bij het exporteren naar PDF.",
-            "- Verbeterd genereren van spellen zonder teams."
-        ]
-    },
-    "14": {
-        "id": "14",
-        "version": "1.8.2",
-        "infos": [
-            "- Gekleurde status- en navigatiebalk.",
-            "- Standaard licht thema.",
-            "- Navigatieproblemen opgelost.",
-            "- Correctie van tekstuele fouten."
-        ]
-    },
-    "13": {
-        "id": "13",
-        "version": "1.8.1",
-        "infos": [
-            "- Bevestigingsmelding bij het verwijderen van een toernooi.",
-            "Huidige toernooi verwijderen."
-        ]
-    },
-    "12": {
-        "id": "12",
-        "version": "1.8.0",
-        "infos": [
-            "- Kampioenschapsmodus toegevoegd!.",
-            "- Automatische crashrapportage toegevoegd.",
-            "- Er is een e-mailknop toegevoegd op de startpagina.",
-            "- Knop om een ​​toernooi te starten met 7 spelers is uitgeschakeld, omdat de modus niet wordt ondersteund.",
-            "- Het laden en opslaan van oude toernooien is opgelost.",
-            "- Probleem toernooi verwijderen opgelost.",
-            "- Genereren van triplets is hersteld.",
-            "- Herstel de tête-à-tête weergave."
-        ]
-    },
-    "11": {
-        "id": "11",
-        "version": "1.7.1",
-        "infos": [
-            "- Genereren van toernooien met een oneven aantal spelers opgelost."
-        ]
-    },
-    "10": {
-        "id": "10",
-        "version": "1.7.0",
-        "infos": [
-            "- Export van toernooien naar PDF toegevoegd.",
-            "- Spelersnaam voorgesteld tijdens registratie.",
-            "- Er is een knop toegevoegd om alle spelers te verwijderen bij registratie.",
-            "- De weergave van oude toernooien is hersteld.",
-            "- Focus op veld voor registratie zonder namen hersteld.",
-            "- Naamswijziging bij registratie opgelost.",
-            "- Wijziging van spelerslijsten tussen verschillende registraties.",
-            "- De weergave van de ranglijst bij een wedstrijd zonder naam is gewijzigd.",
-            "- Expo-update.",
-            "- Update naar nieuwe versies."
-        ]
-    },
-    "9": {
-        "id": "9",
-        "version": "1.6.1",
-        "infos": [
-            "- Crash van de applicatie bij het opstarten opgelost."
-        ]
-    },
-    "8": {
-        "id": "8",
-        "version": "1.6",
-        "infos": [
-            "- Mogelijkheid om oude toernooien te laden.",
-            "- Namen van spelers die tijdens de wedstrijd zijn opgenomen en niet meer apart.",
-            "- Het is niet langer mogelijk om gelijktijdig tête-a-tête- en teamgames te spelen.",
-            "- Bugs opgelost.",
-            "- Bug met teams en triplette.",
-            "- Bug bij het genereren van wedstrijden in een dubbeltoernooi met een triple-complement. De aanvullende spelers waren steeds dezelfde."
-        ]
-    },
-    "7": {
-        "id": "7",
-        "version": "1.5.1",
-        "infos": [
-            "- Crash van de applicatie bij het opstarten opgelost."
-        ]
-    },
-    "6": {
-        "id": "6",
-        "version": "1.5",
-        "infos": [
-            "- Er zijn toernooien voor gevormde teams beschikbaar.",
-            "- Er zijn tête-à-tête toernooien beschikbaar.",
-            "- Naamloze drievoudige toernooien beschikbaar.",
-            "- Verbeteringen in de spelerverdeling voor triples-toernooien.",
-            "- Bij een dubbelspel, wanneer er een oneven aantal spelers is, kan er gekozen worden om teams in drietallen of één tegen één te vormen.",
-            "- Waarschuwing als er een update beschikbaar is.",
-            "- Bugs opgelost."
-        ]
-    },
-    "5": {
-        "id": "5",
-        "version": "1.4.",
-        "infos": [
-            "- Er zijn tête-à-tête toernooien beschikbaar.",
-            "- Let op: Als er een toernooi gaande is, heb je er na deze update geen toegang meer toe!",
-            "- Wijzigingslogboekpagina.",
-            "- Knop om te beoordelen en een reactie achter te laten.",
-            "- Bugs opgelost."
-        ]
-    },
-    "4": {
-        "id": "4",
-        "version": "1.3",
-        "infos": [
-            "- Menu om toernooimodi en doublettes of triplettes te kiezen.",
-            "Let op: de Triplet- en teammodi werken (voorlopig) niet.",
-            "- Registraties zonder vermelding van de namen van de spelers, het is voldoende om het aantal normale en speciale spelers aan te geven.",
-            "- Weergave van spelernummers op de ranglijstpagina en op de score-invoerpagina.",
-            "- Bugs opgelost."
-        ]
-    },
-    "3": {
-        "id": "3",
-        "version": "1.2",
-        "infos": [
-            "- Betere mix van speciale spelers."
-        ]
-    },
-    "2": {
-        "id": "2",
-        "version": "1.1",
-        "infos": [
-            "- Weergave van het rugnummer van de speler, eventueel aangevuld met zijn naam."
-        ]
-    },
-    "1": {
-        "id": "1",
-        "version": "1.0",
-        "infos": [
-            "- Nieuw logo",
-            "- De applicatie is nu in de GCU-kleuren.",
-            "- Het wordt mogelijk om toernooien te starten met een aantal spelers dat een veelvoud is van 2 en alleen met een veelvoud van 4."
-        ]
-    }
+  "33": {
+    "id": "33",
+    "version": "2.3.0",
+    "infos": [
+      "- Lichte en donkere thema's toegevoegd",
+      "- Deense vertaling toegevoegd"
+    ]
+  },
+  "32": {
+    "id": "32",
+    "version": "2.2.0",
+    "infos": [
+      "- Veld-/matchnummer toegevoegd in PDF's",
+      "- Een pagina-einde toegevoegd vóór het sorteren in PDF's",
+      "- De gekozen taal opslaan",
+      "- Toevoeging van 3vs3 + 3vs2 dubbels",
+      "- Alfabetische sortering van spelers in lijsten",
+      "- Belangrijke technische migraties",
+      "- Generatie van melee-demelee in 1 beurt opgelost"
+    ]
+  },
+  "31": {
+    "id": "31",
+    "version": "2.1.1",
+    "infos": [
+      "- PDF-export op iOS hersteld"
+    ]
+  },
+  "30": {
+    "id": "30",
+    "version": "2.1.0",
+    "infos": [
+      "- Een selectiescherm toegevoegd voor aanvulling wanneer het aantal spelers geen volledige wedstrijden toelaat.\"",
+      "Plaatser, Schutter en allrounder toegevoegd in Triplet",
+      "- Er is rekening gehouden met regels (nooit dezelfde teamgenoot, enz.) in Triplet",
+      "- Recensies toegevoegd",
+      "- Verbeterde PDF-export en -lay-out",
+      "- Verbetering van het genereren van mêlée-démêlée doublette wedstrijden.",
+      "- Verbeterde terug-navigatie op schermen",
+      "- Bijgewerkte vertalingen",
+      "- Update naar nieuwe versies",
+      "- Weergave van het veld voor het hernoemen van een speler is hersteld",
+      "- Bug in blokkerende advertentie opgelost",
+      "- Vaste spelertypeselectie",
+      "- Pop-up die voorgestelde speler verwijderde, opgelost",
+      "- Crash opgelost na het verwijderen van het huidige toernooi",
+      "- Vaste spelerslijstnaam die niet behouden bleef na lijstwijziging"
+    ]
+  },
+  "29": {
+    "id": "29",
+    "version": "2.0.2",
+    "infos": [
+      "- Duitse vertaling",
+      "- Vertalingen bijgewerkt",
+      "- Bug in rangschikkingsberekening opgelost"
+    ]
+  },
+  "28": {
+    "id": "28",
+    "version": "2.0.1",
+    "infos": [
+      "- Vertalingen bijgewerkt",
+      "- Update naar nieuwe versies",
+      "- Bug op het terreinscherm opgelost",
+      "- Bug bij het verwijderen van toernooien opgelost"
+    ]
+  },
+  "27": {
+    "id": "27",
+    "version": "2.0.0",
+    "infos": [
+      "- Aanmaken van accounts",
+      "- voorstel accounts",
+      "- Technische basismigratie",
+      "- Update naar nieuwe versies"
+    ]
+  },
+  "26": {
+    "id": "26",
+    "version": "1.16.2",
+    "infos": [
+      "- Vertaling naar het Nederlands.",
+      "- Toernooidatum in PDF.",
+      "- Kleine verbetering in PDF-weergave.",
+      "- Vertaling van de update-notities.",
+      "- Genereren tête-à-tête-toernooien aangepast.",
+      "- Weergave van knoppen en layout verbeterd.",
+      "- Bugs opgelost"
+    ]
+  },
+  "25": {
+    "id": "25",
+    "version": "1.16.1",
+    "infos": [
+      "- Verbeterde weergave op kleine schermen.",
+      "- Verwijdering van donatiepagina's.",
+      "- Bugs opgelost."
+    ]
+  },
+  "24": {
+    "id": "24",
+    "version": "1.16.0",
+    "infos": [
+      "- Multi-kansentoernooi.",
+      "- Verbeterde weergave van tabbladen en winnende teams in de wedstrijdlijst.",
+      "- Bedankt voor de vertaling.",
+      "- Navigatieproblemen opgelost.",
+      "- Bugs bij genereren opgelost.",
+      "- Update naar nieuwe versies."
+    ]
+  },
+  "23": {
+    "id": "23",
+    "version": "1.15.0",
+    "infos": [
+      "- De gehele applicatie heeft een nieuw ontwerp.",
+      "- Vertaling van de aanvraag in het Pools.",
+      "- Bugs opgelost."
+    ]
+  },
+  "22": {
+    "id": "22",
+    "version": "1.14.0",
+    "infos": [
+      "- Vertaling van de aanvraag in het Pools.",
+      "- Exporteren van secties naar PDF.",
+      "- Mogelijkheid om selectievakjes weer te geven bij registratie.",
+      "- Nieuwe registratiepagina's.",
+      "- Bugs opgelost.",
+      "- Bugs opgelost."
+    ]
+  },
+  "21": {
+    "id": "21",
+    "version": "1.13.0",
+    "infos": [
+      "- Opties om overeenkomsten aan velden toe te wijzen.",
+      "Nieuwe pagina's voor: Instellingen, Toernooitype, Toernooimodus, Toernooiopties.",
+      "- De optie “Zonder dezelfde tegenstanders” is verbeterd.",
+      "- Genereren tête-à-tête-toernooien aangepast.",
+      "- Problemen met de weergave van het spelertype zijn opgelost."
+    ]
+  },
+  "20": {
+    "id": "20",
+    "version": "1.12.0",
+    "infos": [
+      "- Mogelijkheid om spelers de rollen van Aanvaller/Schutter/Middenvelder in paren toe te wijzen om de balans in het team te verbeteren.",
+      "- Nieuwe startpagina.",
+      "- Kies het aantal punten voor de overwinning.",
+      "- Instellingenscherm verplaatst.",
+      "- Verbeterde naamswijziging van spelers."
+    ]
+  },
+  "19": {
+    "id": "19",
+    "version": "1.11.0",
+    "infos": [
+      "- Applicatie beschikbaar op iOS!",
+      "- Aanmaak van een community Facebookpagina en toevoeging van een knop op de homepagina.",
+      "- Datum toegevoegd waarop een toernooi is aangemaakt en gewijzigd.",
+      "- Verbeterde weergave van toernooi-informatie.",
+      "- Mogelijkheid om een ​​spelerslijst te hernoemen.",
+      "- Bugs met betrekking tot spelerslijsten opgelost.",
+      "- De weergave van de lichtmodus van de applicatie is hersteld."
+    ]
+  },
+  "18": {
+    "id": "18",
+    "version": "1.10.1",
+    "infos": [
+      "- Waarschuwing wanneer er een nieuwe update beschikbaar is.",
+      "- Er is een bug opgelost waardoor een toernooi niet kon worden geladen."
+    ]
+  },
+  "17": {
+    "id": "17",
+    "version": "1.10.0",
+    "infos": [
+      "- Er is een spelerslijst toegevoegd die tijdens de registratie kan worden geladen om tijd te besparen.",
+      "- Weergave van meer spelersuggesties toegevoegd.",
+      "- Verwijdering van voorgestelde spelers toegevoegd.",
+      "- Weergave van informatie van oude toernooien toegevoegd.",
+      "- Naamswijziging voor toernooien toegevoegd.",
+      "- Interface-aanpassingen.",
+      "- Bugfixes voor verbeteringen en stabiliteit.",
+      "- Bugs opgelost."
+    ]
+  },
+  "16": {
+    "id": "16",
+    "version": "1.9.0",
+    "infos": [
+      "- Compacte modus toegevoegd.",
+      "- Nieuwe startpagina.",
+      "- Bugs opgelost."
+    ]
+  },
+  "15": {
+    "id": "15",
+    "version": "1.8.3",
+    "infos": [
+      "Laadknoppen toegevoegd bij het exporteren naar PDF.",
+      "- Verbeterd genereren van spellen zonder teams."
+    ]
+  },
+  "14": {
+    "id": "14",
+    "version": "1.8.2",
+    "infos": [
+      "- Gekleurde status- en navigatiebalk.",
+      "- Standaard licht thema.",
+      "- Navigatieproblemen opgelost.",
+      "- Correctie van tekstuele fouten."
+    ]
+  },
+  "13": {
+    "id": "13",
+    "version": "1.8.1",
+    "infos": [
+      "- Bevestigingsmelding bij het verwijderen van een toernooi.",
+      "Huidige toernooi verwijderen."
+    ]
+  },
+  "12": {
+    "id": "12",
+    "version": "1.8.0",
+    "infos": [
+      "- Kampioenschapsmodus toegevoegd!.",
+      "- Automatische crashrapportage toegevoegd.",
+      "- Er is een e-mailknop toegevoegd op de startpagina.",
+      "- Knop om een ​​toernooi te starten met 7 spelers is uitgeschakeld, omdat de modus niet wordt ondersteund.",
+      "- Het laden en opslaan van oude toernooien is opgelost.",
+      "- Probleem toernooi verwijderen opgelost.",
+      "- Genereren van triplets is hersteld.",
+      "- Herstel de tête-à-tête weergave."
+    ]
+  },
+  "11": {
+    "id": "11",
+    "version": "1.7.1",
+    "infos": [
+      "- Genereren van toernooien met een oneven aantal spelers opgelost."
+    ]
+  },
+  "10": {
+    "id": "10",
+    "version": "1.7.0",
+    "infos": [
+      "- Export van toernooien naar PDF toegevoegd.",
+      "- Spelersnaam voorgesteld tijdens registratie.",
+      "- Er is een knop toegevoegd om alle spelers te verwijderen bij registratie.",
+      "- De weergave van oude toernooien is hersteld.",
+      "- Focus op veld voor registratie zonder namen hersteld.",
+      "- Naamswijziging bij registratie opgelost.",
+      "- Wijziging van spelerslijsten tussen verschillende registraties.",
+      "- De weergave van de ranglijst bij een wedstrijd zonder naam is gewijzigd.",
+      "- Expo-update.",
+      "- Update naar nieuwe versies."
+    ]
+  },
+  "9": {
+    "id": "9",
+    "version": "1.6.1",
+    "infos": [
+      "- Crash van de applicatie bij het opstarten opgelost."
+    ]
+  },
+  "8": {
+    "id": "8",
+    "version": "1.6",
+    "infos": [
+      "- Mogelijkheid om oude toernooien te laden.",
+      "- Namen van spelers die tijdens de wedstrijd zijn opgenomen en niet meer apart.",
+      "- Het is niet langer mogelijk om gelijktijdig tête-a-tête- en teamgames te spelen.",
+      "- Bugs opgelost.",
+      "- Bug met teams en triplette.",
+      "- Bug bij het genereren van wedstrijden in een dubbeltoernooi met een triple-complement. De aanvullende spelers waren steeds dezelfde."
+    ]
+  },
+  "7": {
+    "id": "7",
+    "version": "1.5.1",
+    "infos": [
+      "- Crash van de applicatie bij het opstarten opgelost."
+    ]
+  },
+  "6": {
+    "id": "6",
+    "version": "1.5",
+    "infos": [
+      "- Er zijn toernooien voor gevormde teams beschikbaar.",
+      "- Er zijn tête-à-tête toernooien beschikbaar.",
+      "- Naamloze drievoudige toernooien beschikbaar.",
+      "- Verbeteringen in de spelerverdeling voor triples-toernooien.",
+      "- Bij een dubbelspel, wanneer er een oneven aantal spelers is, kan er gekozen worden om teams in drietallen of één tegen één te vormen.",
+      "- Waarschuwing als er een update beschikbaar is.",
+      "- Bugs opgelost."
+    ]
+  },
+  "5": {
+    "id": "5",
+    "version": "1.4.",
+    "infos": [
+      "- Er zijn tête-à-tête toernooien beschikbaar.",
+      "- Let op: Als er een toernooi gaande is, heb je er na deze update geen toegang meer toe!",
+      "- Wijzigingslogboekpagina.",
+      "- Knop om te beoordelen en een reactie achter te laten.",
+      "- Bugs opgelost."
+    ]
+  },
+  "4": {
+    "id": "4",
+    "version": "1.3",
+    "infos": [
+      "- Menu om toernooimodi en doublettes of triplettes te kiezen.",
+      "Let op: de Triplet- en teammodi werken (voorlopig) niet.",
+      "- Registraties zonder vermelding van de namen van de spelers, het is voldoende om het aantal normale en speciale spelers aan te geven.",
+      "- Weergave van spelernummers op de ranglijstpagina en op de score-invoerpagina.",
+      "- Bugs opgelost."
+    ]
+  },
+  "3": {
+    "id": "3",
+    "version": "1.2",
+    "infos": [
+      "- Betere mix van speciale spelers."
+    ]
+  },
+  "2": {
+    "id": "2",
+    "version": "1.1",
+    "infos": [
+      "- Weergave van het rugnummer van de speler, eventueel aangevuld met zijn naam."
+    ]
+  },
+  "1": {
+    "id": "1",
+    "version": "1.0",
+    "infos": [
+      "- Nieuw logo",
+      "- De applicatie is nu in de GCU-kleuren.",
+      "- Het wordt mogelijk om toernooien te starten met een aantal spelers dat een veelvoud is van 2 en alleen met een veelvoud van 4."
+    ]
+  }
 }

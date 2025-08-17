@@ -1,6 +1,6 @@
 import { ConfigContext, ExpoConfig } from '@expo/config';
 
-const version = '2.2.0';
+const version = '2.3.0';
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   name: 'Tournois Pétanque App',
@@ -13,13 +13,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   splash: {
     image: './src/assets/splash.png',
     resizeMode: 'contain',
-    backgroundColor: '#0594ae',
-  },
-  androidStatusBar: {
-    backgroundColor: '#0594ae',
-    translucent: false,
-  },
-  androidNavigationBar: {
     backgroundColor: '#0594ae',
   },
   updates: {

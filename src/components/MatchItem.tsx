@@ -43,7 +43,9 @@ const MatchItem: React.FC<Props> = ({
           )}
         </Box>
         <Box className="flex-1">
-          <Text className="text-white text-2xl p-0.5 text-center">{txt}</Text>
+          <Text className="text-typography-white text-2xl p-0.5 text-center">
+            {txt}
+          </Text>
         </Box>
         <Box className="flex-1 items-center">
           {match.score2 === nbPtVictoire && (
@@ -69,13 +71,21 @@ const MatchItem: React.FC<Props> = ({
     if (joueur) {
       if (equipe === 1) {
         return (
-          <Text key={joueur.id} className="text-white text-left" size="xl">
+          <Text
+            key={joueur.id}
+            className="text-typography-white text-left"
+            size="xl"
+          >
             {joueur.id + 1 + ' ' + joueur.name}
           </Text>
         );
       } else {
         return (
-          <Text key={joueur.id} className="text-white text-right" size="xl">
+          <Text
+            key={joueur.id}
+            className="text-typography-white text-right"
+            size="xl"
+          >
             {joueur.name + ' ' + (joueur.id + 1)}
           </Text>
         );
@@ -88,9 +98,9 @@ const MatchItem: React.FC<Props> = ({
     let score2 = listeMatchs[matchID].score2 ?? '?';
     return (
       <HStack className="justify-center">
-        <Text className="text-white text-2xl p-2">{score1}</Text>
-        <Text className="text-white text-2xl p-2"> VS </Text>
-        <Text className="text-white text-2xl p-2">{score2}</Text>
+        <Text className="text-typography-white text-2xl p-2">{score1}</Text>
+        <Text className="text-typography-white text-2xl p-2"> VS </Text>
+        <Text className="text-typography-white text-2xl p-2">{score2}</Text>
       </HStack>
     );
   };

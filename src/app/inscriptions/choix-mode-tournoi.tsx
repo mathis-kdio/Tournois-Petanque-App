@@ -108,7 +108,7 @@ const ChoixModeTournoi = () => {
     }
     return (
       <VStack>
-        <Text className="text-white text-2xl text-center">
+        <Text className="text-typography-white text-2xl text-center">
           {t('mode_tournoi')}
         </Text>
         <RadioGroup
@@ -118,35 +118,26 @@ const ChoixModeTournoi = () => {
         >
           <VStack space="lg">
             <Radio value={ModeTournoi.AVECNOMS} size="lg">
-              <RadioIndicator className="mr-2 border-white">
-                <RadioIcon
-                  as={CircleIcon}
-                  className="fill-white text-background-white"
-                />
+              <RadioIndicator className="mr-2 border-custom-bg-inverse">
+                <RadioIcon as={CircleIcon} className="fill-custom-bg-inverse" />
               </RadioIndicator>
-              <RadioLabel className="text-white">
+              <RadioLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white data-[hover=true]:data-[checked=true]:text-typography-white">
                 {t('melee_demelee_avec_nom')}
               </RadioLabel>
             </Radio>
             <Radio value={ModeTournoi.SANSNOMS} size="lg">
-              <RadioIndicator className="mr-2 border-white">
-                <RadioIcon
-                  as={CircleIcon}
-                  className="fill-white text-background-white"
-                />
+              <RadioIndicator className="mr-2 border-custom-bg-inverse">
+                <RadioIcon as={CircleIcon} className="fill-custom-bg-inverse" />
               </RadioIndicator>
-              <RadioLabel className="text-white">
+              <RadioLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white data-[hover=true]:data-[checked=true]:text-typography-white">
                 {t('melee_demelee_sans_nom')}
               </RadioLabel>
             </Radio>
             <Radio value={ModeTournoi.AVECEQUIPES} size="lg">
-              <RadioIndicator className="mr-2 border-white">
-                <RadioIcon
-                  as={CircleIcon}
-                  className="fill-white text-background-white"
-                />
+              <RadioIndicator className="mr-2 border-custom-bg-inverse">
+                <RadioIcon as={CircleIcon} className="fill-custom-bg-inverse" />
               </RadioIndicator>
-              <RadioLabel className="text-white">
+              <RadioLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white data-[hover=true]:data-[checked=true]:text-typography-white">
                 {t('melee_avec_equipes_constituees')}
               </RadioLabel>
             </Radio>
@@ -158,11 +149,11 @@ const ChoixModeTournoi = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView className="h-1 bg-[#0594ae]">
+      <ScrollView className="h-1 bg-custom-background">
         <TopBarBack title={t('mode_tournoi')} />
         <VStack className="flex-1 px-10 justify-between">
           <VStack space="4xl">
-            <Text className="text-white text-2xl text-center">
+            <Text className="text-typography-white text-2xl text-center">
               {t('type_equipes')}
             </Text>
             <RadioGroup
@@ -172,35 +163,35 @@ const ChoixModeTournoi = () => {
             >
               <VStack space="lg">
                 <Radio value={TypeEquipes.TETEATETE} size="lg">
-                  <RadioIndicator className="mr-2 border-white">
+                  <RadioIndicator className="mr-2 border-custom-bg-inverse">
                     <RadioIcon
                       as={CircleIcon}
-                      className="fill-white text-background-white"
+                      className="fill-custom-bg-inverse"
                     />
                   </RadioIndicator>
-                  <RadioLabel className="text-white">
+                  <RadioLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white data-[hover=true]:data-[checked=true]:text-typography-white">
                     {t('tete_a_tete')}
                   </RadioLabel>
                 </Radio>
                 <Radio value={TypeEquipes.DOUBLETTE} size="lg">
-                  <RadioIndicator className="mr-2 border-white">
+                  <RadioIndicator className="mr-2 border-custom-bg-inverse">
                     <RadioIcon
                       as={CircleIcon}
-                      className="fill-white text-background-white"
+                      className="fill-custom-bg-inverse"
                     />
                   </RadioIndicator>
-                  <RadioLabel className="text-white">
+                  <RadioLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white data-[hover=true]:data-[checked=true]:text-typography-white">
                     {t('doublettes')}
                   </RadioLabel>
                 </Radio>
                 <Radio value={TypeEquipes.TRIPLETTE} size="lg">
-                  <RadioIndicator className="mr-2 border-white">
+                  <RadioIndicator className="mr-2 border-custom-bg-inverse">
                     <RadioIcon
                       as={CircleIcon}
-                      className="fill-white text-background-white"
+                      className="fill-custom-bg-inverse"
                     />
                   </RadioIndicator>
-                  <RadioLabel className="text-white">
+                  <RadioLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white data-[hover=true]:data-[checked=true]:text-typography-white">
                     {t('triplettes')}
                   </RadioLabel>
                 </Radio>

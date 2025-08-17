@@ -14,9 +14,13 @@ const TopBarBack: React.FC<Props> = ({ title }) => {
   return (
     <HStack className="items-center px-5 py-2">
       <Pressable onPress={() => router.back()} className="rounded-2xl p-2">
-        <FontAwesome5 name="arrow-left" size={15} color="white" />
+        <FontAwesome5
+          name="arrow-left"
+          size={15}
+          className="text-custom-bg-inverse"
+        />
       </Pressable>
-      <Text className="text-xl text-white">{title}</Text>
+      <Text className="text-xl text-typography-white">{title}</Text>
     </HStack>
   );
 };

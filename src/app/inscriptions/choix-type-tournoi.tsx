@@ -60,7 +60,7 @@ const ChoixTypeTournoi = () => {
         <ModalBackdrop />
         <ModalContent className="max-h-5/6">
           <ModalHeader>
-            <Heading className="text-black">{infos.title}</Heading>
+            <Heading className="color-custom-text-modal">{infos.title}</Heading>
             <ModalCloseButton>
               <Icon
                 as={CloseIcon}
@@ -93,7 +93,7 @@ const ChoixTypeTournoi = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView className="h-1 bg-[#0594ae]">
+      <ScrollView className="h-1 bg-custom-background">
         <TopBarBack title={t('type_tournoi')} />
         <VStack space="2xl" className="flex-1 px-10">
           <VStack className="flex-1">
@@ -107,8 +107,12 @@ const ChoixTypeTournoi = () => {
               onPress={() => _setState(TypeTournoi.MELEDEMELE)}
               className="flex-row justify-center mt-2"
             >
-              <FontAwesome5 name="info-circle" color="white" size={24} />
-              <Text className="text-white"> {t('savoir_plus')}</Text>
+              <FontAwesome5
+                name="info-circle"
+                className="text-custom-bg-inverse"
+                size={24}
+              />
+              <Text className="text-typography-white"> {t('savoir_plus')}</Text>
             </Pressable>
           </VStack>
           <VStack className="flex-1">
@@ -122,8 +126,12 @@ const ChoixTypeTournoi = () => {
               onPress={() => _setState(TypeTournoi.CHAMPIONNAT)}
               className="flex-row justify-center mt-2"
             >
-              <FontAwesome5 name="info-circle" color="white" size={24} />
-              <Text className="text-white"> {t('savoir_plus')}</Text>
+              <FontAwesome5
+                name="info-circle"
+                className="text-custom-bg-inverse"
+                size={24}
+              />
+              <Text className="text-typography-white"> {t('savoir_plus')}</Text>
             </Pressable>
           </VStack>
           <VStack className="flex-1">
@@ -137,8 +145,12 @@ const ChoixTypeTournoi = () => {
               onPress={() => _setState(TypeTournoi.COUPE)}
               className="flex-row justify-center mt-2"
             >
-              <FontAwesome5 name="info-circle" color="white" size={24} />
-              <Text className="text-white"> {t('savoir_plus')}</Text>
+              <FontAwesome5
+                name="info-circle"
+                className="text-custom-bg-inverse"
+                size={24}
+              />
+              <Text className="text-typography-white"> {t('savoir_plus')}</Text>
             </Pressable>
           </VStack>
           <VStack className="flex-1">
@@ -152,8 +164,12 @@ const ChoixTypeTournoi = () => {
               onPress={() => _setState(TypeTournoi.MULTICHANCES)}
               className="flex-row justify-center mt-2"
             >
-              <FontAwesome5 name="info-circle" color="white" size={24} />
-              <Text className="text-white"> {t('savoir_plus')}</Text>
+              <FontAwesome5
+                name="info-circle"
+                className="text-custom-bg-inverse"
+                size={24}
+              />
+              <Text className="text-typography-white"> {t('savoir_plus')}</Text>
             </Pressable>
           </VStack>
           <VStack className="m-10">

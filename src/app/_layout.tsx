@@ -16,6 +16,19 @@ import { Stack, useNavigationContainerRef } from 'expo-router';
 import { isRunningInExpoGo } from 'expo';
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SELECTED_LANGUAGE_KEY } from '@/utils/async-storage/key';
+import {
+  ThemeProvider,
+  useTheme,
+} from '@/components/ui/theme-provider/ThemeProvider';
+import { getTheme, getThemeColor } from '@/utils/theme/theme';
+import { setBackgroundColorAsync } from 'expo-navigation-bar';
+import { Platform } from 'react-native';
+import { cssInterop } from 'nativewind';
+import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+
+cssInterop(FontAwesome5, { className: 'style' });
+cssInterop(MaterialCommunityIcons, { className: 'style' });
 
 const navigationIntegration = Sentry.reactNavigationIntegration({
   enableTimeToInitialDisplay: !isRunningInExpoGo(),
@@ -33,7 +46,24 @@ Sentry.init({
   attachStacktrace: true,
 });
 
-const SELECTED_LANGUAGE_KEY = 'selectedLanguageKey';
+const GluestackWrapper = ({ children }: { children: React.ReactNode }) => {
+  const { theme } = useTheme();
+  const { globalTheme, style } = getTheme(theme);
+  return (
+    <GluestackUIProvider theme={globalTheme} mode={style}>
+      {children}
+    </GluestackUIProvider>
+  );
+};
+
+const StatusBarWrapper = () => {
+  const { theme } = useTheme();
+  const color = getThemeColor(theme);
+  if (Platform.OS === 'android') {
+    setBackgroundColorAsync(color);
+  }
+  return <StatusBar backgroundColor={color} />;
+};
 
 export default function RootLayout() {
   let persistor = persistStore(Store);
@@ -61,12 +91,14 @@ export default function RootLayout() {
     <Provider store={Store}>
       <PersistGate persistor={persistor}>
         <AuthProvider>
-          <GluestackUIProvider mode="light">
-            <I18nextProvider i18n={i18n} defaultNS={'common'}>
-              <Stack screenOptions={{ headerShown: false }} />
-              <StatusBar style="light" backgroundColor="#0594ae" />
-            </I18nextProvider>
-          </GluestackUIProvider>
+          <ThemeProvider>
+            <GluestackWrapper>
+              <I18nextProvider i18n={i18n} defaultNS={'common'}>
+                <Stack screenOptions={{ headerShown: false }} />
+                <StatusBarWrapper />
+              </I18nextProvider>
+            </GluestackWrapper>
+          </ThemeProvider>
         </AuthProvider>
       </PersistGate>
     </Provider>

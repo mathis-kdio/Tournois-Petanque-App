@@ -10,6 +10,7 @@ import changelogPL from '@assets/ChangelogData_pl.json';
 import neerlandais from '@assets/languages/nl.json';
 import changelogNL from '@assets/ChangelogData_nl.json';
 import allemand from '@assets/languages/de.json';
+import danemark from '@assets/languages/da.json';
 import changelogDE from '@assets/ChangelogData_de.json';
 
 i18n
@@ -43,6 +44,10 @@ i18n
         common: allemand.translation,
         changelog: changelogDE,
       },
+      'dk-DK': {
+        common: danemark.translation,
+        changelog: changelogDE,
+      },
       ns: ['common', 'changelog'],
       supportedLngs: [
         {
@@ -60,6 +65,18 @@ i18n
         {
           code: 'pl-PL',
           locale: 'Polonais - Pologne',
+        },
+        {
+          code: 'nl-NL',
+          locale: 'Neerlandais - Pays-Bas',
+        },
+        {
+          code: 'de-DE',
+          locale: 'Allemand - Allemagne',
+        },
+        {
+          code: 'dk-DK',
+          locale: 'Danois - Danemark',
         },
       ],
       defaultNS: 'common',

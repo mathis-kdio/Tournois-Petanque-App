@@ -1,4 +1,12 @@
 {
+  "33": {
+    "id":"33",
+    "version": "2.3.0",
+    "infos": [
+      "- Ajout des thèmes clair et sombre",
+      "- Ajout traduction en Danois"
+    ]
+  },
   "32": {
     "id":"32",
     "version": "2.2.0",

@@ -16,7 +16,7 @@ const CardButton: React.FC<Props> = ({ text, icons, navigate, newBadge }) => {
   return (
     <Pressable
       onPress={() => navigate()}
-      className="bg-primary-500 flex-1 py-5 rounded-3xl justify-center"
+      className="bg-custom-dark-blue flex-1 py-5 rounded-3xl justify-center"
     >
       {newBadge ? (
         <HStack className="mt-20">
@@ -37,10 +37,15 @@ const CardButton: React.FC<Props> = ({ text, icons, navigate, newBadge }) => {
       <VStack className="items-center">
         <HStack space="md">
           {icons.map((icon, index) => (
-            <FontAwesome5 key={index} name={icon} color="white" size={24} />
+            <FontAwesome5
+              key={index}
+              name={icon}
+              size={24}
+              className="text-custom-text-button"
+            />
           ))}
         </HStack>
-        <Text className="text-white">{text}</Text>
+        <Text className="color-custom-text-button">{text}</Text>
       </VStack>
     </Pressable>
   );

@@ -208,6 +208,7 @@ const ListeJoueurItem: React.FC<Props> = ({
       return (
         <Input variant="underlined">
           <InputField
+            className="text-typography-white placeholder:text-typography-white"
             placeholder={joueur.name}
             autoFocus={true}
             onChangeText={(text: string) => _joueurTxtInputChanged(text)}
@@ -219,7 +220,7 @@ const ListeJoueurItem: React.FC<Props> = ({
       );
     } else {
       return (
-        <Text className="text-white text-xl font-bold break-words">
+        <Text className="text-typography-white text-xl font-bold break-words">
           {joueur.id + 1}-{joueur.name}
         </Text>
       );
@@ -278,13 +279,13 @@ const ListeJoueurItem: React.FC<Props> = ({
             _ajoutEquipe(joueur.id, parseInt(itemValue))
           }
         >
-          <SelectTrigger className="flex flex-row">
+          <SelectTrigger className="flex flex-row border-custom-bg-inverse">
             <SelectInput
-              className="basis-5/6 text-white placeholder:text-white"
+              className="basis-5/6 text-typography-white placeholder:text-typography-white"
               placeholder={t('choix_equipe')}
             />
             <SelectIcon
-              className="basis-1/6 mr-3 text-white"
+              className="basis-1/6 mr-3 text-typography-white"
               as={ChevronDownIcon}
             />
           </SelectTrigger>
@@ -368,10 +369,10 @@ const ListeJoueurItem: React.FC<Props> = ({
             size="md"
             isChecked={isChecked}
           >
-            <CheckboxIndicator className="mr-2 border-white">
+            <CheckboxIndicator className="mr-2 border-typography-white data-[checked=true]:bg-custom-background data-[checked=true]:border-typography-white">
               <CheckboxIcon
                 as={CheckIcon}
-                className="text-white bg-[#0594ae]"
+                className="text-typography-white bg-custom-background"
               />
             </CheckboxIndicator>
             <CheckboxLabel />
@@ -398,7 +399,7 @@ const ListeJoueurItem: React.FC<Props> = ({
         <AlertDialogBackdrop />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <Heading className="text-black">
+            <Heading className="color-custom-text-modal">
               {t('confirmer_uncheck_modal_titre')}
             </Heading>
             <AlertDialogCloseButton>
@@ -419,7 +420,9 @@ const ListeJoueurItem: React.FC<Props> = ({
                 action="secondary"
                 onPress={() => setModalConfirmUncheckIsOpen(false)}
               >
-                <ButtonText className="text-black">{t('annuler')}</ButtonText>
+                <ButtonText className="color-custom-text-modal">
+                  {t('annuler')}
+                </ButtonText>
               </Button>
               <Button
                 action="negative"
@@ -435,11 +438,28 @@ const ListeJoueurItem: React.FC<Props> = ({
   };
 
   const _ajoutCheck = (joueurId: number, isChecked: boolean) => {
-    const action = {
-      type: 'CHECK_JOUEUR',
-      value: [modeTournoi, joueurId, isChecked],
-    };
-    dispatch(action);
+    if (isInscription === true) {
+      const action = {
+        type: 'CHECK_JOUEUR',
+        value: [modeTournoi, joueurId, isChecked],
+      };
+      dispatch(action);
+    } else {
+      let data = { playerId: joueurId, isChecked: isChecked };
+      const inGameCheckPlayer = {
+        type: 'INGAME_CHECK_PLAYER',
+        value: data,
+      };
+      dispatch(inGameCheckPlayer);
+      const actionUpdateTournoi = {
+        type: 'UPDATE_TOURNOI',
+        value: {
+          tournoi: listeMatchs,
+          tournoiId: listeMatchs.at(-1).tournoiID,
+        },
+      };
+      dispatch(actionUpdateTournoi);
+    }
     setModalConfirmUncheckIsOpen(false);
   };
 
@@ -447,7 +467,7 @@ const ListeJoueurItem: React.FC<Props> = ({
     ? ['basis-6/12', 'basis-6/12', 'basis-6/12', 'basis-3/12']
     : ['basis-9/12', 'basis-3/12', 'basis-0/12', 'basis-6/12'];
   return (
-    <HStack className="flex flex-row border border-white rounded-xl m-1 px-1 items-center">
+    <HStack className="flex flex-row border border-custom-bg-inverse rounded-xl m-1 px-1 items-center">
       <HStack className={`${flexsize[0]}`}>
         {_joueurCheckbox(showCheckbox, joueur)}
         {_joueurTypeIcon(joueur.type)}

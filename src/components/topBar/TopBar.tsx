@@ -8,7 +8,7 @@ interface Props {
 const TopBar: React.FC<Props> = ({ title }) => {
   return (
     <HStack className="items-center px-5 py-2">
-      <Text className="text-xl text-white">{title}</Text>
+      <Text className="text-xl text-typography-white">{title}</Text>
     </HStack>
   );
 };
