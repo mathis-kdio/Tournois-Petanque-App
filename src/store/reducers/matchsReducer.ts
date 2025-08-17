@@ -1,3 +1,5 @@
+import { Joueur } from '@/types/interfaces/joueur';
+
 const initialState = { listematchs: undefined };
 
 function gestionMatchs(state = initialState, action) {
@@ -30,14 +32,35 @@ function gestionMatchs(state = initialState, action) {
       }
       return nextState || state;
     case 'INGAME_RENAME_PLAYER':
-      if (action.value !== '') {
+      if (action.value.playerId !== '' || action.value.newName !== '') {
         nextState = {
           ...state,
           listematchs: [...state.listematchs],
         };
-        nextState.listematchs[nextState.listematchs.length - 1].listeJoueurs[
-          action.value.playerId
-        ].name = action.value.newName;
+        let listeJoueurs = nextState.listematchs.at(-1)
+          .listeJoueurs as Joueur[];
+        let joueur = listeJoueurs.find(
+          (joueur) => joueur.id === action.value.playerId,
+        );
+        if (joueur) {
+          joueur.name = action.value.newName;
+        }
+      }
+      return nextState || state;
+    case 'INGAME_CHECK_PLAYER':
+      if (action.value.playerId !== '' || action.value.isChecked !== '') {
+        nextState = {
+          ...state,
+          listematchs: [...state.listematchs],
+        };
+        let listeJoueurs = nextState.listematchs.at(-1)
+          .listeJoueurs as Joueur[];
+        let joueur = listeJoueurs.find(
+          (joueur) => joueur.id === action.value.playerId,
+        );
+        if (joueur) {
+          joueur.isChecked = action.value.isChecked;
+        }
       }
       return nextState || state;
     case 'COUPE_AJOUT_ADVERSAIRE': //action: 0: gagnants  1: id du match  2: id de l'équipe
