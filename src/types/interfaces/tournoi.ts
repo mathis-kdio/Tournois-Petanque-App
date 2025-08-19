@@ -3,7 +3,7 @@ import { OptionsTournoi } from './optionsTournoi';
 
 export interface Tournoi {
   tournoiId: number;
-  name: string;
+  name?: string;
   creationDate: Date;
   updateDate: Date;
   tournoi: [...Match[], OptionsTournoi];
