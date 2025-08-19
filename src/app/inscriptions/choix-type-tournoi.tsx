@@ -33,12 +33,44 @@ const ChoixTypeTournoi = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState<TypeTournoi | undefined>();
 
+  const listeTypeTournois = [
+    {
+      type: TypeTournoi.MELEDEMELE,
+      text: t('type_melee_demelee'),
+      icons: ['random'],
+    },
+    {
+      type: TypeTournoi.MELEE,
+      text: t('type_melee'),
+      icons: ['people-arrows'],
+    },
+    {
+      type: TypeTournoi.CHAMPIONNAT,
+      text: t('type_championnat'),
+      icons: ['table'],
+    },
+    {
+      type: TypeTournoi.COUPE,
+      text: t('type_coupe'),
+      icons: ['trophy'],
+    },
+    {
+      type: TypeTournoi.MULTICHANCES,
+      text: t('type_multi_chances'),
+      icons: ['code-branch'],
+    },
+  ];
+
   const _modalInfos = () => {
     if (!modalType) return;
     const infosModal = {
       'mele-demele': {
         title: t('melee_demelee'),
         text: t('description_melee_demelee'),
+      },
+      melee: {
+        title: t('melee'),
+        text: t('description_melee'),
       },
       championnat: {
         title: t('championnat'),
@@ -96,82 +128,29 @@ const ChoixTypeTournoi = () => {
       <ScrollView className="h-1 bg-custom-background">
         <TopBarBack title={t('type_tournoi')} />
         <VStack space="2xl" className="flex-1 px-10">
-          <VStack className="flex-1">
-            <CardButton
-              text={t('type_melee_demelee')}
-              icons={['random']}
-              navigate={() => _navigate(TypeTournoi.MELEDEMELE)}
-              newBadge={false}
-            />
-            <Pressable
-              onPress={() => _setState(TypeTournoi.MELEDEMELE)}
-              className="flex-row justify-center mt-2"
-            >
-              <FontAwesome5
-                name="info-circle"
-                className="text-custom-bg-inverse"
-                size={24}
+          {listeTypeTournois.map(({ type, text, icons }) => (
+            <VStack className="flex-1" key={type}>
+              <CardButton
+                text={text}
+                icons={icons}
+                navigate={() => _navigate(type)}
+                newBadge={false}
               />
-              <Text className="text-typography-white"> {t('savoir_plus')}</Text>
-            </Pressable>
-          </VStack>
-          <VStack className="flex-1">
-            <CardButton
-              text={t('type_championnat')}
-              icons={['table']}
-              navigate={() => _navigate(TypeTournoi.CHAMPIONNAT)}
-              newBadge={false}
-            />
-            <Pressable
-              onPress={() => _setState(TypeTournoi.CHAMPIONNAT)}
-              className="flex-row justify-center mt-2"
-            >
-              <FontAwesome5
-                name="info-circle"
-                className="text-custom-bg-inverse"
-                size={24}
-              />
-              <Text className="text-typography-white"> {t('savoir_plus')}</Text>
-            </Pressable>
-          </VStack>
-          <VStack className="flex-1">
-            <CardButton
-              text={t('type_coupe')}
-              icons={['trophy']}
-              navigate={() => _navigate(TypeTournoi.COUPE)}
-              newBadge={false}
-            />
-            <Pressable
-              onPress={() => _setState(TypeTournoi.COUPE)}
-              className="flex-row justify-center mt-2"
-            >
-              <FontAwesome5
-                name="info-circle"
-                className="text-custom-bg-inverse"
-                size={24}
-              />
-              <Text className="text-typography-white"> {t('savoir_plus')}</Text>
-            </Pressable>
-          </VStack>
-          <VStack className="flex-1">
-            <CardButton
-              text={t('type_multi_chances')}
-              icons={['code-branch']}
-              navigate={() => _navigate(TypeTournoi.MULTICHANCES)}
-              newBadge={false}
-            />
-            <Pressable
-              onPress={() => _setState(TypeTournoi.MULTICHANCES)}
-              className="flex-row justify-center mt-2"
-            >
-              <FontAwesome5
-                name="info-circle"
-                className="text-custom-bg-inverse"
-                size={24}
-              />
-              <Text className="text-typography-white"> {t('savoir_plus')}</Text>
-            </Pressable>
-          </VStack>
+              <Pressable
+                onPress={() => _setState(type)}
+                className="flex-row justify-center mt-2"
+              >
+                <FontAwesome5
+                  name="info-circle"
+                  className="text-custom-bg-inverse"
+                  size={24}
+                />
+                <Text className="text-typography-white">
+                  {` ${t('savoir_plus')}`}
+                </Text>
+              </Pressable>
+            </VStack>
+          ))}
           <VStack className="m-10">
             <AdMobInscriptionsBanner />
           </VStack>

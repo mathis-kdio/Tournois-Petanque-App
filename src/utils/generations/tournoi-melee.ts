@@ -4,7 +4,7 @@ import { shuffle } from './generation';
 import { Match } from '@/types/interfaces/match';
 import { EquipeGeneration } from '@/types/interfaces/equipe-generation.interface';
 
-export const generationAvecEquipes = (
+export const generationMelee = (
   listeJoueurs: Joueur[],
   nbTours: number,
   typeEquipes: TypeEquipes,
