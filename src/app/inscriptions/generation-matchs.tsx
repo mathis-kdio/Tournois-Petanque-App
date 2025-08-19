@@ -4,7 +4,7 @@ import { VStack } from '@/components/ui/vstack';
 import { generationChampionnat } from '@utils/generations/championnat';
 import { generationCoupe } from '@utils/generations/coupe';
 import { generationMultiChances } from '@utils/generations/multiChances';
-import { generationAvecEquipes } from '@utils/generations/tournoiAvecEquipes';
+import { generationMelee } from '@/utils/generations/tournoi-melee';
 import { generationDoublettes } from '@utils/generations/tournoiDoublettes';
 import { generationTeteATete } from '@utils/generations/tournoiTeteATete';
 import { generationTriplettes } from '@utils/generations/tournoiTriplettes';
@@ -13,7 +13,6 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Platform } from 'react-native';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { Match } from '@/types/interfaces/match';
 import TopBar from '@/components/topBar/TopBar';
@@ -163,14 +162,7 @@ const GenerationMatchs = () => {
     let erreurSpeciaux = undefined;
     let echecGeneration = undefined;
     if (typeTournoi === TypeTournoi.MELEDEMELE) {
-      if (typeInscription === ModeTournoi.AVECEQUIPES) {
-        ({ matchs, nbMatchs, echecGeneration } = generationAvecEquipes(
-          listesJoueurs.avecEquipes,
-          nbTours,
-          typeEquipes,
-          eviterMemeAdversaire,
-        ));
-      } else if (typeEquipes === TypeEquipes.TETEATETE) {
+      if (typeEquipes === TypeEquipes.TETEATETE) {
         ({ matchs, nbMatchs, echecGeneration } = generationTeteATete(
           listesJoueurs[typeInscription],
           nbTours,
@@ -209,6 +201,13 @@ const GenerationMatchs = () => {
       } else {
         echecGeneration = true;
       }
+    } else if (typeTournoi === TypeTournoi.MELEE) {
+      ({ matchs, nbMatchs, echecGeneration } = generationMelee(
+        listesJoueurs.avecEquipes,
+        nbTours,
+        typeEquipes,
+        eviterMemeAdversaire,
+      ));
     } else if (typeTournoi === TypeTournoi.COUPE) {
       ({ matchs, nbTours, nbMatchs } = generationCoupe(
         optionsTournoi,
@@ -225,7 +224,7 @@ const GenerationMatchs = () => {
         typeEquipes,
       ));
     } else {
-      echecGeneration = true;
+      throw new Error('typeTournoi inconnu');
     }
     if (erreurMemesEquipes) {
       setErreurMemesEquipes(erreurMemesEquipes);

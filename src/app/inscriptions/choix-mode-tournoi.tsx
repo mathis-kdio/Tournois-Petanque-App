@@ -82,13 +82,6 @@ const ChoixModeTournoi = () => {
     ) {
       title = t('valider_et_inscriptions');
     }
-    if (
-      modeTournoi === ModeTournoi.AVECEQUIPES &&
-      typeEquipes === TypeEquipes.TETEATETE
-    ) {
-      buttonDisabled = true;
-      title = t('erreur_tournoi_tete_a_tete_et_equipes');
-    }
     return (
       <Button
         action="primary"
@@ -131,14 +124,6 @@ const ChoixModeTournoi = () => {
               </RadioIndicator>
               <RadioLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white data-[hover=true]:data-[checked=true]:text-typography-white">
                 {t('melee_demelee_sans_nom')}
-              </RadioLabel>
-            </Radio>
-            <Radio value={ModeTournoi.AVECEQUIPES} size="lg">
-              <RadioIndicator className="mr-2 border-custom-bg-inverse">
-                <RadioIcon as={CircleIcon} className="fill-custom-bg-inverse" />
-              </RadioIndicator>
-              <RadioLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white data-[hover=true]:data-[checked=true]:text-typography-white">
-                {t('melee_avec_equipes_constituees')}
               </RadioLabel>
             </Radio>
           </VStack>
