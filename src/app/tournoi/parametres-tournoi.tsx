@@ -108,19 +108,21 @@ const ParametresTournoi = () => {
     );
   };
 
-  let parametresTournoi: OptionsTournoi = {
-    nbTours: 0,
-    nbPtVictoire: 13,
-    speciauxIncompatibles: false,
-    memesEquipes: false,
-    memesAdversaires: 50,
-  };
-  if (tournoi) {
-    parametresTournoi = tournoi.at(-1) as OptionsTournoi;
-    parametresTournoi.nbPtVictoire = parametresTournoi.nbPtVictoire
-      ? parametresTournoi.nbPtVictoire
-      : 13;
+  if (!tournoi) {
+    return <></>;
   }
+  let parametresTournoi = tournoi.at(-1) as OptionsTournoi;
+  const {
+    typeTournoi,
+    typeEquipes,
+    nbTours,
+    nbMatchs,
+    nbPtVictoire,
+    complement,
+    speciauxIncompatibles,
+    memesEquipes,
+    memesAdversaires,
+  } = parametresTournoi;
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView className="h-1 bg-custom-background">
@@ -131,29 +133,33 @@ const ParametresTournoi = () => {
               {t('options_tournoi')}
             </Text>
             <Text className="text-typography-white">
-              {t('nombre_tours')} {parametresTournoi.nbTours.toString()}
+              {`${t('type_tournoi_tiret')} ${typeTournoi}`}
             </Text>
             <Text className="text-typography-white">
-              {t('nombre_points_victoire')}{' '}
-              {parametresTournoi.nbPtVictoire.toString()}
+              {`${t('type_equipes_tiret')} ${typeEquipes}`}
             </Text>
             <Text className="text-typography-white">
-              {t('regle_speciaux')}{' '}
-              {parametresTournoi.speciauxIncompatibles
-                ? t('active')
-                : t('desactive')}
+              {`${t('nombre_tours_tiret')} ${nbTours}`}
             </Text>
             <Text className="text-typography-white">
-              {t('regle_equipes_differentes')}{' '}
-              {parametresTournoi.memesEquipes ? t('active') : t('desactive')}
+              {`${t('nombre_matchs_tiret')} ${nbMatchs}`}
             </Text>
             <Text className="text-typography-white">
-              {t('regle_adversaires')}{' '}
-              {parametresTournoi.memesAdversaires === 0
-                ? t('1_match')
-                : t('pourcent_matchs', {
-                    pourcent: parametresTournoi.memesAdversaires,
-                  })}
+              {`${t('nombre_points_victoire_tiret')} ${nbPtVictoire ? nbPtVictoire : 13}`}
+            </Text>
+            {complement && (
+              <Text className="text-typography-white">
+                {`${t('complement_tiret')} ${complement}`}
+              </Text>
+            )}
+            <Text className="text-typography-white">
+              {`${t('regle_equipes_differentes_tiret')} ${memesEquipes ? t('oui') : t('non')}`}
+            </Text>
+            <Text className="text-typography-white">
+              {`${t('regle_adversaires_tiret')} ${memesAdversaires === 0 ? t('1_match') : t('pourcent_matchs', { pourcent: memesAdversaires })}`}
+            </Text>
+            <Text className="text-typography-white">
+              {`${t('regle_speciaux_tiret')} ${speciauxIncompatibles ? t('oui') : t('non')}`}
             </Text>
           </VStack>
           <VStack space="xl">
