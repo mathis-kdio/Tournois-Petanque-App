@@ -45,17 +45,24 @@ const ListeTournois = () => {
     let tournoi = infosTournoi;
     if (tournoi && tournoi.tournoi) {
       let tournoiOptions = tournoi.tournoi.at(-1) as OptionsTournoi;
-      let creationDate = t('date_inconnue');
-      let updateDate = t('date_inconnue');
-      if (tournoi.creationDate) {
-        creationDate = dateFormatDateHeure(tournoi.creationDate);
-      }
-      if (tournoi.updateDate) {
-        updateDate = dateFormatDateHeure(tournoi.updateDate);
-      }
-      let nbPtVictoire = tournoiOptions.nbPtVictoire
-        ? tournoiOptions.nbPtVictoire
-        : 13;
+      const {
+        nbPtVictoire,
+        listeJoueurs,
+        typeTournoi,
+        typeEquipes,
+        nbTours,
+        nbMatchs,
+        complement,
+        memesEquipes,
+        memesAdversaires,
+        speciauxIncompatibles,
+      } = tournoiOptions;
+      let creationDate = tournoi.creationDate
+        ? dateFormatDateHeure(tournoi.creationDate)
+        : t('date_inconnue');
+      let updateDate = tournoi.updateDate
+        ? dateFormatDateHeure(tournoi.updateDate)
+        : t('date_inconnue');
       return (
         <Modal
           isOpen={modalTournoiInfosIsOpen}
@@ -77,58 +84,48 @@ const ListeTournois = () => {
             </ModalHeader>
             <ModalBody>
               <Text>
-                {t('id_modal_informations_tournoi')} {tournoi.tournoiId}
+                {`${t('id_modal_informations_tournoi')} ${tournoi.tournoiId}`}
               </Text>
               <Text>
-                {t('nom_modal_informations_tournoi')} {tournoi.name}
+                {`${t('nom_modal_informations_tournoi')} ${tournoi.name ? tournoi.name : t('sans_nom')}`}
               </Text>
               <Text>
-                {t('creation_modal_informations_tournoi')}
-                {creationDate}
+                {`${t('creation_modal_informations_tournoi')} ${creationDate}`}
               </Text>
               <Text>
-                {t('derniere_modification_modal_informations_tournoi')}{' '}
-                {updateDate}
+                {`${t('derniere_modification_modal_informations_tournoi')} ${updateDate}`}
               </Text>
               <Text>
-                {t('nombre_joueurs_modal_informations_tournoi')}{' '}
-                {tournoiOptions.listeJoueurs.length}
+                {`${t('nombre_joueurs_modal_informations_tournoi')} ${listeJoueurs.length}`}
               </Text>
               <Text>
-                {t('type_equipes_modal_informations_tournoi')}{' '}
-                {tournoiOptions.typeEquipes}
+                {`${t('type_tournoi_modal_informations_tournoi')} ${typeTournoi}`}
               </Text>
               <Text>
-                {t('nombre_tours_modal_informations_tournoi')}{' '}
-                {tournoiOptions.nbTours}
+                {`${t('type_equipes_modal_informations_tournoi')} ${typeEquipes}`}
               </Text>
               <Text>
-                {t('nombre_matchs_modal_informations_tournoi')}{' '}
-                {tournoiOptions.nbMatchs}
+                {`${t('nombre_tours_modal_informations_tournoi')} ${nbTours}`}
               </Text>
               <Text>
-                {t('nombre_points_victoire_modal_informations_tournoi')}{' '}
-                {nbPtVictoire}
+                {`${t('nombre_matchs_modal_informations_tournoi')} ${nbMatchs}`}
               </Text>
               <Text>
-                {t('complement_modal_informations_tournoi')}
-                {tournoiOptions.complement}
+                {`${t('nombre_points_victoire_modal_informations_tournoi')} ${nbPtVictoire ? nbPtVictoire : 13}`}
+              </Text>
+              {complement && (
+                <Text>
+                  {`${t('complement_modal_informations_tournoi')} ${complement}`}
+                </Text>
+              )}
+              <Text>
+                {`${t('regle_equipes_differentes_modal_informations_tournoi')} ${memesEquipes ? t('oui') : t('non')}`}
               </Text>
               <Text>
-                {t('regle_equipes_differentes_modal_informations_tournoi')}{' '}
-                {tournoiOptions.memesEquipes ? t('oui') : t('non')}
+                {`${t('regle_adversaires_modal_informations_tournoi')} ${memesAdversaires === 0 ? t('1_match') : t('pourcent_matchs', { pourcent: memesAdversaires })}`}
               </Text>
               <Text>
-                {t('regle_adversaires_modal_informations_tournoi')}{' '}
-                {tournoiOptions.memesAdversaires === 0
-                  ? t('1_match')
-                  : t('pourcent_matchs', {
-                      pourcent: tournoiOptions.memesAdversaires,
-                    })}
-              </Text>
-              <Text>
-                {t('regle_speciaux_modal_informations_tournoi')}{' '}
-                {tournoiOptions.speciauxIncompatibles ? t('oui') : t('non')}
+                {`${t('regle_speciaux_modal_informations_tournoi')} ${speciauxIncompatibles ? t('oui') : t('non')}`}
               </Text>
             </ModalBody>
           </ModalContent>

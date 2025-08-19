@@ -13,7 +13,7 @@ export interface OptionsTournoi {
   memesEquipes: boolean;
   memesAdversaires: number;
   typeEquipes: TypeEquipes;
-  complement: Complement;
+  complement?: Complement;
   typeTournoi: TypeTournoi;
   listeJoueurs: Joueur[];
   avecTerrains: boolean;
