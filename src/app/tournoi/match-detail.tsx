@@ -155,32 +155,46 @@ const MatchDetail = () => {
   const _boutonValider = (match: Match) => {
     const { nbPtVictoire, typeTournoi } = optionsTournoi;
 
-    let btnDisabled = true;
-    let action: 'warning' | 'positive' | 'negative' = 'positive';
-    let text = t('valider_score');
-    if (score1 !== undefined && score2 !== undefined) {
-      if (
+    let btnDisabled: boolean;
+    let action: 'warning' | 'positive' | 'negative';
+    let text: string;
+
+    const score1Valide = score1 !== undefined && score1 !== '';
+    const score2Valide = score2 !== undefined && score2 !== '';
+
+    if (score1Valide && score2Valide) {
+      const egaliteCoupeMultiChances =
         (typeTournoi === TypeTournoi.MULTICHANCES ||
           typeTournoi === TypeTournoi.COUPE) &&
-        score1 === score2
-      ) {
+        score1 === score2;
+
+      const aucunGagnant =
+        score1 !== nbPtVictoire.toString() &&
+        score2 !== nbPtVictoire.toString();
+
+      if (egaliteCoupeMultiChances) {
+        btnDisabled = true;
         action = 'negative';
         text = t('valider_score_impossible_coupe_multichance', {
-          typeTournoi: typeTournoi,
+          typeTournoi,
         });
-      } else if (
-        score1 !== nbPtVictoire.toString() &&
-        score2 !== nbPtVictoire.toString()
-      ) {
+      } else if (aucunGagnant) {
         btnDisabled = false;
         action = 'warning';
         text = t('valider_score_sans_nb_pt_victoire', {
-          nbPtVictoire: nbPtVictoire,
+          nbPtVictoire,
         });
       } else {
         btnDisabled = false;
+        action = 'positive';
+        text = t('valider_score');
       }
+    } else {
+      btnDisabled = true;
+      action = 'positive';
+      text = t('valider_score');
     }
+
     return (
       <Button
         isDisabled={btnDisabled}
