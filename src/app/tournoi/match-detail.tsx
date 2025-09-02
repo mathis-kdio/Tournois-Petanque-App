@@ -149,7 +149,7 @@ const MatchDetail = () => {
       },
     };
     dispatch(actionUpdateTournoi);
-    router.navigate('/tournoi');
+    router.back();
   };
 
   const _boutonValider = (match: Match) => {
