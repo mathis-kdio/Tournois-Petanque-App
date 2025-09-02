@@ -15,14 +15,12 @@ export interface Props {
   match: Match;
   displayDetailForMatch: (idMatch: number) => void;
   manche: number;
-  nbPtVictoire: number;
 }
 
 const MatchItem: React.FC<Props> = ({
   match,
   displayDetailForMatch,
   manche,
-  nbPtVictoire,
 }) => {
   const { t } = useTranslation();
 
@@ -30,15 +28,15 @@ const MatchItem: React.FC<Props> = ({
     (state: any) => state.gestionMatchs.listematchs,
   );
 
-  const _displayTitle = (match: Match, nbPtVictoire: number) => {
-    let txt = t('match_numero') + (match.id + 1);
-    if (match.terrain) {
-      txt = match.terrain.name;
-    }
+  const _displayTitle = (match: Match) => {
+    const { id, terrain, score1, score2 } = match;
+    const score1Int = score1 ? score1 : 0;
+    const score2Int = score2 ? score2 : 0;
+    const txt = terrain ? terrain.name : `${t('match_numero')}${id + 1}`;
     return (
       <HStack>
         <Box className="flex-1 items-center">
-          {match.score1 === nbPtVictoire && (
+          {score1Int > score2Int && (
             <FontAwesome5 name="trophy" size={20} color="#ffda00" />
           )}
         </Box>
@@ -48,7 +46,7 @@ const MatchItem: React.FC<Props> = ({
           </Text>
         </Box>
         <Box className="flex-1 items-center">
-          {match.score2 === nbPtVictoire && (
+          {score2Int > score1Int && (
             <FontAwesome5 name="trophy" size={20} color="#ffda00" />
           )}
         </Box>
@@ -109,7 +107,7 @@ const MatchItem: React.FC<Props> = ({
     return (
       <TouchableOpacity onPress={() => displayDetailForMatch(match.id)}>
         <VStack className="m-2">
-          {_displayTitle(match, nbPtVictoire)}
+          {_displayTitle(match)}
           <HStack className="items-center">
             <Box className="flex-1">{_displayEquipe(1, match)}</Box>
             <Box className="flex-1">{_displayScore(match.id)}</Box>

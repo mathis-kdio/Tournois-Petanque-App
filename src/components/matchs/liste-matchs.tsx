@@ -30,13 +30,9 @@ const ListeMatchs: React.FC<ListeMatchsProps> = ({ mancheNumber }) => {
   const _displayListeMatch = () => {
     let nbMatchs = 0;
     let matchs = [];
-    let nbPtVictoire = 13;
     if (tournoi !== undefined) {
       let optionsTournoi = tournoi.at(-1) as OptionsTournoi;
       nbMatchs = optionsTournoi.nbMatchs;
-      nbPtVictoire = optionsTournoi.nbPtVictoire
-        ? optionsTournoi.nbPtVictoire
-        : 13;
       matchs = tournoi.slice(0, -1); //On retire la config et donc seulement la liste des matchs
     }
     matchs = matchs.filter(
@@ -47,7 +43,6 @@ const ListeMatchs: React.FC<ListeMatchsProps> = ({ mancheNumber }) => {
         match={item}
         displayDetailForMatch={_displayDetailForMatch}
         manche={mancheNumber}
-        nbPtVictoire={nbPtVictoire}
       />
     );
 
