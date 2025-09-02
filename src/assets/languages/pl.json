@@ -46,6 +46,8 @@
     "m_j": "Mistrz gry",
     "point": "Punkt",
     "valider_score": "Potwierdź wynik",
+    "valider_score_sans_nb_pt_victoire": "Valider le score sans que le gagnant ait atteint {{nbPtVictoire}}",
+    "valider_score_impossible_coupe_multichance": "En {{typeTournoi}} le score doit indiquer un gagnant",
     "score_equipe_1": "wynik drużyny 1",
     "score_equipe_2": "wynik drużyny 2",
     "score_placeholder": "0 - {{scoreVictoire}}",
