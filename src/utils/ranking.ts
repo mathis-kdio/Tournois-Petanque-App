@@ -7,28 +7,17 @@ export const ranking = (
   listeMatchs: Match[],
   optionsTournoi: OptionsTournoi,
 ): Victoire[] => {
-  if (listeMatchs !== undefined) {
-    let nbPtVictoire = optionsTournoi.nbPtVictoire
-      ? optionsTournoi.nbPtVictoire
-      : 13;
-    let victoires = victoiresPointsCalc(
-      listeMatchs,
-      optionsTournoi,
-      nbPtVictoire,
-    );
+  if (listeMatchs === undefined) {
+    throw Error('ranking listeMatchs undefined');
+  }
+  let victoires = victoiresPointsCalc(listeMatchs, optionsTournoi);
 
-    if (optionsTournoi.typeTournoi === TypeTournoi.MULTICHANCES) {
-      //Classement pour les tournois de type Multi-Chances
-      return rankingMuliChances(
-        listeMatchs,
-        optionsTournoi,
-        nbPtVictoire,
-        victoires,
-      );
-    } else {
-      //Classement pour les autres tournois
-      return rankingClassic(victoires);
-    }
+  if (optionsTournoi.typeTournoi === TypeTournoi.MULTICHANCES) {
+    //Classement pour les tournois de type Multi-Chances
+    return rankingMuliChances(listeMatchs, optionsTournoi, victoires);
+  } else {
+    //Classement pour les autres tournois
+    return rankingClassic(victoires);
   }
 };
 
@@ -66,28 +55,17 @@ const factorial = (n: number): number => {
 const rankingMuliChances = (
   listeMatchs: Match[],
   optionsTournoi: OptionsTournoi,
-  nbPtVictoire: number,
   victoires: Victoire[],
 ): Victoire[] => {
   for (let i = 0; i < victoires.length; i++) {
     let position = 1;
     for (let j = 0; j < optionsTournoi.nbMatchs; j++) {
-      if (
-        listeMatchs[j].equipe[0].includes(i) &&
-        listeMatchs[j].score1 !== undefined
-      ) {
-        if (listeMatchs[j].score1 >= nbPtVictoire) {
-          position += factorial(
-            optionsTournoi.nbTours + 1 - listeMatchs[j].manche,
-          );
-        }
-      }
-      if (
-        listeMatchs[j].equipe[1].includes(i) &&
-        listeMatchs[j].score2 !== undefined
-      ) {
-        if (listeMatchs[j].score2 >= nbPtVictoire) {
-          position += factorial(listeMatchs[j].manche);
+      const { score1, score2, equipe, manche } = listeMatchs[j];
+      if (score1 !== undefined && score2 !== undefined) {
+        if (equipe[0].includes(i) && score1 > score2) {
+          position += factorial(optionsTournoi.nbTours + 1 - manche);
+        } else if (equipe[1].includes(i) && score2 > score1) {
+          position += factorial(manche);
         }
       }
     }
@@ -104,7 +82,6 @@ const rankingMuliChances = (
 const victoiresPointsCalc = (
   listeMatchs: Match[],
   optionsTournoi: OptionsTournoi,
-  nbPtVictoire: number,
 ): Victoire[] => {
   let listeJoueurs = optionsTournoi.listeJoueurs;
   let victoires = [];
@@ -113,29 +90,25 @@ const victoiresPointsCalc = (
     let nbPoints = 0;
     let nbMatchs = 0;
     for (let j = 0; j < optionsTournoi.nbMatchs; j++) {
-      if (
-        listeMatchs[j].equipe[0].includes(i) &&
-        listeMatchs[j].score1 !== undefined
-      ) {
-        if (listeMatchs[j].score1 >= nbPtVictoire) {
-          nbVictoire++;
-          nbPoints += nbPtVictoire - listeMatchs[j].score2;
-        } else {
-          nbPoints -= nbPtVictoire - listeMatchs[j].score1;
+      const { score1, score2, equipe } = listeMatchs[j];
+      if (score1 !== undefined && score2 !== undefined) {
+        if (equipe[0].includes(i)) {
+          if (score1 > score2) {
+            nbVictoire++;
+            nbPoints += score1 - score2;
+          } else {
+            nbPoints -= score2 - score1;
+          }
+          nbMatchs++;
+        } else if (equipe[1].includes(i)) {
+          if (score2 > score1) {
+            nbVictoire++;
+            nbPoints += score2 - score1;
+          } else {
+            nbPoints -= score1 - score2;
+          }
+          nbMatchs++;
         }
-        nbMatchs++;
-      }
-      if (
-        listeMatchs[j].equipe[1].includes(i) &&
-        listeMatchs[j].score2 !== undefined
-      ) {
-        if (listeMatchs[j].score2 >= nbPtVictoire) {
-          nbVictoire++;
-          nbPoints += nbPtVictoire - listeMatchs[j].score1;
-        } else {
-          nbPoints -= nbPtVictoire - listeMatchs[j].score2;
-        }
-        nbMatchs++;
       }
     }
     victoires[i] = {

@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import Loading from '@/components/Loading';
+import { TypeTournoi } from '@/types/enums/typeTournoi';
 
 type SearchParams = {
   idMatch?: string;
@@ -152,14 +153,55 @@ const MatchDetail = () => {
   };
 
   const _boutonValider = (match: Match) => {
-    let btnDisabled = !(score1 && score2);
+    const { nbPtVictoire, typeTournoi } = optionsTournoi;
+
+    let btnDisabled: boolean;
+    let action: 'warning' | 'positive' | 'negative';
+    let text: string;
+
+    const score1Valide = score1 !== undefined && score1 !== '';
+    const score2Valide = score2 !== undefined && score2 !== '';
+
+    if (score1Valide && score2Valide) {
+      const egaliteCoupeMultiChances =
+        (typeTournoi === TypeTournoi.MULTICHANCES ||
+          typeTournoi === TypeTournoi.COUPE) &&
+        score1 === score2;
+
+      const aucunGagnant =
+        score1 !== nbPtVictoire.toString() &&
+        score2 !== nbPtVictoire.toString();
+
+      if (egaliteCoupeMultiChances) {
+        btnDisabled = true;
+        action = 'negative';
+        text = t('valider_score_impossible_coupe_multichance', {
+          typeTournoi,
+        });
+      } else if (aucunGagnant) {
+        btnDisabled = false;
+        action = 'warning';
+        text = t('valider_score_sans_nb_pt_victoire', {
+          nbPtVictoire,
+        });
+      } else {
+        btnDisabled = false;
+        action = 'positive';
+        text = t('valider_score');
+      }
+    } else {
+      btnDisabled = true;
+      action = 'positive';
+      text = t('valider_score');
+    }
+
     return (
       <Button
         isDisabled={btnDisabled}
-        action="positive"
+        action={action}
         onPress={() => _envoyerResultat(match)}
       >
-        <ButtonText>{t('valider_score')}</ButtonText>
+        <ButtonText>{text}</ButtonText>
       </Button>
     );
   };
@@ -232,7 +274,6 @@ const MatchDetail = () => {
                         onChangeText={(text) =>
                           _ajoutScoreTextInputChanged(text, 2)
                         }
-                        onSubmitEditing={() => _envoyerResultat(match)}
                         ref={secondInput}
                       />
                     </Input>
