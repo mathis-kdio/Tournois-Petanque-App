@@ -48,6 +48,8 @@ const buttonStyle = tva({
         'bg-success-500 border-success-300 data-[hover=true]:bg-success-600 data-[hover=true]:border-success-400 data-[active=true]:bg-success-700 data-[active=true]:border-success-500 data-[focus-visible=true]:web:ring-indicator-info',
       negative:
         'bg-error-500 border-error-300 data-[hover=true]:bg-error-600 data-[hover=true]:border-error-400 data-[active=true]:bg-error-700 data-[active=true]:border-error-500 data-[focus-visible=true]:web:ring-indicator-info',
+      warning: // ajouté manuellement
+        'bg-warning-500 border-warning-300 data-[hover=true]:bg-warning-600 data-[hover=true]:border-warning-400 data-[active=true]:bg-warning-700 data-[active=true]:border-warning-500 data-[focus-visible=true]:web:ring-indicator-info',
       default:
         'bg-transparent data-[hover=true]:bg-background-50 data-[active=true]:bg-transparent',
     },
@@ -91,6 +93,12 @@ const buttonStyle = tva({
       class:
         'px-0 bg-transparent data-[hover=true]:bg-transparent data-[active=true]:bg-transparent',
     },
+    { // ajouté manuellement
+      action: 'warning',
+      variant: 'link',
+      class:
+        'px-0 bg-transparent data-[hover=true]:bg-transparent data-[active=true]:bg-transparent',
+    },
     {
       action: 'primary',
       variant: 'outline',
@@ -115,6 +123,12 @@ const buttonStyle = tva({
       class:
         'bg-transparent data-[hover=true]:bg-background-50 data-[active=true]:bg-transparent',
     },
+    { // ajouté manuellement
+      action: 'warning',
+      variant: 'outline',
+      class:
+        'bg-transparent data-[hover=true]:bg-background-50 data-[active=true]:bg-transparent',
+    },
   ],
 });
 
@@ -130,6 +144,8 @@ const buttonTextStyle = tva({
         'text-success-600 data-[hover=true]:text-success-600 data-[active=true]:text-success-700',
       negative:
         'text-error-600 data-[hover=true]:text-error-600 data-[active=true]:text-error-700',
+      warning: // ajouté manuellement
+        'text-warning-600 data-[hover=true]:text-warning-600 data-[active=true]:text-warning-700',
     },
     variant: {
       link: 'data-[hover=true]:underline data-[active=true]:underline',
@@ -170,6 +186,12 @@ const buttonTextStyle = tva({
       class:
         'text-typography-0 data-[hover=true]:text-typography-0 data-[active=true]:text-typography-0',
     },
+    { // ajouté manuellement
+      variant: 'solid',
+      action: 'warning',
+      class:
+        'text-typography-0 data-[hover=true]:text-typography-0 data-[active=true]:text-typography-0',
+    },
     {
       variant: 'outline',
       action: 'primary',
@@ -191,6 +213,12 @@ const buttonTextStyle = tva({
     {
       variant: 'outline',
       action: 'negative',
+      class:
+        'text-primary-500 data-[hover=true]:text-primary-500 data-[active=true]:text-primary-500',
+    },
+    { // ajouté manuellement
+      variant: 'outline',
+      action: 'warning',
       class:
         'text-primary-500 data-[hover=true]:text-primary-500 data-[active=true]:text-primary-500',
     },
@@ -220,9 +248,10 @@ const buttonIconStyle = tva({
         'text-typography-500 data-[hover=true]:text-typography-600 data-[active=true]:text-typography-700',
       positive:
         'text-success-600 data-[hover=true]:text-success-600 data-[active=true]:text-success-700',
-
       negative:
         'text-error-600 data-[hover=true]:text-error-600 data-[active=true]:text-error-700',
+      warning: // ajouté manuellement
+        'text-warning-600 data-[hover=true]:text-warning-600 data-[active=true]:text-warning-700',
     },
   },
   parentCompoundVariants: [
@@ -247,6 +276,12 @@ const buttonIconStyle = tva({
     {
       variant: 'solid',
       action: 'negative',
+      class:
+        'text-typography-0 data-[hover=true]:text-typography-0 data-[active=true]:text-typography-0',
+    },
+    { // ajouté manuellement
+      variant: 'solid',
+      action: 'warning',
       class:
         'text-typography-0 data-[hover=true]:text-typography-0 data-[active=true]:text-typography-0',
     },

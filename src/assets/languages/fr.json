@@ -46,6 +46,7 @@
     "m_j": "MJ",
     "point": "Point",
     "valider_score": "Valider le score",
+    "valider_score_sans_nb_pt_victoire": "Valider le score sans que le gagnant ait atteint {{nbPtVictoire}}",
     "score_equipe_1": "score équipe 1",
     "score_equipe_2": "score équipe 2",
     "score_placeholder": "0 à {{scoreVictoire}}",

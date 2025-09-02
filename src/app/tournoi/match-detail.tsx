@@ -153,13 +153,28 @@ const MatchDetail = () => {
 
   const _boutonValider = (match: Match) => {
     let btnDisabled = !(score1 && score2);
+    const { nbPtVictoire } = optionsTournoi;
+
+    let action: 'warning' | 'positive' = 'positive';
+    let text = t('valider_score');
+    if (
+      score1 &&
+      score1 !== nbPtVictoire.toString() &&
+      score2 &&
+      score2 !== nbPtVictoire.toString()
+    ) {
+      action = 'warning';
+      text = t('valider_score_sans_nb_pt_victoire', {
+        nbPtVictoire: nbPtVictoire,
+      });
+    }
     return (
       <Button
         isDisabled={btnDisabled}
-        action="positive"
+        action={action}
         onPress={() => _envoyerResultat(match)}
       >
-        <ButtonText>{t('valider_score')}</ButtonText>
+        <ButtonText>{text}</ButtonText>
       </Button>
     );
   };
