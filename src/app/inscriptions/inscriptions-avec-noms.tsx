@@ -12,6 +12,7 @@ import { Joueur } from '@/types/interfaces/joueur';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'expo-router';
+import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
 
 const InscriptionsAvecNoms = () => {
   const { t } = useTranslation();
@@ -42,49 +43,50 @@ const InscriptionsAvecNoms = () => {
   const _boutonCommencer = () => {
     let btnDisabled = false;
     let title = t('commencer_tournoi');
-    const nbJoueurs = listesJoueurs[optionsTournoi.mode].length;
+    const { mode, typeTournoi, typeEquipes, modeCreationEquipes } =
+      optionsTournoi;
+    const { avecNoms, avecEquipes } = listesJoueurs;
+    const nbJoueurs = listesJoueurs[mode].length;
     let nbEquipes = 0;
     let choixComplement = false;
 
-    if (optionsTournoi.typeEquipes === TypeEquipes.TETEATETE) {
+    if (typeEquipes === TypeEquipes.TETEATETE) {
       nbEquipes = nbJoueurs;
-    } else if (optionsTournoi.typeEquipes === TypeEquipes.DOUBLETTE) {
+    } else if (typeEquipes === TypeEquipes.DOUBLETTE) {
       nbEquipes = Math.ceil(nbJoueurs / 2);
     } else {
       nbEquipes = Math.ceil(nbJoueurs / 3);
     }
 
     if (
-      optionsTournoi.typeTournoi === TypeTournoi.COUPE &&
+      typeTournoi === TypeTournoi.COUPE &&
       (nbEquipes < 4 || Math.log2(nbEquipes) % 1 !== 0)
     ) {
       title = t('configuration_impossible_coupe');
       btnDisabled = true;
     } else if (
-      optionsTournoi.typeTournoi === TypeTournoi.MULTICHANCES &&
+      typeTournoi === TypeTournoi.MULTICHANCES &&
       (nbEquipes === 0 || nbEquipes % 8 !== 0)
     ) {
       title = t('configuration_impossible_multichances');
       btnDisabled = true;
-    } else if (optionsTournoi.mode === ModeTournoi.AVECEQUIPES) {
+    } else if (mode === ModeTournoi.AVECEQUIPES) {
       if (
-        listesJoueurs.avecEquipes.find(
+        modeCreationEquipes === ModeCreationEquipes.MANUELLE &&
+        avecEquipes.find(
           (el: Joueur) =>
             el.equipe === undefined || el.equipe === 0 || el.equipe > nbEquipes,
         ) !== undefined
       ) {
         title = t('joueurs_sans_equipe');
         btnDisabled = true;
-      } else if (optionsTournoi.typeEquipes === TypeEquipes.TETEATETE) {
-        if (
-          listesJoueurs.avecEquipes.length % 2 !== 0 ||
-          listesJoueurs.avecEquipes.length < 2
-        ) {
+      } else if (typeEquipes === TypeEquipes.TETEATETE) {
+        if (avecEquipes.length % 2 !== 0 || avecEquipes.length < 2) {
           title = t('nombre_equipe_multiple_2');
           btnDisabled = true;
-        } else {
+        } else if (modeCreationEquipes === ModeCreationEquipes.MANUELLE) {
           for (let i = 0; i < nbEquipes; i++) {
-            let count = listesJoueurs.avecEquipes.reduce(
+            let count = avecEquipes.reduce(
               (counter: number, obj: Joueur) =>
                 obj.equipe === i ? (counter += 1) : counter,
               0,
@@ -96,16 +98,13 @@ const InscriptionsAvecNoms = () => {
             }
           }
         }
-      } else if (optionsTournoi.typeEquipes === TypeEquipes.DOUBLETTE) {
-        if (
-          listesJoueurs.avecEquipes.length % 4 !== 0 ||
-          listesJoueurs.avecEquipes.length === 0
-        ) {
+      } else if (typeEquipes === TypeEquipes.DOUBLETTE) {
+        if (avecEquipes.length % 4 !== 0 || avecEquipes.length === 0) {
           title = t('equipe_doublette_multiple_4');
           btnDisabled = true;
-        } else {
+        } else if (modeCreationEquipes === ModeCreationEquipes.MANUELLE) {
           for (let i = 0; i < nbEquipes; i++) {
-            let count = listesJoueurs.avecEquipes.reduce(
+            let count = avecEquipes.reduce(
               (counter: number, obj: Joueur) =>
                 obj.equipe === i ? (counter += 1) : counter,
               0,
@@ -118,32 +117,30 @@ const InscriptionsAvecNoms = () => {
           }
         }
       } else if (
-        optionsTournoi.typeEquipes === TypeEquipes.TRIPLETTE &&
-        (listesJoueurs.avecEquipes.length % 6 !== 0 ||
-          listesJoueurs.avecEquipes.length === 0)
+        typeEquipes === TypeEquipes.TRIPLETTE &&
+        (avecEquipes.length % 6 !== 0 || avecEquipes.length === 0)
       ) {
         title = t('equipe_triplette_multiple_6');
         btnDisabled = true;
       }
     } else if (
-      optionsTournoi.typeEquipes === TypeEquipes.TETEATETE &&
-      (listesJoueurs.avecNoms.length % 2 !== 0 ||
-        listesJoueurs.avecNoms.length < 2)
+      typeEquipes === TypeEquipes.TETEATETE &&
+      (avecNoms.length % 2 !== 0 || avecNoms.length < 2)
     ) {
       title = t('tete_a_tete_multiple_2');
       btnDisabled = true;
-    } else if (optionsTournoi.typeEquipes === TypeEquipes.DOUBLETTE) {
-      if (listesJoueurs.avecNoms.length < 4) {
+    } else if (typeEquipes === TypeEquipes.DOUBLETTE) {
+      if (avecNoms.length < 4) {
         title = t('joueurs_insuffisants');
         btnDisabled = true;
-      } else if (listesJoueurs.avecNoms.length % 4 !== 0) {
+      } else if (avecNoms.length % 4 !== 0) {
         choixComplement = true;
       }
-    } else if (optionsTournoi.typeEquipes === TypeEquipes.TRIPLETTE) {
-      if (listesJoueurs.avecNoms.length < 6) {
+    } else if (typeEquipes === TypeEquipes.TRIPLETTE) {
+      if (avecNoms.length < 6) {
         title = t('joueurs_insuffisants');
         btnDisabled = true;
-      } else if (listesJoueurs.avecNoms.length % 6 !== 0) {
+      } else if (avecNoms.length % 6 !== 0) {
         choixComplement = true;
       }
     }
