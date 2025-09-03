@@ -33,6 +33,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'expo-router';
 import TriListeJoueurs from './inscriptions/TriListeJoueurs';
 import { Tri } from '@/types/enums/tri';
+import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
 
 export interface Props {
   loadListScreen: boolean;
@@ -204,7 +205,9 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
       listeJoueur.sort((a, b) => b.name.localeCompare(a.name));
     }
     let nbJoueurs = listeJoueur.length;
-    let avecEquipes = optionsTournoi.mode === ModeTournoi.AVECEQUIPES;
+    let avecEquipes =
+      optionsTournoi.mode === ModeTournoi.AVECEQUIPES &&
+      optionsTournoi.modeCreationEquipes === ModeCreationEquipes.MANUELLE;
     const renderItem: ListRenderItem<Joueur> = ({ item }) => (
       <ListeJoueurItem
         joueur={item}
