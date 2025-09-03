@@ -21,6 +21,7 @@ import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
+import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
 
 const ChoixModeTournoi = () => {
   const { t } = useTranslation();
@@ -33,23 +34,38 @@ const ChoixModeTournoi = () => {
 
   const [typeEquipes, setTypeEquipes] = useState(TypeEquipes.DOUBLETTE);
   const [modeTournoi, setModeTournoi] = useState(ModeTournoi.AVECNOMS);
+  const [modeCreationEquipes, setModeCreationEquipes] = useState(
+    ModeCreationEquipes.MANUELLE,
+  );
 
   const _nextStep = () => {
-    let finalModeTournoi = modeTournoi;
-    let typeTournoi = optionsTournoi.typeTournoi;
-    if (typeTournoi !== TypeTournoi.MELEDEMELE) {
-      finalModeTournoi = ModeTournoi.AVECEQUIPES;
-    }
+    //Sauvegarde typeEquipes
     const updateOptionEquipesTournoi = {
       type: 'UPDATE_OPTION_TOURNOI',
       value: ['typeEquipes', typeEquipes],
     };
     dispatch(updateOptionEquipesTournoi);
+
+    //Sauvegarde modeTournoi
+    let finalModeTournoi = modeTournoi;
+    let typeTournoi = optionsTournoi.typeTournoi;
+    if (typeTournoi !== TypeTournoi.MELEDEMELE) {
+      finalModeTournoi = ModeTournoi.AVECEQUIPES;
+    }
     const updateOptionModeTournoi = {
       type: 'UPDATE_OPTION_TOURNOI',
       value: ['mode', finalModeTournoi],
     };
     dispatch(updateOptionModeTournoi);
+
+    //Sauvegarde modeCreationEquipes
+    if (typeTournoi !== TypeTournoi.MELEDEMELE) {
+      const updateOptionModeCreationEquipes = {
+        type: 'UPDATE_OPTION_TOURNOI',
+        value: ['modeCreationEquipes', modeCreationEquipes],
+      };
+      dispatch(updateOptionModeCreationEquipes);
+    }
 
     if (
       typeTournoi !== TypeTournoi.CHAMPIONNAT &&
@@ -95,7 +111,7 @@ const ChoixModeTournoi = () => {
   };
 
   const _modeTournoi = () => {
-    let typeTournoi = optionsTournoi.typeTournoi;
+    const { typeTournoi } = optionsTournoi;
     if (typeTournoi !== TypeTournoi.MELEDEMELE) {
       return;
     }
@@ -126,6 +142,47 @@ const ChoixModeTournoi = () => {
                 {t('melee_demelee_sans_nom')}
               </RadioLabel>
             </Radio>
+          </VStack>
+        </RadioGroup>
+      </VStack>
+    );
+  };
+
+  const _typeEquipe = () => {
+    const { typeTournoi } = optionsTournoi;
+    if (typeTournoi === TypeTournoi.MELEDEMELE) {
+      return;
+    }
+    return (
+      <VStack>
+        <Text className="text-typography-white text-2xl text-center mb-4">
+          {t('mode_creation_equipe')}
+        </Text>
+        <RadioGroup
+          aria-label={t('choix_mode_creation_equipes')}
+          value={modeCreationEquipes}
+          onChange={setModeCreationEquipes}
+        >
+          <VStack space="lg">
+            {[ModeCreationEquipes.ALEATOIRE, ModeCreationEquipes.MANUELLE].map(
+              (mode) => (
+                <Radio key={mode} value={mode} size="lg">
+                  <RadioIndicator className="mr-2 border-custom-bg-inverse">
+                    <RadioIcon
+                      as={CircleIcon}
+                      className="fill-custom-bg-inverse"
+                    />
+                  </RadioIndicator>
+                  <RadioLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white">
+                    {t(
+                      mode === ModeCreationEquipes.ALEATOIRE
+                        ? 'equipes_aleatoires'
+                        : 'equipes_manuelles',
+                    )}
+                  </RadioLabel>
+                </Radio>
+              ),
+            )}
           </VStack>
         </RadioGroup>
       </VStack>
@@ -183,6 +240,7 @@ const ChoixModeTournoi = () => {
               </VStack>
             </RadioGroup>
             {_modeTournoi()}
+            {_typeEquipe()}
             {_validButton()}
           </VStack>
           <Box className="my-10">
