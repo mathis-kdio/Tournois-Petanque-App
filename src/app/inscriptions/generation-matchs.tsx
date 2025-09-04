@@ -8,7 +8,10 @@ import { generationMelee } from '@/utils/generations/tournoi-melee';
 import { generationDoublettes } from '@utils/generations/tournoiDoublettes';
 import { generationTeteATete } from '@utils/generations/tournoiTeteATete';
 import { generationTriplettes } from '@utils/generations/tournoiTriplettes';
-import { uniqueValueArrayRandOrder } from '@utils/generations/generation';
+import {
+  attributionEquipes,
+  uniqueValueArrayRandOrder,
+} from '@utils/generations/generation';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Platform } from 'react-native';
@@ -29,6 +32,9 @@ import {
   onAdError,
   onAdClosed,
 } from '@/components/adMob/AdMobGenerationTournoiInterstitiel';
+import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
+import { ModeTournoi } from '@/types/enums/modeTournoi';
+import { Joueur } from '@/types/interfaces/joueur';
 
 type SearchParams = {
   screenStackName?: string;
@@ -155,6 +161,21 @@ const GenerationMatchs = () => {
     let complement = optionsTournoi.complement;
     let typeTournoi = optionsTournoi.typeTournoi;
     let typeInscription = optionsTournoi.mode;
+    let mode = optionsTournoi.mode;
+    let modeCreationEquipes = optionsTournoi.modeCreationEquipes;
+
+    let listeJoueursInscrits: Joueur[];
+    if (
+      mode === ModeTournoi.AVECEQUIPES &&
+      modeCreationEquipes === ModeCreationEquipes.ALEATOIRE
+    ) {
+      listeJoueursInscrits = attributionEquipes(
+        listesJoueurs[typeInscription],
+        typeEquipes,
+      );
+    } else {
+      listeJoueursInscrits = listesJoueurs[typeInscription];
+    }
 
     let matchs = undefined;
     let nbMatchs = undefined;
@@ -164,7 +185,7 @@ const GenerationMatchs = () => {
     if (typeTournoi === TypeTournoi.MELEDEMELE) {
       if (typeEquipes === TypeEquipes.TETEATETE) {
         ({ matchs, nbMatchs, echecGeneration } = generationTeteATete(
-          listesJoueurs[typeInscription],
+          listeJoueursInscrits,
           nbTours,
           eviterMemeAdversaire,
         ));
@@ -176,7 +197,7 @@ const GenerationMatchs = () => {
           erreurSpeciaux,
           echecGeneration,
         } = generationDoublettes(
-          listesJoueurs[typeInscription],
+          listeJoueursInscrits,
           nbTours,
           complement,
           speciauxIncompatibles,
@@ -191,7 +212,7 @@ const GenerationMatchs = () => {
           erreurSpeciaux,
           echecGeneration,
         } = generationTriplettes(
-          listesJoueurs[typeInscription],
+          listeJoueursInscrits,
           nbTours,
           complement,
           speciauxIncompatibles,
@@ -203,7 +224,7 @@ const GenerationMatchs = () => {
       }
     } else if (typeTournoi === TypeTournoi.MELEE) {
       ({ matchs, nbMatchs, echecGeneration } = generationMelee(
-        listesJoueurs.avecEquipes,
+        listeJoueursInscrits,
         nbTours,
         typeEquipes,
         eviterMemeAdversaire,
@@ -211,16 +232,16 @@ const GenerationMatchs = () => {
     } else if (typeTournoi === TypeTournoi.COUPE) {
       ({ matchs, nbTours, nbMatchs } = generationCoupe(
         optionsTournoi,
-        listesJoueurs.avecEquipes,
+        listeJoueursInscrits,
       ));
     } else if (typeTournoi === TypeTournoi.CHAMPIONNAT) {
       ({ matchs, nbTours, nbMatchs } = generationChampionnat(
         optionsTournoi,
-        listesJoueurs.avecEquipes,
+        listeJoueursInscrits,
       ));
     } else if (typeTournoi === TypeTournoi.MULTICHANCES) {
       ({ matchs, nbTours, nbMatchs } = generationMultiChances(
-        listesJoueurs[typeInscription],
+        listeJoueursInscrits,
         typeEquipes,
       ));
     } else {
