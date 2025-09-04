@@ -284,6 +284,10 @@
     "tour": "Runde",
     "tour_numero": "Runde nr.",
     "active": "Aktiveret",
-    "desactive": "Deaktiveret"
+    "desactive": "Deaktiveret",
+    "mode_creation_equipe": "Mode de création des équipes",
+    "choix_mode_creation_equipes": "Choix du mode de création des équipes",
+    "equipes_aleatoires": "Equipes constituées aléatoirement",
+    "equipes_manuelles": "Equipes constituées manuellement"
   }
 }
