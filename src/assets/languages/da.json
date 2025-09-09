@@ -46,8 +46,8 @@
     "m_j": "Kampe",
     "point": "Antal point",
     "valider_score": "Godkend score",
-    "valider_score_sans_nb_pt_victoire": "Valider le score sans que le gagnant ait atteint {{nbPtVictoire}}",
-    "valider_score_impossible_coupe_multichance": "En {{typeTournoi}} le score doit indiquer un gagnant",
+    "valider_score_sans_nb_pt_victoire": "Valider scoren uden at vinderen har nået {{nbPtVictoire}}",
+    "valider_score_impossible_coupe_multichance": "I {{typeTournoi}} skal resultatet angive en vinder",
     "score_equipe_1": "hold 1 score",
     "score_equipe_2": "hold 2 score",
     "score_placeholder": "0 til {{scoreVictoire}}",
@@ -284,6 +284,10 @@
     "tour": "Runde",
     "tour_numero": "Runde nr.",
     "active": "Aktiveret",
-    "desactive": "Deaktiveret"
+    "desactive": "Deaktiveret",
+    "mode_creation_equipe": "Sådan opretter du hold",
+    "choix_mode_creation_equipes": "Valg af, hvordan man opretter teams",
+    "equipes_aleatoires": "Tilfældigt dannede hold",
+    "equipes_manuelles": "Manuelt dannede hold"
   }
 }
