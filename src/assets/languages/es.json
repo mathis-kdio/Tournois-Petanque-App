@@ -1,12 +1,12 @@
 {
   "translation": {
-    "nouveau_tournoi": "Nouveau Tournoi",
-    "parametres": "Paramètres",
-    "menu": "Menu",
-    "liste_joueurs": "Liste des joueurs",
+    "nouveau_tournoi": "",
+    "parametres": "",
+    "menu": "",
+    "liste_joueurs": "Liste des ",
     "suggestions_joueurs": "Suggestions de Joueurs",
     "parametres_tournoi": "Paramètres du tournoi",
-    "exporter_pdf": "Exporter en PDF",
+    "exporter_pdf": "",
     "accueil": "Accueil",
     "equipe": "Equipe",
     "nom": "Nom",
