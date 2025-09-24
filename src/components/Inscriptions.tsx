@@ -34,6 +34,7 @@ import { useRouter } from 'expo-router';
 import TriListeJoueurs from './inscriptions/TriListeJoueurs';
 import { Tri } from '@/types/enums/tri';
 import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
+import { JoueurType as JoueurTypeEnum } from '@/types/enums/joueurType';
 
 export interface Props {
   loadListScreen: boolean;
@@ -107,27 +108,36 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
     }
   }, [addPlayerTextInput, etatBouton]);
 
-  const _ajoutJoueur = () => {
+  const _ajoutJoueurFormulaire = () => {
     const { typeEquipes, mode } = optionsTournoi;
     const listeJoueurs: Joueur[] = listesJoueurs[mode];
     if (joueurText === '') {
       return;
     }
 
+    ajoutJoueur(listeJoueurs, typeEquipes, mode, joueurText, joueurType);
+
+    setJoueurText('');
+    setJoueurType('');
+    setEtatBouton(false);
+  };
+
+  const ajoutJoueur = (
+    listeJoueurs: Joueur[],
+    typeEquipes: TypeEquipes,
+    mode: ModeTournoi,
+    joueurName: string,
+    joueurType: JoueurTypeEnum | string,
+  ) => {
     let equipe = 1;
     if (listeJoueurs) {
       equipe = equipeAuto(listeJoueurs, typeEquipes);
     }
-
     const action = {
       type: 'AJOUT_JOUEUR',
-      value: [mode, joueurText, joueurType, equipe],
+      value: [mode, joueurName, joueurType, equipe],
     };
     dispatch(action);
-    setJoueurText('');
-
-    setJoueurType('');
-    setEtatBouton(false);
   };
 
   const equipeAuto = (listeJoueurs: Joueur[], typeEquipes: TypeEquipes) => {
@@ -274,7 +284,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
     if (suggestions.length > 0) {
       let partialSuggested = suggestions.slice(0, nbSuggestions);
       const renderItem: ListRenderItem<Joueur> = ({ item }) => (
-        <JoueurSuggere joueur={item} />
+        <JoueurSuggere joueur={item} ajoutJoueur={ajoutJoueur} />
       );
       return (
         <VStack>
@@ -394,7 +404,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
               autoFocus={true}
               keyboardType="default"
               onChangeText={(text) => _ajoutJoueurTextInputChanged(text)}
-              onSubmitEditing={() => _ajoutJoueur()}
+              onSubmitEditing={() => _ajoutJoueurFormulaire()}
               ref={addPlayerTextInput}
             />
           </Input>
@@ -409,7 +419,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
           <Button
             action="positive"
             isDisabled={!etatBouton}
-            onPress={() => _ajoutJoueur()}
+            onPress={() => _ajoutJoueurFormulaire()}
             size="md"
           >
             <ButtonText>{t('ajouter')}</ButtonText>
