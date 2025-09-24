@@ -27,9 +27,16 @@ import { useDispatch, useSelector } from 'react-redux';
 
 export interface Props {
   joueur: Joueur;
+  ajoutJoueur: (
+    listeJoueurs: Joueur[],
+    typeEquipes: TypeEquipes,
+    mode: ModeTournoi,
+    joueurName: string,
+    joueurType: JoueurTypeEnum | string,
+  ) => void;
 }
 
-const JoueurSuggere: React.FC<Props> = ({ joueur }) => {
+const JoueurSuggere: React.FC<Props> = ({ joueur, ajoutJoueur }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -97,15 +104,9 @@ const JoueurSuggere: React.FC<Props> = ({ joueur }) => {
   };
 
   const _addPlayer = (playerName: string) => {
-    let equipe = undefined;
-    if (optionsTournoi.typeEquipes === TypeEquipes.TETEATETE) {
-      equipe = listesJoueurs.avecEquipes.length + 1;
-    }
-    const action = {
-      type: 'AJOUT_JOUEUR',
-      value: [optionsTournoi.mode, playerName, joueurType, equipe],
-    };
-    dispatch(action);
+    const { avecEquipes } = listesJoueurs;
+    const { typeEquipes, mode } = optionsTournoi;
+    ajoutJoueur(avecEquipes, typeEquipes, mode, playerName, joueurType);
   };
 
   return (

@@ -34,6 +34,7 @@ import { useRouter } from 'expo-router';
 import TriListeJoueurs from './inscriptions/TriListeJoueurs';
 import { Tri } from '@/types/enums/tri';
 import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
+import { JoueurType as JoueurTypeEnum } from '@/types/enums/joueurType';
 
 export interface Props {
   loadListScreen: boolean;
@@ -107,25 +108,63 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
     }
   }, [addPlayerTextInput, etatBouton]);
 
-  const _ajoutJoueur = () => {
-    //Test si au moins 1 caractère
-    if (joueurText !== '') {
-      let equipe = 1;
-      if (
-        optionsTournoi.typeEquipes === TypeEquipes.TETEATETE &&
-        listesJoueurs[optionsTournoi.mode]
-      ) {
-        equipe = listesJoueurs[optionsTournoi.mode].length + 1;
-      }
-      const action = {
-        type: 'AJOUT_JOUEUR',
-        value: [optionsTournoi.mode, joueurText, joueurType, equipe],
-      };
-      dispatch(action);
-      setJoueurText('');
+  const _ajoutJoueurFormulaire = () => {
+    const { typeEquipes, mode } = optionsTournoi;
+    const listeJoueurs: Joueur[] = listesJoueurs[mode];
+    if (joueurText === '') {
+      return;
+    }
 
-      setJoueurType('');
-      setEtatBouton(false);
+    ajoutJoueur(listeJoueurs, typeEquipes, mode, joueurText, joueurType);
+
+    setJoueurText('');
+    setJoueurType('');
+    setEtatBouton(false);
+  };
+
+  const ajoutJoueur = (
+    listeJoueurs: Joueur[],
+    typeEquipes: TypeEquipes,
+    mode: ModeTournoi,
+    joueurName: string,
+    joueurType: JoueurTypeEnum | string,
+  ) => {
+    let equipe = 1;
+    if (listeJoueurs) {
+      equipe = equipeAuto(listeJoueurs, typeEquipes);
+    }
+    const action = {
+      type: 'AJOUT_JOUEUR',
+      value: [mode, joueurName, joueurType, equipe],
+    };
+    dispatch(action);
+  };
+
+  const equipeAuto = (listeJoueurs: Joueur[], typeEquipes: TypeEquipes) => {
+    if (typeEquipes === TypeEquipes.TETEATETE) {
+      return listeJoueurs.length + 1;
+    } else {
+      let nbJoueursParEquipe = typeEquipes === TypeEquipes.DOUBLETTE ? 2 : 3;
+
+      // Compter le nombre de joueurs par équipe
+      const joueursParEquipe: { [key: number]: number } = {};
+      listeJoueurs.forEach((joueur) => {
+        if (joueur.equipe) {
+          joueursParEquipe[joueur.equipe] =
+            (joueursParEquipe[joueur.equipe] || 0) + 1;
+        }
+      });
+
+      // Trouver l'équipe avec l'id le plus proche de 0 qui n'a pas dépassé nbJoueursParEquipe
+      let equipeTrouvee = 1;
+      for (let i = 1; ; i++) {
+        const nbJoueursDansEquipe = joueursParEquipe[i] || 0;
+        if (nbJoueursDansEquipe < nbJoueursParEquipe) {
+          equipeTrouvee = i;
+          break;
+        }
+      }
+      return equipeTrouvee;
     }
   };
 
@@ -245,7 +284,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
     if (suggestions.length > 0) {
       let partialSuggested = suggestions.slice(0, nbSuggestions);
       const renderItem: ListRenderItem<Joueur> = ({ item }) => (
-        <JoueurSuggere joueur={item} />
+        <JoueurSuggere joueur={item} ajoutJoueur={ajoutJoueur} />
       );
       return (
         <VStack>
@@ -365,7 +404,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
               autoFocus={true}
               keyboardType="default"
               onChangeText={(text) => _ajoutJoueurTextInputChanged(text)}
-              onSubmitEditing={() => _ajoutJoueur()}
+              onSubmitEditing={() => _ajoutJoueurFormulaire()}
               ref={addPlayerTextInput}
             />
           </Input>
@@ -380,7 +419,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
           <Button
             action="positive"
             isDisabled={!etatBouton}
-            onPress={() => _ajoutJoueur()}
+            onPress={() => _ajoutJoueurFormulaire()}
             size="md"
           >
             <ButtonText>{t('ajouter')}</ButtonText>
