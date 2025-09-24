@@ -108,24 +108,53 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
   }, [addPlayerTextInput, etatBouton]);
 
   const _ajoutJoueur = () => {
-    //Test si au moins 1 caractère
-    if (joueurText !== '') {
-      let equipe = 1;
-      if (
-        optionsTournoi.typeEquipes === TypeEquipes.TETEATETE &&
-        listesJoueurs[optionsTournoi.mode]
-      ) {
-        equipe = listesJoueurs[optionsTournoi.mode].length + 1;
-      }
-      const action = {
-        type: 'AJOUT_JOUEUR',
-        value: [optionsTournoi.mode, joueurText, joueurType, equipe],
-      };
-      dispatch(action);
-      setJoueurText('');
+    const { typeEquipes, mode } = optionsTournoi;
+    const listeJoueurs: Joueur[] = listesJoueurs[mode];
+    if (joueurText === '') {
+      return;
+    }
 
-      setJoueurType('');
-      setEtatBouton(false);
+    let equipe = 1;
+    if (listeJoueurs) {
+      equipe = equipeAuto(listeJoueurs, typeEquipes);
+    }
+
+    const action = {
+      type: 'AJOUT_JOUEUR',
+      value: [mode, joueurText, joueurType, equipe],
+    };
+    dispatch(action);
+    setJoueurText('');
+
+    setJoueurType('');
+    setEtatBouton(false);
+  };
+
+  const equipeAuto = (listeJoueurs: Joueur[], typeEquipes: TypeEquipes) => {
+    if (typeEquipes === TypeEquipes.TETEATETE) {
+      return listeJoueurs.length + 1;
+    } else {
+      let nbJoueursParEquipe = typeEquipes === TypeEquipes.DOUBLETTE ? 2 : 3;
+
+      // Compter le nombre de joueurs par équipe
+      const joueursParEquipe: { [key: number]: number } = {};
+      listeJoueurs.forEach((joueur) => {
+        if (joueur.equipe) {
+          joueursParEquipe[joueur.equipe] =
+            (joueursParEquipe[joueur.equipe] || 0) + 1;
+        }
+      });
+
+      // Trouver l'équipe avec l'id le plus proche de 0 qui n'a pas dépassé nbJoueursParEquipe
+      let equipeTrouvee = 1;
+      for (let i = 1; ; i++) {
+        const nbJoueursDansEquipe = joueursParEquipe[i] || 0;
+        if (nbJoueursDansEquipe < nbJoueursParEquipe) {
+          equipeTrouvee = i;
+          break;
+        }
+      }
+      return equipeTrouvee;
     }
   };
 
