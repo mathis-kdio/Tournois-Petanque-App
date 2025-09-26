@@ -6,6 +6,7 @@ import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import * as IntentLauncher from 'expo-intent-launcher';
 import { File, Paths } from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import { useTranslation } from 'react-i18next';
 import { generationPDFTournoi } from '@utils/pdf/tournoi';
 import { generationPDFCoupe } from '@utils/pdf/coupe';
@@ -106,13 +107,19 @@ const PDFExport = () => {
 
       const date = dateFormatDateFileName(infosTournoi.creationDate);
       const newFileName = `tournoi-petanque-${infosTournoi.tournoiId}-${date}.pdf`;
+
+      const oldfile = new File(Paths.cache, newFileName);
+      oldfile.delete();
+
       const file = new File(uri);
       file.move(Paths.cache);
       file.rename(newFileName);
 
       if (Platform.OS === 'android') {
+        // TODO : à remplacer par nouvelle API quand équivalent disponible : https://github.com/expo/expo/issues/39056
+        let contentUri = await FileSystem.getContentUriAsync(file.uri);
         IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
-          data: file.uri,
+          data: contentUri,
           flags: 1,
           type: 'application/pdf',
         }).then(() => _toggleLoading());
