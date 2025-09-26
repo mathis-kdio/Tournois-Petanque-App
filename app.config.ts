@@ -89,7 +89,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     ],
     ['./plugins-build/withDisableForcedDarkModeAndroid.js'],
     [
-      'expo-dev-launcher',
+      'expo-dev-client',
       {
         launchMode: 'most-recent',
       },

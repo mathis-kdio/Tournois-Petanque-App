@@ -5,7 +5,8 @@ import { useState } from 'react';
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import * as IntentLauncher from 'expo-intent-launcher';
-import * as FileSystem from 'expo-file-system';
+import { File, Paths } from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import { useTranslation } from 'react-i18next';
 import { generationPDFTournoi } from '@utils/pdf/tournoi';
 import { generationPDFCoupe } from '@utils/pdf/coupe';
@@ -106,14 +107,17 @@ const PDFExport = () => {
 
       const date = dateFormatDateFileName(infosTournoi.creationDate);
       const newFileName = `tournoi-petanque-${infosTournoi.tournoiId}-${date}.pdf`;
-      const newUri = FileSystem.cacheDirectory + newFileName;
-      await FileSystem.moveAsync({
-        from: uri,
-        to: newUri,
-      });
+
+      const oldfile = new File(Paths.cache, newFileName);
+      oldfile.delete();
+
+      const file = new File(uri);
+      file.move(Paths.cache);
+      file.rename(newFileName);
 
       if (Platform.OS === 'android') {
-        let contentUri = await FileSystem.getContentUriAsync(newUri);
+        // TODO : à remplacer par nouvelle API quand équivalent disponible : https://github.com/expo/expo/issues/39056
+        let contentUri = await FileSystem.getContentUriAsync(file.uri);
         IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
           data: contentUri,
           flags: 1,
@@ -121,7 +125,7 @@ const PDFExport = () => {
         }).then(() => _toggleLoading());
       } else if (Platform.OS === 'ios') {
         if (await Sharing.isAvailableAsync()) {
-          Sharing.shareAsync(newUri).then(() => _toggleLoading());
+          Sharing.shareAsync(file.uri).then(() => _toggleLoading());
         } else {
           _toggleLoading();
         }
