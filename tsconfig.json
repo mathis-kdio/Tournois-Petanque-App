@@ -3,9 +3,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "strict": true,
-    "jsxImportSource": "nativewind",
     "paths": {
-      "tailwind.config": ["./tailwind.config.js"],
+      "tailwind.config": [
+        "tailwind.config.js"
+      ],
       "@/*": [
         "./src/*"
       ],
@@ -32,4 +33,7 @@
       ]
     }
   },
+  "exclude": [
+    "node_modules"
+  ]
 }
