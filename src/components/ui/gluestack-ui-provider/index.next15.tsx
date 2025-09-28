@@ -1,3 +1,4 @@
+// This is a Next.js 15 compatible version of the GluestackUIProvider
 'use client';
 import React, { useEffect, useLayoutEffect } from 'react';
 import { config } from './config';
@@ -5,9 +6,6 @@ import { OverlayProvider } from '@gluestack-ui/core/overlay/creator';
 import { ToastProvider } from '@gluestack-ui/core/toast/creator';
 import { setFlushStyles } from '@gluestack-ui/utils/nativewind-utils';
 import { script } from './script';
-
-export type ThemeType = 'basic' | 'original';
-export type ModeType = 'light' | 'dark' | 'system';
 
 const variableStyleTagId = 'nativewind-style';
 const createStyle = (styleTagId: string) => {
@@ -21,23 +19,20 @@ export const useSafeLayoutEffect =
   typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 export function GluestackUIProvider({
-  theme,
   mode = 'light',
   ...props
 }: {
-  theme: ThemeType; 
-  mode?: ModeType;
+  mode?: 'light' | 'dark' | 'system';
   children?: React.ReactNode;
 }) {
   let cssVariablesWithMode = ``;
-  let themeConfig = config[theme]
-  Object.keys(themeConfig).forEach((configKey) => {
+  Object.keys(config).forEach((configKey) => {
     cssVariablesWithMode +=
       configKey === 'dark' ? `\n .dark {\n ` : `\n:root {\n`;
     const cssVariables = Object.keys(
-      themeConfig[configKey as keyof typeof themeConfig]
+      config[configKey as keyof typeof config]
     ).reduce((acc: string, curr: string) => {
-      acc += `${curr}:${themeConfig[configKey as keyof typeof themeConfig][curr]}; `;
+      acc += `${curr}:${config[configKey as keyof typeof config][curr]}; `;
       return acc;
     }, '');
     cssVariablesWithMode += `${cssVariables} \n}`;
@@ -58,7 +53,7 @@ export function GluestackUIProvider({
         documentElement.style.colorScheme = mode;
       }
     }
-  }, [mode, theme]);
+  }, [mode]);
 
   useSafeLayoutEffect(() => {
     if (mode !== 'system') return;
@@ -70,32 +65,23 @@ export function GluestackUIProvider({
   }, [handleMediaQuery]);
 
   useSafeLayoutEffect(() => {
-    if (typeof window === 'undefined') return;
-    const documentElement = document.documentElement;
-    if (!documentElement) return
-    const head = documentElement.querySelector('head');
-    if (!head) return;
-
-    const nodeToRemove = document.querySelector(`[id='${variableStyleTagId}']`);
-    if (nodeToRemove) {
-      head.removeChild(nodeToRemove)
+    if (typeof window !== 'undefined') {
+      const documentElement = document.documentElement;
+      if (documentElement) {
+        const head = documentElement.querySelector('head');
+        let style = head?.querySelector(`[id='${variableStyleTagId}']`);
+        if (!style) {
+          style = createStyle(variableStyleTagId);
+          style.innerHTML = cssVariablesWithMode;
+          if (head) head.appendChild(style);
+        }
+      }
     }
-    let style = createStyle(variableStyleTagId);
-    style.innerHTML = cssVariablesWithMode;
-    head.appendChild(style);
-  }, [mode, theme]);
+  }, []);
 
   return (
-    <>
-      <script
-        suppressHydrationWarning
-        dangerouslySetInnerHTML={{
-          __html: `(${script.toString()})('${mode}')`,
-        }}
-      />
-      <OverlayProvider>
-        <ToastProvider>{props.children}</ToastProvider>
-      </OverlayProvider>
-    </>
+    <OverlayProvider>
+      <ToastProvider>{props.children}</ToastProvider>
+    </OverlayProvider>
   );
 }

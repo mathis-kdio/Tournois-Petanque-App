@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { H4 } from '@expo/html-elements';
-import { createActionsheet } from '@gluestack-ui/actionsheet';
+import { createActionsheet } from '@gluestack-ui/core/actionsheet/creator';
 import {
   Pressable,
   View,
@@ -13,9 +13,9 @@ import {
   PressableProps,
   ViewStyle,
 } from 'react-native';
-import { PrimitiveIcon, UIIcon } from '@gluestack-ui/icon';
-import { tva } from '@gluestack-ui/nativewind-utils/tva';
-import type { VariantProps } from '@gluestack-ui/nativewind-utils';
+import { PrimitiveIcon, UIIcon } from '@gluestack-ui/core/icon/creator';
+import { tva } from '@gluestack-ui/utils/nativewind-utils';
+import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
 import { cssInterop } from 'nativewind';
 import {
   Motion,
@@ -106,7 +106,7 @@ cssInterop(PrimitiveIcon, {
 const actionsheetStyle = tva({ base: 'w-full h-full web:pointer-events-none' });
 
 const actionsheetContentStyle = tva({
-  base: 'items-center rounded-tl-3xl rounded-tr-3xl p-5 pt-2 bg-background-0 web:pointer-events-auto web:select-none shadow-hard-5 border border-b-0 border-outline-100',
+  base: 'items-center rounded-tl-3xl rounded-tr-3xl p-5 pt-2 bg-background-0 web:pointer-events-auto web:select-none shadow-hard-5 border border-b-0 border-outline-100 pb-safe',
 });
 
 const actionsheetItemStyle = tva({
@@ -352,10 +352,10 @@ const ActionsheetItemText = React.forwardRef<
     <UIActionsheet.ItemText
       className={actionsheetItemTextStyle({
         class: className,
-        isTruncated,
-        bold,
-        underline,
-        strikeThrough,
+        isTruncated: Boolean(isTruncated),
+        bold: Boolean(bold),
+        underline: Boolean(underline),
+        strikeThrough: Boolean(strikeThrough),
         size,
       })}
       ref={ref}
@@ -500,14 +500,14 @@ const ActionsheetSectionHeaderText = React.forwardRef<
     <UIActionsheet.SectionHeaderText
       className={actionsheetSectionHeaderTextStyle({
         class: className,
-        isTruncated,
-        bold,
-        underline,
-        strikeThrough,
+        isTruncated: Boolean(isTruncated),
+        bold: Boolean(bold),
+        underline: Boolean(underline),
+        strikeThrough: Boolean(strikeThrough),
         size,
-        sub,
-        italic,
-        highlight,
+        sub: Boolean(sub),
+        italic: Boolean(italic),
+        highlight: Boolean(highlight),
       })}
       ref={ref}
       {...props}

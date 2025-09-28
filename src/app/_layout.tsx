@@ -44,6 +44,7 @@ Sentry.init({
   integrations: [navigationIntegration, Sentry.mobileReplayIntegration()],
   enableNativeFramesTracking: !isRunningInExpoGo(),
   attachStacktrace: true,
+  enableLogs: true,
 });
 
 const GluestackWrapper = ({ children }: { children: React.ReactNode }) => {
