@@ -1,4 +1,16 @@
 {
+  "34": {
+    "id": "34",
+    "version": "2.4.0",
+    "infos": [
+      "- Ajout de la génération d'équipes aléatoirement plutôt que manuellement",
+      "- Ajout possibilité d'avoir un match avec un score différent de celui attendu",
+      "- Amélioration de l'affichage et de la création d'un tournoi mêlée",
+      "- Amélioration de l'équipe par défaut pour les tournois avec des équipes manuelles",
+      "- Correction des checkboxs et du renommage des joueurs dans un tournoi",
+      "- Ajout de textes non traduits"
+    ]
+  },
   "33": {
     "id": "33",
     "version": "2.3.0",
