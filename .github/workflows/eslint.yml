@@ -28,14 +28,15 @@ jobs:
 
       - name: Install ESLint
         run: |
-          npm install eslint@^9.29.0
-          npm install eslint-config-expo@~9.2.0
+          npm install eslint@^9.36.0
+          npm install eslint-config-expo@~10.0.0
           npm install @microsoft/eslint-formatter-sarif@3.1.0
 
       - name: Run ESLint
         env:
           SARIF_ESLINT_IGNORE_SUPPRESSED: "true"
         run: npx eslint .
+          --concurrency=auto
           --format @microsoft/eslint-formatter-sarif
           --output-file eslint-results.sarif
         continue-on-error: true
