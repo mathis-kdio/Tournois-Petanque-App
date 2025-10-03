@@ -1,6 +1,6 @@
 import { ConfigContext, ExpoConfig } from '@expo/config';
 
-const version = '2.4.0-beta-1';
+const version = '2.4.0';
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   name: 'Tournois Pétanque App',

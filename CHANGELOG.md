@@ -1,5 +1,18 @@
 # Change Log
 
+## [2.4.0] - 03-10-2025
+### Ajouté
+- Ajout de la génération d'équipes aléatoirement plutôt que manuellement
+- Ajout possibilité d'avoir un match avec un score différent de celui attendu
+
+### Changement
+- Amélioration de l'affichage et de la création d'un tournoi mêlée
+- Amélioration de l'équipe par défaut pour les tournois avec des équipes manuelles
+
+### Corrigé
+- Correction des checkboxs et du renommage des joueurs dans un tournoi
+- Ajout de textes non traduits
+
 ## [2.3.0] - 22-07-2025
 ### Ajouté
 - Ajout des thèmes clair et sombre
