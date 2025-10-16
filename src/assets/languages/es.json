@@ -1,12 +1,12 @@
 {
   "translation": {
-    "nouveau_tournoi": "",
+    "nouveau_tournoi": "Nouveau Tournoi",
     "parametres": "Paramètres",
     "menu": "Menu",
-    "liste_joueurs": "",
+    "liste_joueurs": "Liste des joueurs",
     "suggestions_joueurs": "Sugerencias de jugadores",
     "parametres_tournoi": "Parámetros de torneo",
-    "exporter_pdf": "https://crowdin.com/editor/tournois-de-ptanque-gcu/19/fr-es?view=side-by-side#1535",
+    "exporter_pdf": "Exporter en PDF",
     "accueil": "Inicio",
     "equipe": "Equipo",
     "nom": "Nombre",
