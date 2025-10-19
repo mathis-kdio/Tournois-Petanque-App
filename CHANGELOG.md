@@ -1,5 +1,13 @@
 # Change Log
 
+## [2.4.1] - 19-10-2025
+### Ajouté
+
+### Changement
+
+### Corrigé
+- Correction de l'export PDF
+
 ## [2.4.0] - 03-10-2025
 ### Ajouté
 - Ajout de la génération d'équipes aléatoirement plutôt que manuellement
