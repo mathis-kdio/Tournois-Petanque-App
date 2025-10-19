@@ -109,7 +109,9 @@ const PDFExport = () => {
       const newFileName = `tournoi-petanque-${infosTournoi.tournoiId}-${date}.pdf`;
 
       const oldfile = new File(Paths.cache, newFileName);
-      oldfile.delete();
+      if (oldfile.exists) {
+        oldfile.delete();
+      }
 
       const file = new File(uri);
       file.move(Paths.cache);
