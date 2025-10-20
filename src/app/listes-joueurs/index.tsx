@@ -11,12 +11,11 @@ import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { ListRenderItem } from 'react-native';
-import {
-  ListeJoueursInfos,
-  ListeJoueurs as ListeJoueursInterface,
-} from '@/types/interfaces/listeJoueurs';
-import { useDispatch, useSelector } from 'react-redux';
+import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
+import { useDispatch } from 'react-redux';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { getAllListesJoueurs } from '@/repositories/listesJoueursRepository';
 
 type SearchParams = {
   loadListScreen?: string;
@@ -28,9 +27,17 @@ const ListesJoueurs = () => {
   const { loadListScreen = 'false' } = useLocalSearchParams<SearchParams>();
   const dispatch = useDispatch();
 
-  const savedLists = useSelector(
-    (state: any) => state.listesJoueurs.listesSauvegarde,
-  );
+  const [listesJoueurs, setListesJoueurs] = useState<ListeJoueursInfos[]>([]);
+
+  useEffect(() => {
+    const fetchListesJoueurs = async () => {
+      setListesJoueurs(await getAllListesJoueurs());
+    };
+
+    fetchListesJoueurs();
+  }, []);
+
+  console.log(listesJoueurs);
 
   const _addList = () => {
     const actionRemoveList = {
@@ -73,32 +80,26 @@ const ListesJoueurs = () => {
     }
   };
 
-  let nbLists = 0;
-  if (savedLists) {
-    nbLists += savedLists.avecEquipes.length;
-    nbLists += savedLists.avecNoms.length;
-    nbLists += savedLists.sansNoms.length;
-  }
-  const renderItem: ListRenderItem<ListeJoueursInterface> = ({ item }) => (
-    <ListeJoueursItem list={item} loadListScreen={loadListScreen === 'true'} />
+  const renderItem: ListRenderItem<ListeJoueursInfos> = ({ item }) => (
+    <ListeJoueursItem
+      listeJoueursInfos={item}
+      loadListScreen={loadListScreen === 'true'}
+    />
   );
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <VStack className="flex-1 bg-custom-background">
         <TopBarBack title={t('listes_joueurs_navigation_title')} />
         <Text className="text-typography-white text-xl text-center">
-          {t('nombre_listes', { nb: nbLists })}
+          {t('nombre_listes', { nb: listesJoueurs.length })}
         </Text>
         <Box className="px-10">{_addListButton()}</Box>
         <VStack className="flex-1 my-2">
           <FlatList
-            data={savedLists.avecNoms}
+            data={listesJoueurs}
             initialNumToRender={20}
-            keyExtractor={(item: ListeJoueursInterface) => {
-              let listeJoueursInfos = item[
-                item.length - 1
-              ] as ListeJoueursInfos;
-              return listeJoueursInfos.listId.toString();
+            keyExtractor={(item: ListeJoueursInfos) => {
+              return item.listId.toString();
             }}
             renderItem={renderItem}
             className="h-1"
