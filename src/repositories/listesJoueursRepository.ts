@@ -1,6 +1,6 @@
 import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
 import { ListesJoueurs, listesJoueurs } from '@/db/schema/listesJoueurs';
-import { ExpoSQLiteDatabase } from 'drizzle-orm/expo-sqlite';
+import { drizzleDb } from '@/db/drizzleClient';
 
 function formatListesJoueurs(lJ: ListesJoueurs): ListeJoueursInfos {
   return {
@@ -9,12 +9,8 @@ function formatListesJoueurs(lJ: ListesJoueurs): ListeJoueursInfos {
   };
 }
 
-export async function getAllListesJoueurs(
-  db: ExpoSQLiteDatabase,
-): Promise<ListeJoueursInfos[]> {
-  console.log('TEST');
-  console.log(db);
-  const result = await db.select().from(listesJoueurs);
+export async function getAllListesJoueurs(): Promise<ListeJoueursInfos[]> {
+  const result = await drizzleDb.select().from(listesJoueurs);
   //let result: ListesJoueurs[] = [];
   return result.map(formatListesJoueurs);
 }
