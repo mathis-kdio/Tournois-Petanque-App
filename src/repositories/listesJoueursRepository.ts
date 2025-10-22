@@ -1,5 +1,9 @@
 import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
-import { ListesJoueurs, listesJoueurs } from '@/db/schema/listesJoueurs';
+import {
+  ListesJoueurs,
+  listesJoueurs,
+  NewListesJoueurs,
+} from '@/db/schema/listesJoueurs';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 
 function formatListesJoueurs(lJ: ListesJoueurs): ListeJoueursInfos {
@@ -13,6 +17,15 @@ export async function getAllListesJoueurs(): Promise<ListeJoueursInfos[]> {
   const result = await getDrizzleDb().select().from(listesJoueurs);
   //let result: ListesJoueurs[] = [];
   return result.map(formatListesJoueurs);
+}
+
+export async function saveListeJoueurs(
+  newListesJoueurs: NewListesJoueurs,
+): Promise<ListesJoueurs[]> {
+  return await getDrizzleDb()
+    .insert(listesJoueurs)
+    .values(newListesJoueurs)
+    .returning();
 }
 
 /*

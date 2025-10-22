@@ -2,7 +2,7 @@ import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 
 export const listesJoueurs = sqliteTable('listes_joueurs', {
   id: integer('id').primaryKey(),
-  name: text('name').notNull(),
+  name: text('name'),
   updatedAt: integer('updated_at'),
   synced: integer('synced').default(0),
 });

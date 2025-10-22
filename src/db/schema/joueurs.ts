@@ -3,10 +3,10 @@ import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 
 export const joueurs = sqliteTable('joueurs', {
   id: integer('id').primaryKey(),
-  joueurId: text('joueur_id'),
+  joueurId: integer('joueur_id'),
   name: text('name'),
   type: text('type').$type<JoueurType>(),
-  equipe: text('equipe'),
+  equipe: integer('equipe'),
 });
 
 export type Joueur = typeof joueurs.$inferSelect;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { drizzle } from 'drizzle-orm/expo-sqlite';
+import { drizzle, ExpoSQLiteDatabase } from 'drizzle-orm/expo-sqlite';
 import { openDatabaseAsync } from 'expo-sqlite';
 import { migrate } from 'drizzle-orm/expo-sqlite/migrator';
 import migrations from 'drizzle/migrations';
@@ -24,7 +24,7 @@ export function useDatabaseMigrations() {
   return { db };
 }
 
-export function getDrizzleDb() {
+export function getDrizzleDb(): ExpoSQLiteDatabase {
   if (!drizzleDbInstance) {
     throw new Error("La base de données n'est pas initialisée.");
   }
