@@ -14,7 +14,7 @@ import '@expo/metro-runtime'; //Fast-refresh web
 import { AuthProvider } from '@/components/supabase/SessionProvider';
 import { Stack, useNavigationContainerRef } from 'expo-router';
 import { isRunningInExpoGo } from 'expo';
-import React, { Suspense, useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SELECTED_LANGUAGE_KEY } from '@/utils/async-storage/key';
 import {
@@ -23,14 +23,10 @@ import {
 } from '@/components/ui/theme-provider/ThemeProvider';
 import { getTheme, getThemeColor } from '@/utils/theme/theme';
 import { setBackgroundColorAsync } from 'expo-navigation-bar';
-import { ActivityIndicator, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import { cssInterop } from 'nativewind';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
-import { openDatabaseSync, SQLiteProvider } from 'expo-sqlite';
-import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
-import migrations from 'drizzle/migrations';
-import { drizzle } from 'drizzle-orm/expo-sqlite';
-import { setDatabaseInstance } from '@/db/drizzleClient';
+import { DatabaseInitializer } from '@/db/DatabaseInitializer';
 
 cssInterop(FontAwesome5, { className: 'style' });
 cssInterop(MaterialCommunityIcons, { className: 'style' });
@@ -52,7 +48,7 @@ Sentry.init({
   enableLogs: true,
 });
 
-const GluestackWrapper = ({ children }: { children: React.ReactNode }) => {
+const GluestackWrapper = ({ children }: { children: ReactNode }) => {
   const { theme } = useTheme();
   const { globalTheme, style } = getTheme(theme);
   return (
@@ -70,8 +66,6 @@ const StatusBarWrapper = () => {
   }
   return <StatusBar backgroundColor={color} />;
 };
-
-export const DATABASE_NAME = 'database';
 
 export default function RootLayout() {
   let persistor = persistStore(Store);
@@ -95,35 +89,21 @@ export default function RootLayout() {
     fetchLanguage();
   }, []);
 
-  const sqLiteDatabase = openDatabaseSync(DATABASE_NAME);
-  const expoSQLiteDatabase = drizzle(sqLiteDatabase);
-  const { error } = useMigrations(expoSQLiteDatabase, migrations);
-  if (!!error) {
-    console.log(error);
-  }
-
   return (
     <Provider store={Store}>
       <PersistGate persistor={persistor}>
-        <Suspense fallback={<ActivityIndicator size="large" />}>
-          <SQLiteProvider
-            databaseName={DATABASE_NAME}
-            options={{ enableChangeListener: true }}
-            onInit={setDatabaseInstance}
-            useSuspense
-          >
-            <AuthProvider>
-              <ThemeProvider>
-                <GluestackWrapper>
-                  <I18nextProvider i18n={i18n} defaultNS={'common'}>
-                    <Stack screenOptions={{ headerShown: false }} />
-                    <StatusBarWrapper />
-                  </I18nextProvider>
-                </GluestackWrapper>
-              </ThemeProvider>
-            </AuthProvider>
-          </SQLiteProvider>
-        </Suspense>
+        <DatabaseInitializer>
+          <AuthProvider>
+            <ThemeProvider>
+              <GluestackWrapper>
+                <I18nextProvider i18n={i18n} defaultNS={'common'}>
+                  <Stack screenOptions={{ headerShown: false }} />
+                  <StatusBarWrapper />
+                </I18nextProvider>
+              </GluestackWrapper>
+            </ThemeProvider>
+          </AuthProvider>
+        </DatabaseInitializer>
       </PersistGate>
     </Provider>
   );

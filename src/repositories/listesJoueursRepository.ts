@@ -1,6 +1,6 @@
 import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
 import { ListesJoueurs, listesJoueurs } from '@/db/schema/listesJoueurs';
-import { drizzleDb } from '@/db/drizzleClient';
+import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 
 function formatListesJoueurs(lJ: ListesJoueurs): ListeJoueursInfos {
   return {
@@ -10,7 +10,7 @@ function formatListesJoueurs(lJ: ListesJoueurs): ListeJoueursInfos {
 }
 
 export async function getAllListesJoueurs(): Promise<ListeJoueursInfos[]> {
-  const result = await drizzleDb.select().from(listesJoueurs);
+  const result = await getDrizzleDb().select().from(listesJoueurs);
   //let result: ListesJoueurs[] = [];
   return result.map(formatListesJoueurs);
 }

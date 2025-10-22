@@ -20,19 +20,19 @@ import React, { useState } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
-import {
-  ListeJoueurs,
-  ListeJoueursInfos,
-} from '@/types/interfaces/listeJoueurs';
+import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'expo-router';
 
 export interface Props {
-  list: ListeJoueurs;
+  listeJoueursInfos: ListeJoueursInfos;
   loadListScreen: boolean;
 }
 
-const ListeJoueursItem: React.FC<Props> = ({ list, loadListScreen }) => {
+const ListeJoueursItem: React.FC<Props> = ({
+  listeJoueursInfos,
+  loadListScreen,
+}) => {
   const { t } = useTranslation();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -239,7 +239,6 @@ const ListeJoueursItem: React.FC<Props> = ({ list, loadListScreen }) => {
     }
   };
 
-  let listeJoueursInfos = list.at(-1) as ListeJoueursInfos;
   return (
     <HStack space="md" className="px-2 my-2 items-center">
       <Box className="flex-1">{_listName(listeJoueursInfos)}</Box>
