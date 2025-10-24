@@ -5,6 +5,7 @@ import {
   NewListesJoueurs,
 } from '@/db/schema/listesJoueurs';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
+import { eq } from 'drizzle-orm';
 
 function formatListesJoueurs(lJ: ListesJoueurs): ListeJoueursInfos {
   return {
@@ -13,34 +14,29 @@ function formatListesJoueurs(lJ: ListesJoueurs): ListeJoueursInfos {
   };
 }
 
-export async function getAllListesJoueurs(): Promise<ListeJoueursInfos[]> {
-  const result = await getDrizzleDb().select().from(listesJoueurs);
-  //let result: ListesJoueurs[] = [];
-  return result.map(formatListesJoueurs);
-}
+export const ListesJoueursRepository = {
+  async getAllListesJoueurs(): Promise<ListeJoueursInfos[]> {
+    const result = await getDrizzleDb().select().from(listesJoueurs);
+    return result.map(formatListesJoueurs);
+  },
 
-export async function saveListeJoueurs(
-  newListesJoueurs: NewListesJoueurs,
-): Promise<ListesJoueurs[]> {
-  return await getDrizzleDb()
-    .insert(listesJoueurs)
-    .values(newListesJoueurs)
-    .returning();
-}
+  async insertListeJoueurs(
+    newListesJoueurs: NewListesJoueurs,
+  ): Promise<ListesJoueurs[]> {
+    return await getDrizzleDb()
+      .insert(listesJoueurs)
+      .values(newListesJoueurs)
+      .returning();
+  },
 
-/*
-export async function getNotesByUser(userId: number): Promise<Note[]> {
-  return db.select().from(notes).where(eq(notes.userId, userId));
-}
+  async deleteListeJoueurs(id: number): Promise<void> {
+    await getDrizzleDb().delete(listesJoueurs).where(eq(listesJoueurs.id, id));
+  },
 
-export async function addNote(newNote: NewNote): Promise<void> {
-  await db.insert(notes).values({
-    ...newNote,
-    updatedAt: Date.now(),
-  });
-}
-
-export async function deleteNote(id: number): Promise<void> {
-  await db.delete(notes).where(eq(notes.id, id));
-}
-*/
+  async renameListeJoueurs(id: number, name: string): Promise<void> {
+    await getDrizzleDb()
+      .update(listesJoueurs)
+      .set({ name })
+      .where(eq(listesJoueurs.id, id));
+  },
+};

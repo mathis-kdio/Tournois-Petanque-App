@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import Loading from '@/components/Loading';
 import { listeType } from '@/types/types/searchParams';
-import { saveListeJoueurs } from '@/repositories/listesJoueursRepository';
+import { ListesJoueursRepository } from '@/repositories/listesJoueursRepository';
 import { NewJoueur, NewJoueursListes, NewListesJoueurs } from '@/db/schema';
 import { saveJoueurs } from '@/repositories/joueursRepository';
 import { saveJoueursListes } from '@/repositories/joueursListesRepository';
@@ -37,7 +37,7 @@ const CreateListeJoueur = () => {
       console.log(listesJoueurs.sauvegarde);
       const a: NewListesJoueurs = {};
       console.log('a', a);
-      const z = await saveListeJoueurs(a);
+      const z = await ListesJoueursRepository.insertListeJoueurs(a);
       console.log('z', z);
 
       const b: NewJoueur[] = [];

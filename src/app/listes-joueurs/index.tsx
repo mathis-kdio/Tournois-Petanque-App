@@ -14,28 +14,48 @@ import { ListRenderItem } from 'react-native';
 import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
 import { useDispatch } from 'react-redux';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { getAllListesJoueurs } from '@/repositories/listesJoueursRepository';
+import { useCallback, useEffect, useState } from 'react';
+import { useListesJoueursRepository } from '@/repositories/useListesJoueursRepository';
 
 type SearchParams = {
   loadListScreen?: string;
 };
 
-const ListesJoueurs = () => {
+const ListesJoueursScreen = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const { loadListScreen = 'false' } = useLocalSearchParams<SearchParams>();
   const dispatch = useDispatch();
 
+  const { getAllListesJoueurs, deleteListeJoueurs, renameListeJoueurs } =
+    useListesJoueursRepository();
   const [listesJoueurs, setListesJoueurs] = useState<ListeJoueursInfos[]>([]);
 
   useEffect(() => {
-    const fetchListesJoueurs = async () => {
-      setListesJoueurs(await getAllListesJoueurs());
+    const fetchData = async () => {
+      const result = await getAllListesJoueurs();
+      setListesJoueurs(result);
     };
+    fetchData();
+  }, [getAllListesJoueurs]);
 
-    fetchListesJoueurs();
-  }, []);
+  const handleDelete = useCallback(
+    async (id: number) => {
+      await deleteListeJoueurs(id);
+      setListesJoueurs((prev) => prev.filter((u) => u.listId !== id));
+    },
+    [deleteListeJoueurs],
+  );
+
+  const handleUpdateName = useCallback(
+    async (id: number, name: string) => {
+      await renameListeJoueurs(id, name);
+      setListesJoueurs((prev) =>
+        prev.map((u) => (u.listId === id ? { ...u, name: name } : u)),
+      );
+    },
+    [renameListeJoueurs],
+  );
 
   console.log(listesJoueurs);
 
@@ -84,6 +104,8 @@ const ListesJoueurs = () => {
     <ListeJoueursItem
       listeJoueursInfos={item}
       loadListScreen={loadListScreen === 'true'}
+      onDelete={handleDelete}
+      onUpdateName={handleUpdateName}
     />
   );
   return (
@@ -110,4 +132,4 @@ const ListesJoueurs = () => {
   );
 };
 
-export default ListesJoueurs;
+export default ListesJoueursScreen;

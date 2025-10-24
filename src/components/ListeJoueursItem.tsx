@@ -27,11 +27,15 @@ import { useRouter } from 'expo-router';
 export interface Props {
   listeJoueursInfos: ListeJoueursInfos;
   loadListScreen: boolean;
+  onDelete: (id: number) => void;
+  onUpdateName: (id: number, name: string) => void;
 }
 
 const ListeJoueursItem: React.FC<Props> = ({
   listeJoueursInfos,
   loadListScreen,
+  onDelete,
+  onUpdateName,
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -119,11 +123,8 @@ const ListeJoueursItem: React.FC<Props> = ({
   };
 
   const _removeList = (listId: number) => {
-    const actionRemoveList = {
-      type: 'REMOVE_SAVED_LIST',
-      value: { typeInscription: 'avecNoms', listId: listId },
-    };
-    dispatch(actionRemoveList);
+    onDelete(listId);
+    setModalDeleteIsOpen(false);
   };
 
   const _showRenameList = (listId: number) => {
@@ -157,19 +158,12 @@ const ListeJoueursItem: React.FC<Props> = ({
   };
 
   const _renameList = (listId: number) => {
-    if (listNameText !== '') {
-      setRenommerOn(false);
-      const actionRenameList = {
-        type: 'RENAME_SAVED_LIST',
-        value: {
-          typeInscription: 'avecNoms',
-          listId: listId,
-          newName: listNameText,
-        },
-      };
-      dispatch(actionRenameList);
-      setListNameText('');
+    if (listNameText === '') {
+      return;
     }
+    onUpdateName(listId, listNameText);
+    setListNameText('');
+    setRenommerOn(false);
   };
 
   const _listTextInputChanged = (text: string) => {
@@ -215,9 +209,8 @@ const ListeJoueursItem: React.FC<Props> = ({
   };
 
   const _listName = (listeJoueursInfos: ListeJoueursInfos) => {
-    let listName = listeJoueursInfos.name
-      ? listeJoueursInfos.name
-      : 'n°' + listeJoueursInfos.listId;
+    const { name, listId } = listeJoueursInfos;
+    let listName = name ? name : `n°' ${listId}`;
     if (renommerOn) {
       return (
         <Input className="border-custom-bg-inverse">
@@ -226,14 +219,14 @@ const ListeJoueursItem: React.FC<Props> = ({
             placeholder={listName}
             autoFocus={true}
             onChangeText={(text) => _listTextInputChanged(text)}
-            onSubmitEditing={() => _renameList(listeJoueursInfos.listId)}
+            onSubmitEditing={() => _renameList(listId)}
           />
         </Input>
       );
     } else {
       return (
         <Text className="text-typography-white">
-          {t('liste')} {listName}
+          {`${t('liste')} ${listName}`}
         </Text>
       );
     }
