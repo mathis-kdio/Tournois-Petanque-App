@@ -26,14 +26,14 @@ import { CommonActions } from '@react-navigation/native';
 
 export interface Props {
   tournoi: TournoiModel;
-  _showModalTournoiInfos: (tournoi: TournoiModel) => void;
+  showModalInfos: (tournoi: TournoiModel) => void;
   onDelete: (id: number) => void;
   onUpdateName: (id: number, name: string) => void;
 }
 
 const ListeTournoiItem: React.FC<Props> = ({
   tournoi,
-  _showModalTournoiInfos,
+  showModalInfos,
   onDelete,
   onUpdateName,
 }) => {
@@ -195,7 +195,7 @@ const ListeTournoiItem: React.FC<Props> = ({
           name="info-circle"
           backgroundColor="#004282"
           iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
-          onPress={() => _showModalTournoiInfos(tournoi)}
+          onPress={() => showModalInfos(tournoi)}
         />
         <Button
           isDisabled={btnDisabled}
