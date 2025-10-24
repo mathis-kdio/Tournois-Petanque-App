@@ -19,7 +19,7 @@ import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
 import { Box } from '@/components/ui/box';
 import { dateFormatDateFileName } from '@/utils/date';
-import { Tournoi } from '@/types/interfaces/tournoi';
+import { TournoiModel } from '@/types/interfaces/tournoi';
 import { useSelector } from 'react-redux';
 import { StyledSwitch } from '@/components/ui/switch/styled-switch';
 
@@ -51,7 +51,7 @@ const PDFExport = () => {
     let tournoiID = optionsTournoi.tournoiID;
     let infosTournoi = listeTournois.find(
       (e) => e.tournoiId === tournoiID,
-    ) as Tournoi;
+    ) as TournoiModel;
     let nbMatchsParTour = 0;
     if (typeTournoi === TypeTournoi.COUPE) {
       nbMatchsParTour = (nbMatchs + 1) / 2;

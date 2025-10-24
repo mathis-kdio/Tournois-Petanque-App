@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { FontAwesome5 } from '@expo/vector-icons';
 import BoutonMenuHeaderNav from '@/components/BoutonMenuHeaderNavigation';
 import { Text } from '@/components/ui/text';
-import { Tournoi } from '@/types/interfaces/tournoi';
+import { TournoiModel } from '@/types/interfaces/tournoi';
 import { captureMessage } from '@sentry/react-native';
 import { useSelector } from 'react-redux';
 import { useTheme } from '@/components/ui/theme-provider/ThemeProvider';
@@ -24,7 +24,7 @@ export default function TabLayout() {
     if (listeTournois !== undefined && listeMatchs !== undefined) {
       let tournoiId = listeMatchs.at(-1).tournoiID;
       let tournoi = listeTournois.find(
-        (element: Tournoi) => element.tournoiId === tournoiId,
+        (element: TournoiModel) => element.tournoiId === tournoiId,
       );
       if (tournoi) {
         tournoiName =

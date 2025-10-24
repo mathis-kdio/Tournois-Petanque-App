@@ -1,7 +1,7 @@
 import { Match } from './match';
 import { OptionsTournoi } from './optionsTournoi';
 
-export interface Tournoi {
+export interface TournoiModel {
   tournoiId: number;
   name?: string;
   creationDate: Date;

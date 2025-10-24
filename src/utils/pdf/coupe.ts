@@ -3,7 +3,7 @@ import { Match } from '@/types/interfaces/match';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { ranking } from '@utils/ranking';
 import { dateFormatDateCompact } from '../date';
-import { Tournoi } from '@/types/interfaces/tournoi';
+import { TournoiModel } from '@/types/interfaces/tournoi';
 import { TFunction } from 'i18next';
 
 export const generationPDFCoupe = (
@@ -12,7 +12,7 @@ export const generationPDFCoupe = (
   listeJoueurs: Joueur[],
   optionsTournoi: OptionsTournoi,
   listeMatchs: Match[],
-  infosTournoi: Tournoi,
+  infosTournoi: TournoiModel,
   nbMatchsParTour: number,
   toursParLigne: number,
   nbToursRestants: number,

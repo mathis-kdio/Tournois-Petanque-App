@@ -18,25 +18,51 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
-import { Tournoi } from '@/types/interfaces/tournoi';
+import { TournoiModel } from '@/types/interfaces/tournoi';
 import { ListRenderItem } from 'react-native';
 import { dateFormatDateHeure } from '@/utils/date';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useCallback, useEffect, useState } from 'react';
+import { useTournoisRepository } from '@/repositories/useTournoisRepository';
 
 const ListeTournois = () => {
   const { t } = useTranslation();
 
+  const { getAllTournois, deleteTournoi, renameTournoi } =
+    useTournoisRepository();
+
   const [modalTournoiInfosIsOpen, setModalTournoiInfosIsOpen] = useState(false);
-  const [infosTournoi, setInfosTournoi] = useState<Tournoi | undefined>(
+  const [infosTournoi, setInfosTournoi] = useState<TournoiModel | undefined>(
     undefined,
   );
+  const [listeTournois, setListeTournois] = useState<TournoiModel[]>([]);
 
-  const listeTournois = useSelector(
-    (state: any) => state.listeTournois.listeTournois,
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getAllTournois();
+      setListeTournois(result);
+    };
+    fetchData();
+  }, [getAllTournois]);
+
+  const handleDelete = useCallback(
+    async (id: number) => {
+      await deleteTournoi(id);
+      setListeTournois((prev) => prev.filter((u) => u.tournoiId !== id));
+    },
+    [deleteTournoi],
   );
 
-  const _showModalTournoiInfos = (tournoi: Tournoi) => {
+  const handleUpdateName = useCallback(
+    async (id: number, name: string) => {
+      await renameTournoi(id, name);
+      setListeTournois((prev) =>
+        prev.map((u) => (u.tournoiId === id ? { ...u, name: name } : u)),
+      );
+    },
+    [renameTournoi],
+  );
+
+  const _showModalTournoiInfos = (tournoi: TournoiModel) => {
     setModalTournoiInfosIsOpen(true);
     setInfosTournoi(tournoi);
   };
@@ -134,12 +160,14 @@ const ListeTournois = () => {
     }
   };
 
-  const renderItem: ListRenderItem<Tournoi> = ({ item }) => (
+  const renderItem: ListRenderItem<TournoiModel> = ({ item }) => (
     <ListeTournoiItem
       tournoi={item}
-      _showModalTournoiInfos={(tournoi: Tournoi) =>
+      _showModalTournoiInfos={(tournoi: TournoiModel) =>
         _showModalTournoiInfos(tournoi)
       }
+      onDelete={handleDelete}
+      onUpdateName={handleUpdateName}
     />
   );
   return (
@@ -153,7 +181,7 @@ const ListeTournois = () => {
           <FlatList
             data={listeTournois}
             initialNumToRender={20}
-            keyExtractor={(item: Tournoi) => item.tournoiId.toString()}
+            keyExtractor={(item: TournoiModel) => item.tournoiId.toString()}
             renderItem={renderItem}
             className="h-1"
           />
