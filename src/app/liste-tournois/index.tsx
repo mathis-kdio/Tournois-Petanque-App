@@ -1,6 +1,5 @@
 import { Heading } from '@/components/ui/heading';
 import { CloseIcon, Icon } from '@/components/ui/icon';
-
 import {
   Modal,
   ModalBackdrop,
@@ -9,7 +8,6 @@ import {
   ModalCloseButton,
   ModalBody,
 } from '@/components/ui/modal';
-
 import { FlatList } from '@/components/ui/flat-list';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
@@ -17,129 +15,153 @@ import ListeTournoiItem from '@components/ListeTournoiItem';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
-import { Tournoi } from '@/types/interfaces/tournoi';
+import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoiModel';
+import { TournoiModel } from '@/types/interfaces/tournoi';
 import { ListRenderItem } from 'react-native';
 import { dateFormatDateHeure } from '@/utils/date';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useCallback, useEffect, useState } from 'react';
+import { useTournoisRepository } from '@/repositories/useTournoisRepository';
 
 const ListeTournois = () => {
   const { t } = useTranslation();
 
+  const { getAllTournois, deleteTournoi, renameTournoi } =
+    useTournoisRepository();
+
   const [modalTournoiInfosIsOpen, setModalTournoiInfosIsOpen] = useState(false);
-  const [infosTournoi, setInfosTournoi] = useState<Tournoi | undefined>(
+  const [infosTournoi, setInfosTournoi] = useState<TournoiModel | undefined>(
     undefined,
   );
+  const [listeTournois, setListeTournois] = useState<TournoiModel[]>([]);
 
-  const listeTournois = useSelector(
-    (state: any) => state.listeTournois.listeTournois,
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getAllTournois();
+      setListeTournois(result);
+    };
+    fetchData();
+  }, [getAllTournois]);
+
+  const handleDelete = useCallback(
+    async (id: number) => {
+      await deleteTournoi(id);
+      setListeTournois((prev) => prev.filter((u) => u.tournoiId !== id));
+    },
+    [deleteTournoi],
   );
 
-  const _showModalTournoiInfos = (tournoi: Tournoi) => {
+  const handleUpdateName = useCallback(
+    async (id: number, name: string) => {
+      await renameTournoi(id, name);
+      setListeTournois((prev) =>
+        prev.map((u) => (u.tournoiId === id ? { ...u, name: name } : u)),
+      );
+    },
+    [renameTournoi],
+  );
+
+  const showModalInfos = (tournoi: TournoiModel) => {
     setModalTournoiInfosIsOpen(true);
     setInfosTournoi(tournoi);
   };
 
   const _modalTournoiInfos = () => {
-    let tournoi = infosTournoi;
-    if (tournoi && tournoi.tournoi) {
-      let tournoiOptions = tournoi.tournoi.at(-1) as OptionsTournoi;
-      const {
-        nbPtVictoire,
-        listeJoueurs,
-        typeTournoi,
-        typeEquipes,
-        nbTours,
-        nbMatchs,
-        complement,
-        memesEquipes,
-        memesAdversaires,
-        speciauxIncompatibles,
-      } = tournoiOptions;
-      let creationDate = tournoi.creationDate
-        ? dateFormatDateHeure(tournoi.creationDate)
-        : t('date_inconnue');
-      let updateDate = tournoi.updateDate
-        ? dateFormatDateHeure(tournoi.updateDate)
-        : t('date_inconnue');
-      return (
-        <Modal
-          isOpen={modalTournoiInfosIsOpen}
-          onClose={() => setModalTournoiInfosIsOpen(false)}
-        >
-          <ModalBackdrop />
-          <ModalContent className="max-h-5/6">
-            <ModalHeader>
-              <Heading className="text-custom-text" size="lg">
-                {t('informations_tournoi_modal_titre')}
-              </Heading>
-              <ModalCloseButton>
-                <Icon
-                  as={CloseIcon}
-                  size="md"
-                  className="stroke-background-400 group-[:hover]/modal-close-button:stroke-background-700 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900"
-                />
-              </ModalCloseButton>
-            </ModalHeader>
-            <ModalBody>
-              <Text>
-                {`${t('id_modal_informations_tournoi')} ${tournoi.tournoiId}`}
-              </Text>
-              <Text>
-                {`${t('nom_modal_informations_tournoi')} ${tournoi.name ? tournoi.name : t('sans_nom')}`}
-              </Text>
-              <Text>
-                {`${t('creation_modal_informations_tournoi')} ${creationDate}`}
-              </Text>
-              <Text>
-                {`${t('derniere_modification_modal_informations_tournoi')} ${updateDate}`}
-              </Text>
-              <Text>
-                {`${t('nombre_joueurs_modal_informations_tournoi')} ${listeJoueurs.length}`}
-              </Text>
-              <Text>
-                {`${t('type_tournoi_modal_informations_tournoi')} ${typeTournoi}`}
-              </Text>
-              <Text>
-                {`${t('type_equipes_modal_informations_tournoi')} ${typeEquipes}`}
-              </Text>
-              <Text>
-                {`${t('nombre_tours_modal_informations_tournoi')} ${nbTours}`}
-              </Text>
-              <Text>
-                {`${t('nombre_matchs_modal_informations_tournoi')} ${nbMatchs}`}
-              </Text>
-              <Text>
-                {`${t('nombre_points_victoire_modal_informations_tournoi')} ${nbPtVictoire ? nbPtVictoire : 13}`}
-              </Text>
-              {complement && (
-                <Text>
-                  {`${t('complement_modal_informations_tournoi')} ${complement}`}
-                </Text>
-              )}
-              <Text>
-                {`${t('regle_equipes_differentes_modal_informations_tournoi')} ${memesEquipes ? t('oui') : t('non')}`}
-              </Text>
-              <Text>
-                {`${t('regle_adversaires_modal_informations_tournoi')} ${memesAdversaires === 0 ? t('1_match') : t('pourcent_matchs', { pourcent: memesAdversaires })}`}
-              </Text>
-              <Text>
-                {`${t('regle_speciaux_modal_informations_tournoi')} ${speciauxIncompatibles ? t('oui') : t('non')}`}
-              </Text>
-            </ModalBody>
-          </ModalContent>
-        </Modal>
-      );
+    if (infosTournoi === undefined || infosTournoi.tournoi === undefined) {
+      return;
     }
+    const { tournoi, creationDate, updateDate, tournoiId, name } = infosTournoi;
+    const {
+      nbPtVictoire,
+      listeJoueurs,
+      typeTournoi,
+      typeEquipes,
+      nbTours,
+      nbMatchs,
+      complement,
+      memesEquipes,
+      memesAdversaires,
+      speciauxIncompatibles,
+    } = tournoi.at(-1) as OptionsTournoiModel;
+    let creationDateFormat = creationDate
+      ? dateFormatDateHeure(creationDate)
+      : t('date_inconnue');
+    let updateDateFormat = updateDate
+      ? dateFormatDateHeure(updateDate)
+      : t('date_inconnue');
+    return (
+      <Modal
+        isOpen={modalTournoiInfosIsOpen}
+        onClose={() => setModalTournoiInfosIsOpen(false)}
+      >
+        <ModalBackdrop />
+        <ModalContent className="max-h-5/6">
+          <ModalHeader>
+            <Heading className="text-custom-text" size="lg">
+              {t('informations_tournoi_modal_titre')}
+            </Heading>
+            <ModalCloseButton>
+              <Icon
+                as={CloseIcon}
+                size="md"
+                className="stroke-background-400 group-[:hover]/modal-close-button:stroke-background-700 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900"
+              />
+            </ModalCloseButton>
+          </ModalHeader>
+          <ModalBody>
+            <Text>{`${t('id_modal_informations_tournoi')} ${tournoiId}`}</Text>
+            <Text>
+              {`${t('nom_modal_informations_tournoi')} ${name ? name : t('sans_nom')}`}
+            </Text>
+            <Text>
+              {`${t('creation_modal_informations_tournoi')} ${creationDateFormat}`}
+            </Text>
+            <Text>
+              {`${t('derniere_modification_modal_informations_tournoi')} ${updateDateFormat}`}
+            </Text>
+            <Text>
+              {`${t('nombre_joueurs_modal_informations_tournoi')} ${listeJoueurs.length}`}
+            </Text>
+            <Text>
+              {`${t('type_tournoi_modal_informations_tournoi')} ${typeTournoi}`}
+            </Text>
+            <Text>
+              {`${t('type_equipes_modal_informations_tournoi')} ${typeEquipes}`}
+            </Text>
+            <Text>
+              {`${t('nombre_tours_modal_informations_tournoi')} ${nbTours}`}
+            </Text>
+            <Text>
+              {`${t('nombre_matchs_modal_informations_tournoi')} ${nbMatchs}`}
+            </Text>
+            <Text>
+              {`${t('nombre_points_victoire_modal_informations_tournoi')} ${nbPtVictoire ? nbPtVictoire : 13}`}
+            </Text>
+            {complement && (
+              <Text>
+                {`${t('complement_modal_informations_tournoi')} ${complement}`}
+              </Text>
+            )}
+            <Text>
+              {`${t('regle_equipes_differentes_modal_informations_tournoi')} ${memesEquipes ? t('oui') : t('non')}`}
+            </Text>
+            <Text>
+              {`${t('regle_adversaires_modal_informations_tournoi')} ${memesAdversaires === 0 ? t('1_match') : t('pourcent_matchs', { pourcent: memesAdversaires })}`}
+            </Text>
+            <Text>
+              {`${t('regle_speciaux_modal_informations_tournoi')} ${speciauxIncompatibles ? t('oui') : t('non')}`}
+            </Text>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    );
   };
 
-  const renderItem: ListRenderItem<Tournoi> = ({ item }) => (
+  const renderItem: ListRenderItem<TournoiModel> = ({ item }) => (
     <ListeTournoiItem
       tournoi={item}
-      _showModalTournoiInfos={(tournoi: Tournoi) =>
-        _showModalTournoiInfos(tournoi)
-      }
+      showModalInfos={(tournoi: TournoiModel) => showModalInfos(tournoi)}
+      onDelete={handleDelete}
+      onUpdateName={handleUpdateName}
     />
   );
   return (
@@ -153,7 +175,7 @@ const ListeTournois = () => {
           <FlatList
             data={listeTournois}
             initialNumToRender={20}
-            keyExtractor={(item: Tournoi) => item.tournoiId.toString()}
+            keyExtractor={(item: TournoiModel) => item.tournoiId.toString()}
             renderItem={renderItem}
             className="h-1"
           />

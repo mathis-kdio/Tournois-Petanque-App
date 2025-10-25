@@ -155,7 +155,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         ],
       },
     ],
-    'expo-router',
+    ['expo-router'],
+    ['expo-sqlite'],
   ],
   extra: {
     eas: {

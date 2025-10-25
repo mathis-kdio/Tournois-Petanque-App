@@ -1,7 +1,6 @@
 import { Input, InputField } from '@/components/ui/input';
 import { CloseIcon, Icon } from '@/components/ui/icon';
 import { Heading } from '@/components/ui/heading';
-
 import {
   AlertDialog,
   AlertDialogBody,
@@ -11,7 +10,6 @@ import {
   AlertDialogFooter,
   AlertDialogCloseButton,
 } from '@/components/ui/alert-dialog';
-
 import { Button, ButtonText, ButtonGroup } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
@@ -19,19 +17,23 @@ import { Box } from '@/components/ui/box';
 import React, { useState } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import { Tournoi } from '@/types/interfaces/tournoi';
+import { TournoiModel } from '@/types/interfaces/tournoi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from 'expo-router';
 import { CommonActions } from '@react-navigation/native';
 
 export interface Props {
-  tournoi: Tournoi;
-  _showModalTournoiInfos: (tournoi: Tournoi) => void;
+  tournoi: TournoiModel;
+  showModalInfos: (tournoi: TournoiModel) => void;
+  onDelete: (id: number) => void;
+  onUpdateName: (id: number, name: string) => void;
 }
 
 const ListeTournoiItem: React.FC<Props> = ({
   tournoi,
-  _showModalTournoiInfos,
+  showModalInfos,
+  onDelete,
+  onUpdateName,
 }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -45,7 +47,7 @@ const ListeTournoiItem: React.FC<Props> = ({
     (state: any) => state.gestionMatchs.listematchs,
   );
 
-  const _chargerTournoi = (tournoi: Tournoi) => {
+  const _chargerTournoi = (tournoi: TournoiModel) => {
     const actionUpdateListeMatchs = {
       type: 'AJOUT_MATCHS',
       value: tournoi.tournoi,
@@ -59,11 +61,7 @@ const ListeTournoiItem: React.FC<Props> = ({
   };
 
   const _supprimerTournoi = (tournoiId: number) => {
-    const actionSupprimerTournoi = {
-      type: 'SUPPR_TOURNOI',
-      value: { tournoiId: tournoiId },
-    };
-    dispatch(actionSupprimerTournoi);
+    onDelete(tournoiId);
   };
 
   const _modalSupprimerTournoi = (tournoiId: number) => {
@@ -115,7 +113,7 @@ const ListeTournoiItem: React.FC<Props> = ({
     );
   };
 
-  const _showRenameTournoi = (tournoi: Tournoi) => {
+  const _showRenameTournoi = (tournoi: TournoiModel) => {
     let name: string;
     let bgColor: string;
     let action;
@@ -145,16 +143,13 @@ const ListeTournoiItem: React.FC<Props> = ({
     );
   };
 
-  const _renameTournoi = (tournoi: Tournoi) => {
-    if (tournoiNameText !== '') {
-      setRenommerOn(false);
-      const actionRenameTournoi = {
-        type: 'RENOMMER_TOURNOI',
-        value: { tournoiId: tournoi.tournoiId, newName: tournoiNameText },
-      };
-      dispatch(actionRenameTournoi);
-      setTournoiNameText('');
+  const _renameTournoi = (tournoi: TournoiModel) => {
+    if (tournoiNameText === '') {
+      return;
     }
+    onUpdateName(tournoi.tournoiId, tournoiNameText);
+    setTournoiNameText('');
+    setRenommerOn(false);
   };
 
   const _tournoiTextInputChanged = (text: string) => {
@@ -162,7 +157,7 @@ const ListeTournoiItem: React.FC<Props> = ({
     setRenommerOn(true);
   };
 
-  const _tournoiName = (tournoi: Tournoi) => {
+  const _tournoiName = (tournoi: TournoiModel) => {
     let tournoiName = tournoi.name ? tournoi.name : 'n°' + tournoi.tournoiId;
     if (renommerOn) {
       return (
@@ -198,7 +193,7 @@ const ListeTournoiItem: React.FC<Props> = ({
           name="info-circle"
           backgroundColor="#004282"
           iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
-          onPress={() => _showModalTournoiInfos(tournoi)}
+          onPress={() => showModalInfos(tournoi)}
         />
         <Button
           isDisabled={btnDisabled}

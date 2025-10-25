@@ -21,14 +21,14 @@ import JoueurType from '@components/JoueurType';
 import { useTranslation } from 'react-i18next';
 import { JoueurType as JoueurTypeEnum } from '@/types/enums/joueurType';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { useDispatch, useSelector } from 'react-redux';
 
 export interface Props {
-  joueur: Joueur;
+  joueur: JoueurModel;
   ajoutJoueur: (
-    listeJoueurs: Joueur[],
+    listeJoueurs: JoueurModel[],
     typeEquipes: TypeEquipes,
     mode: ModeTournoi,
     joueurName: string,

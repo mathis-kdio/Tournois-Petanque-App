@@ -26,7 +26,7 @@ import JoueurType from '@components/JoueurType';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { ListRenderItem, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -66,9 +66,9 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
 
   const _getSuggestions = useCallback(() => {
     let listeHistoriqueFiltre = listesJoueurs.historique.filter(
-      (item1: Joueur) =>
+      (item1: JoueurModel) =>
         listesJoueurs[optionsTournoi.mode].every(
-          (item2: Joueur) => item2.name !== item1.name,
+          (item2: JoueurModel) => item2.name !== item1.name,
         ),
     );
     if (listeHistoriqueFiltre.length > 0) {
@@ -110,7 +110,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
 
   const _ajoutJoueurFormulaire = () => {
     const { typeEquipes, mode } = optionsTournoi;
-    const listeJoueurs: Joueur[] = listesJoueurs[mode];
+    const listeJoueurs: JoueurModel[] = listesJoueurs[mode];
     if (joueurText === '') {
       return;
     }
@@ -123,7 +123,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
   };
 
   const ajoutJoueur = (
-    listeJoueurs: Joueur[],
+    listeJoueurs: JoueurModel[],
     typeEquipes: TypeEquipes,
     mode: ModeTournoi,
     joueurName: string,
@@ -140,7 +140,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
     dispatch(action);
   };
 
-  const equipeAuto = (listeJoueurs: Joueur[], typeEquipes: TypeEquipes) => {
+  const equipeAuto = (listeJoueurs: JoueurModel[], typeEquipes: TypeEquipes) => {
     if (typeEquipes === TypeEquipes.TETEATETE) {
       return listeJoueurs.length + 1;
     } else {
@@ -235,7 +235,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
       return;
     }
 
-    let listeJoueur = [...(listesJoueurs[optionsTournoi.mode] as Joueur[])];
+    let listeJoueur = [...(listesJoueurs[optionsTournoi.mode] as JoueurModel[])];
     if (triType === Tri.ID) {
       listeJoueur.sort((a, b) => a.id - b.id);
     } else if (triType === Tri.ALPHA_ASC) {
@@ -247,7 +247,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
     let avecEquipes =
       optionsTournoi.mode === ModeTournoi.AVECEQUIPES &&
       optionsTournoi.modeCreationEquipes === ModeCreationEquipes.MANUELLE;
-    const renderItem: ListRenderItem<Joueur> = ({ item }) => (
+    const renderItem: ListRenderItem<JoueurModel> = ({ item }) => (
       <ListeJoueurItem
         joueur={item}
         isInscription={true}
@@ -264,7 +264,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
         removeClippedSubviews={false}
         persistentScrollbar={true}
         data={listeJoueur}
-        keyExtractor={(item: Joueur) => item.id.toString()}
+        keyExtractor={(item: JoueurModel) => item.id.toString()}
         renderItem={renderItem}
         ListFooterComponent={
           <VStack space="md" className="flex-1">
@@ -283,7 +283,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
   const _displayListeJoueursSuggeres = () => {
     if (suggestions.length > 0) {
       let partialSuggested = suggestions.slice(0, nbSuggestions);
-      const renderItem: ListRenderItem<Joueur> = ({ item }) => (
+      const renderItem: ListRenderItem<JoueurModel> = ({ item }) => (
         <JoueurSuggere joueur={item} ajoutJoueur={ajoutJoueur} />
       );
       return (
@@ -295,7 +295,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
             removeClippedSubviews={false}
             persistentScrollbar={true}
             data={partialSuggested}
-            keyExtractor={(item: Joueur) => item.id.toString()}
+            keyExtractor={(item: JoueurModel) => item.id.toString()}
             renderItem={renderItem}
           />
           <Box className="px-10 pb-2">{_buttonMoreSuggestedPlayers()}</Box>

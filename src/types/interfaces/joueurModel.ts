@@ -1,6 +1,6 @@
 import { JoueurType } from '../enums/joueurType';
 
-export interface Joueur {
+export interface JoueurModel {
   id: number;
   name: string;
   type: JoueurType | undefined;

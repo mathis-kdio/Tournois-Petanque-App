@@ -1,5 +1,5 @@
 import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
 
 const initialState = {
@@ -42,7 +42,7 @@ function listesJoueurs(state = initialState, action) {
         //Historique
         if (action.value[0] !== ModeTournoi.SANSNOMS) {
           let joueurIndex = listes.historique.findIndex(
-            (joueur: Joueur) => joueur.name === action.value[1],
+            (joueur: JoueurModel) => joueur.name === action.value[1],
           );
           if (joueurIndex !== -1) {
             listes.historique[joueurIndex].nbTournois++;
@@ -110,7 +110,7 @@ function listesJoueurs(state = initialState, action) {
         action.value[2] !== ''
       ) {
         const listes = { ...state.listesJoueurs };
-        let liste = listes[action.value[0]] as Joueur[];
+        let liste = listes[action.value[0]] as JoueurModel[];
         let joueur = liste.find((joueur) => joueur.id === action.value[1]);
         if (joueur) {
           joueur.isChecked = action.value[2];
@@ -138,7 +138,7 @@ function listesJoueurs(state = initialState, action) {
     case 'UPDATE_ALL_JOUEURS_EQUIPE': //action: 0: type d'inscription
       if (action.value[0] !== '') {
         const listes = { ...state.listesJoueurs };
-        listes[action.value[0]].forEach((joueur: Joueur) => {
+        listes[action.value[0]].forEach((joueur: JoueurModel) => {
           joueur.equipe = joueur.id + 1;
         });
         nextState = {

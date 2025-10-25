@@ -3,7 +3,7 @@ import { Divider } from '@/components/ui/divider';
 import { Image } from '@/components/ui/image';
 import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { Victoire } from '@/types/interfaces/victoire';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -22,7 +22,7 @@ const ListeResultatItem: React.FC<Props> = ({ joueur }) => {
 
   const _displayName = (joueurId: number) => {
     let listeJoueurs = listeMatchs.at(-1).listeJoueurs;
-    let joueur = listeJoueurs.find((item: Joueur) => item.id === joueurId);
+    let joueur = listeJoueurs.find((item: JoueurModel) => item.id === joueurId);
     let joueurName = '';
     if (joueur.name === undefined) {
       joueurName = t('sans_nom') + ' (' + (joueur.id + 1) + ')';

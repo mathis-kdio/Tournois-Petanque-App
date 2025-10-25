@@ -1,8 +1,8 @@
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { shuffle } from './generation';
 
 export const generationTeteATete = (
-  listeJoueurs: Joueur[],
+  listeJoueurs: JoueurModel[],
   nbTours: number,
   eviterMemeAdversaire: number,
 ) => {
