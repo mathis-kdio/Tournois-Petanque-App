@@ -21,6 +21,7 @@ import { useNavigation, useRouter } from 'expo-router';
 import { CommonActions } from '@react-navigation/native';
 import { useTournoisRepository } from '@/repositories/useTournoisRepository';
 import { TournoiModel } from '@/types/interfaces/tournoi';
+import Loading from '@/components/Loading';
 
 const ParametresTournoi = () => {
   const { t } = useTranslation();
@@ -41,7 +42,7 @@ const ParametresTournoi = () => {
   }, [getActualTournoi]);
 
   if (!tournoi) {
-    return <></>;
+    return <Loading />;
   }
 
   const _showMatchs = () => {
