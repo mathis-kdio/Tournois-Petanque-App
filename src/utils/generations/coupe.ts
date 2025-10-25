@@ -1,6 +1,6 @@
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoi';
+import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoiModel';
 
 export const generationCoupe = (
   optionsTournoi: OptionsTournoiModel,

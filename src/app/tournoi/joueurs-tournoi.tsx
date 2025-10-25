@@ -10,7 +10,7 @@ import TopBarBack from '@/components/topBar/TopBarBack';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { ListRenderItem } from 'react-native';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoi';
+import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoiModel';
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useTournoisRepository } from '@/repositories/useTournoisRepository';

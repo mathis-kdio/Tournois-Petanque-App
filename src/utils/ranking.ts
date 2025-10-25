@@ -1,6 +1,6 @@
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { MatchModel } from '@/types/interfaces/matchModel';
-import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoi';
+import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoiModel';
 import { Victoire } from '@/types/interfaces/victoire';
 
 export const ranking = (

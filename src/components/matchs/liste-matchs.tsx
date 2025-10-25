@@ -3,7 +3,7 @@ import { VStack } from '@/components/ui/vstack';
 import MatchItem from '@components/MatchItem';
 import { MatchModel } from '@/types/interfaces/matchModel';
 import { ListRenderItem } from 'react-native';
-import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoi';
+import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoiModel';
 import { useSelector } from 'react-redux';
 import useExitAlertOnBack from '@/components/with-exit-alert/with-exit-alert';
 import { useRouter } from 'expo-router';

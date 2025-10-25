@@ -1,4 +1,4 @@
-import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoi';
+import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoiModel';
 import { ConnectedProps, connect } from 'react-redux';
 
 const mapStateToProps = (state: any) => {
