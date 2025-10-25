@@ -13,6 +13,9 @@ import { useTranslation } from 'react-i18next';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import Loading from '@/components/Loading';
 import { screenStackNameType } from '@/types/types/searchParams';
+import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import { useEffect, useState } from 'react';
+import { usePreparationTournoisRepository } from '@/repositories/preparationTournoi.ts/usepreparationTournoiRepository';
 
 type SearchParams = {
   screenStackName?: string;
@@ -24,15 +27,30 @@ const ListeTerrains = () => {
   const param = useLocalSearchParams<SearchParams>();
   const dispatch = useDispatch();
 
+  const { getActualPreparationTournoi } = usePreparationTournoisRepository();
+
   const listesJoueurs = useSelector(
     (state: any) => state.listesJoueurs.listesJoueurs,
   );
   const listeTerrains = useSelector(
     (state: any) => state.listeTerrains.listeTerrains,
   );
-  const optionsTournoi = useSelector(
-    (state: any) => state.optionsTournoi.options,
-  );
+
+  const [preparationTournoiModel, setPreparationTournoiModel] = useState<
+    PreparationTournoiModel | undefined
+  >(undefined);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const resultpreparationTournoi = await getActualPreparationTournoi();
+      setPreparationTournoiModel(resultpreparationTournoi);
+    };
+    fetchData();
+  }, [getActualPreparationTournoi]);
+
+  if (!preparationTournoiModel) {
+    return <Loading />;
+  }
 
   const _ajoutTerrains = () => {
     const ajoutTerrain = { type: 'AJOUT_TERRAIN', value: [] };
@@ -47,8 +65,15 @@ const ListeTerrains = () => {
     );
   };
 
-  const _commencerButton = (screenStackName: screenStackNameType) => {
-    const { typeEquipes, mode, typeTournoi, complement } = optionsTournoi;
+  const _commencerButton = (
+    screenStackName: screenStackNameType,
+    preparationTournoiModel: PreparationTournoiModel,
+  ) => {
+    const { typeEquipes, mode, typeTournoi, complement } =
+      preparationTournoiModel;
+    if (!typeEquipes || !mode || !typeTournoi || !complement) {
+      throw Error;
+    }
     const nbJoueurs = listesJoueurs[mode].length;
     const nbTerrainsNecessaires = calcNbMatchsParTour(
       nbJoueurs,
@@ -109,7 +134,7 @@ const ListeTerrains = () => {
         </VStack>
         <VStack space="lg" className="px-10">
           {_ajoutTerrainButton()}
-          {_commencerButton(param.screenStackName)}
+          {_commencerButton(param.screenStackName, preparationTournoiModel)}
         </VStack>
       </VStack>
     </SafeAreaView>
