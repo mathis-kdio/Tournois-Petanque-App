@@ -23,7 +23,7 @@ import { useTranslation } from 'react-i18next';
 import AdMobInscriptionsBanner from '@/components/adMob/AdMobInscriptionsBanner';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { useRouter } from 'expo-router';
-import { usePreparationTournoisRepository } from '@/repositories/preparationTournoi.ts/usepreparationTournoiRepository';
+import { usePreparationTournoisRepository } from '@/repositories/preparationTournoi/usePreparationTournoiRepository';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 
 const ChoixTypeTournoi = () => {

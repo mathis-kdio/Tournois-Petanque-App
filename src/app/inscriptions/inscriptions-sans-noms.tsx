@@ -13,7 +13,7 @@ import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'expo-router';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
-import { usePreparationTournoisRepository } from '@/repositories/preparationTournoi.ts/usepreparationTournoiRepository';
+import { usePreparationTournoisRepository } from '@/repositories/preparationTournoi/usePreparationTournoiRepository';
 import Loading from '@/components/Loading';
 
 const InscriptionsSansNoms = () => {

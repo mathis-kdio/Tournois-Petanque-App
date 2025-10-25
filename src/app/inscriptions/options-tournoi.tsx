@@ -27,7 +27,7 @@ import { useState } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import Loading from '@/components/Loading';
 import { screenStackNameType } from '@/types/types/searchParams';
-import { usePreparationTournoisRepository } from '@/repositories/preparationTournoi.ts/usepreparationTournoiRepository';
+import { usePreparationTournoisRepository } from '@/repositories/preparationTournoi/usePreparationTournoiRepository';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 
 type SearchParams = {
