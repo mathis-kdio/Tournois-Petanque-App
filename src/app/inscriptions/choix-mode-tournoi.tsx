@@ -18,20 +18,23 @@ import AdMobInscriptionsBanner from '@/components/adMob/AdMobInscriptionsBanner'
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
-import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoi';
+import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import Loading from '@/components/Loading';
+import { usePreparationTournoisRepository } from '@/repositories/preparationTournoi.ts/usepreparationTournoiRepository';
 
 const ChoixModeTournoi = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const dispatch = useDispatch();
 
-  const optionsTournoi = useSelector(
-    (state: any) => state.optionsTournoi.options,
-  );
+  const { getActualPreparationTournoi, updatePreparationTournoi } =
+    usePreparationTournoisRepository();
+
+  const [preparationTournoiModel, setPreparationTournoiModel] = useState<
+    PreparationTournoiModel | undefined
+  >(undefined);
 
   const [typeEquipes, setTypeEquipes] = useState(TypeEquipes.DOUBLETTE);
   const [modeTournoi, setModeTournoi] = useState(ModeTournoi.AVECNOMS);
@@ -39,13 +42,21 @@ const ChoixModeTournoi = () => {
     ModeCreationEquipes.MANUELLE,
   );
 
-  const _nextStep = (optionsTournoi: OptionsTournoiModel) => {
-    //Sauvegarde typeEquipes
-    const updateOptionEquipesTournoi = {
-      type: 'UPDATE_OPTION_TOURNOI',
-      value: ['typeEquipes', typeEquipes],
+  useEffect(() => {
+    const fetchData = async () => {
+      const resultpreparationTournoi = await getActualPreparationTournoi();
+      setPreparationTournoiModel(resultpreparationTournoi);
     };
-    dispatch(updateOptionEquipesTournoi);
+    fetchData();
+  }, [getActualPreparationTournoi]);
+
+  if (!preparationTournoiModel) {
+    return <Loading />;
+  }
+
+  const _nextStep = (optionsTournoi: PreparationTournoiModel) => {
+    //Sauvegarde typeEquipes
+    optionsTournoi.typeEquipes = typeEquipes;
 
     //Sauvegarde modeTournoi
     let finalModeTournoi = modeTournoi;
@@ -53,20 +64,14 @@ const ChoixModeTournoi = () => {
     if (typeTournoi !== TypeTournoi.MELEDEMELE) {
       finalModeTournoi = ModeTournoi.AVECEQUIPES;
     }
-    const updateOptionModeTournoi = {
-      type: 'UPDATE_OPTION_TOURNOI',
-      value: ['mode', finalModeTournoi],
-    };
-    dispatch(updateOptionModeTournoi);
+    optionsTournoi.mode = finalModeTournoi;
 
     //Sauvegarde modeCreationEquipes
     if (typeTournoi !== TypeTournoi.MELEDEMELE) {
-      const updateOptionModeCreationEquipes = {
-        type: 'UPDATE_OPTION_TOURNOI',
-        value: ['modeCreationEquipes', modeCreationEquipes],
-      };
-      dispatch(updateOptionModeCreationEquipes);
+      optionsTournoi.modeCreationEquipes = modeCreationEquipes;
     }
+
+    updatePreparationTournoi(optionsTournoi);
 
     if (
       typeTournoi !== TypeTournoi.CHAMPIONNAT &&
@@ -88,7 +93,7 @@ const ChoixModeTournoi = () => {
     }
   };
 
-  const _validButton = (optionsTournoi: OptionsTournoiModel) => {
+  const _validButton = (optionsTournoi: PreparationTournoiModel) => {
     let buttonDisabled = false;
     let title = t('valider_et_options');
     const { typeTournoi } = optionsTournoi;
@@ -111,7 +116,7 @@ const ChoixModeTournoi = () => {
     );
   };
 
-  const _modeTournoi = (optionsTournoi: OptionsTournoiModel) => {
+  const _modeTournoi = (optionsTournoi: PreparationTournoiModel) => {
     const { typeTournoi } = optionsTournoi;
     if (typeTournoi !== TypeTournoi.MELEDEMELE) {
       return;
@@ -149,7 +154,7 @@ const ChoixModeTournoi = () => {
     );
   };
 
-  const _typeEquipe = (optionsTournoi: OptionsTournoiModel) => {
+  const _typeEquipe = (optionsTournoi: PreparationTournoiModel) => {
     const { typeTournoi } = optionsTournoi;
     if (typeTournoi === TypeTournoi.MELEDEMELE) {
       return;
@@ -240,9 +245,9 @@ const ChoixModeTournoi = () => {
                 </Radio>
               </VStack>
             </RadioGroup>
-            {_modeTournoi(optionsTournoi)}
-            {_typeEquipe(optionsTournoi)}
-            {_validButton(optionsTournoi)}
+            {_modeTournoi(preparationTournoiModel)}
+            {_typeEquipe(preparationTournoiModel)}
+            {_validButton(preparationTournoiModel)}
           </VStack>
           <Box className="my-10">
             <AdMobInscriptionsBanner />
