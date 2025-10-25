@@ -1,9 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { MatchModel } from '@/types/interfaces/match';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
-import { useSelector } from 'react-redux';
 import ListeMatchs from '@components/matchs/liste-matchs';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -66,9 +64,8 @@ export default function MatchsPage() {
     let iconColor = '#ffda00';
     let textColor = 'text-yellow-400';
     let iconName = 'battery-half';
-    let matchsRestant = 0;
-    let matchsManche = matchs.filter((el: MatchModel) => el.manche === numero);
-    matchsRestant = matchsManche.length;
+    let matchsManche = matchs.filter((match) => match.manche === numero);
+    let matchsRestant = matchsManche.length;
     if (matchsManche) {
       let count = matchsManche.reduce(
         (acc, obj) =>
