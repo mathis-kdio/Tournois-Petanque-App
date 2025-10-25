@@ -9,16 +9,16 @@ export interface MatchModel {
   mancheName: string | undefined;
   equipe: [
     [
-      JoueurModel | undefined,
-      JoueurModel | undefined,
-      JoueurModel | undefined,
-      JoueurModel | undefined,
+      JoueurModel | undefined | -1,
+      JoueurModel | undefined | -1,
+      JoueurModel | undefined | -1,
+      JoueurModel | undefined | -1,
     ],
     [
-      JoueurModel | undefined,
-      JoueurModel | undefined,
-      JoueurModel | undefined,
-      JoueurModel | undefined,
+      JoueurModel | undefined | -1,
+      JoueurModel | undefined | -1,
+      JoueurModel | undefined | -1,
+      JoueurModel | undefined | -1,
     ],
   ];
   terrain: TerrainModel | undefined;
