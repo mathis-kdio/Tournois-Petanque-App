@@ -4,11 +4,11 @@ import { HStack } from '@/components/ui/hstack';
 import { Box } from '@/components/ui/box';
 import React, { useState } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { Terrain } from '@/types/interfaces/terrain';
+import { TerrainModel } from '@/types/interfaces/terrainModel';
 import { useDispatch } from 'react-redux';
 
 export interface Props {
-  terrain: Terrain;
+  terrain: TerrainModel;
 }
 
 const ListeTerrainItem: React.FC<Props> = ({ terrain }) => {
@@ -17,7 +17,7 @@ const ListeTerrainItem: React.FC<Props> = ({ terrain }) => {
   const [renommerOn, setRenommerOn] = useState(false);
   const [terrainText, setTerrainText] = useState('');
 
-  const _supprimerTerrain = (terrain: Terrain) => {
+  const _supprimerTerrain = (terrain: TerrainModel) => {
     setRenommerOn(false);
     const actionSuppr = {
       type: 'SUPPR_TERRAIN',
@@ -26,7 +26,7 @@ const ListeTerrainItem: React.FC<Props> = ({ terrain }) => {
     dispatch(actionSuppr);
   };
 
-  const _showRenommerTerrain = (terrain: Terrain) => {
+  const _showRenommerTerrain = (terrain: TerrainModel) => {
     let name: string;
     let bgColor: string;
     let action;
@@ -56,7 +56,7 @@ const ListeTerrainItem: React.FC<Props> = ({ terrain }) => {
     );
   };
 
-  const _renommerTerrain = (terrain: Terrain) => {
+  const _renommerTerrain = (terrain: TerrainModel) => {
     if (terrainText !== '') {
       setRenommerOn(false);
       const actionRenommer = {
@@ -73,7 +73,7 @@ const ListeTerrainItem: React.FC<Props> = ({ terrain }) => {
     setRenommerOn(true);
   };
 
-  const _terrainName = (terrain: Terrain) => {
+  const _terrainName = (terrain: TerrainModel) => {
     if (renommerOn) {
       return (
         <Input className="border-custom-bg-inverse">

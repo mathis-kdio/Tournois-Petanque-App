@@ -6,7 +6,7 @@ import ListeTerrainItem from '@components/ListeTerrainItem';
 import { calcNbMatchsParTour } from '@utils/generations/generation';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { Terrain } from '@/types/interfaces/terrain';
+import { TerrainModel } from '@/types/interfaces/terrainModel';
 import { ListRenderItem } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -79,7 +79,7 @@ const ListeTerrains = () => {
     });
   };
 
-  const renderItem: ListRenderItem<Terrain> = ({ item }) => (
+  const renderItem: ListRenderItem<TerrainModel> = ({ item }) => (
     <ListeTerrainItem terrain={item} />
   );
 
@@ -102,7 +102,7 @@ const ListeTerrains = () => {
             persistentScrollbar={true}
             data={listeTerrains}
             initialNumToRender={20}
-            keyExtractor={(item: Terrain) => item.id.toString()}
+            keyExtractor={(item: TerrainModel) => item.id.toString()}
             renderItem={renderItem}
             className="h-1"
           />

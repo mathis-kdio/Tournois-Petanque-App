@@ -1,5 +1,5 @@
 import { JoueurModel } from './joueurModel';
-import { Terrain } from './terrain';
+import { TerrainModel } from './terrainModel';
 
 export interface MatchModel {
   id: number;
@@ -21,5 +21,5 @@ export interface MatchModel {
       JoueurModel | undefined,
     ],
   ];
-  terrain: Terrain | undefined;
+  terrain: TerrainModel | undefined;
 }
