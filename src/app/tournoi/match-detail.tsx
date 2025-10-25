@@ -14,7 +14,7 @@ import AdMobMatchDetailBanner from '@components/adMob/AdMobMatchDetailBanner';
 import { nextMatch } from '@utils/generations/nextMatch/nextMatch';
 import { Platform } from 'react-native';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { MatchModel } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/matchModel';
 import { requestReview } from '@/utils/storeReview/StoreReview';
 import { useDispatch } from 'react-redux';
 import { useLocalSearchParams, useRouter } from 'expo-router';

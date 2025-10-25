@@ -17,7 +17,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Platform } from 'react-native';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { MatchModel } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/matchModel';
 import TopBar from '@/components/topBar/TopBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';

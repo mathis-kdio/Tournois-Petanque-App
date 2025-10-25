@@ -1,7 +1,7 @@
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { shuffle } from './generation';
-import { MatchModel } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/matchModel';
 import { EquipeGeneration } from '@/types/interfaces/equipe-generation.interface';
 
 export const generationMelee = (

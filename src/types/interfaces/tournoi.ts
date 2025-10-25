@@ -1,4 +1,4 @@
-import { MatchModel } from './match';
+import { MatchModel } from './matchModel';
 import { OptionsTournoiModel } from './optionsTournoi';
 
 export interface TournoiModel {

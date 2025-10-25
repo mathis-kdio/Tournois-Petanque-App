@@ -9,7 +9,7 @@ import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { Complement } from '@/types/enums/complement';
-import { MatchModel } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/matchModel';
 import { JoueurGeneration } from '@/types/interfaces/joueur-generation.interface';
 import {
   testAffectationPossible,

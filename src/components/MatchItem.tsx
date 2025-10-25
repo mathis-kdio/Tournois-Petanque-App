@@ -4,7 +4,7 @@ import { HStack } from '@/components/ui/hstack';
 import { Divider } from '@/components/ui/divider';
 import { Box } from '@/components/ui/box';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { MatchModel } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/matchModel';
 import { FontAwesome5 } from '@expo/vector-icons';
 import React from 'react';
 import { useTranslation } from 'react-i18next';

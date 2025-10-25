@@ -1,5 +1,5 @@
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { MatchModel } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/matchModel';
 import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoi';
 import { Victoire } from '@/types/interfaces/victoire';
 

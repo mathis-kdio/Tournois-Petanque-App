@@ -1,7 +1,7 @@
 import { FlatList } from '@/components/ui/flat-list';
 import { VStack } from '@/components/ui/vstack';
 import MatchItem from '@components/MatchItem';
-import { MatchModel } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/matchModel';
 import { ListRenderItem } from 'react-native';
 import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoi';
 import { useSelector } from 'react-redux';

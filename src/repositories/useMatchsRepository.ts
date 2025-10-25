@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { MatchsRepository } from './matchsRepository';
 import { Match } from '@/db/schema/match';
-import { MatchModel } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/matchModel';
 
 function toMatchmodel(match: Match): MatchModel {
   return {

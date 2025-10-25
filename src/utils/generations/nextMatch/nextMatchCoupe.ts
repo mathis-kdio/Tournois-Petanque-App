@@ -1,4 +1,4 @@
-import { MatchModel } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/matchModel';
 
 export const nextMatchCoupe = (match: MatchModel, nbMatchs: number) => {
   let gagnant = match.equipe[0];
