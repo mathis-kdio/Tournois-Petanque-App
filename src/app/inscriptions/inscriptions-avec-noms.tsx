@@ -13,23 +13,45 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'expo-router';
 import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
+import { usePreparationTournoisRepository } from '@/repositories/preparationTournoi.ts/usepreparationTournoiRepository';
+import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import { useEffect, useState } from 'react';
+import Loading from '@/components/Loading';
 
 const InscriptionsAvecNoms = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const optionsTournoi = useSelector(
-    (state: any) => state.optionsTournoi.options,
-  );
+  const { getActualPreparationTournoi } = usePreparationTournoisRepository();
+
+  const [preparationTournoiModel, setPreparationTournoiModel] = useState<
+    PreparationTournoiModel | undefined
+  >(undefined);
   const listesJoueurs = useSelector(
     (state: any) => state.listesJoueurs.listesJoueurs,
   );
 
-  const _commencer = (choixComplement: boolean) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      const resultpreparationTournoi = await getActualPreparationTournoi();
+      setPreparationTournoiModel(resultpreparationTournoi);
+    };
+    fetchData();
+  }, [getActualPreparationTournoi]);
+
+  if (!preparationTournoiModel) {
+    return <Loading />;
+  }
+
+  if (!preparationTournoiModel.mode) {
+    return <Text>Error</Text>;
+  }
+
+  const _commencer = (choixComplement: boolean, avecTerrains: boolean) => {
     let screenName = 'generation-matchs';
     if (choixComplement) {
       screenName = 'choix-complement';
-    } else if (optionsTournoi.avecTerrains) {
+    } else if (avecTerrains) {
       screenName = 'liste-terrains';
     }
     router.navigate({
@@ -40,12 +62,31 @@ const InscriptionsAvecNoms = () => {
     });
   };
 
-  const _boutonCommencer = () => {
+  const _boutonCommencer = (
+    preparationTournoiModel: PreparationTournoiModel,
+  ) => {
     let btnDisabled = false;
     let title = t('commencer_tournoi');
-    const { mode, typeTournoi, typeEquipes, modeCreationEquipes } =
-      optionsTournoi;
-    const { avecNoms, avecEquipes } = listesJoueurs;
+    const {
+      mode,
+      typeTournoi,
+      typeEquipes,
+      modeCreationEquipes,
+      avecTerrains,
+    } = preparationTournoiModel;
+    if (
+      !mode ||
+      !typeTournoi ||
+      !typeEquipes ||
+      !modeCreationEquipes ||
+      !avecTerrains
+    ) {
+      throw Error;
+    }
+    const { avecNoms, avecEquipes } = listesJoueurs as {
+      avecNoms: JoueurModel[];
+      avecEquipes: JoueurModel[];
+    };
     const nbJoueurs = listesJoueurs[mode].length;
     let nbEquipes = 0;
     let choixComplement = false;
@@ -149,7 +190,7 @@ const InscriptionsAvecNoms = () => {
       <Button
         isDisabled={btnDisabled}
         action={btnDisabled ? 'negative' : 'positive'}
-        onPress={() => _commencer(choixComplement)}
+        onPress={() => _commencer(choixComplement, avecTerrains)}
         size="md"
         className="h-min min-h-10"
       >
@@ -158,7 +199,7 @@ const InscriptionsAvecNoms = () => {
     );
   };
 
-  const nbJoueur = listesJoueurs[optionsTournoi.mode].length;
+  const nbJoueur = listesJoueurs[preparationTournoiModel.mode].length;
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <VStack className="flex-1 bg-custom-background">
@@ -168,7 +209,9 @@ const InscriptionsAvecNoms = () => {
             {t('nombre_joueurs', { nb: nbJoueur })}
           </Text>
           <Inscriptions loadListScreen={false} />
-          <Box className="px-10">{_boutonCommencer()}</Box>
+          <Box className="px-10">
+            {_boutonCommencer(preparationTournoiModel)}
+          </Box>
         </VStack>
       </VStack>
     </SafeAreaView>
