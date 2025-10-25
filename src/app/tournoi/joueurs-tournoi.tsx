@@ -11,54 +11,72 @@ import { Joueur } from '@/types/interfaces/joueur';
 import { ListRenderItem } from 'react-native';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
-import { useSelector } from 'react-redux';
 import { useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { useTournoisRepository } from '@/repositories/useTournoisRepository';
+import { TournoiModel } from '@/types/interfaces/tournoi';
+import Loading from '@/components/Loading';
 
 const JoueursTournoi = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const tournoi = useSelector((state: any) => state.gestionMatchs.listematchs);
+  const { getActualTournoi } = useTournoisRepository();
+
+  const [tournoi, setTournoi] = useState<TournoiModel | undefined>(undefined);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const resultTournoi = await getActualTournoi();
+      setTournoi(resultTournoi);
+    };
+    fetchData();
+  }, [getActualTournoi]);
+
+  if (!tournoi) {
+    return <Loading />;
+  }
 
   const _retourMatchs = () => {
     router.navigate('/tournoi');
   };
 
   const _displayListeJoueur = (optionsTournoi: OptionsTournoi) => {
-    if (optionsTournoi.listeJoueurs !== undefined) {
-      const renderItem: ListRenderItem<Joueur> = ({ item }) => (
-        <ListeJoueurItem
-          joueur={item}
-          isInscription={false}
-          avecEquipes={optionsTournoi.mode === ModeTournoi.AVECEQUIPES}
-          typeEquipes={optionsTournoi.typeEquipes}
-          modeTournoi={optionsTournoi.mode}
-          typeTournoi={optionsTournoi.typeTournoi}
-          nbJoueurs={optionsTournoi.listeJoueurs.length}
-          showCheckbox={true}
-        />
-      );
-
-      return (
-        <FlatList
-          removeClippedSubviews={false}
-          data={optionsTournoi.listeJoueurs}
-          keyExtractor={(item: Joueur) => item.id.toString()}
-          renderItem={renderItem}
-        />
-      );
+    const { listeJoueurs, mode, typeEquipes, typeTournoi } = optionsTournoi;
+    if (listeJoueurs === undefined) {
+      return;
     }
+    const renderItem: ListRenderItem<Joueur> = ({ item }) => (
+      <ListeJoueurItem
+        joueur={item}
+        isInscription={false}
+        avecEquipes={mode === ModeTournoi.AVECEQUIPES}
+        typeEquipes={typeEquipes}
+        modeTournoi={mode}
+        typeTournoi={typeTournoi}
+        nbJoueurs={listeJoueurs.length}
+        showCheckbox={true}
+      />
+    );
+
+    return (
+      <FlatList
+        removeClippedSubviews={false}
+        data={optionsTournoi.listeJoueurs}
+        keyExtractor={(item: Joueur) => item.id.toString()}
+        renderItem={renderItem}
+      />
+    );
   };
 
-  const optionsTournoi = tournoi.at(-1) as OptionsTournoi;
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <VStack className="flex-1 bg-custom-background">
         <TopBarBack title={t('liste_joueurs_inscrits_navigation_title')} />
         <Text className="text-typography-white text-xl text-center">
-          {t('nombre_joueurs', { nb: optionsTournoi.listeJoueurs.length })}
+          {t('nombre_joueurs', { nb: tournoi.options.listeJoueurs.length })}
         </Text>
         <VStack className="flex-1 my-2">
-          {_displayListeJoueur(optionsTournoi)}
+          {_displayListeJoueur(tournoi.options)}
         </VStack>
         <Box className="px-10 mb-2">
           <Button action="primary" onPress={() => _retourMatchs()}>
