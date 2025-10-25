@@ -7,20 +7,35 @@ import ListeResultatItem from '@components/ListeResultatItem';
 import { ranking } from '@utils/ranking';
 import { useTranslation } from 'react-i18next';
 import { ListRenderItem } from 'react-native';
-import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { Victoire } from '@/types/interfaces/victoire';
-import { useSelector } from 'react-redux';
-import { MatchModel } from '@/types/interfaces/match';
 import useExitAlertOnBack from '@/components/with-exit-alert/with-exit-alert';
+import { useTournoisRepository } from '@/repositories/useTournoisRepository';
+import { TournoiModel } from '@/types/interfaces/tournoi';
+import { useEffect, useState } from 'react';
+import Loading from '@/components/Loading';
 
 const ListeResultats = () => {
   useExitAlertOnBack();
 
   const { t } = useTranslation();
-  const tournoi = useSelector((state: any) => state.gestionMatchs.listematchs);
 
-  const listeMatchs = tournoi.slice(0, -1) as MatchModel[];
-  const optionsTournois = tournoi.at(-1) as OptionsTournoi;
+  const { getActualTournoi } = useTournoisRepository();
+
+  const [tournoi, setTournoi] = useState<TournoiModel | undefined>(undefined);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const resultTournoi = await getActualTournoi();
+      setTournoi(resultTournoi);
+    };
+    fetchData();
+  }, [getActualTournoi]);
+
+  if (!tournoi) {
+    return <Loading />;
+  }
+
+  const { options, matchs } = tournoi;
 
   const renderItem: ListRenderItem<Victoire> = ({ item }) => (
     <ListeResultatItem joueur={item} />
@@ -45,7 +60,7 @@ const ListeResultats = () => {
         </HStack>
         <Divider className="my-0.5" />
         <FlatList
-          data={ranking(listeMatchs, optionsTournois)}
+          data={ranking(matchs, options)}
           keyExtractor={(item: Victoire) => item.joueurId.toString()}
           renderItem={renderItem}
         />
