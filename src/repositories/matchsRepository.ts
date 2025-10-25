@@ -29,4 +29,11 @@ export const MatchsRepository = {
       .set({ score1, score2 })
       .where(eq(match.id, id));
   },
+
+  async resetScore(id: number): Promise<void> {
+    await getDrizzleDb()
+      .update(match)
+      .set({ score1: null, score2: null })
+      .where(eq(match.id, id));
+  },
 };

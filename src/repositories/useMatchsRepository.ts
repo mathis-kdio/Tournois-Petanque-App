@@ -32,5 +32,10 @@ export function useMatchsRepository() {
     [],
   );
 
-  return { getAllMatchs, getMatch, deleteMatch, updateScore };
+  const resetScore = useCallback(
+    (id: number) => MatchsRepository.resetScore(id),
+    [],
+  );
+
+  return { getAllMatchs, getMatch, deleteMatch, updateScore, resetScore };
 }

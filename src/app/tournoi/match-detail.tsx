@@ -36,7 +36,7 @@ const MatchDetail = () => {
   const param = useLocalSearchParams<SearchParams>();
   const dispatch = useDispatch();
 
-  const { getMatch, updateScore } = useMatchsRepository();
+  const { getMatch, updateScore, resetScore } = useMatchsRepository();
   const { getActualTournoi } = useTournoisRepository();
 
   const [match, setMatch] = useState<MatchModel | undefined>(undefined);
@@ -77,7 +77,10 @@ const MatchDetail = () => {
     );
   };
 
-  const _displayName = (joueur: JoueurModel | undefined, equipeId: EquipeId) => {
+  const _displayName = (
+    joueur: JoueurModel | undefined,
+    equipeId: EquipeId,
+  ) => {
     if (!joueur) {
       return;
     }
@@ -112,7 +115,7 @@ const MatchDetail = () => {
   };
 
   const _envoyerResultat = async (match: MatchModel) => {
-    const { nbMatchs, typeTournoi, nbTours, tournoiID } = tournoi.options;
+    const { nbMatchs, typeTournoi, nbTours } = tournoi.options;
     await requestReview();
 
     if (!score1 || !score2) {
@@ -124,34 +127,12 @@ const MatchDetail = () => {
     if (actionNextMatch !== undefined) {
       dispatch(actionNextMatch);
     }
-    const actionUpdateTournoi = {
-      type: 'UPDATE_TOURNOI',
-      value: {
-        tournoi: tournoi,
-        tournoiId: tournoiID,
-      },
-    };
-    dispatch(actionUpdateTournoi);
 
     router.back();
   };
 
-  const _supprimerResultat = () => {
-    let info = {
-      idMatch: idMatch,
-      score1: undefined,
-      score2: undefined,
-    };
-    const actionAjoutScore = { type: 'AJOUT_SCORE', value: info };
-    dispatch(actionAjoutScore);
-    const actionUpdateTournoi = {
-      type: 'UPDATE_TOURNOI',
-      value: {
-        tournoi: tournoi,
-        tournoiId: tournoi.at(-1).tournoiID,
-      },
-    };
-    dispatch(actionUpdateTournoi);
+  const _supprimerResultat = (match: MatchModel) => {
+    resetScore(match.id);
     router.back();
   };
 
@@ -285,7 +266,10 @@ const MatchDetail = () => {
                 </HStack>
               </VStack>
               <VStack space="lg" className="my-5">
-                <Button action="negative" onPress={() => _supprimerResultat()}>
+                <Button
+                  action="negative"
+                  onPress={() => _supprimerResultat(match)}
+                >
                   <ButtonText>{t('supprimer_score')}</ButtonText>
                 </Button>
                 {_boutonValider(match)}
