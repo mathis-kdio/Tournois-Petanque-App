@@ -8,23 +8,37 @@ import ListeMatchs from '@components/matchs/liste-matchs';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { StyledTopTabs } from '@/components/navigation/styled-top-tabs';
+import { useEffect, useState } from 'react';
+import { useTournoisRepository } from '@/repositories/useTournoisRepository';
+import { TournoiModel } from '@/types/interfaces/tournoi';
+import Loading from '@/components/Loading';
 
 export default function MatchsPage() {
   const { t } = useTranslation();
 
   const { Screen } = createMaterialTopTabNavigator();
 
-  const listeMatchs = useSelector(
-    (state: any) => state.gestionMatchs.listematchs,
-  );
+  const { getActualTournoi } = useTournoisRepository();
+
+  const [tournoi, setTournoi] = useState<TournoiModel | undefined>(undefined);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const resultTournoi = await getActualTournoi();
+      setTournoi(resultTournoi);
+    };
+    fetchData();
+  }, [getActualTournoi]);
+
+  if (!tournoi) {
+    return <Loading />;
+  }
+
+  const { matchs, options } = tournoi;
 
   const TopTabScreens = () => {
-    let nbTours = 5;
-    if (listeMatchs !== undefined) {
-      nbTours = listeMatchs.at(-1).nbTours;
-    }
     let topTabScreenListe = [];
-    for (let i = 0; i < nbTours; i++) {
+    for (let i = 0; i < options.nbTours; i++) {
       topTabScreenListe.push(
         <Screen
           key={i}
@@ -41,38 +55,38 @@ export default function MatchsPage() {
 
   const TopTabItemLabel = (numero: number) => {
     let title = `${t('tour')} ${numero}`;
-    if (listeMatchs && listeMatchs.at(-1).typeTournoi === TypeTournoi.COUPE) {
-      title = listeMatchs.find((el) => el.manche === numero).mancheName;
+    if (options.typeTournoi === TypeTournoi.COUPE) {
+      const mancheName = matchs.find((el) => el.manche === numero)?.mancheName;
+      if (mancheName === undefined) {
+        throw Error;
+      }
+      title = mancheName;
     }
 
     let iconColor = '#ffda00';
     let textColor = 'text-yellow-400';
     let iconName = 'battery-half';
     let matchsRestant = 0;
-    if (listeMatchs) {
-      let matchs: MatchModel[] = listeMatchs.filter(
-        (el: MatchModel) => el.manche === numero,
+    let matchsManche = matchs.filter((el: MatchModel) => el.manche === numero);
+    matchsRestant = matchsManche.length;
+    if (matchsManche) {
+      let count = matchsManche.reduce(
+        (acc, obj) =>
+          obj.score1 !== undefined && obj.score2 !== undefined
+            ? (acc += 1)
+            : acc,
+        0,
       );
-      matchsRestant = matchs.length;
-      if (matchs) {
-        let count = matchs.reduce(
-          (acc, obj) =>
-            obj.score1 !== undefined && obj.score2 !== undefined
-              ? (acc += 1)
-              : acc,
-          0,
-        );
-        if (count === matchs.length) {
-          textColor = 'text-success-500';
-          iconColor = 'green';
-          iconName = 'battery-full';
-        } else if (count === 0) {
-          textColor = 'text-error-500';
-          iconColor = 'red';
-          iconName = 'battery-empty';
-        }
-        matchsRestant -= count;
+      if (count === matchsManche.length) {
+        textColor = 'text-success-500';
+        iconColor = 'green';
+        iconName = 'battery-full';
+      } else if (count === 0) {
+        textColor = 'text-error-500';
+        iconColor = 'red';
+        iconName = 'battery-empty';
       }
+      matchsRestant -= count;
     }
 
     return (
