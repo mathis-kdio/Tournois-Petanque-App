@@ -6,6 +6,9 @@ import {
 
 export const JoueursPreparationTournoisRepository = {
   async getPreparationTournoi(): Promise<JoueursPreparationTournois[]> {
-    return await getDrizzleDb().select().from(joueursPreparationTournois);
+    return await getDrizzleDb()
+      .select()
+      .from(joueursPreparationTournois)
+      .innerJoin();
   },
 };

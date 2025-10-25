@@ -8,7 +8,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { TerrainModel } from '@/types/interfaces/terrainModel';
 import { ListRenderItem } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import Loading from '@/components/Loading';
@@ -16,6 +15,8 @@ import { screenStackNameType } from '@/types/types/searchParams';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 import { useEffect, useState } from 'react';
 import { usePreparationTournoisRepository } from '@/repositories/preparationTournoi/usePreparationTournoiRepository';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { useTerrainsRepository } from '@/repositories/terrains/useterrainsRepository';
 
 type SearchParams = {
   screenStackName?: string;
@@ -25,19 +26,18 @@ const ListeTerrains = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const param = useLocalSearchParams<SearchParams>();
-  const dispatch = useDispatch();
 
   const { getActualPreparationTournoi } = usePreparationTournoisRepository();
-
-  const listesJoueurs = useSelector(
-    (state: any) => state.listesJoueurs.listesJoueurs,
-  );
-  const listeTerrains = useSelector(
-    (state: any) => state.listeTerrains.listeTerrains,
-  );
+  const { insertTerrain } = useTerrainsRepository();
 
   const [preparationTournoiModel, setPreparationTournoiModel] = useState<
     PreparationTournoiModel | undefined
+  >(undefined);
+  const [joueursModel, setJoueursModel] = useState<JoueurModel[] | undefined>(
+    undefined,
+  );
+  const [terrainsModel, setTerrainsModel] = useState<
+    TerrainModel[] | undefined
   >(undefined);
 
   useEffect(() => {
@@ -48,13 +48,13 @@ const ListeTerrains = () => {
     fetchData();
   }, [getActualPreparationTournoi]);
 
-  if (!preparationTournoiModel) {
+  if (!preparationTournoiModel || !joueursModel || !terrainsModel) {
     return <Loading />;
   }
 
   const _ajoutTerrains = () => {
-    const ajoutTerrain = { type: 'AJOUT_TERRAIN', value: [] };
-    dispatch(ajoutTerrain);
+    const terrainModel: TerrainModel = { id: 0, name: '' };
+    insertTerrain(terrainModel);
   };
 
   const _ajoutTerrainButton = () => {
@@ -68,13 +68,15 @@ const ListeTerrains = () => {
   const _commencerButton = (
     screenStackName: screenStackNameType,
     preparationTournoiModel: PreparationTournoiModel,
+    joueursModel: JoueurModel[],
+    terrainsModel: TerrainModel[],
   ) => {
     const { typeEquipes, mode, typeTournoi, complement } =
       preparationTournoiModel;
     if (!typeEquipes || !mode || !typeTournoi || !complement) {
       throw Error;
     }
-    const nbJoueurs = listesJoueurs[mode].length;
+    const nbJoueurs = joueursModel.length;
     const nbTerrainsNecessaires = calcNbMatchsParTour(
       nbJoueurs,
       typeEquipes,
@@ -82,7 +84,7 @@ const ListeTerrains = () => {
       typeTournoi,
       complement,
     );
-    const disabled = listeTerrains.length < nbTerrainsNecessaires;
+    const disabled = terrainsModel.length < nbTerrainsNecessaires;
     const title = disabled ? t('terrains_insuffisants') : t('commencer');
     return (
       <Button
@@ -108,9 +110,10 @@ const ListeTerrains = () => {
     <ListeTerrainItem terrain={item} />
   );
 
+  const { screenStackName } = param;
   if (
-    param.screenStackName !== 'inscriptions-avec-noms' &&
-    param.screenStackName !== 'inscriptions-sans-noms'
+    screenStackName !== 'inscriptions-avec-noms' &&
+    screenStackName !== 'inscriptions-sans-noms'
   ) {
     return <Loading />;
   }
@@ -120,12 +123,12 @@ const ListeTerrains = () => {
       <VStack className="flex-1 bg-custom-background">
         <TopBarBack title={t('liste_terrains_navigation_title')} />
         <Text className="text-typography-white text-xl text-center">
-          {t('nombre_terrains', { nb: listeTerrains.length })}
+          {t('nombre_terrains', { nb: terrainsModel.length })}
         </Text>
         <VStack className="flex-1 my-2">
           <FlatList
             persistentScrollbar={true}
-            data={listeTerrains}
+            data={terrainsModel}
             initialNumToRender={20}
             keyExtractor={(item: TerrainModel) => item.id.toString()}
             renderItem={renderItem}
@@ -134,7 +137,12 @@ const ListeTerrains = () => {
         </VStack>
         <VStack space="lg" className="px-10">
           {_ajoutTerrainButton()}
-          {_commencerButton(param.screenStackName, preparationTournoiModel)}
+          {_commencerButton(
+            screenStackName,
+            preparationTournoiModel,
+            joueursModel,
+            terrainsModel,
+          )}
         </VStack>
       </VStack>
     </SafeAreaView>

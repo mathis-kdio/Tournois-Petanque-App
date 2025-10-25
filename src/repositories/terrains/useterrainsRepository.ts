@@ -26,6 +26,11 @@ export function useTerrainsRepository() {
     return terrains.map(toTerrainModel);
   }, []);
 
+  const insertTerrain = useCallback((terrainModel: TerrainModel) => {
+    const terrain = toTerrain(terrainModel);
+    TerrainsRepository.insertTerrains(terrain);
+  }, []);
+
   const updateTerrain = useCallback((terrainModel: TerrainModel) => {
     const terrain = toTerrain(terrainModel);
     TerrainsRepository.updateTerrain(terrain);
@@ -33,6 +38,7 @@ export function useTerrainsRepository() {
 
   return {
     getActualTerrains,
+    insertTerrain,
     updateTerrain,
   };
 }
