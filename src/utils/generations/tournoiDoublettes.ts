@@ -6,7 +6,7 @@ import {
 } from './generation';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { Complement } from '@/types/enums/complement';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { MatchModel } from '@/types/interfaces/match';
@@ -43,7 +43,7 @@ const testRegleJamaisMemeCoequipier = (
 };
 
 export const generationDoublettes = (
-  listeJoueurs: Joueur[],
+  listeJoueurs: JoueurModel[],
   nbTours: number,
   complement: Complement,
   speciauxIncompatibles: boolean,
@@ -53,11 +53,11 @@ export const generationDoublettes = (
   const nbjoueurs = listeJoueurs.length;
   let matchs: MatchModel[] = [];
   let idMatch = 0;
-  let joueursEnfants: Joueur[] = [];
-  let joueursTireurs: Joueur[] = [];
-  let joueursPointeurs: Joueur[] = [];
-  let joueursNonType: Joueur[] = [];
-  let joueursNonSpe: Joueur[] = [];
+  let joueursEnfants: JoueurModel[] = [];
+  let joueursTireurs: JoueurModel[] = [];
+  let joueursPointeurs: JoueurModel[] = [];
+  let joueursNonType: JoueurModel[] = [];
+  let joueursNonSpe: JoueurModel[] = [];
   let joueurs: JoueurGeneration[] = [];
 
   //Initialisation des matchs dans un tableau
@@ -395,9 +395,9 @@ export const generationDoublettes = (
 };
 
 function _randomJoueursIds(
-  joueursPointeurs: Joueur[],
-  joueursTireurs: Joueur[],
-  joueursNonType: Joueur[],
+  joueursPointeurs: JoueurModel[],
+  joueursTireurs: JoueurModel[],
+  joueursNonType: JoueurModel[],
   speciauxIncompatibles: boolean,
 ): number[] {
   let arrayIds: number[] = [];

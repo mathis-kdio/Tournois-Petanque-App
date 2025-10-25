@@ -8,7 +8,7 @@ import TopBarBack from '@/components/topBar/TopBarBack';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'expo-router';
@@ -74,7 +74,7 @@ const InscriptionsAvecNoms = () => {
       if (
         modeCreationEquipes === ModeCreationEquipes.MANUELLE &&
         avecEquipes.find(
-          (el: Joueur) =>
+          (el: JoueurModel) =>
             el.equipe === undefined || el.equipe === 0 || el.equipe > nbEquipes,
         ) !== undefined
       ) {
@@ -87,7 +87,7 @@ const InscriptionsAvecNoms = () => {
         } else if (modeCreationEquipes === ModeCreationEquipes.MANUELLE) {
           for (let i = 0; i < nbEquipes; i++) {
             let count = avecEquipes.reduce(
-              (counter: number, obj: Joueur) =>
+              (counter: number, obj: JoueurModel) =>
                 obj.equipe === i ? (counter += 1) : counter,
               0,
             );
@@ -105,7 +105,7 @@ const InscriptionsAvecNoms = () => {
         } else if (modeCreationEquipes === ModeCreationEquipes.MANUELLE) {
           for (let i = 0; i < nbEquipes; i++) {
             let count = avecEquipes.reduce(
-              (counter: number, obj: Joueur) =>
+              (counter: number, obj: JoueurModel) =>
                 obj.equipe === i ? (counter += 1) : counter,
               0,
             );

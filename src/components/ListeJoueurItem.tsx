@@ -47,13 +47,13 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { JoueurType } from '@/types/enums/joueurType';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { useDispatch, useSelector } from 'react-redux';
 
 export interface Props {
-  joueur: Joueur;
+  joueur: JoueurModel;
   isInscription: boolean;
   avecEquipes: boolean;
   typeEquipes: TypeEquipes;
@@ -88,7 +88,7 @@ const ListeJoueurItem: React.FC<Props> = ({
     (state: any) => state.gestionMatchs.listematchs,
   );
 
-  const _showSupprimerJoueur = (joueur: Joueur, isInscription: boolean) => {
+  const _showSupprimerJoueur = (joueur: JoueurModel, isInscription: boolean) => {
     if (isInscription === true) {
       return (
         <Box className="ml-2">
@@ -120,7 +120,7 @@ const ListeJoueurItem: React.FC<Props> = ({
   };
 
   const _showRenommerJoueur = (
-    joueur: Joueur,
+    joueur: JoueurModel,
     isInscription: boolean,
     avecEquipes: boolean,
   ) => {
@@ -154,7 +154,7 @@ const ListeJoueurItem: React.FC<Props> = ({
   };
 
   const _renommerJoueur = (
-    joueur: Joueur,
+    joueur: JoueurModel,
     isInscription: boolean,
     avecEquipes: boolean,
   ) => {
@@ -200,7 +200,7 @@ const ListeJoueurItem: React.FC<Props> = ({
   };
 
   const _joueurName = (
-    joueur: Joueur,
+    joueur: JoueurModel,
     isInscription: boolean,
     avecEquipes: boolean,
   ) => {
@@ -236,7 +236,7 @@ const ListeJoueurItem: React.FC<Props> = ({
   };
 
   const _equipePicker = (
-    joueur: Joueur,
+    joueur: JoueurModel,
     avecEquipes: boolean,
     typeEquipes: TypeEquipes,
     nbJoueurs: number,
@@ -256,7 +256,7 @@ const ListeJoueurItem: React.FC<Props> = ({
       let pickerItem = [];
       for (let i = 1; i <= nbEquipes; i++) {
         let count = listesJoueurs.avecEquipes.reduce(
-          (counter: number, obj: Joueur) =>
+          (counter: number, obj: JoueurModel) =>
             obj.equipe === i ? (counter += 1) : counter,
           0,
         );
@@ -354,7 +354,7 @@ const ListeJoueurItem: React.FC<Props> = ({
     }
   };
 
-  const _joueurCheckbox = (showCheckbox: boolean, joueur: Joueur) => {
+  const _joueurCheckbox = (showCheckbox: boolean, joueur: JoueurModel) => {
     if (showCheckbox) {
       let isChecked = true;
       if (joueur.isChecked === undefined || !joueur.isChecked) {

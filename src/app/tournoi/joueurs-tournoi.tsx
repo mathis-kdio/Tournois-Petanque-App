@@ -7,7 +7,7 @@ import ListeJoueurItem from '@components/ListeJoueurItem';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { ListRenderItem } from 'react-native';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoi';
@@ -45,7 +45,7 @@ const JoueursTournoi = () => {
     if (listeJoueurs === undefined) {
       return;
     }
-    const renderItem: ListRenderItem<Joueur> = ({ item }) => (
+    const renderItem: ListRenderItem<JoueurModel> = ({ item }) => (
       <ListeJoueurItem
         joueur={item}
         isInscription={false}
@@ -62,7 +62,7 @@ const JoueursTournoi = () => {
       <FlatList
         removeClippedSubviews={false}
         data={optionsTournoi.listeJoueurs}
-        keyExtractor={(item: Joueur) => item.id.toString()}
+        keyExtractor={(item: JoueurModel) => item.id.toString()}
         renderItem={renderItem}
       />
     );

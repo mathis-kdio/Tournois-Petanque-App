@@ -34,7 +34,7 @@ import {
 } from '@/components/adMob/AdMobGenerationTournoiInterstitiel';
 import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 
 type SearchParams = {
   screenStackName?: string;
@@ -164,7 +164,7 @@ const GenerationMatchs = () => {
     let mode = optionsTournoi.mode;
     let modeCreationEquipes = optionsTournoi.modeCreationEquipes;
 
-    let listeJoueursInscrits: Joueur[];
+    let listeJoueursInscrits: JoueurModel[];
     if (
       mode === ModeTournoi.AVECEQUIPES &&
       modeCreationEquipes === ModeCreationEquipes.ALEATOIRE

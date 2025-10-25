@@ -15,7 +15,7 @@ import { ListesJoueursRepository } from '@/repositories/listesJoueursRepository'
 import { NewJoueur, NewJoueursListes, NewListesJoueurs } from '@/db/schema';
 import { saveJoueurs } from '@/repositories/joueursRepository';
 import { saveJoueursListes } from '@/repositories/joueursListesRepository';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 
 type SearchParams = {
   type?: string;
@@ -41,7 +41,7 @@ const CreateListeJoueur = () => {
       console.log('z', z);
 
       const b: NewJoueur[] = [];
-      listesJoueurs.sauvegarde.forEach((joueur: Joueur) => {
+      listesJoueurs.sauvegarde.forEach((joueur: JoueurModel) => {
         b.push({
           name: joueur.name,
           equipe: joueur.equipe,

@@ -1,4 +1,4 @@
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { ranking } from '@utils/ranking';
 import { dateFormatDateCompact } from '../date';
 import { TournoiModel } from '@/types/interfaces/tournoi';
@@ -7,7 +7,7 @@ import { TFunction } from 'i18next';
 export const generationPDFCoupe = (
   affichageScore: boolean,
   affichageClassement: boolean,
-  listeJoueurs: Joueur[],
+  listeJoueurs: JoueurModel[],
   tournoi: TournoiModel,
   nbMatchsParTour: number,
   toursParLigne: number,

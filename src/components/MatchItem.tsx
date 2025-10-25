@@ -3,7 +3,7 @@ import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
 import { Divider } from '@/components/ui/divider';
 import { Box } from '@/components/ui/box';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { MatchModel } from '@/types/interfaces/match';
 import { FontAwesome5 } from '@expo/vector-icons';
 import React from 'react';
@@ -65,7 +65,7 @@ const MatchItem: React.FC<Props> = ({
   const _displayName = (joueurNumber: number, equipe: number) => {
     let joueur = listeMatchs
       .at(-1)
-      .listeJoueurs.find((item: Joueur) => item.id === joueurNumber);
+      .listeJoueurs.find((item: JoueurModel) => item.id === joueurNumber);
     if (joueur) {
       if (equipe === 1) {
         return (

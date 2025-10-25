@@ -2,7 +2,7 @@ import { Complement } from '../enums/complement';
 import { ModeTournoi } from '../enums/modeTournoi';
 import { TypeEquipes } from '../enums/typeEquipes';
 import { TypeTournoi } from '../enums/typeTournoi';
-import { Joueur } from './joueur';
+import { JoueurModel } from './joueurModel';
 
 export interface OptionsTournoiModel {
   tournoiID: number;
@@ -15,7 +15,7 @@ export interface OptionsTournoiModel {
   typeEquipes: TypeEquipes;
   complement?: Complement;
   typeTournoi: TypeTournoi;
-  listeJoueurs: Joueur[];
+  listeJoueurs: JoueurModel[];
   avecTerrains: boolean;
   mode: ModeTournoi;
 }

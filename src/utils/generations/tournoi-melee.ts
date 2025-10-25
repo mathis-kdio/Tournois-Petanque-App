@@ -1,11 +1,11 @@
 import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { shuffle } from './generation';
 import { MatchModel } from '@/types/interfaces/match';
 import { EquipeGeneration } from '@/types/interfaces/equipe-generation.interface';
 
 export const generationMelee = (
-  listeJoueurs: Joueur[],
+  listeJoueurs: JoueurModel[],
   nbTours: number,
   typeEquipes: TypeEquipes,
   eviterMemeAdversaire: number,

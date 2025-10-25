@@ -13,7 +13,7 @@ import TopBarBack from '@/components/topBar/TopBarBack';
 import AdMobMatchDetailBanner from '@components/adMob/AdMobMatchDetailBanner';
 import { nextMatch } from '@utils/generations/nextMatch/nextMatch';
 import { Platform } from 'react-native';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { MatchModel } from '@/types/interfaces/match';
 import { requestReview } from '@/utils/storeReview/StoreReview';
 import { useDispatch } from 'react-redux';
@@ -77,7 +77,7 @@ const MatchDetail = () => {
     );
   };
 
-  const _displayName = (joueur: Joueur | undefined, equipeId: EquipeId) => {
+  const _displayName = (joueur: JoueurModel | undefined, equipeId: EquipeId) => {
     if (!joueur) {
       return;
     }

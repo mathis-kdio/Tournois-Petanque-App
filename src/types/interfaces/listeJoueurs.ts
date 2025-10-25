@@ -1,6 +1,6 @@
-import { Joueur } from './joueur';
+import { JoueurModel } from './joueurModel';
 
-export interface ListeJoueurs extends Array<Joueur[] | ListeJoueursInfos> {}
+export interface ListeJoueurs extends Array<JoueurModel[] | ListeJoueursInfos> {}
 
 export interface ListeJoueursInfos {
   listId: number;

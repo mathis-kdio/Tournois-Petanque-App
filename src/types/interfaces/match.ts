@@ -1,4 +1,4 @@
-import { Joueur } from './joueur';
+import { JoueurModel } from './joueurModel';
 import { Terrain } from './terrain';
 
 export interface MatchModel {
@@ -9,16 +9,16 @@ export interface MatchModel {
   mancheName: string | undefined;
   equipe: [
     [
-      Joueur | undefined,
-      Joueur | undefined,
-      Joueur | undefined,
-      Joueur | undefined,
+      JoueurModel | undefined,
+      JoueurModel | undefined,
+      JoueurModel | undefined,
+      JoueurModel | undefined,
     ],
     [
-      Joueur | undefined,
-      Joueur | undefined,
-      Joueur | undefined,
-      Joueur | undefined,
+      JoueurModel | undefined,
+      JoueurModel | undefined,
+      JoueurModel | undefined,
+      JoueurModel | undefined,
     ],
   ];
   terrain: Terrain | undefined;

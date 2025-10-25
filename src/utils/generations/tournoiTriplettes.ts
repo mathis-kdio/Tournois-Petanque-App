@@ -4,7 +4,7 @@ import {
   shuffle,
   uniqueValueArrayRandOrder,
 } from './generation';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
@@ -17,7 +17,7 @@ import {
 } from './melee-demelee';
 
 export const generationTriplettes = (
-  listeJoueurs: Joueur[],
+  listeJoueurs: JoueurModel[],
   nbTours: number,
   complement: Complement,
   speciauxIncompatibles: boolean,
