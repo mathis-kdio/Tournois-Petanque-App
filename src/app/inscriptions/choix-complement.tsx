@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { screenStackNameType } from '@/types/types/searchParams';
 import Loading from '@/components/Loading';
+import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 
 type SearchParams = {
   screenStackName?: string;
@@ -24,34 +26,25 @@ const ChoixComplement = () => {
   const param = useLocalSearchParams<SearchParams>();
   const dispatch = useDispatch();
 
-  const optionsTournoi = useSelector(
-    (state: any) => state.optionsTournoi.options,
-  );
+  const { getActualPreparationTournoi } = usePreparationTournoi();
+
+  const [preparationTournoiModel, setPreparationTournoiModel] = useState<
+    PreparationTournoiModel | undefined
+  >(undefined);
+
+  const [options, setOptions] = useState<Complement[]>([]);
+
   const listesJoueurs = useSelector(
     (state: any) => state.listesJoueurs.listesJoueurs,
   );
 
-  const [options, setOptions] = useState<Complement[]>([]);
-
-  const _navigate = (
-    complement: Complement,
-    screenStackName: screenStackNameType,
-  ) => {
-    const updateOptionComplement = {
-      type: 'UPDATE_OPTION_TOURNOI',
-      value: ['complement', complement],
+  useEffect(() => {
+    const fetchData = async () => {
+      const resultpreparationTournoi = await getActualPreparationTournoi();
+      setPreparationTournoiModel(resultpreparationTournoi);
     };
-    dispatch(updateOptionComplement);
-
-    const { avecTerrains } = optionsTournoi;
-    let screenName = avecTerrains ? 'liste-terrains' : 'generation-matchs';
-    router.navigate({
-      pathname: `/inscriptions/${screenName}`,
-      params: {
-        screenStackName: screenStackName,
-      },
-    });
-  };
+    fetchData();
+  }, [getActualPreparationTournoi]);
 
   const prepareComplements = useCallback(
     (typeEquipes: TypeEquipes, nbJoueurs: number) => {
@@ -70,6 +63,38 @@ const ChoixComplement = () => {
     },
     [],
   );
+
+  useEffect(() => {
+    if (!preparationTournoiModel) return;
+    const { typeEquipes, mode } = preparationTournoiModel;
+    if (!typeEquipes || !mode) return;
+    let nbJoueurs = listesJoueurs[mode].length;
+    prepareComplements(typeEquipes, nbJoueurs);
+  }, [listesJoueurs, preparationTournoiModel, prepareComplements]);
+
+  if (!preparationTournoiModel) {
+    return <Loading />;
+  }
+
+  const _navigate = (
+    complement: Complement,
+    screenStackName: screenStackNameType,
+    avecTerrains: boolean,
+  ) => {
+    const updateOptionComplement = {
+      type: 'UPDATE_OPTION_TOURNOI',
+      value: ['complement', complement],
+    };
+    dispatch(updateOptionComplement);
+
+    let screenName = avecTerrains ? 'liste-terrains' : 'generation-matchs';
+    router.navigate({
+      pathname: `/inscriptions/${screenName}`,
+      params: {
+        screenStackName: screenStackName,
+      },
+    });
+  };
 
   const complementDoublette = (nbJoueurs: number): Complement[] => {
     switch (nbJoueurs % 4) {
@@ -107,15 +132,10 @@ const ChoixComplement = () => {
     }
   };
 
-  useEffect(() => {
-    const { typeEquipes, mode } = optionsTournoi;
-    let nbJoueurs = listesJoueurs[mode].length;
-    prepareComplements(typeEquipes, nbJoueurs);
-  }, [listesJoueurs, optionsTournoi, prepareComplements]);
-
   const card = (
     complement: Complement,
     screenStackName: screenStackNameType,
+    avecTerrains: boolean,
   ) => {
     const complementTextMap: Record<
       Complement,
@@ -164,17 +184,21 @@ const ChoixComplement = () => {
         <CardButton
           text={item.text}
           icons={item.icons}
-          navigate={() => _navigate(complement, screenStackName)}
+          navigate={() => _navigate(complement, screenStackName, avecTerrains)}
           newBadge={false}
         />
       </VStack>
     );
   };
 
-  const { typeEquipes } = optionsTournoi;
-  let nbModulo = typeEquipes === TypeEquipes.DOUBLETTE ? '4' : '6';
+  const { typeEquipes, avecTerrains } = preparationTournoiModel;
+  if (!typeEquipes || !avecTerrains) {
+    throw Error;
+  }
 
-  let screenStackName = param.screenStackName;
+  const nbModulo = typeEquipes === TypeEquipes.DOUBLETTE ? '4' : '6';
+
+  const { screenStackName } = param;
   if (
     screenStackName !== 'inscriptions-avec-noms' &&
     screenStackName !== 'inscriptions-sans-noms'
@@ -195,7 +219,7 @@ const ChoixComplement = () => {
           </Text>
           {options.map((complement, index) => (
             <VStack key={index}>
-              {card(complement, screenStackName)}
+              {card(complement, screenStackName, avecTerrains)}
               {index + 1 !== options.length && <Divider className="mt-5 h-1" />}
             </VStack>
           ))}

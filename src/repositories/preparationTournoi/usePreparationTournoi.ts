@@ -41,7 +41,7 @@ function toPreparationTournoi(
   };
 }
 
-export function usePreparationTournoisRepository() {
+export function usePreparationTournoi() {
   const getActualPreparationTournoi = useCallback(async () => {
     const tournoi = await PreparationTournoisRepository.getPreparationTournoi();
     console.log(tournoi);

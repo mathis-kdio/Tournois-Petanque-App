@@ -14,7 +14,7 @@ import Loading from '@/components/Loading';
 import { screenStackNameType } from '@/types/types/searchParams';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 import { useEffect, useState } from 'react';
-import { usePreparationTournoisRepository } from '@/repositories/preparationTournoi/usePreparationTournoiRepository';
+import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { useTerrainsRepository } from '@/repositories/terrains/useterrainsRepository';
 
@@ -27,7 +27,7 @@ const ListeTerrains = () => {
   const router = useRouter();
   const param = useLocalSearchParams<SearchParams>();
 
-  const { getActualPreparationTournoi } = usePreparationTournoisRepository();
+  const { getActualPreparationTournoi } = usePreparationTournoi();
   const { insertTerrain } = useTerrainsRepository();
 
   const [preparationTournoiModel, setPreparationTournoiModel] = useState<

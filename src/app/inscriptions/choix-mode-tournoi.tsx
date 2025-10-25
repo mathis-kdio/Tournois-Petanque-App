@@ -23,14 +23,14 @@ import { useRouter } from 'expo-router';
 import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 import Loading from '@/components/Loading';
-import { usePreparationTournoisRepository } from '@/repositories/preparationTournoi/usePreparationTournoiRepository';
+import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 
 const ChoixModeTournoi = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
   const { getActualPreparationTournoi, updatePreparationTournoi } =
-    usePreparationTournoisRepository();
+    usePreparationTournoi();
 
   const [preparationTournoiModel, setPreparationTournoiModel] = useState<
     PreparationTournoiModel | undefined

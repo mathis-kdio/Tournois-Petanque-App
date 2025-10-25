@@ -13,7 +13,7 @@ import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'expo-router';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
-import { usePreparationTournoisRepository } from '@/repositories/preparationTournoi/usePreparationTournoiRepository';
+import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import Loading from '@/components/Loading';
 
 const InscriptionsSansNoms = () => {
@@ -21,7 +21,7 @@ const InscriptionsSansNoms = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const { getActualPreparationTournoi } = usePreparationTournoisRepository();
+  const { getActualPreparationTournoi } = usePreparationTournoi();
 
   const [preparationTournoiModel, setPreparationTournoiModel] = useState<
     PreparationTournoiModel | undefined
