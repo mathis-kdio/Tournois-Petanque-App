@@ -5,8 +5,9 @@ import { MatchModel } from '@/types/interfaces/match';
 
 function toMatchmodel(match: Match): MatchModel {
   return {
-    listId: lJ.id,
-    name: lJ.name,
+    id: match.id,
+    score1: match.score1 ?? undefined,
+    score2: match.score2 ?? undefined,
   };
 }
 

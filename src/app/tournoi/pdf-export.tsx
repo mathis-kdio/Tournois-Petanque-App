@@ -1,7 +1,7 @@
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Button, ButtonSpinner, ButtonText } from '@/components/ui/button';
 import { VStack } from '@/components/ui/vstack';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import * as IntentLauncher from 'expo-intent-launcher';
@@ -14,27 +14,41 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { Platform } from 'react-native';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
 import { Box } from '@/components/ui/box';
 import { dateFormatDateFileName } from '@/utils/date';
 import { TournoiModel } from '@/types/interfaces/tournoi';
-import { useSelector } from 'react-redux';
 import { StyledSwitch } from '@/components/ui/switch/styled-switch';
+import { useTournoisRepository } from '@/repositories/useTournoisRepository';
+import Loading from '@/components/Loading';
 
 const PDFExport = () => {
   const { t } = useTranslation();
 
-  const tournoi = useSelector((state: any) => state.gestionMatchs.listematchs);
-  const listeTournois = useSelector(
-    (state: any) => state.listeTournois.listeTournois,
-  );
+  const { getActualTournoi } = useTournoisRepository();
+
+  const [tournoi, setTournoi] = useState<TournoiModel | undefined>(undefined);
 
   const [btnIsLoading, setBtnIsLoading] = useState(false);
   const [ajoutScore, setAjoutScore] = useState(true);
   const [ajoutClassement, setAjoutClassement] = useState(true);
   const [affichageCompact, setAffichageCompact] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const resultTournoi = await getActualTournoi();
+      setTournoi(resultTournoi);
+    };
+    fetchData();
+  }, [getActualTournoi]);
+
+  if (!tournoi) {
+    return <Loading />;
+  }
+
+  const { options } = tournoi;
+  const { nbTours, nbMatchs, listeJoueurs, typeTournoi } = options;
 
   const _generatePDF = async (
     affichageScore: boolean,
@@ -42,16 +56,6 @@ const PDFExport = () => {
     affichageCompact: boolean,
   ) => {
     let toursParLigne = affichageCompact ? 3 : 1;
-    let optionsTournoi = tournoi.at(-1) as OptionsTournoi;
-    let nbTours = optionsTournoi.nbTours;
-    let nbMatchs = optionsTournoi.nbMatchs;
-    let listeMatchs = tournoi;
-    let listeJoueurs = optionsTournoi.listeJoueurs;
-    let typeTournoi = optionsTournoi.typeTournoi;
-    let tournoiID = optionsTournoi.tournoiID;
-    let infosTournoi = listeTournois.find(
-      (e) => e.tournoiId === tournoiID,
-    ) as TournoiModel;
     let nbMatchsParTour = 0;
     if (typeTournoi === TypeTournoi.COUPE) {
       nbMatchsParTour = (nbMatchs + 1) / 2;
@@ -66,9 +70,7 @@ const PDFExport = () => {
         affichageScore,
         affichageClassement,
         listeJoueurs,
-        optionsTournoi,
-        listeMatchs,
-        infosTournoi,
+        tournoi,
         nbMatchsParTour,
         toursParLigne,
         nbToursRestants,
@@ -80,9 +82,7 @@ const PDFExport = () => {
         affichageScore,
         affichageClassement,
         listeJoueurs,
-        optionsTournoi,
-        listeMatchs,
-        infosTournoi,
+        tournoi,
         nbMatchsParTour,
         toursParLigne,
         nbToursRestants,
@@ -105,8 +105,8 @@ const PDFExport = () => {
     } else {
       const { uri } = await Print.printToFileAsync({ html });
 
-      const date = dateFormatDateFileName(infosTournoi.creationDate);
-      const newFileName = `tournoi-petanque-${infosTournoi.tournoiId}-${date}.pdf`;
+      const date = dateFormatDateFileName(tournoi.creationDate);
+      const newFileName = `tournoi-petanque-${tournoi.tournoiId}-${date}.pdf`;
 
       const oldfile = new File(Paths.cache, newFileName);
       if (oldfile.exists) {

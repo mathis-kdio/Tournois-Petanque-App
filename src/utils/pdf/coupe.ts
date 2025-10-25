@@ -1,6 +1,4 @@
 import { Joueur } from '@/types/interfaces/joueur';
-import { MatchModel } from '@/types/interfaces/match';
-import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { ranking } from '@utils/ranking';
 import { dateFormatDateCompact } from '../date';
 import { TournoiModel } from '@/types/interfaces/tournoi';
@@ -10,16 +8,15 @@ export const generationPDFCoupe = (
   affichageScore: boolean,
   affichageClassement: boolean,
   listeJoueurs: Joueur[],
-  optionsTournoi: OptionsTournoi,
-  listeMatchs: MatchModel[],
-  infosTournoi: TournoiModel,
+  tournoi: TournoiModel,
   nbMatchsParTour: number,
   toursParLigne: number,
   nbToursRestants: number,
   nbTables: number,
   t: TFunction<'translation'>,
 ) => {
-  let date = dateFormatDateCompact(infosTournoi.updateDate);
+  const { matchs, options, updateDate } = tournoi;
+  let date = dateFormatDateCompact(updateDate);
   let html = `<!DOCTYPE html><html><head><style>@page{margin: 10px;} table{width: 100%;} table,th,td{border: 1px solid black;border-collapse: collapse;} td{min-width: 50px; word-break:break-all;} .td-score{min-width: 20px;} .text-right{text-align: right;} .text-center{text-align: center;} .no-border-top{border-top: none;} .no-border-bottom{border-bottom: none;} .border-top{border-top: 1px solid;}</style></head><body>`;
   html += `<h1 class="text-center">${t('coupe')} ${date}</h1>`;
   let idxFirstMatchsTable = 0;
@@ -49,8 +46,8 @@ export const generationPDFCoupe = (
         }
         let matchId = idxFirstMatchsTour + i;
         if (matchId < idxFirstMatchsTour + nbMatchsTour) {
-          let nomMatch = `${t('match_numero')}${listeMatchs[matchId].id + 1}`;
-          let terrainMatch = listeMatchs[matchId].terrain;
+          let nomMatch = `${t('match_numero')}${matchs[matchId].id + 1}`;
+          let terrainMatch = matchs[matchId].terrain;
           if (terrainMatch && terrainMatch.name) {
             nomMatch = terrainMatch.name;
           }
@@ -63,9 +60,9 @@ export const generationPDFCoupe = (
       html += '</tr>';
 
       let matchNbJoueur = 1;
-      if (listeMatchs[i].equipe[0][2] !== -1) {
+      if (matchs[i].equipe[0][2] !== undefined) {
         matchNbJoueur = 3;
-      } else if (listeMatchs[i].equipe[0][1] !== -1) {
+      } else if (matchs[i].equipe[0][1] !== undefined) {
         matchNbJoueur = 2;
       }
       for (let jidx = 0; jidx < matchNbJoueur; jidx++) {
@@ -85,8 +82,11 @@ export const generationPDFCoupe = (
           //Joueur equipe 1
           if (matchId < idxFirstMatchsTour + nbMatchsTour) {
             html += '<td class="no-border-bottom no-border-top">';
-            if (listeMatchs[matchId].equipe[0][jidx] !== -1) {
-              let joueur = listeJoueurs[listeMatchs[matchId].equipe[0][jidx]];
+            if (matchs[matchId].equipe[0][jidx] !== undefined) {
+              let joueur = matchs[matchId].equipe[0][jidx];
+              if (!joueur) {
+                throw Error;
+              }
               if (joueur.name === undefined) {
                 html += `${t('sans_nom')} (${joueur.id + 1})`;
               } else if (joueur.name === '') {
@@ -103,26 +103,29 @@ export const generationPDFCoupe = (
               html += `<td rowspan="${matchNbJoueur}" class="td-score text-center">`;
               if (
                 affichageScore === true &&
-                listeMatchs[matchId].score1 !== undefined
+                matchs[matchId].score1 !== undefined
               ) {
-                html += listeMatchs[matchId].score1.toString();
+                html += matchs[matchId].score1.toString();
               }
               html += '</td>';
               //score equipe 2
               html += `<td rowspan="${matchNbJoueur}" class="td-score text-center">`;
               if (
                 affichageScore === true &&
-                listeMatchs[matchId].score2 !== undefined
+                matchs[matchId].score2 !== undefined
               ) {
-                html += listeMatchs[matchId].score2.toString();
+                html += matchs[matchId].score2.toString();
               }
               html += '</td>';
             }
 
             //Joueur equipe 2
             html += '<td class="text-right no-border-bottom no-border-top">';
-            if (listeMatchs[matchId].equipe[1][jidx] !== -1) {
-              let joueur = listeJoueurs[listeMatchs[matchId].equipe[1][jidx]];
+            if (matchs[matchId].equipe[1][jidx] !== undefined) {
+              let joueur = matchs[matchId].equipe[1][jidx];
+              if (!joueur) {
+                throw Error;
+              }
               if (joueur.name === undefined) {
                 html += `${t('sans_nom')} (${joueur.id + 1})`;
               } else if (joueur.name === '') {
@@ -155,7 +158,7 @@ export const generationPDFCoupe = (
 
     html += '<br><table><tr>';
     html += `<th>${t('place')}</th><th>${t('victoire')}</th><th>${t('m_j')}</th><th>${t('point')}</th>`;
-    let classement = ranking(listeMatchs, optionsTournoi);
+    let classement = ranking(matchs, options);
     for (let i = 0; i < listeJoueurs.length; i++) {
       html += '<tr>';
       html += `<td>${classement[i].position} - `;
