@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
+import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoi';
 
 const ChoixModeTournoi = () => {
   const { t } = useTranslation();
@@ -38,7 +39,7 @@ const ChoixModeTournoi = () => {
     ModeCreationEquipes.MANUELLE,
   );
 
-  const _nextStep = () => {
+  const _nextStep = (optionsTournoi: OptionsTournoiModel) => {
     //Sauvegarde typeEquipes
     const updateOptionEquipesTournoi = {
       type: 'UPDATE_OPTION_TOURNOI',
@@ -48,7 +49,7 @@ const ChoixModeTournoi = () => {
 
     //Sauvegarde modeTournoi
     let finalModeTournoi = modeTournoi;
-    let typeTournoi = optionsTournoi.typeTournoi;
+    const { typeTournoi } = optionsTournoi;
     if (typeTournoi !== TypeTournoi.MELEDEMELE) {
       finalModeTournoi = ModeTournoi.AVECEQUIPES;
     }
@@ -87,10 +88,10 @@ const ChoixModeTournoi = () => {
     }
   };
 
-  const _validButton = () => {
+  const _validButton = (optionsTournoi: OptionsTournoiModel) => {
     let buttonDisabled = false;
     let title = t('valider_et_options');
-    let typeTournoi = optionsTournoi.typeTournoi;
+    const { typeTournoi } = optionsTournoi;
     if (
       typeTournoi === TypeTournoi.CHAMPIONNAT ||
       typeTournoi === TypeTournoi.COUPE ||
@@ -102,7 +103,7 @@ const ChoixModeTournoi = () => {
       <Button
         action="primary"
         isDisabled={buttonDisabled}
-        onPress={() => _nextStep()}
+        onPress={() => _nextStep(optionsTournoi)}
         size="md"
       >
         <ButtonText>{title}</ButtonText>
@@ -110,7 +111,7 @@ const ChoixModeTournoi = () => {
     );
   };
 
-  const _modeTournoi = () => {
+  const _modeTournoi = (optionsTournoi: OptionsTournoiModel) => {
     const { typeTournoi } = optionsTournoi;
     if (typeTournoi !== TypeTournoi.MELEDEMELE) {
       return;
@@ -148,7 +149,7 @@ const ChoixModeTournoi = () => {
     );
   };
 
-  const _typeEquipe = () => {
+  const _typeEquipe = (optionsTournoi: OptionsTournoiModel) => {
     const { typeTournoi } = optionsTournoi;
     if (typeTournoi === TypeTournoi.MELEDEMELE) {
       return;
@@ -239,9 +240,9 @@ const ChoixModeTournoi = () => {
                 </Radio>
               </VStack>
             </RadioGroup>
-            {_modeTournoi()}
-            {_typeEquipe()}
-            {_validButton()}
+            {_modeTournoi(optionsTournoi)}
+            {_typeEquipe(optionsTournoi)}
+            {_validButton(optionsTournoi)}
           </VStack>
           <Box className="my-10">
             <AdMobInscriptionsBanner />

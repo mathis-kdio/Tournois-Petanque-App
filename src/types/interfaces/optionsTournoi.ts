@@ -4,7 +4,7 @@ import { TypeEquipes } from '../enums/typeEquipes';
 import { TypeTournoi } from '../enums/typeTournoi';
 import { Joueur } from './joueur';
 
-export interface OptionsTournoi {
+export interface OptionsTournoiModel {
   tournoiID: number;
   nbTours: number;
   nbMatchs: number;

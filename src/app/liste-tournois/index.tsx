@@ -15,7 +15,7 @@ import ListeTournoiItem from '@components/ListeTournoiItem';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
+import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoi';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import { ListRenderItem } from 'react-native';
 import { dateFormatDateHeure } from '@/utils/date';
@@ -81,7 +81,7 @@ const ListeTournois = () => {
       memesEquipes,
       memesAdversaires,
       speciauxIncompatibles,
-    } = tournoi.at(-1) as OptionsTournoi;
+    } = tournoi.at(-1) as OptionsTournoiModel;
     let creationDateFormat = creationDate
       ? dateFormatDateHeure(creationDate)
       : t('date_inconnue');

@@ -10,7 +10,7 @@ import TopBarBack from '@/components/topBar/TopBarBack';
 import { Joueur } from '@/types/interfaces/joueur';
 import { ListRenderItem } from 'react-native';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
+import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoi';
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useTournoisRepository } from '@/repositories/useTournoisRepository';
@@ -40,7 +40,7 @@ const JoueursTournoi = () => {
     router.navigate('/tournoi');
   };
 
-  const _displayListeJoueur = (optionsTournoi: OptionsTournoi) => {
+  const _displayListeJoueur = (optionsTournoi: OptionsTournoiModel) => {
     const { listeJoueurs, mode, typeEquipes, typeTournoi } = optionsTournoi;
     if (listeJoueurs === undefined) {
       return;

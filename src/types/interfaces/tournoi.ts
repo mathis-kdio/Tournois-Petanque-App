@@ -1,5 +1,5 @@
 import { MatchModel } from './match';
-import { OptionsTournoi } from './optionsTournoi';
+import { OptionsTournoiModel } from './optionsTournoi';
 
 export interface TournoiModel {
   tournoiId: number;
@@ -7,5 +7,5 @@ export interface TournoiModel {
   creationDate: Date;
   updateDate: Date;
   matchs: MatchModel[];
-  options: OptionsTournoi;
+  options: OptionsTournoiModel;
 }
