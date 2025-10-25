@@ -4,7 +4,7 @@ import { HStack } from '@/components/ui/hstack';
 import { Divider } from '@/components/ui/divider';
 import { Box } from '@/components/ui/box';
 import { Joueur } from '@/types/interfaces/joueur';
-import { Match } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/match';
 import { FontAwesome5 } from '@expo/vector-icons';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -12,7 +12,7 @@ import { TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 
 export interface Props {
-  match: Match;
+  match: MatchModel;
   displayDetailForMatch: (idMatch: number) => void;
   manche: number;
 }
@@ -28,7 +28,7 @@ const MatchItem: React.FC<Props> = ({
     (state: any) => state.gestionMatchs.listematchs,
   );
 
-  const _displayTitle = (match: Match) => {
+  const _displayTitle = (match: MatchModel) => {
     const { id, terrain, score1, score2 } = match;
     const score1Int = score1 ? score1 : 0;
     const score2Int = score2 ? score2 : 0;
@@ -54,7 +54,7 @@ const MatchItem: React.FC<Props> = ({
     );
   };
 
-  const _displayEquipe = (equipe: number, match: Match) => {
+  const _displayEquipe = (equipe: number, match: MatchModel) => {
     let nomsJoueurs = [];
     for (let i = 0; i < 4; i++) {
       nomsJoueurs.push(_displayName(match.equipe[equipe - 1][i], equipe));

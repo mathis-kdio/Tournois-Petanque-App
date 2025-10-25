@@ -9,7 +9,7 @@ import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { Complement } from '@/types/enums/complement';
-import { Match } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/match';
 import { JoueurGeneration } from '@/types/interfaces/joueur-generation.interface';
 import {
   testAffectationPossible,
@@ -25,7 +25,7 @@ export const generationTriplettes = (
   eviterMemeAdversaire: number,
 ) => {
   let nbjoueurs = listeJoueurs.length;
-  let matchs: Match[] = [];
+  let matchs: MatchModel[] = [];
   let idMatch = 0;
   let joueursSpe = [];
   let joueursNonSpe = [];

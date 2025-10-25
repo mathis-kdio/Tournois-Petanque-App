@@ -1,4 +1,4 @@
-import { Match } from './match';
+import { MatchModel } from './match';
 import { OptionsTournoi } from './optionsTournoi';
 
 export interface TournoiModel {
@@ -6,5 +6,6 @@ export interface TournoiModel {
   name?: string;
   creationDate: Date;
   updateDate: Date;
-  tournoi: [...Match[], OptionsTournoi];
+  matchs: MatchModel[];
+  options: OptionsTournoi;
 }

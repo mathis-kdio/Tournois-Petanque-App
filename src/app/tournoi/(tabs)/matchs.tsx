@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { Match } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/match';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
 import { useSelector } from 'react-redux';
@@ -50,8 +50,8 @@ export default function MatchsPage() {
     let iconName = 'battery-half';
     let matchsRestant = 0;
     if (listeMatchs) {
-      let matchs: Match[] = listeMatchs.filter(
-        (el: Match) => el.manche === numero,
+      let matchs: MatchModel[] = listeMatchs.filter(
+        (el: MatchModel) => el.manche === numero,
       );
       matchsRestant = matchs.length;
       if (matchs) {

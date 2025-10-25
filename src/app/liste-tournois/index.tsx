@@ -1,6 +1,5 @@
 import { Heading } from '@/components/ui/heading';
 import { CloseIcon, Icon } from '@/components/ui/icon';
-
 import {
   Modal,
   ModalBackdrop,
@@ -9,7 +8,6 @@ import {
   ModalCloseButton,
   ModalBody,
 } from '@/components/ui/modal';
-
 import { FlatList } from '@/components/ui/flat-list';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';

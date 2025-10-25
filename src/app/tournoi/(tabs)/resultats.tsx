@@ -10,7 +10,7 @@ import { ListRenderItem } from 'react-native';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { Victoire } from '@/types/interfaces/victoire';
 import { useSelector } from 'react-redux';
-import { Match } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/match';
 import useExitAlertOnBack from '@/components/with-exit-alert/with-exit-alert';
 
 const ListeResultats = () => {
@@ -19,7 +19,7 @@ const ListeResultats = () => {
   const { t } = useTranslation();
   const tournoi = useSelector((state: any) => state.gestionMatchs.listematchs);
 
-  const listeMatchs = tournoi.slice(0, -1) as Match[];
+  const listeMatchs = tournoi.slice(0, -1) as MatchModel[];
   const optionsTournois = tournoi.at(-1) as OptionsTournoi;
 
   const renderItem: ListRenderItem<Victoire> = ({ item }) => (

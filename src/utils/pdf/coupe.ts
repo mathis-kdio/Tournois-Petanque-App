@@ -1,5 +1,5 @@
 import { Joueur } from '@/types/interfaces/joueur';
-import { Match } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/match';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { ranking } from '@utils/ranking';
 import { dateFormatDateCompact } from '../date';
@@ -11,7 +11,7 @@ export const generationPDFCoupe = (
   affichageClassement: boolean,
   listeJoueurs: Joueur[],
   optionsTournoi: OptionsTournoi,
-  listeMatchs: Match[],
+  listeMatchs: MatchModel[],
   infosTournoi: TournoiModel,
   nbMatchsParTour: number,
   toursParLigne: number,

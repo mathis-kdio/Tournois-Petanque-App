@@ -9,7 +9,7 @@ import { Complement } from '@/types/enums/complement';
 import { Joueur } from '@/types/interfaces/joueur';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { Match } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/match';
 import { JoueurGeneration } from '@/types/interfaces/joueur-generation.interface';
 import {
   testAffectationPossible,
@@ -51,7 +51,7 @@ export const generationDoublettes = (
   eviterMemeAdversaire: number,
 ) => {
   const nbjoueurs = listeJoueurs.length;
-  let matchs: Match[] = [];
+  let matchs: MatchModel[] = [];
   let idMatch = 0;
   let joueursEnfants: Joueur[] = [];
   let joueursTireurs: Joueur[] = [];

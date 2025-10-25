@@ -1,10 +1,10 @@
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { nextMatchCoupe } from './nextMatchCoupe';
 import { nextMatchMultiChances } from './nextMatchMultiChances';
-import { Match } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/match';
 
 export const nextMatch = (
-  match: Match,
+  match: MatchModel,
   nbMatchs: number,
   typeTournoi: TypeTournoi,
   nbTours: number,

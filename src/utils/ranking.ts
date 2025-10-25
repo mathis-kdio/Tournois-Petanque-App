@@ -1,10 +1,10 @@
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { Match } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/match';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { Victoire } from '@/types/interfaces/victoire';
 
 export const ranking = (
-  listeMatchs: Match[],
+  listeMatchs: MatchModel[],
   optionsTournoi: OptionsTournoi,
 ): Victoire[] => {
   if (listeMatchs === undefined) {
@@ -53,7 +53,7 @@ const factorial = (n: number): number => {
 };
 
 const rankingMuliChances = (
-  listeMatchs: Match[],
+  listeMatchs: MatchModel[],
   optionsTournoi: OptionsTournoi,
   victoires: Victoire[],
 ): Victoire[] => {
@@ -80,7 +80,7 @@ const rankingMuliChances = (
 };
 
 const victoiresPointsCalc = (
-  listeMatchs: Match[],
+  listeMatchs: MatchModel[],
   optionsTournoi: OptionsTournoi,
 ): Victoire[] => {
   let listeJoueurs = optionsTournoi.listeJoueurs;

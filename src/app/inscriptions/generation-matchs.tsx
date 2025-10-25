@@ -17,7 +17,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Platform } from 'react-native';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { Match } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/match';
 import TopBar from '@/components/topBar/TopBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
@@ -266,7 +266,7 @@ const GenerationMatchs = () => {
       let manche = matchs[0].manche;
       let arrRandIdsTerrains = uniqueValueArrayRandOrder(listeTerrains.length);
       let i = 0;
-      matchs.forEach((match: Match) => {
+      matchs.forEach((match: MatchModel) => {
         if (match.manche !== manche) {
           manche = match.manche;
           arrRandIdsTerrains = uniqueValueArrayRandOrder(listeTerrains.length);

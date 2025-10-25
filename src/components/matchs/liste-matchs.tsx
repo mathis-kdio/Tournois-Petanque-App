@@ -1,7 +1,7 @@
 import { FlatList } from '@/components/ui/flat-list';
 import { VStack } from '@/components/ui/vstack';
 import MatchItem from '@components/MatchItem';
-import { Match } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/match';
 import { ListRenderItem } from 'react-native';
 import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { useSelector } from 'react-redux';
@@ -36,9 +36,9 @@ const ListeMatchs: React.FC<ListeMatchsProps> = ({ mancheNumber }) => {
       matchs = tournoi.slice(0, -1); //On retire la config et donc seulement la liste des matchs
     }
     matchs = matchs.filter(
-      (match: Match) => match.manche === mancheNumber,
-    ) as Match[];
-    const renderItem: ListRenderItem<Match> = ({ item }) => (
+      (match: MatchModel) => match.manche === mancheNumber,
+    ) as MatchModel[];
+    const renderItem: ListRenderItem<MatchModel> = ({ item }) => (
       <MatchItem
         match={item}
         displayDetailForMatch={_displayDetailForMatch}
@@ -50,7 +50,7 @@ const ListeMatchs: React.FC<ListeMatchsProps> = ({ mancheNumber }) => {
       <FlatList
         data={matchs}
         initialNumToRender={nbMatchs}
-        keyExtractor={(item: Match) => item.id.toString()}
+        keyExtractor={(item: MatchModel) => item.id.toString()}
         renderItem={renderItem}
       />
     );
