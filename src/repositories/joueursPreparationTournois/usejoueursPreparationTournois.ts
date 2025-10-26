@@ -34,7 +34,7 @@ export function useJoueursPreparationTournois() {
   const getActualJoueursPreparationTournoi = useCallback(
     async (preparationTournoiId: number) => {
       const joueursPreparationTournois =
-        await JoueursPreparationTournoisRepository.getJoueursPreparationTournoi(
+        await JoueursPreparationTournoisRepository.getMany(
           preparationTournoiId,
         );
       console.log(joueursPreparationTournois);
@@ -57,8 +57,18 @@ export function useJoueursPreparationTournois() {
     [],
   );
 
+  const removeAllJoueursPreparationTournoi = useCallback(async () => {
+    const joueursPreparationTournois =
+      await JoueursPreparationTournoisRepository.getMany(0);
+    JoueursRepository.delete(
+      joueursPreparationTournois.map((e) => e.joueurs.id),
+    );
+    JoueursPreparationTournoisRepository.deleteAll();
+  }, []);
+
   return {
     getActualJoueursPreparationTournoi,
     addJoueursPreparationTournoi,
+    removeAllJoueursPreparationTournoi,
   };
 }

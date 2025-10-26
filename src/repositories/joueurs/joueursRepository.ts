@@ -1,6 +1,7 @@
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { Joueur, joueurs, NewJoueur } from '@/db/schema';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { inArray } from 'drizzle-orm';
 
 export const JoueursRepository = {
   toNewJoueur(joueur: JoueurModel): NewJoueur {
@@ -31,5 +32,9 @@ export const JoueursRepository = {
       throw new Error('Insert operation returned undefined');
     }
     return result;
+  },
+
+  async delete(joueurIds: number[]): Promise<void> {
+    await getDrizzleDb().delete(joueurs).where(inArray(joueurs.id, joueurIds));
   },
 };

@@ -13,10 +13,10 @@ export type JoueursPreparationTournoisWithJoueur = {
 };
 
 export const JoueursPreparationTournoisRepository = {
-  async getJoueursPreparationTournoi(
+  async getMany(
     preparationTournoiId: number,
   ): Promise<JoueursPreparationTournoisWithJoueur[]> {
-    const a = await getDrizzleDb()
+    return await getDrizzleDb()
       .select()
       .from(joueursPreparationTournois)
       .innerJoin(joueurs, eq(joueursPreparationTournois.id, joueurs.joueurId))
@@ -26,8 +26,6 @@ export const JoueursPreparationTournoisRepository = {
           preparationTournoiId,
         ),
       );
-    console.log(a);
-    return a;
   },
 
   async insert(
@@ -36,5 +34,11 @@ export const JoueursPreparationTournoisRepository = {
     await getDrizzleDb()
       .insert(joueursPreparationTournois)
       .values(newJoueursPreparationTournois);
+  },
+
+  async deleteAll(): Promise<void> {
+    await getDrizzleDb()
+      .delete(joueursPreparationTournois)
+      .where(eq(joueursPreparationTournois.preparationTournoiId, 0));
   },
 };

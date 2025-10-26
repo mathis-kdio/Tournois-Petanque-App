@@ -51,9 +51,9 @@ const Inscription: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const dispatch = useDispatch();
 
-  const { addJoueursPreparationTournoi } = useJoueursPreparationTournois();
+  const { addJoueursPreparationTournoi, removeAllJoueursPreparationTournoi } =
+    useJoueursPreparationTournois();
 
   const [joueurType, setJoueurType] = useState<JoueurTypeEnum | undefined>(
     undefined,
@@ -180,7 +180,7 @@ const Inscription: React.FC<Props> = ({
     }
   };
 
-  const _modalRemoveAllPlayers = (mode: ModeTournoi) => {
+  const _modalRemoveAllPlayers = () => {
     return (
       <AlertDialog
         isOpen={modalRemoveIsOpen}
@@ -214,7 +214,7 @@ const Inscription: React.FC<Props> = ({
                   {t('annuler')}
                 </ButtonText>
               </Button>
-              <Button action="negative" onPress={() => _removeAllPlayers(mode)}>
+              <Button action="negative" onPress={() => _removeAllPlayers()}>
                 <ButtonText>{t('oui')}</ButtonText>
               </Button>
             </ButtonGroup>
@@ -224,12 +224,8 @@ const Inscription: React.FC<Props> = ({
     );
   };
 
-  const _removeAllPlayers = (mode: ModeTournoi) => {
-    const actionRemoveAll = {
-      type: 'SUPPR_ALL_JOUEURS',
-      value: [mode],
-    };
-    dispatch(actionRemoveAll);
+  const _removeAllPlayers = () => {
+    removeAllJoueursPreparationTournoi();
     setModalRemoveIsOpen(false);
   };
 
@@ -347,13 +343,14 @@ const Inscription: React.FC<Props> = ({
   };
 
   const _buttonRemoveAllPlayers = (listeJoueurs: JoueurModel[]) => {
-    if (listeJoueurs.length > 0) {
-      return (
-        <Button action="negative" onPress={() => setModalRemoveIsOpen(true)}>
-          <ButtonText>{t('supprimer_joueurs_bouton')}</ButtonText>
-        </Button>
-      );
+    if (listeJoueurs.length === 0) {
+      return <></>;
     }
+    return (
+      <Button action="negative" onPress={() => setModalRemoveIsOpen(true)}>
+        <ButtonText>{t('supprimer_joueurs_bouton')}</ButtonText>
+      </Button>
+    );
   };
 
   const _buttonLoadSavedList = () => {
@@ -464,7 +461,7 @@ const Inscription: React.FC<Props> = ({
       <VStack className="flex-1">
         {_displayListeJoueur(listeJoueurs, preparationTournoi)}
       </VStack>
-      {_modalRemoveAllPlayers(mode)}
+      {_modalRemoveAllPlayers()}
     </VStack>
   );
 };
