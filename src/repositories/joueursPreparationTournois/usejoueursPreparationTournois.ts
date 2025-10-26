@@ -3,10 +3,9 @@ import {
   JoueursPreparationTournoisRepository,
   JoueursPreparationTournoisWithJoueur,
 } from './joueursPreparationTournoiRepository';
-import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
-import { PreparationTournoi } from '@/db/schema/preparationTournoi';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { JoueurType } from '@/types/enums/joueurType';
+import { Joueur, NewJoueursPreparationTournois } from '@/db/schema';
+import { JoueursRepository } from '../joueurs/joueursRepository';
 
 function toJoueurModel(
   preparationTournoi: JoueursPreparationTournoisWithJoueur,
@@ -21,22 +20,13 @@ function toJoueurModel(
   };
 }
 
-function toPreparationTournoi(
-  preparationTournoi: PreparationTournoiModel,
-): PreparationTournoi {
+function toNewJoueursPreparationTournois(
+  joueur: Joueur,
+  preparationTournoiId: number,
+): NewJoueursPreparationTournois {
   return {
-    id: 0,
-    nbTours: preparationTournoi.nbTours ?? null,
-    nbPtVictoire: preparationTournoi.nbPtVictoire ?? null,
-    speciauxIncompatibles: preparationTournoi.speciauxIncompatibles ?? null,
-    memesEquipes: preparationTournoi.memesEquipes ?? null,
-    memesAdversaires: preparationTournoi.memesAdversaires ?? null,
-    typeEquipes: preparationTournoi.typeEquipes ?? null,
-    complement: preparationTournoi.complement ?? null,
-    typeTournoi: preparationTournoi.typeTournoi ?? null,
-    avecTerrains: preparationTournoi.avecTerrains ?? null,
-    mode: preparationTournoi.mode ?? null,
-    modeCreationEquipes: preparationTournoi.modeCreationEquipes ?? null,
+    joueurId: joueur.id,
+    preparationTournoiId: preparationTournoiId,
   };
 }
 
@@ -54,17 +44,15 @@ export function useJoueursPreparationTournois() {
   );
 
   const addJoueursPreparationTournoi = useCallback(
-    async (
-      joueurName: string,
-      joueurType: JoueurType | undefined,
-      equipe: number,
-    ) => {
-      const joueursPreparationTournois =
-        await JoueursPreparationTournoisRepository.getJoueursPreparationTournoi(
-          preparationTournoiId,
-        );
-      console.log(joueursPreparationTournois);
-      return joueursPreparationTournois.map(toJoueurModel);
+    async (joueurModel: JoueurModel) => {
+      const joueur = await JoueursRepository.insert(
+        JoueursRepository.toNewJoueur(joueurModel),
+      );
+
+      await JoueursPreparationTournoisRepository.insert(
+        toNewJoueursPreparationTournois(joueur, 0),
+      );
+      return JoueursRepository.toJoueurModel(joueur);
     },
     [],
   );

@@ -7,7 +7,7 @@ export const joueurs = sqliteTable('joueurs', {
   name: text().notNull(),
   type: text().$type<JoueurType>(),
   equipe: integer(),
-  isChecked: integer({ mode: 'boolean' }),
+  isChecked: integer({ mode: 'boolean' }).default(false),
 });
 
 export type Joueur = typeof joueurs.$inferSelect;

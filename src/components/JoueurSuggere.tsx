@@ -31,7 +31,6 @@ export interface Props {
     joueurName: string,
     joueurType: JoueurTypeEnum | undefined,
     typeEquipes: TypeEquipes,
-    mode: ModeTournoi,
   ) => void;
 }
 
@@ -101,16 +100,12 @@ const JoueurSuggere: React.FC<Props> = ({
     setModalRemoveIsOpen(false);
   };
 
-  const _addPlayer = (
-    playerName: string,
-    typeEquipes: TypeEquipes,
-    mode: ModeTournoi,
-  ) => {
-    ajoutJoueur(playerName, joueurType, typeEquipes, mode);
+  const _addPlayer = (playerName: string, typeEquipes: TypeEquipes) => {
+    ajoutJoueur(playerName, joueurType, typeEquipes);
   };
 
-  const { typeEquipes, mode } = optionsTournoi;
-  if (!typeEquipes || !mode) {
+  const { typeEquipes } = optionsTournoi;
+  if (!typeEquipes) {
     throw Error('manquant ');
   }
 
@@ -141,7 +136,7 @@ const JoueurSuggere: React.FC<Props> = ({
           name="plus"
           backgroundColor="#348352"
           iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
-          onPress={() => _addPlayer(joueur.name, typeEquipes, mode)}
+          onPress={() => _addPlayer(joueur.name, typeEquipes)}
         />
       </Box>
       {_modalRemovePlayer(joueur.id)}

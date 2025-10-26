@@ -2,6 +2,7 @@ import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import {
   joueursPreparationTournois,
   JoueursPreparationTournois,
+  NewJoueursPreparationTournois,
 } from '@/db/schema/joueursPreparationTournois';
 import { Joueur, joueurs } from '@/db/schema';
 import { eq } from 'drizzle-orm';
@@ -27,5 +28,13 @@ export const JoueursPreparationTournoisRepository = {
       );
     console.log(a);
     return a;
+  },
+
+  async insert(
+    newJoueursPreparationTournois: NewJoueursPreparationTournois,
+  ): Promise<void> {
+    await getDrizzleDb()
+      .insert(joueursPreparationTournois)
+      .values(newJoueursPreparationTournois);
   },
 };

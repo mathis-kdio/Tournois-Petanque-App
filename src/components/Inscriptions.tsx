@@ -122,27 +122,31 @@ const Inscription: React.FC<Props> = ({
       return;
     }
 
-    ajoutJoueur(joueurText, joueurType, typeEquipes, mode);
+    ajoutJoueur(joueurText, joueurType, typeEquipes);
 
     setJoueurText('');
     setJoueurType(undefined);
     setEtatBouton(false);
   };
 
-  const ajoutJoueur = (
+  const ajoutJoueur = async (
     joueurName: string,
     joueurType: JoueurTypeEnum | undefined,
     typeEquipes: TypeEquipes,
-    mode: ModeTournoi,
   ) => {
     const equipe = equipeAuto(listeJoueurs, typeEquipes);
 
-    const action = {
-      type: 'AJOUT_JOUEUR',
-      value: [mode, joueurName, joueurType, equipe],
+    let joueur: JoueurModel = {
+      id: listeJoueurs.length,
+      name: joueurName,
+      type: joueurType,
+      equipe: equipe,
+      isChecked: false,
     };
-    dispatch(action);
-    addJoueursPreparationTournoi(joueurName, joueurType, equipe);
+
+    let newjoueur = await addJoueursPreparationTournoi(joueur);
+    // TODO actualisation liste
+    listeJoueurs.push(newjoueur);
   };
 
   const equipeAuto = (
