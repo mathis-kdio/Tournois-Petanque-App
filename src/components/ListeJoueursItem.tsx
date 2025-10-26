@@ -20,19 +20,23 @@ import React, { useState } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
-import {
-  ListeJoueurs,
-  ListeJoueursInfos,
-} from '@/types/interfaces/listeJoueurs';
+import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'expo-router';
 
 export interface Props {
-  list: ListeJoueurs;
+  listeJoueursInfos: ListeJoueursInfos;
   loadListScreen: boolean;
+  onDelete: (id: number) => void;
+  onUpdateName: (id: number, name: string) => void;
 }
 
-const ListeJoueursItem: React.FC<Props> = ({ list, loadListScreen }) => {
+const ListeJoueursItem: React.FC<Props> = ({
+  listeJoueursInfos,
+  loadListScreen,
+  onDelete,
+  onUpdateName,
+}) => {
   const { t } = useTranslation();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -119,11 +123,8 @@ const ListeJoueursItem: React.FC<Props> = ({ list, loadListScreen }) => {
   };
 
   const _removeList = (listId: number) => {
-    const actionRemoveList = {
-      type: 'REMOVE_SAVED_LIST',
-      value: { typeInscription: 'avecNoms', listId: listId },
-    };
-    dispatch(actionRemoveList);
+    onDelete(listId);
+    setModalDeleteIsOpen(false);
   };
 
   const _showRenameList = (listId: number) => {
@@ -157,19 +158,12 @@ const ListeJoueursItem: React.FC<Props> = ({ list, loadListScreen }) => {
   };
 
   const _renameList = (listId: number) => {
-    if (listNameText !== '') {
-      setRenommerOn(false);
-      const actionRenameList = {
-        type: 'RENAME_SAVED_LIST',
-        value: {
-          typeInscription: 'avecNoms',
-          listId: listId,
-          newName: listNameText,
-        },
-      };
-      dispatch(actionRenameList);
-      setListNameText('');
+    if (listNameText === '') {
+      return;
     }
+    onUpdateName(listId, listNameText);
+    setListNameText('');
+    setRenommerOn(false);
   };
 
   const _listTextInputChanged = (text: string) => {
@@ -215,9 +209,8 @@ const ListeJoueursItem: React.FC<Props> = ({ list, loadListScreen }) => {
   };
 
   const _listName = (listeJoueursInfos: ListeJoueursInfos) => {
-    let listName = listeJoueursInfos.name
-      ? listeJoueursInfos.name
-      : 'n°' + listeJoueursInfos.listId;
+    const { name, listId } = listeJoueursInfos;
+    let listName = name ? name : `n°' ${listId}`;
     if (renommerOn) {
       return (
         <Input className="border-custom-bg-inverse">
@@ -226,20 +219,19 @@ const ListeJoueursItem: React.FC<Props> = ({ list, loadListScreen }) => {
             placeholder={listName}
             autoFocus={true}
             onChangeText={(text) => _listTextInputChanged(text)}
-            onSubmitEditing={() => _renameList(listeJoueursInfos.listId)}
+            onSubmitEditing={() => _renameList(listId)}
           />
         </Input>
       );
     } else {
       return (
         <Text className="text-typography-white">
-          {t('liste')} {listName}
+          {`${t('liste')} ${listName}`}
         </Text>
       );
     }
   };
 
-  let listeJoueursInfos = list.at(-1) as ListeJoueursInfos;
   return (
     <HStack space="md" className="px-2 my-2 items-center">
       <Box className="flex-1">{_listName(listeJoueursInfos)}</Box>

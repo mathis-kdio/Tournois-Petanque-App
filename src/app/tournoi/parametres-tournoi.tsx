@@ -1,7 +1,6 @@
 import { ScrollView } from '@/components/ui/scroll-view';
 import { CloseIcon, Icon } from '@/components/ui/icon';
 import { Heading } from '@/components/ui/heading';
-
 import {
   AlertDialog,
   AlertDialogBackdrop,
@@ -11,33 +10,46 @@ import {
   AlertDialogFooter,
   AlertDialogBody,
 } from '@/components/ui/alert-dialog';
-
 import { Text } from '@/components/ui/text';
 import { Button, ButtonText, ButtonGroup } from '@/components/ui/button';
 import { VStack } from '@/components/ui/vstack';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { useDispatch, useSelector } from 'react-redux';
-import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
 import { useNavigation, useRouter } from 'expo-router';
 import { CommonActions } from '@react-navigation/native';
+import { useTournois } from '@/repositories/tournois/useTournois';
+import { TournoiModel } from '@/types/interfaces/tournoi';
+import Loading from '@/components/Loading';
 
 const ParametresTournoi = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const navigation = useNavigation();
-  const dispatch = useDispatch();
-  const tournoi = useSelector((state: any) => state.gestionMatchs.listematchs);
 
+  const { getActualTournoi, deleteTournoi } = useTournois();
+
+  const [tournoi, setTournoi] = useState<TournoiModel | undefined>(undefined);
   const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const resultTournoi = await getActualTournoi();
+      setTournoi(resultTournoi);
+    };
+    fetchData();
+  }, [getActualTournoi]);
+
+  if (!tournoi) {
+    return <Loading />;
+  }
 
   const _showMatchs = () => {
     router.navigate('/tournoi');
   };
 
-  const _supprimerTournoi = () => {
+  const _supprimerTournoi = (tournoiId: number) => {
     setModalDeleteIsOpen(false);
     navigation.dispatch(
       CommonActions.reset({
@@ -45,24 +57,12 @@ const ParametresTournoi = () => {
       }),
     );
 
-    const supprDansListeTournois = {
-      type: 'SUPPR_TOURNOI',
-      value: {
-        tournoiId: tournoi.at(-1).tournoiID,
-      },
-    };
-    const suppressionAllMatchs = { type: 'SUPPR_MATCHS' };
     setTimeout(() => {
-      dispatch(supprDansListeTournois);
-      dispatch(suppressionAllMatchs);
+      deleteTournoi(tournoiId);
     }, 1000);
   };
 
-  const _modalSupprimerTournoi = () => {
-    let tournoiId = 0;
-    if (tournoi) {
-      tournoiId = tournoi.at(-1).tournoiID;
-    }
+  const _modalSupprimerTournoi = (tournoiId: number) => {
     return (
       <AlertDialog
         isOpen={modalDeleteIsOpen}
@@ -98,7 +98,10 @@ const ParametresTournoi = () => {
                   {t('annuler')}
                 </ButtonText>
               </Button>
-              <Button action="negative" onPress={() => _supprimerTournoi()}>
+              <Button
+                action="negative"
+                onPress={() => _supprimerTournoi(tournoiId)}
+              >
                 <ButtonText>{t('oui')}</ButtonText>
               </Button>
             </ButtonGroup>
@@ -108,11 +111,8 @@ const ParametresTournoi = () => {
     );
   };
 
-  if (!tournoi) {
-    return <></>;
-  }
-  let parametresTournoi = tournoi.at(-1) as OptionsTournoi;
   const {
+    tournoiID,
     typeTournoi,
     typeEquipes,
     nbTours,
@@ -122,7 +122,7 @@ const ParametresTournoi = () => {
     speciauxIncompatibles,
     memesEquipes,
     memesAdversaires,
-  } = parametresTournoi;
+  } = tournoi.options;
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView className="h-1 bg-custom-background">
@@ -175,7 +175,7 @@ const ParametresTournoi = () => {
           </VStack>
         </VStack>
       </ScrollView>
-      {_modalSupprimerTournoi()}
+      {_modalSupprimerTournoi(tournoiID)}
     </SafeAreaView>
   );
 };

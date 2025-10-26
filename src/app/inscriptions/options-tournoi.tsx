@@ -23,11 +23,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { useTranslation } from 'react-i18next';
 import { Platform } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import Loading from '@/components/Loading';
 import { screenStackNameType } from '@/types/types/searchParams';
+import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 
 type SearchParams = {
   screenStackName?: string;
@@ -38,7 +39,13 @@ const OptionsTournoi = () => {
   const param = useLocalSearchParams<SearchParams>();
 
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+
+  const { getActualPreparationTournoi, updatePreparationTournoi } =
+    usePreparationTournoi();
+
+  const [preparationTournoiModel, setPreparationTournoiModel] = useState<
+    PreparationTournoiModel | undefined
+  >(undefined);
 
   const [speciauxIncompatibles, setSpeciauxIncompatibles] = useState(true);
   const [memesEquipes, setMemesEquipes] = useState(true);
@@ -50,6 +57,18 @@ const OptionsTournoi = () => {
   let nbToursTxt: string = '5';
   let nbPtVictoireTxt: string = '13';
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const resultpreparationTournoi = await getActualPreparationTournoi();
+      setPreparationTournoiModel(resultpreparationTournoi);
+    };
+    fetchData();
+  }, [getActualPreparationTournoi]);
+
+  if (!preparationTournoiModel) {
+    return <Loading />;
+  }
+
   const _nbToursTxtInputChanged = (text: string) => {
     nbToursTxt = text;
     setNbTours(nbToursTxt ? parseInt(nbToursTxt) : undefined);
@@ -60,42 +79,19 @@ const OptionsTournoi = () => {
     setNbPtVictoire(nbPtVictoireTxt ? parseInt(nbPtVictoireTxt) : undefined);
   };
 
-  const _nextStep = (screenStackName: screenStackNameType) => {
-    const updateOptionNbTours = {
-      type: 'UPDATE_OPTION_TOURNOI',
-      value: ['nbTours', nbTours],
-    };
-    dispatch(updateOptionNbTours);
-    const updateOptionNbPtVictoire = {
-      type: 'UPDATE_OPTION_TOURNOI',
-      value: ['nbPtVictoire', nbPtVictoire],
-    };
-    dispatch(updateOptionNbPtVictoire);
-    const updateOptionSpeciauxIncompatibles = {
-      type: 'UPDATE_OPTION_TOURNOI',
-      value: ['speciauxIncompatibles', speciauxIncompatibles],
-    };
-    dispatch(updateOptionSpeciauxIncompatibles);
-    const updateOptionMemesEquipes = {
-      type: 'UPDATE_OPTION_TOURNOI',
-      value: ['memesEquipes', memesEquipes],
-    };
-    dispatch(updateOptionMemesEquipes);
-    const updateOptionMemesAdversaires = {
-      type: 'UPDATE_OPTION_TOURNOI',
-      value: ['memesAdversaires', memesAdversaires],
-    };
-    dispatch(updateOptionMemesAdversaires);
-    const updateOptionComplement = {
-      type: 'UPDATE_OPTION_TOURNOI',
-      value: ['complement', undefined],
-    };
-    dispatch(updateOptionComplement);
-    const updateOptionAvecTerrains = {
-      type: 'UPDATE_OPTION_TOURNOI',
-      value: ['avecTerrains', avecTerrains],
-    };
-    dispatch(updateOptionAvecTerrains);
+  const _nextStep = (
+    screenStackName: screenStackNameType,
+    preparationTournoiModel: PreparationTournoiModel,
+  ) => {
+    preparationTournoiModel.nbTours = nbTours;
+    preparationTournoiModel.nbPtVictoire = nbPtVictoire;
+    preparationTournoiModel.speciauxIncompatibles = speciauxIncompatibles;
+    preparationTournoiModel.memesEquipes = memesEquipes;
+    preparationTournoiModel.memesAdversaires = memesAdversaires;
+    preparationTournoiModel.complement = undefined;
+    preparationTournoiModel.avecTerrains = avecTerrains;
+
+    updatePreparationTournoi(preparationTournoiModel);
 
     router.navigate(`/inscriptions/${screenStackName}`);
   };
@@ -118,7 +114,7 @@ const OptionsTournoi = () => {
       <Button
         action="primary"
         isDisabled={btnDisabled}
-        onPress={() => _nextStep(screenStackName)}
+        onPress={() => _nextStep(screenStackName, preparationTournoiModel)}
         size="md"
       >
         <ButtonText>{btnTitle}</ButtonText>

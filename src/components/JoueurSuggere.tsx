@@ -4,7 +4,6 @@ import { HStack } from '@/components/ui/hstack';
 import { CloseIcon, Icon } from '@/components/ui/icon';
 import { Button, ButtonGroup, ButtonText } from '@/components/ui/button';
 import { Box } from '@/components/ui/box';
-
 import {
   AlertDialog,
   AlertDialogBackdrop,
@@ -14,41 +13,39 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
 } from '@/components/ui/alert-dialog';
-
 import React, { useState } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import JoueurType from '@components/JoueurType';
 import { useTranslation } from 'react-i18next';
 import { JoueurType as JoueurTypeEnum } from '@/types/enums/joueurType';
-import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import { TypeEquipes } from '@/types/enums/typeEquipes';
 
 export interface Props {
-  joueur: Joueur;
+  joueur: JoueurModel;
+  optionsTournoi: PreparationTournoiModel;
   ajoutJoueur: (
-    listeJoueurs: Joueur[],
-    typeEquipes: TypeEquipes,
-    mode: ModeTournoi,
     joueurName: string,
-    joueurType: JoueurTypeEnum | string,
+    joueurType: JoueurTypeEnum | undefined,
+    typeEquipes: TypeEquipes,
   ) => void;
 }
 
-const JoueurSuggere: React.FC<Props> = ({ joueur, ajoutJoueur }) => {
+const JoueurSuggere: React.FC<Props> = ({
+  joueur,
+  optionsTournoi,
+  ajoutJoueur,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const [joueurType, setJoueurType] = useState('');
+  const [joueurType, setJoueurType] = useState<JoueurTypeEnum | undefined>(
+    undefined,
+  );
   const [modalRemoveIsOpen, setModalRemoveIsOpen] = useState(false);
-
-  const optionsTournoi = useSelector(
-    (state: any) => state.optionsTournoi.options,
-  );
-  const listesJoueurs = useSelector(
-    (state: any) => state.listesJoueurs.listesJoueurs,
-  );
 
   const _modalRemovePlayer = (playerId: number) => {
     return (
@@ -103,11 +100,14 @@ const JoueurSuggere: React.FC<Props> = ({ joueur, ajoutJoueur }) => {
     setModalRemoveIsOpen(false);
   };
 
-  const _addPlayer = (playerName: string) => {
-    const { avecEquipes } = listesJoueurs;
-    const { typeEquipes, mode } = optionsTournoi;
-    ajoutJoueur(avecEquipes, typeEquipes, mode, playerName, joueurType);
+  const _addPlayer = (playerName: string, typeEquipes: TypeEquipes) => {
+    ajoutJoueur(playerName, joueurType, typeEquipes);
   };
+
+  const { typeEquipes } = optionsTournoi;
+  if (!typeEquipes) {
+    throw Error('manquant ');
+  }
 
   return (
     <HStack className="border border-custom-bg-inverse rounded-xl m-1 px-1 items-center">
@@ -119,6 +119,7 @@ const JoueurSuggere: React.FC<Props> = ({ joueur, ajoutJoueur }) => {
       <Box className="flex-1">
         <JoueurType
           joueurType={joueurType}
+          optionsTournoi={optionsTournoi}
           _setJoueurType={(type: JoueurTypeEnum) => setJoueurType(type)}
         />
       </Box>
@@ -135,7 +136,7 @@ const JoueurSuggere: React.FC<Props> = ({ joueur, ajoutJoueur }) => {
           name="plus"
           backgroundColor="#348352"
           iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
-          onPress={() => _addPlayer(joueur.name)}
+          onPress={() => _addPlayer(joueur.name, typeEquipes)}
         />
       </Box>
       {_modalRemovePlayer(joueur.id)}

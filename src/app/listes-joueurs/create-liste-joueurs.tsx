@@ -11,6 +11,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import Loading from '@/components/Loading';
 import { listeType } from '@/types/types/searchParams';
+import { ListesJoueursRepository } from '@/repositories/listesJoueurs/listesJoueursRepository';
+import { NewJoueur, NewJoueursListes, NewListesJoueurs } from '@/db/schema';
+import { saveJoueurs } from '@/repositories/joueurs/joueursRepository';
+import { saveJoueursListes } from '@/repositories/joueursListes/joueursListesRepository';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 
 type SearchParams = {
   type?: string;
@@ -27,16 +32,32 @@ const CreateListeJoueur = () => {
     (state: any) => state.listesJoueurs.listesJoueurs,
   );
 
-  const _dispatch = (type: string, listId?: number) => {
+  const _dispatch = async (type: string, listId?: number) => {
     if (type === 'create') {
-      const addSavedList = {
-        type: 'ADD_SAVED_LIST',
-        value: {
-          typeInscription: ModeTournoi.AVECNOMS,
-          savedList: listesJoueurs.sauvegarde,
-        },
-      };
-      dispatch(addSavedList);
+      console.log(listesJoueurs.sauvegarde);
+      const a: NewListesJoueurs = {};
+      console.log('a', a);
+      const z = await ListesJoueursRepository.insertListeJoueurs(a);
+      console.log('z', z);
+
+      const b: NewJoueur[] = [];
+      listesJoueurs.sauvegarde.forEach((joueur: JoueurModel) => {
+        b.push({
+          name: joueur.name,
+          equipe: joueur.equipe,
+          joueurId: joueur.id,
+        });
+      });
+      console.log('b', b);
+      const joueurs = await saveJoueurs(b);
+      console.log('joueurs', joueurs);
+
+      const c: NewJoueursListes[] = [];
+      joueurs.forEach((joueur) => {
+        c.push({ joueurId: joueur.id, listeId: z.at(0)?.id });
+      });
+      console.log('c', c);
+      saveJoueursListes(c);
     } else if (type === 'edit' && listId !== undefined) {
       const updateSavedList = {
         type: 'UPDATE_SAVED_LIST',

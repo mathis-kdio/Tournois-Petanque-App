@@ -36,9 +36,35 @@ const Accueil = () => {
   const navigation = useNavigation();
   const { session } = useAuth();
 
+  const listesJoueurs = useSelector(
+    (state: any) => state.listesJoueurs.listesJoueurs,
+  );
+  //console.log(listesJoueurs);
+
+  const savedLists = useSelector(
+    (state: any) => state.listesJoueurs.listesSauvegarde,
+  );
+  //console.log(savedLists);
+
   const listeMatchs = useSelector(
     (state: any) => state.gestionMatchs.listematchs,
   );
+  //console.log(listeMatchs);
+
+  const listeTournois = useSelector(
+    (state: any) => state.listeTournois.listeTournois,
+  );
+  //console.log(listeTournois);
+
+  const listeTerrains = useSelector(
+    (state: any) => state.listeTerrains.listeTerrains,
+  );
+  //console.log(listeTerrains);
+
+  const optionsTournoi = useSelector(
+    (state: any) => state.optionsTournoi.options,
+  );
+  //console.log(optionsTournoi);
 
   const [appState, setAppState] = useState<AppStateStatus>(
     AppState.currentState,

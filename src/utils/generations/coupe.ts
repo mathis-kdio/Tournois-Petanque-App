@@ -1,16 +1,19 @@
 import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { Joueur } from '@/types/interfaces/joueur';
-import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { MatchModel } from '@/types/interfaces/matchModel';
+import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 
 export const generationCoupe = (
-  optionsTournoi: OptionsTournoi,
-  listeJoueurs: Joueur[],
+  optionsTournoi: PreparationTournoiModel,
+  listeJoueurs: JoueurModel[],
 ) => {
   let typeEquipes = optionsTournoi.typeEquipes;
   let nbjoueurs = listeJoueurs.length;
   let nbTours = 0;
-  let matchs = [];
-  let equipe = [];
+  let matchs: MatchModel[] = [];
+  let equipe: {
+    equipe: [JoueurModel[] | undefined, JoueurModel[] | undefined];
+  } = { equipe: [undefined, undefined] };
 
   //Initialisation des matchs dans un tableau
   let nbEquipes;
@@ -39,11 +42,12 @@ export const generationCoupe = (
         manche: i,
         mancheName: '1/' + nbMatchsParTour,
         equipe: [
-          [-1, -1, -1],
-          [-1, -1, -1],
+          [-1, -1, -1, -1],
+          [-1, -1, -1, -1],
         ],
         score1: undefined,
         score2: undefined,
+        terrain: undefined,
       });
       idMatch++;
     }
@@ -55,7 +59,7 @@ export const generationCoupe = (
     equipe.push([]);
     for (let j = 0; j < nbjoueurs; j++) {
       if (listeJoueurs[j].equipe === i) {
-        equipe[i - 1].push(listeJoueurs[j].id);
+        equipe[i - 1].push(listeJoueurs[j]);
       }
     }
   }

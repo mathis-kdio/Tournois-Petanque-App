@@ -1,0 +1,41 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1760993111185,
+      "tag": "0000_violet_terrax",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1761168034098,
+      "tag": "0001_true_blink",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1761408736440,
+      "tag": "0002_loving_magneto",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1761482148645,
+      "tag": "0003_slow_red_shift",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1761486199607,
+      "tag": "0004_loose_ken_ellis",
+      "breakpoints": true
+    }
+  ]
+}

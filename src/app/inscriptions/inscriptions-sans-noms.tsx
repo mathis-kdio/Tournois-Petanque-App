@@ -3,37 +3,52 @@ import { Input, InputField } from '@/components/ui/input';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { JoueurType } from '@/types/enums/joueurType';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'expo-router';
+import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import Loading from '@/components/Loading';
 
 const InscriptionsSansNoms = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const optionsTournoi = useSelector(
-    (state: any) => state.optionsTournoi.options,
-  );
+  const { getActualPreparationTournoi } = usePreparationTournoi();
+
+  const [preparationTournoiModel, setPreparationTournoiModel] = useState<
+    PreparationTournoiModel | undefined
+  >(undefined);
 
   const [nbJoueurNormaux, setNbJoueurNormaux] = useState(0);
   const [nbJoueurEnfants, setNbJoueurEnfants] = useState(0);
 
   const secondInput = React.createRef<any>();
 
-  const _textInputJoueursNormaux = (text: string) => {
-    setNbJoueurNormaux(parseInt(text));
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      const resultpreparationTournoi = await getActualPreparationTournoi();
+      setPreparationTournoiModel(resultpreparationTournoi);
+    };
+    fetchData();
+  }, [getActualPreparationTournoi]);
 
-  const _textInputJoueursEnfants = (text: string) => {
+  if (!preparationTournoiModel) {
+    return <Loading />;
+  }
+
+  const _textInputJoueursNormaux = (text: string) =>
+    setNbJoueurNormaux(parseInt(text));
+
+  const _textInputJoueursEnfants = (text: string) =>
     setNbJoueurEnfants(parseInt(text));
-  };
 
   const _ajoutJoueur = (type?: JoueurType) => {
     const action = {
@@ -51,7 +66,7 @@ const InscriptionsSansNoms = () => {
     dispatch(suppressionAllJoueurs);
   };
 
-  const _commencer = (choixComplement: boolean) => {
+  const _commencer = (choixComplement: boolean, avecTerrains: boolean) => {
     _supprimerJoueurs();
 
     for (let i = 0; i < nbJoueurNormaux; i++) {
@@ -65,7 +80,7 @@ const InscriptionsSansNoms = () => {
     let screenName = 'generation-matchs';
     if (choixComplement) {
       screenName = 'choix-complement';
-    } else if (optionsTournoi.avecTerrains) {
+    } else if (avecTerrains) {
       screenName = 'liste-terrains';
     }
     router.navigate({
@@ -87,26 +102,33 @@ const InscriptionsSansNoms = () => {
     return nbJoueur;
   };
 
-  const _boutonCommencer = () => {
-    let btnDisabled: boolean = false;
+  const _boutonCommencer = (
+    preparationTournoiModel: PreparationTournoiModel,
+  ) => {
+    const { typeEquipes, avecTerrains } = preparationTournoiModel;
+    if (!typeEquipes || !avecTerrains) {
+      throw Error;
+    }
+
+    let btnDisabled = false;
     let title = t('commencer_tournoi');
     let nbJoueurs = _nbJoueurs();
     let choixComplement = false;
 
     if (
-      optionsTournoi.typeEquipes === TypeEquipes.TETEATETE &&
+      typeEquipes === TypeEquipes.TETEATETE &&
       (nbJoueurs % 2 !== 0 || nbJoueurs < 2)
     ) {
       title = t('tete_a_tete_multiple_2');
       btnDisabled = true;
-    } else if (optionsTournoi.typeEquipes === TypeEquipes.DOUBLETTE) {
+    } else if (typeEquipes === TypeEquipes.DOUBLETTE) {
       if (nbJoueurs < 4) {
         title = t('joueurs_insuffisants');
         btnDisabled = true;
       } else if (nbJoueurs % 4 !== 0) {
         choixComplement = true;
       }
-    } else if (optionsTournoi.typeEquipes === TypeEquipes.TRIPLETTE) {
+    } else if (typeEquipes === TypeEquipes.TRIPLETTE) {
       if (nbJoueurs < 6) {
         title = t('joueurs_insuffisants');
         btnDisabled = true;
@@ -119,7 +141,7 @@ const InscriptionsSansNoms = () => {
       <Button
         isDisabled={btnDisabled}
         action="positive"
-        onPress={() => _commencer(choixComplement)}
+        onPress={() => _commencer(choixComplement, avecTerrains)}
         className="h-min min-h-10"
       >
         <ButtonText>{title}</ButtonText>
@@ -169,7 +191,7 @@ const InscriptionsSansNoms = () => {
           <Text className="text-typography-white">
             {t('joueurs_enfants_explication')}
           </Text>
-          {_boutonCommencer()}
+          {_boutonCommencer(preparationTournoiModel)}
         </VStack>
       </ScrollView>
     </SafeAreaView>
