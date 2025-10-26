@@ -23,7 +23,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { useTranslation } from 'react-i18next';
 import { Platform } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import Loading from '@/components/Loading';
 import { screenStackNameType } from '@/types/types/searchParams';
@@ -40,7 +40,12 @@ const OptionsTournoi = () => {
 
   const { t } = useTranslation();
 
-  const { updatePreparationTournoi } = usePreparationTournoi();
+  const { getActualPreparationTournoi, updatePreparationTournoi } =
+    usePreparationTournoi();
+
+  const [preparationTournoiModel, setPreparationTournoiModel] = useState<
+    PreparationTournoiModel | undefined
+  >(undefined);
 
   const [speciauxIncompatibles, setSpeciauxIncompatibles] = useState(true);
   const [memesEquipes, setMemesEquipes] = useState(true);
@@ -52,6 +57,18 @@ const OptionsTournoi = () => {
   let nbToursTxt: string = '5';
   let nbPtVictoireTxt: string = '13';
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const resultpreparationTournoi = await getActualPreparationTournoi();
+      setPreparationTournoiModel(resultpreparationTournoi);
+    };
+    fetchData();
+  }, [getActualPreparationTournoi]);
+
+  if (!preparationTournoiModel) {
+    return <Loading />;
+  }
+
   const _nbToursTxtInputChanged = (text: string) => {
     nbToursTxt = text;
     setNbTours(nbToursTxt ? parseInt(nbToursTxt) : undefined);
@@ -62,8 +79,10 @@ const OptionsTournoi = () => {
     setNbPtVictoire(nbPtVictoireTxt ? parseInt(nbPtVictoireTxt) : undefined);
   };
 
-  const _nextStep = (screenStackName: screenStackNameType) => {
-    const preparationTournoiModel: PreparationTournoiModel = {};
+  const _nextStep = (
+    screenStackName: screenStackNameType,
+    preparationTournoiModel: PreparationTournoiModel,
+  ) => {
     preparationTournoiModel.nbTours = nbTours;
     preparationTournoiModel.nbPtVictoire = nbPtVictoire;
     preparationTournoiModel.speciauxIncompatibles = speciauxIncompatibles;
@@ -95,7 +114,7 @@ const OptionsTournoi = () => {
       <Button
         action="primary"
         isDisabled={btnDisabled}
-        onPress={() => _nextStep(screenStackName)}
+        onPress={() => _nextStep(screenStackName, preparationTournoiModel)}
         size="md"
       >
         <ButtonText>{btnTitle}</ButtonText>

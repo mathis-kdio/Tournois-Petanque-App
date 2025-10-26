@@ -29,19 +29,26 @@ import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { ListRenderItem, Pressable } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'expo-router';
 import TriListeJoueurs from './inscriptions/TriListeJoueurs';
 import { Tri } from '@/types/enums/tri';
 import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
 import { JoueurType as JoueurTypeEnum } from '@/types/enums/joueurType';
 import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
+import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 
 export interface Props {
+  listeJoueurs: JoueurModel[];
+  preparationTournoi: PreparationTournoiModel;
   loadListScreen: boolean;
 }
 
-const Inscription: React.FC<Props> = ({ loadListScreen }) => {
+const Inscription: React.FC<Props> = ({
+  listeJoueurs,
+  preparationTournoi,
+  loadListScreen,
+}) => {
   const { t } = useTranslation();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -60,17 +67,10 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
   const [showTri, setshowTri] = useState(false);
   const [triType, setTriType] = useState<Tri>(Tri.ID);
 
-  const optionsTournoi = useSelector(
-    (state: any) => state.optionsTournoi.options,
-  );
-  const listesJoueurs = useSelector(
-    (state: any) => state.listesJoueurs.listesJoueurs,
-  );
-
   const addPlayerTextInput = React.createRef<any>();
 
   const _getSuggestions = useCallback(() => {
-    let listeHistoriqueFiltre = listesJoueurs.historique.filter(
+    /*let listeHistoriqueFiltre = listesJoueurs.historique.filter(
       (item1: JoueurModel) =>
         listesJoueurs[optionsTournoi.mode].every(
           (item2: JoueurModel) => item2.name !== item1.name,
@@ -80,9 +80,9 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
       return listeHistoriqueFiltre.sort(function (a, b) {
         return b.nbTournois - a.nbTournois;
       });
-    }
+    }*/
     return [];
-  }, [listesJoueurs, optionsTournoi.mode]);
+  }, [listeJoueurs, preparationTournoi.mode]);
 
   useEffect(() => {
     let suggestions = _getSuggestions();
@@ -113,12 +113,16 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
     }
   }, [addPlayerTextInput, etatBouton]);
 
-  const _ajoutJoueurFormulaire = () => {
+  const _ajoutJoueurFormulaire = (
+    listeJoueurs: JoueurModel[],
+    typeEquipes: TypeEquipes,
+    mode: ModeTournoi,
+  ) => {
     if (joueurText === '') {
       return;
     }
 
-    ajoutJoueur(joueurText, joueurType);
+    ajoutJoueur(joueurText, joueurType, typeEquipes, mode);
 
     setJoueurText('');
     setJoueurType(undefined);
@@ -128,10 +132,9 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
   const ajoutJoueur = (
     joueurName: string,
     joueurType: JoueurTypeEnum | undefined,
+    typeEquipes: TypeEquipes,
+    mode: ModeTournoi,
   ) => {
-    const { typeEquipes, mode } = optionsTournoi;
-    const listeJoueurs: JoueurModel[] = listesJoueurs[mode];
-
     const equipe = equipeAuto(listeJoueurs, typeEquipes);
 
     const action = {
@@ -173,7 +176,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
     }
   };
 
-  const _modalRemoveAllPlayers = () => {
+  const _modalRemoveAllPlayers = (mode: ModeTournoi) => {
     return (
       <AlertDialog
         isOpen={modalRemoveIsOpen}
@@ -207,7 +210,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
                   {t('annuler')}
                 </ButtonText>
               </Button>
-              <Button action="negative" onPress={() => _removeAllPlayers()}>
+              <Button action="negative" onPress={() => _removeAllPlayers(mode)}>
                 <ButtonText>{t('oui')}</ButtonText>
               </Button>
             </ButtonGroup>
@@ -217,10 +220,10 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
     );
   };
 
-  const _removeAllPlayers = () => {
+  const _removeAllPlayers = (mode: ModeTournoi) => {
     const actionRemoveAll = {
       type: 'SUPPR_ALL_JOUEURS',
-      value: [optionsTournoi.mode],
+      value: [mode],
     };
     dispatch(actionRemoveAll);
     setModalRemoveIsOpen(false);
@@ -235,32 +238,34 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
     });
   };
 
-  const _displayListeJoueur = () => {
-    if (listesJoueurs[optionsTournoi.mode] === undefined) {
-      return;
+  const _displayListeJoueur = (
+    listeJoueurs: JoueurModel[],
+    preparationTournoi: PreparationTournoiModel,
+  ) => {
+    const { mode, modeCreationEquipes, typeEquipes, typeTournoi } =
+      preparationTournoi;
+    if (!mode || !typeEquipes || !typeTournoi) {
+      throw Error('preparationTournoi manquantes');
     }
-
-    let listeJoueur = [...(listesJoueurs[optionsTournoi.mode] as JoueurModel[])];
     if (triType === Tri.ID) {
-      listeJoueur.sort((a, b) => a.id - b.id);
+      listeJoueurs.sort((a, b) => a.id - b.id);
     } else if (triType === Tri.ALPHA_ASC) {
-      listeJoueur.sort((a, b) => a.name.localeCompare(b.name));
+      listeJoueurs.sort((a, b) => a.name.localeCompare(b.name));
     } else if (triType === Tri.ALPHA_DESC) {
-      listeJoueur.sort((a, b) => b.name.localeCompare(a.name));
+      listeJoueurs.sort((a, b) => b.name.localeCompare(a.name));
     }
-    let nbJoueurs = listeJoueur.length;
     let avecEquipes =
-      optionsTournoi.mode === ModeTournoi.AVECEQUIPES &&
-      optionsTournoi.modeCreationEquipes === ModeCreationEquipes.MANUELLE;
+      mode === ModeTournoi.AVECEQUIPES &&
+      modeCreationEquipes === ModeCreationEquipes.MANUELLE;
     const renderItem: ListRenderItem<JoueurModel> = ({ item }) => (
       <ListeJoueurItem
         joueur={item}
         isInscription={true}
         avecEquipes={avecEquipes}
-        typeEquipes={optionsTournoi.typeEquipes}
-        modeTournoi={optionsTournoi.mode}
-        typeTournoi={optionsTournoi.typeTournoi}
-        nbJoueurs={nbJoueurs}
+        typeEquipes={typeEquipes}
+        modeTournoi={mode}
+        typeTournoi={typeTournoi}
+        nbJoueurs={listeJoueurs.length}
         showCheckbox={showCheckbox}
       />
     );
@@ -268,16 +273,16 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
       <FlatList
         removeClippedSubviews={false}
         persistentScrollbar={true}
-        data={listeJoueur}
+        data={listeJoueurs}
         keyExtractor={(item: JoueurModel) => item.id.toString()}
         renderItem={renderItem}
         ListFooterComponent={
           <VStack space="md" className="flex-1">
             <VStack space="sm" className="px-10">
-              {_buttonRemoveAllPlayers()}
+              {_buttonRemoveAllPlayers(listeJoueurs)}
               {_buttonLoadSavedList()}
             </VStack>
-            {_displayListeJoueursSuggeres()}
+            {_displayListeJoueursSuggeres(preparationTournoi)}
           </VStack>
         }
         className="h-1"
@@ -285,13 +290,15 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
     );
   };
 
-  const _displayListeJoueursSuggeres = () => {
+  const _displayListeJoueursSuggeres = (
+    preparationTournoi: PreparationTournoiModel,
+  ) => {
     if (suggestions.length > 0) {
       let partialSuggested = suggestions.slice(0, nbSuggestions);
       const renderItem: ListRenderItem<JoueurModel> = ({ item }) => (
         <JoueurSuggere
           joueur={item}
-          optionsTournoi={optionsTournoi}
+          optionsTournoi={preparationTournoi}
           ajoutJoueur={ajoutJoueur}
         />
       );
@@ -335,8 +342,8 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
     setNbSuggestions((prevState) => prevState + 5);
   };
 
-  const _buttonRemoveAllPlayers = () => {
-    if (listesJoueurs[optionsTournoi.mode].length > 0) {
+  const _buttonRemoveAllPlayers = (listeJoueurs: JoueurModel[]) => {
+    if (listeJoueurs.length > 0) {
       return (
         <Button action="negative" onPress={() => setModalRemoveIsOpen(true)}>
           <ButtonText>{t('supprimer_joueurs_bouton')}</ButtonText>
@@ -402,6 +409,11 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
     );
   };
 
+  const { typeEquipes, mode } = preparationTournoi;
+  if (!typeEquipes || !mode) {
+    throw Error('typeEquipes');
+  }
+
   return (
     <VStack className="flex-1">
       <HStack space="md" className="items-center mx-1">
@@ -413,7 +425,9 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
               autoFocus={true}
               keyboardType="default"
               onChangeText={(text) => _ajoutJoueurTextInputChanged(text)}
-              onSubmitEditing={() => _ajoutJoueurFormulaire()}
+              onSubmitEditing={() =>
+                _ajoutJoueurFormulaire(listeJoueurs, typeEquipes, mode)
+              }
               ref={addPlayerTextInput}
             />
           </Input>
@@ -421,7 +435,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
         <Box className="flex-1">
           <JoueurType
             joueurType={joueurType}
-            optionsTournoi={optionsTournoi}
+            optionsTournoi={preparationTournoi}
             _setJoueurType={(type) => setJoueurType(type)}
           />
         </Box>
@@ -429,7 +443,9 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
           <Button
             action="positive"
             isDisabled={!etatBouton}
-            onPress={() => _ajoutJoueurFormulaire()}
+            onPress={() =>
+              _ajoutJoueurFormulaire(listeJoueurs, typeEquipes, mode)
+            }
             size="md"
           >
             <ButtonText>{t('ajouter')}</ButtonText>
@@ -441,8 +457,10 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
         <Box className="w-fit">{_showTriSection()}</Box>
         <Box className="w-fit">{_showCheckboxSection()}</Box>
       </HStack>
-      <VStack className="flex-1">{_displayListeJoueur()}</VStack>
-      {_modalRemoveAllPlayers()}
+      <VStack className="flex-1">
+        {_displayListeJoueur(listeJoueurs, preparationTournoi)}
+      </VStack>
+      {_modalRemoveAllPlayers(mode)}
     </VStack>
   );
 };

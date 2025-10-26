@@ -10,7 +10,6 @@ import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 import { useRouter } from 'expo-router';
 import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
@@ -24,27 +23,29 @@ const InscriptionsAvecNoms = () => {
 
   const { getActualPreparationTournoi } = usePreparationTournoi();
 
-  const [preparationTournoiModel, setPreparationTournoiModel] = useState<
+  const [preparationTournoi, setPreparationTournoi] = useState<
     PreparationTournoiModel | undefined
   >(undefined);
-  const listesJoueurs = useSelector(
-    (state: any) => state.listesJoueurs.listesJoueurs,
-  );
+  const [listeJoueurs, setlisteJoueurs] = useState<JoueurModel[]>([]);
+
+  const [loading, setloading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       const resultpreparationTournoi = await getActualPreparationTournoi();
-      setPreparationTournoiModel(resultpreparationTournoi);
+      setPreparationTournoi(resultpreparationTournoi);
+      setlisteJoueurs([]);
+      setloading(false);
     };
     fetchData();
   }, [getActualPreparationTournoi]);
 
-  if (!preparationTournoiModel) {
+  if (loading) {
     return <Loading />;
   }
 
-  if (!preparationTournoiModel.mode) {
-    return <Text>Error</Text>;
+  if (!preparationTournoi) {
+    throw Error;
   }
 
   const _commencer = (choixComplement: boolean, avecTerrains: boolean) => {
@@ -63,7 +64,8 @@ const InscriptionsAvecNoms = () => {
   };
 
   const _boutonCommencer = (
-    preparationTournoiModel: PreparationTournoiModel,
+    listeJoueurs: JoueurModel[],
+    preparationTournoi: PreparationTournoiModel,
   ) => {
     let btnDisabled = false;
     let title = t('commencer_tournoi');
@@ -73,21 +75,15 @@ const InscriptionsAvecNoms = () => {
       typeEquipes,
       modeCreationEquipes,
       avecTerrains,
-    } = preparationTournoiModel;
-    if (
-      !mode ||
-      !typeTournoi ||
-      !typeEquipes ||
-      !modeCreationEquipes ||
-      !avecTerrains
-    ) {
-      throw Error;
+    } = preparationTournoi;
+    if (!mode || !typeTournoi || !typeEquipes || avecTerrains === undefined) {
+      throw Error('options tournoi manqutes');
     }
-    const { avecNoms, avecEquipes } = listesJoueurs as {
-      avecNoms: JoueurModel[];
-      avecEquipes: JoueurModel[];
-    };
-    const nbJoueurs = listesJoueurs[mode].length;
+    if (mode === ModeTournoi.AVECEQUIPES && !modeCreationEquipes) {
+      throw Error('modeCreationEquipes manquant');
+    }
+
+    const nbJoueurs = listeJoueurs.length;
     let nbEquipes = 0;
     let choixComplement = false;
 
@@ -114,7 +110,7 @@ const InscriptionsAvecNoms = () => {
     } else if (mode === ModeTournoi.AVECEQUIPES) {
       if (
         modeCreationEquipes === ModeCreationEquipes.MANUELLE &&
-        avecEquipes.find(
+        listeJoueurs.find(
           (el: JoueurModel) =>
             el.equipe === undefined || el.equipe === 0 || el.equipe > nbEquipes,
         ) !== undefined
@@ -122,12 +118,12 @@ const InscriptionsAvecNoms = () => {
         title = t('joueurs_sans_equipe');
         btnDisabled = true;
       } else if (typeEquipes === TypeEquipes.TETEATETE) {
-        if (avecEquipes.length % 2 !== 0 || avecEquipes.length < 2) {
+        if (nbJoueurs % 2 !== 0 || nbJoueurs < 2) {
           title = t('nombre_equipe_multiple_2');
           btnDisabled = true;
         } else if (modeCreationEquipes === ModeCreationEquipes.MANUELLE) {
           for (let i = 0; i < nbEquipes; i++) {
-            let count = avecEquipes.reduce(
+            let count = listeJoueurs.reduce(
               (counter: number, obj: JoueurModel) =>
                 obj.equipe === i ? (counter += 1) : counter,
               0,
@@ -140,12 +136,12 @@ const InscriptionsAvecNoms = () => {
           }
         }
       } else if (typeEquipes === TypeEquipes.DOUBLETTE) {
-        if (avecEquipes.length % 4 !== 0 || avecEquipes.length === 0) {
+        if (nbJoueurs % 4 !== 0 || nbJoueurs === 0) {
           title = t('equipe_doublette_multiple_4');
           btnDisabled = true;
         } else if (modeCreationEquipes === ModeCreationEquipes.MANUELLE) {
           for (let i = 0; i < nbEquipes; i++) {
-            let count = avecEquipes.reduce(
+            let count = listeJoueurs.reduce(
               (counter: number, obj: JoueurModel) =>
                 obj.equipe === i ? (counter += 1) : counter,
               0,
@@ -159,29 +155,29 @@ const InscriptionsAvecNoms = () => {
         }
       } else if (
         typeEquipes === TypeEquipes.TRIPLETTE &&
-        (avecEquipes.length % 6 !== 0 || avecEquipes.length === 0)
+        (nbJoueurs % 6 !== 0 || nbJoueurs === 0)
       ) {
         title = t('equipe_triplette_multiple_6');
         btnDisabled = true;
       }
     } else if (
       typeEquipes === TypeEquipes.TETEATETE &&
-      (avecNoms.length % 2 !== 0 || avecNoms.length < 2)
+      (nbJoueurs % 2 !== 0 || nbJoueurs < 2)
     ) {
       title = t('tete_a_tete_multiple_2');
       btnDisabled = true;
     } else if (typeEquipes === TypeEquipes.DOUBLETTE) {
-      if (avecNoms.length < 4) {
+      if (nbJoueurs < 4) {
         title = t('joueurs_insuffisants');
         btnDisabled = true;
-      } else if (avecNoms.length % 4 !== 0) {
+      } else if (nbJoueurs % 4 !== 0) {
         choixComplement = true;
       }
     } else if (typeEquipes === TypeEquipes.TRIPLETTE) {
-      if (avecNoms.length < 6) {
+      if (nbJoueurs < 6) {
         title = t('joueurs_insuffisants');
         btnDisabled = true;
-      } else if (avecNoms.length % 6 !== 0) {
+      } else if (nbJoueurs % 6 !== 0) {
         choixComplement = true;
       }
     }
@@ -199,7 +195,7 @@ const InscriptionsAvecNoms = () => {
     );
   };
 
-  const nbJoueur = listesJoueurs[preparationTournoiModel.mode].length;
+  const nbJoueur = listeJoueurs.length;
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <VStack className="flex-1 bg-custom-background">
@@ -208,9 +204,13 @@ const InscriptionsAvecNoms = () => {
           <Text className="text-typography-white text-xl text-center">
             {t('nombre_joueurs', { nb: nbJoueur })}
           </Text>
-          <Inscriptions loadListScreen={false} />
+          <Inscriptions
+            listeJoueurs={listeJoueurs}
+            preparationTournoi={preparationTournoi}
+            loadListScreen={false}
+          />
           <Box className="px-10">
-            {_boutonCommencer(preparationTournoiModel)}
+            {_boutonCommencer(listeJoueurs, preparationTournoi)}
           </Box>
         </VStack>
       </VStack>

@@ -37,6 +37,7 @@ const ListeTournois = () => {
   const [actualTournoi, setActualTournoi] = useState<TournoiModel | undefined>(
     undefined,
   );
+  const [loading, setloading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,6 +45,7 @@ const ListeTournois = () => {
       setListeTournois(result);
       const resulta = await getActualTournoi();
       setActualTournoi(resulta);
+      setloading(false);
     };
     fetchData();
   }, [getActualTournoi, getAllTournois]);
@@ -66,7 +68,7 @@ const ListeTournois = () => {
     [renameTournoi],
   );
 
-  if (!listeTournois || !actualTournoi) {
+  if (loading) {
     return <Loading />;
   }
 
@@ -167,7 +169,9 @@ const ListeTournois = () => {
   };
 
   const renderItem: ListRenderItem<TournoiModel> = ({ item }) => {
-    const estTournoiActuel = item.tournoiId === actualTournoi.tournoiId;
+    const estTournoiActuel = actualTournoi
+      ? item.tournoiId === actualTournoi.tournoiId
+      : false;
     return (
       <ListeTournoiItem
         tournoi={item}

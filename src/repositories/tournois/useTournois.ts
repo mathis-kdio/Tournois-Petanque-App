@@ -33,7 +33,6 @@ function toTournoiModel(lJ: Tournoi): TournoiModel {
 export function useTournois() {
   const getAllTournois = useCallback(async () => {
     const tournois = await TournoisRepository.getAllTournois();
-    console.log(tournois);
     return tournois.map(toTournoiModel);
   }, []);
 
@@ -41,7 +40,9 @@ export function useTournois() {
 
   const getActualTournoi = useCallback(async () => {
     const tournoi = await TournoisRepository.getTournoi();
-    console.log(tournoi);
+    if (!tournoi) {
+      return undefined;
+    }
     return toTournoiModel(tournoi);
   }, []);
 

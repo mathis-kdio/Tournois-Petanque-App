@@ -64,6 +64,7 @@ const ChoixModeTournoi = () => {
     if (typeTournoi !== TypeTournoi.MELEDEMELE) {
       finalModeTournoi = ModeTournoi.AVECEQUIPES;
     }
+    console.log(finalModeTournoi)
     optionsTournoi.mode = finalModeTournoi;
 
     //Sauvegarde modeCreationEquipes

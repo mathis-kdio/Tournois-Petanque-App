@@ -51,7 +51,9 @@ export function usePreparationTournoi() {
 
   const updatePreparationTournoi = useCallback(
     (preparationTournoiModel: PreparationTournoiModel) => {
+      console.log(preparationTournoiModel);
       const preparationTournoi = toPreparationTournoi(preparationTournoiModel);
+      console.log(preparationTournoi);
       PreparationTournoisRepository.updatePreparationTournoi(
         preparationTournoi,
       );

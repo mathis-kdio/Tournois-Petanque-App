@@ -1,5 +1,4 @@
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { eq } from 'drizzle-orm';
 import {
   NewPreparationTournoi,
   preparationTournoi,
@@ -25,8 +24,11 @@ export const PreparationTournoisRepository = {
     updatedPreparationTournoi: PreparationTournoi,
   ): Promise<void> {
     await getDrizzleDb()
-      .update(preparationTournoi)
-      .set(updatedPreparationTournoi)
-      .where(eq(preparationTournoi.id, updatedPreparationTournoi.id));
+      .insert(preparationTournoi)
+      .values(updatedPreparationTournoi)
+      .onConflictDoUpdate({
+        target: preparationTournoi.id,
+        set: updatedPreparationTournoi,
+      });
   },
 };

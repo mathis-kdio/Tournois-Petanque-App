@@ -112,8 +112,10 @@ const ChoixTypeTournoi = () => {
   };
 
   const _navigate = (typeTournoi: TypeTournoi) => {
-    let preparationTournoi: PreparationTournoiModel = {};
-    preparationTournoi.typeTournoi = typeTournoi;
+    const preparationTournoi: PreparationTournoiModel = {
+      id: 0,
+      typeTournoi: typeTournoi,
+    };
     updatePreparationTournoi(preparationTournoi);
     return router.navigate('inscriptions/choix-mode-tournoi');
   };

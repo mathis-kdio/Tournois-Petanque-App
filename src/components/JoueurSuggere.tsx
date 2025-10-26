@@ -22,6 +22,7 @@ import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { useDispatch } from 'react-redux';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import { TypeEquipes } from '@/types/enums/typeEquipes';
 
 export interface Props {
   joueur: JoueurModel;
@@ -29,6 +30,8 @@ export interface Props {
   ajoutJoueur: (
     joueurName: string,
     joueurType: JoueurTypeEnum | undefined,
+    typeEquipes: TypeEquipes,
+    mode: ModeTournoi,
   ) => void;
 }
 
@@ -98,9 +101,18 @@ const JoueurSuggere: React.FC<Props> = ({
     setModalRemoveIsOpen(false);
   };
 
-  const _addPlayer = (playerName: string) => {
-    ajoutJoueur(playerName, joueurType);
+  const _addPlayer = (
+    playerName: string,
+    typeEquipes: TypeEquipes,
+    mode: ModeTournoi,
+  ) => {
+    ajoutJoueur(playerName, joueurType, typeEquipes, mode);
   };
+
+  const { typeEquipes, mode } = optionsTournoi;
+  if (!typeEquipes || !mode) {
+    throw Error('manquant ');
+  }
 
   return (
     <HStack className="border border-custom-bg-inverse rounded-xl m-1 px-1 items-center">
@@ -129,7 +141,7 @@ const JoueurSuggere: React.FC<Props> = ({
           name="plus"
           backgroundColor="#348352"
           iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
-          onPress={() => _addPlayer(joueur.name)}
+          onPress={() => _addPlayer(joueur.name, typeEquipes, mode)}
         />
       </Box>
       {_modalRemovePlayer(joueur.id)}
