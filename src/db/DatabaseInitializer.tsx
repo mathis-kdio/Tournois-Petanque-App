@@ -3,6 +3,7 @@ import { useDatabaseMigrations } from './useDatabaseMigrations';
 import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
 import { ActivityIndicator } from 'react-native';
+import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
 
 interface DatabaseInitializerProps {
   children: React.ReactNode;
@@ -11,9 +12,11 @@ interface DatabaseInitializerProps {
 export const DatabaseInitializer: React.FC<DatabaseInitializerProps> = ({
   children,
 }) => {
-  const { db } = useDatabaseMigrations();
+  const { sqliteDatabase, expoSQLiteDatabase } = useDatabaseMigrations();
 
-  if (!db) {
+  useDrizzleStudio(sqliteDatabase);
+
+  if (!expoSQLiteDatabase) {
     return (
       <HStack>
         <ActivityIndicator size="large" />

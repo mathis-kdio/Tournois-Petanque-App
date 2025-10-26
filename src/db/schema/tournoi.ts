@@ -6,6 +6,7 @@ export const tournoi = sqliteTable('tournoi', {
   option1: text('option1'),
   option2: text('option2'),
   option3: text('option3'),
+  createAt: integer('create_at'),
   updatedAt: integer('updated_at'),
   synced: integer('synced').default(0),
 });

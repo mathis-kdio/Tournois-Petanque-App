@@ -4,7 +4,10 @@ import { NewTournoi, Tournoi, tournoi } from '@/db/schema/tournoi';
 
 export const TournoisRepository = {
   async getAllTournois(): Promise<Tournoi[]> {
-    return await getDrizzleDb().select().from(tournoi);
+    console.log(getDrizzleDb())
+    const a = await getDrizzleDb().select().from(tournoi);
+    console.log(a)
+    return a;
   },
 
   async getTournoi(): Promise<Tournoi> {

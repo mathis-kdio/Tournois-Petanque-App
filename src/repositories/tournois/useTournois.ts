@@ -2,14 +2,31 @@ import { useCallback } from 'react';
 import { TournoisRepository } from './tournoisRepository';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import { Tournoi } from '@/db/schema/tournoi';
+import { TypeEquipes } from '@/types/enums/typeEquipes';
+import { TypeTournoi } from '@/types/enums/typeTournoi';
+import { ModeTournoi } from '@/types/enums/modeTournoi';
 
 function toTournoiModel(lJ: Tournoi): TournoiModel {
   return {
     tournoiId: lJ.id,
     name: lJ.name || undefined,
-    creationDate: lJ.updatedAt,
-    updateDate: lJ.updatedAt,
-    tournoi: lJ.updatedAt,
+    creationDate: new Date(Date.now()),
+    updateDate: new Date(Date.now()),
+    matchs: [],
+    options: {
+      tournoiID: 0,
+      nbTours: 0,
+      nbMatchs: 0,
+      nbPtVictoire: 0,
+      speciauxIncompatibles: false,
+      memesEquipes: false,
+      memesAdversaires: 0,
+      typeEquipes: TypeEquipes.TETEATETE,
+      typeTournoi: TypeTournoi.MELEDEMELE,
+      listeJoueurs: [],
+      avecTerrains: false,
+      mode: ModeTournoi.AVECNOMS,
+    },
   };
 }
 
