@@ -35,6 +35,7 @@ import TriListeJoueurs from './inscriptions/TriListeJoueurs';
 import { Tri } from '@/types/enums/tri';
 import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
 import { JoueurType as JoueurTypeEnum } from '@/types/enums/joueurType';
+import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 
 export interface Props {
   loadListScreen: boolean;
@@ -45,9 +46,13 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const [joueurType, setJoueurType] = useState('');
+  const { addJoueursPreparationTournoi } = useJoueursPreparationTournois();
+
+  const [joueurType, setJoueurType] = useState<JoueurTypeEnum | undefined>(
+    undefined,
+  );
   const [etatBouton, setEtatBouton] = useState(false);
-  const [joueurText, setJoueurText] = useState<string>('');
+  const [joueurText, setJoueurText] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [nbSuggestions, setNbSuggestions] = useState(5);
   const [modalRemoveIsOpen, setModalRemoveIsOpen] = useState(false);
@@ -109,38 +114,38 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
   }, [addPlayerTextInput, etatBouton]);
 
   const _ajoutJoueurFormulaire = () => {
-    const { typeEquipes, mode } = optionsTournoi;
-    const listeJoueurs: JoueurModel[] = listesJoueurs[mode];
     if (joueurText === '') {
       return;
     }
 
-    ajoutJoueur(listeJoueurs, typeEquipes, mode, joueurText, joueurType);
+    ajoutJoueur(joueurText, joueurType);
 
     setJoueurText('');
-    setJoueurType('');
+    setJoueurType(undefined);
     setEtatBouton(false);
   };
 
   const ajoutJoueur = (
-    listeJoueurs: JoueurModel[],
-    typeEquipes: TypeEquipes,
-    mode: ModeTournoi,
     joueurName: string,
-    joueurType: JoueurTypeEnum | string,
+    joueurType: JoueurTypeEnum | undefined,
   ) => {
-    let equipe = 1;
-    if (listeJoueurs) {
-      equipe = equipeAuto(listeJoueurs, typeEquipes);
-    }
+    const { typeEquipes, mode } = optionsTournoi;
+    const listeJoueurs: JoueurModel[] = listesJoueurs[mode];
+
+    const equipe = equipeAuto(listeJoueurs, typeEquipes);
+
     const action = {
       type: 'AJOUT_JOUEUR',
       value: [mode, joueurName, joueurType, equipe],
     };
     dispatch(action);
+    addJoueursPreparationTournoi(joueurName, joueurType, equipe);
   };
 
-  const equipeAuto = (listeJoueurs: JoueurModel[], typeEquipes: TypeEquipes) => {
+  const equipeAuto = (
+    listeJoueurs: JoueurModel[],
+    typeEquipes: TypeEquipes,
+  ) => {
     if (typeEquipes === TypeEquipes.TETEATETE) {
       return listeJoueurs.length + 1;
     } else {

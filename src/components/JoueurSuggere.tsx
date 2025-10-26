@@ -4,7 +4,6 @@ import { HStack } from '@/components/ui/hstack';
 import { CloseIcon, Icon } from '@/components/ui/icon';
 import { Button, ButtonGroup, ButtonText } from '@/components/ui/button';
 import { Box } from '@/components/ui/box';
-
 import {
   AlertDialog,
   AlertDialogBackdrop,
@@ -14,25 +13,20 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
 } from '@/components/ui/alert-dialog';
-
 import React, { useState } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import JoueurType from '@components/JoueurType';
 import { useTranslation } from 'react-i18next';
 import { JoueurType as JoueurTypeEnum } from '@/types/enums/joueurType';
-import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 export interface Props {
   joueur: JoueurModel;
   ajoutJoueur: (
-    listeJoueurs: JoueurModel[],
-    typeEquipes: TypeEquipes,
-    mode: ModeTournoi,
     joueurName: string,
-    joueurType: JoueurTypeEnum | string,
+    joueurType: JoueurTypeEnum | undefined,
   ) => void;
 }
 
@@ -40,15 +34,10 @@ const JoueurSuggere: React.FC<Props> = ({ joueur, ajoutJoueur }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const [joueurType, setJoueurType] = useState('');
+  const [joueurType, setJoueurType] = useState<JoueurTypeEnum | undefined>(
+    undefined,
+  );
   const [modalRemoveIsOpen, setModalRemoveIsOpen] = useState(false);
-
-  const optionsTournoi = useSelector(
-    (state: any) => state.optionsTournoi.options,
-  );
-  const listesJoueurs = useSelector(
-    (state: any) => state.listesJoueurs.listesJoueurs,
-  );
 
   const _modalRemovePlayer = (playerId: number) => {
     return (
@@ -104,9 +93,7 @@ const JoueurSuggere: React.FC<Props> = ({ joueur, ajoutJoueur }) => {
   };
 
   const _addPlayer = (playerName: string) => {
-    const { avecEquipes } = listesJoueurs;
-    const { typeEquipes, mode } = optionsTournoi;
-    ajoutJoueur(avecEquipes, typeEquipes, mode, playerName, joueurType);
+    ajoutJoueur(playerName, joueurType);
   };
 
   return (

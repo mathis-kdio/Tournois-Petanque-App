@@ -21,7 +21,7 @@ import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { useSelector } from 'react-redux';
 
 export interface Props {
-  joueurType: JoueurTypeEnum | string;
+  joueurType: JoueurTypeEnum | undefined;
   _setJoueurType: (type: JoueurTypeEnum) => void;
 }
 
@@ -75,13 +75,17 @@ const JoueurType: React.FC<Props> = ({ joueurType, _setJoueurType }) => {
     } else {
       return [];
     }
-  }
+  };
+
+  const setJoueurType = (itemValue: string) => {
+    _setJoueurType(itemValue as JoueurTypeEnum);
+  };
 
   return (
     <Select
       selectedValue={joueurType}
       aria-label={t('choisir_poste')}
-      onValueChange={(itemValue: JoueurTypeEnum) => _setJoueurType(itemValue)}
+      onValueChange={(itemValue: string) => setJoueurType(itemValue)}
     >
       <SelectTrigger variant="rounded" className="border-custom-bg-inverse">
         <SelectInput

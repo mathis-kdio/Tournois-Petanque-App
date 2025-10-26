@@ -6,6 +6,7 @@ import {
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 import { PreparationTournoi } from '@/db/schema/preparationTournoi';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { JoueurType } from '@/types/enums/joueurType';
 
 function toJoueurModel(
   preparationTournoi: JoueursPreparationTournoisWithJoueur,
@@ -52,7 +53,24 @@ export function useJoueursPreparationTournois() {
     [],
   );
 
+  const addJoueursPreparationTournoi = useCallback(
+    async (
+      joueurName: string,
+      joueurType: JoueurType | undefined,
+      equipe: number,
+    ) => {
+      const joueursPreparationTournois =
+        await JoueursPreparationTournoisRepository.getJoueursPreparationTournoi(
+          preparationTournoiId,
+        );
+      console.log(joueursPreparationTournois);
+      return joueursPreparationTournois.map(toJoueurModel);
+    },
+    [],
+  );
+
   return {
     getActualJoueursPreparationTournoi,
+    addJoueursPreparationTournoi,
   };
 }

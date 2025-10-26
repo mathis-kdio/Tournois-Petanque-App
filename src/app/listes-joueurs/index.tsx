@@ -29,6 +29,7 @@ const ListesJoueursScreen = () => {
 
   const { getAllListesJoueurs, deleteListeJoueurs, renameListeJoueurs } =
     useListesJoueurs();
+
   const [listesJoueurs, setListesJoueurs] = useState<ListeJoueursInfos[]>([]);
 
   useEffect(() => {
