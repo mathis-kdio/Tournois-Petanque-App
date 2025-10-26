@@ -7,6 +7,7 @@ function toPreparationTournoiModel(
   preparationTournoi: PreparationTournoi,
 ): PreparationTournoiModel {
   return {
+    id: preparationTournoi.id,
     nbTours: preparationTournoi.nbTours ?? undefined,
     nbPtVictoire: preparationTournoi.nbPtVictoire ?? undefined,
     speciauxIncompatibles:

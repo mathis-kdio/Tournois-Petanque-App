@@ -3,12 +3,29 @@ import {
   joueursPreparationTournois,
   JoueursPreparationTournois,
 } from '@/db/schema/joueursPreparationTournois';
+import { Joueur, joueurs } from '@/db/schema';
+import { eq } from 'drizzle-orm';
+
+export type JoueursPreparationTournoisWithJoueur = {
+  joueurs_prepration_tournois: JoueursPreparationTournois;
+  joueurs: Joueur;
+};
 
 export const JoueursPreparationTournoisRepository = {
-  async getPreparationTournoi(): Promise<JoueursPreparationTournois[]> {
-    return await getDrizzleDb()
+  async getJoueursPreparationTournoi(
+    preparationTournoiId: number,
+  ): Promise<JoueursPreparationTournoisWithJoueur[]> {
+    const a = await getDrizzleDb()
       .select()
       .from(joueursPreparationTournois)
-      .innerJoin();
+      .innerJoin(joueurs, eq(joueursPreparationTournois.id, joueurs.joueurId))
+      .where(
+        eq(
+          joueursPreparationTournois.preparationTournoiId,
+          preparationTournoiId,
+        ),
+      );
+    console.log(a);
+    return a;
   },
 };

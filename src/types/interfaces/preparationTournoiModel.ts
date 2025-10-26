@@ -5,6 +5,7 @@ import { TypeEquipes } from '../enums/typeEquipes';
 import { TypeTournoi } from '../enums/typeTournoi';
 
 export interface PreparationTournoiModel {
+  id: number;
   nbTours?: number;
   nbMatchs?: number;
   nbPtVictoire?: number;

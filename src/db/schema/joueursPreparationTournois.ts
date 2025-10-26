@@ -7,7 +7,7 @@ export const joueursPreparationTournois = sqliteTable(
   {
     id: integer('id').primaryKey(),
     joueurId: integer('joueur_id').references(() => joueurs.id),
-    listeId: integer('preparation_tournoi_id').references(
+    preparationTournoiId: integer('preparation_tournoi_id').references(
       () => preparationTournoi.id,
     ),
   },

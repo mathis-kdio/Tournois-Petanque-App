@@ -2,11 +2,12 @@ import { JoueurType } from '@/types/enums/joueurType';
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 
 export const joueurs = sqliteTable('joueurs', {
-  id: integer('id').primaryKey(),
+  id: integer().primaryKey(),
   joueurId: integer('joueur_id').notNull(),
-  name: text('name').notNull(),
-  type: text('type').$type<JoueurType>(),
-  equipe: integer('equipe'),
+  name: text().notNull(),
+  type: text().$type<JoueurType>(),
+  equipe: integer(),
+  isChecked: integer({ mode: 'boolean' }),
 });
 
 export type Joueur = typeof joueurs.$inferSelect;

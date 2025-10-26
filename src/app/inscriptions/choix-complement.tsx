@@ -9,12 +9,14 @@ import { useTranslation } from 'react-i18next';
 import { Divider } from '@/components/ui/divider';
 import { Complement } from '@/types/enums/complement';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { screenStackNameType } from '@/types/types/searchParams';
 import Loading from '@/components/Loading';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 
 type SearchParams = {
   screenStackName?: string;
@@ -27,24 +29,27 @@ const ChoixComplement = () => {
   const dispatch = useDispatch();
 
   const { getActualPreparationTournoi } = usePreparationTournoi();
+  const { getActualJoueursPreparationTournoi } =
+    useJoueursPreparationTournois();
 
-  const [preparationTournoiModel, setPreparationTournoiModel] = useState<
+  const [preparationTournoi, setPreparationTournoi] = useState<
     PreparationTournoiModel | undefined
   >(undefined);
+  const [joueurs, setJoueurs] = useState<JoueurModel[] | undefined>(undefined);
 
   const [options, setOptions] = useState<Complement[]>([]);
-
-  const listesJoueurs = useSelector(
-    (state: any) => state.listesJoueurs.listesJoueurs,
-  );
 
   useEffect(() => {
     const fetchData = async () => {
       const resultpreparationTournoi = await getActualPreparationTournoi();
-      setPreparationTournoiModel(resultpreparationTournoi);
+      setPreparationTournoi(resultpreparationTournoi);
+      const joueurs = await getActualJoueursPreparationTournoi(
+        resultpreparationTournoi.id,
+      );
+      setJoueurs(joueurs);
     };
     fetchData();
-  }, [getActualPreparationTournoi]);
+  }, [getActualJoueursPreparationTournoi, getActualPreparationTournoi]);
 
   const prepareComplements = useCallback(
     (typeEquipes: TypeEquipes, nbJoueurs: number) => {
@@ -65,14 +70,14 @@ const ChoixComplement = () => {
   );
 
   useEffect(() => {
-    if (!preparationTournoiModel) return;
-    const { typeEquipes, mode } = preparationTournoiModel;
-    if (!typeEquipes || !mode) return;
-    let nbJoueurs = listesJoueurs[mode].length;
+    if (!preparationTournoi || !joueurs) return;
+    const { typeEquipes } = preparationTournoi;
+    const nbJoueurs = joueurs.length;
+    if (!typeEquipes) return;
     prepareComplements(typeEquipes, nbJoueurs);
-  }, [listesJoueurs, preparationTournoiModel, prepareComplements]);
+  }, [joueurs, preparationTournoi, prepareComplements]);
 
-  if (!preparationTournoiModel) {
+  if (!preparationTournoi) {
     return <Loading />;
   }
 
@@ -191,7 +196,7 @@ const ChoixComplement = () => {
     );
   };
 
-  const { typeEquipes, avecTerrains } = preparationTournoiModel;
+  const { typeEquipes, avecTerrains } = preparationTournoi;
   if (!typeEquipes || !avecTerrains) {
     throw Error;
   }

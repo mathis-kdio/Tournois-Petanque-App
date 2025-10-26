@@ -1,19 +1,22 @@
 import { useCallback } from 'react';
-import { JoueursPreparationTournoisRepository } from './joueursPreparationTournoiRepository';
+import {
+  JoueursPreparationTournoisRepository,
+  JoueursPreparationTournoisWithJoueur,
+} from './joueursPreparationTournoiRepository';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 import { PreparationTournoi } from '@/db/schema/preparationTournoi';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { JoueursPreparationTournois } from '@/db/schema/joueursPreparationTournois';
 
 function toJoueurModel(
-  preparationTournoi: JoueursPreparationTournois,
-): JoueurModel[] {
+  preparationTournoi: JoueursPreparationTournoisWithJoueur,
+): JoueurModel {
+  const { joueurs } = preparationTournoi;
   return {
-    id: preparationTournoi.joueurId;
-    name: preparationTournoi.;
-    type: JoueurType | undefined;
-    equipe: number;
-    isChecked: boolean;
+    id: joueurs.id,
+    name: joueurs.name,
+    type: joueurs.type ?? undefined,
+    equipe: joueurs.equipe ?? undefined,
+    isChecked: false,
   };
 }
 
@@ -37,12 +40,17 @@ function toPreparationTournoi(
 }
 
 export function useJoueursPreparationTournois() {
-  const getActualJoueursPreparationTournoi = useCallback(async () => {
-    const joueursPreparationTournois =
-      await JoueursPreparationTournoisRepository.getPreparationTournoi();
-    console.log(joueursPreparationTournois);
-    return joueursPreparationTournois.map(toJoueurModel);
-  }, []);
+  const getActualJoueursPreparationTournoi = useCallback(
+    async (preparationTournoiId: number) => {
+      const joueursPreparationTournois =
+        await JoueursPreparationTournoisRepository.getJoueursPreparationTournoi(
+          preparationTournoiId,
+        );
+      console.log(joueursPreparationTournois);
+      return joueursPreparationTournois.map(toJoueurModel);
+    },
+    [],
+  );
 
   return {
     getActualJoueursPreparationTournoi,
