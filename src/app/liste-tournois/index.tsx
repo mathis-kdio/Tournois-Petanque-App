@@ -20,7 +20,7 @@ import { TournoiModel } from '@/types/interfaces/tournoi';
 import { ListRenderItem } from 'react-native';
 import { dateFormatDateHeure } from '@/utils/date';
 import { useCallback, useEffect, useState } from 'react';
-import { useTournoisRepository } from '@/repositories/useTournoisRepository';
+import { useTournoisRepository } from '@/repositories/tournois/useTournois';
 
 const ListeTournois = () => {
   const { t } = useTranslation();

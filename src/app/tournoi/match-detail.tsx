@@ -20,8 +20,8 @@ import { useDispatch } from 'react-redux';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import Loading from '@/components/Loading';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { useMatchsRepository } from '@/repositories/useMatchsRepository';
-import { useTournoisRepository } from '@/repositories/useTournoisRepository';
+import { useMatchsRepository } from '@/repositories/matchs/useMatchs';
+import { useTournoisRepository } from '@/repositories/tournois/useTournois';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 
 type SearchParams = {

@@ -11,10 +11,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import Loading from '@/components/Loading';
 import { listeType } from '@/types/types/searchParams';
-import { ListesJoueursRepository } from '@/repositories/listesJoueursRepository';
+import { ListesJoueursRepository } from '@/repositories/listesJoueurs/listesJoueursRepository';
 import { NewJoueur, NewJoueursListes, NewListesJoueurs } from '@/db/schema';
-import { saveJoueurs } from '@/repositories/joueursRepository';
-import { saveJoueursListes } from '@/repositories/joueursListesRepository';
+import { saveJoueurs } from '@/repositories/joueurs/joueursRepository';
+import { saveJoueursListes } from '@/repositories/joueursListes/joueursListesRepository';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 
 type SearchParams = {

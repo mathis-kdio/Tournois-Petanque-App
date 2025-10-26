@@ -20,7 +20,7 @@ import { Box } from '@/components/ui/box';
 import { dateFormatDateFileName } from '@/utils/date';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import { StyledSwitch } from '@/components/ui/switch/styled-switch';
-import { useTournoisRepository } from '@/repositories/useTournoisRepository';
+import { useTournoisRepository } from '@/repositories/tournois/useTournois';
 import Loading from '@/components/Loading';
 
 const PDFExport = () => {

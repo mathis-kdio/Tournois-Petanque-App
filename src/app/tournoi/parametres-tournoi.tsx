@@ -19,7 +19,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { useNavigation, useRouter } from 'expo-router';
 import { CommonActions } from '@react-navigation/native';
-import { useTournoisRepository } from '@/repositories/useTournoisRepository';
+import { useTournoisRepository } from '@/repositories/tournois/useTournois';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import Loading from '@/components/Loading';
 
