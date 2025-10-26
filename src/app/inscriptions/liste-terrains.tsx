@@ -16,7 +16,7 @@ import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiMo
 import { useEffect, useState } from 'react';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { useTerrainsRepository } from '@/repositories/terrains/useterrainsRepository';
+import { useTerrains } from '@/repositories/terrains/useterrainsRepository';
 
 type SearchParams = {
   screenStackName?: string;
@@ -28,7 +28,7 @@ const ListeTerrains = () => {
   const param = useLocalSearchParams<SearchParams>();
 
   const { getActualPreparationTournoi } = usePreparationTournoi();
-  const { insertTerrain } = useTerrainsRepository();
+  const { insertTerrain } = useTerrains();
 
   const [preparationTournoiModel, setPreparationTournoiModel] = useState<
     PreparationTournoiModel | undefined

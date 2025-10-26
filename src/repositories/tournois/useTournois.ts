@@ -13,7 +13,7 @@ function toTournoiModel(lJ: Tournoi): TournoiModel {
   };
 }
 
-export function useTournoisRepository() {
+export function useTournois() {
   const getAllTournois = useCallback(
     () => TournoisRepository.getAllTournois(),
     [],

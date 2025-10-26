@@ -19,7 +19,7 @@ function toTerrain(terrain: TerrainModel): Terrain {
   };
 }
 
-export function useTerrainsRepository() {
+export function useTerrains() {
   const getActualTerrains = useCallback(async () => {
     const terrains = await TerrainsRepository.getTerrains();
     console.log(terrains);

@@ -20,13 +20,13 @@ import { TournoiModel } from '@/types/interfaces/tournoi';
 import { ListRenderItem } from 'react-native';
 import { dateFormatDateHeure } from '@/utils/date';
 import { useCallback, useEffect, useState } from 'react';
-import { useTournoisRepository } from '@/repositories/tournois/useTournois';
+import { useTournois } from '@/repositories/tournois/useTournois';
 
 const ListeTournois = () => {
   const { t } = useTranslation();
 
   const { getAllTournois, deleteTournoi, renameTournoi } =
-    useTournoisRepository();
+    useTournois();
 
   const [modalTournoiInfosIsOpen, setModalTournoiInfosIsOpen] = useState(false);
   const [infosTournoi, setInfosTournoi] = useState<TournoiModel | undefined>(

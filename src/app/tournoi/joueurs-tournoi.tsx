@@ -13,14 +13,14 @@ import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoiModel';
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { useTournoisRepository } from '@/repositories/tournois/useTournois';
+import { useTournois } from '@/repositories/tournois/useTournois';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import Loading from '@/components/Loading';
 
 const JoueursTournoi = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const { getActualTournoi } = useTournoisRepository();
+  const { getActualTournoi } = useTournois();
 
   const [tournoi, setTournoi] = useState<TournoiModel | undefined>(undefined);
 

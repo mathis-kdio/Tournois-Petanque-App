@@ -20,13 +20,13 @@ import { Box } from '@/components/ui/box';
 import { dateFormatDateFileName } from '@/utils/date';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import { StyledSwitch } from '@/components/ui/switch/styled-switch';
-import { useTournoisRepository } from '@/repositories/tournois/useTournois';
+import { useTournois } from '@/repositories/tournois/useTournois';
 import Loading from '@/components/Loading';
 
 const PDFExport = () => {
   const { t } = useTranslation();
 
-  const { getActualTournoi } = useTournoisRepository();
+  const { getActualTournoi } = useTournois();
 
   const [tournoi, setTournoi] = useState<TournoiModel | undefined>(undefined);
 

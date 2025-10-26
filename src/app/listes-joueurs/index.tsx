@@ -15,7 +15,7 @@ import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
 import { useDispatch } from 'react-redux';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
-import { useListesJoueursRepository } from '@/repositories/listesJoueurs/useListesJoueursRepository';
+import { useListesJoueurs } from '@/repositories/listesJoueurs/useListesJoueurs';
 
 type SearchParams = {
   loadListScreen?: string;
@@ -28,7 +28,7 @@ const ListesJoueursScreen = () => {
   const dispatch = useDispatch();
 
   const { getAllListesJoueurs, deleteListeJoueurs, renameListeJoueurs } =
-    useListesJoueursRepository();
+    useListesJoueurs();
   const [listesJoueurs, setListesJoueurs] = useState<ListeJoueursInfos[]>([]);
 
   useEffect(() => {

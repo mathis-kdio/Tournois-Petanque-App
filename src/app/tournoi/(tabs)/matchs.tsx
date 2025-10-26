@@ -7,7 +7,7 @@ import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { StyledTopTabs } from '@/components/navigation/styled-top-tabs';
 import { useEffect, useState } from 'react';
-import { useTournoisRepository } from '@/repositories/tournois/useTournois';
+import { useTournois } from '@/repositories/tournois/useTournois';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import Loading from '@/components/Loading';
 
@@ -16,7 +16,7 @@ export default function MatchsPage() {
 
   const { Screen } = createMaterialTopTabNavigator();
 
-  const { getActualTournoi } = useTournoisRepository();
+  const { getActualTournoi } = useTournois();
 
   const [tournoi, setTournoi] = useState<TournoiModel | undefined>(undefined);
 

@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { ListesJoueursRepository } from './listesJoueursRepository';
 
-export function useListesJoueursRepository() {
+export function useListesJoueurs() {
   const getAllListesJoueurs = useCallback(
     () => ListesJoueursRepository.getAllListesJoueurs(),
     [],

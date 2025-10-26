@@ -20,8 +20,8 @@ import { useDispatch } from 'react-redux';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import Loading from '@/components/Loading';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { useMatchsRepository } from '@/repositories/matchs/useMatchs';
-import { useTournoisRepository } from '@/repositories/tournois/useTournois';
+import { useMatchs } from '@/repositories/matchs/useMatchs';
+import { useTournois } from '@/repositories/tournois/useTournois';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 
 type SearchParams = {
@@ -36,8 +36,8 @@ const MatchDetail = () => {
   const param = useLocalSearchParams<SearchParams>();
   const dispatch = useDispatch();
 
-  const { getMatch, updateScore, resetScore } = useMatchsRepository();
-  const { getActualTournoi } = useTournoisRepository();
+  const { getMatch, updateScore, resetScore } = useMatchs();
+  const { getActualTournoi } = useTournois();
 
   const [match, setMatch] = useState<MatchModel | undefined>(undefined);
   const [tournoi, setTournoi] = useState<TournoiModel | undefined>(undefined);

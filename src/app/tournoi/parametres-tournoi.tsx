@@ -19,7 +19,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { useNavigation, useRouter } from 'expo-router';
 import { CommonActions } from '@react-navigation/native';
-import { useTournoisRepository } from '@/repositories/tournois/useTournois';
+import { useTournois } from '@/repositories/tournois/useTournois';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import Loading from '@/components/Loading';
 
@@ -28,7 +28,7 @@ const ParametresTournoi = () => {
   const router = useRouter();
   const navigation = useNavigation();
 
-  const { getActualTournoi, deleteTournoi } = useTournoisRepository();
+  const { getActualTournoi, deleteTournoi } = useTournois();
 
   const [tournoi, setTournoi] = useState<TournoiModel | undefined>(undefined);
   const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false);

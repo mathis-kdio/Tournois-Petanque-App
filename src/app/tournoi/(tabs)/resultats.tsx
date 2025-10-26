@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { ListRenderItem } from 'react-native';
 import { Victoire } from '@/types/interfaces/victoire';
 import useExitAlertOnBack from '@/components/with-exit-alert/with-exit-alert';
-import { useTournoisRepository } from '@/repositories/tournois/useTournois';
+import { useTournois } from '@/repositories/tournois/useTournois';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import { useEffect, useState } from 'react';
 import Loading from '@/components/Loading';
@@ -19,7 +19,7 @@ const ListeResultats = () => {
 
   const { t } = useTranslation();
 
-  const { getActualTournoi } = useTournoisRepository();
+  const { getActualTournoi } = useTournois();
 
   const [tournoi, setTournoi] = useState<TournoiModel | undefined>(undefined);
 

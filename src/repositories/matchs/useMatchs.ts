@@ -11,7 +11,7 @@ function toMatchmodel(match: Match): MatchModel {
   };
 }
 
-export function useMatchsRepository() {
+export function useMatchs() {
   const getAllMatchs = useCallback(() => MatchsRepository.getAllMatchs(), []);
 
   const getMatch = useCallback(async (id: number) => {
