@@ -84,7 +84,7 @@ const victoiresPointsCalc = (
   optionsTournoi: OptionsTournoiModel,
 ): Victoire[] => {
   let listeJoueurs = optionsTournoi.listeJoueurs;
-  let victoires = [];
+  let victoires: Victoire[] = [];
   for (let i = 0; i < listeJoueurs.length; i++) {
     let nbVictoire = 0;
     let nbPoints = 0;
@@ -112,7 +112,7 @@ const victoiresPointsCalc = (
       }
     }
     victoires[i] = {
-      joueurId: i,
+      joueur: listeJoueurs[i],
       victoires: nbVictoire,
       points: nbPoints,
       nbMatchs: nbMatchs,

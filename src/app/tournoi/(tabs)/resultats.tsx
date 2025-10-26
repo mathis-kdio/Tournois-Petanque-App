@@ -38,7 +38,7 @@ const ListeResultats = () => {
   const { options, matchs } = tournoi;
 
   const renderItem: ListRenderItem<Victoire> = ({ item }) => (
-    <ListeResultatItem joueur={item} />
+    <ListeResultatItem victoire={item} />
   );
 
   return (
@@ -61,7 +61,7 @@ const ListeResultats = () => {
         <Divider className="my-0.5" />
         <FlatList
           data={ranking(matchs, options)}
-          keyExtractor={(item: Victoire) => item.joueurId.toString()}
+          keyExtractor={(item: Victoire) => item.joueur.id.toString()}
           renderItem={renderItem}
         />
       </VStack>

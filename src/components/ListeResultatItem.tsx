@@ -8,21 +8,21 @@ import { Victoire } from '@/types/interfaces/victoire';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoiModel';
+import { MatchModel } from '@/types/interfaces/matchModel';
 
 export interface Props {
-  joueur: Victoire;
+  victoire: Victoire;
 }
 
-const ListeResultatItem: React.FC<Props> = ({ joueur }) => {
+const ListeResultatItem: React.FC<Props> = ({ victoire }) => {
   const { t } = useTranslation();
 
   const listeMatchs = useSelector(
     (state: any) => state.gestionMatchs.listematchs,
   );
 
-  const _displayName = (joueurId: number) => {
-    let listeJoueurs = listeMatchs.at(-1).listeJoueurs;
-    let joueur = listeJoueurs.find((item: JoueurModel) => item.id === joueurId);
+  const _displayName = (joueur: JoueurModel) => {
     let joueurName = '';
     if (joueur.name === undefined) {
       joueurName = t('sans_nom') + ' (' + (joueur.id + 1) + ')';
@@ -35,20 +35,16 @@ const ListeResultatItem: React.FC<Props> = ({ joueur }) => {
     return <Text className="text-typography-white text-lg">{joueurName}</Text>;
   };
 
-  const _fanny = (joueurNumber: number) => {
+  const _fanny = (joueur: JoueurModel) => {
     let fanny = false;
     let nbFanny = 0;
-    for (let i = 0; i < listeMatchs.at(-1).nbMatchs; i++) {
-      if (
-        listeMatchs[i].equipe[0].includes(joueurNumber) &&
-        listeMatchs[i].score1 === '0'
-      ) {
+    const options = listeMatchs.at(-1) as OptionsTournoiModel;
+    for (let i = 0; i < options.nbMatchs; i++) {
+      const match = listeMatchs[i] as MatchModel;
+      if (match.equipe[0].includes(joueur) && match.score1 === 0) {
         fanny = true;
         nbFanny++;
-      } else if (
-        listeMatchs[i].equipe[1].includes(joueurNumber) &&
-        listeMatchs[i].score2 === '0'
-      ) {
+      } else if (match.equipe[1].includes(joueur) && match.score2 === 0) {
         fanny = true;
         nbFanny++;
       }
@@ -72,19 +68,19 @@ const ListeResultatItem: React.FC<Props> = ({ joueur }) => {
       <HStack className="flex px-2 py-0.5">
         <HStack className="basis-2/5">
           <Text className="text-typography-white text-lg">
-            {`${joueur.position} - `}
+            {`${victoire.position} - `}
           </Text>
-          {_displayName(joueur.joueurId)}
+          {_displayName(victoire.joueur)}
         </HStack>
         <Text className="basis-1/5 text-center text-typography-white text-lg">
-          {joueur.victoires}
+          {victoire.victoires}
         </Text>
         <Text className="basis-1/5 text-center text-typography-white text-lg">
-          {joueur.nbMatchs}
+          {victoire.nbMatchs}
         </Text>
         <HStack className="basis-1/5 justify-end">
-          {_fanny(joueur.joueurId)}
-          <Text className="text-typography-white text-lg">{` ${joueur.points}`}</Text>
+          {_fanny(victoire.joueur)}
+          <Text className="text-typography-white text-lg">{` ${victoire.points}`}</Text>
         </HStack>
       </HStack>
       <Divider />
