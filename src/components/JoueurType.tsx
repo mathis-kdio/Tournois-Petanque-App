@@ -18,21 +18,22 @@ import { JoueurType as JoueurTypeEnum } from '../types/enums/joueurType';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { useSelector } from 'react-redux';
+import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 
 export interface Props {
   joueurType: JoueurTypeEnum | undefined;
+  optionsTournoi: PreparationTournoiModel;
   _setJoueurType: (type: JoueurTypeEnum) => void;
 }
 
-const JoueurType: React.FC<Props> = ({ joueurType, _setJoueurType }) => {
+const JoueurType: React.FC<Props> = ({
+  joueurType,
+  optionsTournoi,
+  _setJoueurType,
+}) => {
   const { t } = useTranslation();
 
-  const optionsTournoi = useSelector(
-    (state: any) => state.optionsTournoi.options,
-  );
-
-  const _selectItemList = () => {
+  const _selectItemList = (optionsTournoi: PreparationTournoiModel) => {
     const { mode, typeTournoi, typeEquipes } = optionsTournoi;
     if (
       mode === ModeTournoi.SAUVEGARDE ||
@@ -110,7 +111,7 @@ const JoueurType: React.FC<Props> = ({ joueurType, _setJoueurType }) => {
             value={JoueurTypeEnum.ENFANT}
             key={0}
           />
-          {_selectItemList()}
+          {_selectItemList(optionsTournoi)}
         </SelectContent>
       </SelectPortal>
     </Select>

@@ -289,7 +289,11 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
     if (suggestions.length > 0) {
       let partialSuggested = suggestions.slice(0, nbSuggestions);
       const renderItem: ListRenderItem<JoueurModel> = ({ item }) => (
-        <JoueurSuggere joueur={item} ajoutJoueur={ajoutJoueur} />
+        <JoueurSuggere
+          joueur={item}
+          optionsTournoi={optionsTournoi}
+          ajoutJoueur={ajoutJoueur}
+        />
       );
       return (
         <VStack>
@@ -417,6 +421,7 @@ const Inscription: React.FC<Props> = ({ loadListScreen }) => {
         <Box className="flex-1">
           <JoueurType
             joueurType={joueurType}
+            optionsTournoi={optionsTournoi}
             _setJoueurType={(type) => setJoueurType(type)}
           />
         </Box>

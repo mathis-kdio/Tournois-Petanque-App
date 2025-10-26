@@ -15,32 +15,38 @@ import ListeTournoiItem from '@components/ListeTournoiItem';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoiModel';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import { ListRenderItem } from 'react-native';
 import { dateFormatDateHeure } from '@/utils/date';
 import { useCallback, useEffect, useState } from 'react';
 import { useTournois } from '@/repositories/tournois/useTournois';
+import Loading from '@/components/Loading';
 
 const ListeTournois = () => {
   const { t } = useTranslation();
 
-  const { getAllTournois, deleteTournoi, renameTournoi } =
+  const { getAllTournois, getActualTournoi, deleteTournoi, renameTournoi } =
     useTournois();
 
   const [modalTournoiInfosIsOpen, setModalTournoiInfosIsOpen] = useState(false);
+
   const [infosTournoi, setInfosTournoi] = useState<TournoiModel | undefined>(
     undefined,
   );
   const [listeTournois, setListeTournois] = useState<TournoiModel[]>([]);
+  const [actualTournoi, setActualTournoi] = useState<TournoiModel | undefined>(
+    undefined,
+  );
 
   useEffect(() => {
     const fetchData = async () => {
       const result = await getAllTournois();
       setListeTournois(result);
+      const resulta = await getActualTournoi();
+      setActualTournoi(resulta);
     };
     fetchData();
-  }, [getAllTournois]);
+  }, [getActualTournoi, getAllTournois]);
 
   const handleDelete = useCallback(
     async (id: number) => {
@@ -60,16 +66,20 @@ const ListeTournois = () => {
     [renameTournoi],
   );
 
+  if (!listeTournois || !actualTournoi) {
+    return <Loading />;
+  }
+
   const showModalInfos = (tournoi: TournoiModel) => {
     setModalTournoiInfosIsOpen(true);
     setInfosTournoi(tournoi);
   };
 
   const _modalTournoiInfos = () => {
-    if (infosTournoi === undefined || infosTournoi.tournoi === undefined) {
+    if (infosTournoi === undefined || infosTournoi.options === undefined) {
       return;
     }
-    const { tournoi, creationDate, updateDate, tournoiId, name } = infosTournoi;
+    const { options, creationDate, updateDate, tournoiId, name } = infosTournoi;
     const {
       nbPtVictoire,
       listeJoueurs,
@@ -81,7 +91,7 @@ const ListeTournois = () => {
       memesEquipes,
       memesAdversaires,
       speciauxIncompatibles,
-    } = tournoi.at(-1) as OptionsTournoiModel;
+    } = options;
     let creationDateFormat = creationDate
       ? dateFormatDateHeure(creationDate)
       : t('date_inconnue');
@@ -156,14 +166,19 @@ const ListeTournois = () => {
     );
   };
 
-  const renderItem: ListRenderItem<TournoiModel> = ({ item }) => (
-    <ListeTournoiItem
-      tournoi={item}
-      showModalInfos={(tournoi: TournoiModel) => showModalInfos(tournoi)}
-      onDelete={handleDelete}
-      onUpdateName={handleUpdateName}
-    />
-  );
+  const renderItem: ListRenderItem<TournoiModel> = ({ item }) => {
+    const estTournoiActuel = item.tournoiId === actualTournoi.tournoiId;
+    return (
+      <ListeTournoiItem
+        tournoi={item}
+        estTournoiActuel={estTournoiActuel}
+        showModalInfos={(tournoi: TournoiModel) => showModalInfos(tournoi)}
+        onDelete={handleDelete}
+        onUpdateName={handleUpdateName}
+      />
+    );
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <VStack className="flex-1 bg-custom-background">

@@ -14,10 +14,11 @@ function toTournoiModel(lJ: Tournoi): TournoiModel {
 }
 
 export function useTournois() {
-  const getAllTournois = useCallback(
-    () => TournoisRepository.getAllTournois(),
-    [],
-  );
+  const getAllTournois = useCallback(async () => {
+    const tournois = await TournoisRepository.getAllTournois();
+    console.log(tournois);
+    return tournois.map(toTournoiModel);
+  }, []);
 
   const getTournoi = useCallback(() => TournoisRepository.getTournoi(), []);
 

@@ -21,16 +21,22 @@ import { JoueurType as JoueurTypeEnum } from '@/types/enums/joueurType';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { useDispatch } from 'react-redux';
+import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 
 export interface Props {
   joueur: JoueurModel;
+  optionsTournoi: PreparationTournoiModel;
   ajoutJoueur: (
     joueurName: string,
     joueurType: JoueurTypeEnum | undefined,
   ) => void;
 }
 
-const JoueurSuggere: React.FC<Props> = ({ joueur, ajoutJoueur }) => {
+const JoueurSuggere: React.FC<Props> = ({
+  joueur,
+  optionsTournoi,
+  ajoutJoueur,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -106,6 +112,7 @@ const JoueurSuggere: React.FC<Props> = ({ joueur, ajoutJoueur }) => {
       <Box className="flex-1">
         <JoueurType
           joueurType={joueurType}
+          optionsTournoi={optionsTournoi}
           _setJoueurType={(type: JoueurTypeEnum) => setJoueurType(type)}
         />
       </Box>

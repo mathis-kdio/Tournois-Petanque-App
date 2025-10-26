@@ -18,12 +18,13 @@ import React, { useState } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { TournoiModel } from '@/types/interfaces/tournoi';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigation } from 'expo-router';
 import { CommonActions } from '@react-navigation/native';
 
 export interface Props {
   tournoi: TournoiModel;
+  estTournoiActuel: boolean;
   showModalInfos: (tournoi: TournoiModel) => void;
   onDelete: (id: number) => void;
   onUpdateName: (id: number, name: string) => void;
@@ -31,6 +32,7 @@ export interface Props {
 
 const ListeTournoiItem: React.FC<Props> = ({
   tournoi,
+  estTournoiActuel,
   showModalInfos,
   onDelete,
   onUpdateName,
@@ -42,10 +44,6 @@ const ListeTournoiItem: React.FC<Props> = ({
   const [renommerOn, setRenommerOn] = useState(false);
   const [tournoiNameText, setTournoiNameText] = useState('');
   const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false);
-
-  const listeMatchs = useSelector(
-    (state: any) => state.gestionMatchs.listematchs,
-  );
 
   const _chargerTournoi = (tournoi: TournoiModel) => {
     const actionUpdateListeMatchs = {
@@ -180,10 +178,6 @@ const ListeTournoiItem: React.FC<Props> = ({
     }
   };
 
-  let btnDisabled = false;
-  if (listeMatchs && tournoi.tournoiId === listeMatchs.at(-1).tournoiID) {
-    btnDisabled = true;
-  }
   return (
     <HStack space="md" className="px-2 my-2 items-center">
       <Box className="flex-1">{_tournoiName(tournoi)}</Box>
@@ -196,16 +190,16 @@ const ListeTournoiItem: React.FC<Props> = ({
           onPress={() => showModalInfos(tournoi)}
         />
         <Button
-          isDisabled={btnDisabled}
+          isDisabled={estTournoiActuel}
           action="primary"
           onPress={() => _chargerTournoi(tournoi)}
         >
           <ButtonText>{t('charger')}</ButtonText>
         </Button>
         <FontAwesome5.Button
-          disabled={btnDisabled}
+          disabled={estTournoiActuel}
           name="times"
-          backgroundColor={btnDisabled ? '#C0C0C0' : '#E63535'}
+          backgroundColor={estTournoiActuel ? '#C0C0C0' : '#E63535'}
           iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
           onPress={() => setModalDeleteIsOpen(true)}
         />
