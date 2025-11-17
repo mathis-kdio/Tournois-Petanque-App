@@ -1,5 +1,4 @@
 import { Text } from '@/components/ui/text';
-
 import {
   Select,
   SelectBackdrop,
@@ -12,7 +11,6 @@ import {
   SelectPortal,
   SelectTrigger,
 } from '@/components/ui/select';
-
 import { Input, InputField } from '@/components/ui/input';
 import { Image } from '@/components/ui/image';
 import { Heading } from '@/components/ui/heading';
@@ -31,7 +29,6 @@ import {
 } from '@/components/ui/icon';
 import { Button, ButtonGroup, ButtonText } from '@/components/ui/button';
 import { Box } from '@/components/ui/box';
-
 import {
   AlertDialog,
   AlertDialogBackdrop,
@@ -41,7 +38,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
 } from '@/components/ui/alert-dialog';
-
 import React, { useState } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
@@ -50,7 +46,6 @@ import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { useDispatch, useSelector } from 'react-redux';
 
 export interface Props {
   joueur: JoueurModel;
@@ -61,6 +56,12 @@ export interface Props {
   typeTournoi: TypeTournoi;
   nbJoueurs: number;
   showCheckbox: boolean;
+  tournoiID: number | undefined;
+  listesJoueurs: JoueurModel[] | undefined;
+  onDeleteJoueur: (id: number) => void;
+  onAddEquipeJoueur: (id: number, equipeId: number) => void;
+  onUpdateName: (id: number, name: string) => void;
+  onCheckJoueur: (joueurId: number, isChecked: boolean) => void;
 }
 
 const ListeJoueurItem: React.FC<Props> = ({
@@ -72,50 +73,49 @@ const ListeJoueurItem: React.FC<Props> = ({
   typeTournoi,
   nbJoueurs,
   showCheckbox,
+  tournoiID,
+  listesJoueurs,
+  onDeleteJoueur,
+  onAddEquipeJoueur,
+  onUpdateName,
+  onCheckJoueur,
 }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
 
   const [renommerOn, setRenommerOn] = useState(false);
   const [joueurText, setJoueurText] = useState('');
   const [modalConfirmUncheckIsOpen, setModalConfirmUncheckIsOpen] =
     useState(false);
 
-  const listesJoueurs = useSelector(
-    (state: any) => state.listesJoueurs.listesJoueurs,
-  );
-  const listeMatchs = useSelector(
-    (state: any) => state.gestionMatchs.listematchs,
-  );
-
-  const _showSupprimerJoueur = (joueur: JoueurModel, isInscription: boolean) => {
-    if (isInscription === true) {
-      return (
-        <Box className="ml-2">
-          <FontAwesome5.Button
-            name="times"
-            backgroundColor="#E63535"
-            iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
-            onPress={() => _supprimerJoueur(joueur.id)}
-          />
-        </Box>
-      );
+  const _showSupprimerJoueur = (
+    joueur: JoueurModel,
+    isInscription: boolean,
+  ) => {
+    if (!isInscription) {
+      return <></>;
     }
+    return (
+      <Box className="ml-2">
+        <FontAwesome5.Button
+          name="times"
+          backgroundColor="#E63535"
+          iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
+          onPress={() => _supprimerJoueur(joueur.id)}
+        />
+      </Box>
+    );
   };
 
   const _supprimerJoueur = (idJoueur: number) => {
     setRenommerOn(false);
-    const actionSuppr = {
-      type: 'SUPPR_JOUEUR',
-      value: [modeTournoi, idJoueur],
-    };
-    dispatch(actionSuppr);
+    onDeleteJoueur(idJoueur);
+
     if (typeEquipes === TypeEquipes.TETEATETE) {
-      const actionUpdateEquipe = {
+      /*const actionUpdateEquipe = {
         type: 'UPDATE_ALL_JOUEURS_EQUIPE',
         value: [modeTournoi],
       };
-      dispatch(actionUpdateEquipe);
+      dispatch(actionUpdateEquipe);*/
     }
   };
 
@@ -158,40 +158,37 @@ const ListeJoueurItem: React.FC<Props> = ({
     isInscription: boolean,
     avecEquipes: boolean,
   ) => {
-    if (joueurText !== '') {
-      setRenommerOn(false);
-      if (isInscription === true) {
-        let typeInscription = '';
-        if (modeTournoi === ModeTournoi.SAUVEGARDE) {
-          typeInscription = ModeTournoi.SAUVEGARDE;
-        } else if (avecEquipes === true) {
-          typeInscription = ModeTournoi.AVECEQUIPES;
-        } else {
-          typeInscription = ModeTournoi.AVECNOMS;
-        }
-        const actionRenommer = {
-          type: 'RENOMMER_JOUEUR',
-          value: [typeInscription, joueur.id, joueurText],
-        };
-        dispatch(actionRenommer);
-      } else {
-        let data = { playerId: joueur.id, newName: joueurText };
-        const inGameRenamePlayer = {
-          type: 'INGAME_RENAME_PLAYER',
-          value: data,
-        };
-        dispatch(inGameRenamePlayer);
-        const actionUpdateTournoi = {
-          type: 'UPDATE_TOURNOI',
-          value: {
-            tournoi: listeMatchs,
-            tournoiId: listeMatchs.at(-1).tournoiID,
-          },
-        };
-        dispatch(actionUpdateTournoi);
-      }
-      setJoueurText('');
+    if (joueurText === '') {
+      return;
     }
+    if (isInscription === true) {
+      /*let typeInscription = '';
+      if (modeTournoi === ModeTournoi.SAUVEGARDE) {
+        typeInscription = ModeTournoi.SAUVEGARDE;
+      } else if (avecEquipes === true) {
+        typeInscription = ModeTournoi.AVECEQUIPES;
+      } else {
+        typeInscription = ModeTournoi.AVECNOMS;
+      }*/
+      onUpdateName(joueur.id, joueurText);
+    } else {
+      /*let data = { playerId: joueur.id, newName: joueurText };
+      const inGameRenamePlayer = {
+        type: 'INGAME_RENAME_PLAYER',
+        value: data,
+      };
+      dispatch(inGameRenamePlayer);
+      const actionUpdateTournoi = {
+        type: 'UPDATE_TOURNOI',
+        value: {
+          tournoiId: tournoiID,
+        },
+      };
+      dispatch(actionUpdateTournoi);*/
+      onUpdateName(joueur.id, joueurText);
+    }
+    setRenommerOn(false);
+    setJoueurText('');
   };
 
   const _joueurTxtInputChanged = (text: string) => {
@@ -228,11 +225,12 @@ const ListeJoueurItem: React.FC<Props> = ({
   };
 
   const _ajoutEquipe = (joueurId: number, equipeId: number) => {
-    const action = {
+    /*const action = {
       type: 'AJOUT_EQUIPE_JOUEUR',
       value: [ModeTournoi.AVECEQUIPES, joueurId, equipeId],
     };
-    dispatch(action);
+    dispatch(action);*/
+    onAddEquipeJoueur(joueurId, equipeId);
   };
 
   const _equipePicker = (
@@ -241,7 +239,7 @@ const ListeJoueurItem: React.FC<Props> = ({
     typeEquipes: TypeEquipes,
     nbJoueurs: number,
   ) => {
-    if (avecEquipes === true) {
+    if (avecEquipes === true && listesJoueurs) {
       let selectedValue = '0';
       if (joueur.equipe) {
         selectedValue = joueur.equipe.toString();
@@ -255,7 +253,7 @@ const ListeJoueurItem: React.FC<Props> = ({
 
       let pickerItem = [];
       for (let i = 1; i <= nbEquipes; i++) {
-        let count = listesJoueurs.avecEquipes.reduce(
+        let count = listesJoueurs.reduce(
           (counter: number, obj: JoueurModel) =>
             obj.equipe === i ? (counter += 1) : counter,
           0,
@@ -438,28 +436,7 @@ const ListeJoueurItem: React.FC<Props> = ({
   };
 
   const _ajoutCheck = (joueurId: number, isChecked: boolean) => {
-    if (isInscription === true) {
-      const action = {
-        type: 'CHECK_JOUEUR',
-        value: [modeTournoi, joueurId, isChecked],
-      };
-      dispatch(action);
-    } else {
-      let data = { playerId: joueurId, isChecked: isChecked };
-      const inGameCheckPlayer = {
-        type: 'INGAME_CHECK_PLAYER',
-        value: data,
-      };
-      dispatch(inGameCheckPlayer);
-      const actionUpdateTournoi = {
-        type: 'UPDATE_TOURNOI',
-        value: {
-          tournoi: listeMatchs,
-          tournoiId: listeMatchs.at(-1).tournoiID,
-        },
-      };
-      dispatch(actionUpdateTournoi);
-    }
+    onCheckJoueur(joueurId, isChecked);
     setModalConfirmUncheckIsOpen(false);
   };
 

@@ -66,9 +66,20 @@ export function useJoueursPreparationTournois() {
     JoueursPreparationTournoisRepository.deleteAll();
   }, []);
 
+  const getAllJoueursPreparationTournoi = useCallback(async () => {
+    const joueursPreparationTournois =
+      await JoueursPreparationTournoisRepository.getMany(0);
+    const joueurModel = joueursPreparationTournois.map(
+      (joueursPreparationTournoisWithJoueur) =>
+        toJoueurModel(joueursPreparationTournoisWithJoueur),
+    );
+    return joueurModel;
+  }, []);
+
   return {
     getActualJoueursPreparationTournoi,
     addJoueursPreparationTournoi,
     removeAllJoueursPreparationTournoi,
+    getAllJoueursPreparationTournoi,
   };
 }

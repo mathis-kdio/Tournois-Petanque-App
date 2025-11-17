@@ -14,14 +14,21 @@ import { useRouter } from 'expo-router';
 import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Loading from '@/components/Loading';
+import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
+import { JoueurType } from '@/types/enums/joueurType';
 
 const InscriptionsAvecNoms = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
   const { getActualPreparationTournoi } = usePreparationTournoi();
+  const {
+    addJoueursPreparationTournoi,
+    removeAllJoueursPreparationTournoi,
+    getAllJoueursPreparationTournoi,
+  } = useJoueursPreparationTournois();
 
   const [preparationTournoi, setPreparationTournoi] = useState<
     PreparationTournoiModel | undefined
@@ -34,11 +41,101 @@ const InscriptionsAvecNoms = () => {
     const fetchData = async () => {
       const resultpreparationTournoi = await getActualPreparationTournoi();
       setPreparationTournoi(resultpreparationTournoi);
-      setlisteJoueurs([]);
+      const joueurs = await getAllJoueursPreparationTournoi();
+      console.log(joueurs);
+      setlisteJoueurs(joueurs);
       setloading(false);
     };
     fetchData();
-  }, [getActualPreparationTournoi]);
+  }, [getActualPreparationTournoi, getAllJoueursPreparationTournoi]);
+
+  const handleAddJoueur = useCallback(
+    async (joueurName: string, joueurType: JoueurType | undefined) => {
+      if (!preparationTournoi) return;
+      const { typeEquipes } = preparationTournoi;
+      if (!typeEquipes) return;
+      const equipe = equipeAuto(listeJoueurs, typeEquipes);
+      const joueur: JoueurModel = {
+        id: listeJoueurs.length,
+        name: joueurName,
+        type: joueurType,
+        equipe: equipe,
+        isChecked: false,
+      };
+
+      const newjoueur = await addJoueursPreparationTournoi(joueur);
+      setlisteJoueurs((prev) => [...prev, newjoueur]);
+    },
+    [addJoueursPreparationTournoi, listeJoueurs, preparationTournoi],
+  );
+
+  const handleDeleteJoueur = useCallback(async (id: number) => {
+    //await deleteTournoi(id);
+    setlisteJoueurs((prev) => prev.filter((u) => u.id !== id));
+  }, []);
+
+  const handleAddEquipeJoueur = useCallback(
+    async (id: number, equipeId: number) => {
+      //await deleteTournoi(id);
+      setlisteJoueurs((prev) =>
+        prev.map((u) => (u.id === id ? { ...u, equipe: equipeId } : u)),
+      );
+    },
+    [],
+  );
+
+  const handleUpdateName = useCallback(async (id: number, name: string) => {
+    //await renameJoueur(id, name);
+    setlisteJoueurs((prev) =>
+      prev.map((u) => (u.id === id ? { ...u, name: name } : u)),
+    );
+  }, []);
+
+  const handleCheckJoueur = useCallback(
+    async (id: number, isChecked: boolean) => {
+      //await checkJoueur(id, isChecked);
+      setlisteJoueurs((prev) =>
+        prev.map((u) => (u.id === id ? { ...u, isChecked: isChecked } : u)),
+      );
+    },
+    [],
+  );
+
+  const handleDeleteAllJoueurs = useCallback(async () => {
+    await removeAllJoueursPreparationTournoi();
+    setlisteJoueurs([]);
+  }, [removeAllJoueursPreparationTournoi]);
+
+  const equipeAuto = (
+    listeJoueurs: JoueurModel[],
+    typeEquipes: TypeEquipes,
+  ) => {
+    if (typeEquipes === TypeEquipes.TETEATETE) {
+      return listeJoueurs.length + 1;
+    } else {
+      const nbJoueursParEquipe = typeEquipes === TypeEquipes.DOUBLETTE ? 2 : 3;
+
+      // Compter le nombre de joueurs par équipe
+      const joueursParEquipe: { [key: number]: number } = {};
+      listeJoueurs.forEach((joueur) => {
+        if (joueur.equipe) {
+          joueursParEquipe[joueur.equipe] =
+            (joueursParEquipe[joueur.equipe] || 0) + 1;
+        }
+      });
+
+      // Trouver l'équipe avec l'id le plus proche de 0 qui n'a pas dépassé nbJoueursParEquipe
+      let equipeTrouvee = 1;
+      for (let i = 1; ; i++) {
+        const nbJoueursDansEquipe = joueursParEquipe[i] || 0;
+        if (nbJoueursDansEquipe < nbJoueursParEquipe) {
+          equipeTrouvee = i;
+          break;
+        }
+      }
+      return equipeTrouvee;
+    }
+  };
 
   if (loading) {
     return <Loading />;
@@ -208,6 +305,12 @@ const InscriptionsAvecNoms = () => {
             listeJoueurs={listeJoueurs}
             preparationTournoi={preparationTournoi}
             loadListScreen={false}
+            onAddJoueur={handleAddJoueur}
+            onDeleteJoueur={handleDeleteJoueur}
+            onAddEquipeJoueur={handleAddEquipeJoueur}
+            onUpdateName={handleUpdateName}
+            onCheckJoueur={handleCheckJoueur}
+            onDeleteAllJoueurs={handleDeleteAllJoueurs}
           />
           <Box className="px-10">
             {_boutonCommencer(listeJoueurs, preparationTournoi)}

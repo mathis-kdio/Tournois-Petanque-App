@@ -19,10 +19,7 @@ import JoueurType from '@components/JoueurType';
 import { useTranslation } from 'react-i18next';
 import { JoueurType as JoueurTypeEnum } from '@/types/enums/joueurType';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { useDispatch } from 'react-redux';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
-import { TypeEquipes } from '@/types/enums/typeEquipes';
 
 export interface Props {
   joueur: JoueurModel;
@@ -30,17 +27,17 @@ export interface Props {
   ajoutJoueur: (
     joueurName: string,
     joueurType: JoueurTypeEnum | undefined,
-    typeEquipes: TypeEquipes,
   ) => void;
+  supprimerJoueurSuggerre: (joueurId: number) => void;
 }
 
 const JoueurSuggere: React.FC<Props> = ({
   joueur,
   optionsTournoi,
   ajoutJoueur,
+  supprimerJoueurSuggerre,
 }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
 
   const [joueurType, setJoueurType] = useState<JoueurTypeEnum | undefined>(
     undefined,
@@ -92,22 +89,18 @@ const JoueurSuggere: React.FC<Props> = ({
   };
 
   const _removePlayer = (playerId: number) => {
-    const actionSuppr = {
+    /*const actionSuppr = {
       type: 'SUPPR_JOUEUR',
       value: [ModeTournoi.HISTORIQUE, playerId],
     };
-    dispatch(actionSuppr);
+    dispatch(actionSuppr);*/
+    supprimerJoueurSuggerre(playerId);
     setModalRemoveIsOpen(false);
   };
 
-  const _addPlayer = (playerName: string, typeEquipes: TypeEquipes) => {
-    ajoutJoueur(playerName, joueurType, typeEquipes);
+  const _addPlayer = (playerName: string) => {
+    ajoutJoueur(playerName, joueurType);
   };
-
-  const { typeEquipes } = optionsTournoi;
-  if (!typeEquipes) {
-    throw Error('manquant ');
-  }
 
   return (
     <HStack className="border border-custom-bg-inverse rounded-xl m-1 px-1 items-center">
@@ -136,7 +129,7 @@ const JoueurSuggere: React.FC<Props> = ({
           name="plus"
           backgroundColor="#348352"
           iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
-          onPress={() => _addPlayer(joueur.name, typeEquipes)}
+          onPress={() => _addPlayer(joueur.name)}
         />
       </Box>
       {_modalRemovePlayer(joueur.id)}

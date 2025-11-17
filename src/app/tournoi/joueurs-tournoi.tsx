@@ -55,6 +55,8 @@ const JoueursTournoi = () => {
         typeTournoi={typeTournoi}
         nbJoueurs={listeJoueurs.length}
         showCheckbox={true}
+        tournoiID={tournoi.tournoiId}
+        listesJoueurs={undefined}
       />
     );
 

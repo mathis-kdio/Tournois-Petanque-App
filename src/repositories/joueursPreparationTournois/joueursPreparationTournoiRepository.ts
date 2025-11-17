@@ -19,7 +19,7 @@ export const JoueursPreparationTournoisRepository = {
     return await getDrizzleDb()
       .select()
       .from(joueursPreparationTournois)
-      .innerJoin(joueurs, eq(joueursPreparationTournois.id, joueurs.joueurId))
+      .innerJoin(joueurs, eq(joueursPreparationTournois.joueurId, joueurs.id))
       .where(
         eq(
           joueursPreparationTournois.preparationTournoiId,
