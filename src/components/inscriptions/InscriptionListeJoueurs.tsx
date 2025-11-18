@@ -27,7 +27,7 @@ export interface Props {
   onDeleteJoueur: (id: number) => void;
   onAddEquipeJoueur: (id: number, equipeId: number) => void;
   onUpdateName: (joueurModel: JoueurModel, name: string) => void;
-  onCheckJoueur: (joueurId: number, isChecked: boolean) => void;
+  onCheckJoueur: (joueurModel: JoueurModel, isChecked: boolean) => void;
   setModalRemoveIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 

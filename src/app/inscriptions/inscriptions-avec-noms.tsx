@@ -25,7 +25,7 @@ const InscriptionsAvecNoms = () => {
   const router = useRouter();
 
   const { getActualPreparationTournoi } = usePreparationTournoi();
-  const { renameJoueur } = useJoueurs();
+  const { renameJoueur, checkJoueur } = useJoueurs();
   const {
     addJoueursPreparationTournoi,
     removeJoueursPreparationTournoi,
@@ -104,13 +104,18 @@ const InscriptionsAvecNoms = () => {
   );
 
   const handleCheckJoueur = useCallback(
-    async (id: number, isChecked: boolean) => {
-      //await checkJoueur(id, isChecked);
+    async (joueurModel: JoueurModel, isChecked: boolean) => {
+      await checkJoueur(joueurModel, isChecked);
+
       setlisteJoueurs((prev) =>
-        prev.map((u) => (u.id === id ? { ...u, isChecked: isChecked } : u)),
+        prev.map((joueur) =>
+          joueur.id === joueurModel.id
+            ? { ...joueur, isChecked: isChecked }
+            : joueur,
+        ),
       );
     },
-    [],
+    [checkJoueur],
   );
 
   const handleDeleteAllJoueurs = useCallback(async () => {

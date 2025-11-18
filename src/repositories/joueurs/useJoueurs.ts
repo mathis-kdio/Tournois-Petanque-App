@@ -22,7 +22,16 @@ export function useJoueurs() {
     [],
   );
 
+  const checkJoueur = useCallback(
+    async (joueurModel: JoueurModel, isChecked: boolean) => {
+      const joueur = await JoueursRepository.select(joueurModel.id);
+      await JoueursRepository.updateCheck(joueur.id, isChecked);
+    },
+    [],
+  );
+
   return {
     renameJoueur,
+    checkJoueur,
   };
 }

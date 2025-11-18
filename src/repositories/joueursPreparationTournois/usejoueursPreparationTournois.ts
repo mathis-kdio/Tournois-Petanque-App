@@ -16,7 +16,7 @@ function toJoueurModel(
     name: joueurs.name,
     type: joueurs.type ?? undefined,
     equipe: joueurs.equipe ?? undefined,
-    isChecked: false,
+    isChecked: joueurs.isChecked ?? false,
   };
 }
 

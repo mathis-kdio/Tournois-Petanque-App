@@ -61,7 +61,7 @@ export interface Props {
   onDeleteJoueur: (id: number) => void;
   onAddEquipeJoueur: (id: number, equipeId: number) => void;
   onUpdateName: (joueurModel: JoueurModel, name: string) => void;
-  onCheckJoueur: (joueurId: number, isChecked: boolean) => void;
+  onCheckJoueur: (joueurModel: JoueurModel, isChecked: boolean) => void;
 }
 
 const ListeJoueurItem: React.FC<Props> = ({
@@ -92,7 +92,7 @@ const ListeJoueurItem: React.FC<Props> = ({
     isInscription: boolean,
   ) => {
     if (!isInscription) {
-      return <></>;
+      return;
     }
     return (
       <Box className="ml-2">
@@ -193,7 +193,7 @@ const ListeJoueurItem: React.FC<Props> = ({
     isInscription: boolean,
     avecEquipes: boolean,
   ) => {
-    if (renommerOn === true) {
+    if (renommerOn) {
       return (
         <Input variant="underlined">
           <InputField
@@ -305,8 +305,10 @@ const ListeJoueurItem: React.FC<Props> = ({
   };
 
   const _joueurTypeIcon = (joueurType: JoueurType | undefined) => {
-    if (joueurType === undefined) return;
-    let showTireurPointeur =
+    if (joueurType === undefined) {
+      return;
+    }
+    const showTireurPointeur =
       modeTournoi === ModeTournoi.SAUVEGARDE ||
       (typeTournoi === TypeTournoi.MELEDEMELE &&
         (typeEquipes === TypeEquipes.DOUBLETTE ||
@@ -345,36 +347,37 @@ const ListeJoueurItem: React.FC<Props> = ({
   };
 
   const _joueurCheckbox = (showCheckbox: boolean, joueur: JoueurModel) => {
-    if (showCheckbox) {
-      let isChecked = true;
-      if (joueur.isChecked === undefined || !joueur.isChecked) {
-        isChecked = false;
-      }
-      return (
-        <Box className="mr-1 place-self-center">
-          <Checkbox
-            value="joueurCheckbox"
-            onChange={() => _onCheckboxChange(isChecked, joueur.id)}
-            aria-label={t('checkbox_inscription_joueuritem')}
-            size="md"
-            isChecked={isChecked}
-          >
-            <CheckboxIndicator className="mr-2 border-typography-white data-[checked=true]:bg-custom-background data-[checked=true]:border-typography-white">
-              <CheckboxIcon
-                as={CheckIcon}
-                className="text-typography-white bg-custom-background"
-              />
-            </CheckboxIndicator>
-            <CheckboxLabel />
-          </Checkbox>
-        </Box>
-      );
+    if (!showCheckbox) {
+      return;
     }
+    let isChecked = true;
+    if (joueur.isChecked === undefined || !joueur.isChecked) {
+      isChecked = false;
+    }
+    return (
+      <Box className="mr-1 place-self-center">
+        <Checkbox
+          value="joueurCheckbox"
+          onChange={() => _onCheckboxChange(isChecked, joueur)}
+          aria-label={t('checkbox_inscription_joueuritem')}
+          size="md"
+          isChecked={isChecked}
+        >
+          <CheckboxIndicator className="mr-2 border-typography-white data-[checked=true]:bg-custom-background data-[checked=true]:border-typography-white">
+            <CheckboxIcon
+              as={CheckIcon}
+              className="text-typography-white bg-custom-background"
+            />
+          </CheckboxIndicator>
+          <CheckboxLabel />
+        </Checkbox>
+      </Box>
+    );
   };
 
-  const _onCheckboxChange = (isChecked: boolean, joueurId: number) => {
+  const _onCheckboxChange = (isChecked: boolean, joueurModel: JoueurModel) => {
     if (!isChecked) {
-      _ajoutCheck(joueurId, true);
+      _ajoutCheck(joueurModel, true);
     } else {
       setModalConfirmUncheckIsOpen(true);
     }
@@ -416,7 +419,7 @@ const ListeJoueurItem: React.FC<Props> = ({
               </Button>
               <Button
                 action="negative"
-                onPress={() => _ajoutCheck(joueur.id, false)}
+                onPress={() => _ajoutCheck(joueur, false)}
               >
                 <ButtonText>{t('oui')}</ButtonText>
               </Button>
@@ -427,8 +430,8 @@ const ListeJoueurItem: React.FC<Props> = ({
     );
   };
 
-  const _ajoutCheck = (joueurId: number, isChecked: boolean) => {
-    onCheckJoueur(joueurId, isChecked);
+  const _ajoutCheck = (joueurModel: JoueurModel, isChecked: boolean) => {
+    onCheckJoueur(joueurModel, isChecked);
     setModalConfirmUncheckIsOpen(false);
   };
 

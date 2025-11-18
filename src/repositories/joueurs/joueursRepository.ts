@@ -38,10 +38,17 @@ export const JoueursRepository = {
     await getDrizzleDb().delete(joueurs).where(inArray(joueurs.id, joueurIds));
   },
 
-  async updateName(id: number, newName: string): Promise<void> {
+  async updateName(id: number, name: string): Promise<void> {
     await getDrizzleDb()
       .update(joueurs)
-      .set({ name: newName })
+      .set({ name })
+      .where(eq(joueurs.id, id));
+  },
+
+  async updateCheck(id: number, isChecked: boolean): Promise<void> {
+    await getDrizzleDb()
+      .update(joueurs)
+      .set({ isChecked })
       .where(eq(joueurs.id, id));
   },
 
