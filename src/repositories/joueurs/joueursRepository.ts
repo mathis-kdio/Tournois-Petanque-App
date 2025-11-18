@@ -1,7 +1,7 @@
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { Joueur, joueurs, NewJoueur } from '@/db/schema';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { inArray } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 
 export const JoueursRepository = {
   toNewJoueur(joueur: JoueurModel): NewJoueur {
@@ -36,5 +36,25 @@ export const JoueursRepository = {
 
   async delete(joueurIds: number[]): Promise<void> {
     await getDrizzleDb().delete(joueurs).where(inArray(joueurs.id, joueurIds));
+  },
+
+  async updateName(id: number, newName: string): Promise<void> {
+    await getDrizzleDb()
+      .update(joueurs)
+      .set({ name: newName })
+      .where(eq(joueurs.id, id));
+  },
+
+  async select(joueurId: number): Promise<Joueur> {
+    const result = (
+      await getDrizzleDb()
+        .select()
+        .from(joueurs)
+        .where(eq(joueurs.joueurId, joueurId))
+    ).at(0);
+    if (!result) {
+      throw new Error('Joueur not found');
+    }
+    return result;
   },
 };

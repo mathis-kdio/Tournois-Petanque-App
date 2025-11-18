@@ -26,7 +26,7 @@ export interface Props {
   ) => void;
   onDeleteJoueur: (id: number) => void;
   onAddEquipeJoueur: (id: number, equipeId: number) => void;
-  onUpdateName: (id: number, name: string) => void;
+  onUpdateName: (joueurModel: JoueurModel, name: string) => void;
   onCheckJoueur: (joueurId: number, isChecked: boolean) => void;
   onDeleteAllJoueurs: () => void;
 }

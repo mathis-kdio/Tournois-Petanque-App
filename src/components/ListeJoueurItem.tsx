@@ -60,7 +60,7 @@ export interface Props {
   listesJoueurs: JoueurModel[] | undefined;
   onDeleteJoueur: (id: number) => void;
   onAddEquipeJoueur: (id: number, equipeId: number) => void;
-  onUpdateName: (id: number, name: string) => void;
+  onUpdateName: (joueurModel: JoueurModel, name: string) => void;
   onCheckJoueur: (joueurId: number, isChecked: boolean) => void;
 }
 
@@ -162,15 +162,7 @@ const ListeJoueurItem: React.FC<Props> = ({
       return;
     }
     if (isInscription === true) {
-      /*let typeInscription = '';
-      if (modeTournoi === ModeTournoi.SAUVEGARDE) {
-        typeInscription = ModeTournoi.SAUVEGARDE;
-      } else if (avecEquipes === true) {
-        typeInscription = ModeTournoi.AVECEQUIPES;
-      } else {
-        typeInscription = ModeTournoi.AVECNOMS;
-      }*/
-      onUpdateName(joueur.id, joueurText);
+      onUpdateName(joueur, joueurText);
     } else {
       /*let data = { playerId: joueur.id, newName: joueurText };
       const inGameRenamePlayer = {
@@ -185,7 +177,7 @@ const ListeJoueurItem: React.FC<Props> = ({
         },
       };
       dispatch(actionUpdateTournoi);*/
-      onUpdateName(joueur.id, joueurText);
+      onUpdateName(joueur, joueurText);
     }
     setRenommerOn(false);
     setJoueurText('');

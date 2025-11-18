@@ -18,14 +18,17 @@ import { useCallback, useEffect, useState } from 'react';
 import Loading from '@/components/Loading';
 import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import { JoueurType } from '@/types/enums/joueurType';
+import { useJoueurs } from '@/repositories/joueurs/useJoueurs';
 
 const InscriptionsAvecNoms = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
   const { getActualPreparationTournoi } = usePreparationTournoi();
+  const { renameJoueur } = useJoueurs();
   const {
     addJoueursPreparationTournoi,
+    removeJoueursPreparationTournoi,
     removeAllJoueursPreparationTournoi,
     getAllJoueursPreparationTournoi,
   } = useJoueursPreparationTournois();
@@ -69,10 +72,13 @@ const InscriptionsAvecNoms = () => {
     [addJoueursPreparationTournoi, listeJoueurs, preparationTournoi],
   );
 
-  const handleDeleteJoueur = useCallback(async (id: number) => {
-    //await deleteTournoi(id);
-    setlisteJoueurs((prev) => prev.filter((u) => u.id !== id));
-  }, []);
+  const handleDeleteJoueur = useCallback(
+    async (id: number) => {
+      await removeJoueursPreparationTournoi(id);
+      setlisteJoueurs((prev) => prev.filter((u) => u.id !== id));
+    },
+    [removeJoueursPreparationTournoi],
+  );
 
   const handleAddEquipeJoueur = useCallback(
     async (id: number, equipeId: number) => {
@@ -84,12 +90,18 @@ const InscriptionsAvecNoms = () => {
     [],
   );
 
-  const handleUpdateName = useCallback(async (id: number, name: string) => {
-    //await renameJoueur(id, name);
-    setlisteJoueurs((prev) =>
-      prev.map((u) => (u.id === id ? { ...u, name: name } : u)),
-    );
-  }, []);
+  const handleUpdateName = useCallback(
+    async (joueurModel: JoueurModel, name: string) => {
+      await renameJoueur(joueurModel, name);
+
+      setlisteJoueurs((prev) =>
+        prev.map((joueur) =>
+          joueur.id === joueurModel.id ? { ...joueur, name: name } : joueur,
+        ),
+      );
+    },
+    [renameJoueur],
+  );
 
   const handleCheckJoueur = useCallback(
     async (id: number, isChecked: boolean) => {

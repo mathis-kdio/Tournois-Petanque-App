@@ -5,7 +5,7 @@ import {
   NewJoueursPreparationTournois,
 } from '@/db/schema/joueursPreparationTournois';
 import { Joueur, joueurs } from '@/db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 
 export type JoueursPreparationTournoisWithJoueur = {
   joueurs_prepration_tournois: JoueursPreparationTournois;
@@ -34,6 +34,12 @@ export const JoueursPreparationTournoisRepository = {
     await getDrizzleDb()
       .insert(joueursPreparationTournois)
       .values(newJoueursPreparationTournois);
+  },
+
+  async delete(joueurIds: number[]): Promise<void> {
+    await getDrizzleDb()
+      .delete(joueursPreparationTournois)
+      .where(inArray(joueursPreparationTournois.joueurId, joueurIds));
   },
 
   async deleteAll(): Promise<void> {

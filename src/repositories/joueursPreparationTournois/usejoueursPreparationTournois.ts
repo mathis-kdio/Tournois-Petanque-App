@@ -12,7 +12,7 @@ function toJoueurModel(
 ): JoueurModel {
   const { joueurs } = preparationTournoi;
   return {
-    id: joueurs.id,
+    id: joueurs.joueurId,
     name: joueurs.name,
     type: joueurs.type ?? undefined,
     equipe: joueurs.equipe ?? undefined,
@@ -57,6 +57,16 @@ export function useJoueursPreparationTournois() {
     [],
   );
 
+  const removeJoueursPreparationTournoi = useCallback(
+    async (joueurId: number) => {
+      const joueur = await JoueursRepository.select(joueurId);
+
+      await JoueursPreparationTournoisRepository.delete([joueur.id]);
+      await JoueursRepository.delete([joueur.id]);
+    },
+    [],
+  );
+
   const removeAllJoueursPreparationTournoi = useCallback(async () => {
     const joueursPreparationTournois =
       await JoueursPreparationTournoisRepository.getMany(0);
@@ -79,6 +89,7 @@ export function useJoueursPreparationTournois() {
   return {
     getActualJoueursPreparationTournoi,
     addJoueursPreparationTournoi,
+    removeJoueursPreparationTournoi,
     removeAllJoueursPreparationTournoi,
     getAllJoueursPreparationTournoi,
   };
