@@ -3,7 +3,7 @@ import { Text } from '@/components/ui/text';
 import { Button, ButtonText } from '@/components/ui/button';
 import { VStack } from '@/components/ui/vstack';
 import { Box } from '@/components/ui/box';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import JoueurSuggere from '@components/JoueurSuggere';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +11,7 @@ import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { ListRenderItem } from 'react-native';
 import { JoueurType } from '@/types/enums/joueurType';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import { useJoueurs } from '@/repositories/joueurs/useJoueurs';
 
 export interface Props {
   listeJoueurs: JoueurModel[];
@@ -25,37 +26,37 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
 
+  const { getAllJoueurs } = useJoueurs();
+
   const [suggestions, setSuggestions] = useState<JoueurModel[]>([]);
   const [nbSuggestions, setNbSuggestions] = useState(5);
 
-  const _getSuggestions = useCallback(() => {
-    /*let listeHistoriqueFiltre = listesJoueurs.historique.filter(
-      (item1: JoueurModel) =>
-        listesJoueurs[optionsTournoi.mode].every(
-          (item2: JoueurModel) => item2.name !== item1.name,
-        ),
-    );*/
-    // TODO
-    const listeHistoriqueFiltre: JoueurModel[] = [];
-    if (listeHistoriqueFiltre.length > 0) {
-      return listeHistoriqueFiltre.sort(function (a, b) {
-        return b.nbTournois - a.nbTournois;
-      });
-    }
-    return [];
-  }, []);
-
   useEffect(() => {
-    const suggestions = _getSuggestions();
-    setSuggestions(suggestions);
-  }, [_getSuggestions]);
+    const fetchSuggestions = async () => {
+      const joueurs = await getAllJoueurs();
 
-  useEffect(() => {
-    const newSuggestions = _getSuggestions();
-    if (newSuggestions.length !== suggestions.length) {
-      setSuggestions(newSuggestions);
-    }
-  }, [_getSuggestions, suggestions]);
+      const uniquesFiltres = Array.from(
+        new Map(joueurs.map((i) => [i.name, i])).values(),
+      ).filter((unique) =>
+        listeJoueurs.every((joueur) => joueur.name !== unique.name),
+      );
+
+      const occurrences = uniquesFiltres.reduce<Record<string, number>>(
+        (acc, item) => {
+          acc[item.name] = (acc[item.name] || 0) + 1;
+          return acc;
+        },
+        {},
+      );
+
+      const resultat = uniquesFiltres.sort(
+        (a, b) => occurrences[b.name] - occurrences[a.name],
+      );
+
+      setSuggestions(resultat);
+    };
+    fetchSuggestions();
+  }, [getAllJoueurs, listeJoueurs]);
 
   const ajoutJoueur = (
     joueurName: string,
@@ -65,35 +66,26 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
   };
 
   const _buttonMoreSuggestedPlayers = () => {
-    if (nbSuggestions < suggestions.length) {
-      return (
-        <Button action="primary" onPress={() => _showMoreSuggestedPlayers()}>
-          <FontAwesome5
-            name="chevron-down"
-            className="text-custom-text-button"
-          />
-          <ButtonText>{t('plus_suggestions_joueurs_bouton')}</ButtonText>
-          <FontAwesome5
-            name="chevron-down"
-            className="text-custom-text-button"
-          />
-        </Button>
-      );
+    if (nbSuggestions >= suggestions.length) {
+      return;
     }
+    return (
+      <Button action="primary" onPress={() => _showMoreSuggestedPlayers()}>
+        <FontAwesome5 name="chevron-down" className="text-custom-text-button" />
+        <ButtonText>{t('plus_suggestions_joueurs_bouton')}</ButtonText>
+        <FontAwesome5 name="chevron-down" className="text-custom-text-button" />
+      </Button>
+    );
   };
 
   const _showMoreSuggestedPlayers = () => {
     setNbSuggestions((prevState) => prevState + 5);
   };
 
-  const { typeTournoi } = preparationTournoi;
-  if (!typeTournoi) {
-    throw Error('preparationTournoi manquantes');
-  }
-
   if (suggestions.length === 0) {
     return;
   }
+
   const partialSuggested = suggestions.slice(0, nbSuggestions);
   const renderItem: ListRenderItem<JoueurModel> = ({ item }) => (
     <JoueurSuggere
@@ -105,6 +97,7 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
       }}
     />
   );
+
   return (
     <VStack>
       <Text className="text-typography-white text-xl text-center">
@@ -114,7 +107,7 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
         removeClippedSubviews={false}
         persistentScrollbar={true}
         data={partialSuggested}
-        keyExtractor={(item: JoueurModel) => item.id.toString()}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
       />
       <Box className="px-10 pb-2">{_buttonMoreSuggestedPlayers()}</Box>

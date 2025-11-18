@@ -129,7 +129,7 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
             {_buttonLoadSavedList()}
           </VStack>
           <InscriptionListeJoueursSuggestions
-            listeJoueurs={[]}
+            listeJoueurs={listeJoueurs}
             preparationTournoi={preparationTournoi}
             onAddJoueur={onAddJoueur}
           />

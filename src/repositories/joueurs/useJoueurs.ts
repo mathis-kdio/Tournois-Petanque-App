@@ -14,6 +14,11 @@ function toJoueurModel(joueur: Joueur): JoueurModel {
 }
 
 export function useJoueurs() {
+  const getAllJoueurs = useCallback(async () => {
+    const joueurs = await JoueursRepository.selectAll();
+    return joueurs.map(toJoueurModel);
+  }, []);
+
   const renameJoueur = useCallback(
     async (joueurModel: JoueurModel, newName: string) => {
       const joueur = await JoueursRepository.select(joueurModel.id);
@@ -31,6 +36,7 @@ export function useJoueurs() {
   );
 
   return {
+    getAllJoueurs,
     renameJoueur,
     checkJoueur,
   };

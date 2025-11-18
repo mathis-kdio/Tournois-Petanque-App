@@ -52,6 +52,10 @@ export const JoueursRepository = {
       .where(eq(joueurs.id, id));
   },
 
+  async selectAll(): Promise<Joueur[]> {
+    return await getDrizzleDb().select().from(joueurs);
+  },
+
   async select(joueurId: number): Promise<Joueur> {
     const result = (
       await getDrizzleDb()
