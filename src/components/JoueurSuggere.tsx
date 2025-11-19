@@ -24,7 +24,7 @@ import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiMo
 export interface Props {
   joueur: JoueurModel;
   optionsTournoi: PreparationTournoiModel;
-  ajoutJoueur: (
+  onAddJoueur: (
     joueurName: string,
     joueurType: JoueurTypeEnum | undefined,
   ) => void;
@@ -34,7 +34,7 @@ export interface Props {
 const JoueurSuggere: React.FC<Props> = ({
   joueur,
   optionsTournoi,
-  ajoutJoueur,
+  onAddJoueur,
   supprimerJoueurSuggerre,
 }) => {
   const { t } = useTranslation();
@@ -89,17 +89,13 @@ const JoueurSuggere: React.FC<Props> = ({
   };
 
   const _removePlayer = (playerId: number) => {
-    /*const actionSuppr = {
-      type: 'SUPPR_JOUEUR',
-      value: [ModeTournoi.HISTORIQUE, playerId],
-    };
-    dispatch(actionSuppr);*/
-    supprimerJoueurSuggerre(playerId);
+    //TODO Créer une table pour enrigistrer occurence des joueurs suggérés. La table doit être alimenté à chaque ajout de joueur
+    //supprimerJoueurSuggerre(playerId);
     setModalRemoveIsOpen(false);
   };
 
-  const _addPlayer = (playerName: string) => {
-    ajoutJoueur(playerName, joueurType);
+  const addJoueur = (joueurModel: JoueurModel) => {
+    onAddJoueur(joueurModel.name, joueurType);
   };
 
   return (
@@ -129,7 +125,7 @@ const JoueurSuggere: React.FC<Props> = ({
           name="plus"
           backgroundColor="#348352"
           iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
-          onPress={() => _addPlayer(joueur.name)}
+          onPress={() => addJoueur(joueur)}
         />
       </Box>
       {_modalRemovePlayer(joueur.id)}

@@ -58,13 +58,6 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
     fetchSuggestions();
   }, [getAllJoueurs, listeJoueurs]);
 
-  const ajoutJoueur = (
-    joueurName: string,
-    joueurType: JoueurType | undefined,
-  ) => {
-    onAddJoueur(joueurName, joueurType);
-  };
-
   const _buttonMoreSuggestedPlayers = () => {
     if (nbSuggestions >= suggestions.length) {
       return;
@@ -91,7 +84,7 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
     <JoueurSuggere
       joueur={item}
       optionsTournoi={preparationTournoi}
-      ajoutJoueur={ajoutJoueur}
+      onAddJoueur={onAddJoueur}
       supprimerJoueurSuggerre={function (joueurId: number): void {
         throw new Error('Function not implemented.');
       }}
