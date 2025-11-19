@@ -6,25 +6,29 @@ import { Button, ButtonText } from '@/components/ui/button';
 import { Input, InputField } from '@/components/ui/input';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import AdMobMatchDetailBanner from '@components/adMob/AdMobMatchDetailBanner';
 import { nextMatch } from '@utils/generations/nextMatch/nextMatch';
 import { Platform } from 'react-native';
-import { Joueur } from '@/types/interfaces/joueur';
-import { Match } from '@/types/interfaces/match';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { MatchModel } from '@/types/interfaces/matchModel';
 import { requestReview } from '@/utils/storeReview/StoreReview';
-import { useDispatch, useSelector } from 'react-redux';
-import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
+import { useDispatch } from 'react-redux';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import Loading from '@/components/Loading';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
+import { useMatchs } from '@/repositories/matchs/useMatchs';
+import { useTournois } from '@/repositories/tournois/useTournois';
+import { TournoiModel } from '@/types/interfaces/tournoi';
 
 type SearchParams = {
   idMatch?: string;
 };
+
+type EquipeId = 1 | 2;
 
 const MatchDetail = () => {
   const { t } = useTranslation();
@@ -32,128 +36,108 @@ const MatchDetail = () => {
   const param = useLocalSearchParams<SearchParams>();
   const dispatch = useDispatch();
 
-  const tournoi = useSelector((state: any) => state.gestionMatchs.listematchs);
+  const { getMatch, updateScore, resetScore } = useMatchs();
+  const { getActualTournoi } = useTournois();
 
+  const [match, setMatch] = useState<MatchModel | undefined>(undefined);
+  const [tournoi, setTournoi] = useState<TournoiModel | undefined>(undefined);
   const [score1, setScore1] = useState<string | undefined>(undefined);
   const [score2, setScore2] = useState<string | undefined>(undefined);
 
   const secondInput = React.createRef<any>();
 
-  const optionsTournoi = tournoi.slice(-1)[0] as OptionsTournoi;
+  let idMatchParams = parseInt(param.idMatch ?? '');
 
-  let idMatch = parseInt(param.idMatch ?? '');
-  if (isNaN(idMatch)) {
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getMatch(idMatchParams);
+      setMatch(result);
+      const resultTournoi = await getActualTournoi();
+      setTournoi(resultTournoi);
+    };
+    fetchData();
+  }, [getActualTournoi, getMatch, idMatchParams]);
+
+  if (isNaN(idMatchParams)) {
     return <Loading />;
   }
-  const match = tournoi.find((match: Match) => match.id === idMatch) as Match;
-  if (!match) {
+
+  if (!match || !tournoi) {
     return <Loading />;
   }
 
-  const _ajoutScoreTextInputChanged = (score: string, equipe: number) => {
-    if (equipe === 1) {
-      setScore1(score);
-    } else if (equipe === 2) {
-      setScore2(score);
-    }
-  };
+  const _ajoutScoreTextInputChanged = (score: string, equipe: EquipeId) =>
+    equipe === 1 ? setScore1(score) : setScore2(score);
 
-  const _displayTitle = (match: Match) => {
-    let title = match.terrain
-      ? match.terrain.name
-      : t('match_numero') + (match.id + 1);
+  const _displayTitle = (match: MatchModel) => {
+    const { id, terrain } = match;
+    const title = terrain ? terrain.name : `${t('match_numero')}${id + 1}`;
     return (
       <Text className="text-typography-white text-xl text-center">{title}</Text>
     );
   };
 
-  const _displayName = (joueurNumber: number, equipe: number) => {
-    let listeJoueurs = optionsTournoi.listeJoueurs;
-    let joueur = listeJoueurs.find((item: Joueur) => item.id === joueurNumber);
-    if (joueur) {
-      if (equipe === 1) {
-        return (
-          <Text
-            key={joueur.id}
-            className="text-typography-white text-md text-left"
-          >
-            {joueur.id + 1 + ' ' + joueur.name}
-          </Text>
-        );
-      } else {
-        return (
-          <Text
-            key={joueur.id}
-            className="text-typography-white text-md text-right"
-          >
-            {joueur.name + ' ' + (joueur.id + 1)}
-          </Text>
-        );
-      }
+  const _displayName = (
+    joueur: JoueurModel | undefined,
+    equipeId: EquipeId,
+  ) => {
+    if (!joueur) {
+      return;
+    }
+    if (equipeId === 1) {
+      return (
+        <Text
+          key={joueur.id}
+          className="text-typography-white text-md text-left"
+        >
+          {`${joueur.id + 1} ${joueur.name}`}
+        </Text>
+      );
+    } else {
+      return (
+        <Text
+          key={joueur.id}
+          className="text-typography-white text-md text-right"
+        >
+          {`${joueur.name} ${joueur.id + 1}`}
+        </Text>
+      );
     }
   };
 
-  const _displayEquipe = (equipe: number, match: Match) => {
+  const _displayEquipe = (equipeId: EquipeId, match: MatchModel) => {
     let nomsJoueurs = [];
+    const equipe = match.equipe[equipeId - 1];
     for (let i = 0; i < 4; i++) {
-      nomsJoueurs.push(_displayName(match.equipe[equipe - 1][i], equipe));
+      nomsJoueurs.push(_displayName(equipe[i], equipeId));
     }
     return nomsJoueurs;
   };
 
-  const _envoyerResultat = async (match: Match) => {
+  const _envoyerResultat = async (match: MatchModel) => {
+    const { nbMatchs, typeTournoi, nbTours } = tournoi.options;
     await requestReview();
 
-    if (score1 && score2) {
-      let info = {
-        idMatch: idMatch,
-        score1: parseInt(score1),
-        score2: parseInt(score2),
-      };
-      const actionAjoutScore = { type: 'AJOUT_SCORE', value: info };
-      dispatch(actionAjoutScore);
-      //Si tournoi type coupe et pas le dernier match, alors on ajoute les gagnants au match suivant
-      let nbMatchs = optionsTournoi.nbMatchs;
-      let typeTournoi = optionsTournoi.typeTournoi;
-      let nbTours = optionsTournoi.nbTours;
-      let actionNextMatch = nextMatch(match, nbMatchs, typeTournoi, nbTours);
-      if (actionNextMatch !== undefined) {
-        dispatch(actionNextMatch);
-      }
-      const actionUpdateTournoi = {
-        type: 'UPDATE_TOURNOI',
-        value: {
-          tournoi: tournoi,
-          tournoiId: optionsTournoi.tournoiID,
-        },
-      };
-      dispatch(actionUpdateTournoi);
-
-      router.back();
+    if (!score1 || !score2) {
+      return;
     }
-  };
+    updateScore(match.id, parseInt(score1), parseInt(score2));
+    //Si tournoi type coupe et pas le dernier match, alors on ajoute les gagnants au match suivant
+    let actionNextMatch = nextMatch(match, nbMatchs, typeTournoi, nbTours);
+    if (actionNextMatch !== undefined) {
+      dispatch(actionNextMatch);
+    }
 
-  const _supprimerResultat = () => {
-    let info = {
-      idMatch: idMatch,
-      score1: undefined,
-      score2: undefined,
-    };
-    const actionAjoutScore = { type: 'AJOUT_SCORE', value: info };
-    dispatch(actionAjoutScore);
-    const actionUpdateTournoi = {
-      type: 'UPDATE_TOURNOI',
-      value: {
-        tournoi: tournoi,
-        tournoiId: tournoi.at(-1).tournoiID,
-      },
-    };
-    dispatch(actionUpdateTournoi);
     router.back();
   };
 
-  const _boutonValider = (match: Match) => {
-    const { nbPtVictoire, typeTournoi } = optionsTournoi;
+  const _supprimerResultat = (match: MatchModel) => {
+    resetScore(match.id);
+    router.back();
+  };
+
+  const _boutonValider = (match: MatchModel) => {
+    const { nbPtVictoire, typeTournoi } = tournoi.options;
 
     let btnDisabled: boolean;
     let action: 'warning' | 'positive' | 'negative';
@@ -206,6 +190,7 @@ const MatchDetail = () => {
     );
   };
 
+  const { nbPtVictoire } = tournoi.options;
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'height' : 'height'}
@@ -236,7 +221,7 @@ const MatchDetail = () => {
                       <InputField
                         className="text-typography-white placeholder:text-typography-white"
                         placeholder={t('score_placeholder', {
-                          scoreVictoire: optionsTournoi.nbPtVictoire,
+                          scoreVictoire: nbPtVictoire,
                         })}
                         autoFocus={true}
                         defaultValue={
@@ -262,7 +247,7 @@ const MatchDetail = () => {
                       <InputField
                         className="text-typography-white placeholder:text-typography-white"
                         placeholder={t('score_placeholder', {
-                          scoreVictoire: optionsTournoi.nbPtVictoire,
+                          scoreVictoire: nbPtVictoire,
                         })}
                         defaultValue={
                           match.score2 !== undefined
@@ -281,7 +266,10 @@ const MatchDetail = () => {
                 </HStack>
               </VStack>
               <VStack space="lg" className="my-5">
-                <Button action="negative" onPress={() => _supprimerResultat()}>
+                <Button
+                  action="negative"
+                  onPress={() => _supprimerResultat(match)}
+                >
                   <ButtonText>{t('supprimer_score')}</ButtonText>
                 </Button>
                 {_boutonValider(match)}

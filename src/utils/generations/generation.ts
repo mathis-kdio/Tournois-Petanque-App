@@ -2,7 +2,7 @@ import { Complement } from '@/types/enums/complement';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 
 const rand0ToMax = (max: number) => {
   return Math.floor(Math.random() * (max + 1));
@@ -97,9 +97,9 @@ export const shuffle = <T>(array: T[]): T[] => {
 };
 
 export const attributionEquipes = (
-  listesJoueurs: Joueur[],
+  listesJoueurs: JoueurModel[],
   typeEquipes: TypeEquipes,
-): Joueur[] => {
+): JoueurModel[] => {
   let joueursParEquipe: number;
   if (typeEquipes === TypeEquipes.TETEATETE) {
     joueursParEquipe = 1;

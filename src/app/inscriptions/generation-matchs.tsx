@@ -17,7 +17,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Platform } from 'react-native';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { Match } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/matchModel';
 import TopBar from '@/components/topBar/TopBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
@@ -34,7 +34,9 @@ import {
 } from '@/components/adMob/AdMobGenerationTournoiInterstitiel';
 import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 
 type SearchParams = {
   screenStackName?: string;
@@ -47,9 +49,12 @@ const GenerationMatchs = () => {
   const param = useLocalSearchParams<SearchParams>();
   const dispatch = useDispatch();
 
-  const optionsTournoi = useSelector(
-    (state: any) => state.optionsTournoi.options,
-  );
+  const { getActualPreparationTournoi } = usePreparationTournoi();
+
+  const [preparationTournoiModel, setPreparationTournoiModel] = useState<
+    PreparationTournoiModel | undefined
+  >(undefined);
+
   const listesJoueurs = useSelector(
     (state: any) => state.listesJoueurs.listesJoueurs,
   );
@@ -65,7 +70,15 @@ const GenerationMatchs = () => {
   const [adLoaded, setAdLoaded] = useState(false);
   const [adClosed, setAdClosed] = useState(false);
 
-  const _ajoutMatchs = (matchs) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      const resultpreparationTournoi = await getActualPreparationTournoi();
+      setPreparationTournoiModel(resultpreparationTournoi);
+    };
+    fetchData();
+  }, [getActualPreparationTournoi]);
+
+  const _ajoutMatchs = (matchs: MatchModel[]) => {
     const actionAjoutMatchs = { type: 'AJOUT_MATCHS', value: matchs };
     dispatch(actionAjoutMatchs);
     const actionAjoutTournoi = {
@@ -114,7 +127,8 @@ const GenerationMatchs = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      _lanceurGeneration();
+      if (!preparationTournoiModel) return;
+      _lanceurGeneration(preparationTournoiModel);
     }, 1000);
 
     return () => {
@@ -122,8 +136,10 @@ const GenerationMatchs = () => {
     };
   }, []);
 
-  const _lanceurGeneration = () => {
-    let typeInscription = optionsTournoi.mode;
+  const _lanceurGeneration = (
+    preparationTournoiModel: PreparationTournoiModel,
+  ) => {
+    let typeInscription = preparationTournoiModel.mode;
     let listeJoueurs = listesJoueurs[typeInscription];
     let nbjoueurs = listeJoueurs.length;
     let nbGenerationsRatee = 0;
@@ -135,7 +151,7 @@ const GenerationMatchs = () => {
     // 2 si génération réussie
     //Tant que la génération échoue à cause du breaker alors on relancer
     while (nbGenerationsRatee < nbEssaisPossibles) {
-      returnType = _generation();
+      returnType = _generation(preparationTournoiModel);
       if (returnType === 0 || returnType === 2) {
         break;
       } else {
@@ -149,22 +165,41 @@ const GenerationMatchs = () => {
     }
   };
 
-  const _generation = () => {
+  const _generation = (preparationTournoiModel: PreparationTournoiModel) => {
     //Récupération des options que l'utilisateur a modifié ou laissé par défaut
-    let nbTours = optionsTournoi.nbTours;
-    let avecTerrains = optionsTournoi.avecTerrains;
-    let nbPtVictoire = optionsTournoi.nbPtVictoire;
-    let speciauxIncompatibles = optionsTournoi.speciauxIncompatibles;
-    let jamaisMemeCoequipier = optionsTournoi.memesEquipes;
-    let eviterMemeAdversaire = optionsTournoi.memesAdversaires;
-    let typeEquipes = optionsTournoi.typeEquipes;
-    let complement = optionsTournoi.complement;
-    let typeTournoi = optionsTournoi.typeTournoi;
-    let typeInscription = optionsTournoi.mode;
-    let mode = optionsTournoi.mode;
-    let modeCreationEquipes = optionsTournoi.modeCreationEquipes;
+    const {
+      avecTerrains,
+      complement,
+      memesAdversaires,
+      memesEquipes,
+      mode,
+      modeCreationEquipes,
+      nbPtVictoire,
+      speciauxIncompatibles,
+      typeEquipes,
+      typeTournoi,
+    } = preparationTournoiModel;
+    if (
+      !avecTerrains ||
+      !complement ||
+      !memesAdversaires ||
+      !memesEquipes ||
+      !mode ||
+      !modeCreationEquipes ||
+      !nbPtVictoire ||
+      !speciauxIncompatibles ||
+      !typeEquipes ||
+      !typeTournoi
+    ) {
+      throw Error;
+    }
 
-    let listeJoueursInscrits: Joueur[];
+    let nbTours = preparationTournoiModel.nbTours;
+    let jamaisMemeCoequipier = memesEquipes;
+    let eviterMemeAdversaire = memesAdversaires;
+    let typeInscription = mode;
+
+    let listeJoueursInscrits: JoueurModel[];
     if (
       mode === ModeTournoi.AVECEQUIPES &&
       modeCreationEquipes === ModeCreationEquipes.ALEATOIRE
@@ -231,12 +266,12 @@ const GenerationMatchs = () => {
       ));
     } else if (typeTournoi === TypeTournoi.COUPE) {
       ({ matchs, nbTours, nbMatchs } = generationCoupe(
-        optionsTournoi,
+        preparationTournoiModel,
         listeJoueursInscrits,
       ));
     } else if (typeTournoi === TypeTournoi.CHAMPIONNAT) {
       ({ matchs, nbTours, nbMatchs } = generationChampionnat(
-        optionsTournoi,
+        preparationTournoiModel,
         listeJoueursInscrits,
       ));
     } else if (typeTournoi === TypeTournoi.MULTICHANCES) {
@@ -266,7 +301,7 @@ const GenerationMatchs = () => {
       let manche = matchs[0].manche;
       let arrRandIdsTerrains = uniqueValueArrayRandOrder(listeTerrains.length);
       let i = 0;
-      matchs.forEach((match: Match) => {
+      matchs.forEach((match: MatchModel) => {
         if (match.manche !== manche) {
           manche = match.manche;
           arrRandIdsTerrains = uniqueValueArrayRandOrder(listeTerrains.length);

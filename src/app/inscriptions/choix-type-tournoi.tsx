@@ -22,13 +22,15 @@ import CardButton from '@components/buttons/CardButton';
 import { useTranslation } from 'react-i18next';
 import AdMobInscriptionsBanner from '@/components/adMob/AdMobInscriptionsBanner';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { useDispatch } from 'react-redux';
 import { useRouter } from 'expo-router';
+import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 
 const ChoixTypeTournoi = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const dispatch = useDispatch();
+
+  const { updatePreparationTournoi } = usePreparationTournoi();
 
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState<TypeTournoi | undefined>();
@@ -110,11 +112,11 @@ const ChoixTypeTournoi = () => {
   };
 
   const _navigate = (typeTournoi: TypeTournoi) => {
-    const updateOptionTypeTournoi = {
-      type: 'UPDATE_OPTION_TOURNOI',
-      value: ['typeTournoi', typeTournoi],
+    const preparationTournoi: PreparationTournoiModel = {
+      id: 0,
+      typeTournoi: typeTournoi,
     };
-    dispatch(updateOptionTypeTournoi);
+    updatePreparationTournoi(preparationTournoi);
     return router.navigate('inscriptions/choix-mode-tournoi');
   };
 

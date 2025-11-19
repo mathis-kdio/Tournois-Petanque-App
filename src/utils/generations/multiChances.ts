@@ -1,9 +1,9 @@
 import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { shuffle } from './generation';
 
 export const generationMultiChances = (
-  listeJoueurs: Joueur[],
+  listeJoueurs: JoueurModel[],
   typeEquipes: TypeEquipes,
 ) => {
   let nbjoueurs = listeJoueurs.length;

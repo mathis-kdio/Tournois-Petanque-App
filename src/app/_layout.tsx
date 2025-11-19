@@ -14,7 +14,7 @@ import '@expo/metro-runtime'; //Fast-refresh web
 import { AuthProvider } from '@/components/supabase/SessionProvider';
 import { Stack, useNavigationContainerRef } from 'expo-router';
 import { isRunningInExpoGo } from 'expo';
-import React from 'react';
+import { ReactNode, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SELECTED_LANGUAGE_KEY } from '@/utils/async-storage/key';
 import {
@@ -26,6 +26,7 @@ import { setBackgroundColorAsync } from 'expo-navigation-bar';
 import { Platform } from 'react-native';
 import { cssInterop } from 'nativewind';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { DatabaseInitializer } from '@/db/DatabaseInitializer';
 
 cssInterop(FontAwesome5, { className: 'style' });
 cssInterop(MaterialCommunityIcons, { className: 'style' });
@@ -47,7 +48,7 @@ Sentry.init({
   enableLogs: true,
 });
 
-const GluestackWrapper = ({ children }: { children: React.ReactNode }) => {
+const GluestackWrapper = ({ children }: { children: ReactNode }) => {
   const { theme } = useTheme();
   const { globalTheme, style } = getTheme(theme);
   return (
@@ -70,13 +71,13 @@ export default function RootLayout() {
   let persistor = persistStore(Store);
 
   const ref = useNavigationContainerRef();
-  React.useEffect(() => {
+  useEffect(() => {
     if (ref) {
       navigationIntegration.registerNavigationContainer(ref);
     }
   }, [ref]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchLanguage = async () => {
       const selectedLanguage = await AsyncStorage.getItem(
         SELECTED_LANGUAGE_KEY,
@@ -91,16 +92,18 @@ export default function RootLayout() {
   return (
     <Provider store={Store}>
       <PersistGate persistor={persistor}>
-        <AuthProvider>
-          <ThemeProvider>
-            <GluestackWrapper>
-              <I18nextProvider i18n={i18n} defaultNS={'common'}>
-                <Stack screenOptions={{ headerShown: false }} />
-                <StatusBarWrapper />
-              </I18nextProvider>
-            </GluestackWrapper>
-          </ThemeProvider>
-        </AuthProvider>
+        <DatabaseInitializer>
+          <AuthProvider>
+            <ThemeProvider>
+              <GluestackWrapper>
+                <I18nextProvider i18n={i18n} defaultNS={'common'}>
+                  <Stack screenOptions={{ headerShown: false }} />
+                  <StatusBarWrapper />
+                </I18nextProvider>
+              </GluestackWrapper>
+            </ThemeProvider>
+          </AuthProvider>
+        </DatabaseInitializer>
       </PersistGate>
     </Provider>
   );

@@ -8,28 +8,165 @@ import TopBarBack from '@/components/topBar/TopBarBack';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 import { useRouter } from 'expo-router';
 import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
+import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import { useCallback, useEffect, useState } from 'react';
+import Loading from '@/components/Loading';
+import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
+import { JoueurType } from '@/types/enums/joueurType';
+import { useJoueurs } from '@/repositories/joueurs/useJoueurs';
 
 const InscriptionsAvecNoms = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const optionsTournoi = useSelector(
-    (state: any) => state.optionsTournoi.options,
-  );
-  const listesJoueurs = useSelector(
-    (state: any) => state.listesJoueurs.listesJoueurs,
+  const { getActualPreparationTournoi } = usePreparationTournoi();
+  const { renameJoueur, checkJoueur } = useJoueurs();
+  const {
+    addJoueursPreparationTournoi,
+    removeJoueursPreparationTournoi,
+    removeAllJoueursPreparationTournoi,
+    getAllJoueursPreparationTournoi,
+  } = useJoueursPreparationTournois();
+
+  const [preparationTournoi, setPreparationTournoi] = useState<
+    PreparationTournoiModel | undefined
+  >(undefined);
+  const [listeJoueurs, setlisteJoueurs] = useState<JoueurModel[]>([]);
+
+  const [loading, setloading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const resultpreparationTournoi = await getActualPreparationTournoi();
+      setPreparationTournoi(resultpreparationTournoi);
+      const joueurs = await getAllJoueursPreparationTournoi();
+      console.log(joueurs);
+      setlisteJoueurs(joueurs);
+      setloading(false);
+    };
+    fetchData();
+  }, [getActualPreparationTournoi, getAllJoueursPreparationTournoi]);
+
+  const handleAddJoueur = useCallback(
+    async (joueurName: string, joueurType: JoueurType | undefined) => {
+      if (!preparationTournoi) return;
+      const { typeEquipes } = preparationTournoi;
+      if (!typeEquipes) return;
+      const equipe = equipeAuto(listeJoueurs, typeEquipes);
+      const joueur: JoueurModel = {
+        id: listeJoueurs.length,
+        name: joueurName,
+        type: joueurType,
+        equipe: equipe,
+        isChecked: false,
+      };
+
+      const newjoueur = await addJoueursPreparationTournoi(joueur);
+      setlisteJoueurs((prev) => [...prev, newjoueur]);
+    },
+    [addJoueursPreparationTournoi, listeJoueurs, preparationTournoi],
   );
 
-  const _commencer = (choixComplement: boolean) => {
+  const handleDeleteJoueur = useCallback(
+    async (id: number) => {
+      await removeJoueursPreparationTournoi(id);
+      setlisteJoueurs((prev) => prev.filter((u) => u.id !== id));
+    },
+    [removeJoueursPreparationTournoi],
+  );
+
+  const handleAddEquipeJoueur = useCallback(
+    async (id: number, equipeId: number) => {
+      //await deleteTournoi(id);
+      setlisteJoueurs((prev) =>
+        prev.map((u) => (u.id === id ? { ...u, equipe: equipeId } : u)),
+      );
+    },
+    [],
+  );
+
+  const handleUpdateName = useCallback(
+    async (joueurModel: JoueurModel, name: string) => {
+      await renameJoueur(joueurModel, name);
+
+      setlisteJoueurs((prev) =>
+        prev.map((joueur) =>
+          joueur.id === joueurModel.id ? { ...joueur, name: name } : joueur,
+        ),
+      );
+    },
+    [renameJoueur],
+  );
+
+  const handleCheckJoueur = useCallback(
+    async (joueurModel: JoueurModel, isChecked: boolean) => {
+      await checkJoueur(joueurModel, isChecked);
+
+      setlisteJoueurs((prev) =>
+        prev.map((joueur) =>
+          joueur.id === joueurModel.id
+            ? { ...joueur, isChecked: isChecked }
+            : joueur,
+        ),
+      );
+    },
+    [checkJoueur],
+  );
+
+  const handleDeleteAllJoueurs = useCallback(async () => {
+    await removeAllJoueursPreparationTournoi();
+    setlisteJoueurs([]);
+  }, [removeAllJoueursPreparationTournoi]);
+
+  const equipeAuto = (
+    listeJoueurs: JoueurModel[],
+    typeEquipes: TypeEquipes,
+  ) => {
+    if (typeEquipes === TypeEquipes.TETEATETE) {
+      return listeJoueurs.length + 1;
+    } else {
+      const nbJoueursParEquipe = typeEquipes === TypeEquipes.DOUBLETTE ? 2 : 3;
+
+      // Compter le nombre de joueurs par équipe
+      const joueursParEquipe: { [key: number]: number } = {};
+      listeJoueurs.forEach((joueur) => {
+        if (joueur.equipe) {
+          joueursParEquipe[joueur.equipe] =
+            (joueursParEquipe[joueur.equipe] || 0) + 1;
+        }
+      });
+
+      // Trouver l'équipe avec l'id le plus proche de 0 qui n'a pas dépassé nbJoueursParEquipe
+      let equipeTrouvee = 1;
+      for (let i = 1; ; i++) {
+        const nbJoueursDansEquipe = joueursParEquipe[i] || 0;
+        if (nbJoueursDansEquipe < nbJoueursParEquipe) {
+          equipeTrouvee = i;
+          break;
+        }
+      }
+      return equipeTrouvee;
+    }
+  };
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (!preparationTournoi) {
+    throw Error;
+  }
+
+  const _commencer = (choixComplement: boolean, avecTerrains: boolean) => {
     let screenName = 'generation-matchs';
     if (choixComplement) {
       screenName = 'choix-complement';
-    } else if (optionsTournoi.avecTerrains) {
+    } else if (avecTerrains) {
       screenName = 'liste-terrains';
     }
     router.navigate({
@@ -40,13 +177,27 @@ const InscriptionsAvecNoms = () => {
     });
   };
 
-  const _boutonCommencer = () => {
+  const _boutonCommencer = (
+    listeJoueurs: JoueurModel[],
+    preparationTournoi: PreparationTournoiModel,
+  ) => {
     let btnDisabled = false;
     let title = t('commencer_tournoi');
-    const { mode, typeTournoi, typeEquipes, modeCreationEquipes } =
-      optionsTournoi;
-    const { avecNoms, avecEquipes } = listesJoueurs;
-    const nbJoueurs = listesJoueurs[mode].length;
+    const {
+      mode,
+      typeTournoi,
+      typeEquipes,
+      modeCreationEquipes,
+      avecTerrains,
+    } = preparationTournoi;
+    if (!mode || !typeTournoi || !typeEquipes || avecTerrains === undefined) {
+      throw Error('options tournoi manqutes');
+    }
+    if (mode === ModeTournoi.AVECEQUIPES && !modeCreationEquipes) {
+      throw Error('modeCreationEquipes manquant');
+    }
+
+    const nbJoueurs = listeJoueurs.length;
     let nbEquipes = 0;
     let choixComplement = false;
 
@@ -73,21 +224,21 @@ const InscriptionsAvecNoms = () => {
     } else if (mode === ModeTournoi.AVECEQUIPES) {
       if (
         modeCreationEquipes === ModeCreationEquipes.MANUELLE &&
-        avecEquipes.find(
-          (el: Joueur) =>
+        listeJoueurs.find(
+          (el: JoueurModel) =>
             el.equipe === undefined || el.equipe === 0 || el.equipe > nbEquipes,
         ) !== undefined
       ) {
         title = t('joueurs_sans_equipe');
         btnDisabled = true;
       } else if (typeEquipes === TypeEquipes.TETEATETE) {
-        if (avecEquipes.length % 2 !== 0 || avecEquipes.length < 2) {
+        if (nbJoueurs % 2 !== 0 || nbJoueurs < 2) {
           title = t('nombre_equipe_multiple_2');
           btnDisabled = true;
         } else if (modeCreationEquipes === ModeCreationEquipes.MANUELLE) {
           for (let i = 0; i < nbEquipes; i++) {
-            let count = avecEquipes.reduce(
-              (counter: number, obj: Joueur) =>
+            let count = listeJoueurs.reduce(
+              (counter: number, obj: JoueurModel) =>
                 obj.equipe === i ? (counter += 1) : counter,
               0,
             );
@@ -99,13 +250,13 @@ const InscriptionsAvecNoms = () => {
           }
         }
       } else if (typeEquipes === TypeEquipes.DOUBLETTE) {
-        if (avecEquipes.length % 4 !== 0 || avecEquipes.length === 0) {
+        if (nbJoueurs % 4 !== 0 || nbJoueurs === 0) {
           title = t('equipe_doublette_multiple_4');
           btnDisabled = true;
         } else if (modeCreationEquipes === ModeCreationEquipes.MANUELLE) {
           for (let i = 0; i < nbEquipes; i++) {
-            let count = avecEquipes.reduce(
-              (counter: number, obj: Joueur) =>
+            let count = listeJoueurs.reduce(
+              (counter: number, obj: JoueurModel) =>
                 obj.equipe === i ? (counter += 1) : counter,
               0,
             );
@@ -118,29 +269,29 @@ const InscriptionsAvecNoms = () => {
         }
       } else if (
         typeEquipes === TypeEquipes.TRIPLETTE &&
-        (avecEquipes.length % 6 !== 0 || avecEquipes.length === 0)
+        (nbJoueurs % 6 !== 0 || nbJoueurs === 0)
       ) {
         title = t('equipe_triplette_multiple_6');
         btnDisabled = true;
       }
     } else if (
       typeEquipes === TypeEquipes.TETEATETE &&
-      (avecNoms.length % 2 !== 0 || avecNoms.length < 2)
+      (nbJoueurs % 2 !== 0 || nbJoueurs < 2)
     ) {
       title = t('tete_a_tete_multiple_2');
       btnDisabled = true;
     } else if (typeEquipes === TypeEquipes.DOUBLETTE) {
-      if (avecNoms.length < 4) {
+      if (nbJoueurs < 4) {
         title = t('joueurs_insuffisants');
         btnDisabled = true;
-      } else if (avecNoms.length % 4 !== 0) {
+      } else if (nbJoueurs % 4 !== 0) {
         choixComplement = true;
       }
     } else if (typeEquipes === TypeEquipes.TRIPLETTE) {
-      if (avecNoms.length < 6) {
+      if (nbJoueurs < 6) {
         title = t('joueurs_insuffisants');
         btnDisabled = true;
-      } else if (avecNoms.length % 6 !== 0) {
+      } else if (nbJoueurs % 6 !== 0) {
         choixComplement = true;
       }
     }
@@ -149,7 +300,7 @@ const InscriptionsAvecNoms = () => {
       <Button
         isDisabled={btnDisabled}
         action={btnDisabled ? 'negative' : 'positive'}
-        onPress={() => _commencer(choixComplement)}
+        onPress={() => _commencer(choixComplement, avecTerrains)}
         size="md"
         className="h-min min-h-10"
       >
@@ -158,7 +309,7 @@ const InscriptionsAvecNoms = () => {
     );
   };
 
-  const nbJoueur = listesJoueurs[optionsTournoi.mode].length;
+  const nbJoueur = listeJoueurs.length;
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <VStack className="flex-1 bg-custom-background">
@@ -167,8 +318,20 @@ const InscriptionsAvecNoms = () => {
           <Text className="text-typography-white text-xl text-center">
             {t('nombre_joueurs', { nb: nbJoueur })}
           </Text>
-          <Inscriptions loadListScreen={false} />
-          <Box className="px-10">{_boutonCommencer()}</Box>
+          <Inscriptions
+            listeJoueurs={listeJoueurs}
+            preparationTournoi={preparationTournoi}
+            loadListScreen={false}
+            onAddJoueur={handleAddJoueur}
+            onDeleteJoueur={handleDeleteJoueur}
+            onAddEquipeJoueur={handleAddEquipeJoueur}
+            onUpdateName={handleUpdateName}
+            onCheckJoueur={handleCheckJoueur}
+            onDeleteAllJoueurs={handleDeleteAllJoueurs}
+          />
+          <Box className="px-10">
+            {_boutonCommencer(listeJoueurs, preparationTournoi)}
+          </Box>
         </VStack>
       </VStack>
     </SafeAreaView>

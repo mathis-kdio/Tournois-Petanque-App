@@ -1,7 +1,7 @@
-import { Match } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/matchModel';
 
 export const nextMatchMultiChances = (
-  match: Match,
+  match: MatchModel,
   nbMatchs: number,
   nbTours: number,
 ) => {
