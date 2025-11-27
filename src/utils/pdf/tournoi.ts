@@ -164,17 +164,9 @@ export const generationPDFTournoi = (
   }
   html += `</body>
       <style>
-        @page print {
-          .pagebreak { break-before: page; }
-        }
-        @media print {
-          .pagebreak { break-before: page; }
-        }
-        @page print {
-          .pagebreak { page-break-before: always; }
-        }
-        @media print {
-          .pagebreak { break-before: always; }
+        .pagebreak {
+          break-before: page;
+          break-before: always;
         }
       </style>
     </html>`;
