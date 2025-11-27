@@ -7,11 +7,28 @@
   "permissions": [
     {
       "identifier": "fs:allow-download-write",
-      "allow": [{ "path": "$DOWNLOAD/*" }]
+      "allow": [
+        {
+          "path": "$DOWNLOAD/*"
+        }
+      ]
     },
     {
       "identifier": "fs:allow-exists",
-      "allow": [{ "path": "$DOWNLOAD/*" }]
+      "allow": [
+        {
+          "path": "$DOWNLOAD/*"
+        }
+      ]
+    },
+    "core:path:allow-resolve-directory",
+    {
+      "identifier": "opener:allow-open-path",
+      "allow": [
+        {
+          "path": "$DOWNLOAD/*"
+        }
+      ]
     }
   ]
 }

@@ -55,6 +55,7 @@
     "@supabase/supabase-js": "^2.75.1",
     "@tauri-apps/api": "^2.8.0",
     "@tauri-apps/plugin-fs": "^2.4.4",
+    "@tauri-apps/plugin-opener": "^2.5.2",
     "expo": "^54.0.13",
     "expo-build-properties": "~1.0.9",
     "expo-constants": "~18.0.9",
