@@ -132,7 +132,7 @@ const PDFExport = () => {
   };
 
   const _toggleLoading = () => {
-    setBtnIsLoading(!btnIsLoading);
+    setBtnIsLoading((prevState) => !prevState);
   };
 
   const _onPressExportBtn = () => {
