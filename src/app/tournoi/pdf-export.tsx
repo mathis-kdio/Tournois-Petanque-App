@@ -22,6 +22,7 @@ import { dateFormatDateFileName } from '@/utils/date';
 import { Tournoi } from '@/types/interfaces/tournoi';
 import { useSelector } from 'react-redux';
 import { StyledSwitch } from '@/components/ui/switch/styled-switch';
+import { genererPdf } from '@/utils/pdf/generate/genererPdf';
 
 const PDFExport = () => {
   const { t } = useTranslation();
@@ -90,23 +91,16 @@ const PDFExport = () => {
         t,
       );
     }
+
+    const date = dateFormatDateFileName(infosTournoi.creationDate);
+    const newFileName = `tournoi-petanque-${infosTournoi.tournoiId}-${date}.pdf`;
+
     if (Platform.OS === 'web') {
-      const pW = window.open(
-        '',
-        '',
-        `width=${screen.availWidth},height=${screen.availHeight}`,
-      );
-      pW.document.write(html);
-      pW.onafterprint = () => {
-        pW.close();
-      };
-      pW.print();
+      genererPdf(newFileName, html);
+
       _toggleLoading();
     } else {
       const { uri } = await Print.printToFileAsync({ html });
-
-      const date = dateFormatDateFileName(infosTournoi.creationDate);
-      const newFileName = `tournoi-petanque-${infosTournoi.tournoiId}-${date}.pdf`;
 
       const oldfile = new File(Paths.cache, newFileName);
       if (oldfile.exists) {
