@@ -1,0 +1,17 @@
+{
+  "identifier": "default",
+  "description": "Capability for the main window",
+  "windows": [
+    "*"
+  ],
+  "permissions": [
+    {
+      "identifier": "fs:allow-download-write",
+      "allow": [{ "path": "$DOWNLOAD/*" }]
+    },
+    {
+      "identifier": "fs:allow-exists",
+      "allow": [{ "path": "$DOWNLOAD/*" }]
+    }
+  ]
+}
