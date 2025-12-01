@@ -1,5 +1,13 @@
 # Change Log
 
+## [2.4.2] - 01-12-2025
+### Ajouté
+
+### Changement
+
+### Corrigé
+- Correction et amélioration de l'export PDF sur ordinateur
+
 ## [2.4.1] - 19-10-2025
 ### Ajouté
 
