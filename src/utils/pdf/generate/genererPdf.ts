@@ -26,12 +26,10 @@ export const genererPdf = async (fileName: string, html: string) => {
     });
   const pdf = await worker.outputPdf('arraybuffer');
 
-  await writeFile(fileName, pdf, {
-    baseDir: BaseDirectory.Download,
-  });
+  await writeFile(fileName, pdf, { baseDir: BaseDirectory.Download });
 
   const downloads = await downloadDir();
-
   const filePath = `${downloads}${sep()}${fileName}`;
+
   await openPath(filePath);
 };
