@@ -58,7 +58,7 @@ checksum = "a23eb6b1614318a8071c9b2521f36b424b2c83db5eb3a0fead4a6c0809af6e61"
 
 [[package]]
 name = "app"
-version = "2.4.1"
+version = "2.4.2"
 dependencies = [
  "openssl",
  "serde",
@@ -3960,7 +3960,7 @@ dependencies = [
 
 [[package]]
 name = "tauri-build"
-version = "2.4.2"
+version = "2.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9c432ccc9ff661803dab74c6cd78de11026a578a9307610bbc39d3c55be7943f"
 dependencies = [
