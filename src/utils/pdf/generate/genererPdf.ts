@@ -5,7 +5,7 @@ import {
   writeFile,
 } from '@tauri-apps/plugin-fs';
 import { openPath } from '@tauri-apps/plugin-opener';
-import { downloadDir } from '@tauri-apps/api/path';
+import { downloadDir, sep } from '@tauri-apps/api/path';
 import html2pdf from 'html2pdf.js';
 
 export const genererPdf = async (fileName: string, html: string) => {
@@ -31,6 +31,7 @@ export const genererPdf = async (fileName: string, html: string) => {
   });
 
   const downloads = await downloadDir();
-  const filePath = `${downloads}\\${fileName}`;
+
+  const filePath = `${downloads}${sep()}${fileName}`;
   await openPath(filePath);
 };
