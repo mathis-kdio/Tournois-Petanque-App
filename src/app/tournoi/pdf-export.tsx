@@ -96,7 +96,7 @@ const PDFExport = () => {
     const newFileName = `tournoi-petanque-${infosTournoi.tournoiId}-${date}.pdf`;
 
     if (Platform.OS === 'web') {
-      genererPdf(newFileName, html);
+      await genererPdf(newFileName, html);
 
       _toggleLoading();
     } else {
