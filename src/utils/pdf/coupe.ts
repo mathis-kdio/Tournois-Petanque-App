@@ -144,7 +144,7 @@ export const generationPDFCoupe = (
     nbMatchTourEnCours /= 2;
     html += '</tr></table><br>';
     if (toursParLigne === 1) {
-      html += '<div class="pagebreak"></div>';
+      html += '<div class="pagebreak"></div><br>';
     }
   }
   if (affichageClassement === true) {
@@ -179,7 +179,7 @@ export const generationPDFCoupe = (
       <style>
         .pagebreak {
           break-before: page;
-          break-before: always;
+          page-break-before: always;
         }
       </style>
     </html>`;
