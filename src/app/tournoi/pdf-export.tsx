@@ -93,23 +93,25 @@ const PDFExport = () => {
     }
 
     const date = dateFormatDateFileName(infosTournoi.creationDate);
-    const newFileName = `tournoi-petanque-${infosTournoi.tournoiId}-${date}.pdf`;
+    const fileName = `tournoi-petanque-${infosTournoi.tournoiId}-${date}`;
 
     if (Platform.OS === 'web') {
-      await genererPdf(newFileName, html);
+      await genererPdf(fileName, html);
 
       _toggleLoading();
     } else {
+      const fileNameExt = `${fileName}.pdf`;
+
       const { uri } = await Print.printToFileAsync({ html });
 
-      const oldfile = new File(Paths.cache, newFileName);
+      const oldfile = new File(Paths.cache, fileNameExt);
       if (oldfile.exists) {
         oldfile.delete();
       }
 
       const file = new File(uri);
       file.move(Paths.cache);
-      file.rename(newFileName);
+      file.rename(fileNameExt);
 
       if (Platform.OS === 'android') {
         // TODO : à remplacer par nouvelle API quand équivalent disponible : https://github.com/expo/expo/issues/39056

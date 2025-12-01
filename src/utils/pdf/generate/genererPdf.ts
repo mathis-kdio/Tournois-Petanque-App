@@ -1,9 +1,4 @@
-import {
-  exists,
-  remove,
-  BaseDirectory,
-  writeFile,
-} from '@tauri-apps/plugin-fs';
+import { exists, BaseDirectory, writeFile } from '@tauri-apps/plugin-fs';
 import { openPath } from '@tauri-apps/plugin-opener';
 import { downloadDir, sep } from '@tauri-apps/api/path';
 import html2pdf from 'html2pdf.js';
@@ -30,7 +25,7 @@ const genererPdfWeb = (fileName: string, html: string): void => {
   }
 
   pW.document.write(html);
-  pW.document.title = fileName;
+  pW.document.title = `${fileName}.pdf`;
   pW.onafterprint = () => {
     pW.close();
   };
@@ -41,27 +36,28 @@ const genererPdfTauri = async (
   fileName: string,
   html: string,
 ): Promise<void> => {
-  const fileExists = await exists(fileName, {
-    baseDir: BaseDirectory.Download,
-  });
-  if (fileExists) {
-    await remove(fileName, { baseDir: BaseDirectory.Download });
+  let name = `${fileName}.pdf`;
+  let counter = 1;
+
+  while (await exists(name, { baseDir: BaseDirectory.Download })) {
+    name = `${fileName}-${counter}.pdf`;
+    counter++;
   }
 
   const worker = html2pdf()
     .from(html)
     .set({
       margin: 10,
-      filename: fileName,
+      filename: name,
       html2canvas: { scale: 2 },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
     });
   const pdf = await worker.outputPdf('arraybuffer');
 
-  await writeFile(fileName, pdf, { baseDir: BaseDirectory.Download });
+  await writeFile(name, pdf, { baseDir: BaseDirectory.Download });
 
   const downloads = await downloadDir();
-  const filePath = `${downloads}${sep()}${fileName}`;
+  const filePath = `${downloads}${sep()}${name}`;
 
   await openPath(filePath);
 };
