@@ -1,1 +1,1 @@
-export const genererPdf = async (newFileName: string, html: string) => {};
+export const genererPdf = async (fileName: string, html: string) => {};
