@@ -1,7 +1,8 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { PreparationTournoisRepository } from './preparationTournoiRepository';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 import { PreparationTournoi } from '@/db/schema/preparationTournoi';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 function toPreparationTournoiModel(
   preparationTournoi: PreparationTournoi,
@@ -41,6 +42,20 @@ function toPreparationTournoi(
     modeCreationEquipes: preparationTournoi.modeCreationEquipes ?? null,
   };
 }
+
+export const usePreparationTournoiV2 = () => {
+  const { data: preparationTournoi } = useLiveQuery(
+    PreparationTournoisRepository.getPreparationTournoi(),
+  );
+
+  const preparationTournoiVM = useMemo(() => {
+    return preparationTournoi.length
+      ? toPreparationTournoiModel(preparationTournoi[0])
+      : undefined;
+  }, [preparationTournoi]);
+
+  return { preparationTournoiVM: preparationTournoiVM };
+};
 
 export function usePreparationTournoi() {
   const getActualPreparationTournoi = useCallback(async () => {

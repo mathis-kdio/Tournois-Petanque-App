@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import {
   JoueursPreparationTournoisRepository,
   JoueursPreparationTournoisWithJoueur,
@@ -6,6 +6,7 @@ import {
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { Joueur, NewJoueursPreparationTournois } from '@/db/schema';
 import { JoueursRepository } from '../joueurs/joueursRepository';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 function toJoueurModel(
   preparationTournoi: JoueursPreparationTournoisWithJoueur,
@@ -30,14 +31,29 @@ function toNewJoueursPreparationTournois(
   };
 }
 
-export function useJoueursPreparationTournois() {
+export const useJoueursPreparationTournoisV2 = (
+  preparationTournoiId: number | undefined,
+) => {
+  const { data } = useLiveQuery(
+    JoueursPreparationTournoisRepository.getMany(preparationTournoiId),
+    [preparationTournoiId],
+  );
+
+  const actualJoueursPreparationTournoiVM = useMemo(
+    () => data.map(toJoueurModel) ?? [],
+    [data],
+  );
+
+  return { joueurs: actualJoueursPreparationTournoiVM };
+};
+
+export const useJoueursPreparationTournois = () => {
   const getActualJoueursPreparationTournoi = useCallback(
     async (preparationTournoiId: number) => {
       const joueursPreparationTournois =
         await JoueursPreparationTournoisRepository.getMany(
           preparationTournoiId,
         );
-      console.log(joueursPreparationTournois);
       return joueursPreparationTournois.map(toJoueurModel);
     },
     [],
@@ -93,4 +109,4 @@ export function useJoueursPreparationTournois() {
     removeAllJoueursPreparationTournoi,
     getAllJoueursPreparationTournoi,
   };
-}
+};

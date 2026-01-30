@@ -6,9 +6,8 @@ import {
 } from '@/db/schema/preparationTournoi';
 
 export const PreparationTournoisRepository = {
-  async getPreparationTournoi(): Promise<PreparationTournoi> {
-    const result = await getDrizzleDb().select().from(preparationTournoi);
-    return result[0];
+  getPreparationTournoi() {
+    return getDrizzleDb().select().from(preparationTournoi);
   },
 
   async insertPreparationTournoi(

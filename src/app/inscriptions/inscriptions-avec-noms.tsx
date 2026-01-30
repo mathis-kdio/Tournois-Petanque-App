@@ -16,9 +16,9 @@ import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePrep
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 import { useCallback, useEffect, useState } from 'react';
 import Loading from '@/components/Loading';
-import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import { JoueurType } from '@/types/enums/joueurType';
 import { useJoueurs } from '@/repositories/joueurs/useJoueurs';
+import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 
 const InscriptionsAvecNoms = () => {
   const { t } = useTranslation();

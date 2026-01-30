@@ -1,16 +1,5 @@
 import { Input, InputField } from '@/components/ui/input';
-import { CloseIcon, Icon } from '@/components/ui/icon';
-import { Heading } from '@/components/ui/heading';
-import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogBackdrop,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogFooter,
-  AlertDialogCloseButton,
-} from '@/components/ui/alert-dialog';
-import { Button, ButtonText, ButtonGroup } from '@/components/ui/button';
+import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
 import { Box } from '@/components/ui/box';
@@ -21,6 +10,7 @@ import { TournoiModel } from '@/types/interfaces/tournoi';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from 'expo-router';
 import { CommonActions } from '@react-navigation/native';
+import ModalDeleteTournoi from './ModalDeleteTournoi';
 
 export interface Props {
   tournoi: TournoiModel;
@@ -45,7 +35,7 @@ const ListeTournoiItem: React.FC<Props> = ({
   const [tournoiNameText, setTournoiNameText] = useState('');
   const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false);
 
-  const _chargerTournoi = (tournoi: TournoiModel) => {
+  const chargerTournoi = (tournoi: TournoiModel) => {
     const actionUpdateListeMatchs = {
       type: 'AJOUT_MATCHS',
       value: tournoi.tournoi,
@@ -58,60 +48,18 @@ const ListeTournoiItem: React.FC<Props> = ({
     );
   };
 
-  const _supprimerTournoi = (tournoiId: number) => {
-    onDelete(tournoiId);
-  };
-
-  const _modalSupprimerTournoi = (tournoiId: number) => {
+  const modalSupprimerTournoi = (tournoiId: number) => {
     return (
-      <AlertDialog
-        isOpen={modalDeleteIsOpen}
-        onClose={() => setModalDeleteIsOpen(false)}
-      >
-        <AlertDialogBackdrop />
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <Heading className="color-custom-text-modal">
-              {t('supprimer_tournoi_modal_titre')}
-            </Heading>
-            <AlertDialogCloseButton>
-              <Icon
-                as={CloseIcon}
-                size="md"
-                className="stroke-background-400 group-[:hover]/modal-close-button:stroke-background-700 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900"
-              />
-            </AlertDialogCloseButton>
-          </AlertDialogHeader>
-          <AlertDialogBody>
-            <Text>
-              {t('supprimer_tournoi_modal_texte', { id: tournoiId + 1 })}
-            </Text>
-          </AlertDialogBody>
-          <AlertDialogFooter>
-            <ButtonGroup flexDirection="row">
-              <Button
-                variant="outline"
-                action="secondary"
-                onPress={() => setModalDeleteIsOpen(false)}
-              >
-                <ButtonText className="color-custom-text-modal">
-                  {t('annuler')}
-                </ButtonText>
-              </Button>
-              <Button
-                action="negative"
-                onPress={() => _supprimerTournoi(tournoiId)}
-              >
-                <ButtonText>{t('oui')}</ButtonText>
-              </Button>
-            </ButtonGroup>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <ModalDeleteTournoi
+        tournoiId={tournoiId}
+        onDelete={onDelete}
+        modalDeleteIsOpen={modalDeleteIsOpen}
+        setModalDeleteIsOpen={setModalDeleteIsOpen}
+      />
     );
   };
 
-  const _showRenameTournoi = (tournoi: TournoiModel) => {
+  const showRenameTournoi = (tournoi: TournoiModel) => {
     let name: string;
     let bgColor: string;
     let action;
@@ -126,7 +74,7 @@ const ListeTournoiItem: React.FC<Props> = ({
     } else {
       name = 'check';
       bgColor = '#348352';
-      action = () => _renameTournoi(tournoi);
+      action = () => renameTournoi(tournoi.tournoiId);
     }
 
     return (
@@ -141,22 +89,23 @@ const ListeTournoiItem: React.FC<Props> = ({
     );
   };
 
-  const _renameTournoi = (tournoi: TournoiModel) => {
+  const renameTournoi = (tournoiId: number) => {
     if (tournoiNameText === '') {
       return;
     }
-    onUpdateName(tournoi.tournoiId, tournoiNameText);
+    onUpdateName(tournoiId, tournoiNameText);
     setTournoiNameText('');
     setRenommerOn(false);
   };
 
-  const _tournoiTextInputChanged = (text: string) => {
+  const tournoiTextInputChanged = (text: string) => {
     setTournoiNameText(text);
     setRenommerOn(true);
   };
 
-  const _tournoiName = (tournoi: TournoiModel) => {
-    let tournoiName = tournoi.name ? tournoi.name : 'n°' + tournoi.tournoiId;
+  const tournoiName = (tournoi: TournoiModel) => {
+    const { name, tournoiId } = tournoi;
+    const tournoiName = name ? name : 'n°' + tournoiId;
     if (renommerOn) {
       return (
         <Input className="border-custom-bg-inverse">
@@ -164,8 +113,8 @@ const ListeTournoiItem: React.FC<Props> = ({
             className="text-typography-white placeholder:text-typography-white"
             placeholder={tournoiName}
             autoFocus={true}
-            onChangeText={(text: string) => _tournoiTextInputChanged(text)}
-            onSubmitEditing={() => _renameTournoi(tournoi)}
+            onChangeText={(text: string) => tournoiTextInputChanged(text)}
+            onSubmitEditing={() => renameTournoi(tournoiId)}
           />
         </Input>
       );
@@ -180,9 +129,9 @@ const ListeTournoiItem: React.FC<Props> = ({
 
   return (
     <HStack space="md" className="px-2 my-2 items-center">
-      <Box className="flex-1">{_tournoiName(tournoi)}</Box>
+      <Box className="flex-1">{tournoiName(tournoi)}</Box>
       <HStack space="sm">
-        {_showRenameTournoi(tournoi)}
+        {showRenameTournoi(tournoi)}
         <FontAwesome5.Button
           name="info-circle"
           backgroundColor="#004282"
@@ -192,7 +141,7 @@ const ListeTournoiItem: React.FC<Props> = ({
         <Button
           isDisabled={estTournoiActuel}
           action="primary"
-          onPress={() => _chargerTournoi(tournoi)}
+          onPress={() => chargerTournoi(tournoi)}
         >
           <ButtonText>{t('charger')}</ButtonText>
         </Button>
@@ -204,7 +153,7 @@ const ListeTournoiItem: React.FC<Props> = ({
           onPress={() => setModalDeleteIsOpen(true)}
         />
       </HStack>
-      {_modalSupprimerTournoi(tournoi.tournoiId)}
+      {modalSupprimerTournoi(tournoi.tournoiId)}
     </HStack>
   );
 };
