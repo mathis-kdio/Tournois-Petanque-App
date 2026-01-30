@@ -16,7 +16,7 @@ export function useDatabaseMigrations() {
     useState<ExpoSQLiteDatabase | null>(null);
 
   useEffect(() => {
-    openDatabaseAsync(DATABASE_NAME)
+    openDatabaseAsync(DATABASE_NAME, { enableChangeListener: true })
       .then((sqliteDatabase) => {
         setSqliteDatabase(sqliteDatabase);
         return drizzle(sqliteDatabase);

@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { TournoisRepository } from './tournoisRepository';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import { Tournoi } from '@/db/schema/tournoi';
@@ -36,13 +36,13 @@ export const useTournoisV2 = () => {
   );
 
   const { data: data2 } = useLiveQuery(TournoisRepository.getAllTournoisV2());
-  console.log('data2', data2);
   const tournoisVM = useMemo(() => data2.map(toTournoiModel) ?? [], [data2]);
 
   const deleteTournoi = (id: number) => TournoisRepository.deleteTournoiV2(id);
 
-  const renameTournoi = (id: number, name: string) =>
-    TournoisRepository.renameTournoiV2(id, name);
+  const renameTournoi = async (id: number, name: string) => {
+    await TournoisRepository.renameTournoiV2(id, name);
+  };
 
   return {
     actualTournoi: tournoiVM,

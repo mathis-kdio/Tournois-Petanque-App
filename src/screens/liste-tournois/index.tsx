@@ -18,16 +18,7 @@ export default function ListeTournois() {
   const [infosTournoi, setInfosTournoi] = useState<TournoiModel | undefined>(
     undefined,
   );
-  const { listeTournois, actualTournoi, deleteTournoi, renameTournoi } =
-    useTournoisV2();
-
-  const handleDelete = (id: number) => {
-    deleteTournoi(id);
-  };
-
-  const handleUpdateName = (id: number, name: string) => {
-    renameTournoi(id, name);
-  };
+  const { listeTournois, actualTournoi } = useTournoisV2();
 
   const showModalInfos = (tournoi: TournoiModel) => {
     setModalTournoiInfosIsOpen(true);
@@ -56,8 +47,6 @@ export default function ListeTournois() {
         tournoi={item}
         estTournoiActuel={estTournoiActuel}
         showModalInfos={showModalInfos}
-        onDelete={handleDelete}
-        onUpdateName={handleUpdateName}
       />
     );
   };

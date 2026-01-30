@@ -11,21 +11,18 @@ import { useDispatch } from 'react-redux';
 import { useNavigation } from 'expo-router';
 import { CommonActions } from '@react-navigation/native';
 import ModalDeleteTournoi from './ModalDeleteTournoi';
+import { useTournoisV2 } from '@/repositories/tournois/useTournois';
 
 export interface Props {
   tournoi: TournoiModel;
   estTournoiActuel: boolean;
   showModalInfos: (tournoi: TournoiModel) => void;
-  onDelete: (id: number) => void;
-  onUpdateName: (id: number, name: string) => void;
 }
 
 const ListeTournoiItem: React.FC<Props> = ({
   tournoi,
   estTournoiActuel,
   showModalInfos,
-  onDelete,
-  onUpdateName,
 }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -34,6 +31,8 @@ const ListeTournoiItem: React.FC<Props> = ({
   const [renommerOn, setRenommerOn] = useState(false);
   const [tournoiNameText, setTournoiNameText] = useState('');
   const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false);
+
+  const { renameTournoi } = useTournoisV2();
 
   const chargerTournoi = (tournoi: TournoiModel) => {
     const actionUpdateListeMatchs = {
@@ -52,7 +51,6 @@ const ListeTournoiItem: React.FC<Props> = ({
     return (
       <ModalDeleteTournoi
         tournoiId={tournoiId}
-        onDelete={onDelete}
         modalDeleteIsOpen={modalDeleteIsOpen}
         setModalDeleteIsOpen={setModalDeleteIsOpen}
       />
@@ -74,7 +72,7 @@ const ListeTournoiItem: React.FC<Props> = ({
     } else {
       name = 'check';
       bgColor = '#348352';
-      action = () => renameTournoi(tournoi.tournoiId);
+      action = () => updateNameTournoi(tournoi.tournoiId);
     }
 
     return (
@@ -89,11 +87,11 @@ const ListeTournoiItem: React.FC<Props> = ({
     );
   };
 
-  const renameTournoi = (tournoiId: number) => {
+  const updateNameTournoi = async (tournoiId: number) => {
     if (tournoiNameText === '') {
       return;
     }
-    onUpdateName(tournoiId, tournoiNameText);
+    await renameTournoi(tournoiId, tournoiNameText);
     setTournoiNameText('');
     setRenommerOn(false);
   };
@@ -114,7 +112,7 @@ const ListeTournoiItem: React.FC<Props> = ({
             placeholder={tournoiName}
             autoFocus={true}
             onChangeText={(text: string) => tournoiTextInputChanged(text)}
-            onSubmitEditing={() => renameTournoi(tournoiId)}
+            onSubmitEditing={() => updateNameTournoi(tournoiId)}
           />
         </Input>
       );
