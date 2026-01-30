@@ -1,18 +1,5 @@
-import { CloseIcon, Icon } from '@/components/ui/icon';
-import { Heading } from '@/components/ui/heading';
-
-import {
-  AlertDialog,
-  AlertDialogBackdrop,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogCloseButton,
-  AlertDialogBody,
-  AlertDialogFooter,
-} from '@/components/ui/alert-dialog';
-
 import { Input, InputField } from '@/components/ui/input';
-import { Button, ButtonText, ButtonGroup } from '@/components/ui/button';
+import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
 import { Box } from '@/components/ui/box';
@@ -23,6 +10,7 @@ import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'expo-router';
+import ModalDeleteListe from './ModalDeleteListe';
 
 export interface Props {
   listeJoueursInfos: ListeJoueursInfos;
@@ -49,7 +37,7 @@ const ListeJoueursItem: React.FC<Props> = ({
     (state: any) => state.optionsTournoi.options,
   );
 
-  const _modifyList = (listId: number) => {
+  const modifyList = (listId: number) => {
     const actionRemoveList = {
       type: 'SUPPR_ALL_JOUEURS',
       value: [ModeTournoi.SAUVEGARDE],
@@ -78,56 +66,18 @@ const ListeJoueursItem: React.FC<Props> = ({
     });
   };
 
-  const _modalSupprimerListe = (listId: number) => {
+  const modalSupprimerListe = (listId: number) => {
     return (
-      <AlertDialog
-        isOpen={modalDeleteIsOpen}
-        onClose={() => setModalDeleteIsOpen(false)}
-      >
-        <AlertDialogBackdrop />
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <Heading className="color-custom-text-modal">
-              {t('supprimer_liste_modal_titre')}
-            </Heading>
-            <AlertDialogCloseButton>
-              <Icon
-                as={CloseIcon}
-                size="md"
-                className="stroke-background-400 group-[:hover]/modal-close-button:stroke-background-700 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900"
-              />
-            </AlertDialogCloseButton>
-          </AlertDialogHeader>
-          <AlertDialogBody>
-            <Text>{t('supprimer_liste_modal_texte', { id: listId + 1 })}</Text>
-          </AlertDialogBody>
-          <AlertDialogFooter>
-            <ButtonGroup flexDirection="row">
-              <Button
-                variant="outline"
-                action="secondary"
-                onPress={() => setModalDeleteIsOpen(false)}
-              >
-                <ButtonText className="color-custom-text-modal">
-                  {t('annuler')}
-                </ButtonText>
-              </Button>
-              <Button action="negative" onPress={() => _removeList(listId)}>
-                <ButtonText>{t('oui')}</ButtonText>
-              </Button>
-            </ButtonGroup>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <ModalDeleteListe
+        listId={listId}
+        modalDeleteIsOpen={modalDeleteIsOpen}
+        setModalDeleteIsOpen={setModalDeleteIsOpen}
+        onDelete={onDelete}
+      />
     );
   };
 
-  const _removeList = (listId: number) => {
-    onDelete(listId);
-    setModalDeleteIsOpen(false);
-  };
-
-  const _showRenameList = (listId: number) => {
+  const showRenameList = (listId: number) => {
     let name: string;
     let bgColor: string;
     let action;
@@ -142,7 +92,7 @@ const ListeJoueursItem: React.FC<Props> = ({
     } else {
       name = 'check';
       bgColor = '#348352';
-      action = () => _renameList(listId);
+      action = () => renameList(listId);
     }
 
     return (
@@ -157,7 +107,7 @@ const ListeJoueursItem: React.FC<Props> = ({
     );
   };
 
-  const _renameList = (listId: number) => {
+  const renameList = (listId: number) => {
     if (listNameText === '') {
       return;
     }
@@ -166,22 +116,22 @@ const ListeJoueursItem: React.FC<Props> = ({
     setRenommerOn(false);
   };
 
-  const _listTextInputChanged = (text: string) => {
+  const listTextInputChanged = (text: string) => {
     setListNameText(text);
     setRenommerOn(true);
   };
 
-  const _buttons = (listId: number) => {
+  const buttons = (listId: number) => {
     if (loadListScreen) {
       return (
-        <Button action="positive" onPress={() => _loadList(listId)}>
+        <Button action="positive" onPress={() => loadList(listId)}>
           <ButtonText>{t('charger')}</ButtonText>
         </Button>
       );
     } else {
       return (
         <HStack space="md">
-          <Button action="primary" onPress={() => _modifyList(listId)}>
+          <Button action="primary" onPress={() => modifyList(listId)}>
             <ButtonText>{t('modifier')}</ButtonText>
           </Button>
           <FontAwesome5.Button
@@ -195,7 +145,7 @@ const ListeJoueursItem: React.FC<Props> = ({
     }
   };
 
-  const _loadList = (listId: number) => {
+  const loadList = (listId: number) => {
     const actionLoadList = {
       type: 'LOAD_SAVED_LIST',
       value: {
@@ -208,7 +158,7 @@ const ListeJoueursItem: React.FC<Props> = ({
     router.back();
   };
 
-  const _listName = (listeJoueursInfos: ListeJoueursInfos) => {
+  const listName = (listeJoueursInfos: ListeJoueursInfos) => {
     const { name, listId } = listeJoueursInfos;
     let listName = name ? name : `n°' ${listId}`;
     if (renommerOn) {
@@ -218,8 +168,8 @@ const ListeJoueursItem: React.FC<Props> = ({
             className="text-typography-white placeholder:text-typography-white"
             placeholder={listName}
             autoFocus={true}
-            onChangeText={(text) => _listTextInputChanged(text)}
-            onSubmitEditing={() => _renameList(listId)}
+            onChangeText={(text) => listTextInputChanged(text)}
+            onSubmitEditing={() => renameList(listId)}
           />
         </Input>
       );
@@ -234,12 +184,12 @@ const ListeJoueursItem: React.FC<Props> = ({
 
   return (
     <HStack space="md" className="px-2 my-2 items-center">
-      <Box className="flex-1">{_listName(listeJoueursInfos)}</Box>
+      <Box className="flex-1">{listName(listeJoueursInfos)}</Box>
       <HStack space="md">
-        {_showRenameList(listeJoueursInfos.listId)}
-        {_buttons(listeJoueursInfos.listId)}
+        {showRenameList(listeJoueursInfos.listId)}
+        {buttons(listeJoueursInfos.listId)}
       </HStack>
-      {_modalSupprimerListe(listeJoueursInfos.listId)}
+      {modalSupprimerListe(listeJoueursInfos.listId)}
     </HStack>
   );
 };
