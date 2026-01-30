@@ -27,9 +27,6 @@ const ModalInfosTournoi: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
 
-  if (infosTournoi.options === undefined) {
-    return;
-  }
   const { options, creationDate, updateDate, tournoiId, name } = infosTournoi;
   const {
     nbPtVictoire,
@@ -43,10 +40,10 @@ const ModalInfosTournoi: React.FC<Props> = ({
     memesAdversaires,
     speciauxIncompatibles,
   } = options;
-  let creationDateFormat = creationDate
+  const creationDateFormat = creationDate
     ? dateFormatDateHeure(creationDate)
     : t('date_inconnue');
-  let updateDateFormat = updateDate
+  const updateDateFormat = updateDate
     ? dateFormatDateHeure(updateDate)
     : t('date_inconnue');
   return (

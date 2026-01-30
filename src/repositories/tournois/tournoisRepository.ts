@@ -8,9 +8,17 @@ export const TournoisRepository = {
     return a;
   },
 
+  getAllTournoisV2() {
+    return getDrizzleDb().select().from(tournoi);
+  },
+
   async getTournoi(): Promise<Tournoi | undefined> {
     const result = await getDrizzleDb().select().from(tournoi);
     return result[0];
+  },
+
+  getTournoiV2() {
+    return getDrizzleDb().select().from(tournoi);
   },
 
   async insertTournoi(newTournoi: NewTournoi): Promise<Tournoi[]> {
@@ -21,8 +29,22 @@ export const TournoisRepository = {
     await getDrizzleDb().delete(tournoi).where(eq(tournoi.id, id));
   },
 
+  deleteTournoiV2(id: number) {
+    return getDrizzleDb().delete(tournoi).where(eq(tournoi.id, id));
+  },
+
   async renameTournoi(id: number, name: string): Promise<void> {
     await getDrizzleDb()
+      .update(tournoi)
+      .set({ name })
+      .where(eq(tournoi.id, id));
+  },
+
+  async renameTournoiV2(id: number, name: string) {
+    console.log('id', id);
+    console.log('name', name);
+
+    return await getDrizzleDb()
       .update(tournoi)
       .set({ name })
       .where(eq(tournoi.id, id));

@@ -1,34 +1,56 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { TournoisRepository } from './tournoisRepository';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import { Tournoi } from '@/db/schema/tournoi';
-import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { ModeTournoi } from '@/types/enums/modeTournoi';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
-function toTournoiModel(lJ: Tournoi): TournoiModel {
+function toTournoiModel(tournoi: Tournoi): TournoiModel {
   return {
-    tournoiId: lJ.id,
-    name: lJ.name || undefined,
-    creationDate: new Date(Date.now()),
-    updateDate: new Date(Date.now()),
+    tournoiId: tournoi.id,
+    name: tournoi.name || undefined,
+    creationDate: new Date(tournoi.createAt),
+    updateDate: new Date(tournoi.updatedAt),
     matchs: [],
     options: {
-      tournoiID: 0,
-      nbTours: 0,
-      nbMatchs: 0,
-      nbPtVictoire: 0,
-      speciauxIncompatibles: false,
-      memesEquipes: false,
-      memesAdversaires: 0,
-      typeEquipes: TypeEquipes.TETEATETE,
-      typeTournoi: TypeTournoi.MELEDEMELE,
+      tournoiID: tournoi.id,
+      nbTours: tournoi.nbTours,
+      nbMatchs: tournoi.nbMatchs,
+      nbPtVictoire: tournoi.nbPtVictoire,
+      speciauxIncompatibles: tournoi.speciauxIncompatibles,
+      memesEquipes: tournoi.memesEquipes,
+      memesAdversaires: tournoi.memesAdversaires,
+      typeEquipes: tournoi.typeEquipes,
+      typeTournoi: tournoi.typeTournoi,
       listeJoueurs: [],
-      avecTerrains: false,
-      mode: ModeTournoi.AVECNOMS,
+      avecTerrains: tournoi.avecTerrains,
+      mode: tournoi.mode,
     },
   };
 }
+
+export const useTournoisV2 = () => {
+  const { data: data1 } = useLiveQuery(TournoisRepository.getTournoiV2());
+  const tournoiVM = useMemo(
+    () => data1?.[0] && toTournoiModel(data1[0]),
+    [data1],
+  );
+
+  const { data: data2 } = useLiveQuery(TournoisRepository.getAllTournoisV2());
+  console.log('data2', data2);
+  const tournoisVM = useMemo(() => data2.map(toTournoiModel) ?? [], [data2]);
+
+  const deleteTournoi = (id: number) => TournoisRepository.deleteTournoiV2(id);
+
+  const renameTournoi = (id: number, name: string) =>
+    TournoisRepository.renameTournoiV2(id, name);
+
+  return {
+    actualTournoi: tournoiVM,
+    listeTournois: tournoisVM,
+    deleteTournoi,
+    renameTournoi,
+  };
+};
 
 export function useTournois() {
   const getAllTournois = useCallback(async () => {
