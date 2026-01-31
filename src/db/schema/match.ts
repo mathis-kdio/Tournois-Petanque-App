@@ -7,7 +7,7 @@ export const match = sqliteTable('match', {
   id: integer('id').primaryKey(),
   matchId: integer('match_id'),
   tournoiId: integer('tournoi_id').references(() => tournoi.id),
-  tour: text('tour'),
+  tour: text('tour').notNull(),
   equipe1: integer('equipe1_id').references(() => equipe.id),
   equipe2: integer('equipe2_id').references(() => equipe.id),
   score1: integer('score1'),
