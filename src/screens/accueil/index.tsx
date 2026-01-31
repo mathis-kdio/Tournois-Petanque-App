@@ -8,7 +8,6 @@ import { HStack } from '@/components/ui/hstack';
 import { Box } from '@/components/ui/box';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { _openPlateformLink, _openURL } from '@utils/link';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { _adsConsentForm } from '@/utils/adMob/consentForm';
 import CardButton from '@components/buttons/CardButton';
 import { AppState, AppStateStatus, Platform } from 'react-native';

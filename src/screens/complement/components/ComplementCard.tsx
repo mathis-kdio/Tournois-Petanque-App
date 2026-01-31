@@ -21,7 +21,7 @@ const ComplementCard: React.FC<Props> = ({
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const _navigate = (
+  const navigate = (
     complement: Complement,
     screenStackName: screenStackNameType,
     avecTerrains: boolean,
@@ -32,7 +32,7 @@ const ComplementCard: React.FC<Props> = ({
     };
     dispatch(updateOptionComplement);
 
-    let screenName = avecTerrains ? 'liste-terrains' : 'generation-matchs';
+    const screenName = avecTerrains ? 'liste-terrains' : 'generation-matchs';
     router.navigate({
       pathname: `/inscriptions/${screenName}`,
       params: {
@@ -90,7 +90,7 @@ const ComplementCard: React.FC<Props> = ({
       <CardButton
         text={item.text}
         icons={item.icons}
-        navigate={() => _navigate(complement, screenStackName, avecTerrains)}
+        navigate={() => navigate(complement, screenStackName, avecTerrains)}
         newBadge={false}
       />
     </VStack>
