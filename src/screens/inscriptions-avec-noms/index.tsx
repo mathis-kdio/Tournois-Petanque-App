@@ -137,12 +137,14 @@ const InscriptionsAvecNoms = () => {
 
       // Trouver l'équipe avec l'id le plus proche de 0 qui n'a pas dépassé nbJoueursParEquipe
       let equipeTrouvee = 1;
-      for (let i = 1; ; i++) {
+      let i = 1;
+      while (true) {
         const nbJoueursDansEquipe = joueursParEquipe[i] || 0;
         if (nbJoueursDansEquipe < nbJoueursParEquipe) {
           equipeTrouvee = i;
           break;
         }
+        i += 1;
       }
       return equipeTrouvee;
     }
