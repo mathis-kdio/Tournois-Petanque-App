@@ -6,58 +6,43 @@ import TopBarBack from '@/components/topBar/TopBarBack';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { useTranslation } from 'react-i18next';
-import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
-import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
-import { useCallback, useEffect, useState } from 'react';
+import { usePreparationTournoiV2 } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { useCallback } from 'react';
 import Loading from '@/components/Loading';
 import { JoueurType } from '@/types/enums/joueurType';
-import { useJoueurs } from '@/repositories/joueurs/useJoueurs';
-import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
+import { useJoueursV2 } from '@/repositories/joueurs/useJoueurs';
+import {
+  useJoueursPreparationTournois,
+  useJoueursPreparationTournoisV2,
+} from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import StartButton from './components/StartButton';
 
 const InscriptionsAvecNoms = () => {
   const { t } = useTranslation();
 
-  const { getActualPreparationTournoi } = usePreparationTournoi();
-  const { renameJoueur, checkJoueur } = useJoueurs();
+  const { preparationTournoiVM } = usePreparationTournoiV2();
+
+  const { renameJoueur, checkJoueur } = useJoueursV2();
   const {
     addJoueursPreparationTournoi,
     removeJoueursPreparationTournoi,
     removeAllJoueursPreparationTournoi,
-    getAllJoueursPreparationTournoi,
   } = useJoueursPreparationTournois();
 
-  const [preparationTournoi, setPreparationTournoi] = useState<
-    PreparationTournoiModel | undefined
-  >(undefined);
-  const [listeJoueurs, setlisteJoueurs] = useState<JoueurModel[]>([]);
-
-  const [loading, setloading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const resultpreparationTournoi = await getActualPreparationTournoi();
-      setPreparationTournoi(resultpreparationTournoi);
-      const joueurs = await getAllJoueursPreparationTournoi();
-      console.log(joueurs);
-      setlisteJoueurs(joueurs);
-      setloading(false);
-    };
-    fetchData();
-  }, [getActualPreparationTournoi, getAllJoueursPreparationTournoi]);
+  const { joueurs } = useJoueursPreparationTournoisV2(preparationTournoiVM?.id);
 
   const equipeAuto = (
     listeJoueurs: JoueurModel[],
     typeEquipes: TypeEquipes,
   ) => {
     if (typeEquipes === TypeEquipes.TETEATETE) {
-      return listeJoueurs.length + 1;
+      return joueurs.length + 1;
     } else {
       const nbJoueursParEquipe = typeEquipes === TypeEquipes.DOUBLETTE ? 2 : 3;
 
       // Compter le nombre de joueurs par équipe
       const joueursParEquipe: { [key: number]: number } = {};
-      listeJoueurs.forEach((joueur) => {
+      joueurs.forEach((joueur) => {
         if (joueur.equipe) {
           joueursParEquipe[joueur.equipe] =
             (joueursParEquipe[joueur.equipe] || 0) + 1;
@@ -81,94 +66,62 @@ const InscriptionsAvecNoms = () => {
 
   const handleAddJoueur = useCallback(
     async (joueurName: string, joueurType: JoueurType | undefined) => {
-      if (!preparationTournoi) return;
-      const { typeEquipes } = preparationTournoi;
-      if (!typeEquipes) return;
-      const equipe = equipeAuto(listeJoueurs, typeEquipes);
+      if (!preparationTournoiVM) {
+        return;
+      }
+      const { typeEquipes } = preparationTournoiVM;
+      if (!typeEquipes) {
+        throw Error('typeEquipes devrait être défini');
+      }
+      const equipe = equipeAuto(joueurs, typeEquipes);
       const joueur: JoueurModel = {
-        id: listeJoueurs.length,
+        id: joueurs.length,
         name: joueurName,
         type: joueurType,
         equipe: equipe,
         isChecked: false,
       };
 
-      const newjoueur = await addJoueursPreparationTournoi(joueur);
-      setlisteJoueurs((prev) => [...prev, newjoueur]);
+      await addJoueursPreparationTournoi(joueur);
     },
-    [addJoueursPreparationTournoi, listeJoueurs, preparationTournoi],
+    [addJoueursPreparationTournoi, joueurs, preparationTournoiVM],
   );
 
   const handleDeleteJoueur = useCallback(
     async (id: number) => {
       await removeJoueursPreparationTournoi(id);
-      setlisteJoueurs((prev) => prev.filter((u) => u.id !== id));
     },
     [removeJoueursPreparationTournoi],
   );
 
-  const handleAddEquipeJoueur = useCallback(
-    async (id: number, equipeId: number) => {
-      //await deleteTournoi(id);
-      setlisteJoueurs((prev) =>
-        prev.map((u) => (u.id === id ? { ...u, equipe: equipeId } : u)),
-      );
-    },
-    [],
-  );
+  const handleAddEquipeJoueur = (id: number, equipeId: number) => { };
 
-  const handleUpdateName = useCallback(
-    async (joueurModel: JoueurModel, name: string) => {
-      await renameJoueur(joueurModel, name);
+  const handleUpdateName = (joueurModel: JoueurModel, name: string) => {
+    renameJoueur(joueurModel.id, name);
+  };
 
-      setlisteJoueurs((prev) =>
-        prev.map((joueur) =>
-          joueur.id === joueurModel.id ? { ...joueur, name: name } : joueur,
-        ),
-      );
-    },
-    [renameJoueur],
-  );
-
-  const handleCheckJoueur = useCallback(
-    async (joueurModel: JoueurModel, isChecked: boolean) => {
-      await checkJoueur(joueurModel, isChecked);
-
-      setlisteJoueurs((prev) =>
-        prev.map((joueur) =>
-          joueur.id === joueurModel.id
-            ? { ...joueur, isChecked: isChecked }
-            : joueur,
-        ),
-      );
-    },
-    [checkJoueur],
-  );
+  const handleCheckJoueur = (joueurModel: JoueurModel, isChecked: boolean) => {
+    checkJoueur(joueurModel.id, isChecked);
+  };
 
   const handleDeleteAllJoueurs = useCallback(async () => {
     await removeAllJoueursPreparationTournoi();
-    setlisteJoueurs([]);
   }, [removeAllJoueursPreparationTournoi]);
 
-  if (loading) {
+  if (!preparationTournoiVM || !joueurs) {
     return <Loading />;
   }
 
-  if (!preparationTournoi) {
-    throw Error();
-  }
-
-  const nbJoueur = listeJoueurs.length;
   return (
     <VStack className="flex-1 bg-custom-background">
       <TopBarBack title={t('inscription_avec_noms_navigation_title')} />
       <VStack className="flex-1">
         <Text className="text-typography-white text-xl text-center">
-          {t('nombre_joueurs', { nb: nbJoueur })}
+          {t('nombre_joueurs', { nb: joueurs.length })}
         </Text>
         <Inscriptions
-          listeJoueurs={listeJoueurs}
-          preparationTournoi={preparationTournoi}
+          listeJoueurs={joueurs}
+          preparationTournoi={preparationTournoiVM}
           loadListScreen={false}
           onAddJoueur={handleAddJoueur}
           onDeleteJoueur={handleDeleteJoueur}
@@ -179,8 +132,8 @@ const InscriptionsAvecNoms = () => {
         />
         <Box className="px-10">
           <StartButton
-            preparationTournoi={preparationTournoi}
-            listeJoueurs={listeJoueurs}
+            preparationTournoi={preparationTournoiVM}
+            listeJoueurs={joueurs}
           />
         </Box>
       </VStack>
