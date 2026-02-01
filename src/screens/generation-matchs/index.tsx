@@ -288,16 +288,17 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
     if (avecTerrains) {
       let manche = matchs[0].manche;
       let arrRandIdsTerrains = uniqueValueArrayRandOrder(listeTerrains.length);
-      let i = 0;
-      matchs.forEach((match: MatchModel) => {
+      let terrainIndex = 0;
+      for (let k = 0; k < matchs.length; k++) {
+        const match = matchs[k];
         if (match.manche !== manche) {
           manche = match.manche;
           arrRandIdsTerrains = uniqueValueArrayRandOrder(listeTerrains.length);
-          i = 0;
+          terrainIndex = 0;
         }
-        match.terrain = listeTerrains[arrRandIdsTerrains[i]];
-        i++;
-      });
+        match.terrain = listeTerrains[arrRandIdsTerrains[terrainIndex]];
+        terrainIndex += 1;
+      }
     }
 
     //Ajout des options du match à la fin du tableau contenant les matchs
