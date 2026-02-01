@@ -30,8 +30,8 @@ function toTournoiModel(tournoi: Tournoi): TournoiModel {
 
 export const useTournoisV2 = () => {
   const { data: data1 } = useLiveQuery(TournoisRepository.getTournoiV2());
-  const tournoiVM = useMemo(
-    () => data1?.[0] && toTournoiModel(data1[0]),
+  const tournoiVM: TournoiModel | undefined = useMemo(
+    () => (data1?.[0] && toTournoiModel(data1[0])) ?? undefined,
     [data1],
   );
 
