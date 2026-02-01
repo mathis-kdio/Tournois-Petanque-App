@@ -9,21 +9,19 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
 
 export interface Props {
   match: MatchModel;
-  displayDetailForMatch: (idMatch: number) => void;
-  manche: number;
 }
 
-const MatchItem: React.FC<Props> = ({
-  match,
-  displayDetailForMatch,
-  manche,
-}) => {
-  const { t } = useTranslation();
+type Equipe = 1 | 2;
 
-  const _displayTitle = (match: MatchModel) => {
+const MatchItem: React.FC<Props> = ({ match }) => {
+  const { t } = useTranslation();
+  const router = useRouter();
+
+  const displayTitle = (match: MatchModel) => {
     const { id, terrain, score1, score2 } = match;
     const score1Int = score1 ? score1 : 0;
     const score2Int = score2 ? score2 : 0;
@@ -49,19 +47,19 @@ const MatchItem: React.FC<Props> = ({
     );
   };
 
-  const _displayEquipe = (equipe: number, match: MatchModel) => {
-    let nomsJoueurs = [];
+  const displayEquipe = (equipe: Equipe, match: MatchModel) => {
+    const nomsJoueurs = [];
     const joueursEquipe = match.equipe[equipe - 1];
     for (let i = 0; i < 4; i++) {
-      let joueur = joueursEquipe[i];
+      const joueur = joueursEquipe[i];
       if (joueur && joueur !== -1) {
-        nomsJoueurs.push(_displayName(joueur, equipe));
+        nomsJoueurs.push(displayName(joueur, equipe));
       }
     }
     return nomsJoueurs;
   };
 
-  const _displayName = (joueur: JoueurModel, equipe: number) => {
+  const displayName = (joueur: JoueurModel, equipe: Equipe) => {
     if (equipe === 1) {
       return (
         <Text
@@ -85,7 +83,7 @@ const MatchItem: React.FC<Props> = ({
     }
   };
 
-  const _displayScore = (match: MatchModel) => {
+  const displayScore = (match: MatchModel) => {
     const score1 = match.score1 ?? '?';
     const score2 = match.score2 ?? '?';
     return (
@@ -97,22 +95,28 @@ const MatchItem: React.FC<Props> = ({
     );
   };
 
-  if (match.manche === manche) {
-    return (
-      <TouchableOpacity onPress={() => displayDetailForMatch(match.id)}>
-        <VStack className="m-2">
-          {_displayTitle(match)}
-          <HStack className="items-center">
-            <Box className="flex-1">{_displayEquipe(1, match)}</Box>
-            <Box className="flex-1">{_displayScore(match)}</Box>
-            <Box className="flex-1">{_displayEquipe(2, match)}</Box>
-          </HStack>
-        </VStack>
-        <Divider />
-      </TouchableOpacity>
-    );
-  }
-  return null;
+  const navigateMatchDetail = (idMatch: number) => {
+    router.navigate({
+      pathname: '/tournoi/match-detail',
+      params: {
+        idMatch: idMatch,
+      },
+    });
+  };
+
+  return (
+    <TouchableOpacity onPress={() => navigateMatchDetail(match.id)}>
+      <VStack className="m-2">
+        {displayTitle(match)}
+        <HStack className="items-center">
+          <Box className="flex-1">{displayEquipe(1, match)}</Box>
+          <Box className="flex-1">{displayScore(match)}</Box>
+          <Box className="flex-1">{displayEquipe(2, match)}</Box>
+        </HStack>
+      </VStack>
+      <Divider />
+    </TouchableOpacity>
+  );
 };
 
 export default MatchItem;
