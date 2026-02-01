@@ -4,6 +4,10 @@ import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiMo
 import { PreparationTournoi } from '@/db/schema/preparationTournoi';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { TypeEquipes } from '@/types/enums/typeEquipes';
+import { ModeTournoi } from '@/types/enums/modeTournoi';
+import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
+import { TypeTournoi } from '@/types/enums/typeTournoi';
 
 function toPreparationTournoiModel(
   preparationTournoi: PreparationTournoi,
@@ -73,16 +77,66 @@ export const usePreparationTournoiV2 = () => {
     return preparationTournoiJoueurs.map(toJoueursModel);
   }, [preparationTournoiJoueurs]);
 
+  const updateTypePreparationTournoi = async (typeTournoi: TypeTournoi) => {
+    const res = await PreparationTournoisRepository.getPreparationTournoi();
+    const updated = {
+      ...res[0],
+      id: 0,
+      typeTournoi,
+    };
+    PreparationTournoisRepository.updatePreparationTournoi(updated);
+  };
+
+  const updateModePreparationTournoi = async (
+    typeEquipes: TypeEquipes,
+    mode: ModeTournoi,
+    modeCreationEquipes: ModeCreationEquipes,
+  ) => {
+    const res = await PreparationTournoisRepository.getPreparationTournoi();
+    const updated = {
+      ...res[0],
+      id: 0,
+      typeEquipes,
+      mode,
+      modeCreationEquipes,
+    };
+    PreparationTournoisRepository.updatePreparationTournoi(updated);
+  };
+
+  const updateOptionsPreparationTournoi = async (
+    nbTours: number,
+    nbPtVictoire: number,
+    speciauxIncompatibles: boolean,
+    memesEquipes: boolean,
+    memesAdversaires: number,
+    avecTerrains: boolean,
+  ) => {
+    const res = await PreparationTournoisRepository.getPreparationTournoi();
+    const updated = {
+      ...res[0],
+      id: 0,
+      nbTours,
+      nbPtVictoire,
+      speciauxIncompatibles,
+      memesEquipes,
+      memesAdversaires,
+      avecTerrains,
+    };
+    PreparationTournoisRepository.updatePreparationTournoi(updated);
+  };
+
   return {
     preparationTournoiVM: preparationTournoiVM,
     preparationTournoiJoueurs: preparationTournoiJoueursVM,
+    updateTypePreparationTournoi,
+    updateModePreparationTournoi,
+    updateOptionsPreparationTournoi,
   };
 };
 
 export function usePreparationTournoi() {
   const getActualPreparationTournoi = useCallback(async () => {
     const tournoi = await PreparationTournoisRepository.getPreparationTournoi();
-    console.log(tournoi);
     return toPreparationTournoiModel(tournoi);
   }, []);
 

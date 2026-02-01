@@ -20,12 +20,11 @@ import {
 } from '@/components/ui/checkbox';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { useTranslation } from 'react-i18next';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import Loading from '@/components/Loading';
 import { screenStackNameType } from '@/types/types/searchParams';
-import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
-import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import { usePreparationTournoiV2 } from '@/repositories/preparationTournoi/usePreparationTournoi';
 
 export interface Props {
   screenStackName: screenStackNameType;
@@ -36,12 +35,8 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
 
   const { t } = useTranslation();
 
-  const { getActualPreparationTournoi, updatePreparationTournoi } =
-    usePreparationTournoi();
-
-  const [preparationTournoiModel, setPreparationTournoiModel] = useState<
-    PreparationTournoiModel | undefined
-  >(undefined);
+  const { preparationTournoiVM, updateOptionsPreparationTournoi } =
+    usePreparationTournoiV2();
 
   const defaultNbTours = 5;
   const defaultNbPtVictoire = 13;
@@ -55,15 +50,7 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
   );
   const [avecTerrains, setAvecTerrains] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const resultpreparationTournoi = await getActualPreparationTournoi();
-      setPreparationTournoiModel(resultpreparationTournoi);
-    };
-    fetchData();
-  }, [getActualPreparationTournoi]);
-
-  if (!preparationTournoiModel) {
+  if (!preparationTournoiVM) {
     return <Loading />;
   }
 
@@ -75,24 +62,23 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
     setNbPtVictoire(text ? parseInt(text) : undefined);
   };
 
-  const _nextStep = (
-    screenStackName: screenStackNameType,
-    preparationTournoiModel: PreparationTournoiModel,
-  ) => {
-    preparationTournoiModel.nbTours = nbTours;
-    preparationTournoiModel.nbPtVictoire = nbPtVictoire;
-    preparationTournoiModel.speciauxIncompatibles = speciauxIncompatibles;
-    preparationTournoiModel.memesEquipes = memesEquipes;
-    preparationTournoiModel.memesAdversaires = memesAdversaires;
-    preparationTournoiModel.complement = undefined;
-    preparationTournoiModel.avecTerrains = avecTerrains;
-
-    updatePreparationTournoi(preparationTournoiModel);
+  const nextStep = () => {
+    if (!nbTours || !nbPtVictoire) {
+      throw Error('nbTours ou nbPtVictoire ne devrait pas être undefined');
+    }
+    updateOptionsPreparationTournoi(
+      nbTours,
+      nbPtVictoire,
+      speciauxIncompatibles,
+      memesEquipes,
+      memesAdversaires,
+      avecTerrains,
+    );
 
     router.navigate(`/inscriptions/${screenStackName}`);
   };
 
-  const _boutonValider = (screenStackName: screenStackNameType) => {
+  const boutonValider = () => {
     let btnDisabled = true;
     let btnTitle = t('champ_invalide');
     if (
@@ -110,7 +96,7 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
       <Button
         action="primary"
         isDisabled={btnDisabled}
-        onPress={() => _nextStep(screenStackName, preparationTournoiModel)}
+        onPress={() => nextStep()}
         size="md"
       >
         <ButtonText>{btnTitle}</ButtonText>
@@ -236,7 +222,7 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
               </CheckboxLabel>
             </Checkbox>
           </VStack>
-          <VStack>{_boutonValider(screenStackName)}</VStack>
+          <VStack>{boutonValider()}</VStack>
         </VStack>
       </VStack>
     </ScrollView>

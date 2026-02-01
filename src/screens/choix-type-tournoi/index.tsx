@@ -10,15 +10,14 @@ import { useTranslation } from 'react-i18next';
 import AdMobInscriptionsBanner from '@/components/adMob/AdMobInscriptionsBanner';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { useRouter } from 'expo-router';
-import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
-import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import { usePreparationTournoiV2 } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import TypeTournoiModal from './components/TypeTournoiModal';
 
 const ChoixTypeTournoi = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const { updatePreparationTournoi } = usePreparationTournoi();
+  const { updateTypePreparationTournoi } = usePreparationTournoiV2();
 
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState<TypeTournoi | undefined>();
@@ -65,11 +64,7 @@ const ChoixTypeTournoi = () => {
   };
 
   const navigate = (typeTournoi: TypeTournoi) => {
-    const preparationTournoi: PreparationTournoiModel = {
-      id: 0,
-      typeTournoi: typeTournoi,
-    };
-    updatePreparationTournoi(preparationTournoi);
+    updateTypePreparationTournoi(typeTournoi);
     return router.navigate('inscriptions/choix-mode-tournoi');
   };
 

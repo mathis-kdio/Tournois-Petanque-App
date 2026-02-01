@@ -20,7 +20,7 @@ export const PreparationTournoisRepository = {
   },
 
   async updatePreparationTournoi(
-    updatedPreparationTournoi: PreparationTournoi,
+    updatedPreparationTournoi: NewPreparationTournoi,
   ): Promise<void> {
     await getDrizzleDb()
       .insert(preparationTournoi)
