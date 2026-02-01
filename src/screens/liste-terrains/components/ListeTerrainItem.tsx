@@ -17,7 +17,7 @@ const ListeTerrainItem: React.FC<Props> = ({ terrain }) => {
   const [renommerOn, setRenommerOn] = useState(false);
   const [terrainText, setTerrainText] = useState('');
 
-  const _supprimerTerrain = (terrain: TerrainModel) => {
+  const supprimerTerrain = (terrain: TerrainModel) => {
     setRenommerOn(false);
     const actionSuppr = {
       type: 'SUPPR_TERRAIN',
@@ -26,7 +26,7 @@ const ListeTerrainItem: React.FC<Props> = ({ terrain }) => {
     dispatch(actionSuppr);
   };
 
-  const _showRenommerTerrain = (terrain: TerrainModel) => {
+  const renommerButton = (terrain: TerrainModel) => {
     let name: string;
     let bgColor: string;
     let action;
@@ -41,7 +41,7 @@ const ListeTerrainItem: React.FC<Props> = ({ terrain }) => {
     } else {
       name = 'check';
       bgColor = '#348352';
-      action = () => _renommerTerrain(terrain);
+      action = () => renommerTerrain(terrain);
     }
 
     return (
@@ -56,24 +56,26 @@ const ListeTerrainItem: React.FC<Props> = ({ terrain }) => {
     );
   };
 
-  const _renommerTerrain = (terrain: TerrainModel) => {
-    if (terrainText !== '') {
-      setRenommerOn(false);
-      const actionRenommer = {
-        type: 'RENOMMER_TERRAIN',
-        value: { terrainId: terrain.id, newName: terrainText },
-      };
-      dispatch(actionRenommer);
-      setTerrainText('');
+  const renommerTerrain = (terrain: TerrainModel) => {
+    if (terrainText === '') {
+      return;
     }
+
+    setRenommerOn(false);
+    const actionRenommer = {
+      type: 'RENOMMER_TERRAIN',
+      value: { terrainId: terrain.id, newName: terrainText },
+    };
+    dispatch(actionRenommer);
+    setTerrainText('');
   };
 
-  const _terrainTxtInputChanged = (text: string) => {
+  const terrainTxtInputChanged = (text: string) => {
     setTerrainText(text);
     setRenommerOn(true);
   };
 
-  const _terrainName = (terrain: TerrainModel) => {
+  const getName = (terrain: TerrainModel) => {
     if (renommerOn) {
       return (
         <Input className="border-custom-bg-inverse">
@@ -81,15 +83,15 @@ const ListeTerrainItem: React.FC<Props> = ({ terrain }) => {
             className="text-typography-white placeholder:text-typography-white"
             placeholder={terrain.name}
             autoFocus={true}
-            onChangeText={(text) => _terrainTxtInputChanged(text)}
-            onSubmitEditing={() => _renommerTerrain(terrain)}
+            onChangeText={(text) => terrainTxtInputChanged(text)}
+            onSubmitEditing={() => renommerTerrain(terrain)}
           />
         </Input>
       );
     } else {
       return (
         <Text className="text-typography-white">
-          {terrain.id + 1}- {terrain.name}
+          {`${terrain.id + 1}- ${terrain.name}`}
         </Text>
       );
     }
@@ -97,14 +99,14 @@ const ListeTerrainItem: React.FC<Props> = ({ terrain }) => {
 
   return (
     <HStack space="md" className="px-2 my-2 items-center">
-      <Box className="flex-1">{_terrainName(terrain)}</Box>
+      <Box className="flex-1">{getName(terrain)}</Box>
       <HStack space="md">
-        {_showRenommerTerrain(terrain)}
+        {renommerButton(terrain)}
         <FontAwesome5.Button
           name="times"
           backgroundColor="#E63535"
           iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
-          onPress={() => _supprimerTerrain(terrain)}
+          onPress={() => supprimerTerrain(terrain)}
         />
       </HStack>
     </HStack>
