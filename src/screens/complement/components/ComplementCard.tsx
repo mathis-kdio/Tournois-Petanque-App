@@ -4,7 +4,7 @@ import { Complement } from '@/types/enums/complement';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
 import { screenStackNameType } from '@/types/types/searchParams';
-import { useDispatch } from 'react-redux';
+import { usePreparationTournoiV2 } from '@/repositories/preparationTournoi/usePreparationTournoi';
 
 interface Props {
   complement: Complement;
@@ -19,18 +19,11 @@ const ComplementCard: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const dispatch = useDispatch();
 
-  const navigate = (
-    complement: Complement,
-    screenStackName: screenStackNameType,
-    avecTerrains: boolean,
-  ) => {
-    const updateOptionComplement = {
-      type: 'UPDATE_OPTION_TOURNOI',
-      value: ['complement', complement],
-    };
-    dispatch(updateOptionComplement);
+  const { updateComplementPreparationTournoi } = usePreparationTournoiV2();
+
+  const navigate = () => {
+    updateComplementPreparationTournoi(complement);
 
     const screenName = avecTerrains ? 'liste-terrains' : 'generation-matchs';
     router.navigate({
@@ -90,7 +83,7 @@ const ComplementCard: React.FC<Props> = ({
       <CardButton
         text={item.text}
         icons={item.icons}
-        navigate={() => navigate(complement, screenStackName, avecTerrains)}
+        navigate={() => navigate()}
         newBadge={false}
       />
     </VStack>

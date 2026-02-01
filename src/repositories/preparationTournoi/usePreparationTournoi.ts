@@ -8,6 +8,7 @@ import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
+import { Complement } from '@/types/enums/complement';
 
 function toPreparationTournoiModel(
   preparationTournoi: PreparationTournoi,
@@ -125,12 +126,23 @@ export const usePreparationTournoiV2 = () => {
     PreparationTournoisRepository.updatePreparationTournoi(updated);
   };
 
+  const updateComplementPreparationTournoi = async (complement: Complement) => {
+    const res = await PreparationTournoisRepository.getPreparationTournoi();
+    const updated = {
+      ...res[0],
+      id: 0,
+      complement,
+    };
+    PreparationTournoisRepository.updatePreparationTournoi(updated);
+  };
+
   return {
     preparationTournoiVM: preparationTournoiVM,
     preparationTournoiJoueurs: preparationTournoiJoueursVM,
     updateTypePreparationTournoi,
     updateModePreparationTournoi,
     updateOptionsPreparationTournoi,
+    updateComplementPreparationTournoi,
   };
 };
 

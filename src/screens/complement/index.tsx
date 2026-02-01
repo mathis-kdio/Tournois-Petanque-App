@@ -79,14 +79,17 @@ const ChoixComplement: React.FC<Props> = ({ screenStackName }) => {
   );
 
   useEffect(() => {
-    if (!preparationTournoiVM || !joueurs) return;
+    if (!preparationTournoiVM || !joueurs) {
+      return;
+    }
     const { typeEquipes } = preparationTournoiVM;
-    const nbJoueurs = joueurs.length;
-    if (!typeEquipes) return;
-    prepareComplements(typeEquipes, nbJoueurs);
+    if (!typeEquipes) {
+      return;
+    }
+    prepareComplements(typeEquipes, joueurs.length);
   }, [joueurs, preparationTournoiVM, prepareComplements]);
 
-  if (!preparationTournoiVM) {
+  if (!preparationTournoiVM || !joueurs) {
     return <Loading />;
   }
 
