@@ -26,6 +26,8 @@ const StartButton: React.FC<Props> = ({ preparationTournoi, listeJoueurs }) => {
     throw Error('modeCreationEquipes manquant');
   }
 
+  const nbJoueurs = listeJoueurs.length;
+
   const getScreenName = (choixComplement: boolean) => {
     if (choixComplement) {
       return 'choix-complement';
@@ -58,7 +60,6 @@ const StartButton: React.FC<Props> = ({ preparationTournoi, listeJoueurs }) => {
   let btnDisabled = false;
   let title = t('commencer_tournoi');
 
-  const nbJoueurs = listeJoueurs.length;
   let nbEquipes = getNbEquipes();
   let choixComplement = false;
 
@@ -89,17 +90,17 @@ const StartButton: React.FC<Props> = ({ preparationTournoi, listeJoueurs }) => {
         title = t('nombre_equipe_multiple_2');
         btnDisabled = true;
       } else if (modeCreationEquipes === ModeCreationEquipes.MANUELLE) {
-        for (let i = 0; i < nbEquipes; i++) {
-          let count = listeJoueurs.reduce(
+        const allValid = Array.from({ length: nbEquipes }).every((_, i) => {
+          const count = listeJoueurs.reduce(
             (counter: number, obj: JoueurModel) =>
               obj.equipe === i ? (counter += 1) : counter,
             0,
           );
-          if (count > 1) {
-            title = t('equipes_trop_joueurs');
-            btnDisabled = true;
-            break;
-          }
+          return count <= 1;
+        });
+        if (!allValid) {
+          title = t('equipes_trop_joueurs');
+          btnDisabled = true;
         }
       }
     } else if (typeEquipes === TypeEquipes.DOUBLETTE) {
@@ -107,17 +108,17 @@ const StartButton: React.FC<Props> = ({ preparationTournoi, listeJoueurs }) => {
         title = t('equipe_doublette_multiple_4');
         btnDisabled = true;
       } else if (modeCreationEquipes === ModeCreationEquipes.MANUELLE) {
-        for (let i = 0; i < nbEquipes; i++) {
-          let count = listeJoueurs.reduce(
+        const allValid = Array.from({ length: nbEquipes }).every((_, i) => {
+          const count = listeJoueurs.reduce(
             (counter: number, obj: JoueurModel) =>
               obj.equipe === i ? (counter += 1) : counter,
             0,
           );
-          if (count > 2) {
-            title = t('equipes_trop_joueurs');
-            btnDisabled = true;
-            break;
-          }
+          return count <= 2;
+        });
+        if (!allValid) {
+          title = t('equipes_trop_joueurs');
+          btnDisabled = true;
         }
       }
     } else if (
