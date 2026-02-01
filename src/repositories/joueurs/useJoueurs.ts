@@ -13,6 +13,23 @@ function toJoueurModel(joueur: Joueur): JoueurModel {
   };
 }
 
+export const useJoueursV2 = () => {
+  const checkJoueur = async (id: number, isChecked: boolean) => {
+    const joueur = await JoueursRepository.select(id);
+    JoueursRepository.updateCheckV2(joueur.id, isChecked);
+  };
+
+  const renameJoueur = async (id: number, name: string) => {
+    const joueur = await JoueursRepository.select(id);
+    JoueursRepository.updateNameV2(joueur.id, name);
+  };
+
+  return {
+    checkJoueur,
+    renameJoueur,
+  };
+};
+
 export function useJoueurs() {
   const getAllJoueurs = useCallback(async () => {
     const joueurs = await JoueursRepository.selectAll();

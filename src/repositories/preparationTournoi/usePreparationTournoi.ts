@@ -3,6 +3,7 @@ import { PreparationTournoisRepository } from './preparationTournoiRepository';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 import { PreparationTournoi } from '@/db/schema/preparationTournoi';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 
 function toPreparationTournoiModel(
   preparationTournoi: PreparationTournoi,
@@ -43,6 +44,16 @@ function toPreparationTournoi(
   };
 }
 
+function toJoueursModel(): JoueurModel {
+  return {
+    id: 0,
+    name: '',
+    type: undefined,
+    equipe: undefined,
+    isChecked: false,
+  };
+}
+
 export const usePreparationTournoiV2 = () => {
   const { data: preparationTournoi } = useLiveQuery(
     PreparationTournoisRepository.getPreparationTournoi(),
@@ -54,7 +65,18 @@ export const usePreparationTournoiV2 = () => {
       : undefined;
   }, [preparationTournoi]);
 
-  return { preparationTournoiVM: preparationTournoiVM };
+  const { data: preparationTournoiJoueurs } = useLiveQuery(
+    PreparationTournoisRepository.getPreparationTournoi(),
+  );
+
+  const preparationTournoiJoueursVM = useMemo(() => {
+    return preparationTournoiJoueurs.map(toJoueursModel);
+  }, [preparationTournoiJoueurs]);
+
+  return {
+    preparationTournoiVM: preparationTournoiVM,
+    preparationTournoiJoueurs: preparationTournoiJoueursVM,
+  };
 };
 
 export function usePreparationTournoi() {
