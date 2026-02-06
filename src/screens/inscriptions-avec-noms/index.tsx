@@ -31,38 +31,39 @@ const InscriptionsAvecNoms = () => {
 
   const { joueurs } = useJoueursPreparationTournoisV2(preparationTournoiVM?.id);
 
-  const equipeAuto = (
-    listeJoueurs: JoueurModel[],
-    typeEquipes: TypeEquipes,
-  ) => {
-    if (typeEquipes === TypeEquipes.TETEATETE) {
-      return joueurs.length + 1;
-    } else {
-      const nbJoueursParEquipe = typeEquipes === TypeEquipes.DOUBLETTE ? 2 : 3;
+  const equipeAuto = useCallback(
+    (listeJoueurs: JoueurModel[], typeEquipes: TypeEquipes) => {
+      if (typeEquipes === TypeEquipes.TETEATETE) {
+        return listeJoueurs.length + 1;
+      } else {
+        const nbJoueursParEquipe =
+          typeEquipes === TypeEquipes.DOUBLETTE ? 2 : 3;
 
-      // Compter le nombre de joueurs par équipe
-      const joueursParEquipe: { [key: number]: number } = {};
-      joueurs.forEach((joueur) => {
-        if (joueur.equipe) {
-          joueursParEquipe[joueur.equipe] =
-            (joueursParEquipe[joueur.equipe] || 0) + 1;
-        }
-      });
+        // Compter le nombre de joueurs par équipe
+        const joueursParEquipe: { [key: number]: number } = {};
+        listeJoueurs.forEach((joueur) => {
+          if (joueur.equipe) {
+            joueursParEquipe[joueur.equipe] =
+              (joueursParEquipe[joueur.equipe] || 0) + 1;
+          }
+        });
 
-      // Trouver l'équipe avec l'id le plus proche de 0 qui n'a pas dépassé nbJoueursParEquipe
-      let equipeTrouvee = 1;
-      let i = 1;
-      while (true) {
-        const nbJoueursDansEquipe = joueursParEquipe[i] || 0;
-        if (nbJoueursDansEquipe < nbJoueursParEquipe) {
-          equipeTrouvee = i;
-          break;
+        // Trouver l'équipe avec l'id le plus proche de 0 qui n'a pas dépassé nbJoueursParEquipe
+        let equipeTrouvee = 1;
+        let i = 1;
+        while (true) {
+          const nbJoueursDansEquipe = joueursParEquipe[i] || 0;
+          if (nbJoueursDansEquipe < nbJoueursParEquipe) {
+            equipeTrouvee = i;
+            break;
+          }
+          i += 1;
         }
-        i += 1;
+        return equipeTrouvee;
       }
-      return equipeTrouvee;
-    }
-  };
+    },
+    [],
+  );
 
   const handleAddJoueur = useCallback(
     async (joueurName: string, joueurType: JoueurType | undefined) => {
@@ -84,7 +85,7 @@ const InscriptionsAvecNoms = () => {
 
       await addJoueursPreparationTournoi(joueur);
     },
-    [addJoueursPreparationTournoi, joueurs, preparationTournoiVM],
+    [addJoueursPreparationTournoi, equipeAuto, joueurs, preparationTournoiVM],
   );
 
   const handleDeleteJoueur = useCallback(
