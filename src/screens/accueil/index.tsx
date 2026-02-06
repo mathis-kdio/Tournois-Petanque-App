@@ -19,6 +19,7 @@ import { useAuth } from '@/components/supabase/SessionProvider';
 import { useNavigation, useRouter } from 'expo-router';
 import { CommonActions } from '@react-navigation/native';
 import Constants from 'expo-constants';
+import { useTournoisV2 } from '@/repositories/tournois/useTournois';
 
 const googleMarketReviews =
   'market://details?id=com.MK.PetanqueGCU&showAllReviews=true';
@@ -34,6 +35,8 @@ export default function Accueil() {
   const router = useRouter();
   const navigation = useNavigation();
   const { session } = useAuth();
+
+  const { actualTournoi } = useTournoisV2();
 
   const listesJoueurs = useSelector(
     (state: any) => state.listesJoueurs.listesJoueurs,
@@ -97,17 +100,15 @@ export default function Accueil() {
   };
 
   const _buttonShowMatchs = () => {
-    if (listeMatchs) {
-      if (listeMatchs.length !== 0) {
-        return (
-          <CardButton
-            text={t('reprendre_tournoi')}
-            icons={['play']}
-            navigate={() => _showMatchs()}
-            newBadge={false}
-          />
-        );
-      }
+    if (actualTournoi) {
+      return (
+        <CardButton
+          text={t('reprendre_tournoi')}
+          icons={['play']}
+          navigate={() => _showMatchs()}
+          newBadge={false}
+        />
+      );
     } else {
       return (
         <Box className="bg-secondary-500 flex-1 items-center rounded-3xl py-5">
