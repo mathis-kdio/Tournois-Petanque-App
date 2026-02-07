@@ -6,10 +6,12 @@ export const terrainsPreparationTournois = sqliteTable(
   'terrains_preparation_tournois',
   {
     id: integer('id').primaryKey(),
-    terrainId: integer('terrain_id').references(() => terrains.id),
-    preparationTournoiId: integer('preparation_tournoi_id').references(
-      () => preparationTournoi.id,
-    ),
+    terrainId: integer('terrain_id')
+      .references(() => terrains.id)
+      .notNull(),
+    preparationTournoiId: integer('preparation_tournoi_id')
+      .references(() => preparationTournoi.id)
+      .notNull(),
   },
 );
 

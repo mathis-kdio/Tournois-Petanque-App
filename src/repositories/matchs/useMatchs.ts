@@ -1,9 +1,27 @@
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { MatchsRepository } from './matchsRepository';
-import { Match } from '@/db/schema/match';
+import { Match, NewMatch } from '@/db/schema/match';
 import { MatchModel } from '@/types/interfaces/matchModel';
 import { Equipe, Terrain } from '@/db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+
+function toNewMatch(
+  matchModel: MatchModel,
+  matchId: number,
+  tournoiId: number,
+): NewMatch {
+  const { manche, mancheName, terrain } = matchModel;
+
+  return {
+    matchId: matchId,
+    tournoiId: tournoiId,
+    tourId: manche,
+    tourName: mancheName,
+    equipe1: 0,
+    equipe2: 0,
+    terrainId: terrain?.id,
+  };
+}
 
 function toMatchmodel(
   match: Match,
@@ -15,8 +33,8 @@ function toMatchmodel(
     id: match.id,
     score1: match.score1 ?? undefined,
     score2: match.score2 ?? undefined,
-    manche: parseInt(match.tour),
-    mancheName: '',
+    manche: match.tourId,
+    mancheName: match.tourName ?? undefined,
     equipe: [
       [-1, -1, -1, -1],
       [-1, -1, -1, -1],
@@ -26,16 +44,9 @@ function toMatchmodel(
 }
 
 export const useMatchsV2 = (matchId: number) => {
-  /*const { data: data1 } = useLiveQuery(MatchsRepository.getAllMatchsV2());
-  const allMatchsVM = useMemo(
-    () => data1?.[0] && toMatchmodel(data1[0]),
-    [data1],
-  );*/
-
-  const { data: data2 } = useLiveQuery(
-    MatchsRepository.getFullMatchV2(matchId),
-    [matchId],
-  );
+  const { data: data2 } = useLiveQuery(MatchsRepository.getFullMatch(matchId), [
+    matchId,
+  ]);
   const matchVM = useMemo(
     () =>
       data2?.[0] &&
@@ -48,50 +59,27 @@ export const useMatchsV2 = (matchId: number) => {
     [data2],
   );
 
-  const deleteMatch = (id: number) => MatchsRepository.deleteMatchV2(id);
+  const addMatchs = async (matchs: MatchModel[], tournoiId: number) => {
+    const a = matchs.map((match, index) => toNewMatch(match, index, tournoiId));
+    //TODO
+    await MatchsRepository.insertMatch(a[0]);
+  };
+
+  const deleteMatch = (id: number) => MatchsRepository.deleteMatch(id);
 
   const updateScore = async (id: number, score1: number, score2: number) => {
-    await MatchsRepository.updateScoreV2(id, score1, score2);
+    await MatchsRepository.updateScore(id, score1, score2);
   };
 
   const resetScore = async (id: number) => {
-    await MatchsRepository.resetScoreV2(id);
+    await MatchsRepository.resetScore(id);
   };
 
   return {
-    //allMatchs: allMatchsVM,
     match: matchVM,
+    addMatchs,
     deleteMatch,
     updateScore,
     resetScore,
   };
 };
-
-export function useMatchs() {
-  const getAllMatchs = useCallback(() => MatchsRepository.getAllMatchs(), []);
-
-  const getMatch = useCallback(async (id: number) => {
-    const match = await MatchsRepository.getMatch(id);
-    console.log(match);
-    return toMatchmodel(match);
-    //const terrain = MatchsRepository.getMatch(id);
-  }, []);
-
-  const deleteMatch = useCallback(
-    (id: number) => MatchsRepository.deleteMatch(id),
-    [],
-  );
-
-  const updateScore = useCallback(
-    (id: number, score1: number, score2: number) =>
-      MatchsRepository.updateScore(id, score1, score2),
-    [],
-  );
-
-  const resetScore = useCallback(
-    (id: number) => MatchsRepository.resetScore(id),
-    [],
-  );
-
-  return { getAllMatchs, getMatch, deleteMatch, updateScore, resetScore };
-}

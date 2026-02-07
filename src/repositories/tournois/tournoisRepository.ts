@@ -21,8 +21,8 @@ export const TournoisRepository = {
     return getDrizzleDb().select().from(tournoi);
   },
 
-  async insertTournoi(newTournoi: NewTournoi): Promise<Tournoi[]> {
-    return await getDrizzleDb().insert(tournoi).values(newTournoi).returning();
+  insertTournoiV2(newTournoi: NewTournoi) {
+    return getDrizzleDb().insert(tournoi).values(newTournoi).returning();
   },
 
   async deleteTournoi(id: number): Promise<void> {

@@ -54,7 +54,7 @@ const GenerationLoading: React.FC<Props> = ({
 
   if (isLoading) {
     return (
-      <VStack>
+      <VStack className="border border-red-500">
         <Loading />
         <Text className="text-typography-white">
           {t('attente_generation_matchs')}

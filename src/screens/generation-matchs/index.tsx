@@ -16,8 +16,7 @@ import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { MatchModel } from '@/types/interfaces/matchModel';
 import TopBar from '@/components/topBar/TopBar';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigation } from 'expo-router';
 import { CommonActions } from '@react-navigation/native';
 import { screenStackNameType } from '@/types/types/searchParams';
@@ -32,8 +31,13 @@ import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
-import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { usePreparationTournoiV2 } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import GenerationLoading from './components/GenerationLoading';
+import { useTerrainsPreparationTournois } from '@/repositories/terrainsPreparationTournois/useTerrainsPreparationTournois';
+import { useJoueursPreparationTournoisV2 } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
+import Loading from '@/components/Loading';
+import { useTournoisV2 } from '@/repositories/tournois/useTournois';
+import { useMatchsV2 } from '@/repositories/matchs/useMatchs';
 
 export interface Props {
   screenStackName: screenStackNameType;
@@ -42,20 +46,12 @@ export interface Props {
 const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const dispatch = useDispatch();
 
-  const { getActualPreparationTournoi } = usePreparationTournoi();
-
-  const [preparationTournoiModel, setPreparationTournoiModel] = useState<
-    PreparationTournoiModel | undefined
-  >(undefined);
-
-  const listesJoueurs = useSelector(
-    (state: any) => state.listesJoueurs.listesJoueurs,
-  );
-  const listeTerrains = useSelector(
-    (state: any) => state.listeTerrains.listeTerrains,
-  );
+  const { preparationTournoiVM } = usePreparationTournoiV2();
+  const { joueurs } = useJoueursPreparationTournoisV2();
+  const { terrains } = useTerrainsPreparationTournois();
+  const { addTournoi } = useTournoisV2();
+  const { addMatchs } = useMatchsV2(0);
 
   const [isLoading, setIsLoading] = useState(true);
   const [isGenerationEnd, setIsGenerationEnd] = useState(false);
@@ -64,24 +60,6 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
   const [erreurMemesEquipes, setErreurMemesEquipes] = useState(false);
   const [adLoaded, setAdLoaded] = useState(false);
   const [adClosed, setAdClosed] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const resultpreparationTournoi = await getActualPreparationTournoi();
-      setPreparationTournoiModel(resultpreparationTournoi);
-    };
-    fetchData();
-  }, [getActualPreparationTournoi]);
-
-  const ajoutMatchs = (matchs: MatchModel[]) => {
-    const actionAjoutMatchs = { type: 'AJOUT_MATCHS', value: matchs };
-    dispatch(actionAjoutMatchs);
-    const actionAjoutTournoi = {
-      type: 'AJOUT_TOURNOI',
-      value: { tournoi: matchs },
-    };
-    dispatch(actionAjoutTournoi);
-  };
 
   useEffect(() => {
     initInterstitial();
@@ -103,7 +81,9 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
   }, []);
 
   useEffect(() => {
-    if (!isGenerationEnd) return;
+    if (!isGenerationEnd) {
+      return;
+    }
 
     if (Platform.OS !== 'web' && adLoaded) {
       showInterstitialAd();
@@ -120,225 +100,248 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
     }
   }, [isGenerationEnd, adLoaded, adClosed, navigation]);
 
-  const lanceurGeneration = (
-    preparationTournoiModel: PreparationTournoiModel,
-  ) => {
-    let typeInscription = preparationTournoiModel.mode;
-    let listeJoueurs = listesJoueurs[typeInscription];
-    let nbjoueurs = listeJoueurs.length;
-    let nbGenerationsRatee = 0;
-    let nbEssaisPossibles = nbjoueurs * nbjoueurs;
-    let returnType = 0;
-    // 3 types de retour possible:
-    // 0 si trop de personnes de type enfants ou règle pas memeEquipes impossible;
-    // 1 si breaker activé
-    // 2 si génération réussie
-    //Tant que la génération échoue à cause du breaker alors on relancer
-    while (nbGenerationsRatee < nbEssaisPossibles) {
-      returnType = generation(preparationTournoiModel);
-      if (returnType === 0 || returnType === 2) {
-        break;
-      } else {
-        nbGenerationsRatee++;
-      }
-    }
-    //Si la génération échoue trop de fois à cause du breaker alors affichage d'un message pour indiquer de changer les options
-    if (nbGenerationsRatee === nbEssaisPossibles) {
-      setIsGenerationSuccess(false);
-      setIsLoading(false);
-    }
-  };
+  const ajoutMatchs = useCallback(
+    async (matchs: MatchModel[], optionsTournoi: PreparationTournoiModel) => {
+      const b = await addTournoi(optionsTournoi);
 
-  const generation = (preparationTournoiModel: PreparationTournoiModel) => {
-    //Récupération des options que l'utilisateur a modifié ou laissé par défaut
-    const {
-      avecTerrains,
-      complement,
-      memesAdversaires,
-      memesEquipes,
-      mode,
-      modeCreationEquipes,
-      nbPtVictoire,
-      speciauxIncompatibles,
-      typeEquipes,
-      typeTournoi,
-      nbTours,
-    } = preparationTournoiModel;
-    if (
-      !avecTerrains ||
-      !complement ||
-      !memesAdversaires ||
-      !memesEquipes ||
-      !mode ||
-      !modeCreationEquipes ||
-      !nbPtVictoire ||
-      !speciauxIncompatibles ||
-      !typeEquipes ||
-      !typeTournoi
-    ) {
-      throw Error;
-    }
+      addMatchs(matchs);
 
-    let jamaisMemeCoequipier = memesEquipes;
-    let eviterMemeAdversaire = memesAdversaires;
-    let typeInscription = mode;
+      //TODO :
+      // Affecter joueurs
+      // Clear PreparationTournoiModel
+      // Clear TerrainsPreparationTournois
+      // Clear JoueursPreparationTournois
+    },
+    [addMatchs, addTournoi],
+  );
 
-    let listeJoueursInscrits: JoueurModel[];
-    if (
-      mode === ModeTournoi.AVECEQUIPES &&
-      modeCreationEquipes === ModeCreationEquipes.ALEATOIRE
-    ) {
-      listeJoueursInscrits = attributionEquipes(
-        listesJoueurs[typeInscription],
+  const generation = useCallback(
+    (preparationTournoiModel: PreparationTournoiModel) => {
+      //Récupération des options que l'utilisateur a modifié ou laissé par défaut
+      const {
+        avecTerrains,
+        complement,
+        memesAdversaires,
+        memesEquipes,
+        mode,
+        modeCreationEquipes,
+        nbPtVictoire,
+        speciauxIncompatibles,
         typeEquipes,
-      );
-    } else {
-      listeJoueursInscrits = listesJoueurs[typeInscription];
-    }
-
-    let matchs = undefined;
-    let nbMatchs = undefined;
-    let finalNbTours = nbTours;
-    let erreurMemesEquipes = undefined;
-    let erreurSpeciaux = undefined;
-    let echecGeneration = undefined;
-    if (typeTournoi === TypeTournoi.MELEDEMELE) {
-      if (typeEquipes === TypeEquipes.TETEATETE) {
-        ({ matchs, nbMatchs, echecGeneration } = generationTeteATete(
-          listeJoueursInscrits,
-          nbTours,
-          eviterMemeAdversaire,
-        ));
-      } else if (typeEquipes === TypeEquipes.DOUBLETTE) {
-        ({
-          matchs,
-          nbMatchs,
-          erreurMemesEquipes,
-          erreurSpeciaux,
-          echecGeneration,
-        } = generationDoublettes(
-          listeJoueursInscrits,
-          nbTours,
-          complement,
-          speciauxIncompatibles,
-          jamaisMemeCoequipier,
-          eviterMemeAdversaire,
-        ));
-      } else if (typeEquipes === TypeEquipes.TRIPLETTE) {
-        ({
-          matchs,
-          nbMatchs,
-          erreurMemesEquipes,
-          erreurSpeciaux,
-          echecGeneration,
-        } = generationTriplettes(
-          listeJoueursInscrits,
-          nbTours,
-          complement,
-          speciauxIncompatibles,
-          jamaisMemeCoequipier,
-          eviterMemeAdversaire,
-        ));
-      } else {
-        echecGeneration = true;
-      }
-    } else if (typeTournoi === TypeTournoi.MELEE) {
-      ({ matchs, nbMatchs, echecGeneration } = generationMelee(
-        listeJoueursInscrits,
+        typeTournoi,
         nbTours,
-        typeEquipes,
-        eviterMemeAdversaire,
-      ));
-    } else if (typeTournoi === TypeTournoi.COUPE) {
-      ({
-        matchs,
-        nbTours: finalNbTours,
-        nbMatchs,
-      } = generationCoupe(preparationTournoiModel, listeJoueursInscrits));
-    } else if (typeTournoi === TypeTournoi.CHAMPIONNAT) {
-      ({
-        matchs,
-        nbTours: finalNbTours,
-        nbMatchs,
-      } = generationChampionnat(preparationTournoiModel, listeJoueursInscrits));
-    } else if (typeTournoi === TypeTournoi.MULTICHANCES) {
-      ({
-        matchs,
-        nbTours: finalNbTours,
-        nbMatchs,
-      } = generationMultiChances(listeJoueursInscrits, typeEquipes));
-    } else {
-      throw new Error('typeTournoi inconnu');
-    }
-    if (erreurMemesEquipes) {
-      setErreurMemesEquipes(erreurMemesEquipes);
-      setIsLoading(false);
-      return 0;
-    }
-    if (erreurSpeciaux) {
-      setErreurSpeciaux(erreurSpeciaux);
-      setIsLoading(false);
-      return 0;
-    }
-    if (!matchs || echecGeneration) {
-      return 1;
-    }
-
-    //attributions des terrains
-    if (avecTerrains) {
-      let manche = matchs[0].manche;
-      let arrRandIdsTerrains = uniqueValueArrayRandOrder(listeTerrains.length);
-      let terrainIndex = 0;
-      for (let k = 0; k < matchs.length; k++) {
-        const match = matchs[k];
-        if (match.manche !== manche) {
-          manche = match.manche;
-          arrRandIdsTerrains = uniqueValueArrayRandOrder(listeTerrains.length);
-          terrainIndex = 0;
-        }
-        match.terrain = listeTerrains[arrRandIdsTerrains[terrainIndex]];
-        terrainIndex += 1;
+      } = preparationTournoiModel;
+      if (
+        !avecTerrains ||
+        !complement ||
+        !memesAdversaires ||
+        !memesEquipes ||
+        !mode ||
+        !modeCreationEquipes ||
+        !nbPtVictoire ||
+        !speciauxIncompatibles ||
+        !typeEquipes ||
+        !typeTournoi ||
+        !nbTours
+      ) {
+        throw Error;
       }
-    }
 
-    //Ajout des options du match à la fin du tableau contenant les matchs
-    matchs.push({
-      tournoiID: undefined,
-      nbTours: finalNbTours,
-      nbMatchs: nbMatchs,
-      nbPtVictoire: nbPtVictoire,
-      speciauxIncompatibles: speciauxIncompatibles,
-      memesEquipes: jamaisMemeCoequipier,
-      memesAdversaires: eviterMemeAdversaire,
-      typeEquipes: typeEquipes,
-      complement: complement,
-      typeTournoi: typeTournoi,
-      listeJoueurs: listesJoueurs[typeInscription].slice(),
-      avecTerrains: avecTerrains,
-      mode: typeInscription,
-    });
+      let listeJoueursInscrits: JoueurModel[];
+      if (
+        mode === ModeTournoi.AVECEQUIPES &&
+        modeCreationEquipes === ModeCreationEquipes.ALEATOIRE
+      ) {
+        listeJoueursInscrits = attributionEquipes(joueurs, typeEquipes);
+      } else {
+        listeJoueursInscrits = joueurs;
+      }
 
-    //Ajout dans le store
-    ajoutMatchs(matchs);
+      let matchs: MatchModel[] | undefined = undefined;
+      let nbMatchs: number | undefined = undefined;
+      let finalNbTours = nbTours;
+      let erreurMemesEquipes: boolean | undefined = undefined;
+      let erreurSpeciaux: boolean | undefined = undefined;
+      let echecGeneration: boolean | undefined = undefined;
+      if (typeTournoi === TypeTournoi.MELEDEMELE) {
+        if (typeEquipes === TypeEquipes.TETEATETE) {
+          ({ matchs, nbMatchs, echecGeneration } = generationTeteATete(
+            listeJoueursInscrits,
+            nbTours,
+            memesAdversaires,
+          ));
+        } else if (typeEquipes === TypeEquipes.DOUBLETTE) {
+          ({
+            matchs,
+            nbMatchs,
+            erreurMemesEquipes,
+            erreurSpeciaux,
+            echecGeneration,
+          } = generationDoublettes(
+            listeJoueursInscrits,
+            nbTours,
+            complement,
+            speciauxIncompatibles,
+            memesEquipes,
+            memesAdversaires,
+          ));
+        } else if (typeEquipes === TypeEquipes.TRIPLETTE) {
+          ({
+            matchs,
+            nbMatchs,
+            erreurMemesEquipes,
+            erreurSpeciaux,
+            echecGeneration,
+          } = generationTriplettes(
+            listeJoueursInscrits,
+            nbTours,
+            complement,
+            speciauxIncompatibles,
+            memesEquipes,
+            memesAdversaires,
+          ));
+        } else {
+          echecGeneration = true;
+        }
+      } else if (typeTournoi === TypeTournoi.MELEE) {
+        ({ matchs, nbMatchs, echecGeneration } = generationMelee(
+          listeJoueursInscrits,
+          nbTours,
+          typeEquipes,
+          memesAdversaires,
+        ));
+      } else if (typeTournoi === TypeTournoi.COUPE) {
+        ({
+          matchs,
+          nbTours: finalNbTours,
+          nbMatchs,
+        } = generationCoupe(preparationTournoiModel, listeJoueursInscrits));
+      } else if (typeTournoi === TypeTournoi.CHAMPIONNAT) {
+        ({
+          matchs,
+          nbTours: finalNbTours,
+          nbMatchs,
+        } = generationChampionnat(
+          preparationTournoiModel,
+          listeJoueursInscrits,
+        ));
+      } else if (typeTournoi === TypeTournoi.MULTICHANCES) {
+        ({
+          matchs,
+          nbTours: finalNbTours,
+          nbMatchs,
+        } = generationMultiChances(listeJoueursInscrits, typeEquipes));
+      } else {
+        throw new Error('typeTournoi inconnu');
+      }
 
-    //Désactivation de l'affichage du _displayLoading
-    setIsLoading(false);
-    setIsGenerationEnd(true);
+      if (erreurMemesEquipes) {
+        setErreurMemesEquipes(erreurMemesEquipes);
+        setIsLoading(false);
+        return 0;
+      }
+      if (erreurSpeciaux) {
+        setErreurSpeciaux(erreurSpeciaux);
+        setIsLoading(false);
+        return 0;
+      }
+      if (!matchs || echecGeneration) {
+        return 1;
+      }
 
-    //Si génération valide alors return 2
-    return 2;
-  };
+      //attributions des terrains
+      if (avecTerrains) {
+        let manche = matchs[0].manche;
+        let arrRandIdsTerrains = uniqueValueArrayRandOrder(terrains.length);
+        let terrainIndex = 0;
+        for (let k = 0; k < matchs.length; k++) {
+          const match = matchs[k];
+          if (match.manche !== manche) {
+            manche = match.manche;
+            arrRandIdsTerrains = uniqueValueArrayRandOrder(terrains.length);
+            terrainIndex = 0;
+          }
+          match.terrain = terrains[arrRandIdsTerrains[terrainIndex]];
+          terrainIndex += 1;
+        }
+      }
+
+      //Ajout des options du match à la fin du tableau contenant les matchs
+      const tournoiOptions: PreparationTournoiModel = {
+        id: 0,
+        nbTours: finalNbTours,
+        nbMatchs: nbMatchs,
+        nbPtVictoire: nbPtVictoire,
+        speciauxIncompatibles: speciauxIncompatibles,
+        memesEquipes: memesEquipes,
+        memesAdversaires: memesAdversaires,
+        typeEquipes: typeEquipes,
+        complement: complement,
+        typeTournoi: typeTournoi,
+        avecTerrains: avecTerrains,
+        mode: mode,
+      };
+
+      console.log('ajoutMatchs');
+      //Ajout dans le store
+      ajoutMatchs(matchs, tournoiOptions);
+
+      //Désactivation de l'affichage du _displayLoading
+      console.log('generation terminée');
+      setIsLoading(false);
+      setIsGenerationEnd(true);
+
+      //Si génération valide alors return 2
+      return 2;
+    },
+    [ajoutMatchs, joueurs, terrains],
+  );
+
+  const lanceurGeneration = useCallback(
+    (preparationTournoiModel: PreparationTournoiModel) => {
+      const nbjoueurs = joueurs.length;
+      const nbEssaisPossibles = nbjoueurs * nbjoueurs;
+      let nbGenerationsRatee = 0;
+      let returnType = 0;
+      // 3 types de retour possible:
+      // 0 si trop de personnes de type enfants ou règle pas memeEquipes impossible;
+      // 1 si breaker activé
+      // 2 si génération réussie
+      //Tant que la génération échoue à cause du breaker alors on relancer
+      while (nbGenerationsRatee < nbEssaisPossibles) {
+        returnType = generation(preparationTournoiModel);
+        if (returnType === 0 || returnType === 2) {
+          break;
+        } else {
+          nbGenerationsRatee++;
+        }
+      }
+      //Si la génération échoue trop de fois à cause du breaker alors affichage d'un message pour indiquer de changer les options
+      if (nbGenerationsRatee === nbEssaisPossibles) {
+        setIsGenerationSuccess(false);
+        setIsLoading(false);
+      }
+    },
+    [generation, joueurs],
+  );
 
   useEffect(() => {
+    if (!preparationTournoiVM) {
+      return;
+    }
+
     const timer = setTimeout(() => {
-      if (!preparationTournoiModel) return;
-      lanceurGeneration(preparationTournoiModel);
+      lanceurGeneration(preparationTournoiVM);
     }, 1000);
 
     return () => {
       clearTimeout(timer);
     };
-  }, []);
+  }, [lanceurGeneration, preparationTournoiVM]);
+
+  if (!preparationTournoiVM || !joueurs.length) {
+    return <Loading />;
+  }
 
   return (
     <VStack className="flex-1 bg-custom-background">

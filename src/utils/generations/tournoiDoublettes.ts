@@ -49,7 +49,13 @@ export const generationDoublettes = (
   speciauxIncompatibles: boolean,
   jamaisMemeCoequipier: boolean,
   eviterMemeAdversaire: number,
-) => {
+): {
+  matchs?: MatchModel[];
+  nbMatchs?: number;
+  echecGeneration?: boolean;
+  erreurSpeciaux?: boolean;
+  erreurMemesEquipes?: boolean;
+} => {
   const nbjoueurs = listeJoueurs.length;
   let matchs: MatchModel[] = [];
   let idMatch = 0;
@@ -297,7 +303,7 @@ export const generationDoublettes = (
       joueursNonType,
       speciauxIncompatibles,
     );
-    for (let j = 0; j < joueursNonSpe.length; ) {
+    for (let j = 0; j < joueursNonSpe.length;) {
       let joueurId = random[j];
       let match = matchs[idMatch];
 
