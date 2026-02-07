@@ -1,21 +1,26 @@
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { eq } from 'drizzle-orm';
 import { NewTerrain, Terrain, terrains } from '@/db/schema';
+import { eq } from 'drizzle-orm';
 
 export const TerrainsRepository = {
-  async getTerrains(): Promise<Terrain[]> {
-    const result = await getDrizzleDb().select().from(terrains);
+  async insert(terrain: NewTerrain): Promise<Terrain> {
+    const result = (
+      await getDrizzleDb().insert(terrains).values(terrain).returning()
+    ).at(0);
+    if (!result) {
+      throw new Error('Insert operation returned undefined');
+    }
     return result;
   },
 
-  async insertTerrains(terrain: NewTerrain): Promise<Terrain[]> {
-    return await getDrizzleDb().insert(terrains).values(terrain).returning();
+  delete(terrainId: number) {
+    return getDrizzleDb().delete(terrains).where(eq(terrains.id, terrainId));
   },
 
-  async updateTerrain(terrain: Terrain): Promise<void> {
-    await getDrizzleDb()
+  rename(terrainId: number, name: string) {
+    return getDrizzleDb()
       .update(terrains)
-      .set(terrain)
-      .where(eq(terrains.id, terrain.id));
+      .set({ name })
+      .where(eq(terrains.id, terrainId));
   },
 };

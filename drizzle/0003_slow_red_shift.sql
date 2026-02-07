@@ -1,4 +1,4 @@
-CREATE TABLE `joueurs_prepration_tournois` (
+CREATE TABLE `joueurs_preparation_tournois` (
 	`id` integer PRIMARY KEY NOT NULL,
 	`joueur_id` integer,
 	`preparation_tournoi_id` integer,

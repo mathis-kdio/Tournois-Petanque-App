@@ -13,7 +13,7 @@ const countOccurrences = (arr: number[], val: number) =>
 
 export const uniqueValueArrayRandOrder = (arrayLength: number) => {
   const res = [];
-  for (let i = 0; i < arrayLength; ) {
+  for (let i = 0; i < arrayLength;) {
     const random = rand0ToMax(arrayLength - 1);
     if (countOccurrences(res, random) < 1) {
       res.push(random);
@@ -28,7 +28,7 @@ export const calcNbMatchsParTour = (
   typeEquipes: TypeEquipes,
   modeTournoi: ModeTournoi,
   typeTournoi: TypeTournoi,
-  complement: Complement,
+  complement: Complement | undefined,
 ): number => {
   if (
     modeTournoi === ModeTournoi.AVECEQUIPES ||

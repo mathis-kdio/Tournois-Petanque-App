@@ -5,25 +5,21 @@ import { Box } from '@/components/ui/box';
 import React, { useState } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { TerrainModel } from '@/types/interfaces/terrainModel';
-import { useDispatch } from 'react-redux';
+import { useTerrainsPreparationTournois } from '@/repositories/terrainsPreparationTournois/useTerrainsPreparationTournois';
 
 export interface Props {
   terrain: TerrainModel;
 }
 
 const ListeTerrainItem: React.FC<Props> = ({ terrain }) => {
-  const dispatch = useDispatch();
-
   const [renommerOn, setRenommerOn] = useState(false);
   const [terrainText, setTerrainText] = useState('');
 
+  const { deleteTerrain, renameTerrain } = useTerrainsPreparationTournois();
+
   const supprimerTerrain = (terrain: TerrainModel) => {
     setRenommerOn(false);
-    const actionSuppr = {
-      type: 'SUPPR_TERRAIN',
-      value: { terrainId: terrain.id },
-    };
-    dispatch(actionSuppr);
+    deleteTerrain(terrain.id);
   };
 
   const renommerButton = (terrain: TerrainModel) => {
@@ -58,15 +54,13 @@ const ListeTerrainItem: React.FC<Props> = ({ terrain }) => {
 
   const renommerTerrain = (terrain: TerrainModel) => {
     if (terrainText === '') {
-      return;
+      throw Error('renommerTerrain ne devrait pas être possible');
     }
 
     setRenommerOn(false);
-    const actionRenommer = {
-      type: 'RENOMMER_TERRAIN',
-      value: { terrainId: terrain.id, newName: terrainText },
-    };
-    dispatch(actionRenommer);
+
+    renameTerrain(terrain.id, terrainText);
+
     setTerrainText('');
   };
 

@@ -8,7 +8,7 @@ import { Joueur, joueurs } from '@/db/schema';
 import { eq, inArray, sql } from 'drizzle-orm';
 
 export type JoueursPreparationTournoisWithJoueur = {
-  joueurs_prepration_tournois: JoueursPreparationTournois;
+  joueurs_preparation_tournois: JoueursPreparationTournois;
   joueurs: Joueur;
 };
 
@@ -20,19 +20,12 @@ export const JoueursPreparationTournoisRepository = {
       .where(sql`1 = 0`);
   },
 
-  getMany(preparationTournoiId?: number) {
+  getMany() {
     return getDrizzleDb()
       .select()
       .from(joueursPreparationTournois)
       .innerJoin(joueurs, eq(joueursPreparationTournois.joueurId, joueurs.id))
-      .where(
-        preparationTournoiId
-          ? eq(
-            joueursPreparationTournois.preparationTournoiId,
-            preparationTournoiId,
-          )
-          : sql`0 = 1`,
-      );
+      .where(eq(joueursPreparationTournois.preparationTournoiId, 0));
   },
 
   async insert(

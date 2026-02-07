@@ -7,6 +7,8 @@ import m0002 from './0002_loving_magneto.sql';
 import m0003 from './0003_slow_red_shift.sql';
 import m0004 from './0004_loose_ken_ellis.sql';
 import m0005 from './0005_giant_justice.sql';
+import m0006 from './0006_wild_the_spike.sql';
+import m0007 from './0007_medical_silver_sable.sql';
 
   export default {
     journal,
@@ -16,7 +18,9 @@ m0001,
 m0002,
 m0003,
 m0004,
-m0005
+m0005,
+m0006,
+m0007
     }
   }
   

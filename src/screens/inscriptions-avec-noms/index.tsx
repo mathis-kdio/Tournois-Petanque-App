@@ -24,76 +24,72 @@ const InscriptionsAvecNoms = () => {
 
   const { renameJoueur, checkJoueur } = useJoueursV2();
   const {
-    addJoueursPreparationTournoi,
     removeJoueursPreparationTournoi,
     removeAllJoueursPreparationTournoi,
   } = useJoueursPreparationTournois();
 
-  const { joueurs } = useJoueursPreparationTournoisV2(preparationTournoiVM?.id);
+  const { joueurs, addJoueursPreparationTournoi } =
+    useJoueursPreparationTournoisV2();
 
-  const equipeAuto = useCallback(
-    (listeJoueurs: JoueurModel[], typeEquipes: TypeEquipes) => {
-      if (typeEquipes === TypeEquipes.TETEATETE) {
-        return listeJoueurs.length + 1;
-      } else {
-        const nbJoueursParEquipe =
-          typeEquipes === TypeEquipes.DOUBLETTE ? 2 : 3;
+  const equipeAuto = (
+    listeJoueurs: JoueurModel[],
+    typeEquipes: TypeEquipes,
+  ) => {
+    if (typeEquipes === TypeEquipes.TETEATETE) {
+      return listeJoueurs.length + 1;
+    } else {
+      const nbJoueursParEquipe = typeEquipes === TypeEquipes.DOUBLETTE ? 2 : 3;
 
-        // Compter le nombre de joueurs par équipe
-        const joueursParEquipe: { [key: number]: number } = {};
-        listeJoueurs.forEach((joueur) => {
-          if (joueur.equipe) {
-            joueursParEquipe[joueur.equipe] =
-              (joueursParEquipe[joueur.equipe] || 0) + 1;
-          }
-        });
-
-        // Trouver l'équipe avec l'id le plus proche de 0 qui n'a pas dépassé nbJoueursParEquipe
-        let equipeTrouvee = 1;
-        let i = 1;
-        while (true) {
-          const nbJoueursDansEquipe = joueursParEquipe[i] || 0;
-          if (nbJoueursDansEquipe < nbJoueursParEquipe) {
-            equipeTrouvee = i;
-            break;
-          }
-          i += 1;
+      // Compter le nombre de joueurs par équipe
+      const joueursParEquipe: { [key: number]: number } = {};
+      listeJoueurs.forEach((joueur) => {
+        if (joueur.equipe) {
+          joueursParEquipe[joueur.equipe] =
+            (joueursParEquipe[joueur.equipe] || 0) + 1;
         }
-        return equipeTrouvee;
-      }
-    },
-    [],
-  );
+      });
 
-  const handleAddJoueur = useCallback(
-    async (joueurName: string, joueurType: JoueurType | undefined) => {
-      if (!preparationTournoiVM) {
-        return;
+      // Trouver l'équipe avec l'id le plus proche de 0 qui n'a pas dépassé nbJoueursParEquipe
+      let equipeTrouvee = 1;
+      let i = 1;
+      while (true) {
+        const nbJoueursDansEquipe = joueursParEquipe[i] || 0;
+        if (nbJoueursDansEquipe < nbJoueursParEquipe) {
+          equipeTrouvee = i;
+          break;
+        }
+        i += 1;
       }
-      const { typeEquipes } = preparationTournoiVM;
-      if (!typeEquipes) {
-        throw Error('typeEquipes devrait être défini');
-      }
-      const equipe = equipeAuto(joueurs, typeEquipes);
-      const joueur: JoueurModel = {
-        id: joueurs.length,
-        name: joueurName,
-        type: joueurType,
-        equipe: equipe,
-        isChecked: false,
-      };
+      return equipeTrouvee;
+    }
+  };
 
-      await addJoueursPreparationTournoi(joueur);
-    },
-    [addJoueursPreparationTournoi, equipeAuto, joueurs, preparationTournoiVM],
-  );
+  const handleAddJoueur = async (
+    joueurName: string,
+    joueurType: JoueurType | undefined,
+  ) => {
+    if (!preparationTournoiVM) {
+      throw Error('preparationTournoiVM devrait être défini');
+    }
+    const { typeEquipes } = preparationTournoiVM;
+    if (!typeEquipes) {
+      throw Error('typeEquipes devrait être défini');
+    }
+    const equipe = equipeAuto(joueurs, typeEquipes);
+    const joueur: JoueurModel = {
+      id: joueurs.length,
+      name: joueurName,
+      type: joueurType,
+      equipe: equipe,
+      isChecked: false,
+    };
 
-  const handleDeleteJoueur = useCallback(
-    async (id: number) => {
-      await removeJoueursPreparationTournoi(id);
-    },
-    [removeJoueursPreparationTournoi],
-  );
+    await addJoueursPreparationTournoi(joueur);
+  };
+
+  const handleDeleteJoueur = (id: number) => {
+    removeJoueursPreparationTournoi(id);
+  };
 
   const handleAddEquipeJoueur = (id: number, equipeId: number) => { };
 

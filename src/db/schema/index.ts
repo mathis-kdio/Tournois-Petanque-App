@@ -6,5 +6,6 @@ export * from './joueursTournois';
 export * from './listesJoueurs';
 export * from './match';
 export * from './preparationTournoi';
+export * from './terrainsPreparationTournoi';
 export * from './terrain';
 export * from './tournoi';

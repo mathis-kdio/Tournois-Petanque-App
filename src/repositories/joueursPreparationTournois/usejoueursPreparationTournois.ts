@@ -4,7 +4,7 @@ import {
   JoueursPreparationTournoisWithJoueur,
 } from './joueursPreparationTournoiRepository';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { Joueur, NewJoueursPreparationTournois } from '@/db/schema';
+import { Joueur, NewJoueur, NewJoueursPreparationTournois } from '@/db/schema';
 import { JoueursRepository } from '../joueurs/joueursRepository';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
@@ -21,6 +21,16 @@ function toJoueurModel(
   };
 }
 
+function toNewJoueur(joueurModel: JoueurModel): NewJoueur {
+  return {
+    joueurId: joueurModel.id,
+    name: joueurModel.name,
+    type: joueurModel.type,
+    equipe: joueurModel.equipe,
+    isChecked: joueurModel.isChecked,
+  };
+}
+
 function toNewJoueursPreparationTournois(
   joueur: Joueur,
   preparationTournoiId: number,
@@ -31,20 +41,32 @@ function toNewJoueursPreparationTournois(
   };
 }
 
-export const useJoueursPreparationTournoisV2 = (
-  preparationTournoiId: number | undefined,
-) => {
-  const { data } = useLiveQuery(
-    JoueursPreparationTournoisRepository.getMany(preparationTournoiId),
-    [preparationTournoiId],
-  );
+export const useJoueursPreparationTournoisV2 = () => {
+  const { data } = useLiveQuery(JoueursPreparationTournoisRepository.getMany());
 
   const actualJoueursPreparationTournoiVM = useMemo(
     () => data.map(toJoueurModel) ?? [],
     [data],
   );
 
-  return { joueurs: actualJoueursPreparationTournoiVM };
+  const addJoueursPreparationTournoi = async (joueurModel: JoueurModel) => {
+    const res = await JoueursRepository.insert(toNewJoueur(joueurModel));
+    await JoueursPreparationTournoisRepository.insert(
+      toNewJoueursPreparationTournois(res, 0),
+    );
+  };
+
+  const removeJoueursPreparationTournoi = async (joueurId: number) => {
+    const joueur = await JoueursRepository.select(joueurId);
+    await JoueursPreparationTournoisRepository.delete([joueur.id]);
+    await JoueursRepository.delete([joueur.id]);
+  };
+
+  return {
+    joueurs: actualJoueursPreparationTournoiVM,
+    addJoueursPreparationTournoi,
+    removeJoueursPreparationTournoi,
+  };
 };
 
 export const useJoueursPreparationTournois = () => {

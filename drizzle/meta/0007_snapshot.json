@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "beeec38a-b59a-4474-acf7-a491d0d6c69f",
-  "prevId": "4187bfc2-738f-4bb3-8392-ee1225601bd1",
+  "id": "3ecd6dd3-ee80-4f29-87d4-ea93ede4a9cb",
+  "prevId": "da65a0a7-a898-4e4f-a557-808778c694c2",
   "tables": {
     "equipe": {
       "name": "equipe",
@@ -107,7 +107,8 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false
+          "autoincrement": false,
+          "default": false
         }
       },
       "indexes": {},
@@ -357,7 +358,7 @@
           "name": "tour",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "equipe1_id": {
@@ -564,6 +565,64 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "terrains_preparation_tournois": {
+      "name": "terrains_preparation_tournois",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "terrain_id": {
+          "name": "terrain_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "preparation_tournoi_id": {
+          "name": "preparation_tournoi_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "terrains_preparation_tournois_terrain_id_terrains_id_fk": {
+          "name": "terrains_preparation_tournois_terrain_id_terrains_id_fk",
+          "tableFrom": "terrains_preparation_tournois",
+          "tableTo": "terrains",
+          "columnsFrom": [
+            "terrain_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "terrains_preparation_tournois_preparation_tournoi_id_preparation_tournoi_id_fk": {
+          "name": "terrains_preparation_tournois_preparation_tournoi_id_preparation_tournoi_id_fk",
+          "tableFrom": "terrains_preparation_tournois",
+          "tableTo": "preparation_tournoi",
+          "columnsFrom": [
+            "preparation_tournoi_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "terrains": {
       "name": "terrains",
       "columns": {
@@ -617,51 +676,92 @@
           "name": "name",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
-        "option1": {
-          "name": "option1",
-          "type": "text",
+        "nbTours": {
+          "name": "nbTours",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
-        "option2": {
-          "name": "option2",
-          "type": "text",
+        "nbMatchs": {
+          "name": "nbMatchs",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
-        "option3": {
-          "name": "option3",
+        "nbPtVictoire": {
+          "name": "nbPtVictoire",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "speciauxIncompatibles": {
+          "name": "speciauxIncompatibles",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "memesEquipes": {
+          "name": "memesEquipes",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "memesAdversaires": {
+          "name": "memesAdversaires",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "typeEquipes": {
+          "name": "typeEquipes",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "typeTournoi": {
+          "name": "typeTournoi",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "avecTerrains": {
+          "name": "avecTerrains",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "mode": {
+          "name": "mode",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
           "autoincrement": false
         },
         "create_at": {
           "name": "create_at",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "updated_at": {
           "name": "updated_at",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
-        },
-        "synced": {
-          "name": "synced",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": 0
         }
       },
       "indexes": {},

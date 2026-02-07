@@ -174,8 +174,8 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-    "joueurs_prepration_tournois": {
-      "name": "joueurs_prepration_tournois",
+    "joueurs_preparation_tournois": {
+      "name": "joueurs_preparation_tournois",
       "columns": {
         "id": {
           "name": "id",
@@ -201,9 +201,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "joueurs_prepration_tournois_joueur_id_joueurs_id_fk": {
-          "name": "joueurs_prepration_tournois_joueur_id_joueurs_id_fk",
-          "tableFrom": "joueurs_prepration_tournois",
+        "joueurs_preparation_tournois_joueur_id_joueurs_id_fk": {
+          "name": "joueurs_preparation_tournois_joueur_id_joueurs_id_fk",
+          "tableFrom": "joueurs_preparation_tournois",
           "tableTo": "joueurs",
           "columnsFrom": [
             "joueur_id"
@@ -214,9 +214,9 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "joueurs_prepration_tournois_preparation_tournoi_id_preparation_tournoi_id_fk": {
-          "name": "joueurs_prepration_tournois_preparation_tournoi_id_preparation_tournoi_id_fk",
-          "tableFrom": "joueurs_prepration_tournois",
+        "joueurs_preparation_tournois_preparation_tournoi_id_preparation_tournoi_id_fk": {
+          "name": "joueurs_preparation_tournois_preparation_tournoi_id_preparation_tournoi_id_fk",
+          "tableFrom": "joueurs_preparation_tournois",
           "tableTo": "preparation_tournoi",
           "columnsFrom": [
             "preparation_tournoi_id"

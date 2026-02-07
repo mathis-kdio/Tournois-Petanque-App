@@ -57,8 +57,6 @@ const ListesJoueurs = () => {
     [renameListeJoueurs],
   );
 
-  console.log(listesJoueurs);
-
   const _addList = () => {
     const actionRemoveList = {
       type: 'SUPPR_ALL_JOUEURS',

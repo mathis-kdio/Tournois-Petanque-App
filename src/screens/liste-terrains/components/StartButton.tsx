@@ -34,7 +34,7 @@ const StartButton: React.FC<Props> = ({
 
   const { typeEquipes, mode, typeTournoi, complement } =
     preparationTournoiModel;
-  if (!typeEquipes || !mode || !typeTournoi || !complement) {
+  if (!typeEquipes || !mode || !typeTournoi) {
     throw Error('options incomplètes');
   }
 

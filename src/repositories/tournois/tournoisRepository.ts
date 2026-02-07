@@ -41,9 +41,6 @@ export const TournoisRepository = {
   },
 
   async renameTournoiV2(id: number, name: string) {
-    console.log('id', id);
-    console.log('name', name);
-
     return await getDrizzleDb()
       .update(tournoi)
       .set({ name })

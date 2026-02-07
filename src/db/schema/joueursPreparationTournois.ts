@@ -3,7 +3,7 @@ import { joueurs } from './joueurs';
 import { preparationTournoi } from './preparationTournoi';
 
 export const joueursPreparationTournois = sqliteTable(
-  'joueurs_prepration_tournois',
+  'joueurs_preparation_tournois',
   {
     id: integer('id').primaryKey(),
     joueurId: integer('joueur_id').references(() => joueurs.id),
