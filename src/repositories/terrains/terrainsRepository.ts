@@ -3,6 +3,10 @@ import { NewTerrain, Terrain, terrains } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 
 export const TerrainsRepository = {
+  getAll() {
+    return getDrizzleDb().select().from(terrains);
+  },
+
   async insert(terrain: NewTerrain): Promise<Terrain> {
     const result = (
       await getDrizzleDb().insert(terrains).values(terrain).returning()

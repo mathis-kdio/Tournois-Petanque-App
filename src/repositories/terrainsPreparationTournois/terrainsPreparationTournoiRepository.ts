@@ -1,6 +1,6 @@
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { Joueur, terrains } from '@/db/schema';
-import { eq, inArray } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import {
   NewTerrainsPreparationTournois,
   terrainsPreparationTournois,
@@ -13,6 +13,15 @@ export type TerrainsPreparationTournoisWithJoueur = {
 };
 
 export const TerrainsPreparationTournoisRepository = {
+  getIdsInPreparation(preparationId: number) {
+    return getDrizzleDb()
+      .select({ terrainId: terrainsPreparationTournois.terrainId })
+      .from(terrainsPreparationTournois)
+      .where(
+        eq(terrainsPreparationTournois.preparationTournoiId, preparationId),
+      );
+  },
+
   getMany() {
     return getDrizzleDb()
       .select()

@@ -32,17 +32,23 @@ function toNewTerrainsPreparationTournois(
 }
 
 export function useTerrainsPreparationTournois() {
-  const { data: terrainsPreparationTournois } = useLiveQuery(
-    TerrainsPreparationTournoisRepository.getMany(),
+  const { data: tousLesTerrains = [] } = useLiveQuery(
+    TerrainsRepository.getAll(),
+  );
+
+  const { data: liaisons = [] } = useLiveQuery(
+    TerrainsPreparationTournoisRepository.getIdsInPreparation(0),
   );
 
   const terrainsVm = useMemo(() => {
-    return terrainsPreparationTournois.length
-      ? terrainsPreparationTournois.map(({ terrains }) =>
-        toTerrainModel(terrains),
-      )
-      : [];
-  }, [terrainsPreparationTournois]);
+    if (!tousLesTerrains.length || !liaisons.length) {
+      return [];
+    }
+    const idsEnPreparation = new Set(liaisons.map((l) => l.terrainId));
+    return tousLesTerrains
+      .filter((t) => idsEnPreparation.has(t.id))
+      .map((t) => toTerrainModel(t));
+  }, [tousLesTerrains, liaisons]);
 
   const insertTerrain = async (terrainName: string) => {
     const terrain = await TerrainsRepository.insert(toNewTerrain(terrainName));
@@ -58,9 +64,6 @@ export function useTerrainsPreparationTournois() {
 
   const renameTerrain = async (terrainId: number, name: string) => {
     await TerrainsRepository.rename(terrainId, name);
-    // Problème de refresh de terrainsPreparationTournois
-    // => Solution : ne pas faire de jointure mais une autre useLiveQuery
-    //   => ou ne pas avoir terrainsPreparationTournois dans ce use mais en entrée et avoir uniquement useLiveQuery pour TerrainsRepository
   };
 
   return {
