@@ -43,7 +43,7 @@ function toNewTournoi(
     !nbPtVictoire ||
     speciauxIncompatibles === undefined ||
     memesEquipes === undefined ||
-    !memesAdversaires ||
+    memesAdversaires === undefined ||
     (typeEquipes !== TypeEquipes.DOUBLETTE &&
       typeEquipes !== TypeEquipes.TETEATETE &&
       typeEquipes !== TypeEquipes.TRIPLETTE) ||

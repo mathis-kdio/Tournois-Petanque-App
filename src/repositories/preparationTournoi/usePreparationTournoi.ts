@@ -1,6 +1,9 @@
 import { useMemo } from 'react';
 import { PreparationTournoisRepository } from './preparationTournoiRepository';
-import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import {
+  MemesAdversairesType,
+  PreparationTournoiModel,
+} from '@/types/interfaces/preparationTournoiModel';
 import { PreparationTournoi } from '@/db/schema/preparationTournoi';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
@@ -71,7 +74,7 @@ export const usePreparationTournoi = () => {
     nbPtVictoire: number,
     speciauxIncompatibles: boolean,
     memesEquipes: boolean,
-    memesAdversaires: number,
+    memesAdversaires: MemesAdversairesType,
     avecTerrains: boolean,
   ) => {
     const res = await PreparationTournoisRepository.getPreparationTournoi();

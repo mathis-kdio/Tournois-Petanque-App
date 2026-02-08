@@ -4,6 +4,8 @@ import { ModeTournoi } from '../enums/modeTournoi';
 import { TypeEquipes } from '../enums/typeEquipes';
 import { TypeTournoi } from '../enums/typeTournoi';
 
+export type MemesAdversairesType = 0 | 50 | 100;
+
 export interface PreparationTournoiModel {
   id: number;
   nbTours?: number;
@@ -11,7 +13,7 @@ export interface PreparationTournoiModel {
   nbPtVictoire?: number;
   speciauxIncompatibles?: boolean;
   memesEquipes?: boolean;
-  memesAdversaires?: number;
+  memesAdversaires?: MemesAdversairesType;
   typeEquipes?: TypeEquipes;
   complement?: Complement;
   typeTournoi?: TypeTournoi;

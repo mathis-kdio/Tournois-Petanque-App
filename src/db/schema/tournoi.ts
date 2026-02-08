@@ -1,6 +1,7 @@
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
+import { MemesAdversairesType } from '@/types/interfaces/preparationTournoiModel';
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 
 export const tournoi = sqliteTable('tournoi', {
@@ -11,7 +12,7 @@ export const tournoi = sqliteTable('tournoi', {
   nbPtVictoire: integer().notNull(),
   speciauxIncompatibles: integer({ mode: 'boolean' }).notNull(),
   memesEquipes: integer({ mode: 'boolean' }).notNull(),
-  memesAdversaires: integer().notNull(),
+  memesAdversaires: integer().$type<MemesAdversairesType>().notNull(),
   typeEquipes: text({
     enum: [TypeEquipes.DOUBLETTE, TypeEquipes.TETEATETE, TypeEquipes.TRIPLETTE],
   }).notNull(),

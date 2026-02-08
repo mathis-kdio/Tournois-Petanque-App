@@ -25,6 +25,7 @@ import { useRouter } from 'expo-router';
 import Loading from '@/components/Loading';
 import { screenStackNameType } from '@/types/types/searchParams';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { MemesAdversairesType } from '@/types/interfaces/preparationTournoiModel';
 
 export interface Props {
   screenStackName: screenStackNameType;
@@ -43,7 +44,8 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
 
   const [speciauxIncompatibles, setSpeciauxIncompatibles] = useState(true);
   const [memesEquipes, setMemesEquipes] = useState(true);
-  const [memesAdversaires, setMemesAdversaires] = useState(50);
+  const [memesAdversaires, setMemesAdversaires] =
+    useState<MemesAdversairesType>(50);
   const [nbTours, setNbTours] = useState<number | undefined>(defaultNbTours);
   const [nbPtVictoire, setNbPtVictoire] = useState<number | undefined>(
     defaultNbPtVictoire,
