@@ -11,10 +11,7 @@ import { useCallback } from 'react';
 import Loading from '@/components/Loading';
 import { JoueurType } from '@/types/enums/joueurType';
 import { useJoueursV2 } from '@/repositories/joueurs/useJoueurs';
-import {
-  useJoueursPreparationTournois,
-  useJoueursPreparationTournoisV2,
-} from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
+import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import StartButton from './components/StartButton';
 
 const InscriptionsAvecNoms = () => {
@@ -24,12 +21,11 @@ const InscriptionsAvecNoms = () => {
 
   const { renameJoueur, checkJoueur } = useJoueursV2();
   const {
+    joueurs,
+    addJoueursPreparationTournoi,
     removeJoueursPreparationTournoi,
     removeAllJoueursPreparationTournoi,
   } = useJoueursPreparationTournois();
-
-  const { joueurs, addJoueursPreparationTournoi } =
-    useJoueursPreparationTournoisV2();
 
   const equipeAuto = (
     listeJoueurs: JoueurModel[],

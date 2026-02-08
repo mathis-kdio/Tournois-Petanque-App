@@ -11,7 +11,7 @@ import Loading from '@/components/Loading';
 import { screenStackNameType } from '@/types/types/searchParams';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import StartButton from './components/StartButton';
-import { useJoueursPreparationTournoisV2 } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
+import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import { useTerrainsPreparationTournois } from '@/repositories/terrainsPreparationTournois/useTerrainsPreparationTournois';
 
 export interface Props {
@@ -22,7 +22,7 @@ const ListeTerrains: React.FC<Props> = ({ screenStackName }) => {
   const { t } = useTranslation();
 
   const { preparationTournoiVM } = usePreparationTournoi();
-  const { joueurs } = useJoueursPreparationTournoisV2();
+  const { joueurs } = useJoueursPreparationTournois();
   const { terrains, insertTerrain } = useTerrainsPreparationTournois();
 
   if (!preparationTournoiVM || !joueurs || !terrains) {

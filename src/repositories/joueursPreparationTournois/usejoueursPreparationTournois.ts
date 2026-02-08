@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import {
   JoueursPreparationTournoisRepository,
   JoueursPreparationTournoisWithJoueur,
@@ -42,7 +42,7 @@ function toNewJoueursPreparationTournois(
   };
 }
 
-export const useJoueursPreparationTournoisV2 = () => {
+export const useJoueursPreparationTournois = () => {
   const { data } = useLiveQuery(JoueursPreparationTournoisRepository.getMany());
 
   const actualJoueursPreparationTournoiVM = useMemo(
@@ -63,68 +63,16 @@ export const useJoueursPreparationTournoisV2 = () => {
     await JoueursRepository.delete([joueur.id]);
   };
 
+  const removeAllJoueursPreparationTournoi = async () => {
+    const joueur = await JoueursPreparationTournoisRepository.getMany();
+    await JoueursPreparationTournoisRepository.deleteAll();
+    await JoueursRepository.delete(joueur.map((e) => e.joueurs.id));
+  };
+
   return {
     joueurs: actualJoueursPreparationTournoiVM,
     addJoueursPreparationTournoi,
     removeJoueursPreparationTournoi,
-  };
-};
-
-export const useJoueursPreparationTournois = () => {
-  const getActualJoueursPreparationTournoi = useCallback(async () => {
-    const joueursPreparationTournois =
-      await JoueursPreparationTournoisRepository.getMany();
-    return joueursPreparationTournois.map(toJoueurModel);
-  }, []);
-
-  const addJoueursPreparationTournoi = useCallback(
-    async (joueurModel: JoueurModel) => {
-      const joueur = await JoueursRepository.insert(
-        JoueursRepository.toNewJoueur(joueurModel),
-      );
-
-      await JoueursPreparationTournoisRepository.insert(
-        toNewJoueursPreparationTournois(joueur, 0),
-      );
-      return JoueursRepository.toJoueurModel(joueur);
-    },
-    [],
-  );
-
-  const removeJoueursPreparationTournoi = useCallback(
-    async (joueurId: number) => {
-      const joueur = await JoueursRepository.select(joueurId);
-
-      await JoueursPreparationTournoisRepository.delete([joueur.id]);
-      await JoueursRepository.delete([joueur.id]);
-    },
-    [],
-  );
-
-  const removeAllJoueursPreparationTournoi = useCallback(async () => {
-    const joueursPreparationTournois =
-      await JoueursPreparationTournoisRepository.getMany();
-    JoueursRepository.delete(
-      joueursPreparationTournois.map((e) => e.joueurs.id),
-    );
-    JoueursPreparationTournoisRepository.deleteAll();
-  }, []);
-
-  const getAllJoueursPreparationTournoi = useCallback(async () => {
-    const joueursPreparationTournois =
-      await JoueursPreparationTournoisRepository.getMany();
-    const joueurModel = joueursPreparationTournois.map(
-      (joueursPreparationTournoisWithJoueur) =>
-        toJoueurModel(joueursPreparationTournoisWithJoueur),
-    );
-    return joueurModel;
-  }, []);
-
-  return {
-    getActualJoueursPreparationTournoi,
-    addJoueursPreparationTournoi,
-    removeJoueursPreparationTournoi,
     removeAllJoueursPreparationTournoi,
-    getAllJoueursPreparationTournoi,
   };
 };

@@ -9,7 +9,7 @@ import { Complement } from '@/types/enums/complement';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import Loading from '@/components/Loading';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
-import { useJoueursPreparationTournoisV2 } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
+import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import ComplementCard from '@/screens/complement/components/ComplementCard';
 import { screenStackNameType } from '@/types/types/searchParams';
 
@@ -22,7 +22,7 @@ const ChoixComplement: React.FC<Props> = ({ screenStackName }) => {
 
   const { preparationTournoiVM } = usePreparationTournoi();
 
-  const { joueurs } = useJoueursPreparationTournoisV2(preparationTournoiVM?.id);
+  const { joueurs } = useJoueursPreparationTournois(preparationTournoiVM?.id);
 
   const [options, setOptions] = useState<Complement[]>([]);
 
