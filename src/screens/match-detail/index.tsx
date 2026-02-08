@@ -36,11 +36,15 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
 
   const secondInput = React.createRef<any>();
 
-  const { match, updateScore, resetScore } = useMatchsV2(idMatch);
+  const { updateScore, resetScore } = useMatchsV2(idMatch);
   const { actualTournoi } = useTournoisV2();
 
-  if (!match || !actualTournoi) {
+  if (!actualTournoi) {
     return <Loading />;
+  }
+  const match = actualTournoi.matchs.find((match) => match.id === idMatch);
+  if (!match) {
+    throw Error('match devrait être trouvé');
   }
 
   const ajoutScoreTextInputChanged = (score: string, equipe: EquipeId) =>
@@ -54,10 +58,7 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
     );
   };
 
-  const displayName = (joueur: JoueurModel | undefined, equipeId: EquipeId) => {
-    if (!joueur) {
-      return;
-    }
+  const displayName = (joueur: JoueurModel, equipeId: EquipeId) => {
     if (equipeId === 1) {
       return (
         <Text
@@ -83,7 +84,10 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
     const nomsJoueurs = [];
     const equipe = match.equipe[equipeId - 1];
     for (let i = 0; i < 4; i++) {
-      nomsJoueurs.push(displayName(equipe[i], equipeId));
+      const joueur = equipe[i];
+      if (joueur && joueur !== -1) {
+        nomsJoueurs.push(displayName(joueur, equipeId));
+      }
     }
     return nomsJoueurs;
   };

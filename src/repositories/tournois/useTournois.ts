@@ -63,9 +63,9 @@ function toJoueurModel(joueur: Joueur): JoueurModel {
 export const useTournoisV2 = () => {
   const { data: data1 } = useLiveQuery(TournoisRepository.getTournoi());
 
-  const tournoiId = data1?.[0]?.id;
+  const tournoiId = data1[0] ? data1[0].id : -1;
   const { data: matchs } = useLiveQuery(
-    MatchsRepository.getFullMatchsTournoi(tournoiId ?? -1),
+    MatchsRepository.getFullMatchsTournoi(tournoiId),
     [tournoiId],
   );
 
@@ -112,7 +112,7 @@ export const useTournoisV2 = () => {
   }, [equipes]);
 
   const tournoiVM = useMemo(() => {
-    if (!data1.length && !matchs.length && !equipes.length) {
+    if (!data1.length || !matchs.length || !equipes.length) {
       return;
     }
 
