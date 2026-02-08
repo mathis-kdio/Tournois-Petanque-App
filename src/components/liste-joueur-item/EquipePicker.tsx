@@ -60,22 +60,23 @@ const EquipePicker: React.FC<Props> = ({
     nbEquipes = Math.ceil(listesJoueurs.length / 3);
   }
 
-  const pickerItem = [];
-  for (let i = 1; i <= nbEquipes; i++) {
-    const count = listesJoueurs.reduce(
-      (counter, joueur) => (joueur.equipe === i ? counter++ : counter),
-      0,
-    );
-    if (typeEquipes === TypeEquipes.TETEATETE && count < 1) {
-      pickerItem.push(equipePickerItem(i));
-    } else if (typeEquipes === TypeEquipes.DOUBLETTE && count < 2) {
-      pickerItem.push(equipePickerItem(i));
-    } else if (typeEquipes === TypeEquipes.TRIPLETTE && count < 3) {
-      pickerItem.push(equipePickerItem(i));
-    } else if (equipe === i) {
-      pickerItem.push(equipePickerItem(i));
-    }
-  }
+  const pickerItem = Array.from({ length: nbEquipes }, (_, i) => i + 1).flatMap(
+    (equipId) => {
+      const count = listesJoueurs.reduce(
+        (counter, joueur) => (joueur.equipe === equipId ? counter++ : counter),
+        0,
+      );
+      if (
+        (typeEquipes === TypeEquipes.TETEATETE && count < 1) ||
+        (typeEquipes === TypeEquipes.DOUBLETTE && count < 2) ||
+        (typeEquipes === TypeEquipes.TRIPLETTE && count < 3) ||
+        equipe === equipId
+      ) {
+        return [equipePickerItem(equipId)];
+      }
+      return [];
+    },
+  );
 
   return (
     <Select
