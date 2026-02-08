@@ -10,7 +10,7 @@ import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePrep
 import { useCallback } from 'react';
 import Loading from '@/components/Loading';
 import { JoueurType } from '@/types/enums/joueurType';
-import { useJoueursV2 } from '@/repositories/joueurs/useJoueurs';
+import { useJoueurs } from '@/repositories/joueurs/useJoueurs';
 import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import StartButton from './components/StartButton';
 
@@ -19,7 +19,7 @@ const InscriptionsAvecNoms = () => {
 
   const { preparationTournoiVM } = usePreparationTournoi();
 
-  const { renameJoueur, checkJoueur } = useJoueursV2();
+  const { renameJoueur, checkJoueur } = useJoueurs();
   const {
     joueurs,
     addJoueursPreparationTournoi,

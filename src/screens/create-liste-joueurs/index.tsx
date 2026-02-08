@@ -8,7 +8,7 @@ import TopBarBack from '@/components/topBar/TopBarBack';
 import { listeType } from '@/types/types/searchParams';
 import SubmitButton from './components/SubmitButton';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { useJoueursV2 } from '@/repositories/joueurs/useJoueurs';
+import { useJoueurs } from '@/repositories/joueurs/useJoueurs';
 import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import Loading from '@/components/Loading';
@@ -27,7 +27,7 @@ const CreateListeJoueur: React.FC<Props> = ({ type, idList }) => {
   const { preparationTournoiVM } = usePreparationTournoi();
   const preparationTournoiJoueurs: JoueurModel[] = [];
 
-  const { renameJoueur, checkJoueur } = useJoueursV2();
+  const { renameJoueur, checkJoueur } = useJoueurs();
   const {
     addJoueursPreparationTournoi,
     removeJoueursPreparationTournoi,

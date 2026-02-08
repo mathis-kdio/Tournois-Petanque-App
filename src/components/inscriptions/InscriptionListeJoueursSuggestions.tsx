@@ -33,7 +33,8 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
 
   useEffect(() => {
     const fetchSuggestions = async () => {
-      const joueurs = await getAllJoueurs();
+      //TODO Mettre en place BDD pour joueurs suggéré
+      const joueurs: JoueurModel[] = [];
 
       const uniquesFiltres = Array.from(
         new Map(joueurs.map((i) => [i.name, i])).values(),
