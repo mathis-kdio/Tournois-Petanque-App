@@ -77,7 +77,7 @@ const InscriptionsAvecNoms = () => {
     }
     const equipe = equipeAuto(joueurs, typeEquipes);
     const joueur: JoueurModel = {
-      id: joueurs.length,
+      joueurTournoiId: joueurs.length,
       name: joueurName,
       type: joueurType,
       equipe: equipe,
@@ -94,11 +94,11 @@ const InscriptionsAvecNoms = () => {
   const handleAddEquipeJoueur = (id: number, equipeId: number) => { };
 
   const handleUpdateName = (joueurModel: JoueurModel, name: string) => {
-    renameJoueur(joueurModel.id, name);
+    renameJoueur(joueurModel.joueurTournoiId, name);
   };
 
   const handleCheckJoueur = (joueurModel: JoueurModel, isChecked: boolean) => {
-    checkJoueur(joueurModel.id, isChecked);
+    checkJoueur(joueurModel.joueurTournoiId, isChecked);
   };
 
   const handleDeleteAllJoueurs = useCallback(async () => {

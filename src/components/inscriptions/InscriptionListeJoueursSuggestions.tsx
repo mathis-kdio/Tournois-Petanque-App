@@ -100,7 +100,7 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
         removeClippedSubviews={false}
         persistentScrollbar={true}
         data={partialSuggested}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.joueurTournoiId.toString()}
         renderItem={renderItem}
       />
       <Box className="px-10 pb-2">{_buttonMoreSuggestedPlayers()}</Box>

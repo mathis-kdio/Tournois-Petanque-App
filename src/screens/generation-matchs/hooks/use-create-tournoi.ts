@@ -115,7 +115,7 @@ export const useCreateTournoi = () => {
     equipeMatch.map(async (joueurEquipe) => {
       if (joueurEquipe && joueurEquipe !== -1) {
         await EquipesJoueursRepository.insert(
-          toNewEquipesJoueurs(equipeId, joueurEquipe.id),
+          toNewEquipesJoueurs(equipeId, joueurEquipe.uniqueBDDId),
         );
       }
     });

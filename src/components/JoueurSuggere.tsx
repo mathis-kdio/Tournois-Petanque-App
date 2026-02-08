@@ -128,7 +128,7 @@ const JoueurSuggere: React.FC<Props> = ({
           onPress={() => addJoueur(joueur)}
         />
       </Box>
-      {_modalRemovePlayer(joueur.id)}
+      {_modalRemovePlayer(joueur.joueurTournoiId)}
     </HStack>
   );
 };

@@ -111,7 +111,7 @@ function listesJoueurs(state = initialState, action) {
       ) {
         const listes = { ...state.listesJoueurs };
         let liste = listes[action.value[0]] as JoueurModel[];
-        let joueur = liste.find((joueur) => joueur.id === action.value[1]);
+        let joueur = liste.find((joueur) => joueur.joueurTournoiId === action.value[1]);
         if (joueur) {
           joueur.isChecked = action.value[2];
         }
@@ -139,7 +139,7 @@ function listesJoueurs(state = initialState, action) {
       if (action.value[0] !== '') {
         const listes = { ...state.listesJoueurs };
         listes[action.value[0]].forEach((joueur: JoueurModel) => {
-          joueur.equipe = joueur.id + 1;
+          joueur.equipe = joueur.joueurTournoiId + 1;
         });
         nextState = {
           ...state,
@@ -157,7 +157,7 @@ function listesJoueurs(state = initialState, action) {
         if (savedLists[action.value.typeInscription].length !== 0) {
           let lastlist =
             savedLists[action.value.typeInscription][
-              savedLists[action.value.typeInscription].length - 1
+            savedLists[action.value.typeInscription].length - 1
             ];
           listId = lastlist[lastlist.length - 1].listId + 1;
         }

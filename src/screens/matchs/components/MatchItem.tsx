@@ -63,21 +63,21 @@ const MatchItem: React.FC<Props> = ({ match }) => {
     if (equipe === 1) {
       return (
         <Text
-          key={joueur.id}
+          key={joueur.joueurTournoiId}
           className="text-typography-white text-left"
           size="xl"
         >
-          {`${joueur.id + 1} ${joueur.name}`}
+          {`${joueur.joueurTournoiId + 1} ${joueur.name}`}
         </Text>
       );
     } else {
       return (
         <Text
-          key={joueur.id}
+          key={joueur.joueurTournoiId}
           className="text-typography-white text-right"
           size="xl"
         >
-          {`${joueur.name} ${joueur.id + 1}`}
+          {`${joueur.name} ${joueur.joueurTournoiId + 1}`}
         </Text>
       );
     }

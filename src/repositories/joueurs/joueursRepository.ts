@@ -6,7 +6,7 @@ import { eq, inArray } from 'drizzle-orm';
 export const JoueursRepository = {
   toNewJoueur(joueur: JoueurModel): NewJoueur {
     return {
-      joueurId: joueur.id,
+      joueurId: joueur.joueurTournoiId,
       name: joueur.name,
       type: joueur.type,
       equipe: joueur.equipe,
@@ -16,7 +16,7 @@ export const JoueursRepository = {
 
   toJoueurModel(joueur: Joueur): JoueurModel {
     return {
-      id: joueur.joueurId,
+      joueurTournoiId: joueur.joueurId,
       name: joueur.name,
       type: joueur.type ?? undefined,
       equipe: joueur.equipe ?? undefined,

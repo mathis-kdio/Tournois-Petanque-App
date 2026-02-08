@@ -51,7 +51,7 @@ function toPreparationTournoi(
 
 function toJoueursModel(): JoueurModel {
   return {
-    id: 0,
+    joueurTournoiId: 0,
     name: '',
     type: undefined,
     equipe: undefined,

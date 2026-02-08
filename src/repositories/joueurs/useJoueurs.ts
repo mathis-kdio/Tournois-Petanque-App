@@ -5,7 +5,7 @@ import { JoueursRepository } from './joueursRepository';
 
 function toJoueurModel(joueur: Joueur): JoueurModel {
   return {
-    id: joueur.joueurId,
+    joueurTournoiId: joueur.joueurId,
     name: joueur.name,
     type: joueur.type ?? undefined,
     equipe: joueur.equipe ?? undefined,
@@ -38,7 +38,7 @@ export function useJoueurs() {
 
   const renameJoueur = useCallback(
     async (joueurModel: JoueurModel, newName: string) => {
-      const joueur = await JoueursRepository.select(joueurModel.id);
+      const joueur = await JoueursRepository.select(joueurModel.joueurTournoiId);
       await JoueursRepository.updateName(joueur.id, newName);
     },
     [],
@@ -46,7 +46,7 @@ export function useJoueurs() {
 
   const checkJoueur = useCallback(
     async (joueurModel: JoueurModel, isChecked: boolean) => {
-      const joueur = await JoueursRepository.select(joueurModel.id);
+      const joueur = await JoueursRepository.select(joueurModel.joueurTournoiId);
       await JoueursRepository.updateCheck(joueur.id, isChecked);
     },
     [],

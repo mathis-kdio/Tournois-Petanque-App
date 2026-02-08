@@ -152,11 +152,11 @@ export const generationPDFTournoi = (
       html += '<td>' + classement[i].position + ' - ';
       let joueur = listeJoueurs[classement[i].joueurId];
       if (joueur.name === undefined) {
-        html += `${t('sans_nom')} (${joueur.id + 1})`;
+        html += `${t('sans_nom')} (${joueur.joueurTournoiId + 1})`;
       } else if (joueur.name === '') {
-        html += `${t('joueur')} ${joueur.id + 1}`;
+        html += `${t('joueur')} ${joueur.joueurTournoiId + 1}`;
       } else {
-        html += `${joueur.name} (${joueur.id + 1})`;
+        html += `${joueur.name} (${joueur.joueurTournoiId + 1})`;
       }
       html += '</td>';
       html += `<td class="text-center">${classement[i].victoires}</td>`;

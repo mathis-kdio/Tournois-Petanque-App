@@ -125,7 +125,7 @@ export const generationDoublettes = (
       joueursNonSpe.push(joueur);
     }
     joueurs.push({
-      id: joueur.id,
+      id: joueur.joueurTournoiId,
       name: joueur.name,
       type: joueur.type,
       isChecked: joueur.isChecked,
@@ -249,9 +249,9 @@ export const generationDoublettes = (
       idsJoueursSpe = uniqueValueArrayRandOrder(joueursEnfants.length);
       for (let j = 0; j < joueursEnfants.length; j++) {
         if (matchs[idMatch].equipe[0][1] === -1) {
-          matchs[idMatch].equipe[0][1] = joueursEnfants[idsJoueursSpe[j]].id;
+          matchs[idMatch].equipe[0][1] = joueursEnfants[idsJoueursSpe[j]].joueurTournoiId;
         } else if (matchs[idMatch].equipe[1][1] === -1) {
-          matchs[idMatch].equipe[1][1] = joueursEnfants[idsJoueursSpe[j]].id;
+          matchs[idMatch].equipe[1][1] = joueursEnfants[idsJoueursSpe[j]].joueurTournoiId;
           idMatch++;
         }
       }
@@ -411,13 +411,13 @@ function _randomJoueursIds(
   let joueursTireursId: number[] = [];
   let joueursNonTypeId: number[] = [];
   for (let i = 0; i < joueursPointeurs.length; i++) {
-    joueursPointeursId.push(joueursPointeurs[i].id);
+    joueursPointeursId.push(joueursPointeurs[i].joueurTournoiId);
   }
   for (let i = 0; i < joueursTireurs.length; i++) {
-    joueursTireursId.push(joueursTireurs[i].id);
+    joueursTireursId.push(joueursTireurs[i].joueurTournoiId);
   }
   for (let i = 0; i < joueursNonType.length; i++) {
-    joueursNonTypeId.push(joueursNonType[i].id);
+    joueursNonTypeId.push(joueursNonType[i].joueurTournoiId);
   }
 
   if (speciauxIncompatibles === true) {

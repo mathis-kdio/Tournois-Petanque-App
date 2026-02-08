@@ -40,7 +40,7 @@ function gestionMatchs(state = initialState, action) {
         let listeJoueurs = nextState.listematchs.at(-1)
           .listeJoueurs as JoueurModel[];
         let joueur = listeJoueurs.find(
-          (joueur) => joueur.id === action.value.playerId,
+          (joueur) => joueur.joueurTournoiId === action.value.playerId,
         );
         if (joueur) {
           joueur.name = action.value.newName;
@@ -56,7 +56,7 @@ function gestionMatchs(state = initialState, action) {
         let listeJoueurs = nextState.listematchs.at(-1)
           .listeJoueurs as JoueurModel[];
         let joueur = listeJoueurs.find(
-          (joueur) => joueur.id === action.value.playerId,
+          (joueur) => joueur.joueurTournoiId === action.value.playerId,
         );
         if (joueur) {
           joueur.isChecked = action.value.isChecked;

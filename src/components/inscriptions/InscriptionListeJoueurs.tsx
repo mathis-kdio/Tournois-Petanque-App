@@ -88,7 +88,7 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
     throw Error('preparationTournoi manquantes');
   }
   if (triType === Tri.ID) {
-    listeJoueurs.sort((a, b) => a.id - b.id);
+    listeJoueurs.sort((a, b) => a.joueurTournoiId - b.joueurTournoiId);
   } else if (triType === Tri.ALPHA_ASC) {
     listeJoueurs.sort((a, b) => a.name.localeCompare(b.name));
   } else if (triType === Tri.ALPHA_DESC) {
@@ -120,7 +120,7 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
       removeClippedSubviews={false}
       persistentScrollbar={true}
       data={listeJoueurs}
-      keyExtractor={(item: JoueurModel) => item.id.toString()}
+      keyExtractor={(item: JoueurModel) => item.joueurTournoiId.toString()}
       renderItem={renderItem}
       ListFooterComponent={
         <VStack space="md" className="flex-1">

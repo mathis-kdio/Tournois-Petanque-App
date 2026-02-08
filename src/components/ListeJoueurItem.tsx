@@ -100,7 +100,7 @@ const ListeJoueurItem: React.FC<Props> = ({
           name="times"
           backgroundColor="#E63535"
           iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
-          onPress={() => _supprimerJoueur(joueur.id)}
+          onPress={() => _supprimerJoueur(joueur.joueurTournoiId)}
         />
       </Box>
     );
@@ -210,7 +210,7 @@ const ListeJoueurItem: React.FC<Props> = ({
     } else {
       return (
         <Text className="text-typography-white text-xl font-bold break-words">
-          {joueur.id + 1}-{joueur.name}
+          {joueur.joueurTournoiId + 1}-{joueur.name}
         </Text>
       );
     }
@@ -266,7 +266,7 @@ const ListeJoueurItem: React.FC<Props> = ({
           selectedValue={selectedValue}
           aria-label={t('choix_equipe')}
           onValueChange={(itemValue) =>
-            _ajoutEquipe(joueur.id, parseInt(itemValue))
+            _ajoutEquipe(joueur.joueurTournoiId, parseInt(itemValue))
           }
         >
           <SelectTrigger className="flex flex-row border-custom-bg-inverse">

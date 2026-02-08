@@ -21,11 +21,11 @@ const ListeResultatItem: React.FC<Props> = ({ victoire, matchs, options }) => {
 
   const getName = (joueur: JoueurModel) => {
     if (joueur.name === undefined) {
-      return t('sans_nom') + ' (' + (joueur.id + 1) + ')';
+      return t('sans_nom') + ' (' + (joueur.joueurTournoiId + 1) + ')';
     } else if (joueur.name === '') {
-      return t('joueur') + ' ' + (joueur.id + 1);
+      return t('joueur') + ' ' + (joueur.joueurTournoiId + 1);
     } else {
-      return joueur.name + ' (' + (joueur.id + 1) + ')';
+      return joueur.name + ' (' + (joueur.joueurTournoiId + 1) + ')';
     }
   };
 

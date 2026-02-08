@@ -42,7 +42,7 @@ const CreateListeJoueur: React.FC<Props> = ({ type, idList }) => {
     if (!typeEquipes) return;
     const equipe = undefined;
     const joueur: JoueurModel = {
-      id: preparationTournoiJoueurs.length,
+      joueurTournoiId: preparationTournoiJoueurs.length,
       name: joueurName,
       type: joueurType,
       equipe: equipe,
@@ -59,11 +59,11 @@ const CreateListeJoueur: React.FC<Props> = ({ type, idList }) => {
   const handleAddEquipeJoueur = () => { };
 
   const handleUpdateName = (joueurModel: JoueurModel, name: string) => {
-    renameJoueur(joueurModel.id, name);
+    renameJoueur(joueurModel.joueurTournoiId, name);
   };
 
   const handleCheckJoueur = (joueurModel: JoueurModel, isChecked: boolean) => {
-    checkJoueur(joueurModel.id, isChecked);
+    checkJoueur(joueurModel.joueurTournoiId, isChecked);
   };
 
   const handleDeleteAllJoueurs = () => {

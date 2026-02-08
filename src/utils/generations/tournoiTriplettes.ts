@@ -70,7 +70,7 @@ export const generationTriplettes = (
       joueursNonSpe[joueursNonSpe.length - 1].equipe = [];
     }
     joueurs.push({
-      id: listeJoueurs[i].id,
+      id: listeJoueurs[i].joueurTournoiId,
       name: listeJoueurs[i].name,
       type: listeJoueurs[i].type,
       isChecked: listeJoueurs[i].isChecked,
@@ -92,9 +92,9 @@ export const generationTriplettes = (
         idsJoueursSpe = uniqueValueArrayRandOrder(joueursSpe.length);
         for (let j = 0; j < joueursSpe.length; j++) {
           if (matchs[idMatch].equipe[0][0] === -1) {
-            matchs[idMatch].equipe[0][0] = joueursSpe[idsJoueursSpe[j]].id;
+            matchs[idMatch].equipe[0][0] = joueursSpe[idsJoueursSpe[j]].joueurTournoiId;
           } else if (matchs[idMatch].equipe[1][0] === -1) {
-            matchs[idMatch].equipe[1][0] = joueursSpe[idsJoueursSpe[j]].id;
+            matchs[idMatch].equipe[1][0] = joueursSpe[idsJoueursSpe[j]].joueurTournoiId;
             idMatch++;
           }
         }
@@ -179,7 +179,7 @@ export const generationTriplettes = (
   //On ordonne aléatoirement les ids des joueurs non enfants à chaque début de manche
   let joueursNonSpeId = [];
   for (let i = 0; i < joueursNonSpe.length; i++) {
-    joueursNonSpeId.push(joueursNonSpe[i].id);
+    joueursNonSpeId.push(joueursNonSpe[i].joueurTournoiId);
   }
 
   //FONCTIONNEMENT

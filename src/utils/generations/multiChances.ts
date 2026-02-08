@@ -54,7 +54,7 @@ export const generationMultiChances = (
     equipe.push([]);
     for (let j = 0; j < nbjoueurs; j++) {
       if (listeJoueurs[j].equipe === i) {
-        equipe[i - 1].push(listeJoueurs[j].id);
+        equipe[i - 1].push(listeJoueurs[j].joueurTournoiId);
       }
     }
   }

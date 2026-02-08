@@ -44,7 +44,7 @@ export const generationTeteATete = (
   //On place les ids des joueurs dans un tableau qui sera mélangé à chaque nouveau tour
   let joueursIds = [];
   for (let i = 0; i < joueurs.length; i++) {
-    joueursIds.push(joueurs[i].id);
+    joueursIds.push(joueurs[i].joueurTournoiId);
   }
 
   idMatch = 0;

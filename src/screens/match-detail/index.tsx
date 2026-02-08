@@ -61,19 +61,19 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
     if (equipeId === 1) {
       return (
         <Text
-          key={joueur.id}
+          key={joueur.joueurTournoiId}
           className="text-typography-white text-md text-left"
         >
-          {`${joueur.id + 1} ${joueur.name}`}
+          {`${joueur.joueurTournoiId + 1} ${joueur.name}`}
         </Text>
       );
     } else {
       return (
         <Text
-          key={joueur.id}
+          key={joueur.joueurTournoiId}
           className="text-typography-white text-md text-right"
         >
-          {`${joueur.name} ${joueur.id + 1}`}
+          {`${joueur.name} ${joueur.joueurTournoiId + 1}`}
         </Text>
       );
     }

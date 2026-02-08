@@ -13,7 +13,7 @@ function toJoueurModel(
 ): JoueurModel {
   const { joueurs } = preparationTournoi;
   return {
-    id: joueurs.joueurId,
+    joueurTournoiId: joueurs.joueurId,
     name: joueurs.name,
     type: joueurs.type ?? undefined,
     equipe: joueurs.equipe ?? undefined,
@@ -23,7 +23,7 @@ function toJoueurModel(
 
 function toNewJoueur(joueurModel: JoueurModel): NewJoueur {
   return {
-    joueurId: joueurModel.id,
+    joueurId: joueurModel.joueurTournoiId,
     name: joueurModel.name,
     type: joueurModel.type,
     equipe: joueurModel.equipe,
