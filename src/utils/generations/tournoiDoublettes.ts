@@ -15,6 +15,7 @@ import {
   testAffectationPossible,
   updatePlayerRelationships,
 } from './melee-demelee';
+import { MatchGeneration } from '@/types/interfaces/match-generation';
 
 const testRegleJamaisMemeCoequipier = (
   nbTours: number,
@@ -50,14 +51,14 @@ export const generationDoublettes = (
   jamaisMemeCoequipier: boolean,
   eviterMemeAdversaire: number,
 ): {
-  matchs?: MatchModel[];
+  matchs?: MatchGeneration[];
   nbMatchs?: number;
   echecGeneration?: boolean;
   erreurSpeciaux?: boolean;
   erreurMemesEquipes?: boolean;
 } => {
   const nbjoueurs = listeJoueurs.length;
-  let matchs: MatchModel[] = [];
+  let matchs: MatchGeneration[] = [];
   let idMatch = 0;
   let joueursEnfants: JoueurModel[] = [];
   let joueursTireurs: JoueurModel[] = [];
@@ -249,9 +250,11 @@ export const generationDoublettes = (
       idsJoueursSpe = uniqueValueArrayRandOrder(joueursEnfants.length);
       for (let j = 0; j < joueursEnfants.length; j++) {
         if (matchs[idMatch].equipe[0][1] === -1) {
-          matchs[idMatch].equipe[0][1] = joueursEnfants[idsJoueursSpe[j]].joueurTournoiId;
+          matchs[idMatch].equipe[0][1] =
+            joueursEnfants[idsJoueursSpe[j]].joueurTournoiId;
         } else if (matchs[idMatch].equipe[1][1] === -1) {
-          matchs[idMatch].equipe[1][1] = joueursEnfants[idsJoueursSpe[j]].joueurTournoiId;
+          matchs[idMatch].equipe[1][1] =
+            joueursEnfants[idsJoueursSpe[j]].joueurTournoiId;
           idMatch++;
         }
       }

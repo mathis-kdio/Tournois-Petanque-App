@@ -1,4 +1,4 @@
-import { NewEquipe, NewTournoi, Tournoi } from '@/db/schema';
+import { Joueur, NewEquipe, NewTournoi, Tournoi } from '@/db/schema';
 import { NewEquipesJoueurs } from '@/db/schema/equipesJoueurs';
 import { NewMatch } from '@/db/schema/match';
 import { EquipeRepository } from '@/repositories/equipe/equipeRepository';
@@ -11,8 +11,11 @@ import { TournoisRepository } from '@/repositories/tournois/tournoisRepository';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { EquipesType, EquipeType } from '@/types/interfaces/equipeType';
-import { MatchModel } from '@/types/interfaces/matchModel';
+import {
+  EquipeGenerationType,
+  EquipesGenerationType,
+  MatchGeneration,
+} from '@/types/interfaces/match-generation';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 
 function toNewTournoi(
@@ -72,13 +75,13 @@ function toNewTournoi(
 }
 
 function toNewMatch(
-  matchModel: MatchModel,
+  matchGeneration: MatchGeneration,
   matchId: number,
   tournoiId: number,
   equipe1Id: number,
   equipe2Id: number,
 ): NewMatch {
-  const { manche, mancheName, terrain } = matchModel;
+  const { manche, mancheName, terrain } = matchGeneration;
 
   return {
     matchId: matchId,
@@ -110,24 +113,33 @@ function toNewEquipesJoueurs(
 export const useCreateTournoi = () => {
   const addEquipesJoueur = async (
     equipeId: number,
-    equipeMatch: EquipeType,
+    equipeMatch: EquipeGenerationType,
+    listeJoueurs: Joueur[],
   ) => {
-    equipeMatch.map(async (joueurEquipe) => {
-      if (joueurEquipe && joueurEquipe !== -1) {
+    equipeMatch.map(async (joueurIdEquipe) => {
+      if (joueurIdEquipe !== undefined && joueurIdEquipe !== -1) {
+        //Récupère le joueur de la BDD à partir du joueurId du match généré
+        const joueur = listeJoueurs.find((a) => a.joueurId === joueurIdEquipe);
+        if (!joueur) {
+          throw Error('joueur inconnu');
+        }
         await EquipesJoueursRepository.insert(
-          toNewEquipesJoueurs(equipeId, joueurEquipe.uniqueBDDId),
+          toNewEquipesJoueurs(equipeId, joueur.id),
         );
       }
     });
   };
 
-  const addEquipes = async (equipesMatch: EquipesType) => {
+  const addEquipes = async (
+    equipesMatch: EquipesGenerationType,
+    listeJoueurs: Joueur[],
+  ) => {
     // TODO Problème : va insérer des équipes qui peuvent déjà être présentes
     const equipe1 = await EquipeRepository.insert(toNewEquipe(0));
-    addEquipesJoueur(equipe1.id, equipesMatch[0]);
+    addEquipesJoueur(equipe1.id, equipesMatch[0], listeJoueurs);
 
     const equipe2 = await EquipeRepository.insert(toNewEquipe(1));
-    addEquipesJoueur(equipe2.id, equipesMatch[1]);
+    addEquipesJoueur(equipe2.id, equipesMatch[1], listeJoueurs);
 
     return { equipe1, equipe2 };
   };
@@ -142,10 +154,21 @@ export const useCreateTournoi = () => {
     )[0] as Tournoi;
   };
 
-  const addMatchs = async (matchModels: MatchModel[], tournoiId: number) => {
+  const addMatchs = async (
+    matchModels: MatchGeneration[],
+    tournoiId: number,
+  ) => {
+    //Récupère la liste joueur du tournoi, permettra de retrouver le joueur de la BDD avec l'id associé aux matchs
+    const listeJoueurs = (
+      await JoueursPreparationTournoisRepository.getMany()
+    ).map((a) => a.joueurs);
+
     const newMatchs = await Promise.all(
       matchModels.map(async (matchModel, index) => {
-        const { equipe1, equipe2 } = await addEquipes(matchModel.equipe);
+        const { equipe1, equipe2 } = await addEquipes(
+          matchModel.equipe,
+          listeJoueurs,
+        );
         return toNewMatch(matchModel, index, tournoiId, equipe1.id, equipe2.id);
       }),
     );

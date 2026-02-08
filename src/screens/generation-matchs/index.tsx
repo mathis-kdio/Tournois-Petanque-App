@@ -37,6 +37,7 @@ import { useTerrainsPreparationTournois } from '@/repositories/terrainsPreparati
 import { useJoueursPreparationTournoisV2 } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import Loading from '@/components/Loading';
 import { useCreateTournoi } from './hooks/use-create-tournoi';
+import { MatchGeneration } from '@/types/interfaces/match-generation';
 
 export interface Props {
   screenStackName: screenStackNameType;
@@ -100,7 +101,10 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
   }, [isGenerationEnd, adLoaded, adClosed, navigation]);
 
   const ajoutMatchs = useCallback(
-    async (matchs: MatchModel[], optionsTournoi: PreparationTournoiModel) => {
+    async (
+      matchs: MatchGeneration[],
+      optionsTournoi: PreparationTournoiModel,
+    ) => {
       const tournoi = await addTournoi(optionsTournoi);
 
       await addMatchs(matchs, tournoi.id);
@@ -151,7 +155,7 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
         listeJoueursInscrits = joueurs;
       }
 
-      let matchs: MatchModel[] | undefined = undefined;
+      let matchs: MatchGeneration[] | undefined = undefined;
       let nbMatchs: number | undefined = undefined;
       let finalNbTours = nbTours;
       let erreurMemesEquipes: boolean | undefined = undefined;
