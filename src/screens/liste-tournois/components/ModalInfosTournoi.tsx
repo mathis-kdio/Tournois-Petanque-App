@@ -13,15 +13,18 @@ import { useTranslation } from 'react-i18next';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import { dateFormatDateHeure } from '@/utils/date';
 import { SetStateAction } from 'react';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 
 export interface Props {
   infosTournoi: TournoiModel;
+  listeJoueurs: JoueurModel[];
   modalTournoiInfosIsOpen: boolean;
   setModalTournoiInfosIsOpen: (value: SetStateAction<boolean>) => void;
 }
 
 const ModalInfosTournoi: React.FC<Props> = ({
   infosTournoi,
+  listeJoueurs,
   modalTournoiInfosIsOpen,
   setModalTournoiInfosIsOpen,
 }) => {
@@ -30,7 +33,6 @@ const ModalInfosTournoi: React.FC<Props> = ({
   const { options, creationDate, updateDate, tournoiId, name } = infosTournoi;
   const {
     nbPtVictoire,
-    listeJoueurs,
     typeTournoi,
     typeEquipes,
     nbTours,

@@ -19,9 +19,9 @@ export default function ListeTournois() {
   const [infosTournoi, setInfosTournoi] = useState<TournoiModel | undefined>(
     undefined,
   );
-  const { listeTournois, actualTournoi } = useTournois();
+  const { listeTournois, actualTournoi, joueursTournoi } = useTournois();
 
-  if (!listeTournois) {
+  if (!listeTournois || !joueursTournoi) {
     return <Loading />;
   }
 
@@ -37,6 +37,7 @@ export default function ListeTournois() {
     return (
       <ModalInfosTournoi
         infosTournoi={infosTournoi}
+        listeJoueurs={joueursTournoi}
         modalTournoiInfosIsOpen={modalTournoiInfosIsOpen}
         setModalTournoiInfosIsOpen={setModalTournoiInfosIsOpen}
       />
