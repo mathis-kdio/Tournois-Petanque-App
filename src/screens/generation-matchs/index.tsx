@@ -36,8 +36,7 @@ import GenerationLoading from './components/GenerationLoading';
 import { useTerrainsPreparationTournois } from '@/repositories/terrainsPreparationTournois/useTerrainsPreparationTournois';
 import { useJoueursPreparationTournoisV2 } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import Loading from '@/components/Loading';
-import { useTournoisV2 } from '@/repositories/tournois/useTournois';
-import { useMatchsV2 } from '@/repositories/matchs/useMatchs';
+import { useCreateTournoi } from './hooks/use-create-tournoi';
 
 export interface Props {
   screenStackName: screenStackNameType;
@@ -50,8 +49,8 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
   const { preparationTournoiVM } = usePreparationTournoiV2();
   const { joueurs } = useJoueursPreparationTournoisV2();
   const { terrains } = useTerrainsPreparationTournois();
-  const { addTournoi } = useTournoisV2();
-  const { addMatchs } = useMatchsV2(0);
+  const { addTournoi, addMatchs, clearPreparationTournois } =
+    useCreateTournoi();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isGenerationEnd, setIsGenerationEnd] = useState(false);
@@ -102,17 +101,13 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
 
   const ajoutMatchs = useCallback(
     async (matchs: MatchModel[], optionsTournoi: PreparationTournoiModel) => {
-      const b = await addTournoi(optionsTournoi);
+      const tournoi = await addTournoi(optionsTournoi);
 
-      addMatchs(matchs);
+      await addMatchs(matchs, tournoi.id);
 
-      //TODO :
-      // Affecter joueurs
-      // Clear PreparationTournoiModel
-      // Clear TerrainsPreparationTournois
-      // Clear JoueursPreparationTournois
+      await clearPreparationTournois();
     },
-    [addMatchs, addTournoi],
+    [addMatchs, addTournoi, clearPreparationTournois],
   );
 
   const generation = useCallback(
@@ -132,19 +127,18 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
         nbTours,
       } = preparationTournoiModel;
       if (
-        !avecTerrains ||
-        !complement ||
-        !memesAdversaires ||
-        !memesEquipes ||
+        avecTerrains === undefined ||
+        memesAdversaires === undefined ||
+        memesEquipes === undefined ||
         !mode ||
         !modeCreationEquipes ||
-        !nbPtVictoire ||
-        !speciauxIncompatibles ||
+        nbPtVictoire === undefined ||
+        speciauxIncompatibles === undefined ||
         !typeEquipes ||
         !typeTournoi ||
-        !nbTours
+        nbTours === undefined
       ) {
-        throw Error;
+        throw Error('preparationTournoiModel incomplet');
       }
 
       let listeJoueursInscrits: JoueurModel[];
@@ -329,7 +323,7 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
     if (!preparationTournoiVM) {
       return;
     }
-
+    console.log('preparationTournoiVM', preparationTournoiVM);
     const timer = setTimeout(() => {
       lanceurGeneration(preparationTournoiVM);
     }, 1000);

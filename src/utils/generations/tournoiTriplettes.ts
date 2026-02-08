@@ -19,7 +19,7 @@ import {
 export const generationTriplettes = (
   listeJoueurs: JoueurModel[],
   nbTours: number,
-  complement: Complement,
+  complement: Complement | undefined,
   speciauxIncompatibles: boolean,
   jamaisMemeCoequipier: boolean,
   eviterMemeAdversaire: number,
@@ -206,7 +206,7 @@ export const generationTriplettes = (
   for (let tour = 0; tour < nbTours; tour++) {
     breaker = 0;
     let random = shuffle(joueursNonSpeId);
-    for (let j = 0; j < joueursNonSpe.length; ) {
+    for (let j = 0; j < joueursNonSpe.length;) {
       let joueurId = random[j];
       let match = matchs[idMatch];
 
@@ -296,5 +296,7 @@ function getNbComplements(complement: Complement) {
     case Complement.QUATREVSTROIS:
     case Complement.TROISVSDEUX:
       return 1;
+    default:
+      throw Error('Complement non pris en charge en tournoi triplettes');
   }
 }

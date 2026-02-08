@@ -15,8 +15,8 @@ export const MatchsRepository = {
       .innerJoin(terrains, eq(match.terrainId, terrains.id));
   },
 
-  insertMatch(newMatch: NewMatch) {
-    return getDrizzleDb().insert(match).values(newMatch).returning();
+  insertMatch(newMatchs: NewMatch[]) {
+    return getDrizzleDb().insert(match).values(newMatchs).returning();
   },
 
   deleteMatch(id: number) {

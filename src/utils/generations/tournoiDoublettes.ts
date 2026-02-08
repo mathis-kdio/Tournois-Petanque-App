@@ -45,7 +45,7 @@ const testRegleJamaisMemeCoequipier = (
 export const generationDoublettes = (
   listeJoueurs: JoueurModel[],
   nbTours: number,
-  complement: Complement,
+  complement: Complement | undefined,
   speciauxIncompatibles: boolean,
   jamaisMemeCoequipier: boolean,
   eviterMemeAdversaire: number,

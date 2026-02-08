@@ -3,6 +3,7 @@ import {
   NewPreparationTournoi,
   preparationTournoi,
 } from '@/db/schema/preparationTournoi';
+import { eq } from 'drizzle-orm';
 
 export const PreparationTournoisRepository = {
   getPreparationTournoi() {
@@ -19,5 +20,11 @@ export const PreparationTournoisRepository = {
         target: preparationTournoi.id,
         set: updatedPreparationTournoi,
       });
+  },
+
+  delete() {
+    return getDrizzleDb()
+      .delete(preparationTournoi)
+      .where(eq(preparationTournoi.id, 0));
   },
 };

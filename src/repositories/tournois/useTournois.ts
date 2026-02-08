@@ -1,12 +1,8 @@
 import { useCallback, useMemo } from 'react';
 import { TournoisRepository } from './tournoisRepository';
 import { TournoiModel } from '@/types/interfaces/tournoi';
-import { NewTournoi, Tournoi } from '@/db/schema/tournoi';
+import { Tournoi } from '@/db/schema/tournoi';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
-import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { TypeTournoi } from '@/types/enums/typeTournoi';
 
 function toTournoiModel(tournoi: Tournoi): TournoiModel {
   return {
@@ -32,62 +28,6 @@ function toTournoiModel(tournoi: Tournoi): TournoiModel {
   };
 }
 
-function toNewTournoi(
-  preparationTournoiModel: PreparationTournoiModel,
-): NewTournoi {
-  const {
-    nbTours,
-    nbMatchs,
-    nbPtVictoire,
-    speciauxIncompatibles,
-    memesEquipes,
-    memesAdversaires,
-    typeEquipes,
-    typeTournoi,
-    avecTerrains,
-    mode,
-  } = preparationTournoiModel;
-  if (
-    !mode ||
-    (mode !== ModeTournoi.AVECEQUIPES &&
-      mode !== ModeTournoi.AVECNOMS &&
-      mode !== ModeTournoi.SANSNOMS) ||
-    !nbTours ||
-    !nbMatchs ||
-    !nbPtVictoire ||
-    speciauxIncompatibles === undefined ||
-    memesEquipes === undefined ||
-    !memesAdversaires ||
-    (typeEquipes !== TypeEquipes.DOUBLETTE &&
-      typeEquipes !== TypeEquipes.TETEATETE &&
-      typeEquipes !== TypeEquipes.TRIPLETTE) ||
-    (typeTournoi !== TypeTournoi.CHAMPIONNAT &&
-      typeTournoi !== TypeTournoi.COUPE &&
-      typeTournoi !== TypeTournoi.MELEDEMELE &&
-      typeTournoi !== TypeTournoi.MELEE &&
-      typeTournoi !== TypeTournoi.MULTICHANCES) ||
-    avecTerrains === undefined
-  ) {
-    throw Error('aaa');
-  }
-
-  return {
-    mode: mode,
-    name: '',
-    nbTours: nbTours,
-    nbMatchs: nbMatchs,
-    nbPtVictoire: nbPtVictoire,
-    speciauxIncompatibles: speciauxIncompatibles,
-    memesEquipes: memesEquipes,
-    memesAdversaires: memesAdversaires,
-    typeEquipes: typeEquipes,
-    typeTournoi: typeTournoi,
-    avecTerrains: avecTerrains,
-    createAt: 0,
-    updatedAt: 0,
-  };
-}
-
 export const useTournoisV2 = () => {
   const { data: data1 } = useLiveQuery(TournoisRepository.getTournoiV2());
   const tournoiVM: TournoiModel | undefined = useMemo(
@@ -98,16 +38,6 @@ export const useTournoisV2 = () => {
   const { data: data2 } = useLiveQuery(TournoisRepository.getAllTournoisV2());
   const tournoisVM = useMemo(() => data2.map(toTournoiModel) ?? [], [data2]);
 
-  const addTournoi = async (
-    preparationTournoiModel: PreparationTournoiModel,
-  ): Promise<Tournoi> => {
-    return (
-      await TournoisRepository.insertTournoiV2(
-        toNewTournoi(preparationTournoiModel),
-      )
-    )[0] as Tournoi;
-  };
-
   const deleteTournoi = (id: number) => TournoisRepository.deleteTournoiV2(id);
 
   const renameTournoi = async (id: number, name: string) => {
@@ -117,7 +47,6 @@ export const useTournoisV2 = () => {
   return {
     actualTournoi: tournoiVM,
     listeTournois: tournoisVM,
-    addTournoi,
     deleteTournoi,
     renameTournoi,
   };

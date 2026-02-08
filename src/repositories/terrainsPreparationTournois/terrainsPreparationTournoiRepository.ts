@@ -44,4 +44,10 @@ export const TerrainsPreparationTournoisRepository = {
       .delete(terrainsPreparationTournois)
       .where(eq(terrainsPreparationTournois.terrainId, terrainId));
   },
+
+  deleteAll() {
+    return getDrizzleDb()
+      .delete(terrainsPreparationTournois)
+      .where(eq(terrainsPreparationTournois.preparationTournoiId, 0));
+  },
 };

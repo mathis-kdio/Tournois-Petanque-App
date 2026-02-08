@@ -57,6 +57,13 @@
       "when": 1770481019284,
       "tag": "0007_medical_silver_sable",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1770507437533,
+      "tag": "0008_fair_dormammu",
+      "breakpoints": true
     }
   ]
 }

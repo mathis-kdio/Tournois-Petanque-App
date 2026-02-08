@@ -1,4 +1,5 @@
 export * from './equipe';
+export * from './equipesJoueurs';
 export * from './joueurs';
 export * from './joueursListes';
 export * from './joueursPreparationTournois';

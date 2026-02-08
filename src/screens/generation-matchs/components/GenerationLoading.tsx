@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
 import Loading from '@/components/Loading';
 import { screenStackNameType } from '@/types/types/searchParams';
+import { Box } from '@/components/ui/box';
 
 export interface Props {
   screenStackName: screenStackNameType;
@@ -65,8 +66,10 @@ const GenerationLoading: React.FC<Props> = ({
 
   const { textInfo, textError } = getTexts();
   return (
-    <VStack>
-      <Loading />
+    <VStack className="border border-red-500 items-center place-items-center">
+      <Box>
+        <Loading />
+      </Box>
       <Text className="text-typography-white">{textInfo}</Text>
       <Text className="text-typography-white">{textError}</Text>
       <Button action="primary" onPress={() => retourInscription()}>
