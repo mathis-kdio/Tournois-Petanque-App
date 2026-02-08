@@ -13,6 +13,7 @@ function toJoueurModel(
 ): JoueurModel {
   const { joueurs } = preparationTournoi;
   return {
+    uniqueBDDId: joueurs.id,
     joueurTournoiId: joueurs.joueurId,
     name: joueurs.name,
     type: joueurs.type ?? undefined,
@@ -70,16 +71,11 @@ export const useJoueursPreparationTournoisV2 = () => {
 };
 
 export const useJoueursPreparationTournois = () => {
-  const getActualJoueursPreparationTournoi = useCallback(
-    async (preparationTournoiId: number) => {
-      const joueursPreparationTournois =
-        await JoueursPreparationTournoisRepository.getMany(
-          preparationTournoiId,
-        );
-      return joueursPreparationTournois.map(toJoueurModel);
-    },
-    [],
-  );
+  const getActualJoueursPreparationTournoi = useCallback(async () => {
+    const joueursPreparationTournois =
+      await JoueursPreparationTournoisRepository.getMany();
+    return joueursPreparationTournois.map(toJoueurModel);
+  }, []);
 
   const addJoueursPreparationTournoi = useCallback(
     async (joueurModel: JoueurModel) => {
@@ -107,7 +103,7 @@ export const useJoueursPreparationTournois = () => {
 
   const removeAllJoueursPreparationTournoi = useCallback(async () => {
     const joueursPreparationTournois =
-      await JoueursPreparationTournoisRepository.getMany(0);
+      await JoueursPreparationTournoisRepository.getMany();
     JoueursRepository.delete(
       joueursPreparationTournois.map((e) => e.joueurs.id),
     );
@@ -116,7 +112,7 @@ export const useJoueursPreparationTournois = () => {
 
   const getAllJoueursPreparationTournoi = useCallback(async () => {
     const joueursPreparationTournois =
-      await JoueursPreparationTournoisRepository.getMany(0);
+      await JoueursPreparationTournoisRepository.getMany();
     const joueurModel = joueursPreparationTournois.map(
       (joueursPreparationTournoisWithJoueur) =>
         toJoueurModel(joueursPreparationTournoisWithJoueur),
