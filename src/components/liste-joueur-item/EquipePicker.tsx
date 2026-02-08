@@ -53,11 +53,12 @@ const EquipePicker: React.FC<Props> = ({
   };
 
   const selectedValue = equipe ? equipe.toString() : '0';
-  let nbEquipes = listesJoueurs.length;
+  const nbJoueur = listesJoueurs.length;
+  let nbEquipes = nbJoueur;
   if (typeEquipes === TypeEquipes.DOUBLETTE) {
-    nbEquipes = Math.ceil(listesJoueurs.length / 2);
+    nbEquipes = Math.ceil(nbJoueur / 2);
   } else if (typeEquipes === TypeEquipes.TRIPLETTE) {
-    nbEquipes = Math.ceil(listesJoueurs.length / 3);
+    nbEquipes = Math.ceil(nbJoueur / 3);
   }
 
   const pickerItem = Array.from({ length: nbEquipes }, (_, i) => i + 1).flatMap(

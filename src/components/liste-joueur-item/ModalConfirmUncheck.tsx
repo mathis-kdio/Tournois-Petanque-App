@@ -13,17 +13,14 @@ import {
 } from '@/components/ui/alert-dialog';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { JoueurModel } from '@/types/interfaces/joueurModel';
 
 export interface Props {
-  joueur: JoueurModel;
   modalConfirmUncheckIsOpen: boolean;
   setModalConfirmUncheckIsOpen: (value: React.SetStateAction<boolean>) => void;
-  onCancel: (joueurModel: JoueurModel, isChecked: boolean) => void;
+  onCancel: (isChecked: boolean) => void;
 }
 
 const ModalConfirmUncheck: React.FC<Props> = ({
-  joueur,
   modalConfirmUncheckIsOpen,
   setModalConfirmUncheckIsOpen,
   onCancel,
@@ -63,7 +60,7 @@ const ModalConfirmUncheck: React.FC<Props> = ({
                 {t('annuler')}
               </ButtonText>
             </Button>
-            <Button action="negative" onPress={() => onCancel(joueur, false)}>
+            <Button action="negative" onPress={() => onCancel(false)}>
               <ButtonText>{t('oui')}</ButtonText>
             </Button>
           </ButtonGroup>
