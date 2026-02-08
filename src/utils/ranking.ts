@@ -10,11 +10,7 @@ export const ranking = (
   listeJoueurs: JoueurModel[],
   optionsTournoi: OptionsTournoiModel,
 ): Victoire[] => {
-  const victoires = victoiresPointsCalc(
-    listeMatchs,
-    listeJoueurs,
-    optionsTournoi,
-  );
+  const victoires = victoiresPointsCalc(listeMatchs, listeJoueurs);
 
   if (optionsTournoi.typeTournoi === TypeTournoi.MULTICHANCES) {
     //Classement pour les tournois de type Multi-Chances
@@ -86,17 +82,16 @@ const rankingMuliChances = (
 const victoiresPointsCalc = (
   listeMatchs: MatchModel[],
   listeJoueurs: JoueurModel[],
-  optionsTournoi: OptionsTournoiModel,
 ): Victoire[] => {
-  let victoires: Victoire[] = [];
-  for (let i = 0; i < listeJoueurs.length; i++) {
+  const victoires: Victoire[] = [];
+  listeJoueurs.forEach((joueur) => {
     let nbVictoire = 0;
     let nbPoints = 0;
     let nbMatchs = 0;
-    for (let j = 0; j < optionsTournoi.nbMatchs; j++) {
-      const { score1, score2, equipe } = listeMatchs[j];
+    listeMatchs.forEach((match) => {
+      const { score1, score2, equipe } = match;
       if (score1 !== undefined && score2 !== undefined) {
-        if (isJoueurInEquipe(i, equipe[0])) {
+        if (isJoueurInEquipe(joueur.joueurTournoiId, equipe[0])) {
           if (score1 > score2) {
             nbVictoire++;
             nbPoints += score1 - score2;
@@ -104,7 +99,7 @@ const victoiresPointsCalc = (
             nbPoints -= score2 - score1;
           }
           nbMatchs++;
-        } else if (isJoueurInEquipe(i, equipe[1])) {
+        } else if (isJoueurInEquipe(joueur.joueurTournoiId, equipe[1])) {
           if (score2 > score1) {
             nbVictoire++;
             nbPoints += score2 - score1;
@@ -114,22 +109,22 @@ const victoiresPointsCalc = (
           nbMatchs++;
         }
       }
-    }
-    victoires[i] = {
-      joueur: listeJoueurs[i],
+    });
+    victoires.push({
+      joueur: joueur,
       victoires: nbVictoire,
       points: nbPoints,
       nbMatchs: nbMatchs,
       position: 0,
-    };
-  }
+    });
+  });
 
   return victoires;
 };
 
-const isJoueurInEquipe = (joueurId: number, equipe: EquipeType) => {
+export const isJoueurInEquipe = (joueurId: number, equipe: EquipeType) => {
   const res = equipe.find(
     (joueur) => joueur && joueur !== -1 && joueur.joueurTournoiId === joueurId,
   );
-  return !res && res !== -1;
+  return res !== undefined && res !== -1;
 };

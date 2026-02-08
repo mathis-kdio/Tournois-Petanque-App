@@ -5,6 +5,7 @@ import { JoueurModel } from '@/types/interfaces/joueurModel';
 import React from 'react';
 import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoiModel';
 import { MatchModel } from '@/types/interfaces/matchModel';
+import { isJoueurInEquipe } from '@/utils/ranking';
 
 export interface Props {
   joueur: JoueurModel;
@@ -15,12 +16,14 @@ export interface Props {
 const Fanny: React.FC<Props> = ({ joueur, matchs, options }) => {
   let fanny = false;
   let nbFanny = 0;
-  for (let i = 0; i < options.nbMatchs; i++) {
-    const match = matchs[i];
-    if (match.equipe[0].includes(joueur) && match.score1 === 0) {
+  const { joueurTournoiId } = joueur;
+  const { nbMatchs } = options;
+  for (let i = 0; i < nbMatchs; i++) {
+    const { score1, score2, equipe } = matchs[i];
+    if (isJoueurInEquipe(joueurTournoiId, equipe[0]) && score1 === 0) {
       fanny = true;
       nbFanny++;
-    } else if (match.equipe[1].includes(joueur) && match.score2 === 0) {
+    } else if (isJoueurInEquipe(joueurTournoiId, equipe[1]) && score2 === 0) {
       fanny = true;
       nbFanny++;
     }
