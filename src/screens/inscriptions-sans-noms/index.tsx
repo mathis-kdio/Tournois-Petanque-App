@@ -5,14 +5,14 @@ import { VStack } from '@/components/ui/vstack';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { usePreparationTournoiV2 } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import Loading from '@/components/Loading';
 import StartButton from './components/StartButton';
 
 const InscriptionsSansNoms = () => {
   const { t } = useTranslation();
 
-  const { preparationTournoiVM } = usePreparationTournoiV2();
+  const { preparationTournoiVM } = usePreparationTournoi();
 
   const [nbJoueurNormaux, setNbJoueurNormaux] = useState(0);
   const [nbJoueurEnfants, setNbJoueurEnfants] = useState(0);

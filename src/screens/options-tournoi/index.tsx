@@ -24,7 +24,7 @@ import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import Loading from '@/components/Loading';
 import { screenStackNameType } from '@/types/types/searchParams';
-import { usePreparationTournoiV2 } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 
 export interface Props {
   screenStackName: screenStackNameType;
@@ -36,7 +36,7 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
   const { t } = useTranslation();
 
   const { preparationTournoiVM, updateOptionsPreparationTournoi } =
-    usePreparationTournoiV2();
+    usePreparationTournoi();
 
   const defaultNbTours = 5;
   const defaultNbPtVictoire = 13;

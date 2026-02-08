@@ -29,7 +29,7 @@ function toPreparationTournoiModel(
   };
 }
 
-export const usePreparationTournoiV2 = () => {
+export const usePreparationTournoi = () => {
   const { data: preparationTournoi } = useLiveQuery(
     PreparationTournoisRepository.getPreparationTournoi(),
   );

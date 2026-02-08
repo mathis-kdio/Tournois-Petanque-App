@@ -21,14 +21,14 @@ import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
 import Loading from '@/components/Loading';
-import { usePreparationTournoiV2 } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 
 const ChoixModeTournoi = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
   const { preparationTournoiVM, updateModePreparationTournoi } =
-    usePreparationTournoiV2();
+    usePreparationTournoi();
 
   const [typeEquipes, setTypeEquipes] = useState(TypeEquipes.DOUBLETTE);
   const [modeTournoi, setModeTournoi] = useState(ModeTournoi.AVECNOMS);

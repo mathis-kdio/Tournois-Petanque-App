@@ -8,7 +8,7 @@ import { Divider } from '@/components/ui/divider';
 import { Complement } from '@/types/enums/complement';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import Loading from '@/components/Loading';
-import { usePreparationTournoiV2 } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import { useJoueursPreparationTournoisV2 } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import ComplementCard from '@/screens/complement/components/ComplementCard';
 import { screenStackNameType } from '@/types/types/searchParams';
@@ -20,7 +20,7 @@ export interface Props {
 const ChoixComplement: React.FC<Props> = ({ screenStackName }) => {
   const { t } = useTranslation();
 
-  const { preparationTournoiVM } = usePreparationTournoiV2();
+  const { preparationTournoiVM } = usePreparationTournoi();
 
   const { joueurs } = useJoueursPreparationTournoisV2(preparationTournoiVM?.id);
 

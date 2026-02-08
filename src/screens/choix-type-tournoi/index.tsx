@@ -10,14 +10,14 @@ import { useTranslation } from 'react-i18next';
 import AdMobInscriptionsBanner from '@/components/adMob/AdMobInscriptionsBanner';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { useRouter } from 'expo-router';
-import { usePreparationTournoiV2 } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import TypeTournoiModal from './components/TypeTournoiModal';
 
 const ChoixTypeTournoi = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const { updateTypePreparationTournoi } = usePreparationTournoiV2();
+  const { updateTypePreparationTournoi } = usePreparationTournoi();
 
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState<TypeTournoi | undefined>();

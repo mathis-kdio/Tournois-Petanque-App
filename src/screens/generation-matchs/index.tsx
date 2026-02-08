@@ -31,7 +31,7 @@ import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
-import { usePreparationTournoiV2 } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import GenerationLoading from './components/GenerationLoading';
 import { useTerrainsPreparationTournois } from '@/repositories/terrainsPreparationTournois/useTerrainsPreparationTournois';
 import { useJoueursPreparationTournoisV2 } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
@@ -47,7 +47,7 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
-  const { preparationTournoiVM } = usePreparationTournoiV2();
+  const { preparationTournoiVM } = usePreparationTournoi();
   const { joueurs } = useJoueursPreparationTournoisV2();
   const { terrains } = useTerrainsPreparationTournois();
   const { addTournoi, addMatchs, clearPreparationTournois } =

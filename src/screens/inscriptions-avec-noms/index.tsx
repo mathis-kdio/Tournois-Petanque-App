@@ -6,7 +6,7 @@ import TopBarBack from '@/components/topBar/TopBarBack';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { useTranslation } from 'react-i18next';
-import { usePreparationTournoiV2 } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import { useCallback } from 'react';
 import Loading from '@/components/Loading';
 import { JoueurType } from '@/types/enums/joueurType';
@@ -20,7 +20,7 @@ import StartButton from './components/StartButton';
 const InscriptionsAvecNoms = () => {
   const { t } = useTranslation();
 
-  const { preparationTournoiVM } = usePreparationTournoiV2();
+  const { preparationTournoiVM } = usePreparationTournoi();
 
   const { renameJoueur, checkJoueur } = useJoueursV2();
   const {

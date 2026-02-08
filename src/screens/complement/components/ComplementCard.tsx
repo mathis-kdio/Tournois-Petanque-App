@@ -4,7 +4,7 @@ import { Complement } from '@/types/enums/complement';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
 import { screenStackNameType } from '@/types/types/searchParams';
-import { usePreparationTournoiV2 } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 
 interface Props {
   complement: Complement;
@@ -20,7 +20,7 @@ const ComplementCard: React.FC<Props> = ({
   const { t } = useTranslation();
   const router = useRouter();
 
-  const { updateComplementPreparationTournoi } = usePreparationTournoiV2();
+  const { updateComplementPreparationTournoi } = usePreparationTournoi();
 
   const navigate = () => {
     updateComplementPreparationTournoi(complement);

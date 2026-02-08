@@ -10,7 +10,7 @@ import SubmitButton from './components/SubmitButton';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { useJoueursV2 } from '@/repositories/joueurs/useJoueurs';
 import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
-import { usePreparationTournoiV2 } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import Loading from '@/components/Loading';
 import { JoueurType } from '@/types/enums/joueurType';
 
@@ -24,7 +24,7 @@ const CreateListeJoueur: React.FC<Props> = ({ type, idList }) => {
 
   const listesJoueurs: JoueurModel[] = [];
 
-  const { preparationTournoiVM } = usePreparationTournoiV2();
+  const { preparationTournoiVM } = usePreparationTournoi();
   const preparationTournoiJoueurs: JoueurModel[] = [];
 
   const { renameJoueur, checkJoueur } = useJoueursV2();
