@@ -1,18 +1,5 @@
 import { Text } from '@/components/ui/text';
-import {
-  Select,
-  SelectBackdrop,
-  SelectContent,
-  SelectDragIndicator,
-  SelectDragIndicatorWrapper,
-  SelectIcon,
-  SelectInput,
-  SelectItem,
-  SelectPortal,
-  SelectTrigger,
-} from '@/components/ui/select';
 import { Input, InputField } from '@/components/ui/input';
-import { Image } from '@/components/ui/image';
 import { HStack } from '@/components/ui/hstack';
 import {
   Checkbox,
@@ -20,17 +7,18 @@ import {
   CheckboxIndicator,
   CheckboxLabel,
 } from '@/components/ui/checkbox';
-import { CheckIcon, ChevronDownIcon } from '@/components/ui/icon';
+import { CheckIcon } from '@/components/ui/icon';
 import { Box } from '@/components/ui/box';
 import React, { useState } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import { JoueurType } from '@/types/enums/joueurType';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import ModalConfirmUncheck from './ModalConfirmUncheck';
+import JoueurTypeIcon from './JoueurTypeIcon';
+import EquipePicker from './EquipePicker';
 
 export interface Props {
   joueur: JoueurModel;
@@ -39,10 +27,8 @@ export interface Props {
   typeEquipes: TypeEquipes;
   modeTournoi: ModeTournoi;
   typeTournoi: TypeTournoi;
-  nbJoueurs: number;
   showCheckbox: boolean;
-  tournoiID: number | undefined;
-  listesJoueurs: JoueurModel[] | undefined;
+  listesJoueurs: JoueurModel[];
   onDeleteJoueur: (id: number) => void;
   onAddEquipeJoueur: (id: number, equipeId: number) => void;
   onUpdateName: (joueurModel: JoueurModel, name: string) => void;
@@ -56,9 +42,7 @@ const ListeJoueurItem: React.FC<Props> = ({
   typeEquipes,
   modeTournoi,
   typeTournoi,
-  nbJoueurs,
   showCheckbox,
-  tournoiID,
   listesJoueurs,
   onDeleteJoueur,
   onAddEquipeJoueur,
@@ -201,136 +185,6 @@ const ListeJoueurItem: React.FC<Props> = ({
     }
   };
 
-  const _ajoutEquipe = (joueurId: number, equipeId: number) => {
-    /*const action = {
-      type: 'AJOUT_EQUIPE_JOUEUR',
-      value: [ModeTournoi.AVECEQUIPES, joueurId, equipeId],
-    };
-    dispatch(action);*/
-    onAddEquipeJoueur(joueurId, equipeId);
-  };
-
-  const _equipePicker = (
-    joueur: JoueurModel,
-    avecEquipes: boolean,
-    typeEquipes: TypeEquipes,
-    nbJoueurs: number,
-  ) => {
-    if (avecEquipes === true && listesJoueurs) {
-      let selectedValue = '0';
-      if (joueur.equipe) {
-        selectedValue = joueur.equipe.toString();
-      }
-      let nbEquipes = nbJoueurs;
-      if (typeEquipes === TypeEquipes.DOUBLETTE) {
-        nbEquipes = Math.ceil(nbJoueurs / 2);
-      } else if (typeEquipes === TypeEquipes.TRIPLETTE) {
-        nbEquipes = Math.ceil(nbJoueurs / 3);
-      }
-
-      let pickerItem = [];
-      for (let i = 1; i <= nbEquipes; i++) {
-        let count = listesJoueurs.reduce(
-          (counter: number, obj: JoueurModel) =>
-            obj.equipe === i ? (counter += 1) : counter,
-          0,
-        );
-        if (typeEquipes === TypeEquipes.TETEATETE && count < 1) {
-          pickerItem.push(_equipePickerItem(i));
-        }
-        if (typeEquipes === TypeEquipes.DOUBLETTE && count < 2) {
-          pickerItem.push(_equipePickerItem(i));
-        } else if (typeEquipes === TypeEquipes.TRIPLETTE && count < 3) {
-          pickerItem.push(_equipePickerItem(i));
-        } else if (joueur.equipe === i) {
-          pickerItem.push(_equipePickerItem(i));
-        }
-      }
-      return (
-        <Select
-          selectedValue={selectedValue}
-          aria-label={t('choix_equipe')}
-          onValueChange={(itemValue) =>
-            _ajoutEquipe(joueur.joueurTournoiId, parseInt(itemValue))
-          }
-        >
-          <SelectTrigger className="flex flex-row border-custom-bg-inverse">
-            <SelectInput
-              className="basis-5/6 text-typography-white placeholder:text-typography-white"
-              placeholder={t('choix_equipe')}
-            />
-            <SelectIcon
-              className="basis-1/6 mr-3 text-typography-white"
-              as={ChevronDownIcon}
-            />
-          </SelectTrigger>
-          <SelectPortal>
-            <SelectBackdrop />
-            <SelectContent>
-              <SelectDragIndicatorWrapper>
-                <SelectDragIndicator />
-              </SelectDragIndicatorWrapper>
-              <SelectItem label={t('choisir')} value="0" key="0" />
-              {pickerItem}
-            </SelectContent>
-          </SelectPortal>
-        </Select>
-      );
-    }
-  };
-
-  const _equipePickerItem = (equipe: number) => {
-    return (
-      <SelectItem
-        label={equipe.toString()}
-        value={equipe.toString()}
-        key={equipe}
-      />
-    );
-  };
-
-  const _joueurTypeIcon = (joueurType: JoueurType | undefined) => {
-    if (joueurType === undefined) {
-      return;
-    }
-    const showTireurPointeur =
-      modeTournoi === ModeTournoi.SAUVEGARDE ||
-      (typeTournoi === TypeTournoi.MELEDEMELE &&
-        (typeEquipes === TypeEquipes.DOUBLETTE ||
-          typeEquipes === TypeEquipes.TRIPLETTE));
-    if (showTireurPointeur) {
-      return (
-        <Box>
-          {joueurType === JoueurType.ENFANT && (
-            <FontAwesome5 name="child" color="darkgray" size={24} />
-          )}
-          {joueurType === JoueurType.TIREUR && (
-            <Image
-              source={require('@assets/images/tireur.png')}
-              alt="tireur"
-              className="w-[30px] h-[30px]"
-            />
-          )}
-          {joueurType === JoueurType.POINTEUR && (
-            <Image
-              source={require('@assets/images/pointeur.png')}
-              alt="tireur"
-              className="w-[30px] h-[30px]"
-            />
-          )}
-        </Box>
-      );
-    } else {
-      return (
-        <Box>
-          {joueurType === JoueurType.ENFANT && (
-            <FontAwesome5 name="child" color="darkgray" size={24} />
-          )}
-        </Box>
-      );
-    }
-  };
-
   const _joueurCheckbox = (showCheckbox: boolean, joueur: JoueurModel) => {
     if (!showCheckbox) {
       return;
@@ -380,7 +234,12 @@ const ListeJoueurItem: React.FC<Props> = ({
     <HStack className="flex flex-row border border-custom-bg-inverse rounded-xl m-1 px-1 items-center">
       <HStack className={`${flexsize[0]}`}>
         {_joueurCheckbox(showCheckbox, joueur)}
-        {_joueurTypeIcon(joueur.type)}
+        <JoueurTypeIcon
+          joueurType={joueur.type}
+          typeEquipes={typeEquipes}
+          modeTournoi={modeTournoi}
+          typeTournoi={typeTournoi}
+        />
         <Box className="flex-1">
           {_joueurName(joueur, isInscription, avecEquipes)}
         </Box>
@@ -388,7 +247,12 @@ const ListeJoueurItem: React.FC<Props> = ({
       <HStack className={`${flexsize[1]} justify-end`}>
         {avecEquipes === true && (
           <HStack className={`${flexsize[2]}`}>
-            {_equipePicker(joueur, avecEquipes, typeEquipes, nbJoueurs)}
+            <EquipePicker
+              joueur={joueur}
+              typeEquipes={typeEquipes}
+              listesJoueurs={listesJoueurs}
+              onAddEquipeJoueur={onAddEquipeJoueur}
+            />
           </HStack>
         )}
         <HStack className={`${flexsize[3]}`}>

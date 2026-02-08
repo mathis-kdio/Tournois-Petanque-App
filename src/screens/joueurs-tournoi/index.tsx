@@ -23,7 +23,7 @@ const JoueursTournoi = () => {
     return <Loading />;
   }
 
-  const { options, tournoiId } = actualTournoi;
+  const { options } = actualTournoi;
 
   const retourMatchs = () => {
     router.navigate('/tournoi');
@@ -39,9 +39,7 @@ const JoueursTournoi = () => {
         typeEquipes={typeEquipes}
         modeTournoi={mode}
         typeTournoi={typeTournoi}
-        nbJoueurs={joueursTournoi.length}
         showCheckbox={true}
-        tournoiID={tournoiId}
         listesJoueurs={joueursTournoi}
         onDeleteJoueur={() => ''}
         onAddEquipeJoueur={() => ''}
