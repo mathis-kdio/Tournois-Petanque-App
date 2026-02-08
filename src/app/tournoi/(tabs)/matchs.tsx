@@ -4,7 +4,7 @@ import { StyledTopTabs } from '@/components/navigation/styled-top-tabs';
 import MatchsManche from '@/screens/matchs/components/MatchsManche';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { useTournoisV2 } from '@/repositories/tournois/useTournois';
+import { useTournois } from '@/repositories/tournois/useTournois';
 import Loading from '@/components/Loading';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
@@ -12,7 +12,7 @@ import { Text } from '@/components/ui/text';
 export default function MatchsScreen() {
   const { t } = useTranslation();
   const { Screen } = createMaterialTopTabNavigator();
-  const { actualTournoi } = useTournoisV2();
+  const { actualTournoi } = useTournois();
 
   if (!actualTournoi) {
     return <Loading />;

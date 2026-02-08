@@ -13,7 +13,7 @@ import { Button, ButtonText, ButtonGroup } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useTournoisV2 } from '@/repositories/tournois/useTournois';
+import { useTournois } from '@/repositories/tournois/useTournois';
 
 export interface Props {
   modalDeleteIsOpen: boolean;
@@ -28,7 +28,7 @@ const ModalDeleteTournoi: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
 
-  const { deleteTournoi } = useTournoisV2();
+  const { deleteTournoi } = useTournois();
 
   const supprimerTournoi = (tournoiId: number) => {
     deleteTournoi(tournoiId);

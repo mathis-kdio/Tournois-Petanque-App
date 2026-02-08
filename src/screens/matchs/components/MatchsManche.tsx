@@ -4,7 +4,7 @@ import MatchItem from '@/screens/matchs/components/MatchItem';
 import { MatchModel } from '@/types/interfaces/matchModel';
 import { ListRenderItem } from 'react-native';
 import useExitAlertOnBack from '@/components/with-exit-alert/with-exit-alert';
-import { useTournoisV2 } from '@/repositories/tournois/useTournois';
+import { useTournois } from '@/repositories/tournois/useTournois';
 import Loading from '@/components/Loading';
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 const MatchsManche: React.FC<Props> = ({ mancheNumber }) => {
   useExitAlertOnBack();
 
-  const { actualTournoi } = useTournoisV2();
+  const { actualTournoi } = useTournois();
 
   if (!actualTournoi) {
     return <Loading />;

@@ -8,13 +8,13 @@ import { ranking } from '@utils/ranking';
 import { useTranslation } from 'react-i18next';
 import { ListRenderItem } from 'react-native';
 import { Victoire } from '@/types/interfaces/victoire';
-import { useTournoisV2 } from '@/repositories/tournois/useTournois';
+import { useTournois } from '@/repositories/tournois/useTournois';
 import Loading from '@/components/Loading';
 
 const ListeResultats = () => {
   const { t } = useTranslation();
 
-  const { actualTournoi, joueursTournoi } = useTournoisV2();
+  const { actualTournoi, joueursTournoi } = useTournois();
 
   if (!actualTournoi) {
     return <Loading />;

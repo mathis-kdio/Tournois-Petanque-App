@@ -14,7 +14,7 @@ import { Button, ButtonText, ButtonGroup } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from 'expo-router';
 import { CommonActions } from '@react-navigation/native';
-import { useTournoisV2 } from '@/repositories/tournois/useTournois';
+import { useTournois } from '@/repositories/tournois/useTournois';
 
 export interface Props {
   tournoiId: number;
@@ -30,7 +30,7 @@ const DeleteTournoiModal: React.FC<Props> = ({
   const { t } = useTranslation();
   const navigation = useNavigation();
 
-  const { deleteTournoi } = useTournoisV2();
+  const { deleteTournoi } = useTournois();
 
   const supprimerTournoi = (tournoiId: number) => {
     setModalDeleteIsOpen(false);

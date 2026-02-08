@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { TournoisRepository } from './tournoisRepository';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import { Tournoi } from '@/db/schema/tournoi';
@@ -60,7 +60,7 @@ function toJoueurModel(joueur: Joueur): JoueurModel {
   };
 }
 
-export const useTournoisV2 = () => {
+export const useTournois = () => {
   const { data: data1 } = useLiveQuery(TournoisRepository.getTournoi());
 
   const tournoiId = data1[0] ? data1[0].id : -1;
@@ -152,10 +152,13 @@ export const useTournoisV2 = () => {
     [allTournois],
   );
 
-  const deleteTournoi = (id: number) => TournoisRepository.deleteTournoiV2(id);
+  //TODO : Ajouter autres tables à supprimer comme terrains, matchs etc
+  const deleteTournoi = async (id: number) => {
+    await TournoisRepository.deleteTournoi(id);
+  };
 
   const renameTournoi = async (id: number, name: string) => {
-    await TournoisRepository.renameTournoiV2(id, name);
+    await TournoisRepository.renameTournoi(id, name);
   };
 
   return {
@@ -166,20 +169,3 @@ export const useTournoisV2 = () => {
     renameTournoi,
   };
 };
-
-export function useTournois() {
-  const deleteTournoi = useCallback(
-    (id: number) => TournoisRepository.deleteTournoi(id),
-    [],
-  );
-
-  const renameTournoi = useCallback(
-    (id: number, name: string) => TournoisRepository.renameTournoi(id, name),
-    [],
-  );
-
-  return {
-    deleteTournoi,
-    renameTournoi,
-  };
-}

@@ -7,7 +7,7 @@ import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
 import { Box } from '@/components/ui/box';
 import { StyledSwitch } from '@/components/ui/switch/styled-switch';
-import { useTournoisV2 } from '@/repositories/tournois/useTournois';
+import { useTournois } from '@/repositories/tournois/useTournois';
 import Loading from '@/components/Loading';
 import ExportButton from './components/ExportButton';
 
@@ -18,7 +18,7 @@ const PDFExport = () => {
   const [ajoutClassement, setAjoutClassement] = useState(true);
   const [affichageCompact, setAffichageCompact] = useState(false);
 
-  const { actualTournoi } = useTournoisV2();
+  const { actualTournoi } = useTournois();
 
   if (!actualTournoi) {
     return <Loading />;

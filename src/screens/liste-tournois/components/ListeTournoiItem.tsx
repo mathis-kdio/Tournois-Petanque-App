@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigation } from 'expo-router';
 import { CommonActions } from '@react-navigation/native';
 import ModalDeleteTournoi from './ModalDeleteTournoi';
-import { useTournoisV2 } from '@/repositories/tournois/useTournois';
+import { useTournois } from '@/repositories/tournois/useTournois';
 
 export interface Props {
   tournoi: TournoiModel;
@@ -32,7 +32,7 @@ const ListeTournoiItem: React.FC<Props> = ({
   const [tournoiNameText, setTournoiNameText] = useState('');
   const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false);
 
-  const { renameTournoi } = useTournoisV2();
+  const { renameTournoi } = useTournois();
 
   const chargerTournoi = (tournoi: TournoiModel) => {
     const actionUpdateListeMatchs = {

@@ -19,7 +19,7 @@ import { useAuth } from '@/components/supabase/SessionProvider';
 import { useNavigation, useRouter } from 'expo-router';
 import { CommonActions } from '@react-navigation/native';
 import Constants from 'expo-constants';
-import { useTournoisV2 } from '@/repositories/tournois/useTournois';
+import { useTournois } from '@/repositories/tournois/useTournois';
 
 const googleMarketReviews =
   'market://details?id=com.MK.PetanqueGCU&showAllReviews=true';
@@ -36,7 +36,7 @@ export default function Accueil() {
   const navigation = useNavigation();
   const { session } = useAuth();
 
-  const { actualTournoi } = useTournoisV2();
+  const { actualTournoi } = useTournois();
 
   const listesJoueurs = useSelector(
     (state: any) => state.listesJoueurs.listesJoueurs,

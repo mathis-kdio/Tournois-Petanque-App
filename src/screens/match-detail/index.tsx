@@ -17,7 +17,7 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'expo-router';
 import Loading from '@/components/Loading';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { useTournoisV2 } from '@/repositories/tournois/useTournois';
+import { useTournois } from '@/repositories/tournois/useTournois';
 import { useMatchsV2 } from '@/repositories/matchs/useMatchs';
 
 type EquipeId = 1 | 2;
@@ -37,7 +37,7 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
   const secondInput = React.createRef<any>();
 
   const { updateScore, resetScore } = useMatchsV2(idMatch);
-  const { actualTournoi } = useTournoisV2();
+  const { actualTournoi } = useTournois();
 
   if (!actualTournoi) {
     return <Loading />;

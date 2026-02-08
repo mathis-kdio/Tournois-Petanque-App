@@ -10,14 +10,14 @@ import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { ListRenderItem } from 'react-native';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { useRouter } from 'expo-router';
-import { useTournoisV2 } from '@/repositories/tournois/useTournois';
+import { useTournois } from '@/repositories/tournois/useTournois';
 import Loading from '@/components/Loading';
 
 const JoueursTournoi = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const { actualTournoi } = useTournoisV2();
+  const { actualTournoi } = useTournois();
 
   if (!actualTournoi) {
     return <Loading />;

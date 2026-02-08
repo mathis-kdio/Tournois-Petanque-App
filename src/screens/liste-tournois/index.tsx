@@ -6,7 +6,7 @@ import TopBarBack from '@/components/topBar/TopBarBack';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import { ListRenderItem } from 'react-native';
 import { useState } from 'react';
-import { useTournoisV2 } from '@/repositories/tournois/useTournois';
+import { useTournois } from '@/repositories/tournois/useTournois';
 import ListeTournoiItem from './components/ListeTournoiItem';
 import ModalInfosTournoi from './components/ModalInfosTournoi';
 
@@ -18,7 +18,7 @@ export default function ListeTournois() {
   const [infosTournoi, setInfosTournoi] = useState<TournoiModel | undefined>(
     undefined,
   );
-  const { listeTournois, actualTournoi } = useTournoisV2();
+  const { listeTournois, actualTournoi } = useTournois();
 
   const showModalInfos = (tournoi: TournoiModel) => {
     setModalTournoiInfosIsOpen(true);

@@ -6,8 +6,9 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { useRouter } from 'expo-router';
-import { useTournoisV2 } from '@/repositories/tournois/useTournois';
+import { useTournois } from '@/repositories/tournois/useTournois';
 import DeleteTournoiModal from './components/DeleteTournoiModal';
+import Loading from '@/components/Loading';
 
 const ParametresTournoi = () => {
   const { t } = useTranslation();
@@ -15,7 +16,11 @@ const ParametresTournoi = () => {
 
   const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false);
 
-  const { actualTournoi } = useTournoisV2();
+  const { actualTournoi } = useTournois();
+
+  if (!actualTournoi) {
+    return <Loading />;
+  }
 
   const showMatchs = () => {
     router.navigate('/tournoi');
