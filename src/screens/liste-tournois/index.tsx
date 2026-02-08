@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { useTournois } from '@/repositories/tournois/useTournois';
 import ListeTournoiItem from './components/ListeTournoiItem';
 import ModalInfosTournoi from './components/ModalInfosTournoi';
+import Loading from '@/components/Loading';
 
 export default function ListeTournois() {
   const { t } = useTranslation();
@@ -19,6 +20,10 @@ export default function ListeTournois() {
     undefined,
   );
   const { listeTournois, actualTournoi } = useTournois();
+
+  if (!listeTournois) {
+    return <Loading />;
+  }
 
   const showModalInfos = (tournoi: TournoiModel) => {
     setModalTournoiInfosIsOpen(true);

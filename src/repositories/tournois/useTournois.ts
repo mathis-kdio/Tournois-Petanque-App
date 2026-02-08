@@ -150,7 +150,10 @@ export const useTournois = () => {
   const { data: allTournois } = useLiveQuery(
     TournoisRepository.getAllTournois(),
   );
-  const tournoisVM = useMemo(() => {
+  const listeTournoisVM = useMemo(() => {
+    if (!allTournois) {
+      return;
+    }
     return allTournois.map((tournoi) => toTournoiModel(tournoi, [])) ?? [];
   }, [allTournois]);
 
@@ -166,7 +169,7 @@ export const useTournois = () => {
   return {
     actualTournoi: tournoiVM,
     joueursTournoi: joueursTournoi,
-    listeTournois: tournoisVM,
+    listeTournois: listeTournoisVM,
     deleteTournoi,
     renameTournoi,
   };
