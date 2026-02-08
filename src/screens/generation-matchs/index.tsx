@@ -280,12 +280,10 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
         mode: mode,
       };
 
-      console.log('ajoutMatchs');
       //Ajout dans le store
       ajoutMatchs(matchs, tournoiOptions);
 
       //Désactivation de l'affichage du _displayLoading
-      console.log('generation terminée');
       setIsLoading(false);
       setIsGenerationEnd(true);
 
@@ -327,7 +325,7 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
     if (!preparationTournoiVM) {
       return;
     }
-    console.log('preparationTournoiVM', preparationTournoiVM);
+
     const timer = setTimeout(() => {
       lanceurGeneration(preparationTournoiVM);
     }, 1000);

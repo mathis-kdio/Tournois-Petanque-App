@@ -26,9 +26,7 @@ const MatchsManche: React.FC<Props> = ({ mancheNumber }) => {
     return <MatchItem match={item} />;
   };
 
-  console.log(matchs);
   const matchsManche = matchs.filter((match) => match.manche === mancheNumber);
-  console.log(matchsManche);
 
   return (
     <VStack className="flex-1 bg-custom-background">
