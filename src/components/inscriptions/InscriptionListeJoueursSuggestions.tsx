@@ -85,7 +85,7 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
       joueur={item}
       optionsTournoi={preparationTournoi}
       onAddJoueur={onAddJoueur}
-      supprimerJoueurSuggerre={function (joueurId: number): void {
+      supprimerJoueurSuggere={function (joueurId: number): void {
         throw new Error('Function not implemented.');
       }}
     />
