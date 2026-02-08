@@ -23,17 +23,17 @@ import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiMo
 export interface Props {
   joueurType: JoueurTypeEnum | undefined;
   optionsTournoi: PreparationTournoiModel;
-  _setJoueurType: (type: JoueurTypeEnum) => void;
+  handleSetJoueurType: (type: JoueurTypeEnum) => void;
 }
 
-const JoueurType: React.FC<Props> = ({
+const JoueurTypeSelect: React.FC<Props> = ({
   joueurType,
   optionsTournoi,
-  _setJoueurType,
+  handleSetJoueurType,
 }) => {
   const { t } = useTranslation();
 
-  const _selectItemList = (optionsTournoi: PreparationTournoiModel) => {
+  const selectItemList = () => {
     const { mode, typeTournoi, typeEquipes } = optionsTournoi;
     if (
       mode === ModeTournoi.SAUVEGARDE ||
@@ -79,14 +79,14 @@ const JoueurType: React.FC<Props> = ({
   };
 
   const setJoueurType = (itemValue: string) => {
-    _setJoueurType(itemValue as JoueurTypeEnum);
+    handleSetJoueurType(itemValue as JoueurTypeEnum);
   };
 
   return (
     <Select
       selectedValue={joueurType}
       aria-label={t('choisir_poste')}
-      onValueChange={(itemValue: string) => setJoueurType(itemValue)}
+      onValueChange={setJoueurType}
     >
       <SelectTrigger variant="rounded" className="border-custom-bg-inverse">
         <SelectInput
@@ -111,11 +111,11 @@ const JoueurType: React.FC<Props> = ({
             value={JoueurTypeEnum.ENFANT}
             key={0}
           />
-          {_selectItemList(optionsTournoi)}
+          {selectItemList()}
         </SelectContent>
       </SelectPortal>
     </Select>
   );
 };
 
-export default JoueurType;
+export default JoueurTypeSelect;

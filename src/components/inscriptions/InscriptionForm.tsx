@@ -3,7 +3,7 @@ import { Input, InputField } from '@/components/ui/input';
 import { HStack } from '@/components/ui/hstack';
 import { Box } from '@/components/ui/box';
 import React, { useEffect, useState } from 'react';
-import JoueurType from '@components/JoueurType';
+import JoueurTypeSelect from '@/components/JoueurTypeSelect';
 import { useTranslation } from 'react-i18next';
 import { JoueurType as JoueurTypeEnum } from '@/types/enums/joueurType';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
@@ -70,10 +70,10 @@ const InscriptionForm: React.FC<Props> = ({
         </Input>
       </Box>
       <Box className="flex-1">
-        <JoueurType
+        <JoueurTypeSelect
           joueurType={joueurType}
           optionsTournoi={preparationTournoi}
-          _setJoueurType={(type) => setJoueurType(type)}
+          handleSetJoueurType={setJoueurType}
         />
       </Box>
       <Box>

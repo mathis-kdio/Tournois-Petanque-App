@@ -3,7 +3,7 @@ import { HStack } from '@/components/ui/hstack';
 import { Box } from '@/components/ui/box';
 import React, { useState } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
-import JoueurType from '@components/JoueurType';
+import JoueurTypeSelect from '@/components/JoueurTypeSelect';
 import { JoueurType as JoueurTypeEnum } from '@/types/enums/joueurType';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
@@ -44,10 +44,10 @@ const JoueurSuggere: React.FC<Props> = ({
         </Text>
       </Box>
       <Box className="flex-1">
-        <JoueurType
+        <JoueurTypeSelect
           joueurType={joueurType}
           optionsTournoi={optionsTournoi}
-          _setJoueurType={setJoueurType}
+          handleSetJoueurType={setJoueurType}
         />
       </Box>
       <Box className="ml-2">
