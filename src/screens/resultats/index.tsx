@@ -14,7 +14,7 @@ import Loading from '@/components/Loading';
 const ListeResultats = () => {
   const { t } = useTranslation();
 
-  const { actualTournoi } = useTournoisV2();
+  const { actualTournoi, joueursTournoi } = useTournoisV2();
 
   if (!actualTournoi) {
     return <Loading />;
@@ -45,7 +45,7 @@ const ListeResultats = () => {
         </HStack>
         <Divider className="my-0.5" />
         <FlatList
-          data={ranking(matchs, options)}
+          data={ranking(matchs, joueursTournoi, options)}
           keyExtractor={(item) => item.joueur.joueurTournoiId.toString()}
           renderItem={renderItem}
         />

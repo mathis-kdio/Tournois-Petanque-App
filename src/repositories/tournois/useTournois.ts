@@ -5,12 +5,10 @@ import { Tournoi } from '@/db/schema/tournoi';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { FullMatch, MatchsRepository } from '../matchs/matchsRepository';
 import { MatchModel } from '@/types/interfaces/matchModel';
-import {
-  EquipesJoueursRepository,
-  FullEquipeJoueur,
-} from '../equipesJoueurs/equipesJoueursRepository';
+import { EquipesJoueursRepository } from '../equipesJoueurs/equipesJoueursRepository';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { EquipeType } from '@/types/interfaces/equipeType';
+import { Joueur } from '@/db/schema';
 
 function toTournoiModel(tournoi: Tournoi, matchs: MatchModel[]): TournoiModel {
   return {
@@ -29,7 +27,6 @@ function toTournoiModel(tournoi: Tournoi, matchs: MatchModel[]): TournoiModel {
       memesAdversaires: tournoi.memesAdversaires,
       typeEquipes: tournoi.typeEquipes,
       typeTournoi: tournoi.typeTournoi,
-      listeJoueurs: [],
       avecTerrains: tournoi.avecTerrains,
       mode: tournoi.mode,
     },
@@ -52,14 +49,14 @@ function toMatchmodel(
   };
 }
 
-function toJoueurModel(fullEquipeJoueur: FullEquipeJoueur): JoueurModel {
+function toJoueurModel(joueur: Joueur): JoueurModel {
   return {
-    uniqueBDDId: fullEquipeJoueur.joueurs.id,
-    joueurTournoiId: fullEquipeJoueur.joueurs.joueurId,
-    name: fullEquipeJoueur.joueurs.name,
-    type: fullEquipeJoueur.joueurs.type ?? undefined,
-    equipe: fullEquipeJoueur.joueurs.equipe ?? undefined,
-    isChecked: fullEquipeJoueur.joueurs.isChecked ?? false,
+    uniqueBDDId: joueur.id,
+    joueurTournoiId: joueur.joueurId,
+    name: joueur.name,
+    type: joueur.type ?? undefined,
+    equipe: joueur.equipe ?? undefined,
+    isChecked: joueur.isChecked ?? false,
   };
 }
 
@@ -99,6 +96,21 @@ export const useTournoisV2 = () => {
     [equipesTournoi],
   );
 
+  const joueursTournoi = useMemo(() => {
+    const joueursIds = new Set();
+    return equipes
+      .map(({ joueurs }) => joueurs)
+      .filter(({ id }) => {
+        if (joueursIds.has(id)) {
+          return false;
+        } else {
+          joueursIds.add(id);
+          return true;
+        }
+      })
+      .map(toJoueurModel);
+  }, [equipes]);
+
   const tournoiVM = useMemo(() => {
     if (!data1.length && !matchs.length && !equipes.length) {
       return;
@@ -106,16 +118,22 @@ export const useTournoisV2 = () => {
 
     const matchModels = matchs.map((match) => {
       const equipe1JoueurModels = equipes
-        .filter((a) => a.equipes_joueurs.equipeId === match.equipe1.id)
-        .map(toJoueurModel);
+        .filter(
+          ({ equipes_joueurs }) =>
+            equipes_joueurs.equipeId === match.equipe1.id,
+        )
+        .map(({ joueurs }) => toJoueurModel(joueurs));
       const equipe1: EquipeType = [
         ...equipe1JoueurModels.slice(0, 4),
         ...Array(Math.max(0, 4 - equipe1JoueurModels.length)).fill(undefined),
       ] as EquipeType;
 
       const equipe2JoueurModels = equipes
-        .filter((a) => a.equipes_joueurs.equipeId === match.equipe2.id)
-        .map(toJoueurModel);
+        .filter(
+          ({ equipes_joueurs }) =>
+            equipes_joueurs.equipeId === match.equipe2.id,
+        )
+        .map(({ joueurs }) => toJoueurModel(joueurs));
       const equipe2: EquipeType = [
         ...equipe2JoueurModels.slice(0, 4),
         ...Array(Math.max(0, 4 - equipe2JoueurModels.length)).fill(undefined),
@@ -142,6 +160,7 @@ export const useTournoisV2 = () => {
 
   return {
     actualTournoi: tournoiVM,
+    joueursTournoi: joueursTournoi,
     listeTournois: tournoisVM,
     deleteTournoi,
     renameTournoi,
