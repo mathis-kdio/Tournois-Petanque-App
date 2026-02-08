@@ -13,7 +13,6 @@ import {
 } from '@/components/ui/select';
 import { Input, InputField } from '@/components/ui/input';
 import { Image } from '@/components/ui/image';
-import { Heading } from '@/components/ui/heading';
 import { HStack } from '@/components/ui/hstack';
 import {
   Checkbox,
@@ -21,23 +20,8 @@ import {
   CheckboxIndicator,
   CheckboxLabel,
 } from '@/components/ui/checkbox';
-import {
-  CheckIcon,
-  ChevronDownIcon,
-  CloseIcon,
-  Icon,
-} from '@/components/ui/icon';
-import { Button, ButtonGroup, ButtonText } from '@/components/ui/button';
+import { CheckIcon, ChevronDownIcon } from '@/components/ui/icon';
 import { Box } from '@/components/ui/box';
-import {
-  AlertDialog,
-  AlertDialogBackdrop,
-  AlertDialogBody,
-  AlertDialogCloseButton,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-} from '@/components/ui/alert-dialog';
 import React, { useState } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
@@ -46,6 +30,7 @@ import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
+import ModalConfirmUncheck from './ModalConfirmUncheck';
 
 export interface Props {
   joueur: JoueurModel;
@@ -383,53 +368,6 @@ const ListeJoueurItem: React.FC<Props> = ({
     }
   };
 
-  const _modalConfirmUncheck = () => {
-    return (
-      <AlertDialog
-        isOpen={modalConfirmUncheckIsOpen}
-        onClose={() => setModalConfirmUncheckIsOpen(false)}
-      >
-        <AlertDialogBackdrop />
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <Heading className="color-custom-text-modal">
-              {t('confirmer_uncheck_modal_titre')}
-            </Heading>
-            <AlertDialogCloseButton>
-              <Icon
-                as={CloseIcon}
-                size="md"
-                className="stroke-background-400 group-[:hover]/modal-close-button:stroke-background-700 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900"
-              />
-            </AlertDialogCloseButton>
-          </AlertDialogHeader>
-          <AlertDialogBody>
-            <Text>{t('confirmer_uncheck_modal_texte')}</Text>
-          </AlertDialogBody>
-          <AlertDialogFooter>
-            <ButtonGroup flexDirection="row">
-              <Button
-                variant="outline"
-                action="secondary"
-                onPress={() => setModalConfirmUncheckIsOpen(false)}
-              >
-                <ButtonText className="color-custom-text-modal">
-                  {t('annuler')}
-                </ButtonText>
-              </Button>
-              <Button
-                action="negative"
-                onPress={() => _ajoutCheck(joueur, false)}
-              >
-                <ButtonText>{t('oui')}</ButtonText>
-              </Button>
-            </ButtonGroup>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    );
-  };
-
   const _ajoutCheck = (joueurModel: JoueurModel, isChecked: boolean) => {
     onCheckJoueur(joueurModel, isChecked);
     setModalConfirmUncheckIsOpen(false);
@@ -460,7 +398,12 @@ const ListeJoueurItem: React.FC<Props> = ({
           {_showSupprimerJoueur(joueur, isInscription)}
         </HStack>
       </HStack>
-      {_modalConfirmUncheck()}
+      <ModalConfirmUncheck
+        joueur={joueur}
+        modalConfirmUncheckIsOpen={modalConfirmUncheckIsOpen}
+        setModalConfirmUncheckIsOpen={setModalConfirmUncheckIsOpen}
+        onCancel={_ajoutCheck}
+      />
     </HStack>
   );
 };

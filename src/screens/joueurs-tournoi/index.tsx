@@ -3,7 +3,7 @@ import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { ButtonText, Button } from '@/components/ui/button';
-import ListeJoueurItem from '@components/ListeJoueurItem';
+import ListeJoueurItem from '@/components/liste-joueur-item/ListeJoueurItem';
 import { useTranslation } from 'react-i18next';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { JoueurModel } from '@/types/interfaces/joueurModel';

@@ -2,7 +2,7 @@ import { FlatList } from '@/components/ui/flat-list';
 import { Button, ButtonText } from '@/components/ui/button';
 import { VStack } from '@/components/ui/vstack';
 import React, { Dispatch, SetStateAction } from 'react';
-import ListeJoueurItem from '@components/ListeJoueurItem';
+import ListeJoueurItem from '@/components/liste-joueur-item/ListeJoueurItem';
 import { useTranslation } from 'react-i18next';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
