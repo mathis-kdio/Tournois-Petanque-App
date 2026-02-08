@@ -16,7 +16,7 @@ const ListeResultats = () => {
 
   const { actualTournoi, joueursTournoi } = useTournois();
 
-  if (!actualTournoi) {
+  if (!actualTournoi || !joueursTournoi) {
     return <Loading />;
   }
 

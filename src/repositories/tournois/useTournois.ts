@@ -97,6 +97,9 @@ export const useTournois = () => {
   );
 
   const joueursTournoi = useMemo(() => {
+    if (!equipes.length) {
+      return;
+    }
     const joueursIds = new Set();
     return equipes
       .map(({ joueurs }) => joueurs)
@@ -147,10 +150,9 @@ export const useTournois = () => {
   const { data: allTournois } = useLiveQuery(
     TournoisRepository.getAllTournois(),
   );
-  const tournoisVM = useMemo(
-    () => allTournois.map((tournoi) => toTournoiModel(tournoi, [])) ?? [],
-    [allTournois],
-  );
+  const tournoisVM = useMemo(() => {
+    return allTournois.map((tournoi) => toTournoiModel(tournoi, [])) ?? [];
+  }, [allTournois]);
 
   //TODO : Ajouter autres tables à supprimer comme terrains, matchs etc
   const deleteTournoi = async (id: number) => {

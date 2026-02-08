@@ -17,9 +17,9 @@ const JoueursTournoi = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const { actualTournoi } = useTournois();
+  const { actualTournoi, joueursTournoi } = useTournois();
 
-  if (!actualTournoi) {
+  if (!actualTournoi || !joueursTournoi) {
     return <Loading />;
   }
 
@@ -30,7 +30,7 @@ const JoueursTournoi = () => {
   };
 
   const renderItem: ListRenderItem<JoueurModel> = ({ item }) => {
-    const { listeJoueurs, mode, typeEquipes, typeTournoi } = options;
+    const { mode, typeEquipes, typeTournoi } = options;
     return (
       <ListeJoueurItem
         joueur={item}
@@ -39,10 +39,10 @@ const JoueursTournoi = () => {
         typeEquipes={typeEquipes}
         modeTournoi={mode}
         typeTournoi={typeTournoi}
-        nbJoueurs={listeJoueurs.length}
+        nbJoueurs={joueursTournoi.length}
         showCheckbox={true}
         tournoiID={tournoiId}
-        listesJoueurs={listeJoueurs}
+        listesJoueurs={joueursTournoi}
         onDeleteJoueur={() => ''}
         onAddEquipeJoueur={() => ''}
         onUpdateName={() => ''}
@@ -55,12 +55,12 @@ const JoueursTournoi = () => {
     <VStack className="flex-1 bg-custom-background">
       <TopBarBack title={t('liste_joueurs_inscrits_navigation_title')} />
       <Text className="text-typography-white text-xl text-center">
-        {t('nombre_joueurs', { nb: options.listeJoueurs.length })}
+        {t('nombre_joueurs', { nb: joueursTournoi.length })}
       </Text>
       <VStack className="flex-1 my-2">
         <FlatList
           removeClippedSubviews={false}
-          data={options.listeJoueurs}
+          data={joueursTournoi}
           keyExtractor={(item: JoueurModel) => item.joueurTournoiId.toString()}
           renderItem={renderItem}
         />

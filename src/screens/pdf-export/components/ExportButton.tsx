@@ -12,9 +12,11 @@ import { Platform } from 'react-native';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { dateFormatDateFileName } from '@/utils/date';
 import { TournoiModel } from '@/types/interfaces/tournoi';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 
 export interface Props {
   tournoi: TournoiModel;
+  listeJoueurs: JoueurModel[];
   affichageScore: boolean;
   affichageClassement: boolean;
   affichageCompact: boolean;
@@ -22,6 +24,7 @@ export interface Props {
 
 const ExportButton: React.FC<Props> = ({
   tournoi,
+  listeJoueurs,
   affichageScore,
   affichageClassement,
   affichageCompact,
@@ -32,7 +35,7 @@ const ExportButton: React.FC<Props> = ({
 
   const getHtml = () => {
     const { options } = tournoi;
-    const { nbTours, nbMatchs, listeJoueurs, typeTournoi } = options;
+    const { nbTours, nbMatchs, typeTournoi } = options;
 
     const toursParLigne = affichageCompact ? 3 : 1;
     const nbMatchsParTour =

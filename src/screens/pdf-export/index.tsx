@@ -18,9 +18,9 @@ const PDFExport = () => {
   const [ajoutClassement, setAjoutClassement] = useState(true);
   const [affichageCompact, setAffichageCompact] = useState(false);
 
-  const { actualTournoi } = useTournois();
+  const { actualTournoi, joueursTournoi } = useTournois();
 
-  if (!actualTournoi) {
+  if (!actualTournoi || !joueursTournoi) {
     return <Loading />;
   }
 
@@ -75,6 +75,7 @@ const PDFExport = () => {
         </HStack>
         <ExportButton
           tournoi={actualTournoi}
+          listeJoueurs={joueursTournoi}
           affichageScore={ajoutScore}
           affichageClassement={ajoutClassement}
           affichageCompact={affichageCompact}

@@ -37,7 +37,7 @@ export const generationPDFTournoi = (
       // Affichage du numéro du match ou du nom du terrain
       html += '<tr class="border-top">';
       for (let nb = 0; nb < nbTourTable; nb++) {
-        let matchId =
+        const matchId =
           tableIdx * (toursParLigne * nbMatchsParTour) +
           nb * nbMatchsParTour +
           i;
@@ -73,18 +73,18 @@ export const generationPDFTournoi = (
           //Joueur equipe 1
           html += '<td class="no-border-bottom no-border-top">';
           if (matchs[matchId].equipe[0][jidx] !== undefined) {
-            let joueur = matchs[matchId].equipe[0][jidx];
-            if (!joueur) {
+            const joueur = matchs[matchId].equipe[0][jidx];
+            if (!joueur || joueur === -1) {
               throw Error;
             }
             if (joueur === undefined) {
               html += '';
             } else if (joueur.name === undefined) {
-              html += `${t('sans_nom')} (${joueur.id + 1})`;
+              html += `${t('sans_nom')} (${joueur.joueurTournoiId + 1})`;
             } else if (joueur.name === '') {
-              html += `${t('joueur')} ${joueur.id + 1}`;
+              html += `${t('joueur')} ${joueur.joueurTournoiId + 1}`;
             } else {
-              html += `${joueur.name} (${joueur.id + 1})`;
+              html += `${joueur.name} (${joueur.joueurTournoiId + 1})`;
             }
           }
           html += '</td>';
@@ -114,18 +114,18 @@ export const generationPDFTournoi = (
           //Joueur equipe 2
           html += '<td class="text-right no-border-bottom no-border-top">';
           if (matchs[matchId].equipe[1][jidx] !== undefined) {
-            let joueur = matchs[matchId].equipe[1][jidx];
-            if (!joueur) {
+            const joueur = matchs[matchId].equipe[1][jidx];
+            if (!joueur || joueur === -1) {
               throw Error;
             }
             if (joueur === undefined) {
               html += '';
             } else if (joueur.name === undefined) {
-              html += `${t('sans_nom')} (${joueur.id + 1})`;
+              html += `${t('sans_nom')} (${joueur.joueurTournoiId + 1})`;
             } else if (joueur.name === '') {
-              html += `${t('joueur')} ${joueur.id + 1}`;
+              html += `${t('joueur')} ${joueur.joueurTournoiId + 1}`;
             } else {
-              html += `${joueur.name} (${joueur.id + 1})`;
+              html += `${joueur.name} (${joueur.joueurTournoiId + 1})`;
             }
           }
           html += '</td>';
@@ -146,11 +146,11 @@ export const generationPDFTournoi = (
 
     html += '<br><table><tr>';
     html += `<th>${t('place')}</th><th>${t('victoire')}</th><th>${t('m_j')}</th><th>${t('point')}</th>`;
-    let classement = ranking(matchs, options);
+    const classement = ranking(matchs, listeJoueurs, options);
     for (let i = 0; i < listeJoueurs.length; i++) {
       html += '<tr>';
       html += '<td>' + classement[i].position + ' - ';
-      let joueur = listeJoueurs[classement[i].joueurId];
+      const joueur = classement[i].joueur;
       if (joueur.name === undefined) {
         html += `${t('sans_nom')} (${joueur.joueurTournoiId + 1})`;
       } else if (joueur.name === '') {
