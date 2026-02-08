@@ -27,7 +27,7 @@ const InscriptionRemoveAllModal: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
 
-  const _removeAllPlayers = () => {
+  const removeAllPlayers = () => {
     onDeleteAllJoueurs();
     setModalRemoveIsOpen(false);
   };
@@ -65,7 +65,7 @@ const InscriptionRemoveAllModal: React.FC<Props> = ({
                 {t('annuler')}
               </ButtonText>
             </Button>
-            <Button action="negative" onPress={() => _removeAllPlayers()}>
+            <Button action="negative" onPress={removeAllPlayers}>
               <ButtonText>{t('oui')}</ButtonText>
             </Button>
           </ButtonGroup>

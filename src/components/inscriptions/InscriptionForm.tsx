@@ -30,7 +30,7 @@ const InscriptionForm: React.FC<Props> = ({
 
   const addPlayerTextInput = React.createRef<any>();
 
-  const _ajoutJoueurTextInputChanged = (text: string) => {
+  const ajoutJoueurTextInputChanged = (text: string) => {
     setJoueurText(text);
     setEtatBouton(text !== '');
   };
@@ -42,7 +42,7 @@ const InscriptionForm: React.FC<Props> = ({
     }
   }, [addPlayerTextInput, etatBouton]);
 
-  const _ajoutJoueurFormulaire = () => {
+  const ajoutJoueurFormulaire = () => {
     if (joueurText === '') {
       return;
     }
@@ -63,8 +63,8 @@ const InscriptionForm: React.FC<Props> = ({
             placeholder={t('nom')}
             autoFocus={true}
             keyboardType="default"
-            onChangeText={(text) => _ajoutJoueurTextInputChanged(text)}
-            onSubmitEditing={() => _ajoutJoueurFormulaire()}
+            onChangeText={(text) => ajoutJoueurTextInputChanged(text)}
+            onSubmitEditing={ajoutJoueurFormulaire}
             ref={addPlayerTextInput}
           />
         </Input>
@@ -80,7 +80,7 @@ const InscriptionForm: React.FC<Props> = ({
         <Button
           action="positive"
           isDisabled={!etatBouton}
-          onPress={() => _ajoutJoueurFormulaire()}
+          onPress={ajoutJoueurFormulaire}
           size="md"
         >
           <ButtonText>{t('ajouter')}</ButtonText>

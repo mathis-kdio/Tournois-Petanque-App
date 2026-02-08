@@ -58,12 +58,12 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
     fetchSuggestions();
   }, [getAllJoueurs, listeJoueurs]);
 
-  const _buttonMoreSuggestedPlayers = () => {
+  const buttonMoreSuggestedPlayers = () => {
     if (nbSuggestions >= suggestions.length) {
       return;
     }
     return (
-      <Button action="primary" onPress={() => _showMoreSuggestedPlayers()}>
+      <Button action="primary" onPress={showMoreSuggestedPlayers}>
         <FontAwesome5 name="chevron-down" className="text-custom-text-button" />
         <ButtonText>{t('plus_suggestions_joueurs_bouton')}</ButtonText>
         <FontAwesome5 name="chevron-down" className="text-custom-text-button" />
@@ -71,7 +71,7 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
     );
   };
 
-  const _showMoreSuggestedPlayers = () => {
+  const showMoreSuggestedPlayers = () => {
     setNbSuggestions((prevState) => prevState + 5);
   };
 
@@ -103,7 +103,7 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
         keyExtractor={(item) => item.joueurTournoiId.toString()}
         renderItem={renderItem}
       />
-      <Box className="px-10 pb-2">{_buttonMoreSuggestedPlayers()}</Box>
+      <Box className="px-10 pb-2">{buttonMoreSuggestedPlayers()}</Box>
     </VStack>
   );
 };

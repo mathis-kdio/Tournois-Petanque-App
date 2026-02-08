@@ -47,7 +47,7 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
   const { t } = useTranslation();
   const router = useRouter();
 
-  const _loadSavedList = () => {
+  const loadSavedList = () => {
     router.navigate({
       pathname: '/listes-joueurs',
       params: {
@@ -56,7 +56,7 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
     });
   };
 
-  const _buttonRemoveAllPlayers = (listeJoueurs: JoueurModel[]) => {
+  const buttonRemoveAllPlayers = (listeJoueurs: JoueurModel[]) => {
     if (listeJoueurs.length === 0) {
       return;
     }
@@ -67,12 +67,12 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
     );
   };
 
-  const _buttonLoadSavedList = () => {
+  const buttonLoadSavedList = () => {
     if (loadListScreen) {
       return;
     }
     return (
-      <Button action="primary" onPress={() => _loadSavedList()}>
+      <Button action="primary" onPress={loadSavedList}>
         <ButtonText>{t('charger_liste_joueurs_bouton')}</ButtonText>
       </Button>
     );
@@ -123,8 +123,8 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
       ListFooterComponent={
         <VStack space="md" className="flex-1">
           <VStack space="sm" className="px-10">
-            {_buttonRemoveAllPlayers(listeJoueurs)}
-            {_buttonLoadSavedList()}
+            {buttonRemoveAllPlayers(listeJoueurs)}
+            {buttonLoadSavedList()}
           </VStack>
           <InscriptionListeJoueursSuggestions
             listeJoueurs={listeJoueurs}
