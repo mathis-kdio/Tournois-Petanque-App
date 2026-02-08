@@ -90,7 +90,7 @@ const JoueurSuggere: React.FC<Props> = ({
 
   const _removePlayer = (playerId: number) => {
     //TODO Créer une table pour enrigistrer occurence des joueurs suggérés. La table doit être alimenté à chaque ajout de joueur
-    //supprimerJoueurSuggerre(playerId);
+    supprimerJoueurSuggerre(playerId);
     setModalRemoveIsOpen(false);
   };
 

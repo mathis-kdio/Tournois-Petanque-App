@@ -4,7 +4,7 @@ import { Button, ButtonText } from '@/components/ui/button';
 import { VStack } from '@/components/ui/vstack';
 import { Box } from '@/components/ui/box';
 import React, { useEffect, useState } from 'react';
-import JoueurSuggere from '@components/JoueurSuggere';
+import JoueurSuggere from '@/components/joueur-suggere/JoueurSuggere';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
