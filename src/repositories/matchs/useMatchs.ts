@@ -43,7 +43,7 @@ function toMatchmodel(
   };
 }
 
-export const useMatchsV2 = (matchId: number) => {
+export const useMatchs = (matchId: number) => {
   const { data: data2 } = useLiveQuery(MatchsRepository.getFullMatch(matchId), [
     matchId,
   ]);
