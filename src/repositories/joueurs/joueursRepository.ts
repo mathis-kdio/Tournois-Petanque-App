@@ -1,9 +1,9 @@
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { Joueur, joueurs, NewJoueur } from '@/db/schema';
+import { joueurs, NewJoueur } from '@/db/schema';
 import { eq, inArray } from 'drizzle-orm';
 
 export const JoueursRepository = {
-  async insert(newJoueur: NewJoueur): Promise<Joueur> {
+  async insert(newJoueur: NewJoueur) {
     const result = (
       await getDrizzleDb().insert(joueurs).values(newJoueur).returning()
     ).at(0);
@@ -13,8 +13,8 @@ export const JoueursRepository = {
     return result;
   },
 
-  async delete(joueurIds: number[]): Promise<void> {
-    await getDrizzleDb().delete(joueurs).where(inArray(joueurs.id, joueurIds));
+  delete(joueurIds: number[]) {
+    return getDrizzleDb().delete(joueurs).where(inArray(joueurs.id, joueurIds));
   },
 
   updateName(id: number, name: string) {
@@ -31,7 +31,7 @@ export const JoueursRepository = {
       .where(eq(joueurs.id, id));
   },
 
-  async select(joueurId: number): Promise<Joueur> {
+  async select(joueurId: number) {
     const result = (
       await getDrizzleDb()
         .select()

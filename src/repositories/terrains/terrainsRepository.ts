@@ -1,5 +1,5 @@
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { NewTerrain, Terrain, terrains } from '@/db/schema';
+import { NewTerrain, terrains } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 
 export const TerrainsRepository = {
@@ -7,7 +7,7 @@ export const TerrainsRepository = {
     return getDrizzleDb().select().from(terrains);
   },
 
-  async insert(terrain: NewTerrain): Promise<Terrain> {
+  async insert(terrain: NewTerrain) {
     const result = (
       await getDrizzleDb().insert(terrains).values(terrain).returning()
     ).at(0);

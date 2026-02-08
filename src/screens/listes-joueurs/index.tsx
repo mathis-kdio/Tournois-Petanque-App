@@ -13,8 +13,8 @@ import { ListRenderItem } from 'react-native';
 import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
 import { useDispatch } from 'react-redux';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
 import { useListesJoueurs } from '@/repositories/listesJoueurs/useListesJoueurs';
+import Loading from '@/components/Loading';
 
 type SearchParams = {
   loadListScreen?: string;
@@ -26,38 +26,22 @@ const ListesJoueurs = () => {
   const { loadListScreen = 'false' } = useLocalSearchParams<SearchParams>();
   const dispatch = useDispatch();
 
-  const { getAllListesJoueurs, deleteListeJoueurs, renameListeJoueurs } =
+  const { allListesJoueurs, deleteListeJoueurs, renameListeJoueurs } =
     useListesJoueurs();
 
-  const [listesJoueurs, setListesJoueurs] = useState<ListeJoueursInfos[]>([]);
+  if (!allListesJoueurs) {
+    return <Loading />;
+  }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await getAllListesJoueurs();
-      setListesJoueurs(result);
-    };
-    fetchData();
-  }, [getAllListesJoueurs]);
+  const handleDelete = (id: number) => {
+    deleteListeJoueurs(id);
+  };
 
-  const handleDelete = useCallback(
-    async (id: number) => {
-      await deleteListeJoueurs(id);
-      setListesJoueurs((prev) => prev.filter((u) => u.listId !== id));
-    },
-    [deleteListeJoueurs],
-  );
+  const handleUpdateName = (id: number, name: string) => {
+    renameListeJoueurs(id, name);
+  };
 
-  const handleUpdateName = useCallback(
-    async (id: number, name: string) => {
-      await renameListeJoueurs(id, name);
-      setListesJoueurs((prev) =>
-        prev.map((u) => (u.listId === id ? { ...u, name: name } : u)),
-      );
-    },
-    [renameListeJoueurs],
-  );
-
-  const _addList = () => {
+  const addList = () => {
     const actionRemoveList = {
       type: 'SUPPR_ALL_JOUEURS',
       value: [ModeTournoi.SAUVEGARDE],
@@ -88,10 +72,10 @@ const ListesJoueurs = () => {
     });
   };
 
-  const _addListButton = () => {
+  const addListButton = () => {
     if (loadListScreen !== 'true') {
       return (
-        <Button action="positive" onPress={() => _addList()}>
+        <Button action="positive" onPress={() => addList()}>
           <ButtonText>{t('creer_liste')}</ButtonText>
         </Button>
       );
@@ -106,16 +90,17 @@ const ListesJoueurs = () => {
       onUpdateName={handleUpdateName}
     />
   );
+
   return (
     <VStack className="flex-1 bg-custom-background">
       <TopBarBack title={t('listes_joueurs_navigation_title')} />
       <Text className="text-typography-white text-xl text-center">
-        {t('nombre_listes', { nb: listesJoueurs.length })}
+        {t('nombre_listes', { nb: allListesJoueurs.length })}
       </Text>
-      <Box className="px-10">{_addListButton()}</Box>
+      <Box className="px-10">{addListButton()}</Box>
       <VStack className="flex-1 my-2">
         <FlatList
-          data={listesJoueurs}
+          data={allListesJoueurs}
           initialNumToRender={20}
           keyExtractor={(item: ListeJoueursInfos) => {
             return item.listId.toString();

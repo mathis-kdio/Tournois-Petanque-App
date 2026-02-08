@@ -3,10 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'expo-router';
 import { listeType } from '@/types/types/searchParams';
-import { ListesJoueursRepository } from '@/repositories/listesJoueurs/listesJoueursRepository';
 import { NewJoueur, NewJoueursListes, NewListesJoueurs } from '@/db/schema';
-import { saveJoueursListes } from '@/repositories/joueursListes/joueursListesRepository';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { useListesJoueurs } from '@/repositories/listesJoueurs/useListesJoueurs';
 
 export interface Props {
   type: listeType;
@@ -19,9 +18,11 @@ const SubmitButton: React.FC<Props> = ({ type, idList, listesJoueurs }) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
+  const { insertListeJoueurs } = useListesJoueurs();
+
   const submitCreate = () => {
     const a: NewListesJoueurs = {};
-    const z = ListesJoueursRepository.insertListeJoueurs(a);
+    const z = insertListeJoueurs(a);
 
     const b: NewJoueur[] = [];
     const joueurs = saveJoueurs(b);
@@ -30,7 +31,7 @@ const SubmitButton: React.FC<Props> = ({ type, idList, listesJoueurs }) => {
     joueurs.forEach((joueur) => {
       c.push({ joueurId: joueur.id, listeId: z.at(0)?.id });
     });
-    saveJoueursListes(c);
+    insertListeJoueurs(c);
   };
 
   const submitEdit = (listId: number) => {

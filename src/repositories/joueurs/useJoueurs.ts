@@ -3,12 +3,12 @@ import { JoueursRepository } from './joueursRepository';
 export const useJoueurs = () => {
   const checkJoueur = async (id: number, isChecked: boolean) => {
     const joueur = await JoueursRepository.select(id);
-    JoueursRepository.updateCheck(joueur.id, isChecked);
+    await JoueursRepository.updateCheck(joueur.id, isChecked);
   };
 
   const renameJoueur = async (id: number, name: string) => {
     const joueur = await JoueursRepository.select(id);
-    JoueursRepository.updateName(joueur.id, name);
+    await JoueursRepository.updateName(joueur.id, name);
   };
 
   return {

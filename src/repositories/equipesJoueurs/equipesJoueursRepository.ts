@@ -25,14 +25,6 @@ export type FullEquipeJoueur = {
 };
 
 export const EquipesJoueursRepository = {
-  getEquipe(equipeId: number) {
-    return getDrizzleDb()
-      .select()
-      .from(equipesJoueurs)
-      .where(eq(equipesJoueurs.equipeId, equipeId))
-      .innerJoin(joueurs, eq(joueurs.id, equipesJoueurs.joueurId));
-  },
-
   getEquipes(equipeIds: number[]) {
     return getDrizzleDb()
       .select()

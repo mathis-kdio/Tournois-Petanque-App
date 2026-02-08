@@ -65,7 +65,9 @@ export const useMatchs = (matchId: number) => {
     await MatchsRepository.insertMatch(a[0]);
   };
 
-  const deleteMatch = (id: number) => MatchsRepository.deleteMatch(id);
+  const deleteMatch = async (id: number) => {
+    await MatchsRepository.deleteMatch(id);
+  };
 
   const updateScore = async (id: number, score1: number, score2: number) => {
     await MatchsRepository.updateScore(id, score1, score2);

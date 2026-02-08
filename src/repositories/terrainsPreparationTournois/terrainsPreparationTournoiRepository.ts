@@ -1,5 +1,5 @@
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { Joueur, terrains } from '@/db/schema';
+import { Joueur } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import {
   NewTerrainsPreparationTournois,
@@ -20,17 +20,6 @@ export const TerrainsPreparationTournoisRepository = {
       .where(
         eq(terrainsPreparationTournois.preparationTournoiId, preparationId),
       );
-  },
-
-  getMany() {
-    return getDrizzleDb()
-      .select()
-      .from(terrainsPreparationTournois)
-      .innerJoin(
-        terrains,
-        eq(terrainsPreparationTournois.terrainId, terrains.id),
-      )
-      .where(eq(terrainsPreparationTournois.preparationTournoiId, 0));
   },
 
   insert(newTerrainsPreparationTournois: NewTerrainsPreparationTournois) {

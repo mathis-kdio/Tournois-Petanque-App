@@ -5,7 +5,7 @@ import {
   NewJoueursPreparationTournois,
 } from '@/db/schema/joueursPreparationTournois';
 import { Joueur, joueurs } from '@/db/schema';
-import { eq, inArray, sql } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 
 export type JoueursPreparationTournoisWithJoueur = {
   joueurs_preparation_tournois: JoueursPreparationTournois;
@@ -13,13 +13,6 @@ export type JoueursPreparationTournoisWithJoueur = {
 };
 
 export const JoueursPreparationTournoisRepository = {
-  getEmpty() {
-    return getDrizzleDb()
-      .select()
-      .from(joueursPreparationTournois)
-      .where(sql`1 = 0`);
-  },
-
   getMany() {
     return getDrizzleDb()
       .select()
@@ -28,22 +21,20 @@ export const JoueursPreparationTournoisRepository = {
       .where(eq(joueursPreparationTournois.preparationTournoiId, 0));
   },
 
-  async insert(
-    newJoueursPreparationTournois: NewJoueursPreparationTournois,
-  ): Promise<void> {
-    await getDrizzleDb()
+  insert(newJoueursPreparationTournois: NewJoueursPreparationTournois) {
+    return getDrizzleDb()
       .insert(joueursPreparationTournois)
       .values(newJoueursPreparationTournois);
   },
 
-  async delete(joueurIds: number[]): Promise<void> {
-    await getDrizzleDb()
+  delete(joueurIds: number[]) {
+    return getDrizzleDb()
       .delete(joueursPreparationTournois)
       .where(inArray(joueursPreparationTournois.joueurId, joueurIds));
   },
 
-  async deleteAll(): Promise<void> {
-    await getDrizzleDb()
+  deleteAll() {
+    return getDrizzleDb()
       .delete(joueursPreparationTournois)
       .where(eq(joueursPreparationTournois.preparationTournoiId, 0));
   },
