@@ -24,8 +24,9 @@ const CreateListeJoueur: React.FC<Props> = ({ type, idList }) => {
 
   const listesJoueurs: JoueurModel[] = [];
 
-  const { preparationTournoiJoueurs, preparationTournoiVM } =
-    usePreparationTournoiV2();
+  const { preparationTournoiVM } = usePreparationTournoiV2();
+  const preparationTournoiJoueurs: JoueurModel[] = [];
+
   const { renameJoueur, checkJoueur } = useJoueursV2();
   const {
     addJoueursPreparationTournoi,

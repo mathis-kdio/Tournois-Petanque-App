@@ -2,37 +2,24 @@ import { ScrollView } from '@/components/ui/scroll-view';
 import { Input, InputField } from '@/components/ui/input';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
-import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { usePreparationTournoiV2 } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import Loading from '@/components/Loading';
 import StartButton from './components/StartButton';
 
 const InscriptionsSansNoms = () => {
   const { t } = useTranslation();
 
-  const { getActualPreparationTournoi } = usePreparationTournoi();
-
-  const [preparationTournoiModel, setPreparationTournoiModel] = useState<
-    PreparationTournoiModel | undefined
-  >(undefined);
+  const { preparationTournoiVM } = usePreparationTournoiV2();
 
   const [nbJoueurNormaux, setNbJoueurNormaux] = useState(0);
   const [nbJoueurEnfants, setNbJoueurEnfants] = useState(0);
 
   const secondInput = React.createRef<any>();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const resultpreparationTournoi = await getActualPreparationTournoi();
-      setPreparationTournoiModel(resultpreparationTournoi);
-    };
-    fetchData();
-  }, [getActualPreparationTournoi]);
-
-  if (!preparationTournoiModel) {
+  if (!preparationTournoiVM) {
     return <Loading />;
   }
 
@@ -84,7 +71,7 @@ const InscriptionsSansNoms = () => {
           {t('joueurs_enfants_explication')}
         </Text>
         <StartButton
-          preparationTournoiModel={preparationTournoiModel}
+          preparationTournoiModel={preparationTournoiVM}
           nbJoueurNormaux={nbJoueurNormaux}
           nbJoueurEnfants={nbJoueurEnfants}
         />

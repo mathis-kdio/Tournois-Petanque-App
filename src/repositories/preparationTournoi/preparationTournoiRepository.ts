@@ -10,10 +10,8 @@ export const PreparationTournoisRepository = {
     return getDrizzleDb().select().from(preparationTournoi);
   },
 
-  async updatePreparationTournoi(
-    updatedPreparationTournoi: NewPreparationTournoi,
-  ): Promise<void> {
-    await getDrizzleDb()
+  updatePreparationTournoi(updatedPreparationTournoi: NewPreparationTournoi) {
+    return getDrizzleDb()
       .insert(preparationTournoi)
       .values(updatedPreparationTournoi)
       .onConflictDoUpdate({
