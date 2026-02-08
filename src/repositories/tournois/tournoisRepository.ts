@@ -1,27 +1,17 @@
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { eq } from 'drizzle-orm';
-import { NewTournoi, Tournoi, tournoi } from '@/db/schema/tournoi';
+import { desc, eq } from 'drizzle-orm';
+import { NewTournoi, tournoi } from '@/db/schema/tournoi';
 
 export const TournoisRepository = {
-  async getAllTournois(): Promise<Tournoi[]> {
-    const a = await getDrizzleDb().select().from(tournoi);
-    return a;
-  },
-
-  getAllTournoisV2() {
+  getAllTournois() {
     return getDrizzleDb().select().from(tournoi);
   },
 
-  async getTournoi(): Promise<Tournoi | undefined> {
-    const result = await getDrizzleDb().select().from(tournoi);
-    return result[0];
+  getTournoi() {
+    return getDrizzleDb().select().from(tournoi).orderBy(desc(tournoi.id));
   },
 
-  getTournoiV2() {
-    return getDrizzleDb().select().from(tournoi);
-  },
-
-  insertTournoiV2(newTournoi: NewTournoi) {
+  insertTournoi(newTournoi: NewTournoi) {
     return getDrizzleDb().insert(tournoi).values(newTournoi).returning();
   },
 

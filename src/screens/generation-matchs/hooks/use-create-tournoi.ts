@@ -148,7 +148,7 @@ export const useCreateTournoi = () => {
     preparationTournoiModel: PreparationTournoiModel,
   ): Promise<Tournoi> => {
     return (
-      await TournoisRepository.insertTournoiV2(
+      await TournoisRepository.insertTournoi(
         toNewTournoi(preparationTournoiModel),
       )
     )[0] as Tournoi;
