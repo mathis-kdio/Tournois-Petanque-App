@@ -136,10 +136,10 @@ export const useCreateTournoi = () => {
   ) => {
     // TODO Problème : va insérer des équipes qui peuvent déjà être présentes
     const equipe1 = await EquipeRepository.insert(toNewEquipe(0));
-    addEquipesJoueur(equipe1.id, equipesMatch[0], listeJoueurs);
+    await addEquipesJoueur(equipe1.id, equipesMatch[0], listeJoueurs);
 
     const equipe2 = await EquipeRepository.insert(toNewEquipe(1));
-    addEquipesJoueur(equipe2.id, equipesMatch[1], listeJoueurs);
+    await addEquipesJoueur(equipe2.id, equipesMatch[1], listeJoueurs);
 
     return { equipe1, equipe2 };
   };
