@@ -11,7 +11,7 @@ import Loading from '@/components/Loading';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import ComplementCard from '@/screens/complement/components/ComplementCard';
 import { screenStackNameType } from '@/types/types/searchParams';
-import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/usejoueursPreparationTournoisaa';
+import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 
 export interface Props {
   screenStackName: screenStackNameType;
