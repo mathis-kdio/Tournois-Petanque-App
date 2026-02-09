@@ -13,7 +13,7 @@ import { Text } from '@/components/ui/text';
 import { _openURL } from '@utils/link';
 import { useTranslation } from 'react-i18next';
 import Item from '@components/Item';
-import i18n from 'i18next';
+import { changeLanguage } from 'i18next';
 import { Pressable } from '@/components/ui/pressable';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SELECTED_LANGUAGE_KEY } from '@/utils/async-storage/key';
@@ -31,8 +31,8 @@ const LanguagesModal: React.FC<Props> = ({
 
   const { t } = useTranslation();
 
-  const changeLanguage = async (language: string) => {
-    await i18n.changeLanguage(language);
+  const handleChangeLanguage = async (language: string) => {
+    await changeLanguage(language);
     await AsyncStorage.setItem(SELECTED_LANGUAGE_KEY, language);
     setModalLanguagesOpen(false);
   };
@@ -65,7 +65,7 @@ const LanguagesModal: React.FC<Props> = ({
         <ModalBody>
           <Item
             text={t('francais')}
-            action={() => changeLanguage('fr-FR')}
+            action={() => handleChangeLanguage('fr-FR')}
             icon={''}
             type="modal"
             drapeau={drapeauFrance}
@@ -73,7 +73,7 @@ const LanguagesModal: React.FC<Props> = ({
           <Divider />
           <Item
             text={t('anglais')}
-            action={() => changeLanguage('en-US')}
+            action={() => handleChangeLanguage('en-US')}
             icon={''}
             type="modal"
             drapeau={drapeauUSA}
@@ -81,7 +81,7 @@ const LanguagesModal: React.FC<Props> = ({
           <Divider />
           <Item
             text={t('polonais')}
-            action={() => changeLanguage('pl-PL')}
+            action={() => handleChangeLanguage('pl-PL')}
             icon={''}
             type="modal"
             drapeau={drapeauPologne}
@@ -89,7 +89,7 @@ const LanguagesModal: React.FC<Props> = ({
           <Divider />
           <Item
             text={t('neerlandais')}
-            action={() => changeLanguage('nl-NL')}
+            action={() => handleChangeLanguage('nl-NL')}
             icon={''}
             type="modal"
             drapeau={drapeauPaysBas}
@@ -97,7 +97,7 @@ const LanguagesModal: React.FC<Props> = ({
           <Divider />
           <Item
             text={t('allemand')}
-            action={() => changeLanguage('de-DE')}
+            action={() => handleChangeLanguage('de-DE')}
             icon={''}
             type="modal"
             drapeau={drapeauAllemagne}
@@ -105,7 +105,7 @@ const LanguagesModal: React.FC<Props> = ({
           <Divider />
           <Item
             text={t('danois')}
-            action={() => changeLanguage('dk-DK')}
+            action={() => handleChangeLanguage('dk-DK')}
             icon={''}
             type="modal"
             drapeau={drapeauDanemark}

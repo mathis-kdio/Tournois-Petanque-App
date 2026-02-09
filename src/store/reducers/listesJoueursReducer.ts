@@ -111,7 +111,9 @@ function listesJoueurs(state = initialState, action) {
       ) {
         const listes = { ...state.listesJoueurs };
         let liste = listes[action.value[0]] as JoueurModel[];
-        let joueur = liste.find((joueur) => joueur.joueurTournoiId === action.value[1]);
+        let joueur = liste.find(
+          (joueur) => joueur.joueurTournoiId === action.value[1],
+        );
         if (joueur) {
           joueur.isChecked = action.value[2];
         }

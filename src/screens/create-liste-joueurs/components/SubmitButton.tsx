@@ -1,6 +1,5 @@
 import { Button, ButtonText } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 import { useRouter } from 'expo-router';
 import { listeType } from '@/types/types/searchParams';
 import { NewJoueur, NewJoueursListes, NewListesJoueurs } from '@/db/schema';
@@ -16,7 +15,6 @@ export interface Props {
 const SubmitButton: React.FC<Props> = ({ type, idList, listesJoueurs }) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const dispatch = useDispatch();
 
   const { insertListeJoueurs } = useListesJoueurs();
 
