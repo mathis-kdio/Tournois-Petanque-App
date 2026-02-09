@@ -13,6 +13,7 @@ import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { dateFormatDateFileName } from '@/utils/date';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { genererPdf } from '@/utils/pdf/generate/genererPdf';
 
 export interface Props {
   tournoi: TournoiModel;
@@ -71,38 +72,29 @@ const ExportButton: React.FC<Props> = ({
     }
   };
 
-  const generatePDFWeb = (html: string) => {
-    const pW = window.open(
-      '',
-      '',
-      `width=${screen.availWidth},height=${screen.availHeight}`,
-    );
-    pW.document.write(html);
-    pW.onafterprint = () => {
-      pW.close();
-    };
-    pW.print();
-  };
-
   const generatePDF = async () => {
     const html = getHtml();
+
+    const date = dateFormatDateFileName(tournoi.creationDate);
+    const fileName = `tournoi-petanque-${tournoi.tournoiId}-${date}`;
+
     if (Platform.OS === 'web') {
-      generatePDFWeb(html);
+      await genererPdf(fileName, html);
+
       toggleLoading();
     } else {
       const { uri } = await Print.printToFileAsync({ html });
 
-      const date = dateFormatDateFileName(tournoi.creationDate);
-      const newFileName = `tournoi-petanque-${tournoi.tournoiId}-${date}.pdf`;
+      const fileNameExt = `${fileName}.pdf`;
 
-      const oldfile = new File(Paths.cache, newFileName);
+      const oldfile = new File(Paths.cache, fileNameExt);
       if (oldfile.exists) {
         oldfile.delete();
       }
 
       const file = new File(uri);
       file.move(Paths.cache);
-      file.rename(newFileName);
+      file.rename(fileNameExt);
 
       if (Platform.OS === 'android') {
         // TODO : à remplacer par nouvelle API quand équivalent disponible : https://github.com/expo/expo/issues/39056
