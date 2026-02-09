@@ -1,11 +1,16 @@
 import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { shuffle } from './generation';
+import { MatchModel } from '@/types/interfaces/matchModel';
 
 export const generationMultiChances = (
-  listeJoueurs: Joueur[],
+  listeJoueurs: JoueurModel[],
   typeEquipes: TypeEquipes,
-) => {
+): {
+  matchs: MatchModel[];
+  nbTours: number;
+  nbMatchs: number;
+} => {
   let nbjoueurs = listeJoueurs.length;
   let matchs = [];
   let idMatch = 0;
@@ -49,7 +54,7 @@ export const generationMultiChances = (
     equipe.push([]);
     for (let j = 0; j < nbjoueurs; j++) {
       if (listeJoueurs[j].equipe === i) {
-        equipe[i - 1].push(listeJoueurs[j].id);
+        equipe[i - 1].push(listeJoueurs[j].joueurTournoiId);
       }
     }
   }
@@ -63,7 +68,7 @@ export const generationMultiChances = (
   //FONCTIONNEMENT
   idMatch = 0;
   let randomEquipesIds = shuffle(equipesIds);
-  for (let j = 0; j < equipe.length; ) {
+  for (let j = 0; j < equipe.length;) {
     //Affectation equipe 1
     if (matchs[idMatch].equipe[0][0] === -1) {
       matchs[idMatch].equipe[0][0] = equipe[randomEquipesIds[j]][0];

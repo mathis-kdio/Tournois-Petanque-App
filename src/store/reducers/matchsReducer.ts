@@ -1,4 +1,4 @@
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 
 const initialState = { listematchs: undefined };
 
@@ -38,9 +38,9 @@ function gestionMatchs(state = initialState, action) {
           listematchs: [...state.listematchs],
         };
         let listeJoueurs = nextState.listematchs.at(-1)
-          .listeJoueurs as Joueur[];
+          .listeJoueurs as JoueurModel[];
         let joueur = listeJoueurs.find(
-          (joueur) => joueur.id === action.value.playerId,
+          (joueur) => joueur.joueurTournoiId === action.value.playerId,
         );
         if (joueur) {
           joueur.name = action.value.newName;
@@ -54,9 +54,9 @@ function gestionMatchs(state = initialState, action) {
           listematchs: [...state.listematchs],
         };
         let listeJoueurs = nextState.listematchs.at(-1)
-          .listeJoueurs as Joueur[];
+          .listeJoueurs as JoueurModel[];
         let joueur = listeJoueurs.find(
-          (joueur) => joueur.id === action.value.playerId,
+          (joueur) => joueur.joueurTournoiId === action.value.playerId,
         );
         if (joueur) {
           joueur.isChecked = action.value.isChecked;

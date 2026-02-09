@@ -1,5 +1,7 @@
+import { JoueurModel } from './joueurModel';
+
 export interface Victoire {
-  joueurId: number;
+  joueur: JoueurModel;
   victoires: number;
   points: number;
   nbMatchs: number;

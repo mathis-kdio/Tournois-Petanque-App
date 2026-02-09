@@ -1,16 +1,16 @@
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { Match } from '@/types/interfaces/match';
-import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
+import { EquipeType } from '@/types/interfaces/equipeType';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { MatchModel } from '@/types/interfaces/matchModel';
+import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoiModel';
 import { Victoire } from '@/types/interfaces/victoire';
 
 export const ranking = (
-  listeMatchs: Match[],
-  optionsTournoi: OptionsTournoi,
+  listeMatchs: MatchModel[],
+  listeJoueurs: JoueurModel[],
+  optionsTournoi: OptionsTournoiModel,
 ): Victoire[] => {
-  if (listeMatchs === undefined) {
-    throw Error('ranking listeMatchs undefined');
-  }
-  let victoires = victoiresPointsCalc(listeMatchs, optionsTournoi);
+  const victoires = victoiresPointsCalc(listeMatchs, listeJoueurs);
 
   if (optionsTournoi.typeTournoi === TypeTournoi.MULTICHANCES) {
     //Classement pour les tournois de type Multi-Chances
@@ -53,8 +53,8 @@ const factorial = (n: number): number => {
 };
 
 const rankingMuliChances = (
-  listeMatchs: Match[],
-  optionsTournoi: OptionsTournoi,
+  listeMatchs: MatchModel[],
+  optionsTournoi: OptionsTournoiModel,
   victoires: Victoire[],
 ): Victoire[] => {
   for (let i = 0; i < victoires.length; i++) {
@@ -62,9 +62,9 @@ const rankingMuliChances = (
     for (let j = 0; j < optionsTournoi.nbMatchs; j++) {
       const { score1, score2, equipe, manche } = listeMatchs[j];
       if (score1 !== undefined && score2 !== undefined) {
-        if (equipe[0].includes(i) && score1 > score2) {
+        if (isJoueurInEquipe(i, equipe[0]) && score1 > score2) {
           position += factorial(optionsTournoi.nbTours + 1 - manche);
-        } else if (equipe[1].includes(i) && score2 > score1) {
+        } else if (isJoueurInEquipe(i, equipe[1]) && score2 > score1) {
           position += factorial(manche);
         }
       }
@@ -80,19 +80,18 @@ const rankingMuliChances = (
 };
 
 const victoiresPointsCalc = (
-  listeMatchs: Match[],
-  optionsTournoi: OptionsTournoi,
+  listeMatchs: MatchModel[],
+  listeJoueurs: JoueurModel[],
 ): Victoire[] => {
-  let listeJoueurs = optionsTournoi.listeJoueurs;
-  let victoires = [];
-  for (let i = 0; i < listeJoueurs.length; i++) {
+  const victoires: Victoire[] = [];
+  listeJoueurs.forEach((joueur) => {
     let nbVictoire = 0;
     let nbPoints = 0;
     let nbMatchs = 0;
-    for (let j = 0; j < optionsTournoi.nbMatchs; j++) {
-      const { score1, score2, equipe } = listeMatchs[j];
+    listeMatchs.forEach((match) => {
+      const { score1, score2, equipe } = match;
       if (score1 !== undefined && score2 !== undefined) {
-        if (equipe[0].includes(i)) {
+        if (isJoueurInEquipe(joueur.joueurTournoiId, equipe[0])) {
           if (score1 > score2) {
             nbVictoire++;
             nbPoints += score1 - score2;
@@ -100,7 +99,7 @@ const victoiresPointsCalc = (
             nbPoints -= score2 - score1;
           }
           nbMatchs++;
-        } else if (equipe[1].includes(i)) {
+        } else if (isJoueurInEquipe(joueur.joueurTournoiId, equipe[1])) {
           if (score2 > score1) {
             nbVictoire++;
             nbPoints += score2 - score1;
@@ -110,15 +109,22 @@ const victoiresPointsCalc = (
           nbMatchs++;
         }
       }
-    }
-    victoires[i] = {
-      joueurId: i,
+    });
+    victoires.push({
+      joueur: joueur,
       victoires: nbVictoire,
       points: nbPoints,
       nbMatchs: nbMatchs,
-      position: undefined,
-    };
-  }
+      position: 0,
+    });
+  });
 
   return victoires;
+};
+
+export const isJoueurInEquipe = (joueurId: number, equipe: EquipeType) => {
+  const res = equipe.find(
+    (joueur) => joueur && joueur !== -1 && joueur.joueurTournoiId === joueurId,
+  );
+  return res !== undefined && res !== -1;
 };

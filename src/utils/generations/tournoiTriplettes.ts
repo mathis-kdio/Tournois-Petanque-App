@@ -4,12 +4,12 @@ import {
   shuffle,
   uniqueValueArrayRandOrder,
 } from './generation';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { Complement } from '@/types/enums/complement';
-import { Match } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/matchModel';
 import { JoueurGeneration } from '@/types/interfaces/joueur-generation.interface';
 import {
   testAffectationPossible,
@@ -17,15 +17,15 @@ import {
 } from './melee-demelee';
 
 export const generationTriplettes = (
-  listeJoueurs: Joueur[],
+  listeJoueurs: JoueurModel[],
   nbTours: number,
-  complement: Complement,
+  complement: Complement | undefined,
   speciauxIncompatibles: boolean,
   jamaisMemeCoequipier: boolean,
   eviterMemeAdversaire: number,
 ) => {
   let nbjoueurs = listeJoueurs.length;
-  let matchs: Match[] = [];
+  let matchs: MatchModel[] = [];
   let idMatch = 0;
   let joueursSpe = [];
   let joueursNonSpe = [];
@@ -70,7 +70,7 @@ export const generationTriplettes = (
       joueursNonSpe[joueursNonSpe.length - 1].equipe = [];
     }
     joueurs.push({
-      id: listeJoueurs[i].id,
+      id: listeJoueurs[i].joueurTournoiId,
       name: listeJoueurs[i].name,
       type: listeJoueurs[i].type,
       isChecked: listeJoueurs[i].isChecked,
@@ -92,9 +92,9 @@ export const generationTriplettes = (
         idsJoueursSpe = uniqueValueArrayRandOrder(joueursSpe.length);
         for (let j = 0; j < joueursSpe.length; j++) {
           if (matchs[idMatch].equipe[0][0] === -1) {
-            matchs[idMatch].equipe[0][0] = joueursSpe[idsJoueursSpe[j]].id;
+            matchs[idMatch].equipe[0][0] = joueursSpe[idsJoueursSpe[j]].joueurTournoiId;
           } else if (matchs[idMatch].equipe[1][0] === -1) {
-            matchs[idMatch].equipe[1][0] = joueursSpe[idsJoueursSpe[j]].id;
+            matchs[idMatch].equipe[1][0] = joueursSpe[idsJoueursSpe[j]].joueurTournoiId;
             idMatch++;
           }
         }
@@ -179,7 +179,7 @@ export const generationTriplettes = (
   //On ordonne aléatoirement les ids des joueurs non enfants à chaque début de manche
   let joueursNonSpeId = [];
   for (let i = 0; i < joueursNonSpe.length; i++) {
-    joueursNonSpeId.push(joueursNonSpe[i].id);
+    joueursNonSpeId.push(joueursNonSpe[i].joueurTournoiId);
   }
 
   //FONCTIONNEMENT
@@ -206,7 +206,7 @@ export const generationTriplettes = (
   for (let tour = 0; tour < nbTours; tour++) {
     breaker = 0;
     let random = shuffle(joueursNonSpeId);
-    for (let j = 0; j < joueursNonSpe.length; ) {
+    for (let j = 0; j < joueursNonSpe.length;) {
       let joueurId = random[j];
       let match = matchs[idMatch];
 
@@ -296,5 +296,7 @@ function getNbComplements(complement: Complement) {
     case Complement.QUATREVSTROIS:
     case Complement.TROISVSDEUX:
       return 1;
+    default:
+      throw Error('Complement non pris en charge en tournoi triplettes');
   }
 }

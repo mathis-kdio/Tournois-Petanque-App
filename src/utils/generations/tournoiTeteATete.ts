@@ -1,11 +1,16 @@
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { shuffle } from './generation';
+import { MatchModel } from '@/types/interfaces/matchModel';
 
 export const generationTeteATete = (
-  listeJoueurs: Joueur[],
+  listeJoueurs: JoueurModel[],
   nbTours: number,
   eviterMemeAdversaire: number,
-) => {
+): {
+  matchs?: MatchModel[];
+  nbMatchs?: number;
+  echecGeneration?: boolean;
+} => {
   let nbjoueurs = listeJoueurs.length;
   let matchs = [];
   let idMatch = 0;
@@ -39,7 +44,7 @@ export const generationTeteATete = (
   //On place les ids des joueurs dans un tableau qui sera mélangé à chaque nouveau tour
   let joueursIds = [];
   for (let i = 0; i < joueurs.length; i++) {
-    joueursIds.push(joueurs[i].id);
+    joueursIds.push(joueurs[i].joueurTournoiId);
   }
 
   idMatch = 0;
@@ -47,7 +52,7 @@ export const generationTeteATete = (
   for (let i = 0; i < nbTours; i++) {
     breaker = 0;
     let random = shuffle(joueursIds);
-    for (let j = 0; j < joueurs.length; ) {
+    for (let j = 0; j < joueurs.length;) {
       //Affectation joueur equipe 1
       if (matchs[idMatch].equipe[0][0] === -1) {
         matchs[idMatch].equipe[0][0] = random[j];
@@ -74,7 +79,7 @@ export const generationTeteATete = (
               arr.reduce(
                 (a, v) =>
                   v.equipe[0][0] === joueurAdverse &&
-                  v.equipe[1][0] === joueurAffect
+                    v.equipe[1][0] === joueurAffect
                     ? a + 1
                     : a,
                 0,
@@ -87,7 +92,7 @@ export const generationTeteATete = (
               arr.reduce(
                 (a, v) =>
                   v.equipe[1][0] === joueurAdverse &&
-                  v.equipe[0][0] === joueurAffect
+                    v.equipe[0][0] === joueurAffect
                     ? a + 1
                     : a,
                 0,

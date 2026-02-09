@@ -1,11 +1,16 @@
 import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { Joueur } from '@/types/interfaces/joueur';
-import { OptionsTournoi } from '@/types/interfaces/optionsTournoi';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { MatchModel } from '@/types/interfaces/matchModel';
+import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 
 export const generationChampionnat = (
-  optionsTournoi: OptionsTournoi,
-  listeJoueurs: Joueur[],
-) => {
+  optionsTournoi: PreparationTournoiModel,
+  listeJoueurs: JoueurModel[],
+): {
+  matchs: MatchModel[];
+  nbTours: number;
+  nbMatchs: number;
+} => {
   let typeEquipes = optionsTournoi.typeEquipes;
   let nbjoueurs = listeJoueurs.length;
   let matchs = [];
@@ -50,7 +55,7 @@ export const generationChampionnat = (
     equipe.push([]);
     for (let j = 0; j < nbjoueurs; j++) {
       if (listeJoueurs[j].equipe === i) {
-        equipe[i - 1].push(listeJoueurs[j].id);
+        equipe[i - 1].push(listeJoueurs[j].joueurTournoiId);
       }
     }
   }

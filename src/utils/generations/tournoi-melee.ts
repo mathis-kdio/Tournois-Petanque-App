@@ -1,17 +1,17 @@
 import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { shuffle } from './generation';
-import { Match } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/matchModel';
 import { EquipeGeneration } from '@/types/interfaces/equipe-generation.interface';
 
 export const generationMelee = (
-  listeJoueurs: Joueur[],
+  listeJoueurs: JoueurModel[],
   nbTours: number,
   typeEquipes: TypeEquipes,
   eviterMemeAdversaire: number,
 ) => {
   let nbjoueurs = listeJoueurs.length;
-  let matchs: Match[] = [];
+  let matchs: MatchModel[] = [];
   let idMatch = 0;
   let equipes: EquipeGeneration[] = [];
 
@@ -54,7 +54,7 @@ export const generationMelee = (
     equipes.push({ joueurs: [], adversesId: [] });
     for (let j = 0; j < nbjoueurs; j++) {
       if (listeJoueurs[j].equipe === i) {
-        equipes[i - 1].joueurs.push(listeJoueurs[j].id);
+        equipes[i - 1].joueurs.push(listeJoueurs[j].joueurTournoiId);
       }
     }
   }
@@ -71,7 +71,7 @@ export const generationMelee = (
   for (let tour = 0; tour < nbTours; tour++) {
     breaker = 0;
     let randomEquipesIds = shuffle(equipesIds);
-    for (let j = 0; j < equipes.length; ) {
+    for (let j = 0; j < equipes.length;) {
       //Affectation equipe 1
       if (matchs[idMatch].equipe[0][0] === -1) {
         matchs[idMatch].equipe[0][0] = equipes[randomEquipesIds[j]].joueurs[0];

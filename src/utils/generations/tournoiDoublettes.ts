@@ -6,15 +6,16 @@ import {
 } from './generation';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { Complement } from '@/types/enums/complement';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { Match } from '@/types/interfaces/match';
+import { MatchModel } from '@/types/interfaces/matchModel';
 import { JoueurGeneration } from '@/types/interfaces/joueur-generation.interface';
 import {
   testAffectationPossible,
   updatePlayerRelationships,
 } from './melee-demelee';
+import { MatchGeneration } from '@/types/interfaces/match-generation';
 
 const testRegleJamaisMemeCoequipier = (
   nbTours: number,
@@ -43,21 +44,27 @@ const testRegleJamaisMemeCoequipier = (
 };
 
 export const generationDoublettes = (
-  listeJoueurs: Joueur[],
+  listeJoueurs: JoueurModel[],
   nbTours: number,
-  complement: Complement,
+  complement: Complement | undefined,
   speciauxIncompatibles: boolean,
   jamaisMemeCoequipier: boolean,
   eviterMemeAdversaire: number,
-) => {
+): {
+  matchs?: MatchGeneration[];
+  nbMatchs?: number;
+  echecGeneration?: boolean;
+  erreurSpeciaux?: boolean;
+  erreurMemesEquipes?: boolean;
+} => {
   const nbjoueurs = listeJoueurs.length;
-  let matchs: Match[] = [];
+  let matchs: MatchGeneration[] = [];
   let idMatch = 0;
-  let joueursEnfants: Joueur[] = [];
-  let joueursTireurs: Joueur[] = [];
-  let joueursPointeurs: Joueur[] = [];
-  let joueursNonType: Joueur[] = [];
-  let joueursNonSpe: Joueur[] = [];
+  let joueursEnfants: JoueurModel[] = [];
+  let joueursTireurs: JoueurModel[] = [];
+  let joueursPointeurs: JoueurModel[] = [];
+  let joueursNonType: JoueurModel[] = [];
+  let joueursNonSpe: JoueurModel[] = [];
   let joueurs: JoueurGeneration[] = [];
 
   //Initialisation des matchs dans un tableau
@@ -119,7 +126,7 @@ export const generationDoublettes = (
       joueursNonSpe.push(joueur);
     }
     joueurs.push({
-      id: joueur.id,
+      id: joueur.joueurTournoiId,
       name: joueur.name,
       type: joueur.type,
       isChecked: joueur.isChecked,
@@ -243,9 +250,11 @@ export const generationDoublettes = (
       idsJoueursSpe = uniqueValueArrayRandOrder(joueursEnfants.length);
       for (let j = 0; j < joueursEnfants.length; j++) {
         if (matchs[idMatch].equipe[0][1] === -1) {
-          matchs[idMatch].equipe[0][1] = joueursEnfants[idsJoueursSpe[j]].id;
+          matchs[idMatch].equipe[0][1] =
+            joueursEnfants[idsJoueursSpe[j]].joueurTournoiId;
         } else if (matchs[idMatch].equipe[1][1] === -1) {
-          matchs[idMatch].equipe[1][1] = joueursEnfants[idsJoueursSpe[j]].id;
+          matchs[idMatch].equipe[1][1] =
+            joueursEnfants[idsJoueursSpe[j]].joueurTournoiId;
           idMatch++;
         }
       }
@@ -297,7 +306,7 @@ export const generationDoublettes = (
       joueursNonType,
       speciauxIncompatibles,
     );
-    for (let j = 0; j < joueursNonSpe.length; ) {
+    for (let j = 0; j < joueursNonSpe.length;) {
       let joueurId = random[j];
       let match = matchs[idMatch];
 
@@ -395,9 +404,9 @@ export const generationDoublettes = (
 };
 
 function _randomJoueursIds(
-  joueursPointeurs: Joueur[],
-  joueursTireurs: Joueur[],
-  joueursNonType: Joueur[],
+  joueursPointeurs: JoueurModel[],
+  joueursTireurs: JoueurModel[],
+  joueursNonType: JoueurModel[],
   speciauxIncompatibles: boolean,
 ): number[] {
   let arrayIds: number[] = [];
@@ -405,13 +414,13 @@ function _randomJoueursIds(
   let joueursTireursId: number[] = [];
   let joueursNonTypeId: number[] = [];
   for (let i = 0; i < joueursPointeurs.length; i++) {
-    joueursPointeursId.push(joueursPointeurs[i].id);
+    joueursPointeursId.push(joueursPointeurs[i].joueurTournoiId);
   }
   for (let i = 0; i < joueursTireurs.length; i++) {
-    joueursTireursId.push(joueursTireurs[i].id);
+    joueursTireursId.push(joueursTireurs[i].joueurTournoiId);
   }
   for (let i = 0; i < joueursNonType.length; i++) {
-    joueursNonTypeId.push(joueursNonType[i].id);
+    joueursNonTypeId.push(joueursNonType[i].joueurTournoiId);
   }
 
   if (speciauxIncompatibles === true) {
