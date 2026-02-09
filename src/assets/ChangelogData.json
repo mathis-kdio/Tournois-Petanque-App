@@ -1,4 +1,11 @@
 {
+  "36": {
+    "id":"36",
+    "version": "2.4.2",
+    "infos": [
+      "- Correction et amélioration de l'export PDF sur ordinateur"
+    ]
+  },
   "35": {
     "id":"35",
     "version": "2.4.1",

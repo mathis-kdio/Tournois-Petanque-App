@@ -135,7 +135,7 @@ export const generationPDFTournoi = (
     }
     html += '</tr></table><br>';
     if (toursParLigne === 1) {
-      html += '<div class="pagebreak"></div>';
+      html += '<div class="pagebreak"></div><br>';
     }
   }
   if (affichageClassement === true) {
@@ -168,17 +168,9 @@ export const generationPDFTournoi = (
   }
   html += `</body>
       <style>
-        @page print {
-          .pagebreak { break-before: page; }
-        }
-        @media print {
-          .pagebreak { break-before: page; }
-        }
-        @page print {
-          .pagebreak { page-break-before: always; }
-        }
-        @media print {
-          .pagebreak { break-before: always; }
+        .pagebreak {
+          break-before: page;
+          page-break-before: always;
         }
       </style>
     </html>`;

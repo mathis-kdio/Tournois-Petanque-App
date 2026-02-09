@@ -1,6 +1,6 @@
 [package]
 name = "app"
-version = "2.4.1"
+version = "2.4.2"
 description = "Créer un tournoi de pétanque et ajouter les scores n'a jamais été aussi simple !"
 authors = ["Mathis Cadio"]
 license = ""
@@ -12,13 +12,15 @@ build = "src/build.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "2.2.0", features = [] }
+tauri-build = { version = "2.5.3", features = [] }
 
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "2.5.1", features = [] }
-tauri-plugin-updater = "2.7.1"
+tauri = { version = "2.9.4", features = [] }
+tauri-plugin-updater = "2.9.0"
+tauri-plugin-fs = "2.4.4"
+tauri-plugin-opener = "2.5.2"
 # TODO: below is here for feature unification (ubuntu22.04 does not have openssl1.1 and it is creating problems for us)
 [target.'cfg(target_os = "linux")'.dependencies]
 openssl = { version = "0.10", features = ["vendored"] }

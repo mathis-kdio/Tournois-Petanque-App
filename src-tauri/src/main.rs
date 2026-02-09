@@ -7,6 +7,8 @@ use tauri_plugin_updater::UpdaterExt;
 
 pub fn main() {
   tauri::Builder::default()
+    .plugin(tauri_plugin_opener::init())
+    .plugin(tauri_plugin_fs::init())
     .plugin(tauri_plugin_updater::Builder::new().build())
     .setup(|app| {
       let handle = app.handle().clone();
