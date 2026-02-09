@@ -1,16 +1,16 @@
+import { Complement } from '@/types/enums/complement';
 import { JoueurType } from '@/types/enums/joueurType';
+import { ModeTournoi } from '@/types/enums/modeTournoi';
+import { TypeEquipes } from '@/types/enums/typeEquipes';
+import { TypeTournoi } from '@/types/enums/typeTournoi';
+import { JoueurGeneration } from '@/types/interfaces/joueur-generation.interface';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { MatchModel } from '@/types/interfaces/matchModel';
 import {
   calcNbMatchsParTour,
   shuffle,
   uniqueValueArrayRandOrder,
 } from './generation';
-import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { Complement } from '@/types/enums/complement';
-import { MatchModel } from '@/types/interfaces/matchModel';
-import { JoueurGeneration } from '@/types/interfaces/joueur-generation.interface';
 import {
   testAffectationPossible,
   updatePlayerRelationships,
@@ -92,9 +92,11 @@ export const generationTriplettes = (
         idsJoueursSpe = uniqueValueArrayRandOrder(joueursSpe.length);
         for (let j = 0; j < joueursSpe.length; j++) {
           if (matchs[idMatch].equipe[0][0] === -1) {
-            matchs[idMatch].equipe[0][0] = joueursSpe[idsJoueursSpe[j]].joueurTournoiId;
+            matchs[idMatch].equipe[0][0] =
+              joueursSpe[idsJoueursSpe[j]].joueurTournoiId;
           } else if (matchs[idMatch].equipe[1][0] === -1) {
-            matchs[idMatch].equipe[1][0] = joueursSpe[idsJoueursSpe[j]].joueurTournoiId;
+            matchs[idMatch].equipe[1][0] =
+              joueursSpe[idsJoueursSpe[j]].joueurTournoiId;
             idMatch++;
           }
         }

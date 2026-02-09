@@ -1,6 +1,6 @@
 import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { shuffle } from './generation';
 import { MatchModel } from '@/types/interfaces/matchModel';
+import { shuffle } from './generation';
 
 export const generationTeteATete = (
   listeJoueurs: JoueurModel[],

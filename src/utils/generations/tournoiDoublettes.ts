@@ -1,20 +1,20 @@
+import { Complement } from '@/types/enums/complement';
 import { JoueurType } from '@/types/enums/joueurType';
+import { ModeTournoi } from '@/types/enums/modeTournoi';
+import { TypeEquipes } from '@/types/enums/typeEquipes';
+import { TypeTournoi } from '@/types/enums/typeTournoi';
+import { JoueurGeneration } from '@/types/interfaces/joueur-generation.interface';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { MatchGeneration } from '@/types/interfaces/match-generation';
 import {
   calcNbMatchsParTour,
   shuffle,
   uniqueValueArrayRandOrder,
 } from './generation';
-import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { Complement } from '@/types/enums/complement';
-import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { JoueurGeneration } from '@/types/interfaces/joueur-generation.interface';
 import {
   testAffectationPossible,
   updatePlayerRelationships,
 } from './melee-demelee';
-import { MatchGeneration } from '@/types/interfaces/match-generation';
 
 const testRegleJamaisMemeCoequipier = (
   nbTours: number,

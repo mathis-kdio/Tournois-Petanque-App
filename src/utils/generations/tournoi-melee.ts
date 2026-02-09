@@ -1,8 +1,8 @@
 import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { shuffle } from './generation';
-import { MatchModel } from '@/types/interfaces/matchModel';
 import { EquipeGeneration } from '@/types/interfaces/equipe-generation.interface';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { MatchModel } from '@/types/interfaces/matchModel';
+import { shuffle } from './generation';
 
 export const generationMelee = (
   listeJoueurs: JoueurModel[],
@@ -79,10 +79,12 @@ export const generationMelee = (
           typeEquipes === TypeEquipes.DOUBLETTE ||
           typeEquipes === TypeEquipes.TRIPLETTE
         ) {
-          matchs[idMatch].equipe[0][1] = equipes[randomEquipesIds[j]].joueurs[1];
+          matchs[idMatch].equipe[0][1] =
+            equipes[randomEquipesIds[j]].joueurs[1];
         }
         if (typeEquipes === TypeEquipes.TRIPLETTE) {
-          matchs[idMatch].equipe[0][2] = equipes[randomEquipesIds[j]].joueurs[2];
+          matchs[idMatch].equipe[0][2] =
+            equipes[randomEquipesIds[j]].joueurs[2];
         }
         j++;
         breaker = 0;
@@ -114,10 +116,12 @@ export const generationMelee = (
           typeEquipes === TypeEquipes.DOUBLETTE ||
           typeEquipes === TypeEquipes.TRIPLETTE
         ) {
-          matchs[idMatch].equipe[1][1] = equipes[randomEquipesIds[j]].joueurs[1];
+          matchs[idMatch].equipe[1][1] =
+            equipes[randomEquipesIds[j]].joueurs[1];
         }
         if (typeEquipes === TypeEquipes.TRIPLETTE) {
-          matchs[idMatch].equipe[1][2] = equipes[randomEquipesIds[j]].joueurs[2];
+          matchs[idMatch].equipe[1][2] =
+            equipes[randomEquipesIds[j]].joueurs[2];
         }
         equipes[equipe1Id].adversesId.push(randomEquipesIds[j]);
         equipes[randomEquipesIds[j]].adversesId.push(equipe1Id);
