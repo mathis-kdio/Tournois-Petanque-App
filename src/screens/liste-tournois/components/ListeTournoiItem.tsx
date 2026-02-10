@@ -1,17 +1,15 @@
-import { Input, InputField } from '@/components/ui/input';
-import { Button, ButtonText } from '@/components/ui/button';
-import { Text } from '@/components/ui/text';
-import { HStack } from '@/components/ui/hstack';
 import { Box } from '@/components/ui/box';
-import React, { useState } from 'react';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { useTranslation } from 'react-i18next';
-import { TournoiModel } from '@/types/interfaces/tournoi';
-import { useDispatch } from 'react-redux';
-import { useNavigation } from 'expo-router';
-import { CommonActions } from '@react-navigation/native';
-import ModalDeleteTournoi from './ModalDeleteTournoi';
+import { Button, ButtonText } from '@/components/ui/button';
+import { HStack } from '@/components/ui/hstack';
+import { Input, InputField } from '@/components/ui/input';
+import { Text } from '@/components/ui/text';
 import { useTournois } from '@/repositories/tournois/useTournois';
+import { TournoiModel } from '@/types/interfaces/tournoi';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { useNavigation } from 'expo-router';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import ModalDeleteTournoi from './ModalDeleteTournoi';
 
 export interface Props {
   tournoi: TournoiModel;
@@ -26,7 +24,6 @@ const ListeTournoiItem: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const dispatch = useDispatch();
 
   const [renommerOn, setRenommerOn] = useState(false);
   const [tournoiNameText, setTournoiNameText] = useState('');
@@ -35,6 +32,8 @@ const ListeTournoiItem: React.FC<Props> = ({
   const { renameTournoi } = useTournois();
 
   const chargerTournoi = (tournoi: TournoiModel) => {
+    throw Error('TODO chargerTournoi');
+    /*
     const actionUpdateListeMatchs = {
       type: 'AJOUT_MATCHS',
       value: tournoi.tournoi,
@@ -45,6 +44,7 @@ const ListeTournoiItem: React.FC<Props> = ({
         routes: [{ name: 'tournoi' }],
       }),
     );
+    */
   };
 
   const modalSupprimerTournoi = (tournoiId: number) => {

@@ -1,18 +1,17 @@
-import { CloseIcon, Icon } from '@/components/ui/icon';
-import { Heading } from '@/components/ui/heading';
-import { Button, ButtonText, ButtonGroup } from '@/components/ui/button';
 import {
-  AlertDialogContent,
   AlertDialog,
-  AlertDialogBody,
-  AlertDialogHeader,
-  AlertDialogFooter,
-  AlertDialogCloseButton,
   AlertDialogBackdrop,
+  AlertDialogBody,
+  AlertDialogCloseButton,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
 } from '@/components/ui/alert-dialog';
+import { Button, ButtonGroup, ButtonText } from '@/components/ui/button';
+import { Heading } from '@/components/ui/heading';
+import { CloseIcon, Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 
 export interface Props {
   alertOpen: boolean;
@@ -21,10 +20,11 @@ export interface Props {
 
 const ClearDataAlertDialog: React.FC<Props> = ({ alertOpen, setAlertOpen }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
 
   const clearData = () => {
     setAlertOpen(false);
+    throw Error('TODO clearData');
+    /*
     const actionRemoveAllPlayersAvecNoms = {
       type: 'SUPPR_ALL_JOUEURS',
       value: ['avecNoms'],
@@ -60,6 +60,7 @@ const ClearDataAlertDialog: React.FC<Props> = ({ alertOpen, setAlertOpen }) => {
     dispatch(actionRemoveAllTerrains);
     const actionRemoveAllOptions = { type: 'SUPPR_ALL_OPTIONS' };
     dispatch(actionRemoveAllOptions);
+    */
   };
 
   return (

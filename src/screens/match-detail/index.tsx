@@ -1,24 +1,23 @@
-import { ScrollView } from '@/components/ui/scroll-view';
+import Loading from '@/components/Loading';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import { Box } from '@/components/ui/box';
-import { HStack } from '@/components/ui/hstack';
 import { Button, ButtonText } from '@/components/ui/button';
+import { HStack } from '@/components/ui/hstack';
 import { Input, InputField } from '@/components/ui/input';
+import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import TopBarBack from '@/components/topBar/TopBarBack';
-import AdMobMatchDetailBanner from '@components/adMob/AdMobMatchDetailBanner';
-import { nextMatch } from '@utils/generations/nextMatch/nextMatch';
+import { useMatchs } from '@/repositories/matchs/useMatchs';
+import { useTournois } from '@/repositories/tournois/useTournois';
+import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { MatchModel } from '@/types/interfaces/matchModel';
 import { requestReview } from '@/utils/storeReview/StoreReview';
-import { useDispatch } from 'react-redux';
+import AdMobMatchDetailBanner from '@components/adMob/AdMobMatchDetailBanner';
+import { nextMatch } from '@utils/generations/nextMatch/nextMatch';
 import { useRouter } from 'expo-router';
-import Loading from '@/components/Loading';
-import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { useTournois } from '@/repositories/tournois/useTournois';
-import { useMatchs } from '@/repositories/matchs/useMatchs';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type EquipeId = 1 | 2;
 
@@ -29,7 +28,6 @@ export interface Props {
 const MatchDetail: React.FC<Props> = ({ idMatch }) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const dispatch = useDispatch();
 
   const [score1, setScore1] = useState<string | undefined>(undefined);
   const [score2, setScore2] = useState<string | undefined>(undefined);
@@ -104,7 +102,10 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
     //Si tournoi type coupe et pas le dernier match, alors on ajoute les gagnants au match suivant
     const actionNextMatch = nextMatch(match, nbMatchs, typeTournoi, nbTours);
     if (actionNextMatch !== undefined) {
+      throw Error('TODO actionNextMatch');
+      /*
       dispatch(actionNextMatch);
+      */
     }
 
     router.back();

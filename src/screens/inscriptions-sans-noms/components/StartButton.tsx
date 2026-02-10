@@ -1,11 +1,9 @@
 import { Button, ButtonText } from '@/components/ui/button';
-import { useTranslation } from 'react-i18next';
 import { JoueurType } from '@/types/enums/joueurType';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { useDispatch } from 'react-redux';
-import { useRouter } from 'expo-router';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
 export interface Props {
   preparationTournoiModel: PreparationTournoiModel;
@@ -20,22 +18,26 @@ const StartButton: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const dispatch = useDispatch();
 
   const ajoutJoueur = (type?: JoueurType) => {
+    throw Error('TODO ajoutJoueur');
+    /*
     const action = {
       type: 'AJOUT_JOUEUR',
       value: [ModeTournoi.SANSNOMS, '', type, undefined],
     };
-    dispatch(action);
+    dispatch(action);*/
   };
 
   const supprimerJoueurs = () => {
+    throw Error('TODO ajoutJoueur');
+    /*
     const suppressionAllJoueurs = {
       type: 'SUPPR_ALL_JOUEURS',
       value: [ModeTournoi.SANSNOMS],
     };
     dispatch(suppressionAllJoueurs);
+    */
   };
 
   const getNextScreen = (choixComplement: boolean, avecTerrains: boolean) => {

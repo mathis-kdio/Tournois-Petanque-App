@@ -1,15 +1,13 @@
-import { Input, InputField } from '@/components/ui/input';
-import { Button, ButtonText } from '@/components/ui/button';
-import { Text } from '@/components/ui/text';
-import { HStack } from '@/components/ui/hstack';
 import { Box } from '@/components/ui/box';
-import React, { useState } from 'react';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { useTranslation } from 'react-i18next';
-import { ModeTournoi } from '@/types/enums/modeTournoi';
+import { Button, ButtonText } from '@/components/ui/button';
+import { HStack } from '@/components/ui/hstack';
+import { Input, InputField } from '@/components/ui/input';
+import { Text } from '@/components/ui/text';
 import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
-import { useDispatch, useSelector } from 'react-redux';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ModalDeleteListe from './ModalDeleteListe';
 
 export interface Props {
@@ -27,17 +25,14 @@ const ListeJoueursItem: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const dispatch = useDispatch();
 
   const [renommerOn, setRenommerOn] = useState(false);
   const [listNameText, setListNameText] = useState('');
   const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false);
 
-  const optionsTournoi = useSelector(
-    (state: any) => state.optionsTournoi.options,
-  );
-
   const modifyList = (listId: number) => {
+    throw Error('TODO modifyList');
+    /*
     const actionRemoveList = {
       type: 'SUPPR_ALL_JOUEURS',
       value: [ModeTournoi.SAUVEGARDE],
@@ -57,6 +52,7 @@ const ListeJoueursItem: React.FC<Props> = ({
       value: ['mode', ModeTournoi.SAUVEGARDE],
     };
     dispatch(updateOptionModeTournoi);
+    */
     router.navigate({
       pathname: '/listes-joueurs/create-liste-joueurs',
       params: {
@@ -146,7 +142,8 @@ const ListeJoueursItem: React.FC<Props> = ({
   };
 
   const loadList = (listId: number) => {
-    const actionLoadList = {
+    throw Error('TODO Load Liste');
+    /*const actionLoadList = {
       type: 'LOAD_SAVED_LIST',
       value: {
         typeInscriptionSrc: 'avecNoms',
@@ -154,7 +151,7 @@ const ListeJoueursItem: React.FC<Props> = ({
         listId: listId,
       },
     };
-    dispatch(actionLoadList);
+    dispatch(actionLoadList);*/
     router.back();
   };
 

@@ -1,20 +1,16 @@
+import Loading from '@/components/Loading';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import { Box } from '@/components/ui/box';
-import { FlatList } from '@/components/ui/flat-list';
 import { Button, ButtonText } from '@/components/ui/button';
+import { FlatList } from '@/components/ui/flat-list';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import ListeJoueursItem from '@/screens/listes-joueurs/components/ListeJoueursItem';
-import { useTranslation } from 'react-i18next';
-import TopBarBack from '@/components/topBar/TopBarBack';
-import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { ListRenderItem } from 'react-native';
-import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
-import { useDispatch } from 'react-redux';
-import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useListesJoueurs } from '@/repositories/listesJoueurs/useListesJoueurs';
-import Loading from '@/components/Loading';
+import ListeJoueursItem from '@/screens/listes-joueurs/components/ListeJoueursItem';
+import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import { ListRenderItem } from 'react-native';
 
 type SearchParams = {
   loadListScreen?: string;
@@ -24,7 +20,6 @@ const ListesJoueurs = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const { loadListScreen = 'false' } = useLocalSearchParams<SearchParams>();
-  const dispatch = useDispatch();
 
   const { allListesJoueurs, deleteListeJoueurs, renameListeJoueurs } =
     useListesJoueurs();
@@ -42,6 +37,8 @@ const ListesJoueurs = () => {
   };
 
   const addList = () => {
+    throw Error('TODO addList');
+    /*
     const actionRemoveList = {
       type: 'SUPPR_ALL_JOUEURS',
       value: [ModeTournoi.SAUVEGARDE],
@@ -63,7 +60,7 @@ const ListesJoueurs = () => {
       value: ['mode', ModeTournoi.SAUVEGARDE],
     };
     dispatch(updateOptionModeTournoi);
-
+    */
     router.navigate({
       pathname: '/listes-joueurs/create-liste-joueurs',
       params: {
