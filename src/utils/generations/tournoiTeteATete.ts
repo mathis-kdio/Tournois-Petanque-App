@@ -1,48 +1,49 @@
+import { JoueurGenerationTeteATete } from '@/types/interfaces/joueur-generation.interface';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { MatchModel } from '@/types/interfaces/matchModel';
+import { MatchGeneration } from '@/types/interfaces/match-generation';
 import { shuffle } from './generation';
 
 export const generationTeteATete = (
   listeJoueurs: JoueurModel[],
   nbTours: number,
   eviterMemeAdversaire: number,
-): {
-  matchs?: MatchModel[];
-  nbMatchs?: number;
-  echecGeneration?: boolean;
-} => {
-  let nbjoueurs = listeJoueurs.length;
-  let matchs = [];
-  let idMatch = 0;
-  let joueurs = [];
+) => {
+  const nbjoueurs = listeJoueurs.length;
+
+  //Calcul nombre de match et nombre de matchs par tour
+  const nbMatchsParTour = nbjoueurs / 2;
+  const nbMatchs = nbTours * nbMatchsParTour;
 
   //Initialisation des matchs dans un tableau
-  let nbMatchsParTour = nbjoueurs / 2;
-  let nbMatchs = nbTours * nbMatchsParTour;
-  idMatch = 0;
+  const matchs: MatchGeneration[] = [];
+  let idMatch = 0;
   for (let i = 1; i < nbTours + 1; i++) {
     for (let j = 0; j < nbMatchsParTour; j++) {
       matchs.push({
         id: idMatch,
         manche: i,
         equipe: [
-          [-1, -1, -1],
-          [-1, -1, -1],
+          [-1, -1, -1, -1],
+          [-1, -1, -1, -1],
         ],
         score1: undefined,
         score2: undefined,
+        mancheName: undefined,
+        terrain: undefined,
       });
       idMatch++;
     }
   }
 
+  //Création d'un tableau dans lequel les joueurs sont regroupés par équipes
+  const joueurs: JoueurGenerationTeteATete[] = [];
   for (let i = 0; i < nbjoueurs; i++) {
     const joueur = { ...listeJoueurs[i], equipe: [] };
     joueurs.push(joueur);
   }
 
   //On place les ids des joueurs dans un tableau qui sera mélangé à chaque nouveau tour
-  let joueursIds = [];
+  const joueursIds: number[] = [];
   for (let i = 0; i < joueurs.length; i++) {
     joueursIds.push(joueurs[i].joueurTournoiId);
   }
@@ -51,11 +52,13 @@ export const generationTeteATete = (
   let breaker = 0; //permet de détecter quand boucle infinie
   for (let i = 0; i < nbTours; i++) {
     breaker = 0;
-    let random = shuffle(joueursIds);
-    for (let j = 0; j < joueurs.length;) {
+    const random = shuffle(joueursIds);
+    for (let j = 0; j < joueurs.length; j) {
+      const match = matchs[idMatch];
       //Affectation joueur equipe 1
-      if (matchs[idMatch].equipe[0][0] === -1) {
-        matchs[idMatch].equipe[0][0] = random[j];
+      const equipe1 = match.equipe[0];
+      if (equipe1[0] === -1) {
+        equipe1[0] = random[j];
         j++;
         breaker = 0;
       }
@@ -64,39 +67,17 @@ export const generationTeteATete = (
         //Test si l'équipe 1 n'a pas déjà joué contre + de la moitié de ses matchs contre le joueur adverse
         let affectationPossible = true;
         if (eviterMemeAdversaire !== 100) {
-          if (matchs[idMatch].equipe[0][0] !== -1) {
-            let joueur1 = matchs[idMatch].equipe[0][0];
+          if (equipe1[0] !== -1) {
+            const joueur1 = equipe1[0];
             let totPartiesJ1 = 0;
             //Compte le nombre de fois où dans des matchs :
             //Si le joueur en affectation était joueur 3 ou 4 et qu'il a déjà eu le joueur 1 ou 2 comme adversaire
             //OU
             //Si le joueur en affectation était joueur 1 ou 2 et qu'il a déjà eu le joueur 3 ou 4 comme adversaire
-            const occurrencesAdversaireDansEquipe1 = (
-              arr,
-              joueurAdverse,
-              joueurAffect,
-            ) =>
-              arr.reduce(
-                (a, v) =>
-                  v.equipe[0][0] === joueurAdverse &&
-                    v.equipe[1][0] === joueurAffect
-                    ? a + 1
-                    : a,
-                0,
-              );
-            const occurrencesAdversaireDansEquipe2 = (
-              arr,
-              joueurAdverse,
-              joueurAffect,
-            ) =>
-              arr.reduce(
-                (a, v) =>
-                  v.equipe[1][0] === joueurAdverse &&
-                    v.equipe[0][0] === joueurAffect
-                    ? a + 1
-                    : a,
-                0,
-              );
+            if (joueur1 === undefined) {
+              throw Error('joueur1 devrait être défini');
+            }
+
             totPartiesJ1 += occurrencesAdversaireDansEquipe1(
               matchs,
               joueur1,
@@ -124,8 +105,9 @@ export const generationTeteATete = (
         }
         if (affectationPossible === true) {
           //Affectation equipe 2
-          if (matchs[idMatch].equipe[1][0] === -1) {
-            matchs[idMatch].equipe[1][0] = random[j];
+          const equipe2 = match.equipe[1];
+          if (equipe2[0] === -1) {
+            equipe2[0] = random[j];
             j++;
             breaker = 0;
           }
@@ -152,4 +134,32 @@ export const generationTeteATete = (
   }
 
   return { matchs, nbMatchs };
+};
+
+const occurrencesAdversaireDansEquipe1 = (
+  arr: MatchGeneration[],
+  joueurAdverse: number,
+  joueurAffect: number,
+) => {
+  return arr.reduce(
+    (a, v) =>
+      v.equipe[0][0] === joueurAdverse && v.equipe[1][0] === joueurAffect
+        ? a + 1
+        : a,
+    0,
+  );
+};
+
+const occurrencesAdversaireDansEquipe2 = (
+  arr: MatchGeneration[],
+  joueurAdverse: number,
+  joueurAffect: number,
+) => {
+  return arr.reduce(
+    (a, v) =>
+      v.equipe[1][0] === joueurAdverse && v.equipe[0][0] === joueurAffect
+        ? a + 1
+        : a,
+    0,
+  );
 };

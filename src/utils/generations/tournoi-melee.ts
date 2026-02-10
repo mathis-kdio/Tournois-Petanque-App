@@ -1,7 +1,7 @@
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { EquipeGeneration } from '@/types/interfaces/equipe-generation.interface';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { MatchModel } from '@/types/interfaces/matchModel';
+import { MatchGeneration } from '@/types/interfaces/match-generation';
 import { shuffle } from './generation';
 
 export const generationMelee = (
@@ -10,12 +10,9 @@ export const generationMelee = (
   typeEquipes: TypeEquipes,
   eviterMemeAdversaire: number,
 ) => {
-  let nbjoueurs = listeJoueurs.length;
-  let matchs: MatchModel[] = [];
-  let idMatch = 0;
-  let equipes: EquipeGeneration[] = [];
+  const nbjoueurs = listeJoueurs.length;
 
-  //Initialisation des matchs dans un tableau
+  //Calcul nombre d'équipes, du nombre de match et nombre de matchs par tour
   let nbEquipes: number;
   let nbMatchsParTour: number;
   if (typeEquipes === TypeEquipes.TETEATETE) {
@@ -28,9 +25,11 @@ export const generationMelee = (
     nbEquipes = nbjoueurs / 3;
     nbMatchsParTour = Math.ceil(nbjoueurs / 6);
   }
-  let nbMatchs = nbTours * nbMatchsParTour;
+  const nbMatchs = nbTours * nbMatchsParTour;
 
-  idMatch = 0;
+  //Initialisation des matchs dans un tableau
+  const matchs: MatchGeneration[] = [];
+  let idMatch = 0;
   for (let i = 1; i < nbTours + 1; i++) {
     for (let j = 0; j < nbMatchsParTour; j++) {
       matchs.push({
@@ -50,17 +49,19 @@ export const generationMelee = (
   }
 
   //Création d'un tableau dans lequel les joueurs sont regroupés par équipes
+  const equipes: EquipeGeneration[] = [];
   for (let i = 1; i <= nbEquipes; i++) {
     equipes.push({ joueurs: [], adversesId: [] });
     for (let j = 0; j < nbjoueurs; j++) {
-      if (listeJoueurs[j].equipe === i) {
-        equipes[i - 1].joueurs.push(listeJoueurs[j].joueurTournoiId);
+      const joueur = listeJoueurs[j];
+      if (joueur.equipe === i) {
+        equipes[i - 1].joueurs.push(joueur.joueurTournoiId);
       }
     }
   }
 
   //On place les ids des équipes dans un tableau qui sera mélanger à chaque nouveaux tour
-  let equipesIds = [];
+  const equipesIds = [];
   for (let i = 0; i < nbEquipes; i++) {
     equipesIds.push(i);
   }
@@ -70,58 +71,50 @@ export const generationMelee = (
   let breaker = 0; //permet de détecter quand boucle infinie
   for (let tour = 0; tour < nbTours; tour++) {
     breaker = 0;
-    let randomEquipesIds = shuffle(equipesIds);
-    for (let j = 0; j < equipes.length;) {
+    const randomEquipesIds = shuffle(equipesIds);
+    for (let j = 0; j < equipes.length; j) {
+      const match = matchs[idMatch];
       //Affectation equipe 1
-      if (matchs[idMatch].equipe[0][0] === -1) {
-        matchs[idMatch].equipe[0][0] = equipes[randomEquipesIds[j]].joueurs[0];
+      const equipe1 = match.equipe[0];
+      if (equipe1[0] === -1) {
+        equipe1[0] = equipes[randomEquipesIds[j]].joueurs[0];
         if (
           typeEquipes === TypeEquipes.DOUBLETTE ||
           typeEquipes === TypeEquipes.TRIPLETTE
         ) {
-          matchs[idMatch].equipe[0][1] =
-            equipes[randomEquipesIds[j]].joueurs[1];
+          equipe1[1] = equipes[randomEquipesIds[j]].joueurs[1];
         }
         if (typeEquipes === TypeEquipes.TRIPLETTE) {
-          matchs[idMatch].equipe[0][2] =
-            equipes[randomEquipesIds[j]].joueurs[2];
+          equipe1[2] = equipes[randomEquipesIds[j]].joueurs[2];
         }
         j++;
         breaker = 0;
       }
       //Affectation Equipe 2
-      let affectationPossible = true;
-      //Règle eviterMemeAdversaire
-      let equipe1Id = equipes.findIndex((equipe) =>
-        equipe.joueurs.every(
-          (v, index) => v === matchs[idMatch].equipe[0][index],
-        ),
+      const equipe2 = match.equipe[1];
+      const equipe1Id = equipes.findIndex((equipe) =>
+        equipe.joueurs.every((v, index) => v === equipe1[index]),
       );
-      let nbRencontres = equipes[equipe1Id].adversesId.filter(
-        (el) => el === randomEquipesIds[j],
-      ).length;
-      if (eviterMemeAdversaire === 0 && nbRencontres !== 0) {
-        //1 seul match possible
-        affectationPossible = false;
-      } else if (
-        eviterMemeAdversaire === 50 &&
-        nbRencontres >= Math.floor(nbTours / 2)
-      ) {
-        //La moitié des matchs possible
-        affectationPossible = false;
-      }
-      if (matchs[idMatch].equipe[1][0] === -1 && affectationPossible) {
-        matchs[idMatch].equipe[1][0] = equipes[randomEquipesIds[j]].joueurs[0];
+
+      //Règle eviterMemeAdversaire
+      const affectationPossible = testRegleEviterMemeAdversaire(
+        equipes,
+        equipe1Id,
+        randomEquipesIds[j],
+        eviterMemeAdversaire,
+        nbTours,
+      );
+
+      if (equipe2[0] === -1 && affectationPossible) {
+        equipe2[0] = equipes[randomEquipesIds[j]].joueurs[0];
         if (
           typeEquipes === TypeEquipes.DOUBLETTE ||
           typeEquipes === TypeEquipes.TRIPLETTE
         ) {
-          matchs[idMatch].equipe[1][1] =
-            equipes[randomEquipesIds[j]].joueurs[1];
+          equipe2[1] = equipes[randomEquipesIds[j]].joueurs[1];
         }
         if (typeEquipes === TypeEquipes.TRIPLETTE) {
-          matchs[idMatch].equipe[1][2] =
-            equipes[randomEquipesIds[j]].joueurs[2];
+          equipe2[2] = equipes[randomEquipesIds[j]].joueurs[2];
         }
         equipes[equipe1Id].adversesId.push(randomEquipesIds[j]);
         equipes[randomEquipesIds[j]].adversesId.push(equipe1Id);
@@ -151,4 +144,28 @@ export const generationMelee = (
   }
 
   return { matchs, nbMatchs };
+};
+
+const testRegleEviterMemeAdversaire = (
+  equipes: EquipeGeneration[],
+  equipe1Id: number,
+  randomEquipesId: number,
+  eviterMemeAdversaire: number,
+  nbTours: number,
+) => {
+  const nbRencontres = equipes[equipe1Id].adversesId.filter(
+    (el) => el === randomEquipesId,
+  ).length;
+  if (eviterMemeAdversaire === 0 && nbRencontres !== 0) {
+    //1 seul match possible
+    return false;
+  } else if (
+    eviterMemeAdversaire === 50 &&
+    nbRencontres >= Math.floor(nbTours / 2)
+  ) {
+    //La moitié des matchs possible
+    return false;
+  } else {
+    return true;
+  }
 };

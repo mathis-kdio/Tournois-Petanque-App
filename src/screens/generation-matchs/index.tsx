@@ -1,42 +1,42 @@
+import {
+  initInterstitial,
+  onAdClosed,
+  onAdError,
+  onAdLoaded,
+  showInterstitialAd,
+} from '@/components/adMob/AdMobGenerationTournoiInterstitiel';
+import Loading from '@/components/Loading';
+import TopBar from '@/components/topBar/TopBar';
 import { VStack } from '@/components/ui/vstack';
+import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
+import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { useTerrainsPreparationTournois } from '@/repositories/terrainsPreparationTournois/useTerrainsPreparationTournois';
+import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
+import { ModeTournoi } from '@/types/enums/modeTournoi';
+import { TypeEquipes } from '@/types/enums/typeEquipes';
+import { TypeTournoi } from '@/types/enums/typeTournoi';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { MatchGeneration } from '@/types/interfaces/match-generation';
+import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import { screenStackNameType } from '@/types/types/searchParams';
+import { generationMelee } from '@/utils/generations/tournoi-melee';
+import { CommonActions } from '@react-navigation/native';
 import { generationChampionnat } from '@utils/generations/championnat';
 import { generationCoupe } from '@utils/generations/coupe';
-import { generationMultiChances } from '@utils/generations/multiChances';
-import { generationMelee } from '@/utils/generations/tournoi-melee';
-import { generationDoublettes } from '@utils/generations/tournoiDoublettes';
-import { generationTeteATete } from '@utils/generations/tournoiTeteATete';
-import { generationTriplettes } from '@utils/generations/tournoiTriplettes';
 import {
   attributionEquipes,
   uniqueValueArrayRandOrder,
 } from '@utils/generations/generation';
+import { generationMultiChances } from '@utils/generations/multiChances';
+import { generationDoublettes } from '@utils/generations/tournoiDoublettes';
+import { generationTeteATete } from '@utils/generations/tournoiTeteATete';
+import { generationTriplettes } from '@utils/generations/tournoiTriplettes';
+import { useNavigation } from 'expo-router';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Platform } from 'react-native';
-import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { TypeTournoi } from '@/types/enums/typeTournoi';
-import TopBar from '@/components/topBar/TopBar';
-import { useCallback, useEffect, useState } from 'react';
-import { useNavigation } from 'expo-router';
-import { CommonActions } from '@react-navigation/native';
-import { screenStackNameType } from '@/types/types/searchParams';
-import {
-  initInterstitial,
-  onAdLoaded,
-  showInterstitialAd,
-  onAdError,
-  onAdClosed,
-} from '@/components/adMob/AdMobGenerationTournoiInterstitiel';
-import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
-import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
-import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import GenerationLoading from './components/GenerationLoading';
-import { useTerrainsPreparationTournois } from '@/repositories/terrainsPreparationTournois/useTerrainsPreparationTournois';
-import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
-import Loading from '@/components/Loading';
 import { useCreateTournoi } from './hooks/use-create-tournoi';
-import { MatchGeneration } from '@/types/interfaces/match-generation';
 
 export interface Props {
   screenStackName: screenStackNameType;
@@ -212,16 +212,13 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
           matchs,
           nbTours: finalNbTours,
           nbMatchs,
-        } = generationCoupe(preparationTournoiModel, listeJoueursInscrits));
+        } = generationCoupe(typeEquipes, listeJoueursInscrits));
       } else if (typeTournoi === TypeTournoi.CHAMPIONNAT) {
         ({
           matchs,
           nbTours: finalNbTours,
           nbMatchs,
-        } = generationChampionnat(
-          preparationTournoiModel,
-          listeJoueursInscrits,
-        ));
+        } = generationChampionnat(typeEquipes, listeJoueursInscrits));
       } else if (typeTournoi === TypeTournoi.MULTICHANCES) {
         ({
           matchs,

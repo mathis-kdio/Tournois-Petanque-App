@@ -49,15 +49,8 @@ export const generationDoublettes = (
   speciauxIncompatibles: boolean,
   jamaisMemeCoequipier: boolean,
   eviterMemeAdversaire: number,
-): {
-  matchs?: MatchGeneration[];
-  nbMatchs?: number;
-  echecGeneration?: boolean;
-  erreurSpeciaux?: boolean;
-  erreurMemesEquipes?: boolean;
-} => {
+) => {
   const nbjoueurs = listeJoueurs.length;
-  let matchs: MatchGeneration[] = [];
   let idMatch = 0;
   let joueursEnfants: JoueurModel[] = [];
   let joueursTireurs: JoueurModel[] = [];
@@ -66,8 +59,7 @@ export const generationDoublettes = (
   let joueursNonSpe: JoueurModel[] = [];
   let joueurs: JoueurGeneration[] = [];
 
-  //Initialisation des matchs dans un tableau
-  let nbMatchsParTour = calcNbMatchsParTour(
+  const nbMatchsParTour = calcNbMatchsParTour(
     nbjoueurs,
     TypeEquipes.DOUBLETTE,
     ModeTournoi.AVECNOMS,
@@ -76,6 +68,9 @@ export const generationDoublettes = (
   );
 
   const nbMatchs = nbTours * nbMatchsParTour;
+
+  //Initialisation des matchs dans un tableau
+  const matchs: MatchGeneration[] = [];
   idMatch = 0;
   for (let i = 1; i < nbTours + 1; i++) {
     for (let j = 0; j < nbMatchsParTour; j++) {
@@ -133,7 +128,8 @@ export const generationDoublettes = (
       allAdversaires: [],
     });
   }
-  let nbJoueursSpe = joueursEnfants.length;
+  const nbJoueursSpe = joueursEnfants.length;
+
   //Test s'il faut compléter des équipes
   //Si c'est le cas, alors on remplie de joueurs invisible pour le complément en mode tête à tête
   if (nbjoueurs % 4 !== 0) {
@@ -305,7 +301,7 @@ export const generationDoublettes = (
       joueursNonType,
       speciauxIncompatibles,
     );
-    for (let j = 0; j < joueursNonSpe.length;) {
+    for (let j = 0; j < joueursNonSpe.length; j) {
       let joueurId = random[j];
       let match = matchs[idMatch];
 
@@ -408,10 +404,10 @@ function _randomJoueursIds(
   joueursNonType: JoueurModel[],
   speciauxIncompatibles: boolean,
 ): number[] {
-  let arrayIds: number[] = [];
-  let joueursPointeursId: number[] = [];
-  let joueursTireursId: number[] = [];
-  let joueursNonTypeId: number[] = [];
+  const arrayIds: number[] = [];
+  const joueursPointeursId: number[] = [];
+  const joueursTireursId: number[] = [];
+  const joueursNonTypeId: number[] = [];
   for (let i = 0; i < joueursPointeurs.length; i++) {
     joueursPointeursId.push(joueursPointeurs[i].joueurTournoiId);
   }
@@ -422,7 +418,7 @@ function _randomJoueursIds(
     joueursNonTypeId.push(joueursNonType[i].joueurTournoiId);
   }
 
-  if (speciauxIncompatibles === true) {
+  if (speciauxIncompatibles) {
     if (joueursPointeurs.length > joueursTireurs.length) {
       arrayIds.push(...shuffle(joueursPointeursId));
       joueursNonTypeId.push(...joueursTireursId);

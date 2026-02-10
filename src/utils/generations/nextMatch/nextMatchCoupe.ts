@@ -16,7 +16,7 @@ export const nextMatchCoupe = (match: MatchModel, nbMatchs: number) => {
   for (let i = 2; i <= manche; i++) {
     div = div * 2;
   }
-  let nbMatchsManche = Math.floor((nbMatchs + 1) / div);
+  const nbMatchsManche = Math.floor((nbMatchs + 1) / div);
 
   if (manche === 1) {
     if (id % 2 !== 0) {
@@ -32,7 +32,7 @@ export const nextMatchCoupe = (match: MatchModel, nbMatchs: number) => {
     matchId = id + (nbMatchsManche - Math.ceil((id % nbMatchsAvantManche) / 2));
   }
 
-  let equipeId = id % 2;
+  const equipeId = id % 2;
   const actionAjoutAdversaire = {
     type: 'COUPE_AJOUT_ADVERSAIRE',
     value: { gagnant: gagnant, matchId: matchId, equipeId: equipeId },

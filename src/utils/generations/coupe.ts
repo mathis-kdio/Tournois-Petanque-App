@@ -1,23 +1,16 @@
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { MatchModel } from '@/types/interfaces/matchModel';
-import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import { MatchGeneration } from '@/types/interfaces/match-generation';
 
 export const generationCoupe = (
-  optionsTournoi: PreparationTournoiModel,
+  typeEquipes: TypeEquipes,
   listeJoueurs: JoueurModel[],
 ) => {
-  let typeEquipes = optionsTournoi.typeEquipes;
-  let nbjoueurs = listeJoueurs.length;
-  let nbTours = 0;
-  let matchs: MatchModel[] = [];
-  let equipe: {
-    equipe: [JoueurModel[] | undefined, JoueurModel[] | undefined];
-  } = { equipe: [undefined, undefined] };
+  const nbjoueurs = listeJoueurs.length;
 
-  //Initialisation des matchs dans un tableau
-  let nbEquipes;
-  let nbMatchsPremierTour;
+  //Calcul nombre d'équipes, de tours et nombre de matchs 1er tour
+  let nbEquipes: number;
+  let nbMatchsPremierTour: number;
   if (typeEquipes === TypeEquipes.TETEATETE) {
     nbEquipes = nbjoueurs;
     nbMatchsPremierTour = nbjoueurs / 2;
@@ -28,8 +21,10 @@ export const generationCoupe = (
     nbEquipes = nbjoueurs / 3;
     nbMatchsPremierTour = Math.ceil(nbjoueurs / 6);
   }
-  nbTours = Math.log2(nbEquipes);
+  const nbTours = Math.log2(nbEquipes);
 
+  //Initialisation des matchs dans un tableau
+  const matchs: MatchGeneration[] = [];
   let idMatch = 0;
   for (
     let i = 1, nbMatchsParTour = nbMatchsPremierTour;
@@ -40,7 +35,7 @@ export const generationCoupe = (
       matchs.push({
         id: idMatch,
         manche: i,
-        mancheName: '1/' + nbMatchsParTour,
+        mancheName: `1/${nbMatchsParTour}`,
         equipe: [
           [-1, -1, -1, -1],
           [-1, -1, -1, -1],
@@ -52,20 +47,23 @@ export const generationCoupe = (
       idMatch++;
     }
   }
-  let nbMatchs = idMatch;
+  const nbMatchs = idMatch;
   matchs[matchs.length - 1].mancheName = 'Finale';
+
   //Création d'un tableau dans lequel les joueurs sont regroupés par équipes
+  const equipe: number[][] = [];
   for (let i = 1; i <= nbEquipes; i++) {
     equipe.push([]);
     for (let j = 0; j < nbjoueurs; j++) {
-      if (listeJoueurs[j].equipe === i) {
-        equipe[i - 1].push(listeJoueurs[j]);
+      const joueur = listeJoueurs[j];
+      if (joueur.equipe === i) {
+        equipe[i - 1].push(joueur.joueurTournoiId);
       }
     }
   }
 
   //On place les ids des équipes dans un tableau qui sera décalé à chaque nouveaux tour
-  let equipesIds = [];
+  const equipesIds = [];
   for (let i = 0; i < nbEquipes; i++) {
     equipesIds.push(i);
   }
@@ -73,32 +71,39 @@ export const generationCoupe = (
   //FONCTIONNEMENT
   idMatch = 0;
   for (let j = 0; j < equipe.length / 2; j++) {
+    const match = matchs[idMatch];
     //Affectation Equipe 1
-    matchs[idMatch].equipe[0][0] = equipe[equipesIds[j]][0];
+    const equipe1 = match.equipe[0];
+    equipe1[0] = equipe[equipesIds[j]][0];
     if (
       typeEquipes === TypeEquipes.DOUBLETTE ||
       typeEquipes === TypeEquipes.TRIPLETTE
     ) {
-      matchs[idMatch].equipe[0][1] = equipe[equipesIds[j]][1];
+      equipe1[1] = equipe[equipesIds[j]][1];
     }
     if (typeEquipes === TypeEquipes.TRIPLETTE) {
-      matchs[idMatch].equipe[0][2] = equipe[equipesIds[j]][2];
+      equipe1[2] = equipe[equipesIds[j]][2];
     }
 
     //Affectation Equipe 2
-    matchs[idMatch].equipe[1][0] = equipe[equipesIds[nbEquipes - 1 - j]][0];
+    const equipe2 = match.equipe[1];
+    equipe2[0] = equipe[equipesIds[nbEquipes - 1 - j]][0];
     if (
       typeEquipes === TypeEquipes.DOUBLETTE ||
       typeEquipes === TypeEquipes.TRIPLETTE
     ) {
-      matchs[idMatch].equipe[1][1] = equipe[equipesIds[nbEquipes - 1 - j]][1];
+      equipe2[1] = equipe[equipesIds[nbEquipes - 1 - j]][1];
     }
     if (typeEquipes === TypeEquipes.TRIPLETTE) {
-      matchs[idMatch].equipe[1][2] = equipe[equipesIds[nbEquipes - 1 - j]][2];
+      equipe2[2] = equipe[equipesIds[nbEquipes - 1 - j]][2];
     }
     idMatch++;
   }
-  equipesIds.splice(1, 0, equipesIds.pop());
+  const last = equipesIds.pop();
+  if (last === undefined) {
+    throw Error();
+  }
+  equipesIds.splice(1, 0, last);
 
   return { matchs, nbTours, nbMatchs };
 };

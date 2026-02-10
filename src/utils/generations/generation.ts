@@ -13,7 +13,7 @@ const countOccurrences = (arr: number[], val: number) =>
 
 export const uniqueValueArrayRandOrder = (arrayLength: number) => {
   const res = [];
-  for (let i = 0; i < arrayLength;) {
+  for (let i = 0; i < arrayLength; i) {
     const random = rand0ToMax(arrayLength - 1);
     if (countOccurrences(res, random) < 1) {
       res.push(random);

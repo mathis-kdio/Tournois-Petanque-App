@@ -3,9 +3,12 @@ import { JoueurType } from '@/types/enums/joueurType';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { JoueurGeneration } from '@/types/interfaces/joueur-generation.interface';
+import {
+  JoueurGeneration,
+  JoueurGenerationTeteATete,
+} from '@/types/interfaces/joueur-generation.interface';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { MatchModel } from '@/types/interfaces/matchModel';
+import { MatchGeneration } from '@/types/interfaces/match-generation';
 import {
   calcNbMatchsParTour,
   shuffle,
@@ -24,23 +27,21 @@ export const generationTriplettes = (
   jamaisMemeCoequipier: boolean,
   eviterMemeAdversaire: number,
 ) => {
-  let nbjoueurs = listeJoueurs.length;
-  let matchs: MatchModel[] = [];
-  let idMatch = 0;
-  let joueursSpe = [];
-  let joueursNonSpe = [];
-  let joueurs: JoueurGeneration[] = [];
+  const nbjoueurs = listeJoueurs.length;
 
-  //Initialisation des matchs dans un tableau
-  let nbMatchsParTour = calcNbMatchsParTour(
+  //Calcul nombre de match et nombre de matchs par tour
+  const nbMatchsParTour = calcNbMatchsParTour(
     nbjoueurs,
     TypeEquipes.TRIPLETTE,
     ModeTournoi.AVECNOMS,
     TypeTournoi.MELEDEMELE,
     complement,
   );
-  let nbMatchs = nbTours * nbMatchsParTour;
-  idMatch = 0;
+  const nbMatchs = nbTours * nbMatchsParTour;
+
+  //Initialisation des matchs dans un tableau
+  const matchs: MatchGeneration[] = [];
+  let idMatch = 0;
   for (let tour = 1; tour < nbTours + 1; tour++) {
     for (let j = 0; j < nbMatchsParTour; j++) {
       matchs.push({
@@ -61,12 +62,15 @@ export const generationTriplettes = (
 
   //Création d'un tableau contenant tous les joueurs, un autre les non enfants et un autre les enfants
   //Le tableau contenant les tous les joueurs permettra de connaitre dans quel équipe chaque joueur a été
+  const joueursSpe: JoueurGenerationTeteATete[] = [];
+  const joueursNonSpe: JoueurGenerationTeteATete[] = [];
+  const joueurs: JoueurGeneration[] = [];
+
   for (let i = 0; i < nbjoueurs; i++) {
     if (listeJoueurs[i].type === JoueurType.ENFANT) {
-      joueursSpe.push({ ...listeJoueurs[i] });
-      joueursSpe[joueursSpe.length - 1].equipe = [];
+      joueursSpe.push({ ...listeJoueurs[i], equipe: [] });
     } else {
-      joueursNonSpe.push({ ...listeJoueurs[i] });
+      joueursNonSpe.push({ ...listeJoueurs[i], equipe: [] });
       joueursNonSpe[joueursNonSpe.length - 1].equipe = [];
     }
     joueurs.push({
@@ -79,7 +83,7 @@ export const generationTriplettes = (
     });
   }
 
-  let nbJoueursSpe = joueursSpe.length;
+  const nbJoueursSpe = joueursSpe.length;
 
   //Assignation des joueurs enfants
   if (speciauxIncompatibles === true) {
@@ -88,36 +92,32 @@ export const generationTriplettes = (
       //Joueurs enfants seront toujours J1 E1 ou J1 E2
       for (let i = 0; i < nbTours; i++) {
         let idMatch = i * nbMatchsParTour;
-        let idsJoueursSpe = [];
-        idsJoueursSpe = uniqueValueArrayRandOrder(joueursSpe.length);
+        const idsJoueursSpe = uniqueValueArrayRandOrder(joueursSpe.length);
         for (let j = 0; j < joueursSpe.length; j++) {
-          if (matchs[idMatch].equipe[0][0] === -1) {
-            matchs[idMatch].equipe[0][0] =
-              joueursSpe[idsJoueursSpe[j]].joueurTournoiId;
-          } else if (matchs[idMatch].equipe[1][0] === -1) {
-            matchs[idMatch].equipe[1][0] =
-              joueursSpe[idsJoueursSpe[j]].joueurTournoiId;
+          const match = matchs[idMatch];
+          const joueurSpeId = joueursSpe[idsJoueursSpe[j]].joueurTournoiId;
+          if (match.equipe[0][0] === -1) {
+            match.equipe[0][0] = joueurSpeId;
+          } else if (match.equipe[1][0] === -1) {
+            match.equipe[1][0] = joueurSpeId;
             idMatch++;
           }
         }
       }
-    }
-    //Si trop nombreux alors message et retour à l'inscription
-    else {
+    } else {
+      //Si trop nombreux alors message et retour à l'inscription
       return { erreurSpeciaux: true };
     }
-  }
-  //Si la règle n'est pas activée alors les joueurs enfants et les non enfants sont regroupés
-  else {
+  } else {
+    //Si la règle n'est pas activée alors les joueurs enfants et les non enfants sont regroupés
     joueursNonSpe.splice(0, joueursNonSpe.length);
     for (let i = 0; i < nbjoueurs; i++) {
-      joueursNonSpe.push({ ...listeJoueurs[i] });
+      joueursNonSpe.push({ ...listeJoueurs[i], equipe: [] });
     }
   }
 
   if (complement !== undefined) {
-    const complementIds = [];
-
+    const complementIds: number[] = [];
     const complementCount = getNbComplements(complement);
 
     for (let i = 0; i < complementCount; i++) {
@@ -163,10 +163,10 @@ export const generationTriplettes = (
 
   //Test si possible d'appliquer la règle jamaisMemeCoequipier
   //TO DO : réussir à trouver les bons paramètres pour déclencher le message d'erreur sans empecher trop de tournois
-  if (jamaisMemeCoequipier === true) {
+  if (jamaisMemeCoequipier) {
     let nbCombinaisons = nbjoueurs;
     //Si option de ne pas mettre enfants ensemble alors moins de combinaisons possibles
-    if (speciauxIncompatibles === true) {
+    if (speciauxIncompatibles) {
       if (nbJoueursSpe <= nbjoueurs / 3) {
         nbCombinaisons -= nbJoueursSpe;
       }
@@ -179,7 +179,7 @@ export const generationTriplettes = (
   }
 
   //On ordonne aléatoirement les ids des joueurs non enfants à chaque début de manche
-  let joueursNonSpeId = [];
+  const joueursNonSpeId: number[] = [];
   for (let i = 0; i < joueursNonSpe.length; i++) {
     joueursNonSpeId.push(joueursNonSpe[i].joueurTournoiId);
   }
@@ -207,15 +207,16 @@ export const generationTriplettes = (
   let breaker = 0; //permet de détecter quand boucle infinie
   for (let tour = 0; tour < nbTours; tour++) {
     breaker = 0;
-    let random = shuffle(joueursNonSpeId);
-    for (let j = 0; j < joueursNonSpe.length;) {
+    const random = shuffle(joueursNonSpeId);
+    for (let j = 0; j < joueursNonSpe.length; j) {
       let joueurId = random[j];
-      let match = matchs[idMatch];
+      const match = matchs[idMatch];
+      const equipes = match.equipe;
 
       let assigned = false;
 
       for (const { equipe, place } of equipeIndices) {
-        if (match.equipe[equipe][place] === -1) {
+        if (equipes[equipe][place] === -1) {
           const affectationPossible = testAffectationPossible(
             tour,
             joueurs[joueurId],
@@ -223,12 +224,12 @@ export const generationTriplettes = (
             speciauxIncompatibles,
             eviterMemeAdversaire,
             nbTours,
-            match.equipe[equipe],
-            match.equipe[(equipe + 1) % 2],
+            equipes[equipe],
+            equipes[(equipe + 1) % 2],
             joueurs,
           );
           if (affectationPossible) {
-            match.equipe[equipe][place] = joueurId;
+            equipes[equipe][place] = joueurId;
             breaker = 0;
             j++;
             assigned = true;
