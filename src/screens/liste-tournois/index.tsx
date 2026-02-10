@@ -1,15 +1,15 @@
+import Loading from '@/components/Loading';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import { FlatList } from '@/components/ui/flat-list';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { useTranslation } from 'react-i18next';
-import TopBarBack from '@/components/topBar/TopBarBack';
-import { TournoiModel } from '@/types/interfaces/tournoi';
-import { ListRenderItem } from 'react-native';
-import { useState } from 'react';
 import { useTournois } from '@/repositories/tournois/useTournois';
+import { TournoiModel } from '@/types/interfaces/tournoi';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ListRenderItem } from 'react-native';
 import ListeTournoiItem from './components/ListeTournoiItem';
 import ModalInfosTournoi from './components/ModalInfosTournoi';
-import Loading from '@/components/Loading';
 
 export default function ListeTournois() {
   const { t } = useTranslation();
@@ -21,7 +21,7 @@ export default function ListeTournois() {
   );
   const { listeTournois, actualTournoi, joueursTournoi } = useTournois();
 
-  if (!listeTournois || !joueursTournoi) {
+  if (!listeTournois) {
     return <Loading />;
   }
 
@@ -31,7 +31,7 @@ export default function ListeTournois() {
   };
 
   const modalTournoiInfos = () => {
-    if (!infosTournoi) {
+    if (!infosTournoi || !joueursTournoi) {
       return;
     }
     return (
