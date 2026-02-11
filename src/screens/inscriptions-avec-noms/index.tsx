@@ -1,17 +1,17 @@
-import { VStack } from '@/components/ui/vstack';
-import { Text } from '@/components/ui/text';
-import { Box } from '@/components/ui/box';
-import Inscriptions from '@components/Inscriptions';
-import TopBarBack from '@/components/topBar/TopBarBack';
-import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { useTranslation } from 'react-i18next';
-import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
-import { useCallback } from 'react';
 import Loading from '@/components/Loading';
-import { JoueurType } from '@/types/enums/joueurType';
+import TopBarBack from '@/components/topBar/TopBarBack';
+import { Box } from '@/components/ui/box';
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
 import { useJoueurs } from '@/repositories/joueurs/useJoueurs';
 import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
+import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { JoueurType } from '@/types/enums/joueurType';
+import { TypeEquipes } from '@/types/enums/typeEquipes';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
+import Inscriptions from '@components/Inscriptions';
+import { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import StartButton from './components/StartButton';
 
 const InscriptionsAvecNoms = () => {
@@ -90,11 +90,11 @@ const InscriptionsAvecNoms = () => {
   const handleAddEquipeJoueur = (id: number, equipeId: number) => { };
 
   const handleUpdateName = (joueurModel: JoueurModel, name: string) => {
-    renameJoueur(joueurModel.joueurTournoiId, name);
+    renameJoueur(joueurModel.uniqueBDDId, name);
   };
 
   const handleCheckJoueur = (joueurModel: JoueurModel, isChecked: boolean) => {
-    checkJoueur(joueurModel.joueurTournoiId, isChecked);
+    checkJoueur(joueurModel.uniqueBDDId, isChecked);
   };
 
   const handleDeleteAllJoueurs = useCallback(async () => {

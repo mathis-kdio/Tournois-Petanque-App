@@ -1,14 +1,14 @@
-import { useMemo } from 'react';
-import { TournoisRepository } from './tournoisRepository';
-import { TournoiModel } from '@/types/interfaces/tournoi';
-import { Tournoi } from '@/db/schema/tournoi';
-import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { FullMatch, MatchsRepository } from '../matchs/matchsRepository';
-import { MatchModel } from '@/types/interfaces/matchModel';
-import { EquipesJoueursRepository } from '../equipesJoueurs/equipesJoueursRepository';
-import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { EquipeType } from '@/types/interfaces/equipeType';
 import { Joueur } from '@/db/schema';
+import { Tournoi } from '@/db/schema/tournoi';
+import { EquipeType } from '@/types/interfaces/equipeType';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { MatchModel } from '@/types/interfaces/matchModel';
+import { TournoiModel } from '@/types/interfaces/tournoi';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+import { useMemo } from 'react';
+import { JoueursRepository } from '../joueurs/joueursRepository';
+import { FullMatch, MatchsRepository } from '../matchs/matchsRepository';
+import { TournoisRepository } from './tournoisRepository';
 
 function toTournoiModel(tournoi: Tournoi, matchs: MatchModel[]): TournoiModel {
   return {
@@ -89,19 +89,17 @@ export const useTournois = () => {
     });
   }, [matchs]);
 
-  const { data: equipes } = useLiveQuery(
-    EquipesJoueursRepository.getEquipes(
-      equipesTournoi.map((equipe) => equipe.id),
-    ),
+  const { data: equipesWithJoueursTournoi } = useLiveQuery(
+    JoueursRepository.getEquipes(equipesTournoi.map((equipe) => equipe.id)),
     [equipesTournoi],
   );
 
   const joueursTournoi = useMemo(() => {
-    if (!equipes.length) {
+    if (!equipesWithJoueursTournoi.length) {
       return;
     }
     const joueursIds = new Set();
-    return equipes
+    return equipesWithJoueursTournoi
       .map(({ joueurs }) => joueurs)
       .filter(({ id }) => {
         if (joueursIds.has(id)) {
@@ -112,15 +110,15 @@ export const useTournois = () => {
         }
       })
       .map(toJoueurModel);
-  }, [equipes]);
+  }, [equipesWithJoueursTournoi]);
 
   const tournoiVM = useMemo(() => {
-    if (!data1.length || !matchs.length || !equipes.length) {
+    if (!data1.length || !matchs.length || !equipesWithJoueursTournoi.length) {
       return;
     }
 
     const matchModels = matchs.map((match) => {
-      const equipe1JoueurModels = equipes
+      const equipe1JoueurModels = equipesWithJoueursTournoi
         .filter(
           ({ equipes_joueurs }) =>
             equipes_joueurs.equipeId === match.equipe1.id,
@@ -131,7 +129,7 @@ export const useTournois = () => {
         ...Array(Math.max(0, 4 - equipe1JoueurModels.length)).fill(undefined),
       ] as EquipeType;
 
-      const equipe2JoueurModels = equipes
+      const equipe2JoueurModels = equipesWithJoueursTournoi
         .filter(
           ({ equipes_joueurs }) =>
             equipes_joueurs.equipeId === match.equipe2.id,
@@ -145,7 +143,7 @@ export const useTournois = () => {
       return toMatchmodel(match, equipe1, equipe2);
     });
     return toTournoiModel(data1[0], matchModels);
-  }, [data1, matchs, equipes]);
+  }, [data1, matchs, equipesWithJoueursTournoi]);
 
   const { data: allTournois } = useLiveQuery(
     TournoisRepository.getAllTournois(),

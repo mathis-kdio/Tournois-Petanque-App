@@ -1,11 +1,9 @@
-import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import {
   EquipesJoueurs,
   equipesJoueurs,
   NewEquipesJoueurs,
 } from '@/db/schema/equipesJoueurs';
-import { eq, inArray } from 'drizzle-orm';
-import { joueurs } from '@/db/schema';
+import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { JoueurType } from '@/types/enums/joueurType';
 
 export type FullEquipeJoueur = {
@@ -25,14 +23,6 @@ export type FullEquipeJoueur = {
 };
 
 export const EquipesJoueursRepository = {
-  getEquipes(equipeIds: number[]) {
-    return getDrizzleDb()
-      .select()
-      .from(equipesJoueurs)
-      .where(inArray(equipesJoueurs.equipeId, equipeIds))
-      .innerJoin(joueurs, eq(joueurs.id, equipesJoueurs.joueurId));
-  },
-
   async insert(newEquipesJoueurs: NewEquipesJoueurs): Promise<EquipesJoueurs> {
     return (
       await getDrizzleDb()

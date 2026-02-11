@@ -1,13 +1,13 @@
 import { JoueursRepository } from './joueursRepository';
 
 export const useJoueurs = () => {
-  const checkJoueur = async (id: number, isChecked: boolean) => {
-    const joueur = await JoueursRepository.select(id);
+  const checkJoueur = async (uniqueBDDId: number, isChecked: boolean) => {
+    const joueur = await JoueursRepository.select(uniqueBDDId);
     await JoueursRepository.updateCheck(joueur.id, isChecked);
   };
 
-  const renameJoueur = async (id: number, name: string) => {
-    const joueur = await JoueursRepository.select(id);
+  const renameJoueur = async (uniqueBDDId: number, name: string) => {
+    const joueur = await JoueursRepository.select(uniqueBDDId);
     await JoueursRepository.updateName(joueur.id, name);
   };
 

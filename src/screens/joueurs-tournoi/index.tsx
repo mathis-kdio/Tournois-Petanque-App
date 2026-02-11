@@ -1,23 +1,25 @@
-import { FlatList } from '@/components/ui/flat-list';
+import ListeJoueurItem from '@/components/liste-joueur-item/ListeJoueurItem';
+import Loading from '@/components/Loading';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import { Box } from '@/components/ui/box';
+import { Button, ButtonText } from '@/components/ui/button';
+import { FlatList } from '@/components/ui/flat-list';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { ButtonText, Button } from '@/components/ui/button';
-import ListeJoueurItem from '@/components/liste-joueur-item/ListeJoueurItem';
-import { useTranslation } from 'react-i18next';
-import TopBarBack from '@/components/topBar/TopBarBack';
-import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { ListRenderItem } from 'react-native';
-import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { useRouter } from 'expo-router';
+import { useJoueurs } from '@/repositories/joueurs/useJoueurs';
 import { useTournois } from '@/repositories/tournois/useTournois';
-import Loading from '@/components/Loading';
+import { ModeTournoi } from '@/types/enums/modeTournoi';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import { ListRenderItem } from 'react-native';
 
 const JoueursTournoi = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
   const { actualTournoi, joueursTournoi } = useTournois();
+  const { renameJoueur, checkJoueur } = useJoueurs();
 
   if (!actualTournoi || !joueursTournoi) {
     return <Loading />;
@@ -27,6 +29,27 @@ const JoueursTournoi = () => {
 
   const retourMatchs = () => {
     router.navigate('/tournoi');
+  };
+
+  const onDeleteJoueur = () => {
+    throw new Error('Impossible de supprimer un joueur dans un tournoi lancé');
+  };
+
+  const onAddEquipeJoueur = () => {
+    throw new Error(
+      "Impossible d'ajouter une équipe à un joueur dans un tournoi lancé",
+    );
+  };
+
+  const onUpdateName = async (joueurModel: JoueurModel, name: string) => {
+    await renameJoueur(joueurModel.uniqueBDDId, name);
+  };
+
+  const onCheckJoueur = async (
+    joueurModel: JoueurModel,
+    isChecked: boolean,
+  ) => {
+    await checkJoueur(joueurModel.uniqueBDDId, isChecked);
   };
 
   const renderItem: ListRenderItem<JoueurModel> = ({ item }) => {
@@ -41,10 +64,10 @@ const JoueursTournoi = () => {
         typeTournoi={typeTournoi}
         showCheckbox={true}
         listesJoueurs={joueursTournoi}
-        onDeleteJoueur={() => ''}
-        onAddEquipeJoueur={() => ''}
-        onUpdateName={() => ''}
-        onCheckJoueur={() => ''}
+        onDeleteJoueur={onDeleteJoueur}
+        onAddEquipeJoueur={onAddEquipeJoueur}
+        onUpdateName={onUpdateName}
+        onCheckJoueur={onCheckJoueur}
       />
     );
   };

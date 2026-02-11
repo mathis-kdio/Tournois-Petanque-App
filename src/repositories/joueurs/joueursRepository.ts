@@ -1,5 +1,5 @@
+import { equipesJoueurs, joueurs, NewJoueur } from '@/db/schema';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { joueurs, NewJoueur } from '@/db/schema';
 import { eq, inArray } from 'drizzle-orm';
 
 export const JoueursRepository = {
@@ -31,16 +31,24 @@ export const JoueursRepository = {
       .where(eq(joueurs.id, id));
   },
 
-  async select(joueurId: number) {
+  async select(uniqueBDDId: number) {
     const result = (
       await getDrizzleDb()
         .select()
         .from(joueurs)
-        .where(eq(joueurs.joueurId, joueurId))
+        .where(eq(joueurs.id, uniqueBDDId))
     ).at(0);
     if (!result) {
       throw new Error('Joueur not found');
     }
     return result;
+  },
+
+  getEquipes(equipeIds: number[]) {
+    return getDrizzleDb()
+      .select()
+      .from(joueurs)
+      .where(inArray(equipesJoueurs.equipeId, equipeIds))
+      .innerJoin(equipesJoueurs, eq(equipesJoueurs.joueurId, joueurs.id));
   },
 };
