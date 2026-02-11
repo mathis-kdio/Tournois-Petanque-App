@@ -1,10 +1,10 @@
-import { getDrizzleDb } from '@/db/useDatabaseMigrations';
+import { Joueur, joueurs } from '@/db/schema';
 import {
   joueursPreparationTournois,
   JoueursPreparationTournois,
   NewJoueursPreparationTournois,
 } from '@/db/schema/joueursPreparationTournois';
-import { Joueur, joueurs } from '@/db/schema';
+import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { eq, inArray } from 'drizzle-orm';
 
 export type JoueursPreparationTournoisWithJoueur = {
@@ -21,7 +21,7 @@ export const JoueursPreparationTournoisRepository = {
       .where(eq(joueursPreparationTournois.preparationTournoiId, 0));
   },
 
-  insert(newJoueursPreparationTournois: NewJoueursPreparationTournois) {
+  insert(newJoueursPreparationTournois: NewJoueursPreparationTournois[]) {
     return getDrizzleDb()
       .insert(joueursPreparationTournois)
       .values(newJoueursPreparationTournois);

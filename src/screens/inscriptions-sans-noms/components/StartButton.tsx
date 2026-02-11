@@ -1,9 +1,9 @@
 import { Button, ButtonText } from '@/components/ui/button';
-import { JoueurType } from '@/types/enums/joueurType';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import { useInscriptionSansNom } from '../hooks/use-inscription-sans-noms';
 
 export interface Props {
   preparationTournoiModel: PreparationTournoiModel;
@@ -19,26 +19,8 @@ const StartButton: React.FC<Props> = ({
   const { t } = useTranslation();
   const router = useRouter();
 
-  const ajoutJoueur = (type?: JoueurType) => {
-    throw Error('TODO ajoutJoueur');
-    /*
-    const action = {
-      type: 'AJOUT_JOUEUR',
-      value: [ModeTournoi.SANSNOMS, '', type, undefined],
-    };
-    dispatch(action);*/
-  };
-
-  const supprimerJoueurs = () => {
-    throw Error('TODO ajoutJoueur');
-    /*
-    const suppressionAllJoueurs = {
-      type: 'SUPPR_ALL_JOUEURS',
-      value: [ModeTournoi.SANSNOMS],
-    };
-    dispatch(suppressionAllJoueurs);
-    */
-  };
+  const { addJoueurs, clearJoueursAutresInscriptions } =
+    useInscriptionSansNom();
 
   const getNextScreen = (choixComplement: boolean, avecTerrains: boolean) => {
     if (choixComplement) {
@@ -50,16 +32,10 @@ const StartButton: React.FC<Props> = ({
     }
   };
 
-  const commencer = (choixComplement: boolean, avecTerrains: boolean) => {
-    supprimerJoueurs();
+  const commencer = async (choixComplement: boolean, avecTerrains: boolean) => {
+    await clearJoueursAutresInscriptions();
 
-    for (let i = 0; i < nbJoueurNormaux; i++) {
-      ajoutJoueur();
-    }
-
-    for (let i = 0; i < nbJoueurEnfants; i++) {
-      ajoutJoueur(JoueurType.ENFANT);
-    }
+    await addJoueurs(nbJoueurNormaux, nbJoueurEnfants);
 
     router.navigate({
       pathname: `/inscriptions/${getNextScreen(choixComplement, avecTerrains)}`,
@@ -70,7 +46,7 @@ const StartButton: React.FC<Props> = ({
   };
 
   const { typeEquipes, avecTerrains } = preparationTournoiModel;
-  if (!typeEquipes || !avecTerrains) {
+  if (!typeEquipes || avecTerrains === undefined) {
     throw Error('typeEquipes ou avecTerrains non défini');
   }
 

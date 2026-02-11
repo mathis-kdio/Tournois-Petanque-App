@@ -1,6 +1,6 @@
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useLocalSearchParams } from 'expo-router';
 import Loading from '@/components/Loading';
+import { useLocalSearchParams } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import GenerationMatchs from '../../screens/generation-matchs';
 
 type SearchParams = {

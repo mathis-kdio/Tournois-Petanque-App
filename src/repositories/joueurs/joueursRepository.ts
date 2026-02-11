@@ -13,8 +13,12 @@ export const JoueursRepository = {
     return result;
   },
 
-  delete(joueurIds: number[]) {
-    return getDrizzleDb().delete(joueurs).where(inArray(joueurs.id, joueurIds));
+  insertMultiples(newJoueurs: NewJoueur[]) {
+    return getDrizzleDb().insert(joueurs).values(newJoueurs).returning();
+  },
+
+  delete(id: number[]) {
+    return getDrizzleDb().delete(joueurs).where(inArray(joueurs.id, id));
   },
 
   updateName(id: number, name: string) {

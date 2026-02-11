@@ -1,12 +1,12 @@
-import { ScrollView } from '@/components/ui/scroll-view';
+import Loading from '@/components/Loading';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import { Input, InputField } from '@/components/ui/input';
+import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
+import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import TopBarBack from '@/components/topBar/TopBarBack';
-import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
-import Loading from '@/components/Loading';
 import StartButton from './components/StartButton';
 
 const InscriptionsSansNoms = () => {
@@ -23,11 +23,15 @@ const InscriptionsSansNoms = () => {
     return <Loading />;
   }
 
-  const textInputJoueursNormaux = (text: string) =>
-    setNbJoueurNormaux(parseInt(text));
+  const textInputJoueursNormaux = (text: string) => {
+    const nombreJoueurs = parseInt(text);
+    setNbJoueurNormaux(isNaN(nombreJoueurs) ? 0 : nombreJoueurs);
+  };
 
-  const textInputJoueursEnfants = (text: string) =>
-    setNbJoueurEnfants(parseInt(text));
+  const textInputJoueursEnfants = (text: string) => {
+    const nombreJoueurs = parseInt(text);
+    setNbJoueurEnfants(isNaN(nombreJoueurs) ? 0 : nombreJoueurs);
+  };
 
   return (
     <ScrollView className="h-1 bg-custom-background">
@@ -38,7 +42,7 @@ const InscriptionsSansNoms = () => {
         </Text>
         <VStack>
           <Text className="text-typography-white text-md">
-            {t('nombre_joueurs_adultes')}{' '}
+            {t('nombre_joueurs_adultes')}
           </Text>
           <Input className="border-custom-bg-inverse">
             <InputField
@@ -47,22 +51,21 @@ const InscriptionsSansNoms = () => {
               keyboardType="number-pad"
               returnKeyType="next"
               autoFocus={true}
-              blurOnSubmit={false}
-              onChangeText={(text) => textInputJoueursNormaux(text)}
+              onChangeText={textInputJoueursNormaux}
               onSubmitEditing={() => secondInput.current.focus()}
             />
           </Input>
         </VStack>
         <VStack>
           <Text className="text-typography-white text-md">
-            {t('nombre_joueurs_enfants')}{' '}
+            {t('nombre_joueurs_enfants')}
           </Text>
           <Input className="border-custom-bg-inverse">
             <InputField
               className="text-typography-white placeholder:text-typography-white"
               placeholder={t('nombre_placeholder')}
               keyboardType="number-pad"
-              onChangeText={(text) => textInputJoueursEnfants(text)}
+              onChangeText={textInputJoueursEnfants}
               ref={secondInput}
             />
           </Input>
