@@ -6,7 +6,6 @@ import {
   showInterstitialAd,
 } from '@/components/adMob/AdMobGenerationTournoiInterstitiel';
 import Loading from '@/components/Loading';
-import TopBar from '@/components/topBar/TopBar';
 import { VStack } from '@/components/ui/vstack';
 import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
@@ -337,7 +336,6 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
 
   return (
     <VStack className="flex-1 bg-custom-background">
-      <TopBar title={t('generation_matchs_navigation_title')} />
       <VStack className="flex-1 px-10 justify-center items-center">
         <GenerationLoading
           screenStackName={screenStackName}

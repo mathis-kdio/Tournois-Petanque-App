@@ -1,11 +1,11 @@
+import Loading from '@/components/Loading';
 import { Button, ButtonText } from '@/components/ui/button';
+import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { useTranslation } from 'react-i18next';
-import { useRouter } from 'expo-router';
-import Loading from '@/components/Loading';
 import { screenStackNameType } from '@/types/types/searchParams';
-import { Box } from '@/components/ui/box';
+import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
 export interface Props {
   screenStackName: screenStackNameType;
@@ -55,8 +55,10 @@ const GenerationLoading: React.FC<Props> = ({
 
   if (isLoading) {
     return (
-      <VStack className="border border-red-500">
-        <Loading />
+      <VStack>
+        <HStack>
+          <Loading />
+        </HStack>
         <Text className="text-typography-white">
           {t('attente_generation_matchs')}
         </Text>
@@ -66,12 +68,9 @@ const GenerationLoading: React.FC<Props> = ({
 
   const { textInfo, textError } = getTexts();
   return (
-    <VStack className="border border-red-500 items-center place-items-center">
-      <Box>
-        <Loading />
-      </Box>
-      <Text className="text-typography-white">{textInfo}</Text>
-      <Text className="text-typography-white">{textError}</Text>
+    <VStack>
+      <Text className="text-typography-white text-center">{textInfo}</Text>
+      <Text className="text-typography-white text-center">{textError}</Text>
       <Button action="primary" onPress={() => retourInscription()}>
         <ButtonText>{t('retour_inscription')}</ButtonText>
       </Button>
