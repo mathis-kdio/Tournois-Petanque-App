@@ -1,11 +1,11 @@
+import Loading from '@/components/Loading';
 import { FlatList } from '@/components/ui/flat-list';
 import { VStack } from '@/components/ui/vstack';
+import useExitAlertOnBack from '@/components/with-exit-alert/with-exit-alert';
+import { useTournois } from '@/repositories/tournois/useTournois';
 import MatchItem from '@/screens/matchs/components/MatchItem';
 import { MatchModel } from '@/types/interfaces/matchModel';
 import { ListRenderItem } from 'react-native';
-import useExitAlertOnBack from '@/components/with-exit-alert/with-exit-alert';
-import { useTournois } from '@/repositories/tournois/useTournois';
-import Loading from '@/components/Loading';
 
 interface Props {
   mancheNumber: number;
@@ -33,7 +33,7 @@ const MatchsManche: React.FC<Props> = ({ mancheNumber }) => {
       <FlatList
         data={matchsManche}
         initialNumToRender={options.nbMatchs}
-        keyExtractor={(item: MatchModel) => item.id.toString()}
+        keyExtractor={(item: MatchModel) => item.matchId.toString()}
         renderItem={renderItem}
       />
     </VStack>

@@ -2,7 +2,7 @@ import { EquipesType } from './equipeType';
 import { TerrainModel } from './terrainModel';
 
 export interface MatchModel {
-  id: number;
+  matchId: number;
   score1: number | undefined;
   score2: number | undefined;
   manche: number;

@@ -9,8 +9,8 @@ export const nextMatch = (
   typeTournoi: TypeTournoi,
   nbTours: number,
 ) => {
-  const { id, manche } = match;
-  if (typeTournoi === TypeTournoi.COUPE && id + 1 < nbMatchs) {
+  const { matchId, manche } = match;
+  if (typeTournoi === TypeTournoi.COUPE && matchId + 1 < nbMatchs) {
     //Tournoi de type Coupe sauf dernier match
     return nextMatchCoupe(match, nbMatchs);
   } else if (typeTournoi === TypeTournoi.MULTICHANCES && manche < nbTours) {

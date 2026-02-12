@@ -40,7 +40,7 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
   if (!actualTournoi) {
     return <Loading />;
   }
-  const match = actualTournoi.matchs.find((match) => match.id === idMatch);
+  const match = actualTournoi.matchs.find((match) => match.matchId === idMatch);
   if (!match) {
     throw Error('match devrait être trouvé');
   }
@@ -49,8 +49,8 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
     equipe === 1 ? setScore1(score) : setScore2(score);
 
   const displayTitle = (match: MatchModel) => {
-    const { id, terrain } = match;
-    const title = terrain ? terrain.name : `${t('match_numero')}${id + 1}`;
+    const { matchId, terrain } = match;
+    const title = terrain ? terrain.name : `${t('match_numero')}${matchId + 1}`;
     return (
       <Text className="text-typography-white text-xl text-center">{title}</Text>
     );
@@ -97,7 +97,7 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
     if (!score1 || !score2) {
       return;
     }
-    updateScore(match.id, parseInt(score1), parseInt(score2));
+    updateScore(match.matchId, parseInt(score1), parseInt(score2));
 
     //Si tournoi type coupe et pas le dernier match, alors on ajoute les gagnants au match suivant
     const actionNextMatch = nextMatch(match, nbMatchs, typeTournoi, nbTours);
@@ -112,7 +112,7 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
   };
 
   const supprimerResultat = (match: MatchModel) => {
-    resetScore(match.id);
+    resetScore(match.matchId);
     router.back();
   };
 

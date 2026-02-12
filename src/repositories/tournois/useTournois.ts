@@ -39,7 +39,7 @@ function toMatchmodel(
   equipe2: EquipeType,
 ): MatchModel {
   return {
-    id: fullMatch.match.id,
+    matchId: fullMatch.match.matchId,
     score1: fullMatch.match.score1 ?? undefined,
     score2: fullMatch.match.score2 ?? undefined,
     manche: fullMatch.match.tourId,

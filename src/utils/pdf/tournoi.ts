@@ -1,8 +1,8 @@
 import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { ranking } from '@utils/ranking';
-import { dateFormatDateCompact } from '../date';
 import { TournoiModel } from '@/types/interfaces/tournoi';
+import { ranking } from '@utils/ranking';
 import { TFunction } from 'i18next';
+import { dateFormatDateCompact } from '../date';
 
 export const generationPDFTournoi = (
   affichageScore: boolean,
@@ -41,7 +41,7 @@ export const generationPDFTournoi = (
           tableIdx * (toursParLigne * nbMatchsParTour) +
           nb * nbMatchsParTour +
           i;
-        let nomMatch = `${t('match_numero')}${matchs[matchId].id + 1}`;
+        let nomMatch = `${t('match_numero')}${matchs[matchId].matchId + 1}`;
         let terrainMatch = matchs[matchId].terrain;
         if (terrainMatch && terrainMatch.name) {
           nomMatch = terrainMatch.name;

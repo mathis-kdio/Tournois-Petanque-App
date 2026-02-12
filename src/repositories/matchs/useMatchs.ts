@@ -1,9 +1,9 @@
-import { useMemo } from 'react';
-import { MatchsRepository } from './matchsRepository';
+import { Equipe, Terrain } from '@/db/schema';
 import { Match, NewMatch } from '@/db/schema/match';
 import { MatchModel } from '@/types/interfaces/matchModel';
-import { Equipe, Terrain } from '@/db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+import { useMemo } from 'react';
+import { MatchsRepository } from './matchsRepository';
 
 function toNewMatch(
   matchModel: MatchModel,
@@ -30,7 +30,7 @@ function toMatchmodel(
   terrain: Terrain,
 ): MatchModel {
   return {
-    id: match.id,
+    matchId: match.matchId,
     score1: match.score1 ?? undefined,
     score2: match.score2 ?? undefined,
     manche: match.tourId,

@@ -5,7 +5,7 @@ export const nextMatchMultiChances = (
   nbMatchs: number,
   nbTours: number,
 ) => {
-  const { id, manche, score1, score2, equipe } = match;
+  const { matchId, manche, score1, score2, equipe } = match;
   if (score1 === undefined || score2 === undefined) {
     throw Error(
       'score1 ou score2 doivent être définis pour calculer le prochain match multichance',
@@ -20,12 +20,12 @@ export const nextMatchMultiChances = (
   }
   const nbMatchsTour = nbMatchs / nbTours;
 
-  const offset = Math.ceil((id % (nbMatchsTour / 2 ** (manche - 1))) / 2);
-  const gagnantMatchId = id + nbMatchsTour - offset;
+  const offset = Math.ceil((matchId % (nbMatchsTour / 2 ** (manche - 1))) / 2);
+  const gagnantMatchId = matchId + nbMatchsTour - offset;
   const perdantMatchId =
-    id + nbMatchsTour + nbMatchsTour / 2 ** manche - offset;
+    matchId + nbMatchsTour + nbMatchsTour / 2 ** manche - offset;
 
-  const equipeId = id % 2;
+  const equipeId = matchId % 2;
   const actionMultichancesAddNextMatch = {
     type: 'MULTICHANCES_ADD_NEXT_MATCH',
     value: {
