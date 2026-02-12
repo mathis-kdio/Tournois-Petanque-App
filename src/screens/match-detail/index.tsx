@@ -34,7 +34,7 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
 
   const secondInput = React.createRef<any>();
 
-  const { updateScore, resetScore } = useMatchs(idMatch);
+  const { updateScore, resetScore } = useMatchs();
   const { actualTournoi } = useTournois();
 
   if (!actualTournoi) {
