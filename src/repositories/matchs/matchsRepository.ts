@@ -1,7 +1,7 @@
-import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { eq } from 'drizzle-orm';
+import { equipe, terrains } from '@/db/schema';
 import { match, NewMatch } from '@/db/schema/match';
-import { equipe, terrains, tournoi } from '@/db/schema';
+import { getDrizzleDb } from '@/db/useDatabaseMigrations';
+import { and, eq } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/sqlite-core';
 
 export type FullMatch = {
@@ -40,17 +40,11 @@ export type FullMatch = {
 };
 
 export const MatchsRepository = {
-  getFullMatch(id: number) {
-    const equipe1 = alias(equipe, 'equipe1');
-    const equipe2 = alias(equipe, 'equipe2');
+  get(tournoiId: number, matchId: number) {
     return getDrizzleDb()
       .select()
       .from(match)
-      .where(eq(match.id, id))
-      .innerJoin(tournoi, eq(match.tournoiId, tournoi.id))
-      .innerJoin(equipe1, eq(match.equipe1, equipe1.id))
-      .innerJoin(equipe2, eq(match.equipe2, equipe2.id))
-      .leftJoin(terrains, eq(match.terrainId, terrains.id));
+      .where(and(eq(match.tournoiId, tournoiId), eq(match.matchId, matchId)));
   },
 
   getFullMatchsTournoi(tournoiId: number) {
