@@ -1,4 +1,5 @@
 import { Joueur, NewJoueur, NewJoueursPreparationTournois } from '@/db/schema';
+import { JoueurType } from '@/types/enums/joueurType';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { useMemo } from 'react';
@@ -22,13 +23,18 @@ function toJoueurModel(
   };
 }
 
-function toNewJoueur(joueurModel: JoueurModel): NewJoueur {
+function toNewJoueur(
+  joueurTournoiId: number,
+  joueurName: string,
+  joueurType: JoueurType | undefined,
+  equipe: number,
+): NewJoueur {
   return {
-    joueurId: joueurModel.joueurTournoiId,
-    name: joueurModel.name,
-    type: joueurModel.type,
-    equipe: joueurModel.equipe,
-    isChecked: joueurModel.isChecked,
+    joueurId: joueurTournoiId,
+    name: joueurName,
+    type: joueurType,
+    equipe: equipe,
+    isChecked: false,
   };
 }
 
@@ -50,8 +56,15 @@ export const useJoueursPreparationTournois = () => {
     [data],
   );
 
-  const addJoueursPreparationTournoi = async (joueurModel: JoueurModel) => {
-    const res = await JoueursRepository.insert(toNewJoueur(joueurModel));
+  const addJoueursPreparationTournoi = async (
+    joueurTournoiId: number,
+    joueurName: string,
+    joueurType: JoueurType | undefined,
+    equipe: number,
+  ) => {
+    const res = await JoueursRepository.insert(
+      toNewJoueur(joueurTournoiId, joueurName, joueurType, equipe),
+    );
     await JoueursPreparationTournoisRepository.insert([
       toNewJoueursPreparationTournois(res, 0),
     ]);

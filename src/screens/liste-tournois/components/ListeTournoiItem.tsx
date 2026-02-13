@@ -31,7 +31,7 @@ const ListeTournoiItem: React.FC<Props> = ({
 
   const { renameTournoi } = useTournois();
 
-  const chargerTournoi = (tournoi: TournoiModel) => {
+  const chargerTournoi = () => {
     throw Error('TODO chargerTournoi');
     /*
     const actionUpdateListeMatchs = {
@@ -39,25 +39,25 @@ const ListeTournoiItem: React.FC<Props> = ({
       value: tournoi.tournoi,
     };
     dispatch(actionUpdateListeMatchs);
+    */
     navigation.dispatch(
       CommonActions.reset({
         routes: [{ name: 'tournoi' }],
       }),
     );
-    */
   };
 
-  const modalSupprimerTournoi = (tournoiId: number) => {
+  const modalSupprimerTournoi = () => {
     return (
       <ModalDeleteTournoi
-        tournoiId={tournoiId}
+        tournoiId={tournoi.tournoiId}
         modalDeleteIsOpen={modalDeleteIsOpen}
         setModalDeleteIsOpen={setModalDeleteIsOpen}
       />
     );
   };
 
-  const showRenameTournoi = (tournoi: TournoiModel) => {
+  const showRenameTournoi = () => {
     let name: string;
     let bgColor: string;
     let action;
@@ -72,7 +72,7 @@ const ListeTournoiItem: React.FC<Props> = ({
     } else {
       name = 'check';
       bgColor = '#348352';
-      action = () => updateNameTournoi(tournoi.tournoiId);
+      action = () => updateNameTournoi();
     }
 
     return (
@@ -87,11 +87,11 @@ const ListeTournoiItem: React.FC<Props> = ({
     );
   };
 
-  const updateNameTournoi = async (tournoiId: number) => {
+  const updateNameTournoi = async () => {
     if (tournoiNameText === '') {
       return;
     }
-    await renameTournoi(tournoiId, tournoiNameText);
+    await renameTournoi(tournoi.tournoiId, tournoiNameText);
     setTournoiNameText('');
     setRenommerOn(false);
   };
@@ -101,9 +101,9 @@ const ListeTournoiItem: React.FC<Props> = ({
     setRenommerOn(true);
   };
 
-  const tournoiName = (tournoi: TournoiModel) => {
+  const tournoiName = () => {
     const { name, tournoiId } = tournoi;
-    const tournoiName = name ? name : 'n°' + tournoiId;
+    const tournoiName = name ? name : `n°${tournoiId}`;
     if (renommerOn) {
       return (
         <Input className="border-custom-bg-inverse">
@@ -111,15 +111,15 @@ const ListeTournoiItem: React.FC<Props> = ({
             className="text-typography-white placeholder:text-typography-white"
             placeholder={tournoiName}
             autoFocus={true}
-            onChangeText={(text: string) => tournoiTextInputChanged(text)}
-            onSubmitEditing={() => updateNameTournoi(tournoiId)}
+            onChangeText={tournoiTextInputChanged}
+            onSubmitEditing={updateNameTournoi}
           />
         </Input>
       );
     } else {
       return (
         <Text className="text-typography-white">
-          {t('tournoi')} {tournoiName}
+          {`${t('tournoi')} ${tournoiName}`}
         </Text>
       );
     }
@@ -127,9 +127,9 @@ const ListeTournoiItem: React.FC<Props> = ({
 
   return (
     <HStack space="md" className="px-2 my-2 items-center">
-      <Box className="flex-1">{tournoiName(tournoi)}</Box>
+      <Box className="flex-1">{tournoiName()}</Box>
       <HStack space="sm">
-        {showRenameTournoi(tournoi)}
+        {showRenameTournoi()}
         <FontAwesome5.Button
           name="info-circle"
           backgroundColor="#004282"
@@ -139,7 +139,7 @@ const ListeTournoiItem: React.FC<Props> = ({
         <Button
           isDisabled={estTournoiActuel}
           action="primary"
-          onPress={() => chargerTournoi(tournoi)}
+          onPress={() => chargerTournoi()}
         >
           <ButtonText>{t('charger')}</ButtonText>
         </Button>
@@ -151,7 +151,7 @@ const ListeTournoiItem: React.FC<Props> = ({
           onPress={() => setModalDeleteIsOpen(true)}
         />
       </HStack>
-      {modalSupprimerTournoi(tournoi.tournoiId)}
+      {modalSupprimerTournoi()}
     </HStack>
   );
 };

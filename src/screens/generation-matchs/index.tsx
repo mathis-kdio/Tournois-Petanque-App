@@ -32,7 +32,6 @@ import { generationTeteATete } from '@utils/generations/tournoiTeteATete';
 import { generationTriplettes } from '@utils/generations/tournoiTriplettes';
 import { useNavigation } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Platform } from 'react-native';
 import GenerationLoading from './components/GenerationLoading';
 import { useCreateTournoi } from './hooks/use-create-tournoi';
@@ -42,7 +41,6 @@ export interface Props {
 }
 
 const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
-  const { t } = useTranslation();
   const navigation = useNavigation();
 
   const { preparationTournoiVM } = usePreparationTournoi();

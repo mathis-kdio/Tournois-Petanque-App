@@ -1,13 +1,3 @@
-import { HStack } from '@/components/ui/hstack';
-import { CheckIcon } from '@/components/ui/icon';
-import { ScrollView } from '@/components/ui/scroll-view';
-import {
-  Slider,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderTrack,
-} from '@/components/ui/slider';
-
 import Loading from '@/components/Loading';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { Button, ButtonText } from '@/components/ui/button';
@@ -17,7 +7,16 @@ import {
   CheckboxIndicator,
   CheckboxLabel,
 } from '@/components/ui/checkbox';
+import { HStack } from '@/components/ui/hstack';
+import { CheckIcon } from '@/components/ui/icon';
 import { Input, InputField } from '@/components/ui/input';
+import { ScrollView } from '@/components/ui/scroll-view';
+import {
+  Slider,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderTrack,
+} from '@/components/ui/slider';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
@@ -56,12 +55,19 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
     return <Loading />;
   }
 
-  const _nbToursTxtInputChanged = (text: string) => {
+  const nbToursTxtInputChanged = (text: string) => {
     setNbTours(text ? parseInt(text) : undefined);
   };
 
-  const _nbPtVictoireTxtInputChanged = (text: string) => {
+  const nbPtVictoireTxtInputChanged = (text: string) => {
     setNbPtVictoire(text ? parseInt(text) : undefined);
+  };
+
+  const memesAdversairesSliderChanged = (value: number) => {
+    if (value !== 0 && value !== 50 && value !== 100) {
+      throw Error('value slider memesAdversaires non prise en charge');
+    }
+    setMemesAdversaires(value);
   };
 
   const nextStep = () => {
@@ -98,7 +104,7 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
       <Button
         action="primary"
         isDisabled={btnDisabled}
-        onPress={() => nextStep()}
+        onPress={nextStep}
         size="md"
       >
         <ButtonText>{btnTitle}</ButtonText>
@@ -122,7 +128,7 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
                   placeholder={t('nombre_placeholder')}
                   keyboardType="numeric"
                   defaultValue={defaultNbTours.toString()}
-                  onChangeText={(text) => _nbToursTxtInputChanged(text)}
+                  onChangeText={nbToursTxtInputChanged}
                 />
               </Input>
             </VStack>
@@ -136,7 +142,7 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
                   placeholder={t('nombre_placeholder')}
                   keyboardType="numeric"
                   defaultValue={defaultNbPtVictoire.toString()}
-                  onChangeText={(text) => _nbPtVictoireTxtInputChanged(text)}
+                  onChangeText={nbPtVictoireTxtInputChanged}
                 />
               </Input>
             </VStack>
@@ -144,7 +150,7 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
           <VStack space="md">
             <Checkbox
               value="speciauxIncompatibles"
-              onChange={() => setSpeciauxIncompatibles(!speciauxIncompatibles)}
+              onChange={() => setSpeciauxIncompatibles((prev) => !prev)}
               aria-label={t('choix_regle_speciaux')}
               defaultIsChecked
               size="md"
@@ -161,7 +167,7 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
             </Checkbox>
             <Checkbox
               value="memesEquipes"
-              onChange={() => setMemesEquipes(!memesEquipes)}
+              onChange={() => setMemesEquipes((prev) => !prev)}
               aria-label={t('choix_regle_equipes')}
               defaultIsChecked
               size="md"
@@ -193,7 +199,7 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
               defaultValue={50}
               step={50}
               aria-label={t('choix_regle_adversaires')}
-              onChangeEnd={(v) => setMemesAdversaires(v)}
+              onChangeEnd={memesAdversairesSliderChanged}
             >
               <SliderTrack>
                 <SliderFilledTrack />
@@ -209,7 +215,7 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
           <VStack>
             <Checkbox
               value="avecTerrains"
-              onChange={() => setAvecTerrains(!avecTerrains)}
+              onChange={() => setAvecTerrains((prev) => !prev)}
               aria-label={t('choix_option_terrains')}
               size="md"
             >

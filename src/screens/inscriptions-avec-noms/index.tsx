@@ -10,7 +10,6 @@ import { JoueurType } from '@/types/enums/joueurType';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import Inscriptions from '@components/Inscriptions';
-import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import StartButton from './components/StartButton';
 
@@ -27,18 +26,23 @@ const InscriptionsAvecNoms = () => {
     removeAllJoueursPreparationTournoi,
   } = useJoueursPreparationTournois();
 
-  const equipeAuto = (
-    listeJoueurs: JoueurModel[],
-    typeEquipes: TypeEquipes,
-  ) => {
+  const equipeAuto = () => {
+    if (!preparationTournoiVM) {
+      throw Error('preparationTournoiVM devrait être défini');
+    }
+    const { typeEquipes } = preparationTournoiVM;
+    if (!typeEquipes) {
+      throw Error('typeEquipes devrait être défini');
+    }
+
     if (typeEquipes === TypeEquipes.TETEATETE) {
-      return listeJoueurs.length + 1;
+      return joueurs.length + 1;
     } else {
       const nbJoueursParEquipe = typeEquipes === TypeEquipes.DOUBLETTE ? 2 : 3;
 
       // Compter le nombre de joueurs par équipe
       const joueursParEquipe: { [key: number]: number } = {};
-      listeJoueurs.forEach((joueur) => {
+      joueurs.forEach((joueur) => {
         if (joueur.equipe) {
           joueursParEquipe[joueur.equipe] =
             (joueursParEquipe[joueur.equipe] || 0) + 1;
@@ -64,23 +68,14 @@ const InscriptionsAvecNoms = () => {
     joueurName: string,
     joueurType: JoueurType | undefined,
   ) => {
-    if (!preparationTournoiVM) {
-      throw Error('preparationTournoiVM devrait être défini');
-    }
-    const { typeEquipes } = preparationTournoiVM;
-    if (!typeEquipes) {
-      throw Error('typeEquipes devrait être défini');
-    }
-    const equipe = equipeAuto(joueurs, typeEquipes);
-    const joueur: JoueurModel = {
-      joueurTournoiId: joueurs.length,
-      name: joueurName,
-      type: joueurType,
-      equipe: equipe,
-      isChecked: false,
-    };
+    const equipe = equipeAuto();
 
-    await addJoueursPreparationTournoi(joueur);
+    await addJoueursPreparationTournoi(
+      joueurs.length,
+      joueurName,
+      joueurType,
+      equipe,
+    );
   };
 
   const handleDeleteJoueur = (id: number) => {
@@ -97,9 +92,9 @@ const InscriptionsAvecNoms = () => {
     checkJoueur(joueurModel.uniqueBDDId, isChecked);
   };
 
-  const handleDeleteAllJoueurs = useCallback(async () => {
+  const handleDeleteAllJoueurs = async () => {
     await removeAllJoueursPreparationTournoi();
-  }, [removeAllJoueursPreparationTournoi]);
+  };
 
   if (!preparationTournoiVM || !joueurs) {
     return <Loading />;
