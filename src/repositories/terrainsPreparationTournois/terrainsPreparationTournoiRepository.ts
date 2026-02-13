@@ -1,11 +1,11 @@
-import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { Joueur } from '@/db/schema';
-import { eq } from 'drizzle-orm';
 import {
   NewTerrainsPreparationTournois,
   terrainsPreparationTournois,
   TerrainsPreparationTournois,
 } from '@/db/schema/terrainsPreparationTournoi';
+import { getDrizzleDb } from '@/db/useDatabaseMigrations';
+import { eq } from 'drizzle-orm';
 
 export type TerrainsPreparationTournoisWithJoueur = {
   terrains_preparation_tournois: TerrainsPreparationTournois;

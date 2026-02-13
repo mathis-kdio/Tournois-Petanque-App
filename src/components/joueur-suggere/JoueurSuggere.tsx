@@ -1,12 +1,12 @@
-import { Text } from '@/components/ui/text';
-import { HStack } from '@/components/ui/hstack';
-import { Box } from '@/components/ui/box';
-import React, { useState } from 'react';
-import { FontAwesome5 } from '@expo/vector-icons';
 import JoueurTypeSelect from '@/components/JoueurTypeSelect';
+import { Box } from '@/components/ui/box';
+import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
 import { JoueurType as JoueurTypeEnum } from '@/types/enums/joueurType';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import { FontAwesome5 } from '@expo/vector-icons';
+import React, { useState } from 'react';
 import RemoveSuggereAlertDialog from './RemoveSuggereAlertDialog';
 
 export interface Props {

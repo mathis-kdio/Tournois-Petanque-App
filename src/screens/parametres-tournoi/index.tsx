@@ -1,14 +1,14 @@
+import Loading from '@/components/Loading';
+import TopBarBack from '@/components/topBar/TopBarBack';
+import { Button, ButtonText } from '@/components/ui/button';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
-import { Button, ButtonText } from '@/components/ui/button';
 import { VStack } from '@/components/ui/vstack';
+import { useTournois } from '@/repositories/tournois/useTournois';
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import TopBarBack from '@/components/topBar/TopBarBack';
-import { useRouter } from 'expo-router';
-import { useTournois } from '@/repositories/tournois/useTournois';
 import DeleteTournoiModal from './components/DeleteTournoiModal';
-import Loading from '@/components/Loading';
 
 const ParametresTournoi = () => {
   const { t } = useTranslation();

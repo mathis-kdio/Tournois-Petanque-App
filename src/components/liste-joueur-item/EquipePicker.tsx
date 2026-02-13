@@ -1,3 +1,4 @@
+import { ChevronDownIcon } from '@/components/ui/icon';
 import {
   Select,
   SelectBackdrop,
@@ -10,11 +11,10 @@ import {
   SelectPortal,
   SelectTrigger,
 } from '@/components/ui/select';
-import { ChevronDownIcon } from '@/components/ui/icon';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 export interface Props {
   joueur: JoueurModel;

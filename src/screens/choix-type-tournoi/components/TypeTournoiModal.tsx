@@ -2,15 +2,15 @@ import { Heading } from '@/components/ui/heading';
 import { CloseIcon, Icon } from '@/components/ui/icon';
 import {
   Modal,
+  ModalBackdrop,
+  ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalHeader,
-  ModalBody,
-  ModalBackdrop,
-  ModalCloseButton,
 } from '@/components/ui/modal';
 import { Text } from '@/components/ui/text';
-import { useTranslation } from 'react-i18next';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
+import { useTranslation } from 'react-i18next';
 
 export interface Props {
   modalType: TypeTournoi;

@@ -1,19 +1,19 @@
-import { ScrollView } from '@/components/ui/scroll-view';
-import { Center } from '@/components/ui/center';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import { Box } from '@/components/ui/box';
+import { Center } from '@/components/ui/center';
 import { Divider } from '@/components/ui/divider';
+import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { useState } from 'react';
-import { _openURL } from '@utils/link';
-import { _adsConsentShowForm } from '@utils/adMob/consentForm';
-import { useTranslation } from 'react-i18next';
-import TopBarBack from '@/components/topBar/TopBarBack';
 import Item from '@components/Item';
-import { useRouter } from 'expo-router';
+import { _adsConsentShowForm } from '@utils/adMob/consentForm';
+import { _openURL } from '@utils/link';
 import Constants from 'expo-constants';
-import LanguagesModal from './components/LanguagesModal';
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ClearDataAlertDialog from './components/ClearDataAlertDialog';
+import LanguagesModal from './components/LanguagesModal';
 import ThemeModal from './components/ThemeModal';
 
 const Parametres = () => {

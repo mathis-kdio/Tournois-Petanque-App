@@ -1,6 +1,6 @@
-import { TextStyle, ViewStyle } from 'react-native';
 import { Tabs } from 'expo-router';
 import { cssInterop } from 'nativewind';
+import { TextStyle, ViewStyle } from 'react-native';
 
 const StyledTabsImpl = ({
   tabBarStyle,

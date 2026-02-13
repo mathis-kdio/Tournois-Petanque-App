@@ -1,14 +1,14 @@
-import { VStack } from '@/components/ui/vstack';
-import { ScrollView } from '@/components/ui/scroll-view';
-import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
-import { supabaseClient } from '@/utils/supabase';
-import { useTranslation } from 'react-i18next';
-import Item from '@components/Item';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { LoaderIcon, TrashIcon } from '@/components/ui/icon';
+import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { Divider } from '@/components/ui/divider';
+import { LoaderIcon, TrashIcon } from '@/components/ui/icon';
+import { ScrollView } from '@/components/ui/scroll-view';
+import { VStack } from '@/components/ui/vstack';
+import { supabaseClient } from '@/utils/supabase';
+import Item from '@components/Item';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Compte = () => {
   const { t } = useTranslation();
@@ -19,7 +19,7 @@ const Compte = () => {
     router.navigate('');
   };
 
-  const supprimerCompte = () => {};
+  const supprimerCompte = () => { };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

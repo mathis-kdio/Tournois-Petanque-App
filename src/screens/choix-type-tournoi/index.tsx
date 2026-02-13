@@ -1,16 +1,16 @@
-import { ScrollView } from '@/components/ui/scroll-view';
+import AdMobInscriptionsBanner from '@/components/adMob/AdMobInscriptionsBanner';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import { Pressable } from '@/components/ui/pressable';
+import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { useState } from 'react';
-import { FontAwesome5 } from '@expo/vector-icons';
-import TopBarBack from '@/components/topBar/TopBarBack';
-import CardButton from '@components/buttons/CardButton';
-import { useTranslation } from 'react-i18next';
-import AdMobInscriptionsBanner from '@/components/adMob/AdMobInscriptionsBanner';
-import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { useRouter } from 'expo-router';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { TypeTournoi } from '@/types/enums/typeTournoi';
+import CardButton from '@components/buttons/CardButton';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import TypeTournoiModal from './components/TypeTournoiModal';
 
 const ChoixTypeTournoi = () => {

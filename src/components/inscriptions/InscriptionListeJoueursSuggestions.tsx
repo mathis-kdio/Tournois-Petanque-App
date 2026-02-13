@@ -1,17 +1,17 @@
+import JoueurSuggere from '@/components/joueur-suggere/JoueurSuggere';
+import { Box } from '@/components/ui/box';
+import { Button, ButtonText } from '@/components/ui/button';
 import { FlatList } from '@/components/ui/flat-list';
 import { Text } from '@/components/ui/text';
-import { Button, ButtonText } from '@/components/ui/button';
 import { VStack } from '@/components/ui/vstack';
-import { Box } from '@/components/ui/box';
-import React, { useEffect, useState } from 'react';
-import JoueurSuggere from '@/components/joueur-suggere/JoueurSuggere';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { useTranslation } from 'react-i18next';
-import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { ListRenderItem } from 'react-native';
-import { JoueurType } from '@/types/enums/joueurType';
-import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 import { useJoueurs } from '@/repositories/joueurs/useJoueurs';
+import { JoueurType } from '@/types/enums/joueurType';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import { FontAwesome5 } from '@expo/vector-icons';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ListRenderItem } from 'react-native';
 
 export interface Props {
   listeJoueurs: JoueurModel[];

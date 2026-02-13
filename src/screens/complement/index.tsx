@@ -1,17 +1,17 @@
+import Loading from '@/components/Loading';
+import TopBarBack from '@/components/topBar/TopBarBack';
+import { Divider } from '@/components/ui/divider';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { useCallback, useEffect, useState } from 'react';
-import TopBarBack from '@/components/topBar/TopBarBack';
-import { useTranslation } from 'react-i18next';
-import { Divider } from '@/components/ui/divider';
-import { Complement } from '@/types/enums/complement';
-import { TypeEquipes } from '@/types/enums/typeEquipes';
-import Loading from '@/components/Loading';
+import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import ComplementCard from '@/screens/complement/components/ComplementCard';
+import { Complement } from '@/types/enums/complement';
+import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { screenStackNameType } from '@/types/types/searchParams';
-import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
+import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export interface Props {
   screenStackName: screenStackNameType;

@@ -1,10 +1,10 @@
+import { Platform } from 'react-native';
 import {
+  AdEventType,
+  AdsConsent,
   InterstitialAd,
   TestIds,
-  AdsConsent,
-  AdEventType,
 } from 'react-native-google-mobile-ads';
-import { Platform } from 'react-native';
 
 const getUnitId = (): string => {
   if (__DEV__) {

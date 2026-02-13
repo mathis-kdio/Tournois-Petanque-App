@@ -1,6 +1,8 @@
 import { AppStateStatus } from 'react-native';
-import { AdsConsent, AdsConsentStatus } from 'react-native-google-mobile-ads';
-import mobileAds from 'react-native-google-mobile-ads';
+import mobileAds, {
+  AdsConsent,
+  AdsConsentStatus,
+} from 'react-native-google-mobile-ads';
 
 export const _adsConsentForm = async (appState: AppStateStatus) => {
   if (appState === 'active') {

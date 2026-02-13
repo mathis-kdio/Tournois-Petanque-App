@@ -1,11 +1,11 @@
-import { Image } from '@/components/ui/image';
 import { Box } from '@/components/ui/box';
-import React from 'react';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { Image } from '@/components/ui/image';
 import { JoueurType } from '@/types/enums/joueurType';
-import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
+import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
+import { FontAwesome5 } from '@expo/vector-icons';
+import React from 'react';
 
 export interface Props {
   joueurType: JoueurType | undefined;

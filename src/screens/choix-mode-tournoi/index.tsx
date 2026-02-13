@@ -1,27 +1,27 @@
-import { ScrollView } from '@/components/ui/scroll-view';
+import AdMobInscriptionsBanner from '@/components/adMob/AdMobInscriptionsBanner';
+import Loading from '@/components/Loading';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import { Box } from '@/components/ui/box';
+import { Button, ButtonText } from '@/components/ui/button';
 import { CircleIcon } from '@/components/ui/icon';
 import {
   Radio,
-  RadioLabel,
-  RadioIcon,
   RadioGroup,
+  RadioIcon,
   RadioIndicator,
+  RadioLabel,
 } from '@/components/ui/radio';
+import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
-import { Button, ButtonText } from '@/components/ui/button';
 import { VStack } from '@/components/ui/vstack';
-import TopBarBack from '@/components/topBar/TopBarBack';
-import { useTranslation } from 'react-i18next';
-import AdMobInscriptionsBanner from '@/components/adMob/AdMobInscriptionsBanner';
-import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { useState } from 'react';
-import { useRouter } from 'expo-router';
-import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
-import Loading from '@/components/Loading';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
+import { ModeTournoi } from '@/types/enums/modeTournoi';
+import { TypeEquipes } from '@/types/enums/typeEquipes';
+import { TypeTournoi } from '@/types/enums/typeTournoi';
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const ChoixModeTournoi = () => {
   const { t } = useTranslation();

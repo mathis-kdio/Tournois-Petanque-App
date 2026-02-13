@@ -1,16 +1,16 @@
-import { CloseIcon, Icon } from '@/components/ui/icon';
 import { Heading } from '@/components/ui/heading';
+import { CloseIcon, Icon } from '@/components/ui/icon';
 import {
   Modal,
   ModalBackdrop,
-  ModalContent,
-  ModalCloseButton,
-  ModalHeader,
   ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
 } from '@/components/ui/modal';
 import { Text } from '@/components/ui/text';
-import { useTranslation } from 'react-i18next';
 import { Changelog as ChangelogInterface } from '@/types/interfaces/changelog';
+import { useTranslation } from 'react-i18next';
 
 export interface Props {
   modalChangelogItem: ChangelogInterface;

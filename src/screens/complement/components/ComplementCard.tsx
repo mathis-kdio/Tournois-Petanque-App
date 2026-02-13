@@ -1,10 +1,10 @@
-import { VStack } from '@/components/ui/vstack';
 import CardButton from '@/components/buttons/CardButton';
-import { Complement } from '@/types/enums/complement';
-import { useTranslation } from 'react-i18next';
-import { useRouter } from 'expo-router';
-import { screenStackNameType } from '@/types/types/searchParams';
+import { VStack } from '@/components/ui/vstack';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { Complement } from '@/types/enums/complement';
+import { screenStackNameType } from '@/types/types/searchParams';
+import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   complement: Complement;

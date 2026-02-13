@@ -1,12 +1,12 @@
 import { Button, ButtonText } from '@/components/ui/button';
+import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
+import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { useTranslation } from 'react-i18next';
-import { useRouter } from 'expo-router';
-import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
 export interface Props {
   preparationTournoi: PreparationTournoiModel;

@@ -1,14 +1,14 @@
+import Loading from '@/components/Loading';
+import TopBarBack from '@/components/topBar/TopBarBack';
+import { Box } from '@/components/ui/box';
+import { HStack } from '@/components/ui/hstack';
 import { ScrollView } from '@/components/ui/scroll-view';
+import { StyledSwitch } from '@/components/ui/switch/styled-switch';
+import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
+import { useTournois } from '@/repositories/tournois/useTournois';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import TopBarBack from '@/components/topBar/TopBarBack';
-import { Text } from '@/components/ui/text';
-import { HStack } from '@/components/ui/hstack';
-import { Box } from '@/components/ui/box';
-import { StyledSwitch } from '@/components/ui/switch/styled-switch';
-import { useTournois } from '@/repositories/tournois/useTournois';
-import Loading from '@/components/Loading';
 import ExportButton from './components/ExportButton';
 
 const PDFExport = () => {

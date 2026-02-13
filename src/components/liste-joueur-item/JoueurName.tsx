@@ -1,7 +1,7 @@
-import { Text } from '@/components/ui/text';
 import { Input, InputField } from '@/components/ui/input';
-import React from 'react';
+import { Text } from '@/components/ui/text';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
+import React from 'react';
 
 export interface Props {
   joueur: JoueurModel;

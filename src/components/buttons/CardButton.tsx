@@ -1,8 +1,8 @@
 import { Badge, BadgeText } from '@/components/ui/badge';
 import { HStack } from '@/components/ui/hstack';
-import { VStack } from '@/components/ui/vstack';
 import { Pressable } from '@/components/ui/pressable';
 import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
 import { FontAwesome5 } from '@expo/vector-icons';
 
 interface Props {

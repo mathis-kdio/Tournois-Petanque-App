@@ -1,16 +1,16 @@
-import { Heading } from '@/components/ui/heading';
 import {
   AlertDialog,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogBody,
-  AlertDialogFooter,
   AlertDialogBackdrop,
+  AlertDialogBody,
   AlertDialogCloseButton,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
 } from '@/components/ui/alert-dialog';
-import { Icon, CloseIcon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
 import { Button, ButtonGroup, ButtonText } from '@/components/ui/button';
+import { Heading } from '@/components/ui/heading';
+import { CloseIcon, Icon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
 import React, { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 

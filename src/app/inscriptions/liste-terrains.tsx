@@ -1,7 +1,7 @@
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useLocalSearchParams } from 'expo-router';
 import Loading from '@/components/Loading';
 import ListeTerrains from '@/screens/liste-terrains';
+import { useLocalSearchParams } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type SearchParams = {
   screenStackName?: string;

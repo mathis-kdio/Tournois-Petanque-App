@@ -1,11 +1,11 @@
-import { Tabs } from 'expo-router';
-import { useTranslation } from 'react-i18next';
-import { FontAwesome5 } from '@expo/vector-icons';
 import BoutonMenuHeaderNav from '@/components/BoutonMenuHeaderNavigation';
+import { StyledTabs } from '@/components/navigation/styled-tabs';
 import { Text } from '@/components/ui/text';
 import { useTheme } from '@/components/ui/theme-provider/ThemeProvider';
-import { StyledTabs } from '@/components/navigation/styled-tabs';
 import { useTournois } from '@/repositories/tournois/useTournois';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { Tabs } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
 export default function TabLayout() {
   const { t } = useTranslation();

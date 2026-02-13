@@ -1,11 +1,11 @@
+import TopBarBack from '@/components/topBar/TopBarBack';
 import { FlatList } from '@/components/ui/flat-list';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
+import { Changelog as ChangelogInterface } from '@/types/interfaces/changelog';
+import ChangelogData from '@assets/ChangelogData.json';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import TopBarBack from '@/components/topBar/TopBarBack';
-import ChangelogData from '@assets/ChangelogData.json';
-import { Changelog as ChangelogInterface } from '@/types/interfaces/changelog';
 import { ListRenderItem } from 'react-native';
 import ChangelogItem from './components/ChangelogItem';
 import ChangelogModal from './components/ChangelogModal';

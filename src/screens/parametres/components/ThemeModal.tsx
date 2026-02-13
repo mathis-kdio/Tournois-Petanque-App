@@ -1,21 +1,21 @@
-import { CloseIcon, Icon } from '@/components/ui/icon';
+import { Divider } from '@/components/ui/divider';
 import { Heading } from '@/components/ui/heading';
+import { CloseIcon, Icon } from '@/components/ui/icon';
 import {
   Modal,
   ModalBackdrop,
-  ModalContent,
-  ModalCloseButton,
-  ModalHeader,
   ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
 } from '@/components/ui/modal';
-import { Divider } from '@/components/ui/divider';
-import { useTranslation } from 'react-i18next';
-import Item from '@components/Item';
 import { useTheme } from '@/components/ui/theme-provider/ThemeProvider';
-import { setStatusBarBackgroundColor } from 'expo-status-bar';
-import { setBackgroundColorAsync } from 'expo-navigation-bar';
-import { Platform } from 'react-native';
 import { AppTheme, getThemeColor } from '@/utils/theme/theme';
+import Item from '@components/Item';
+import { setBackgroundColorAsync } from 'expo-navigation-bar';
+import { setStatusBarBackgroundColor } from 'expo-status-bar';
+import { useTranslation } from 'react-i18next';
+import { Platform } from 'react-native';
 
 export interface Props {
   modalThemeOpen: boolean;

@@ -1,8 +1,8 @@
 import { Divider } from '@/components/ui/divider';
 import { VStack } from '@/components/ui/vstack';
-import { useTranslation } from 'react-i18next';
-import Item from '@components/Item';
 import { Changelog as ChangelogInterface } from '@/types/interfaces/changelog';
+import Item from '@components/Item';
+import { useTranslation } from 'react-i18next';
 
 export interface Props {
   item: ChangelogInterface;

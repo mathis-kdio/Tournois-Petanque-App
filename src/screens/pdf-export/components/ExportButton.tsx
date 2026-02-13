@@ -1,19 +1,19 @@
 import { Button, ButtonSpinner, ButtonText } from '@/components/ui/button';
-import { useState } from 'react';
-import * as Print from 'expo-print';
-import * as Sharing from 'expo-sharing';
-import * as IntentLauncher from 'expo-intent-launcher';
+import { TypeTournoi } from '@/types/enums/typeTournoi';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { TournoiModel } from '@/types/interfaces/tournoi';
+import { dateFormatDateFileName } from '@/utils/date';
+import { genererPdf } from '@/utils/pdf/generate/genererPdf';
+import { generationPDFCoupe } from '@utils/pdf/coupe';
+import { generationPDFTournoi } from '@utils/pdf/tournoi';
 import { File, Paths } from 'expo-file-system';
 import * as FileSystem from 'expo-file-system/legacy';
+import * as IntentLauncher from 'expo-intent-launcher';
+import * as Print from 'expo-print';
+import * as Sharing from 'expo-sharing';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { generationPDFTournoi } from '@utils/pdf/tournoi';
-import { generationPDFCoupe } from '@utils/pdf/coupe';
 import { Platform } from 'react-native';
-import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { dateFormatDateFileName } from '@/utils/date';
-import { TournoiModel } from '@/types/interfaces/tournoi';
-import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { genererPdf } from '@/utils/pdf/generate/genererPdf';
 
 export interface Props {
   tournoi: TournoiModel;

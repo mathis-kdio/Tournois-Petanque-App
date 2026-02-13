@@ -1,6 +1,6 @@
+import { NewTournoi, tournoi } from '@/db/schema/tournoi';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { desc, eq } from 'drizzle-orm';
-import { NewTournoi, tournoi } from '@/db/schema/tournoi';
 
 export const TournoisRepository = {
   getAllTournois() {

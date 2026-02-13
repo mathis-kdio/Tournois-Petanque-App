@@ -1,11 +1,11 @@
 import { Button, ButtonText } from '@/components/ui/button';
-import { calcNbMatchsParTour } from '@utils/generations/generation';
-import { TerrainModel } from '@/types/interfaces/terrainModel';
-import { useTranslation } from 'react-i18next';
-import { useRouter } from 'expo-router';
-import { screenStackNameType } from '@/types/types/searchParams';
-import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import { TerrainModel } from '@/types/interfaces/terrainModel';
+import { screenStackNameType } from '@/types/types/searchParams';
+import { calcNbMatchsParTour } from '@utils/generations/generation';
+import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
 export interface Props {
   screenStackName: screenStackNameType;

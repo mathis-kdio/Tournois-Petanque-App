@@ -1,31 +1,31 @@
-import { ScrollView } from '@/components/ui/scroll-view';
 import { HStack } from '@/components/ui/hstack';
+import { CheckIcon } from '@/components/ui/icon';
+import { ScrollView } from '@/components/ui/scroll-view';
 import {
   Slider,
-  SliderTrack,
   SliderFilledTrack,
   SliderThumb,
+  SliderTrack,
 } from '@/components/ui/slider';
-import { CheckIcon } from '@/components/ui/icon';
 
-import { Input, InputField } from '@/components/ui/input';
-import { Text } from '@/components/ui/text';
+import Loading from '@/components/Loading';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import { Button, ButtonText } from '@/components/ui/button';
-import { VStack } from '@/components/ui/vstack';
 import {
   Checkbox,
   CheckboxIcon,
   CheckboxIndicator,
   CheckboxLabel,
 } from '@/components/ui/checkbox';
-import TopBarBack from '@/components/topBar/TopBarBack';
-import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
-import { useRouter } from 'expo-router';
-import Loading from '@/components/Loading';
-import { screenStackNameType } from '@/types/types/searchParams';
+import { Input, InputField } from '@/components/ui/input';
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import { MemesAdversairesType } from '@/types/interfaces/preparationTournoiModel';
+import { screenStackNameType } from '@/types/types/searchParams';
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export interface Props {
   screenStackName: screenStackNameType;

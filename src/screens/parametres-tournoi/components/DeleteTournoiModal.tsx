@@ -1,20 +1,20 @@
-import { CloseIcon, Icon } from '@/components/ui/icon';
-import { Heading } from '@/components/ui/heading';
 import {
   AlertDialog,
   AlertDialogBackdrop,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogCloseButton,
-  AlertDialogFooter,
   AlertDialogBody,
+  AlertDialogCloseButton,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
 } from '@/components/ui/alert-dialog';
+import { Button, ButtonGroup, ButtonText } from '@/components/ui/button';
+import { Heading } from '@/components/ui/heading';
+import { CloseIcon, Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
-import { Button, ButtonText, ButtonGroup } from '@/components/ui/button';
-import { useTranslation } from 'react-i18next';
-import { useNavigation } from 'expo-router';
-import { CommonActions } from '@react-navigation/native';
 import { useTournois } from '@/repositories/tournois/useTournois';
+import { CommonActions } from '@react-navigation/native';
+import { useNavigation } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
 export interface Props {
   tournoiId: number;

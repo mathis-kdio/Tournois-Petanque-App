@@ -1,25 +1,25 @@
+import { useAuth } from '@/components/supabase/SessionProvider';
+import { Box } from '@/components/ui/box';
 import { Button, ButtonText } from '@/components/ui/button';
-import { ScrollView } from '@/components/ui/scroll-view';
+import { HStack } from '@/components/ui/hstack';
 import { Image } from '@/components/ui/image';
 import { Pressable } from '@/components/ui/pressable';
+import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { HStack } from '@/components/ui/hstack';
-import { Box } from '@/components/ui/box';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { _openPlateformLink, _openURL } from '@utils/link';
+import { useTournois } from '@/repositories/tournois/useTournois';
 import { _adsConsentForm } from '@/utils/adMob/consentForm';
-import CardButton from '@components/buttons/CardButton';
-import { AppState, AppStateStatus, Platform } from 'react-native';
 import { _requestTrackingPermissions } from '@/utils/expoTrackingTransparency/requestTrackingPermission';
+import CardButton from '@components/buttons/CardButton';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { CommonActions } from '@react-navigation/native';
+import { _openPlateformLink, _openURL } from '@utils/link';
+import Constants from 'expo-constants';
+import { useNavigation, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { AppState, AppStateStatus, Platform } from 'react-native';
 import { useSelector } from 'react-redux';
-import { useAuth } from '@/components/supabase/SessionProvider';
-import { useNavigation, useRouter } from 'expo-router';
-import { CommonActions } from '@react-navigation/native';
-import Constants from 'expo-constants';
-import { useTournois } from '@/repositories/tournois/useTournois';
 
 const googleMarketReviews =
   'market://details?id=com.MK.PetanqueGCU&showAllReviews=true';

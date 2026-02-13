@@ -1,15 +1,15 @@
+import Loading from '@/components/Loading';
 import { Divider } from '@/components/ui/divider';
-import { VStack } from '@/components/ui/vstack';
-import { Text } from '@/components/ui/text';
 import { FlatList } from '@/components/ui/flat-list';
 import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
+import { useTournois } from '@/repositories/tournois/useTournois';
 import ListeResultatItem from '@/screens/resultats/components/ListeResultatItem';
+import { Victoire } from '@/types/interfaces/victoire';
 import { ranking } from '@utils/ranking';
 import { useTranslation } from 'react-i18next';
 import { ListRenderItem } from 'react-native';
-import { Victoire } from '@/types/interfaces/victoire';
-import { useTournois } from '@/repositories/tournois/useTournois';
-import Loading from '@/components/Loading';
 
 const ListeResultats = () => {
   const { t } = useTranslation();

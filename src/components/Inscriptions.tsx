@@ -1,20 +1,20 @@
+import { Box } from '@/components/ui/box';
 import { Divider } from '@/components/ui/divider';
+import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { HStack } from '@/components/ui/hstack';
-import { Box } from '@/components/ui/box';
-import React, { useState } from 'react';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
-import { useTranslation } from 'react-i18next';
-import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { Pressable } from 'react-native';
-import TriListeJoueurs from './inscriptions/TriListeJoueurs';
-import { Tri } from '@/types/enums/tri';
 import { JoueurType as JoueurTypeEnum } from '@/types/enums/joueurType';
+import { Tri } from '@/types/enums/tri';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Pressable } from 'react-native';
 import InscriptionForm from './inscriptions/InscriptionForm';
-import InscriptionRemoveAllModal from './inscriptions/InscriptionRemoveAllModal';
 import InscriptionListeJoueurs from './inscriptions/InscriptionListeJoueurs';
+import InscriptionRemoveAllModal from './inscriptions/InscriptionRemoveAllModal';
+import TriListeJoueurs from './inscriptions/TriListeJoueurs';
 
 export interface Props {
   listeJoueurs: JoueurModel[];

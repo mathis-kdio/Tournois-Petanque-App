@@ -1,22 +1,22 @@
-import { CloseIcon, Icon } from '@/components/ui/icon';
+import { Divider } from '@/components/ui/divider';
 import { Heading } from '@/components/ui/heading';
+import { CloseIcon, Icon } from '@/components/ui/icon';
 import {
   Modal,
   ModalBackdrop,
-  ModalContent,
-  ModalCloseButton,
-  ModalHeader,
   ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
 } from '@/components/ui/modal';
-import { Divider } from '@/components/ui/divider';
-import { Text } from '@/components/ui/text';
-import { _openURL } from '@utils/link';
-import { useTranslation } from 'react-i18next';
-import Item from '@components/Item';
-import { changeLanguage } from 'i18next';
 import { Pressable } from '@/components/ui/pressable';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Text } from '@/components/ui/text';
 import { SELECTED_LANGUAGE_KEY } from '@/utils/async-storage/key';
+import Item from '@components/Item';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { _openURL } from '@utils/link';
+import { changeLanguage } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 export interface Props {
   modalLanguagesOpen: boolean;

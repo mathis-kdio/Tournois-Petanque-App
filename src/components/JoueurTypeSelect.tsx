@@ -1,3 +1,4 @@
+import { ChevronDownIcon } from '@/components/ui/icon';
 import {
   Select,
   SelectBackdrop,
@@ -10,15 +11,13 @@ import {
   SelectPortal,
   SelectTrigger,
 } from '@/components/ui/select';
-
-import { ChevronDownIcon } from '@/components/ui/icon';
+import { ModeTournoi } from '@/types/enums/modeTournoi';
+import { TypeEquipes } from '@/types/enums/typeEquipes';
+import { TypeTournoi } from '@/types/enums/typeTournoi';
+import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { JoueurType as JoueurTypeEnum } from '../types/enums/joueurType';
-import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 
 export interface Props {
   joueurType: JoueurTypeEnum | undefined;

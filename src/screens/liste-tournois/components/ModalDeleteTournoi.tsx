@@ -1,19 +1,19 @@
-import { CloseIcon, Icon } from '@/components/ui/icon';
-import { Heading } from '@/components/ui/heading';
 import {
   AlertDialog,
-  AlertDialogBody,
   AlertDialogBackdrop,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogFooter,
+  AlertDialogBody,
   AlertDialogCloseButton,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
 } from '@/components/ui/alert-dialog';
-import { Button, ButtonText, ButtonGroup } from '@/components/ui/button';
+import { Button, ButtonGroup, ButtonText } from '@/components/ui/button';
+import { Heading } from '@/components/ui/heading';
+import { CloseIcon, Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
+import { useTournois } from '@/repositories/tournois/useTournois';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useTournois } from '@/repositories/tournois/useTournois';
 
 export interface Props {
   modalDeleteIsOpen: boolean;

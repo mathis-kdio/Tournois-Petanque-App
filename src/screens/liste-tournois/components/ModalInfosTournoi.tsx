@@ -3,17 +3,17 @@ import { CloseIcon, Icon } from '@/components/ui/icon';
 import {
   Modal,
   ModalBackdrop,
+  ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalHeader,
-  ModalCloseButton,
-  ModalBody,
 } from '@/components/ui/modal';
 import { Text } from '@/components/ui/text';
-import { useTranslation } from 'react-i18next';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import { dateFormatDateHeure } from '@/utils/date';
 import { SetStateAction } from 'react';
-import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { useTranslation } from 'react-i18next';
 
 export interface Props {
   infosTournoi: TournoiModel;

@@ -1,3 +1,4 @@
+import { Box } from '@/components/ui/box';
 import {
   Checkbox,
   CheckboxIcon,
@@ -5,7 +6,6 @@ import {
   CheckboxLabel,
 } from '@/components/ui/checkbox';
 import { CheckIcon } from '@/components/ui/icon';
-import { Box } from '@/components/ui/box';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 

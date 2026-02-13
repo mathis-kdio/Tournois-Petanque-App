@@ -1,5 +1,5 @@
-import { SafeAreaView } from 'react-native-safe-area-context';
 import ChoixModeTournoi from '@/screens/choix-mode-tournoi';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ChoixModeTournoiScreen = () => {
   return (

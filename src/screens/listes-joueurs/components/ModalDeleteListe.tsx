@@ -1,17 +1,17 @@
-import { CloseIcon, Icon } from '@/components/ui/icon';
 import { Heading } from '@/components/ui/heading';
+import { CloseIcon, Icon } from '@/components/ui/icon';
 
 import {
   AlertDialog,
   AlertDialogBackdrop,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogCloseButton,
   AlertDialogBody,
+  AlertDialogCloseButton,
+  AlertDialogContent,
   AlertDialogFooter,
+  AlertDialogHeader,
 } from '@/components/ui/alert-dialog';
 
-import { Button, ButtonText, ButtonGroup } from '@/components/ui/button';
+import { Button, ButtonGroup, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import React from 'react';
 import { useTranslation } from 'react-i18next';

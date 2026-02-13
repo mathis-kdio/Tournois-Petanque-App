@@ -1,8 +1,8 @@
-import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import {
   NewPreparationTournoi,
   preparationTournoi,
 } from '@/db/schema/preparationTournoi';
+import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { eq } from 'drizzle-orm';
 
 export const PreparationTournoisRepository = {

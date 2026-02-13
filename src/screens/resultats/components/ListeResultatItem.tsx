@@ -1,14 +1,14 @@
-import { VStack } from '@/components/ui/vstack';
 import { Divider } from '@/components/ui/divider';
-import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { MatchModel } from '@/types/interfaces/matchModel';
+import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoiModel';
 import { Victoire } from '@/types/interfaces/victoire';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Fanny from './Fanny';
-import { MatchModel } from '@/types/interfaces/matchModel';
-import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoiModel';
 
 export interface Props {
   victoire: Victoire;

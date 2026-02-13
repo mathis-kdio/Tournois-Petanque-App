@@ -1,12 +1,12 @@
-import { VStack } from '@/components/ui/vstack';
+import { useAuth } from '@/components/supabase/SessionProvider';
+import TopBarBack from '@/components/topBar/TopBarBack';
+import { HStack } from '@/components/ui/hstack';
 import { ScrollView } from '@/components/ui/scroll-view';
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import TopBarBack from '@/components/topBar/TopBarBack';
-import { Text } from '@/components/ui/text';
-import { HStack } from '@/components/ui/hstack';
-import { useAuth } from '@/components/supabase/SessionProvider';
 
 interface UserDetail {
   Nom: { label: string; value: string };

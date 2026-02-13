@@ -1,7 +1,3 @@
-import { Text } from '@/components/ui/text';
-import { Heading } from '@/components/ui/heading';
-import { CloseIcon, Icon } from '@/components/ui/icon';
-import { Button, ButtonGroup, ButtonText } from '@/components/ui/button';
 import {
   AlertDialog,
   AlertDialogBackdrop,
@@ -11,6 +7,10 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
 } from '@/components/ui/alert-dialog';
+import { Button, ButtonGroup, ButtonText } from '@/components/ui/button';
+import { Heading } from '@/components/ui/heading';
+import { CloseIcon, Icon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 

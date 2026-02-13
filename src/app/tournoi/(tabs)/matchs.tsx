@@ -1,13 +1,13 @@
-import { useTranslation } from 'react-i18next';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import Loading from '@/components/Loading';
 import { StyledTopTabs } from '@/components/navigation/styled-top-tabs';
+import { HStack } from '@/components/ui/hstack';
+import { Text } from '@/components/ui/text';
+import { useTournois } from '@/repositories/tournois/useTournois';
 import MatchsManche from '@/screens/matchs/components/MatchsManche';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { useTournois } from '@/repositories/tournois/useTournois';
-import Loading from '@/components/Loading';
-import { HStack } from '@/components/ui/hstack';
-import { Text } from '@/components/ui/text';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { useTranslation } from 'react-i18next';
 
 export default function MatchsScreen() {
   const { t } = useTranslation();

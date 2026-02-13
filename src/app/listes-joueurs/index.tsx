@@ -1,5 +1,5 @@
-import { SafeAreaView } from 'react-native-safe-area-context';
 import ListesJoueurs from '@/screens/listes-joueurs';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ListesJoueursScreen = () => {
   return (

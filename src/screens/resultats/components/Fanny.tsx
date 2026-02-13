@@ -1,11 +1,11 @@
+import { HStack } from '@/components/ui/hstack';
 import { Image } from '@/components/ui/image';
 import { Text } from '@/components/ui/text';
-import { HStack } from '@/components/ui/hstack';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
-import React from 'react';
-import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoiModel';
 import { MatchModel } from '@/types/interfaces/matchModel';
+import { OptionsTournoiModel } from '@/types/interfaces/optionsTournoiModel';
 import { isJoueurInEquipe } from '@/utils/ranking';
+import React from 'react';
 
 export interface Props {
   joueur: JoueurModel;

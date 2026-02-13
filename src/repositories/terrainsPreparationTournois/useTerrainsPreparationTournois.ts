@@ -1,10 +1,10 @@
-import { useMemo } from 'react';
 import { NewTerrain, Terrain } from '@/db/schema';
+import { NewTerrainsPreparationTournois } from '@/db/schema/terrainsPreparationTournoi';
 import { TerrainModel } from '@/types/interfaces/terrainModel';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { TerrainsPreparationTournoisRepository } from './terrainsPreparationTournoiRepository';
+import { useMemo } from 'react';
 import { TerrainsRepository } from '../terrains/terrainsRepository';
-import { NewTerrainsPreparationTournois } from '@/db/schema/terrainsPreparationTournoi';
+import { TerrainsPreparationTournoisRepository } from './terrainsPreparationTournoiRepository';
 
 function toTerrainModel(terrain: Terrain): TerrainModel {
   return {

@@ -1,9 +1,9 @@
-import { KeyboardAvoidingView } from '@/components/ui/keyboard-avoiding-view';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Platform } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
 import Loading from '@/components/Loading';
+import { KeyboardAvoidingView } from '@/components/ui/keyboard-avoiding-view';
 import MatchDetail from '@/screens/match-detail';
+import { useLocalSearchParams } from 'expo-router';
+import { Platform } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type SearchParams = {
   idMatch?: string;

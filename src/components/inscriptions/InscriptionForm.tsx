@@ -1,12 +1,12 @@
-import { Button, ButtonText } from '@/components/ui/button';
-import { Input, InputField } from '@/components/ui/input';
-import { HStack } from '@/components/ui/hstack';
-import { Box } from '@/components/ui/box';
-import React, { useEffect, useState } from 'react';
 import JoueurTypeSelect from '@/components/JoueurTypeSelect';
-import { useTranslation } from 'react-i18next';
+import { Box } from '@/components/ui/box';
+import { Button, ButtonText } from '@/components/ui/button';
+import { HStack } from '@/components/ui/hstack';
+import { Input, InputField } from '@/components/ui/input';
 import { JoueurType as JoueurTypeEnum } from '@/types/enums/joueurType';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export interface Props {
   preparationTournoi: PreparationTournoiModel;
