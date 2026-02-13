@@ -1,4 +1,3 @@
-import Loading from '@/components/Loading';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { Box } from '@/components/ui/box';
 import { Button, ButtonText } from '@/components/ui/button';
@@ -21,50 +20,28 @@ const ListesJoueurs = () => {
   const router = useRouter();
   const { loadListScreen = 'false' } = useLocalSearchParams<SearchParams>();
 
-  const { allListesJoueurs, deleteListeJoueurs, renameListeJoueurs } =
-    useListesJoueurs();
+  const {
+    allListesJoueurs,
+    deleteListeJoueurs,
+    renameListeJoueurs,
+    insertListeJoueurs,
+  } = useListesJoueurs();
 
-  if (!allListesJoueurs) {
-    return <Loading />;
-  }
-
-  const handleDelete = (id: number) => {
-    deleteListeJoueurs(id);
+  const handleDelete = async (id: number) => {
+    await deleteListeJoueurs(id);
   };
 
-  const handleUpdateName = (id: number, name: string) => {
-    renameListeJoueurs(id, name);
+  const handleUpdateName = async (id: number, name: string) => {
+    await renameListeJoueurs(id, name);
   };
 
-  const addList = () => {
-    throw Error('TODO addList');
-    /*
-    const actionRemoveList = {
-      type: 'SUPPR_ALL_JOUEURS',
-      value: [ModeTournoi.SAUVEGARDE],
-    };
-    dispatch(actionRemoveList);
-    //Sera utilisé par le component inscription
-    const updateOptionTypeTournoi = {
-      type: 'UPDATE_OPTION_TOURNOI',
-      value: ['typeTournoi', TypeTournoi.MELEDEMELE],
-    };
-    dispatch(updateOptionTypeTournoi);
-    const updateOptionEquipesTournoi = {
-      type: 'UPDATE_OPTION_TOURNOI',
-      value: ['typeEquipes', TypeEquipes.TETEATETE],
-    };
-    dispatch(updateOptionEquipesTournoi);
-    const updateOptionModeTournoi = {
-      type: 'UPDATE_OPTION_TOURNOI',
-      value: ['mode', ModeTournoi.SAUVEGARDE],
-    };
-    dispatch(updateOptionModeTournoi);
-    */
+  const addList = async () => {
+    const listeJoueurs = await insertListeJoueurs();
     router.navigate({
       pathname: '/listes-joueurs/create-liste-joueurs',
       params: {
         type: 'create',
+        listId: listeJoueurs.id,
       },
     });
   };

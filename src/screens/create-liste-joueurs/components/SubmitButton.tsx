@@ -1,18 +1,18 @@
 import { Button, ButtonText } from '@/components/ui/button';
-import { useTranslation } from 'react-i18next';
-import { useRouter } from 'expo-router';
-import { listeType } from '@/types/types/searchParams';
 import { NewJoueur, NewJoueursListes, NewListesJoueurs } from '@/db/schema';
-import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { useListesJoueurs } from '@/repositories/listesJoueurs/useListesJoueurs';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { listeType } from '@/types/types/searchParams';
+import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
 export interface Props {
   type: listeType;
   idList: number | undefined;
-  listesJoueurs: JoueurModel[];
+  listeJoueurs: JoueurModel[];
 }
 
-const SubmitButton: React.FC<Props> = ({ type, idList, listesJoueurs }) => {
+const SubmitButton: React.FC<Props> = ({ type, idList, listeJoueurs }) => {
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -55,7 +55,7 @@ const SubmitButton: React.FC<Props> = ({ type, idList, listesJoueurs }) => {
 
   return (
     <Button
-      isDisabled={listesJoueurs.length === 0}
+      isDisabled={listeJoueurs.length === 0}
       action="positive"
       onPress={() => submit(type, idList)}
     >

@@ -1,7 +1,7 @@
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useLocalSearchParams } from 'expo-router';
 import Loading from '@/components/Loading';
 import CreateListeJoueur from '@/screens/create-liste-joueurs';
+import { useLocalSearchParams } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type SearchParams = {
   type?: string;
@@ -13,10 +13,7 @@ const CreateListeJoueurScreen = () => {
   const { type, listId } = param;
 
   const idList = parseInt(listId ?? '');
-  if (
-    (type !== 'create' && type !== 'edit') ||
-    (type === 'edit' && isNaN(idList))
-  ) {
+  if ((type !== 'create' && type !== 'edit') || isNaN(idList)) {
     return <Loading />;
   }
 

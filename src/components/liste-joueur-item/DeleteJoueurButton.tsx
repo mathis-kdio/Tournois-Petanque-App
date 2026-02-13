@@ -1,10 +1,10 @@
 import { Box } from '@/components/ui/box';
-import React from 'react';
-import { FontAwesome5 } from '@expo/vector-icons';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
+import { FontAwesome5 } from '@expo/vector-icons';
+import React from 'react';
 
 export interface Props {
-  joueurTournoiId: number;
+  joueurUniqueBDDId: number;
   isInscription: boolean;
   typeEquipes: TypeEquipes;
   setRenommerOn: (value: React.SetStateAction<boolean>) => void;
@@ -12,7 +12,7 @@ export interface Props {
 }
 
 const DeleteJoueurButton: React.FC<Props> = ({
-  joueurTournoiId,
+  joueurUniqueBDDId,
   isInscription,
   typeEquipes,
   setRenommerOn,
@@ -20,7 +20,7 @@ const DeleteJoueurButton: React.FC<Props> = ({
 }) => {
   const supprimerJoueur = () => {
     setRenommerOn(false);
-    onDeleteJoueur(joueurTournoiId);
+    onDeleteJoueur(joueurUniqueBDDId);
 
     if (typeEquipes === TypeEquipes.TETEATETE) {
       //TODO

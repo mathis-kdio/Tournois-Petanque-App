@@ -1,109 +1,102 @@
-import { VStack } from '@/components/ui/vstack';
-import { Text } from '@/components/ui/text';
+import Loading from '@/components/Loading';
+import TopBarBack from '@/components/topBar/TopBarBack';
 import { Box } from '@/components/ui/box';
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
+import { useJoueurs } from '@/repositories/joueurs/useJoueurs';
+import { JoueurType } from '@/types/enums/joueurType';
+import { ModeTournoi } from '@/types/enums/modeTournoi';
+import { TypeEquipes } from '@/types/enums/typeEquipes';
+import { TypeTournoi } from '@/types/enums/typeTournoi';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import { listeType } from '@/types/types/searchParams';
 import Inscriptions from '@components/Inscriptions';
 import { useTranslation } from 'react-i18next';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import TopBarBack from '@/components/topBar/TopBarBack';
-import { listeType } from '@/types/types/searchParams';
 import SubmitButton from './components/SubmitButton';
-import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { useJoueurs } from '@/repositories/joueurs/useJoueurs';
-import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
-import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
-import Loading from '@/components/Loading';
-import { JoueurType } from '@/types/enums/joueurType';
+import { useCreateListeJoueur } from './hooks/useCreateListeJoueur';
 
 export interface Props {
   type: listeType;
-  idList?: number;
+  idList: number;
 }
 
 const CreateListeJoueur: React.FC<Props> = ({ type, idList }) => {
   const { t } = useTranslation();
 
-  const listesJoueurs: JoueurModel[] = [];
-
-  const { preparationTournoiVM } = usePreparationTournoi();
-  const preparationTournoiJoueurs: JoueurModel[] = [];
-
   const { renameJoueur, checkJoueur } = useJoueurs();
   const {
-    addJoueursPreparationTournoi,
-    removeJoueursPreparationTournoi,
-    removeAllJoueursPreparationTournoi,
-  } = useJoueursPreparationTournois();
+    listeJoueurs,
+    removeAllJoueursList,
+    removeJoueurList,
+    addJoueurInList,
+  } = useCreateListeJoueur(idList);
 
   const handleAddJoueur = async (
     joueurName: string,
     joueurType: JoueurType | undefined,
   ) => {
-    if (!preparationTournoiVM) return;
-    const { typeEquipes } = preparationTournoiVM;
-    if (!typeEquipes) return;
-    const equipe = undefined;
-    const joueur: JoueurModel = {
-      joueurTournoiId: preparationTournoiJoueurs.length,
-      name: joueurName,
-      type: joueurType,
-      equipe: equipe,
-      isChecked: false,
-    };
-
-    await addJoueursPreparationTournoi(joueur);
+    await addJoueurInList(joueurName, joueurType, idList);
   };
 
-  const handleDeleteJoueur = () => {
-    removeJoueursPreparationTournoi(id);
+  const handleDeleteJoueur = async (id: number) => {
+    await removeJoueurList(id);
   };
 
-  const handleAddEquipeJoueur = () => { };
+  const handleAddEquipeJoueur = (id: number, equipeId: number) => {
+    throw Error('TODO');
+  };
 
   const handleUpdateName = (joueurModel: JoueurModel, name: string) => {
-    renameJoueur(joueurModel.joueurTournoiId, name);
+    renameJoueur(joueurModel.uniqueBDDId, name);
   };
 
   const handleCheckJoueur = (joueurModel: JoueurModel, isChecked: boolean) => {
-    checkJoueur(joueurModel.joueurTournoiId, isChecked);
+    checkJoueur(joueurModel.uniqueBDDId, isChecked);
   };
 
-  const handleDeleteAllJoueurs = () => {
-    removeAllJoueursPreparationTournoi();
+  const handleDeleteAllJoueurs = async () => {
+    await removeAllJoueursList(idList);
   };
 
-  if (!preparationTournoiJoueurs || !preparationTournoiVM) {
+  if (!listeJoueurs) {
     return <Loading />;
   }
 
+  const preparationTournoi: PreparationTournoiModel = {
+    id: 0,
+    typeEquipes: TypeEquipes.TETEATETE,
+    mode: ModeTournoi.AVECNOMS,
+    typeTournoi: TypeTournoi.MELEDEMELE,
+  };
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <VStack className="flex-1 bg-custom-background">
-        <TopBarBack title={t('creation_liste_joueurs_navigation_title')} />
-        <VStack className="flex-1 justify-between">
-          <Text className="text-typography-white text-xl text-center">
-            {t('nombre_joueurs', { nb: listesJoueurs.length })}
-          </Text>
-          <Inscriptions
-            loadListScreen={true}
-            listeJoueurs={preparationTournoiJoueurs}
-            preparationTournoi={preparationTournoiVM}
-            onAddJoueur={handleAddJoueur}
-            onDeleteJoueur={handleDeleteJoueur}
-            onAddEquipeJoueur={handleAddEquipeJoueur}
-            onUpdateName={handleUpdateName}
-            onCheckJoueur={handleCheckJoueur}
-            onDeleteAllJoueurs={handleDeleteAllJoueurs}
+    <VStack className="flex-1 bg-custom-background">
+      <TopBarBack title={t('creation_liste_joueurs_navigation_title')} />
+      <VStack className="flex-1 justify-between">
+        <Text className="text-typography-white text-xl text-center">
+          {t('nombre_joueurs', { nb: listeJoueurs.length })}
+        </Text>
+        <Inscriptions
+          loadListScreen={true}
+          listeJoueurs={listeJoueurs}
+          preparationTournoi={preparationTournoi}
+          onAddJoueur={handleAddJoueur}
+          onDeleteJoueur={handleDeleteJoueur}
+          onAddEquipeJoueur={handleAddEquipeJoueur}
+          onUpdateName={handleUpdateName}
+          onCheckJoueur={handleCheckJoueur}
+          onDeleteAllJoueurs={handleDeleteAllJoueurs}
+        />
+        <Box className="px-10">
+          <SubmitButton
+            type={type}
+            listeJoueurs={listeJoueurs}
+            idList={idList}
           />
-          <Box className="px-10">
-            <SubmitButton
-              type={type}
-              listesJoueurs={listesJoueurs}
-              idList={idList}
-            />
-          </Box>
-        </VStack>
+        </Box>
       </VStack>
-    </SafeAreaView>
+    </VStack>
   );
 };
 

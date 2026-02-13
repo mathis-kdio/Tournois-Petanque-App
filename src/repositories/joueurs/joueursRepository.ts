@@ -1,4 +1,4 @@
-import { equipesJoueurs, joueurs, NewJoueur } from '@/db/schema';
+import { equipesJoueurs, joueurs, joueursListes, NewJoueur } from '@/db/schema';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { eq, inArray } from 'drizzle-orm';
 
@@ -54,5 +54,13 @@ export const JoueursRepository = {
       .from(joueurs)
       .where(inArray(equipesJoueurs.equipeId, equipeIds))
       .innerJoin(equipesJoueurs, eq(equipesJoueurs.joueurId, joueurs.id));
+  },
+
+  getJoueursListe(listeId: number) {
+    return getDrizzleDb()
+      .select()
+      .from(joueurs)
+      .where(eq(joueursListes.listeId, listeId))
+      .innerJoin(joueursListes, eq(joueursListes.joueurId, joueurs.id));
   },
 };

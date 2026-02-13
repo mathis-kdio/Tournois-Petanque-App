@@ -1,8 +1,10 @@
-import { useMemo } from 'react';
-import { ListesJoueursRepository } from './listesJoueursRepository';
-import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { ListesJoueurs, NewListesJoueurs } from '@/db/schema';
 import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+import { useMemo } from 'react';
+import { JoueursRepository } from '../joueurs/joueursRepository';
+import { JoueursListesRepository } from '../joueursListes/joueursListesRepository';
+import { ListesJoueursRepository } from './listesJoueursRepository';
 
 function toListeJoueursInfos(lJ: ListesJoueurs): ListeJoueursInfos {
   return {
@@ -18,17 +20,28 @@ export const useListesJoueurs = () => {
 
   const allListesJoueursVM = useMemo(() => {
     if (!listesJoueurs.length) {
-      return;
+      return [];
     }
     return listesJoueurs.map(toListeJoueursInfos);
   }, [listesJoueurs]);
 
-  const insertListeJoueurs = async (newListesJoueurs: NewListesJoueurs) => {
-    await ListesJoueursRepository.insertListeJoueurs(newListesJoueurs);
+  const insertListeJoueurs = async () => {
+    const newListesJoueurs: NewListesJoueurs = {
+      updatedAt: new Date().getUTCMilliseconds(),
+    };
+
+    return (
+      await ListesJoueursRepository.insertListeJoueurs(newListesJoueurs)
+    )[0];
   };
 
   const deleteListeJoueurs = async (id: number) => {
+    const joueursListes = await JoueursListesRepository.getInList(id);
+    await JoueursListesRepository.removeAllInList(id);
     await ListesJoueursRepository.deleteListeJoueurs(id);
+    await JoueursRepository.delete(
+      joueursListes.map((joueursListe) => joueursListe.joueurId),
+    );
   };
 
   const renameListeJoueurs = async (id: number, name: string) => {

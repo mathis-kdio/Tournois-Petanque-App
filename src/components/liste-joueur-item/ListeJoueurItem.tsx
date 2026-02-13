@@ -1,17 +1,17 @@
-import { HStack } from '@/components/ui/hstack';
 import { Box } from '@/components/ui/box';
-import React, { useState } from 'react';
-import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { HStack } from '@/components/ui/hstack';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
+import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import ModalConfirmUncheck from './ModalConfirmUncheck';
-import JoueurTypeIcon from './JoueurTypeIcon';
-import EquipePicker from './EquipePicker';
-import JoueurName from './JoueurName';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
+import React, { useState } from 'react';
 import DeleteJoueurButton from './DeleteJoueurButton';
-import RenameJoueurButton from './RenameJoueurButton';
+import EquipePicker from './EquipePicker';
 import JoueurCheckox from './JoueurCheckox';
+import JoueurName from './JoueurName';
+import JoueurTypeIcon from './JoueurTypeIcon';
+import ModalConfirmUncheck from './ModalConfirmUncheck';
+import RenameJoueurButton from './RenameJoueurButton';
 
 export interface Props {
   joueur: JoueurModel;
@@ -47,7 +47,7 @@ const ListeJoueurItem: React.FC<Props> = ({
   const [modalConfirmUncheckIsOpen, setModalConfirmUncheckIsOpen] =
     useState(false);
 
-  const { isChecked, type, joueurTournoiId } = joueur;
+  const { isChecked, type, uniqueBDDId } = joueur;
 
   const handleRenommerJoueur = () => {
     if (joueurText === '') {
@@ -129,7 +129,7 @@ const ListeJoueurItem: React.FC<Props> = ({
         </HStack>
         <HStack className={`${flexsize[3]}`}>
           <DeleteJoueurButton
-            joueurTournoiId={joueurTournoiId}
+            joueurUniqueBDDId={uniqueBDDId}
             isInscription={isInscription}
             typeEquipes={typeEquipes}
             setRenommerOn={setRenommerOn}

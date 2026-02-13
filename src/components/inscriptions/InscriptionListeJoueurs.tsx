@@ -1,17 +1,17 @@
-import { FlatList } from '@/components/ui/flat-list';
-import { Button, ButtonText } from '@/components/ui/button';
-import { VStack } from '@/components/ui/vstack';
-import React, { Dispatch, SetStateAction } from 'react';
 import ListeJoueurItem from '@/components/liste-joueur-item/ListeJoueurItem';
-import { useTranslation } from 'react-i18next';
-import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { ListRenderItem } from 'react-native';
-import { useRouter } from 'expo-router';
-import { Tri } from '@/types/enums/tri';
-import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
+import { Button, ButtonText } from '@/components/ui/button';
+import { FlatList } from '@/components/ui/flat-list';
+import { VStack } from '@/components/ui/vstack';
 import { JoueurType as JoueurTypeEnum } from '@/types/enums/joueurType';
+import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
+import { ModeTournoi } from '@/types/enums/modeTournoi';
+import { Tri } from '@/types/enums/tri';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import { useRouter } from 'expo-router';
+import React, { Dispatch, SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ListRenderItem } from 'react-native';
 import InscriptionListeJoueursSuggestions from './InscriptionListeJoueursSuggestions';
 
 export interface Props {
@@ -78,15 +78,12 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
     );
   };
 
-  const { typeEquipes, mode } = preparationTournoi;
-  if (!typeEquipes || !mode) {
-    throw Error('typeEquipes, mode');
+  const { typeEquipes, mode, typeTournoi, modeCreationEquipes } =
+    preparationTournoi;
+  if (!typeEquipes || !mode || !typeTournoi) {
+    throw Error('typeEquipes, mode ou typeTournoi manquant');
   }
 
-  const { modeCreationEquipes, typeTournoi } = preparationTournoi;
-  if (!typeTournoi) {
-    throw Error('preparationTournoi manquantes');
-  }
   if (triType === Tri.ID) {
     listeJoueurs.sort((a, b) => a.joueurTournoiId - b.joueurTournoiId);
   } else if (triType === Tri.ALPHA_ASC) {
