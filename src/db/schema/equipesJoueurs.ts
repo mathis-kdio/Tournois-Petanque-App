@@ -1,6 +1,6 @@
-import { sqliteTable, integer } from 'drizzle-orm/sqlite-core';
-import { joueurs } from './joueurs';
+import { integer, sqliteTable } from 'drizzle-orm/sqlite-core';
 import { equipe } from './equipe';
+import { joueurs } from './joueurs';
 
 export const equipesJoueurs = sqliteTable('equipes_joueurs', {
   id: integer('id').primaryKey(),

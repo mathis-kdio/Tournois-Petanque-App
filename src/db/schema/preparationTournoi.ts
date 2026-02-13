@@ -4,7 +4,7 @@ import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { MemesAdversairesType } from '@/types/interfaces/preparationTournoiModel';
-import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
+import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 export const preparationTournoi = sqliteTable('preparation_tournoi', {
   id: integer('id').primaryKey(),

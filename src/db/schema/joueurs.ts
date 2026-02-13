@@ -1,5 +1,5 @@
 import { JoueurType } from '@/types/enums/joueurType';
-import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
+import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 export const joueurs = sqliteTable('joueurs', {
   id: integer().primaryKey(),

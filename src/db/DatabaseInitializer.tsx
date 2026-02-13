@@ -1,9 +1,9 @@
-import React from 'react';
-import { useDatabaseMigrations } from './useDatabaseMigrations';
-import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
-import { ActivityIndicator } from 'react-native';
+import { Text } from '@/components/ui/text';
 import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
+import React from 'react';
+import { ActivityIndicator } from 'react-native';
+import { useDatabaseMigrations } from './useDatabaseMigrations';
 
 interface DatabaseInitializerProps {
   children: React.ReactNode;

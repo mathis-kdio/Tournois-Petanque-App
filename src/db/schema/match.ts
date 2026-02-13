@@ -1,6 +1,6 @@
-import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
-import { terrains } from './terrain';
+import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { equipe } from './equipe';
+import { terrains } from './terrain';
 import { tournoi } from './tournoi';
 
 export const match = sqliteTable('match', {

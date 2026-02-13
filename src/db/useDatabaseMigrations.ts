@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
 import { drizzle, ExpoSQLiteDatabase } from 'drizzle-orm/expo-sqlite';
-import { openDatabaseAsync, SQLiteDatabase } from 'expo-sqlite';
 import { migrate } from 'drizzle-orm/expo-sqlite/migrator';
 import migrations from 'drizzle/migrations';
+import { openDatabaseAsync, SQLiteDatabase } from 'expo-sqlite';
+import { useEffect, useState } from 'react';
 
 let drizzleDbInstance: any = null;
 
