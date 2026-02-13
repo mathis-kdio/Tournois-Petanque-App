@@ -89,11 +89,7 @@ const CreateListeJoueur: React.FC<Props> = ({ type, idList }) => {
           onDeleteAllJoueurs={handleDeleteAllJoueurs}
         />
         <Box className="px-10">
-          <SubmitButton
-            type={type}
-            listeJoueurs={listeJoueurs}
-            idList={idList}
-          />
+          <SubmitButton type={type} listeJoueurs={listeJoueurs} />
         </Box>
       </VStack>
     </VStack>
