@@ -7,7 +7,7 @@ export const TournoisRepository = {
     return getDrizzleDb().select().from(tournoi);
   },
 
-  getTournoi() {
+  getTournois() {
     return getDrizzleDb().select().from(tournoi).orderBy(desc(tournoi.id));
   },
 
@@ -17,6 +17,13 @@ export const TournoisRepository = {
 
   deleteTournoi(id: number) {
     return getDrizzleDb().delete(tournoi).where(eq(tournoi.id, id));
+  },
+
+  setActualTournoi(id: number, estTournoiActuel: boolean) {
+    return getDrizzleDb()
+      .update(tournoi)
+      .set({ estTournoiActuel: estTournoiActuel })
+      .where(eq(tournoi.id, id));
   },
 
   renameTournoi(id: number, name: string) {

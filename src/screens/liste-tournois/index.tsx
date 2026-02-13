@@ -45,16 +45,7 @@ export default function ListeTournois() {
   };
 
   const renderItem: ListRenderItem<TournoiModel> = ({ item }) => {
-    const estTournoiActuel = actualTournoi
-      ? item.tournoiId === actualTournoi.tournoiId
-      : false;
-    return (
-      <ListeTournoiItem
-        tournoi={item}
-        estTournoiActuel={estTournoiActuel}
-        showModalInfos={showModalInfos}
-      />
-    );
+    return <ListeTournoiItem tournoi={item} showModalInfos={showModalInfos} />;
   };
 
   return (

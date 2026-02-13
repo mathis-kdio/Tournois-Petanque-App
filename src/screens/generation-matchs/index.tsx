@@ -10,6 +10,7 @@ import { VStack } from '@/components/ui/vstack';
 import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import { useTerrainsPreparationTournois } from '@/repositories/terrainsPreparationTournois/useTerrainsPreparationTournois';
+import { useTournois } from '@/repositories/tournois/useTournois';
 import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
@@ -48,6 +49,8 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
   const { terrains } = useTerrainsPreparationTournois();
   const { addTournoi, addMatchs, clearPreparationTournois } =
     useCreateTournoi();
+
+  const { setActualTournoi } = useTournois();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isGenerationEnd, setIsGenerationEnd] = useState(false);
@@ -102,12 +105,13 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
       optionsTournoi: PreparationTournoiModel,
     ) => {
       const tournoi = await addTournoi(optionsTournoi);
+      setActualTournoi(tournoi.id);
 
       await addMatchs(matchs, tournoi.id);
 
       await clearPreparationTournois();
     },
-    [addMatchs, addTournoi, clearPreparationTournois],
+    [addTournoi, setActualTournoi, addMatchs, clearPreparationTournois],
   );
 
   const generation = useCallback(

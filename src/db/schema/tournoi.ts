@@ -29,6 +29,7 @@ export const tournoi = sqliteTable('tournoi', {
   mode: text({
     enum: [ModeTournoi.AVECEQUIPES, ModeTournoi.AVECNOMS, ModeTournoi.SANSNOMS],
   }).notNull(),
+  estTournoiActuel: integer({ mode: 'boolean' }).notNull(),
   createAt: integer('create_at').notNull(),
   updatedAt: integer('updated_at').notNull(),
 });

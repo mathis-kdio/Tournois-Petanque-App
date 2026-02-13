@@ -6,6 +6,7 @@ import { Text } from '@/components/ui/text';
 import { useTournois } from '@/repositories/tournois/useTournois';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { CommonActions } from '@react-navigation/native';
 import { useNavigation } from 'expo-router';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -13,15 +14,10 @@ import ModalDeleteTournoi from './ModalDeleteTournoi';
 
 export interface Props {
   tournoi: TournoiModel;
-  estTournoiActuel: boolean;
   showModalInfos: (tournoi: TournoiModel) => void;
 }
 
-const ListeTournoiItem: React.FC<Props> = ({
-  tournoi,
-  estTournoiActuel,
-  showModalInfos,
-}) => {
+const ListeTournoiItem: React.FC<Props> = ({ tournoi, showModalInfos }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
@@ -29,17 +25,13 @@ const ListeTournoiItem: React.FC<Props> = ({
   const [tournoiNameText, setTournoiNameText] = useState('');
   const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false);
 
-  const { renameTournoi } = useTournois();
+  const { renameTournoi, setActualTournoi } = useTournois();
+
+  const { tournoiId, name, estTournoiActuel } = tournoi;
 
   const chargerTournoi = () => {
-    throw Error('TODO chargerTournoi');
-    /*
-    const actionUpdateListeMatchs = {
-      type: 'AJOUT_MATCHS',
-      value: tournoi.tournoi,
-    };
-    dispatch(actionUpdateListeMatchs);
-    */
+    setActualTournoi(tournoiId);
+
     navigation.dispatch(
       CommonActions.reset({
         routes: [{ name: 'tournoi' }],
@@ -50,7 +42,7 @@ const ListeTournoiItem: React.FC<Props> = ({
   const modalSupprimerTournoi = () => {
     return (
       <ModalDeleteTournoi
-        tournoiId={tournoi.tournoiId}
+        tournoiId={tournoiId}
         modalDeleteIsOpen={modalDeleteIsOpen}
         setModalDeleteIsOpen={setModalDeleteIsOpen}
       />
@@ -91,7 +83,7 @@ const ListeTournoiItem: React.FC<Props> = ({
     if (tournoiNameText === '') {
       return;
     }
-    await renameTournoi(tournoi.tournoiId, tournoiNameText);
+    await renameTournoi(tournoiId, tournoiNameText);
     setTournoiNameText('');
     setRenommerOn(false);
   };
@@ -102,7 +94,6 @@ const ListeTournoiItem: React.FC<Props> = ({
   };
 
   const tournoiName = () => {
-    const { name, tournoiId } = tournoi;
     const tournoiName = name ? name : `n°${tournoiId}`;
     if (renommerOn) {
       return (

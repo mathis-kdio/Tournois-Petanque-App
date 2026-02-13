@@ -60,6 +60,7 @@ function toNewTournoi(
   return {
     mode: mode,
     name: '',
+    estTournoiActuel: true,
     nbTours: nbTours,
     nbMatchs: nbMatchs,
     nbPtVictoire: nbPtVictoire,

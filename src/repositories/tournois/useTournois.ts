@@ -14,6 +14,7 @@ function toTournoiModel(tournoi: Tournoi, matchs: MatchModel[]): TournoiModel {
   return {
     tournoiId: tournoi.id,
     name: tournoi.name || undefined,
+    estTournoiActuel: tournoi.estTournoiActuel,
     creationDate: new Date(tournoi.createAt),
     updateDate: new Date(tournoi.updatedAt),
     matchs: matchs,
@@ -61,9 +62,10 @@ function toJoueurModel(joueur: Joueur): JoueurModel {
 }
 
 export const useTournois = () => {
-  const { data: data1 } = useLiveQuery(TournoisRepository.getTournoi());
+  const { data: tournois } = useLiveQuery(TournoisRepository.getTournois());
 
-  const tournoiId = data1[0] ? data1[0].id : -1;
+  const tournoiActuel = tournois.find((tournoi) => tournoi.estTournoiActuel);
+  const tournoiId = tournoiActuel ? tournoiActuel.id : -1;
   const { data: matchs } = useLiveQuery(
     MatchsRepository.getFullMatchsTournoi(tournoiId),
     [tournoiId],
@@ -112,8 +114,8 @@ export const useTournois = () => {
       .map(toJoueurModel);
   }, [equipesWithJoueursTournoi]);
 
-  const tournoiVM = useMemo(() => {
-    if (!data1.length || !matchs.length || !equipesWithJoueursTournoi.length) {
+  const actualTournoiVM = useMemo(() => {
+    if (!tournoiActuel || !matchs.length || !equipesWithJoueursTournoi.length) {
       return;
     }
 
@@ -142,8 +144,8 @@ export const useTournois = () => {
 
       return toMatchmodel(match, equipe1, equipe2);
     });
-    return toTournoiModel(data1[0], matchModels);
-  }, [data1, matchs, equipesWithJoueursTournoi]);
+    return toTournoiModel(tournoiActuel, matchModels);
+  }, [tournoiActuel, matchs, equipesWithJoueursTournoi]);
 
   const { data: allTournois } = useLiveQuery(
     TournoisRepository.getAllTournois(),
@@ -155,6 +157,16 @@ export const useTournois = () => {
     return allTournois.map((tournoi) => toTournoiModel(tournoi, [])) ?? [];
   }, [allTournois]);
 
+  const setActualTournoi = async (id: number) => {
+    if (actualTournoiVM) {
+      await TournoisRepository.setActualTournoi(
+        actualTournoiVM.tournoiId,
+        false,
+      );
+    }
+    await TournoisRepository.setActualTournoi(id, true);
+  };
+
   //TODO : Ajouter autres tables à supprimer comme terrains, matchs etc
   const deleteTournoi = async (id: number) => {
     await TournoisRepository.deleteTournoi(id);
@@ -165,9 +177,10 @@ export const useTournois = () => {
   };
 
   return {
-    actualTournoi: tournoiVM,
+    actualTournoi: actualTournoiVM,
     joueursTournoi: joueursTournoi,
     listeTournois: listeTournoisVM,
+    setActualTournoi,
     deleteTournoi,
     renameTournoi,
   };
