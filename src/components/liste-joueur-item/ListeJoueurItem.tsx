@@ -23,7 +23,7 @@ export interface Props {
   showCheckbox: boolean;
   listesJoueurs: JoueurModel[];
   onDeleteJoueur: (id: number) => void;
-  onAddEquipeJoueur: (id: number, equipeId: number) => void;
+  onAddEquipeJoueur: (joueurModel: JoueurModel, equipeId: number) => void;
   onUpdateName: (joueurModel: JoueurModel, name: string) => void;
   onCheckJoueur: (joueurModel: JoueurModel, isChecked: boolean) => void;
 }

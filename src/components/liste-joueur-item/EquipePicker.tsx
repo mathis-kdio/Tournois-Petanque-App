@@ -20,7 +20,7 @@ export interface Props {
   joueur: JoueurModel;
   typeEquipes: TypeEquipes;
   listesJoueurs: JoueurModel[];
-  onAddEquipeJoueur: (id: number, equipeId: number) => void;
+  onAddEquipeJoueur: (joueurModel: JoueurModel, equipeId: number) => void;
 }
 
 const EquipePicker: React.FC<Props> = ({
@@ -31,7 +31,7 @@ const EquipePicker: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
 
-  const { joueurTournoiId, equipe } = joueur;
+  const { equipe } = joueur;
 
   const equipePickerItem = (equipe: number) => {
     return (
@@ -44,12 +44,7 @@ const EquipePicker: React.FC<Props> = ({
   };
 
   const ajoutEquipe = (equipeId: number) => {
-    /*const action = {
-      type: 'AJOUT_EQUIPE_JOUEUR',
-      value: [ModeTournoi.AVECEQUIPES, joueurId, equipeId],
-    };
-    dispatch(action);*/
-    onAddEquipeJoueur(joueurTournoiId, equipeId);
+    onAddEquipeJoueur(joueur, equipeId);
   };
 
   const selectedValue = equipe ? equipe.toString() : '0';

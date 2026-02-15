@@ -24,7 +24,7 @@ export interface Props {
 const CreateListeJoueur: React.FC<Props> = ({ type, idList }) => {
   const { t } = useTranslation();
 
-  const { renameJoueur, checkJoueur } = useJoueurs();
+  const { renameJoueur, checkJoueur, addEquipeJoueur } = useJoueurs();
   const {
     listeJoueurs,
     removeAllJoueursList,
@@ -43,16 +43,22 @@ const CreateListeJoueur: React.FC<Props> = ({ type, idList }) => {
     await removeJoueurList(id);
   };
 
-  const handleAddEquipeJoueur = (id: number, equipeId: number) => {
-    throw Error('TODO');
+  const handleAddEquipeJoueur = async (
+    joueurModel: JoueurModel,
+    equipeId: number,
+  ) => {
+    await addEquipeJoueur(joueurModel.uniqueBDDId, equipeId);
   };
 
-  const handleUpdateName = (joueurModel: JoueurModel, name: string) => {
-    renameJoueur(joueurModel.uniqueBDDId, name);
+  const handleUpdateName = async (joueurModel: JoueurModel, name: string) => {
+    await renameJoueur(joueurModel.uniqueBDDId, name);
   };
 
-  const handleCheckJoueur = (joueurModel: JoueurModel, isChecked: boolean) => {
-    checkJoueur(joueurModel.uniqueBDDId, isChecked);
+  const handleCheckJoueur = async (
+    joueurModel: JoueurModel,
+    isChecked: boolean,
+  ) => {
+    await checkJoueur(joueurModel.uniqueBDDId, isChecked);
   };
 
   const handleDeleteAllJoueurs = async () => {

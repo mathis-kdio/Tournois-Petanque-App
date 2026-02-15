@@ -35,6 +35,13 @@ export const JoueursRepository = {
       .where(eq(joueurs.id, id));
   },
 
+  updateEquipe(id: number, equipeId: number) {
+    return getDrizzleDb()
+      .update(joueurs)
+      .set({ equipe: equipeId })
+      .where(eq(joueurs.id, id));
+  },
+
   async select(uniqueBDDId: number) {
     const result = (
       await getDrizzleDb()

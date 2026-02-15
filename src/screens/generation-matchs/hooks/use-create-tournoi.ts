@@ -183,7 +183,6 @@ export const useCreateTournoi = () => {
   };
 
   return {
-    addEquipes,
     addTournoi,
     addMatchs,
     clearPreparationTournois,

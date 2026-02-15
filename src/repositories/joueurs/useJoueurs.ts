@@ -11,8 +11,14 @@ export const useJoueurs = () => {
     await JoueursRepository.updateName(joueur.id, name);
   };
 
+  const addEquipeJoueur = async (uniqueBDDId: number, equipeId: number) => {
+    const joueur = await JoueursRepository.select(uniqueBDDId);
+    await JoueursRepository.updateEquipe(joueur.id, equipeId);
+  };
+
   return {
     checkJoueur,
     renameJoueur,
+    addEquipeJoueur,
   };
 };
