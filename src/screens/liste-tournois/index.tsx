@@ -19,7 +19,7 @@ export default function ListeTournois() {
   const [infosTournoi, setInfosTournoi] = useState<TournoiModel | undefined>(
     undefined,
   );
-  const { listeTournois, actualTournoi, joueursTournoi } = useTournois();
+  const { listeTournois, joueursTournoi } = useTournois();
 
   if (!listeTournois) {
     return <Loading />;

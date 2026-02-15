@@ -97,7 +97,7 @@ export const useTournois = () => {
   );
 
   const joueursTournoi = useMemo(() => {
-    if (!equipesWithJoueursTournoi.length) {
+    if (!equipesWithJoueursTournoi || equipesWithJoueursTournoi.length === 0) {
       return;
     }
     const joueursIds = new Set();

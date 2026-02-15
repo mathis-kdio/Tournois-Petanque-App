@@ -46,47 +46,48 @@ const Securite = () => {
     }
 
     setIsLoading(true);
-    try {
-      // Mise à jour du mot de passe
-      const { error } = await supabaseClient.auth.updateUser({
-        password: newPassword,
-      });
 
-      if (error) {
-        Alert.alert('Erreur', error.message);
-        setError(true);
-      } else {
-        Alert.alert('Succès', 'Votre mot de passe a été changé avec succès.');
-      }
-    } catch (error) {
-      Alert.alert(
-        'Erreur',
-        'Une erreur est survenue lors du changement de mot de passe.',
-      );
+    // Mise à jour du mot de passe
+    const { error } = await supabaseClient.auth
+      .updateUser({
+        password: newPassword,
+      })
+      .catch(() => ({
+        error: new Error(
+          'Une erreur est survenue lors du changement de mot de passe.',
+        ),
+      }));
+
+    if (error) {
+      Alert.alert('Erreur', error.message);
       setError(true);
-    } finally {
-      setIsLoading(false);
+    } else {
+      Alert.alert('Succès', 'Votre mot de passe a été changé avec succès.');
       setError(false);
     }
+
+    setIsLoading(false);
   };
 
-  const handleInputChange =
-    (field: 'oldPassword' | 'newPassword' | 'confirmPassword') =>
-      (value: string) => {
-        switch (field) {
-          case 'oldPassword':
-            setOldPassword(value);
-            break;
-          case 'newPassword':
-            setNewPassword(value);
-            break;
-          case 'confirmPassword':
-            setConfirmPassword(value);
-            break;
-          default:
-            break;
-        }
-      };
+  const handleInputChange = (
+    field: 'oldPassword' | 'newPassword' | 'confirmPassword',
+  ) => {
+    return (value: string) => {
+      switch (field) {
+        case 'oldPassword':
+          setOldPassword(value);
+          break;
+        case 'newPassword':
+          setNewPassword(value);
+          break;
+        case 'confirmPassword':
+          setConfirmPassword(value);
+          break;
+        default:
+          break;
+      }
+    };
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
