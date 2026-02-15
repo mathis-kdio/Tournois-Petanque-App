@@ -1,6 +1,7 @@
 import { Joueur, NewJoueur, NewJoueursListes } from '@/db/schema';
 import { JoueursRepository } from '@/repositories/joueurs/joueursRepository';
 import { JoueursListesRepository } from '@/repositories/joueursListes/joueursListesRepository';
+import { JoueursSuggestionRepository } from '@/repositories/joueursSuggestion/joueursSuggestionRepository';
 import { JoueurType } from '@/types/enums/joueurType';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
@@ -66,6 +67,11 @@ export const useCreateListeJoueur = (listeId: number) => {
     };
     const joueur = await JoueursRepository.insert(newJoueur);
     await JoueursListesRepository.insert(toNewJoueursListes(joueur, listeId));
+
+    await JoueursSuggestionRepository.insertOrUpdateOccurence({
+      name: joueurName,
+      occurence: 1,
+    });
   };
 
   return {

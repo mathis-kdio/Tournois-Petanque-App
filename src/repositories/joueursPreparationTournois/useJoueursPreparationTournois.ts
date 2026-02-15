@@ -4,6 +4,7 @@ import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { useMemo } from 'react';
 import { JoueursRepository } from '../joueurs/joueursRepository';
+import { JoueursSuggestionRepository } from '../joueursSuggestion/joueursSuggestionRepository';
 import {
   JoueursPreparationTournoisRepository,
   JoueursPreparationTournoisWithJoueur,
@@ -68,6 +69,11 @@ export const useJoueursPreparationTournois = () => {
     await JoueursPreparationTournoisRepository.insert([
       toNewJoueursPreparationTournois(res, 0),
     ]);
+
+    await JoueursSuggestionRepository.insertOrUpdateOccurence({
+      name: joueurName,
+      occurence: 1,
+    });
   };
 
   const removeJoueursPreparationTournoi = async (joueurId: number) => {

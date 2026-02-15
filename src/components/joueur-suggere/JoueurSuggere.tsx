@@ -3,20 +3,20 @@ import { Box } from '@/components/ui/box';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
 import { JoueurType as JoueurTypeEnum } from '@/types/enums/joueurType';
-import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { JoueurSuggestionModel } from '@/types/interfaces/joueurSuggestionModel';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 import { FontAwesome5 } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import RemoveSuggereAlertDialog from './RemoveSuggereAlertDialog';
 
 export interface Props {
-  joueur: JoueurModel;
+  joueur: JoueurSuggestionModel;
   optionsTournoi: PreparationTournoiModel;
   onAddJoueur: (
     joueurName: string,
     joueurType: JoueurTypeEnum | undefined,
   ) => void;
-  supprimerJoueurSuggere: (joueurId: number) => void;
+  supprimerJoueurSuggere: (id: number) => void;
 }
 
 const JoueurSuggere: React.FC<Props> = ({
@@ -30,7 +30,7 @@ const JoueurSuggere: React.FC<Props> = ({
   );
   const [modalRemoveIsOpen, setModalRemoveIsOpen] = useState(false);
 
-  const { name, joueurTournoiId } = joueur;
+  const { name, id } = joueur;
 
   const addJoueur = () => {
     onAddJoueur(name, joueurType);
@@ -67,7 +67,7 @@ const JoueurSuggere: React.FC<Props> = ({
         />
       </Box>
       <RemoveSuggereAlertDialog
-        joueurId={joueurTournoiId}
+        id={id}
         modalRemoveIsOpen={modalRemoveIsOpen}
         setModalRemoveIsOpen={setModalRemoveIsOpen}
         supprimerJoueurSuggere={supprimerJoueurSuggere}

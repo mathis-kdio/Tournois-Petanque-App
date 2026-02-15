@@ -71,6 +71,20 @@
       "when": 1771186982140,
       "tag": "0009_ambitious_kinsey_walden",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "6",
+      "when": 1771189989528,
+      "tag": "0010_windy_mole_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "6",
+      "when": 1771191513092,
+      "tag": "0011_goofy_dexter_bennett",
+      "breakpoints": true
     }
   ]
 }

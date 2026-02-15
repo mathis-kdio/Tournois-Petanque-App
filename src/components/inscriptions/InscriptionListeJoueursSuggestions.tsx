@@ -4,9 +4,10 @@ import { Button, ButtonText } from '@/components/ui/button';
 import { FlatList } from '@/components/ui/flat-list';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { useJoueurs } from '@/repositories/joueurs/useJoueurs';
+import { useJoueursSuggestion } from '@/repositories/joueursSuggestion/useJoueursSuggestion';
 import { JoueurType } from '@/types/enums/joueurType';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { JoueurSuggestionModel } from '@/types/interfaces/joueurSuggestionModel';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 import { FontAwesome5 } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
@@ -26,38 +27,21 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
 
-  const { getAllJoueurs } = useJoueurs();
+  const { joueursSuggestion, cacherSuggestion } = useJoueursSuggestion();
 
-  const [suggestions, setSuggestions] = useState<JoueurModel[]>([]);
+  const [suggestions, setSuggestions] = useState<JoueurSuggestionModel[]>([]);
   const [nbSuggestions, setNbSuggestions] = useState(5);
 
   useEffect(() => {
     const fetchSuggestions = async () => {
-      //TODO Mettre en place BDD pour joueurs suggéré
-      const joueurs: JoueurModel[] = [];
-
-      const uniquesFiltres = Array.from(
-        new Map(joueurs.map((i) => [i.name, i])).values(),
-      ).filter((unique) =>
-        listeJoueurs.every((joueur) => joueur.name !== unique.name),
+      const suggestionNonInscrits = joueursSuggestion.filter((suggestion) =>
+        listeJoueurs.every((joueur) => joueur.name !== suggestion.name),
       );
 
-      const occurrences = uniquesFiltres.reduce<Record<string, number>>(
-        (acc, item) => {
-          acc[item.name] = (acc[item.name] || 0) + 1;
-          return acc;
-        },
-        {},
-      );
-
-      const resultat = uniquesFiltres.sort(
-        (a, b) => occurrences[b.name] - occurrences[a.name],
-      );
-
-      setSuggestions(resultat);
+      setSuggestions(suggestionNonInscrits);
     };
     fetchSuggestions();
-  }, [getAllJoueurs, listeJoueurs]);
+  }, [joueursSuggestion, listeJoueurs]);
 
   const buttonMoreSuggestedPlayers = () => {
     if (nbSuggestions >= suggestions.length) {
@@ -76,19 +60,21 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
     setNbSuggestions((prevState) => prevState + 5);
   };
 
+  const handleSuppressionSuggestion = async (id: number) => {
+    await cacherSuggestion(id);
+  };
+
   if (suggestions.length === 0) {
     return;
   }
 
   const partialSuggested = suggestions.slice(0, nbSuggestions);
-  const renderItem: ListRenderItem<JoueurModel> = ({ item }) => (
+  const renderItem: ListRenderItem<JoueurSuggestionModel> = ({ item }) => (
     <JoueurSuggere
       joueur={item}
       optionsTournoi={preparationTournoi}
       onAddJoueur={onAddJoueur}
-      supprimerJoueurSuggere={function (joueurId: number): void {
-        throw new Error('Function not implemented.');
-      }}
+      supprimerJoueurSuggere={handleSuppressionSuggestion}
     />
   );
 
@@ -101,7 +87,7 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
         removeClippedSubviews={false}
         persistentScrollbar={true}
         data={partialSuggested}
-        keyExtractor={(item) => item.joueurTournoiId.toString()}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
       />
       <Box className="px-10 pb-2">{buttonMoreSuggestedPlayers()}</Box>

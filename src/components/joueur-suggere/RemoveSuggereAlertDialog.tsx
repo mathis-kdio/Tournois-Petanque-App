@@ -15,14 +15,14 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 export interface Props {
-  joueurId: number;
+  id: number;
   modalRemoveIsOpen: boolean;
   setModalRemoveIsOpen: (value: React.SetStateAction<boolean>) => void;
-  supprimerJoueurSuggere: (joueurId: number) => void;
+  supprimerJoueurSuggere: (id: number) => void;
 }
 
 const RemoveSuggereAlertDialog: React.FC<Props> = ({
-  joueurId,
+  id,
   modalRemoveIsOpen,
   setModalRemoveIsOpen,
   supprimerJoueurSuggere,
@@ -31,7 +31,7 @@ const RemoveSuggereAlertDialog: React.FC<Props> = ({
 
   const removeSuggere = () => {
     //TODO Créer une table pour enrigistrer occurence des joueurs suggérés. La table doit être alimenté à chaque ajout de joueur
-    supprimerJoueurSuggere(joueurId);
+    supprimerJoueurSuggere(id);
     setModalRemoveIsOpen(false);
   };
 

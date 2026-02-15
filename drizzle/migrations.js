@@ -10,6 +10,8 @@ import m0006 from './0006_wild_the_spike.sql';
 import m0007 from './0007_medical_silver_sable.sql';
 import m0008 from './0008_fair_dormammu.sql';
 import m0009 from './0009_ambitious_kinsey_walden.sql';
+import m0010 from './0010_windy_mole_man.sql';
+import m0011 from './0011_goofy_dexter_bennett.sql';
 import journal from './meta/_journal.json';
 
 export default {
@@ -25,5 +27,7 @@ export default {
     m0007,
     m0008,
     m0009,
+    m0010,
+    m0011,
   },
 };
