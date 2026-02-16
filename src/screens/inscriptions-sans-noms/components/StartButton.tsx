@@ -27,7 +27,7 @@ const StartButton: React.FC<Props> = ({
     throw Error('typeEquipes non défini');
   }
 
-  const getNextScreen = (choixComplement: boolean, avecTerrains: boolean) => {
+  const getNextScreen = (choixComplement: boolean) => {
     if (choixComplement) {
       return 'choix-complement';
     } else if (avecTerrains) {
@@ -37,13 +37,13 @@ const StartButton: React.FC<Props> = ({
     }
   };
 
-  const commencer = async (choixComplement: boolean, avecTerrains: boolean) => {
+  const commencer = async (choixComplement: boolean) => {
     await clearJoueursAutresInscriptions();
 
     await addJoueurs(nbJoueurNormaux, nbJoueurEnfants);
 
     router.navigate({
-      pathname: `/inscriptions/${getNextScreen(choixComplement, avecTerrains)}`,
+      pathname: `/inscriptions/${getNextScreen(choixComplement)}`,
       params: {
         screenStackName: 'inscriptions-sans-noms',
       },
@@ -81,7 +81,7 @@ const StartButton: React.FC<Props> = ({
     <Button
       isDisabled={btnDisabled}
       action="positive"
-      onPress={() => commencer(choixComplement, avecTerrains)}
+      onPress={() => commencer(choixComplement)}
       className="h-min min-h-10"
     >
       <ButtonText>{title}</ButtonText>
