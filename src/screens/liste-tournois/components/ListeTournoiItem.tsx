@@ -29,8 +29,8 @@ const ListeTournoiItem: React.FC<Props> = ({ tournoi, showModalInfos }) => {
 
   const { tournoiId, name, estTournoiActuel } = tournoi;
 
-  const chargerTournoi = () => {
-    setActualTournoi(tournoiId);
+  const chargerTournoi = async () => {
+    await setActualTournoi(tournoiId);
 
     navigation.dispatch(
       CommonActions.reset({

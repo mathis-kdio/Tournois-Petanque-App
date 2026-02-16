@@ -30,8 +30,8 @@ const ModalDeleteTournoi: React.FC<Props> = ({
 
   const { deleteTournoi } = useTournois();
 
-  const supprimerTournoi = (tournoiId: number) => {
-    deleteTournoi(tournoiId);
+  const supprimerTournoi = async (tournoiId: number) => {
+    await deleteTournoi(tournoiId);
   };
 
   return (

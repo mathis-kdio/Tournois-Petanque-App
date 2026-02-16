@@ -17,9 +17,9 @@ const ListeTerrainItem: React.FC<Props> = ({ terrain }) => {
 
   const { deleteTerrain, renameTerrain } = useTerrainsPreparationTournois();
 
-  const supprimerTerrain = (terrain: TerrainModel) => {
+  const supprimerTerrain = async (terrain: TerrainModel) => {
     setRenommerOn(false);
-    deleteTerrain(terrain.id);
+    await deleteTerrain(terrain.id);
   };
 
   const renommerButton = (terrain: TerrainModel) => {
@@ -52,14 +52,14 @@ const ListeTerrainItem: React.FC<Props> = ({ terrain }) => {
     );
   };
 
-  const renommerTerrain = (terrain: TerrainModel) => {
+  const renommerTerrain = async (terrain: TerrainModel) => {
     if (terrainText === '') {
       throw Error('renommerTerrain ne devrait pas être possible');
     }
 
     setRenommerOn(false);
 
-    renameTerrain(terrain.id, terrainText);
+    await renameTerrain(terrain.id, terrainText);
 
     setTerrainText('');
   };

@@ -105,8 +105,8 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
     router.back();
   };
 
-  const supprimerResultat = () => {
-    resetScore(match.matchId);
+  const supprimerResultat = async () => {
+    await resetScore(match.matchId);
     router.back();
   };
 

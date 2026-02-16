@@ -70,11 +70,11 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
     setMemesAdversaires(value);
   };
 
-  const nextStep = () => {
+  const nextStep = async () => {
     if (!nbTours || !nbPtVictoire) {
       throw Error('nbTours ou nbPtVictoire ne devrait pas être undefined');
     }
-    updateOptionsPreparationTournoi(
+    await updateOptionsPreparationTournoi(
       nbTours,
       nbPtVictoire,
       speciauxIncompatibles,

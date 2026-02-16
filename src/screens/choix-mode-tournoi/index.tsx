@@ -40,14 +40,14 @@ const ChoixModeTournoi = () => {
     return <Loading />;
   }
 
-  const nextStep = () => {
+  const nextStep = async () => {
     let finalModeTournoi = modeTournoi;
     const { typeTournoi } = preparationTournoiVM;
     if (typeTournoi !== TypeTournoi.MELEDEMELE) {
       finalModeTournoi = ModeTournoi.AVECEQUIPES;
     }
 
-    updateModePreparationTournoi(
+    await updateModePreparationTournoi(
       typeEquipes,
       finalModeTournoi,
       modeCreationEquipes,

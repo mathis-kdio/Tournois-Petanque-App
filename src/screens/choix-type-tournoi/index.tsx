@@ -63,8 +63,8 @@ const ChoixTypeTournoi = () => {
     );
   };
 
-  const navigate = (typeTournoi: TypeTournoi) => {
-    updateTypePreparationTournoi(typeTournoi);
+  const navigate = async (typeTournoi: TypeTournoi) => {
+    await updateTypePreparationTournoi(typeTournoi);
     return router.navigate('inscriptions/choix-mode-tournoi');
   };
 

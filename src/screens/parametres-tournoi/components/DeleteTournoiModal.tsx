@@ -40,8 +40,8 @@ const DeleteTournoiModal: React.FC<Props> = ({
       }),
     );
 
-    setTimeout(() => {
-      deleteTournoi(tournoiId);
+    setTimeout(async () => {
+      await deleteTournoi(tournoiId);
     }, 1000);
   };
 

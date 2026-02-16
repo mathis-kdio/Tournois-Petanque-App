@@ -22,8 +22,8 @@ const ComplementCard: React.FC<Props> = ({
 
   const { updateComplementPreparationTournoi } = usePreparationTournoi();
 
-  const navigate = () => {
-    updateComplementPreparationTournoi(complement);
+  const navigate = async () => {
+    await updateComplementPreparationTournoi(complement);
 
     const screenName = avecTerrains ? 'liste-terrains' : 'generation-matchs';
     router.navigate({

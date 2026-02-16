@@ -29,8 +29,8 @@ const ListeTerrains: React.FC<Props> = ({ screenStackName }) => {
     return <Loading />;
   }
 
-  const ajoutTerrain = () => {
-    insertTerrain('');
+  const ajoutTerrain = async () => {
+    await insertTerrain('');
   };
 
   const renderItem: ListRenderItem<TerrainModel> = ({ item }) => (

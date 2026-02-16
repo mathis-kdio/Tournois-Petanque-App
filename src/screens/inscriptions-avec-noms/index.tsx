@@ -78,8 +78,8 @@ const InscriptionsAvecNoms = () => {
     );
   };
 
-  const handleDeleteJoueur = (id: number) => {
-    removeJoueursPreparationTournoi(id);
+  const handleDeleteJoueur = async (id: number) => {
+    await removeJoueursPreparationTournoi(id);
   };
 
   const handleAddEquipeJoueur = async (

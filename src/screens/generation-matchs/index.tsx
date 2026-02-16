@@ -105,7 +105,7 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
       optionsTournoi: PreparationTournoiModel,
     ) => {
       const tournoi = await addTournoi(optionsTournoi);
-      setActualTournoi(tournoi.id);
+      await setActualTournoi(tournoi.id);
 
       await addMatchs(matchs, tournoi.id);
 
