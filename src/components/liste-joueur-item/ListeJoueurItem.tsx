@@ -56,19 +56,6 @@ const ListeJoueurItem: React.FC<Props> = ({
     if (isInscription) {
       onUpdateName(joueur, joueurText);
     } else {
-      /*let data = { playerId: joueur.id, newName: joueurText };
-      const inGameRenamePlayer = {
-        type: 'INGAME_RENAME_PLAYER',
-        value: data,
-      };
-      dispatch(inGameRenamePlayer);
-      const actionUpdateTournoi = {
-        type: 'UPDATE_TOURNOI',
-        value: {
-          tournoiId: tournoiID,
-        },
-      };
-      dispatch(actionUpdateTournoi);*/
       onUpdateName(joueur, joueurText);
     }
     setRenommerOn(false);
