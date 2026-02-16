@@ -76,6 +76,32 @@ export const useJoueursPreparationTournois = () => {
     });
   };
 
+  const addJoueursPreparationTournoiFromList = async (listeId: number) => {
+    const joueursInscrits =
+      await JoueursPreparationTournoisRepository.getMany();
+    let nbJoueursInscrits = joueursInscrits.length;
+
+    const joueursListe = await JoueursRepository.getJoueursListe(listeId);
+    const newJoueurs = joueursListe
+      .map((a) => a.joueurs)
+      .map((joueur) =>
+        toNewJoueur(
+          nbJoueursInscrits++,
+          joueur.name,
+          joueur.type ?? undefined,
+          0,
+        ),
+      );
+    const joueurs = await JoueursRepository.insertMultiples(newJoueurs);
+
+    const newJoueursPreparationTournois = joueurs.map((joueur) =>
+      toNewJoueursPreparationTournois(joueur, 0),
+    );
+    await JoueursPreparationTournoisRepository.insert(
+      newJoueursPreparationTournois,
+    );
+  };
+
   const removeJoueursPreparationTournoi = async (joueurId: number) => {
     const joueur = await JoueursRepository.select(joueurId);
     await JoueursPreparationTournoisRepository.delete([joueur.id]);
@@ -91,6 +117,7 @@ export const useJoueursPreparationTournois = () => {
   return {
     joueurs: actualJoueursPreparationTournoiVM,
     addJoueursPreparationTournoi,
+    addJoueursPreparationTournoiFromList,
     removeJoueursPreparationTournoi,
     removeAllJoueursPreparationTournoi,
   };

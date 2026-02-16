@@ -3,6 +3,7 @@ import { Button, ButtonText } from '@/components/ui/button';
 import { HStack } from '@/components/ui/hstack';
 import { Input, InputField } from '@/components/ui/input';
 import { Text } from '@/components/ui/text';
+import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -26,33 +27,14 @@ const ListeJoueursItem: React.FC<Props> = ({
   const { t } = useTranslation();
   const router = useRouter();
 
+  const { addJoueursPreparationTournoiFromList } =
+    useJoueursPreparationTournois();
+
   const [renommerOn, setRenommerOn] = useState(false);
   const [listNameText, setListNameText] = useState('');
   const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false);
 
   const modifyList = (listId: number) => {
-    throw Error('TODO modifyList');
-    /*
-    const actionRemoveList = {
-      type: 'SUPPR_ALL_JOUEURS',
-      value: [ModeTournoi.SAUVEGARDE],
-    };
-    dispatch(actionRemoveList);
-    const actionLoadList = {
-      type: 'LOAD_SAVED_LIST',
-      value: {
-        typeInscriptionSrc: 'avecNoms',
-        typeInscriptionDst: ModeTournoi.SAUVEGARDE,
-        listId: listId,
-      },
-    };
-    dispatch(actionLoadList);
-    const updateOptionModeTournoi = {
-      type: 'UPDATE_OPTION_TOURNOI',
-      value: ['mode', ModeTournoi.SAUVEGARDE],
-    };
-    dispatch(updateOptionModeTournoi);
-    */
     router.navigate({
       pathname: '/listes-joueurs/create-liste-joueurs',
       params: {
@@ -141,17 +123,8 @@ const ListeJoueursItem: React.FC<Props> = ({
     }
   };
 
-  const loadList = (listId: number) => {
-    throw Error('TODO Load Liste');
-    /*const actionLoadList = {
-      type: 'LOAD_SAVED_LIST',
-      value: {
-        typeInscriptionSrc: 'avecNoms',
-        typeInscriptionDst: optionsTournoi.mode,
-        listId: listId,
-      },
-    };
-    dispatch(actionLoadList);*/
+  const loadList = async (listId: number) => {
+    await addJoueursPreparationTournoiFromList(listId);
     router.back();
   };
 
