@@ -5,19 +5,16 @@ export const nextMatchMultiChances = (
   nbMatchs: number,
   nbTours: number,
 ) => {
-  const { matchId, manche, score1, score2, equipe } = match;
+  const { matchId, manche, score1, score2 } = match;
   if (score1 === undefined || score2 === undefined) {
     throw Error(
       'score1 ou score2 doivent être définis pour calculer le prochain match multichance',
     );
   }
 
-  let gagnant = equipe[0];
-  let perdant = equipe[1];
-  if (score2 > score1) {
-    gagnant = equipe[1];
-    perdant = equipe[0];
-  }
+  const gagnantEquipeNumber: 0 | 1 = score2 > score1 ? 1 : 0;
+  const perdantEquipeNumber: 0 | 1 = score2 > score1 ? 0 : 1;
+
   const nbMatchsTour = nbMatchs / nbTours;
 
   const offset = Math.ceil((matchId % (nbMatchsTour / 2 ** (manche - 1))) / 2);
@@ -25,16 +22,13 @@ export const nextMatchMultiChances = (
   const perdantMatchId =
     matchId + nbMatchsTour + nbMatchsTour / 2 ** manche - offset;
 
-  const equipeId = matchId % 2;
-  const actionMultichancesAddNextMatch = {
-    type: 'MULTICHANCES_ADD_NEXT_MATCH',
-    value: {
-      gagnant: gagnant,
-      gagnantMatchId: gagnantMatchId,
-      perdant: perdant,
-      perdantMatchId: perdantMatchId,
-      equipeId: equipeId,
-    },
+  const nextEquipeNumber = (matchId % 2) as 0 | 1;
+
+  return {
+    gagnantEquipeNumber,
+    gagnantMatchId,
+    perdantEquipeNumber,
+    perdantMatchId,
+    nextEquipeNumber,
   };
-  return actionMultichancesAddNextMatch;
 };

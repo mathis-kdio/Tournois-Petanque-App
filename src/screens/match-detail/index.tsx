@@ -11,7 +11,6 @@ import { useMatchs } from '@/repositories/matchs/useMatchs';
 import { useTournois } from '@/repositories/tournois/useTournois';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { MatchModel } from '@/types/interfaces/matchModel';
 import { requestReview } from '@/utils/storeReview/StoreReview';
 import AdMobMatchDetailBanner from '@components/adMob/AdMobMatchDetailBanner';
 import { nextMatch } from '@utils/generations/nextMatch/nextMatch';
@@ -40,6 +39,7 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
   if (!actualTournoi) {
     return <Loading />;
   }
+
   const match = actualTournoi.matchs.find((match) => match.matchId === idMatch);
   if (!match) {
     throw Error('match devrait être trouvé');
@@ -48,7 +48,7 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
   const ajoutScoreTextInputChanged = (score: string, equipe: EquipeId) =>
     equipe === 1 ? setScore1(score) : setScore2(score);
 
-  const displayTitle = (match: MatchModel) => {
+  const displayTitle = () => {
     const { matchId, terrain } = match;
     const title = terrain ? terrain.name : `${t('match_numero')}${matchId + 1}`;
     return (
@@ -78,7 +78,7 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
     }
   };
 
-  const displayEquipe = (equipeId: EquipeId, match: MatchModel) => {
+  const displayEquipe = (equipeId: EquipeId) => {
     const nomsJoueurs = [];
     const equipe = match.equipe[equipeId - 1];
     for (let i = 0; i < 4; i++) {
@@ -90,33 +90,27 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
     return nomsJoueurs;
   };
 
-  const envoyerResultat = async (match: MatchModel) => {
-    const { nbMatchs, typeTournoi, nbTours } = actualTournoi.options;
+  const envoyerResultat = async () => {
+    const { nbMatchs, typeTournoi, nbTours, tournoiID } = actualTournoi.options;
     await requestReview();
 
     if (!score1 || !score2) {
       return;
     }
-    updateScore(match.matchId, parseInt(score1), parseInt(score2));
+    await updateScore(match.matchId, parseInt(score1), parseInt(score2));
 
-    //Si tournoi type coupe et pas le dernier match, alors on ajoute les gagnants au match suivant
-    const actionNextMatch = nextMatch(match, nbMatchs, typeTournoi, nbTours);
-    if (actionNextMatch !== undefined) {
-      throw Error('TODO actionNextMatch');
-      /*
-      dispatch(actionNextMatch);
-      */
-    }
+    //Actualise les matchs suivants si nécessaire selon le type de tournoi (COUPE & MULTICHANCES)
+    await nextMatch(match, nbMatchs, typeTournoi, nbTours, tournoiID);
 
     router.back();
   };
 
-  const supprimerResultat = (match: MatchModel) => {
+  const supprimerResultat = () => {
     resetScore(match.matchId);
     router.back();
   };
 
-  const boutonValider = (match: MatchModel) => {
+  const boutonValider = () => {
     const { nbPtVictoire, typeTournoi } = actualTournoi.options;
 
     let btnDisabled: boolean;
@@ -163,7 +157,7 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
       <Button
         isDisabled={btnDisabled}
         action={action}
-        onPress={() => envoyerResultat(match)}
+        onPress={envoyerResultat}
       >
         <ButtonText>{text}</ButtonText>
       </Button>
@@ -177,13 +171,13 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
         <TopBarBack title={t('detail_match_navigation_title')} />
         <VStack className="px-10 justify-between">
           <VStack space="xl">
-            {displayTitle(match)}
+            {displayTitle()}
             <HStack className="items-center">
-              <Box className="flex-2">{displayEquipe(1, match)}</Box>
+              <Box className="flex-2">{displayEquipe(1)}</Box>
               <Box className="flex-1 items-center">
                 <Text className="text-typography-white text-xl">{t('vs')}</Text>
               </Box>
-              <Box className="flex-2">{displayEquipe(2, match)}</Box>
+              <Box className="flex-2">{displayEquipe(2)}</Box>
             </HStack>
             <HStack space="lg">
               <Box className="flex-1">
@@ -231,10 +225,10 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
             </HStack>
           </VStack>
           <VStack space="lg" className="my-5">
-            <Button action="negative" onPress={() => supprimerResultat(match)}>
+            <Button action="negative" onPress={supprimerResultat}>
               <ButtonText>{t('supprimer_score')}</ButtonText>
             </Button>
-            {boutonValider(match)}
+            {boutonValider()}
           </VStack>
           <VStack className="mb-5">
             <AdMobMatchDetailBanner />

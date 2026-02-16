@@ -78,6 +78,19 @@ export const MatchsRepository = {
       .where(eq(match.id, id));
   },
 
+  updateMatchNext(
+    tournoiId: number,
+    equipeId: number,
+    matchId: number,
+    nextEquipeNumber: 0 | 1,
+  ) {
+    const fieldToUpdate = nextEquipeNumber === 0 ? 'equipe1' : 'equipe2';
+    return getDrizzleDb()
+      .update(match)
+      .set({ [fieldToUpdate]: equipeId })
+      .where(and(eq(match.tournoiId, tournoiId), eq(match.matchId, matchId)));
+  },
+
   resetScore(id: number) {
     return getDrizzleDb()
       .update(match)

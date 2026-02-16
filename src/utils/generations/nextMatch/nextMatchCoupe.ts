@@ -1,15 +1,13 @@
 import { MatchModel } from '@/types/interfaces/matchModel';
 
 export const nextMatchCoupe = (match: MatchModel, nbMatchs: number) => {
-  const { matchId, score1, score2, manche, equipe } = match;
-  let gagnant = equipe[0];
+  const { matchId, score1, score2, manche } = match;
   if (!score2 || !score1) {
     throw Error;
   }
 
-  if (score2 > score1) {
-    gagnant = equipe[1];
-  }
+  const equipeNumber: 1 | 0 = score2 > score1 ? 1 : 0;
+
   let nextMatchId = null;
 
   let div = 2;
@@ -34,10 +32,11 @@ export const nextMatchCoupe = (match: MatchModel, nbMatchs: number) => {
       (nbMatchsManche - Math.ceil((matchId % nbMatchsAvantManche) / 2));
   }
 
-  const equipeId = matchId % 2;
-  const actionAjoutAdversaire = {
-    type: 'COUPE_AJOUT_ADVERSAIRE',
-    value: { gagnant: gagnant, nextMatchId: nextMatchId, equipeId: equipeId },
+  const nextEquipeNumber = (matchId % 2) as 0 | 1;
+
+  return {
+    equipeNumber,
+    gagnantMatchId: nextMatchId,
+    nextEquipeNumber,
   };
-  return actionAjoutAdversaire;
 };
