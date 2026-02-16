@@ -19,6 +19,10 @@ export const TournoisRepository = {
     return getDrizzleDb().delete(tournoi).where(eq(tournoi.id, id));
   },
 
+  deleteAll() {
+    return getDrizzleDb().delete(tournoi);
+  },
+
   setActualTournoi(id: number, estTournoiActuel: boolean) {
     return getDrizzleDb()
       .update(tournoi)

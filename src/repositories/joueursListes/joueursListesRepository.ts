@@ -25,4 +25,8 @@ export const JoueursListesRepository = {
       .delete(joueursListes)
       .where(eq(joueursListes.listeId, listeId));
   },
+
+  deleteAll() {
+    return getDrizzleDb().delete(joueursListes);
+  },
 };

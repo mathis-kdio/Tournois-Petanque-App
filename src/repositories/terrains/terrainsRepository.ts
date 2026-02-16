@@ -21,6 +21,10 @@ export const TerrainsRepository = {
     return getDrizzleDb().delete(terrains).where(eq(terrains.id, terrainId));
   },
 
+  deleteAll() {
+    return getDrizzleDb().delete(terrains);
+  },
+
   rename(terrainId: number, name: string) {
     return getDrizzleDb()
       .update(terrains)

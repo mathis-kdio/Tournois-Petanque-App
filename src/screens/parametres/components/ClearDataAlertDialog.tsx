@@ -12,6 +12,7 @@ import { Heading } from '@/components/ui/heading';
 import { CloseIcon, Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { useTranslation } from 'react-i18next';
+import { useClearData } from '../hooks/use-clear-data';
 
 export interface Props {
   alertOpen: boolean;
@@ -21,46 +22,11 @@ export interface Props {
 const ClearDataAlertDialog: React.FC<Props> = ({ alertOpen, setAlertOpen }) => {
   const { t } = useTranslation();
 
-  const clearData = () => {
+  const { clearData } = useClearData();
+
+  const handleClearData = async () => {
     setAlertOpen(false);
-    throw Error('TODO clearData');
-    /*
-    const actionRemoveAllPlayersAvecNoms = {
-      type: 'SUPPR_ALL_JOUEURS',
-      value: ['avecNoms'],
-    };
-    dispatch(actionRemoveAllPlayersAvecNoms);
-    const actionRemoveAllPlayersSansNoms = {
-      type: 'SUPPR_ALL_JOUEURS',
-      value: ['sansNoms'],
-    };
-    dispatch(actionRemoveAllPlayersSansNoms);
-    const actionRemoveAllPlayersAvecEquipes = {
-      type: 'SUPPR_ALL_JOUEURS',
-      value: ['avecEquipes'],
-    };
-    dispatch(actionRemoveAllPlayersAvecEquipes);
-    const actionRemoveAllPlayersHistorique = {
-      type: 'SUPPR_ALL_JOUEURS',
-      value: ['historique'],
-    };
-    dispatch(actionRemoveAllPlayersHistorique);
-    const actionRemoveAllPlayersSauvegarde = {
-      type: 'SUPPR_ALL_JOUEURS',
-      value: ['sauvegarde'],
-    };
-    dispatch(actionRemoveAllPlayersSauvegarde);
-    const actionRemoveAllSavedList = { type: 'REMOVE_ALL_SAVED_LIST' };
-    dispatch(actionRemoveAllSavedList);
-    const actionRemoveAllTournaments = { type: 'SUPPR_ALL_TOURNOIS' };
-    dispatch(actionRemoveAllTournaments);
-    const actionRemoveAllMatchs = { type: 'REMOVE_ALL_MATCHS' };
-    dispatch(actionRemoveAllMatchs);
-    const actionRemoveAllTerrains = { type: 'REMOVE_ALL_TERRAINS' };
-    dispatch(actionRemoveAllTerrains);
-    const actionRemoveAllOptions = { type: 'SUPPR_ALL_OPTIONS' };
-    dispatch(actionRemoveAllOptions);
-    */
+    await clearData();
   };
 
   return (
@@ -93,7 +59,7 @@ const ClearDataAlertDialog: React.FC<Props> = ({ alertOpen, setAlertOpen }) => {
                 {t('annuler')}
               </ButtonText>
             </Button>
-            <Button action="negative" onPress={() => clearData()}>
+            <Button action="negative" onPress={handleClearData}>
               <ButtonText>{t('oui')}</ButtonText>
             </Button>
           </ButtonGroup>

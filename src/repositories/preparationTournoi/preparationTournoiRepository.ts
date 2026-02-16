@@ -25,4 +25,8 @@ export const PreparationTournoisRepository = {
       .delete(preparationTournoi)
       .where(eq(preparationTournoi.id, 0));
   },
+
+  deleteAll() {
+    return getDrizzleDb().delete(preparationTournoi);
+  },
 };

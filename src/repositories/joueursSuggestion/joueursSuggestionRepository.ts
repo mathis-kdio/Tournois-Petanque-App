@@ -27,4 +27,8 @@ export const JoueursSuggestionRepository = {
       .set({ cacher: true })
       .where(eq(joueursSuggestion.id, id));
   },
+
+  deleteAll() {
+    return getDrizzleDb().delete(joueursSuggestion);
+  },
 };

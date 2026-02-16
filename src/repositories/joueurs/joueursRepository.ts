@@ -21,6 +21,10 @@ export const JoueursRepository = {
     return getDrizzleDb().delete(joueurs).where(inArray(joueurs.id, id));
   },
 
+  deleteAll() {
+    return getDrizzleDb().delete(joueurs);
+  },
+
   updateName(id: number, name: string) {
     return getDrizzleDb()
       .update(joueurs)

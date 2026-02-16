@@ -67,6 +67,10 @@ export const MatchsRepository = {
     return getDrizzleDb().delete(match).where(eq(match.id, id));
   },
 
+  deleteAll() {
+    return getDrizzleDb().delete(match);
+  },
+
   updateScore(id: number, score1: number, score2: number) {
     return getDrizzleDb()
       .update(match)

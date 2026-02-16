@@ -31,4 +31,8 @@ export const EquipesJoueursRepository = {
         .returning()
     )[0];
   },
+
+  deleteAll() {
+    return getDrizzleDb().delete(equipesJoueurs);
+  },
 };

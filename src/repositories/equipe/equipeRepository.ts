@@ -7,4 +7,8 @@ export const EquipeRepository = {
       await getDrizzleDb().insert(equipe).values(newEquipe).returning()
     )[0];
   },
+
+  deleteAll() {
+    return getDrizzleDb().delete(equipe);
+  },
 };
