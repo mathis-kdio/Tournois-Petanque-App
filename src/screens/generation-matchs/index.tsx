@@ -131,7 +131,6 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
         nbTours,
       } = preparationTournoiModel;
       if (
-        avecTerrains === undefined ||
         memesAdversaires === undefined ||
         memesEquipes === undefined ||
         !mode ||

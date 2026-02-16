@@ -94,8 +94,8 @@ const ChoixComplement: React.FC<Props> = ({ screenStackName }) => {
   }
 
   const { typeEquipes, avecTerrains } = preparationTournoiVM;
-  if (!typeEquipes || !avecTerrains) {
-    throw Error;
+  if (!typeEquipes) {
+    throw Error('typeEquipes manquant');
   }
 
   const nbModulo = typeEquipes === TypeEquipes.DOUBLETTE ? '4' : '6';

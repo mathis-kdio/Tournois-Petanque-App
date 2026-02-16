@@ -26,7 +26,7 @@ function toPreparationTournoiModel(
     typeEquipes: preparationTournoi.typeEquipes ?? undefined,
     complement: preparationTournoi.complement ?? undefined,
     typeTournoi: preparationTournoi.typeTournoi ?? undefined,
-    avecTerrains: preparationTournoi.avecTerrains ?? undefined,
+    avecTerrains: preparationTournoi.avecTerrains,
     mode: preparationTournoi.mode ?? undefined,
     modeCreationEquipes: preparationTournoi.modeCreationEquipes ?? undefined,
   };

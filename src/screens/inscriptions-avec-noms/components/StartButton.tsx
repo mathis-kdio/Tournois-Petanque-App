@@ -19,9 +19,9 @@ const StartButton: React.FC<Props> = ({ preparationTournoi, listeJoueurs }) => {
 
   const { mode, typeTournoi, typeEquipes, modeCreationEquipes, avecTerrains } =
     preparationTournoi;
-  if (!mode || !typeTournoi || !typeEquipes || avecTerrains === undefined) {
+  if (!mode || !typeTournoi || !typeEquipes) {
     throw Error(
-      `options tournoi manquantes: mode ${mode}, typeTournoi ${typeTournoi}, typeEquipes ${typeEquipes}, avecTerrains ${avecTerrains}`,
+      `options tournoi manquantes: mode ${mode}, typeTournoi ${typeTournoi}, typeEquipes ${typeEquipes}`,
     );
   }
   if (mode === ModeTournoi.AVECEQUIPES && !modeCreationEquipes) {

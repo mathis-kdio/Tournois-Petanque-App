@@ -71,7 +71,7 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
   };
 
   const nextStep = async () => {
-    if (!nbTours || !nbPtVictoire) {
+    if (nbTours === undefined || nbPtVictoire === undefined) {
       throw Error('nbTours ou nbPtVictoire ne devrait pas être undefined');
     }
     await updateOptionsPreparationTournoi(

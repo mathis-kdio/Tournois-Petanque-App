@@ -22,6 +22,11 @@ const StartButton: React.FC<Props> = ({
   const { addJoueurs, clearJoueursAutresInscriptions } =
     useInscriptionSansNom();
 
+  const { typeEquipes, avecTerrains } = preparationTournoiModel;
+  if (!typeEquipes) {
+    throw Error('typeEquipes non défini');
+  }
+
   const getNextScreen = (choixComplement: boolean, avecTerrains: boolean) => {
     if (choixComplement) {
       return 'choix-complement';
@@ -44,11 +49,6 @@ const StartButton: React.FC<Props> = ({
       },
     });
   };
-
-  const { typeEquipes, avecTerrains } = preparationTournoiModel;
-  if (!typeEquipes || avecTerrains === undefined) {
-    throw Error('typeEquipes ou avecTerrains non défini');
-  }
 
   let btnDisabled = false;
   let title = t('commencer_tournoi');

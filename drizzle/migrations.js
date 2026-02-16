@@ -12,6 +12,7 @@ import m0008 from './0008_fair_dormammu.sql';
 import m0009 from './0009_ambitious_kinsey_walden.sql';
 import m0010 from './0010_windy_mole_man.sql';
 import m0011 from './0011_goofy_dexter_bennett.sql';
+import m0012 from './0012_easy_payback.sql';
 import journal from './meta/_journal.json';
 
 export default {
@@ -29,5 +30,6 @@ export default {
     m0009,
     m0010,
     m0011,
+    m0012,
   },
 };

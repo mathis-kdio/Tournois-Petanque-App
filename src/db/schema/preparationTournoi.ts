@@ -18,7 +18,7 @@ export const preparationTournoi = sqliteTable('preparation_tournoi', {
   mode: text().$type<ModeTournoi>(),
   modeCreationEquipes: text().$type<ModeCreationEquipes>(),
   complement: text().$type<Complement>(),
-  avecTerrains: integer({ mode: 'boolean' }),
+  avecTerrains: integer({ mode: 'boolean' }).default(false).notNull(),
 });
 
 export type PreparationTournoi = typeof preparationTournoi.$inferSelect;

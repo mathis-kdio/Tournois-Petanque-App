@@ -51,8 +51,7 @@ function toNewTournoi(
       typeTournoi !== TypeTournoi.COUPE &&
       typeTournoi !== TypeTournoi.MELEDEMELE &&
       typeTournoi !== TypeTournoi.MELEE &&
-      typeTournoi !== TypeTournoi.MULTICHANCES) ||
-    avecTerrains === undefined
+      typeTournoi !== TypeTournoi.MULTICHANCES)
   ) {
     throw Error('aaa');
   }

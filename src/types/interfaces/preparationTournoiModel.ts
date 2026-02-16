@@ -17,7 +17,7 @@ export interface PreparationTournoiModel {
   typeEquipes?: TypeEquipes;
   complement?: Complement;
   typeTournoi?: TypeTournoi;
-  avecTerrains?: boolean;
+  avecTerrains: boolean;
   mode?: ModeTournoi;
   modeCreationEquipes?: ModeCreationEquipes;
 }
