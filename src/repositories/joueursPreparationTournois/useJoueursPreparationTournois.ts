@@ -84,9 +84,9 @@ export const useJoueursPreparationTournois = () => {
     const joueursListe = await JoueursRepository.getJoueursListe(listeId);
     const newJoueurs = joueursListe
       .map((a) => a.joueurs)
-      .map((joueur) =>
+      .map((joueur, index) =>
         toNewJoueur(
-          nbJoueursInscrits++,
+          nbJoueursInscrits + index,
           joueur.name,
           joueur.type ?? undefined,
           0,
