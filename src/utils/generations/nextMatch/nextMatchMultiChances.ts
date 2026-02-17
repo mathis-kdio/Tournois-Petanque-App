@@ -1,17 +1,11 @@
-import { MatchModel } from '@/types/interfaces/matchModel';
-
 export const nextMatchMultiChances = (
-  match: MatchModel,
+  matchId: number,
+  score1: number,
+  score2: number,
+  manche: number,
   nbMatchs: number,
   nbTours: number,
 ) => {
-  const { matchId, manche, score1, score2 } = match;
-  if (score1 === undefined || score2 === undefined) {
-    throw Error(
-      'score1 ou score2 doivent être définis pour calculer le prochain match multichance',
-    );
-  }
-
   const gagnantEquipeNumber: 0 | 1 = score2 > score1 ? 1 : 0;
   const perdantEquipeNumber: 0 | 1 = score2 > score1 ? 0 : 1;
 

@@ -1,11 +1,10 @@
-import { MatchModel } from '@/types/interfaces/matchModel';
-
-export const nextMatchCoupe = (match: MatchModel, nbMatchs: number) => {
-  const { matchId, score1, score2, manche } = match;
-  if (!score2 || !score1) {
-    throw Error;
-  }
-
+export const nextMatchCoupe = (
+  matchId: number,
+  score1: number,
+  score2: number,
+  manche: number,
+  nbMatchs: number,
+) => {
   const equipeNumber: 1 | 0 = score2 > score1 ? 1 : 0;
 
   let nextMatchId = null;

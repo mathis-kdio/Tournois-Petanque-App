@@ -104,7 +104,16 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
     await updateScore(match.matchId, nombreScore1, nombreScore2);
 
     //Actualise les matchs suivants si nécessaire selon le type de tournoi (COUPE & MULTICHANCES)
-    await nextMatch(match, nbMatchs, typeTournoi, nbTours, tournoiID);
+    await nextMatch(
+      match.matchId,
+      nombreScore1,
+      nombreScore2,
+      match.manche,
+      nbMatchs,
+      typeTournoi,
+      nbTours,
+      tournoiID,
+    );
 
     router.back();
   };
