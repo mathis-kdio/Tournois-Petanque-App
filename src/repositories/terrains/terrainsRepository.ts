@@ -1,6 +1,6 @@
 import { NewTerrain, terrains } from '@/db/schema';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { eq } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 
 export const TerrainsRepository = {
   getAll() {
@@ -17,8 +17,8 @@ export const TerrainsRepository = {
     return result;
   },
 
-  delete(terrainId: number) {
-    return getDrizzleDb().delete(terrains).where(eq(terrains.id, terrainId));
+  delete(idlist: number[]) {
+    return getDrizzleDb().delete(terrains).where(inArray(terrains.id, idlist));
   },
 
   deleteAll() {

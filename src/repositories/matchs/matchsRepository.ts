@@ -1,7 +1,7 @@
 import { equipe, terrains } from '@/db/schema';
 import { match, NewMatch } from '@/db/schema/match';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, inArray } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/sqlite-core';
 
 export type FullMatch = {
@@ -63,8 +63,8 @@ export const MatchsRepository = {
     return getDrizzleDb().insert(match).values(newMatchs).returning();
   },
 
-  deleteMatch(id: number) {
-    return getDrizzleDb().delete(match).where(eq(match.id, id));
+  delete(idlist: number[]) {
+    return getDrizzleDb().delete(match).where(inArray(match.id, idlist));
   },
 
   deleteAll() {

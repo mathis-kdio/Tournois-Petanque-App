@@ -11,7 +11,7 @@ import { Button, ButtonGroup, ButtonText } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { CloseIcon, Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
-import { useTournois } from '@/repositories/tournois/useTournois';
+import { useDeleteTournoi } from '@/repositories/tournois/useDeleteTournoi';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -28,7 +28,7 @@ const ModalDeleteTournoi: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
 
-  const { deleteTournoi } = useTournois();
+  const { deleteTournoi } = useDeleteTournoi();
 
   const supprimerTournoi = async (tournoiId: number) => {
     await deleteTournoi(tournoiId);

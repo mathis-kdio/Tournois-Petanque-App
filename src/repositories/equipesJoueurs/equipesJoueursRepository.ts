@@ -5,6 +5,7 @@ import {
 } from '@/db/schema/equipesJoueurs';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { JoueurType } from '@/types/enums/joueurType';
+import { inArray } from 'drizzle-orm';
 
 export type FullEquipeJoueur = {
   equipes_joueurs: {
@@ -30,6 +31,12 @@ export const EquipesJoueursRepository = {
         .values(newEquipesJoueurs)
         .returning()
     )[0];
+  },
+
+  delete(idlist: number[]) {
+    return getDrizzleDb()
+      .delete(equipesJoueurs)
+      .where(inArray(equipesJoueurs.id, idlist));
   },
 
   deleteAll() {

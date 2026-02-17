@@ -167,11 +167,6 @@ export const useTournois = () => {
     await TournoisRepository.setActualTournoi(id, true);
   };
 
-  //TODO : Ajouter autres tables à supprimer comme terrains, matchs etc
-  const deleteTournoi = async (id: number) => {
-    await TournoisRepository.deleteTournoi(id);
-  };
-
   const renameTournoi = async (id: number, name: string) => {
     await TournoisRepository.renameTournoi(id, name);
   };
@@ -181,7 +176,6 @@ export const useTournois = () => {
     joueursTournoi: joueursTournoi,
     listeTournois: listeTournoisVM,
     setActualTournoi,
-    deleteTournoi,
     renameTournoi,
   };
 };

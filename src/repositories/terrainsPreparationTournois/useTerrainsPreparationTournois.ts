@@ -59,7 +59,7 @@ export function useTerrainsPreparationTournois() {
 
   const deleteTerrain = async (terrainId: number) => {
     await TerrainsPreparationTournoisRepository.delete(terrainId);
-    await TerrainsRepository.delete(terrainId);
+    await TerrainsRepository.delete([terrainId]);
   };
 
   const renameTerrain = async (terrainId: number, name: string) => {
