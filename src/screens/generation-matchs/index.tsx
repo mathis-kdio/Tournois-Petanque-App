@@ -130,18 +130,11 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
         typeTournoi,
         nbTours,
       } = preparationTournoiModel;
-      if (
-        memesAdversaires === undefined ||
-        memesEquipes === undefined ||
-        !mode ||
-        !modeCreationEquipes ||
-        nbPtVictoire === undefined ||
-        speciauxIncompatibles === undefined ||
-        !typeEquipes ||
-        !typeTournoi ||
-        nbTours === undefined
-      ) {
-        throw Error('preparationTournoiModel incomplet');
+
+      if (!typeEquipes || !typeTournoi) {
+        throw Error(
+          'typeEquipes et typeTournoi nécessaires pour générer un tournoi',
+        );
       }
 
       let listeJoueursInscrits: JoueurModel[];
@@ -162,12 +155,27 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
       let echecGeneration: boolean | undefined = undefined;
       if (typeTournoi === TypeTournoi.MELEDEMELE) {
         if (typeEquipes === TypeEquipes.TETEATETE) {
+          if (nbTours === undefined || memesAdversaires === undefined) {
+            throw Error(
+              'generationTeteATete nbTours et memesAdversaires nécessaires',
+            );
+          }
           ({ matchs, nbMatchs, echecGeneration } = generationTeteATete(
             listeJoueursInscrits,
             nbTours,
             memesAdversaires,
           ));
         } else if (typeEquipes === TypeEquipes.DOUBLETTE) {
+          if (
+            nbTours === undefined ||
+            speciauxIncompatibles === undefined ||
+            memesEquipes === undefined ||
+            memesAdversaires === undefined
+          ) {
+            throw Error(
+              'generationDoublettes nbTours, speciauxIncompatibles, memesEquipes et memesAdversaires nécessaires',
+            );
+          }
           ({
             matchs,
             nbMatchs,
@@ -183,6 +191,16 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
             memesAdversaires,
           ));
         } else if (typeEquipes === TypeEquipes.TRIPLETTE) {
+          if (
+            nbTours === undefined ||
+            speciauxIncompatibles === undefined ||
+            memesEquipes === undefined ||
+            memesAdversaires === undefined
+          ) {
+            throw Error(
+              'generationTriplettes nbTours, speciauxIncompatibles, memesEquipes et memesAdversaires nécessaires',
+            );
+          }
           ({
             matchs,
             nbMatchs,
@@ -201,6 +219,11 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
           echecGeneration = true;
         }
       } else if (typeTournoi === TypeTournoi.MELEE) {
+        if (nbTours === undefined || memesAdversaires === undefined) {
+          throw Error(
+            'generationMelee nbTours et memesAdversaires nécessaires',
+          );
+        }
         ({ matchs, nbMatchs, echecGeneration } = generationMelee(
           listeJoueursInscrits,
           nbTours,

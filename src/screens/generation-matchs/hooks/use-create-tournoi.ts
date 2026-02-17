@@ -16,56 +16,33 @@ import {
   EquipesGenerationType,
   MatchGeneration,
 } from '@/types/interfaces/match-generation';
-import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import {
+  MemesAdversairesType,
+  PreparationTournoiModel,
+} from '@/types/interfaces/preparationTournoiModel';
 
 function toNewTournoi(
-  preparationTournoiModel: PreparationTournoiModel,
+  nbTours: number,
+  nbMatchs: number,
+  nbPtVictoire: number,
+  speciauxIncompatibles: boolean,
+  memesEquipes: boolean,
+  memesAdversaires: MemesAdversairesType,
+  typeEquipes: TypeEquipes,
+  typeTournoi: TypeTournoi,
+  avecTerrains: boolean,
+  mode: ModeTournoi.AVECNOMS | ModeTournoi.SANSNOMS | ModeTournoi.AVECEQUIPES,
 ): NewTournoi {
-  const {
-    nbTours,
-    nbMatchs,
-    nbPtVictoire,
-    speciauxIncompatibles,
-    memesEquipes,
-    memesAdversaires,
-    typeEquipes,
-    typeTournoi,
-    avecTerrains,
-    mode,
-  } = preparationTournoiModel;
-  if (
-    !mode ||
-    (mode !== ModeTournoi.AVECEQUIPES &&
-      mode !== ModeTournoi.AVECNOMS &&
-      mode !== ModeTournoi.SANSNOMS) ||
-    !nbTours ||
-    !nbMatchs ||
-    !nbPtVictoire ||
-    speciauxIncompatibles === undefined ||
-    memesEquipes === undefined ||
-    memesAdversaires === undefined ||
-    (typeEquipes !== TypeEquipes.DOUBLETTE &&
-      typeEquipes !== TypeEquipes.TETEATETE &&
-      typeEquipes !== TypeEquipes.TRIPLETTE) ||
-    (typeTournoi !== TypeTournoi.CHAMPIONNAT &&
-      typeTournoi !== TypeTournoi.COUPE &&
-      typeTournoi !== TypeTournoi.MELEDEMELE &&
-      typeTournoi !== TypeTournoi.MELEE &&
-      typeTournoi !== TypeTournoi.MULTICHANCES)
-  ) {
-    throw Error('aaa');
-  }
-
   return {
     mode: mode,
     name: '',
     estTournoiActuel: true,
     nbTours: nbTours,
     nbMatchs: nbMatchs,
-    nbPtVictoire: nbPtVictoire,
-    speciauxIncompatibles: speciauxIncompatibles,
-    memesEquipes: memesEquipes,
-    memesAdversaires: memesAdversaires,
+    nbPtVictoire: nbPtVictoire ?? 13,
+    speciauxIncompatibles: speciauxIncompatibles ?? true,
+    memesEquipes: memesEquipes ?? true,
+    memesAdversaires: memesAdversaires ?? 0,
     typeEquipes: typeEquipes,
     typeTournoi: typeTournoi,
     avecTerrains: avecTerrains,
@@ -147,9 +124,66 @@ export const useCreateTournoi = () => {
   const addTournoi = async (
     preparationTournoiModel: PreparationTournoiModel,
   ): Promise<Tournoi> => {
+    const {
+      nbTours,
+      nbMatchs,
+      nbPtVictoire,
+      speciauxIncompatibles,
+      memesEquipes,
+      memesAdversaires,
+      typeEquipes,
+      typeTournoi,
+      avecTerrains,
+      mode,
+    } = preparationTournoiModel;
+    if (nbTours === undefined) {
+      throw Error('nbTours doit être défini');
+    }
+
+    if (nbMatchs === undefined) {
+      throw Error('nbMatchs doit être défini');
+    }
+
+    if (
+      mode !== ModeTournoi.AVECEQUIPES &&
+      mode !== ModeTournoi.AVECNOMS &&
+      mode !== ModeTournoi.SANSNOMS
+    ) {
+      throw Error('mode doit être défini');
+    }
+
+    if (
+      typeEquipes !== TypeEquipes.DOUBLETTE &&
+      typeEquipes !== TypeEquipes.TETEATETE &&
+      typeEquipes !== TypeEquipes.TRIPLETTE
+    ) {
+      throw Error('typeEquipes doit être défini');
+    }
+
+    if (
+      typeTournoi !== TypeTournoi.CHAMPIONNAT &&
+      typeTournoi !== TypeTournoi.COUPE &&
+      typeTournoi !== TypeTournoi.MELEDEMELE &&
+      typeTournoi !== TypeTournoi.MELEE &&
+      typeTournoi !== TypeTournoi.MULTICHANCES
+    ) {
+      throw Error('typeTournoi doit être défini');
+    }
+
     return (
       await TournoisRepository.insertTournoi(
-        toNewTournoi(preparationTournoiModel),
+        toNewTournoi(
+          nbTours,
+          nbMatchs,
+          nbPtVictoire ?? 13,
+          speciauxIncompatibles ?? true,
+          memesEquipes ?? true,
+          memesAdversaires ?? 100,
+          typeEquipes,
+          typeTournoi,
+          avecTerrains,
+          mode,
+        ),
       )
     )[0] as Tournoi;
   };
