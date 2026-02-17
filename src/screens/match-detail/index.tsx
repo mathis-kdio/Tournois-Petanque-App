@@ -40,6 +40,9 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
     return <Loading />;
   }
 
+  const { nbPtVictoire, nbMatchs, typeTournoi, nbTours, tournoiID } =
+    actualTournoi.options;
+
   const match = actualTournoi.matchs.find((match) => match.matchId === idMatch);
   if (!match) {
     throw Error('match devrait être trouvé');
@@ -91,13 +94,14 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
   };
 
   const envoyerResultat = async () => {
-    const { nbMatchs, typeTournoi, nbTours, tournoiID } = actualTournoi.options;
     await requestReview();
 
-    if (!score1 || !score2) {
-      return;
+    const nombreScore1 = parseInt(score1 ?? '');
+    const nombreScore2 = parseInt(score2 ?? '');
+    if (isNaN(nombreScore1) || isNaN(nombreScore2)) {
+      throw Error('score1 ou score2 pas un nombre');
     }
-    await updateScore(match.matchId, parseInt(score1), parseInt(score2));
+    await updateScore(match.matchId, nombreScore1, nombreScore2);
 
     //Actualise les matchs suivants si nécessaire selon le type de tournoi (COUPE & MULTICHANCES)
     await nextMatch(match, nbMatchs, typeTournoi, nbTours, tournoiID);
@@ -111,24 +115,23 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
   };
 
   const boutonValider = () => {
-    const { nbPtVictoire, typeTournoi } = actualTournoi.options;
-
     let btnDisabled: boolean;
     let action: 'warning' | 'positive' | 'negative';
     let text: string;
 
-    const score1Valide = score1 !== undefined && score1 !== '';
-    const score2Valide = score2 !== undefined && score2 !== '';
+    const nombreScore1 = parseInt(score1 ?? '');
+    const nombreScore2 = parseInt(score2 ?? '');
+    const isScore1Valide = !isNaN(nombreScore1);
+    const isScore2Valide = !isNaN(nombreScore2);
 
-    if (score1Valide && score2Valide) {
+    if (isScore1Valide && isScore2Valide) {
       const egaliteCoupeMultiChances =
         (typeTournoi === TypeTournoi.MULTICHANCES ||
           typeTournoi === TypeTournoi.COUPE) &&
-        score1 === score2;
+        nombreScore1 === nombreScore2;
 
       const aucunGagnant =
-        score1 !== nbPtVictoire.toString() &&
-        score2 !== nbPtVictoire.toString();
+        nombreScore1 !== nbPtVictoire && nombreScore2 !== nbPtVictoire;
 
       if (egaliteCoupeMultiChances) {
         btnDisabled = true;
@@ -164,7 +167,6 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
     );
   };
 
-  const { nbPtVictoire } = actualTournoi.options;
   return (
     <ScrollView className="h-1 bg-custom-background">
       <VStack>
