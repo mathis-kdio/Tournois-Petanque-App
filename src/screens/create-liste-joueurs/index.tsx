@@ -74,6 +74,7 @@ const CreateListeJoueur: React.FC<Props> = ({ type, idList }) => {
     typeEquipes: TypeEquipes.TETEATETE,
     mode: ModeTournoi.AVECNOMS,
     typeTournoi: TypeTournoi.MELEDEMELE,
+    avecTerrains: false,
   };
 
   return (
