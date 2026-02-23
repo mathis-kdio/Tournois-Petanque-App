@@ -62,7 +62,9 @@ function toJoueurModel(joueur: Joueur): JoueurModel {
 }
 
 export const useTournois = () => {
-  const { data: tournois } = useLiveQuery(TournoisRepository.getTournois());
+  const { data: tournois = [] } = useLiveQuery(
+    TournoisRepository.getTournois(),
+  );
 
   const tournoiActuel = tournois.find((tournoi) => tournoi.estTournoiActuel);
   const tournoiId = tournoiActuel ? tournoiActuel.id : -1;
