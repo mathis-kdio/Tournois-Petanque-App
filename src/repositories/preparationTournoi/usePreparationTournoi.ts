@@ -45,8 +45,11 @@ export const usePreparationTournoi = () => {
 
   const updateTypePreparationTournoi = async (typeTournoi: TypeTournoi) => {
     const res = await PreparationTournoisRepository.getPreparationTournoi();
+    if (res.length === 0) {
+      throw Error('PreparationTournoi undefined');
+    }
     const updated = {
-      ...res[0],
+      ...res.at(0),
       id: 0,
       typeTournoi,
     };
@@ -59,8 +62,11 @@ export const usePreparationTournoi = () => {
     modeCreationEquipes: ModeCreationEquipes,
   ) => {
     const res = await PreparationTournoisRepository.getPreparationTournoi();
+    if (res.length === 0) {
+      throw Error('PreparationTournoi undefined');
+    }
     const updated = {
-      ...res[0],
+      ...res.at(0),
       id: 0,
       typeEquipes,
       mode,
@@ -78,8 +84,11 @@ export const usePreparationTournoi = () => {
     avecTerrains: boolean,
   ) => {
     const res = await PreparationTournoisRepository.getPreparationTournoi();
+    if (res.length === 0) {
+      throw Error('PreparationTournoi undefined');
+    }
     const updated = {
-      ...res[0],
+      ...res.at(0),
       id: 0,
       nbTours,
       nbPtVictoire,
@@ -93,8 +102,11 @@ export const usePreparationTournoi = () => {
 
   const updateComplementPreparationTournoi = async (complement: Complement) => {
     const res = await PreparationTournoisRepository.getPreparationTournoi();
+    if (res.length === 0) {
+      throw Error('PreparationTournoi undefined');
+    }
     const updated = {
-      ...res[0],
+      ...res.at(0),
       id: 0,
       complement,
     };
