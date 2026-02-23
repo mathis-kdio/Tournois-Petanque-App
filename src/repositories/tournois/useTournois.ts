@@ -117,7 +117,13 @@ export const useTournois = () => {
   }, [equipesWithJoueursTournoi]);
 
   const actualTournoiVM = useMemo(() => {
-    if (!tournoiActuel || !matchs.length || !equipesWithJoueursTournoi.length) {
+    if (
+      !tournoiActuel ||
+      !matchs ||
+      !matchs.length ||
+      !equipesWithJoueursTournoi ||
+      !equipesWithJoueursTournoi.length
+    ) {
       return;
     }
 
