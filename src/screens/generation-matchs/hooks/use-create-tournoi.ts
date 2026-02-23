@@ -93,18 +93,22 @@ export const useCreateTournoi = () => {
     equipeMatch: EquipeGenerationType,
     listeJoueurs: Joueur[],
   ) => {
-    equipeMatch.map(async (joueurIdEquipe) => {
-      if (joueurIdEquipe !== undefined && joueurIdEquipe !== -1) {
-        //Récupère le joueur de la BDD à partir du joueurId du match généré
-        const joueur = listeJoueurs.find((a) => a.joueurId === joueurIdEquipe);
-        if (!joueur) {
-          throw Error('joueur inconnu');
+    return await Promise.all(
+      equipeMatch.map(async (joueurIdEquipe) => {
+        if (joueurIdEquipe !== undefined && joueurIdEquipe !== -1) {
+          //Récupère le joueur de la BDD à partir du joueurId du match généré
+          const joueur = listeJoueurs.find(
+            (a) => a.joueurId === joueurIdEquipe,
+          );
+          if (!joueur) {
+            throw Error('joueur inconnu');
+          }
+          await EquipesJoueursRepository.insert(
+            toNewEquipesJoueurs(equipeId, joueur.id),
+          );
         }
-        await EquipesJoueursRepository.insert(
-          toNewEquipesJoueurs(equipeId, joueur.id),
-        );
-      }
-    });
+      }),
+    );
   };
 
   const addEquipes = async (
