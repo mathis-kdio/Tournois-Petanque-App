@@ -49,6 +49,13 @@ export const useCreateListeJoueur = (listeId: number) => {
   const removeJoueurList = async (joueurUniqueBDDId: number) => {
     await JoueursListesRepository.removeJoueurId(joueurUniqueBDDId);
     await JoueursRepository.delete([joueurUniqueBDDId]);
+
+    //Update JoueurId des autres joueurs de la liste
+    const joueurs = await JoueursRepository.getJoueursListe(listeId);
+    joueurs.map(
+      async ({ joueurs }, index) =>
+        await JoueursRepository.updateJoueurId(joueurs.id, index),
+    );
   };
 
   const addJoueurInList = async (

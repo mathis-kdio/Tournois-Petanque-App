@@ -106,6 +106,13 @@ export const useJoueursPreparationTournois = () => {
     const joueur = await JoueursRepository.select(joueurId);
     await JoueursPreparationTournoisRepository.delete([joueur.id]);
     await JoueursRepository.delete([joueur.id]);
+
+    //Update JoueurId des autres joueurs inscrits
+    const joueurs = await JoueursPreparationTournoisRepository.getMany();
+    joueurs.map(
+      async ({ joueurs }, index) =>
+        await JoueursRepository.updateJoueurId(joueurs.id, index),
+    );
   };
 
   const removeAllJoueursPreparationTournoi = async () => {
