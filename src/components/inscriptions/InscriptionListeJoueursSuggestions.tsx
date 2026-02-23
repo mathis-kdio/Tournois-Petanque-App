@@ -27,7 +27,7 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
 
-  const { joueursSuggestion, cacherSuggestion } = useJoueursSuggestion();
+  const { joueursSuggestion } = useJoueursSuggestion();
 
   const [suggestions, setSuggestions] = useState<JoueurSuggestionModel[]>([]);
   const [nbSuggestions, setNbSuggestions] = useState(5);
@@ -60,10 +60,6 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
     setNbSuggestions((prevState) => prevState + 5);
   };
 
-  const handleSuppressionSuggestion = async (id: number) => {
-    await cacherSuggestion(id);
-  };
-
   if (suggestions.length === 0) {
     return;
   }
@@ -74,7 +70,6 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
       joueur={item}
       optionsTournoi={preparationTournoi}
       onAddJoueur={onAddJoueur}
-      supprimerJoueurSuggere={handleSuppressionSuggestion}
     />
   );
 

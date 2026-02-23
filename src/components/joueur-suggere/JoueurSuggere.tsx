@@ -16,14 +16,12 @@ export interface Props {
     joueurName: string,
     joueurType: JoueurTypeEnum | undefined,
   ) => void;
-  supprimerJoueurSuggere: (id: number) => void;
 }
 
 const JoueurSuggere: React.FC<Props> = ({
   joueur,
   optionsTournoi,
   onAddJoueur,
-  supprimerJoueurSuggere,
 }) => {
   const [joueurType, setJoueurType] = useState<JoueurTypeEnum | undefined>(
     undefined,
@@ -70,7 +68,6 @@ const JoueurSuggere: React.FC<Props> = ({
         id={id}
         modalRemoveIsOpen={modalRemoveIsOpen}
         setModalRemoveIsOpen={setModalRemoveIsOpen}
-        supprimerJoueurSuggere={supprimerJoueurSuggere}
       />
     </HStack>
   );

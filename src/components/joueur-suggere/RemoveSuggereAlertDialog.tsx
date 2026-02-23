@@ -11,6 +11,7 @@ import { Button, ButtonGroup, ButtonText } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { CloseIcon, Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
+import { useJoueursSuggestion } from '@/repositories/joueursSuggestion/useJoueursSuggestion';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -18,20 +19,19 @@ export interface Props {
   id: number;
   modalRemoveIsOpen: boolean;
   setModalRemoveIsOpen: (value: React.SetStateAction<boolean>) => void;
-  supprimerJoueurSuggere: (id: number) => void;
 }
 
 const RemoveSuggereAlertDialog: React.FC<Props> = ({
   id,
   modalRemoveIsOpen,
   setModalRemoveIsOpen,
-  supprimerJoueurSuggere,
 }) => {
   const { t } = useTranslation();
 
-  const removeSuggere = () => {
-    //TODO Créer une table pour enrigistrer occurence des joueurs suggérés. La table doit être alimenté à chaque ajout de joueur
-    supprimerJoueurSuggere(id);
+  const { cacherSuggestion } = useJoueursSuggestion();
+
+  const removeSuggere = async () => {
+    await cacherSuggestion(id);
     setModalRemoveIsOpen(false);
   };
 
