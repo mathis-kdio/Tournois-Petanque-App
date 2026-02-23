@@ -115,7 +115,7 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
   );
 
   const generation = useCallback(
-    (preparationTournoiModel: PreparationTournoiModel) => {
+    async (preparationTournoiModel: PreparationTournoiModel) => {
       //Récupération des options que l'utilisateur a modifié ou laissé par défaut
       const {
         avecTerrains,
@@ -300,7 +300,7 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
       };
 
       //Ajout dans le store
-      ajoutMatchs(matchs, tournoiOptions);
+      await ajoutMatchs(matchs, tournoiOptions);
 
       //Désactivation de l'affichage du _displayLoading
       setIsLoading(false);
@@ -313,7 +313,7 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
   );
 
   const lanceurGeneration = useCallback(
-    (preparationTournoiModel: PreparationTournoiModel) => {
+    async (preparationTournoiModel: PreparationTournoiModel) => {
       const nbjoueurs = joueurs.length;
       const nbEssaisPossibles = nbjoueurs * nbjoueurs;
       let nbGenerationsRatee = 0;
@@ -324,7 +324,7 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
       // 2 si génération réussie
       //Tant que la génération échoue à cause du breaker alors on relancer
       while (nbGenerationsRatee < nbEssaisPossibles) {
-        returnType = generation(preparationTournoiModel);
+        returnType = await generation(preparationTournoiModel);
         if (returnType === 0 || returnType === 2) {
           break;
         } else {
@@ -345,8 +345,8 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
       return;
     }
 
-    const timer = setTimeout(() => {
-      lanceurGeneration(preparationTournoiVM);
+    const timer = setTimeout(async () => {
+      await lanceurGeneration(preparationTournoiVM);
     }, 1000);
 
     return () => {
