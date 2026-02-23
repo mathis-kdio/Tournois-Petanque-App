@@ -109,9 +109,11 @@ export const useJoueursPreparationTournois = () => {
 
     //Update JoueurId des autres joueurs inscrits
     const joueurs = await JoueursPreparationTournoisRepository.getMany();
-    joueurs.map(
-      async ({ joueurs }, index) =>
-        await JoueursRepository.updateJoueurId(joueurs.id, index),
+    await Promise.all(
+      joueurs.map(
+        async ({ joueurs }, index) =>
+          await JoueursRepository.updateJoueurId(joueurs.id, index),
+      ),
     );
   };
 
