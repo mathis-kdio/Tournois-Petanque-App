@@ -117,6 +117,16 @@ export const useJoueursPreparationTournois = () => {
     );
   };
 
+  const updateJoueursEquipe = async () => {
+    const joueurs = await JoueursPreparationTournoisRepository.getMany();
+    await Promise.all(
+      joueurs.map(
+        async ({ joueurs }, index) =>
+          await JoueursRepository.updateEquipe(joueurs.id, index + 1),
+      ),
+    );
+  };
+
   const removeAllJoueursPreparationTournoi = async () => {
     const joueur = await JoueursPreparationTournoisRepository.getMany();
     await JoueursPreparationTournoisRepository.deleteAll();
@@ -129,5 +139,6 @@ export const useJoueursPreparationTournois = () => {
     addJoueursPreparationTournoiFromList,
     removeJoueursPreparationTournoi,
     removeAllJoueursPreparationTournoi,
+    updateJoueursEquipe,
   };
 };

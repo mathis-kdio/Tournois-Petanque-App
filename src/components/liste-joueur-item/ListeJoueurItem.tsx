@@ -22,7 +22,7 @@ export interface Props {
   typeTournoi: TypeTournoi;
   showCheckbox: boolean;
   listesJoueurs: JoueurModel[];
-  onDeleteJoueur: (id: number) => void;
+  onDeleteJoueur: (id: number) => Promise<void>;
   onAddEquipeJoueur: (joueurModel: JoueurModel, equipeId: number) => void;
   onUpdateName: (joueurModel: JoueurModel, name: string) => void;
   onCheckJoueur: (joueurModel: JoueurModel, isChecked: boolean) => void;

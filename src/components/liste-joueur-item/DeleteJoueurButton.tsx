@@ -1,4 +1,5 @@
 import { Box } from '@/components/ui/box';
+import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { FontAwesome5 } from '@expo/vector-icons';
 import React from 'react';
@@ -8,7 +9,7 @@ export interface Props {
   isInscription: boolean;
   typeEquipes: TypeEquipes;
   setRenommerOn: (value: React.SetStateAction<boolean>) => void;
-  onDeleteJoueur: (id: number) => void;
+  onDeleteJoueur: (id: number) => Promise<void>;
 }
 
 const DeleteJoueurButton: React.FC<Props> = ({
@@ -18,17 +19,14 @@ const DeleteJoueurButton: React.FC<Props> = ({
   setRenommerOn,
   onDeleteJoueur,
 }) => {
-  const supprimerJoueur = () => {
+  const { updateJoueursEquipe } = useJoueursPreparationTournois();
+
+  const supprimerJoueur = async () => {
     setRenommerOn(false);
-    onDeleteJoueur(joueurUniqueBDDId);
+    await onDeleteJoueur(joueurUniqueBDDId);
 
     if (typeEquipes === TypeEquipes.TETEATETE) {
-      //TODO
-      /*const actionUpdateEquipe = {
-        type: 'UPDATE_ALL_JOUEURS_EQUIPE',
-        value: [modeTournoi],
-      };
-      dispatch(actionUpdateEquipe);*/
+      await updateJoueursEquipe();
     }
   };
 
