@@ -23,12 +23,18 @@ export interface Props {
   onAddJoueur: (
     joueurName: string,
     joueurType: JoueurTypeEnum | undefined,
-  ) => void;
+  ) => Promise<void>;
   onDeleteJoueur: (id: number) => Promise<void>;
-  onAddEquipeJoueur: (joueurModel: JoueurModel, equipeId: number) => void;
-  onUpdateName: (joueurModel: JoueurModel, name: string) => void;
-  onCheckJoueur: (joueurModel: JoueurModel, isChecked: boolean) => void;
-  onDeleteAllJoueurs: () => void;
+  onAddEquipeJoueur: (
+    joueurModel: JoueurModel,
+    equipeId: number,
+  ) => Promise<void>;
+  onUpdateName: (joueurModel: JoueurModel, name: string) => Promise<void>;
+  onCheckJoueur: (
+    joueurModel: JoueurModel,
+    isChecked: boolean,
+  ) => Promise<void>;
+  onDeleteAllJoueurs: () => Promise<void>;
 }
 
 const Inscription: React.FC<Props> = ({

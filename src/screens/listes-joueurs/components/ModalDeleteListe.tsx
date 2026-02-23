@@ -20,7 +20,7 @@ export interface Props {
   listId: number;
   modalDeleteIsOpen: boolean;
   setModalDeleteIsOpen: (value: React.SetStateAction<boolean>) => void;
-  onDelete: (id: number) => void;
+  onDelete: (id: number) => Promise<void>;
 }
 
 const ModalDeleteListe: React.FC<Props> = ({
@@ -31,8 +31,8 @@ const ModalDeleteListe: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
 
-  const _removeList = (listId: number) => {
-    onDelete(listId);
+  const _removeList = async (listId: number) => {
+    await onDelete(listId);
     setModalDeleteIsOpen(false);
   };
 

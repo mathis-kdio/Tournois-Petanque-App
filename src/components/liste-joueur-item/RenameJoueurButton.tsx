@@ -6,7 +6,7 @@ export interface Props {
   renommerOn: boolean;
   setRenommerOn: (value: React.SetStateAction<boolean>) => void;
   joueurText: string;
-  handleRenommerJoueur: () => void;
+  handleRenommerJoueur: () => Promise<void>;
 }
 
 const RenameJoueurButton: React.FC<Props> = ({
@@ -29,7 +29,7 @@ const RenameJoueurButton: React.FC<Props> = ({
   } else {
     name = 'check';
     bgColor = '#348352';
-    action = () => handleRenommerJoueur();
+    action = async () => await handleRenommerJoueur();
   }
 
   return (

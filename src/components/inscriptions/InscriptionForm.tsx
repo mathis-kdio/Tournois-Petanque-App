@@ -13,7 +13,7 @@ export interface Props {
   onAddJoueur: (
     joueurName: string,
     joueurType: JoueurTypeEnum | undefined,
-  ) => void;
+  ) => Promise<void>;
 }
 
 const InscriptionForm: React.FC<Props> = ({
@@ -42,12 +42,12 @@ const InscriptionForm: React.FC<Props> = ({
     }
   }, [addPlayerTextInput, etatBouton]);
 
-  const ajoutJoueurFormulaire = () => {
+  const ajoutJoueurFormulaire = async () => {
     if (joueurText === '') {
       return;
     }
 
-    onAddJoueur(joueurText, joueurType);
+    await onAddJoueur(joueurText, joueurType);
 
     setJoueurText('');
     setJoueurType(undefined);

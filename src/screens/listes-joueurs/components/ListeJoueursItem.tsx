@@ -14,8 +14,8 @@ import ModalDeleteListe from './ModalDeleteListe';
 export interface Props {
   listeJoueursInfos: ListeJoueursInfos;
   loadListScreen: boolean;
-  onDelete: (id: number) => void;
-  onUpdateName: (id: number, name: string) => void;
+  onDelete: (id: number) => Promise<void>;
+  onUpdateName: (id: number, name: string) => Promise<void>;
 }
 
 const ListeJoueursItem: React.FC<Props> = ({
@@ -85,11 +85,11 @@ const ListeJoueursItem: React.FC<Props> = ({
     );
   };
 
-  const renameList = (listId: number) => {
+  const renameList = async (listId: number) => {
     if (listNameText === '') {
       return;
     }
-    onUpdateName(listId, listNameText);
+    await onUpdateName(listId, listNameText);
     setListNameText('');
     setRenommerOn(false);
   };

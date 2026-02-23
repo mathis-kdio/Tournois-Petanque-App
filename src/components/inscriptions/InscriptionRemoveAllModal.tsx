@@ -11,13 +11,13 @@ import { Button, ButtonGroup, ButtonText } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { CloseIcon, Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 export interface Props {
   modalRemoveIsOpen: boolean;
-  setModalRemoveIsOpen: Dispatch<SetStateAction<boolean>>;
-  onDeleteAllJoueurs: () => void;
+  setModalRemoveIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onDeleteAllJoueurs: () => Promise<void>;
 }
 
 const InscriptionRemoveAllModal: React.FC<Props> = ({
@@ -27,8 +27,8 @@ const InscriptionRemoveAllModal: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
 
-  const removeAllPlayers = () => {
-    onDeleteAllJoueurs();
+  const removeAllPlayers = async () => {
+    await onDeleteAllJoueurs();
     setModalRemoveIsOpen(false);
   };
 

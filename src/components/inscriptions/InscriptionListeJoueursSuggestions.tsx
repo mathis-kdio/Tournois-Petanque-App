@@ -17,7 +17,10 @@ import { ListRenderItem } from 'react-native';
 export interface Props {
   listeJoueurs: JoueurModel[];
   preparationTournoi: PreparationTournoiModel;
-  onAddJoueur: (joueurName: string, joueurType: JoueurType | undefined) => void;
+  onAddJoueur: (
+    joueurName: string,
+    joueurType: JoueurType | undefined,
+  ) => Promise<void>;
 }
 
 const InscriptionListeJoueursSuggestions: React.FC<Props> = ({

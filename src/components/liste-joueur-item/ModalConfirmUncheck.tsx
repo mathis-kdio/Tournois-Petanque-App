@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 export interface Props {
   modalConfirmUncheckIsOpen: boolean;
   setModalConfirmUncheckIsOpen: (value: React.SetStateAction<boolean>) => void;
-  onCancel: (isChecked: boolean) => void;
+  onCancel: (isChecked: boolean) => Promise<void>;
 }
 
 const ModalConfirmUncheck: React.FC<Props> = ({
@@ -60,7 +60,10 @@ const ModalConfirmUncheck: React.FC<Props> = ({
                 {t('annuler')}
               </ButtonText>
             </Button>
-            <Button action="negative" onPress={() => onCancel(false)}>
+            <Button
+              action="negative"
+              onPress={async () => await onCancel(false)}
+            >
               <ButtonText>{t('oui')}</ButtonText>
             </Button>
           </ButtonGroup>

@@ -23,9 +23,15 @@ export interface Props {
   showCheckbox: boolean;
   listesJoueurs: JoueurModel[];
   onDeleteJoueur: (id: number) => Promise<void>;
-  onAddEquipeJoueur: (joueurModel: JoueurModel, equipeId: number) => void;
-  onUpdateName: (joueurModel: JoueurModel, name: string) => void;
-  onCheckJoueur: (joueurModel: JoueurModel, isChecked: boolean) => void;
+  onAddEquipeJoueur: (
+    joueurModel: JoueurModel,
+    equipeId: number,
+  ) => Promise<void>;
+  onUpdateName: (joueurModel: JoueurModel, name: string) => Promise<void>;
+  onCheckJoueur: (
+    joueurModel: JoueurModel,
+    isChecked: boolean,
+  ) => Promise<void>;
 }
 
 const ListeJoueurItem: React.FC<Props> = ({
@@ -49,21 +55,21 @@ const ListeJoueurItem: React.FC<Props> = ({
 
   const { isChecked, type, uniqueBDDId } = joueur;
 
-  const handleRenommerJoueur = () => {
+  const handleRenommerJoueur = async () => {
     if (joueurText === '') {
       throw Error('joueurText doit au moins avoir 1 caractère');
     }
     if (isInscription) {
-      onUpdateName(joueur, joueurText);
+      await onUpdateName(joueur, joueurText);
     } else {
-      onUpdateName(joueur, joueurText);
+      await onUpdateName(joueur, joueurText);
     }
     setRenommerOn(false);
     setJoueurText('');
   };
 
-  const ajoutCheck = (checked: boolean) => {
-    onCheckJoueur(joueur, checked);
+  const ajoutCheck = async (checked: boolean) => {
+    await onCheckJoueur(joueur, checked);
     setModalConfirmUncheckIsOpen(false);
   };
 

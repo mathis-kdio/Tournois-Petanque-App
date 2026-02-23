@@ -15,7 +15,7 @@ export interface Props {
   onAddJoueur: (
     joueurName: string,
     joueurType: JoueurTypeEnum | undefined,
-  ) => void;
+  ) => Promise<void>;
 }
 
 const JoueurSuggere: React.FC<Props> = ({
@@ -30,8 +30,8 @@ const JoueurSuggere: React.FC<Props> = ({
 
   const { name, id } = joueur;
 
-  const addJoueur = () => {
-    onAddJoueur(name, joueurType);
+  const addJoueur = async () => {
+    await onAddJoueur(name, joueurType);
   };
 
   return (

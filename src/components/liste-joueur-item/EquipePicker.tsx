@@ -20,7 +20,10 @@ export interface Props {
   joueur: JoueurModel;
   typeEquipes: TypeEquipes;
   listesJoueurs: JoueurModel[];
-  onAddEquipeJoueur: (joueurModel: JoueurModel, equipeId: number) => void;
+  onAddEquipeJoueur: (
+    joueurModel: JoueurModel,
+    equipeId: number,
+  ) => Promise<void>;
 }
 
 const EquipePicker: React.FC<Props> = ({
@@ -43,8 +46,8 @@ const EquipePicker: React.FC<Props> = ({
     );
   };
 
-  const ajoutEquipe = (equipeId: number) => {
-    onAddEquipeJoueur(joueur, equipeId);
+  const ajoutEquipe = async (equipeId: number) => {
+    await onAddEquipeJoueur(joueur, equipeId);
   };
 
   const selectedValue = equipe ? equipe.toString() : '0';

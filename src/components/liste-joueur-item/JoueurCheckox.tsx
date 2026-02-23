@@ -13,7 +13,7 @@ export interface Props {
   isChecked: boolean;
   showCheckbox: boolean;
   setModalConfirmUncheckIsOpen: (value: React.SetStateAction<boolean>) => void;
-  ajoutCheck: (isChecked: boolean) => void;
+  ajoutCheck: (isChecked: boolean) => Promise<void>;
 }
 
 const JoueurCheckox: React.FC<Props> = ({
@@ -24,9 +24,9 @@ const JoueurCheckox: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
 
-  const onCheckboxChange = () => {
+  const onCheckboxChange = async () => {
     if (!isChecked) {
-      ajoutCheck(true);
+      await ajoutCheck(true);
     } else {
       setModalConfirmUncheckIsOpen(true);
     }

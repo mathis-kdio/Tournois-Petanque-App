@@ -8,7 +8,7 @@ export interface Props {
   renommerOn: boolean;
   setRenommerOn: (value: React.SetStateAction<boolean>) => void;
   setJoueurText: (value: React.SetStateAction<string>) => void;
-  handleRenommerJoueur: () => void;
+  handleRenommerJoueur: () => Promise<void>;
 }
 
 const JoueurName: React.FC<Props> = ({
