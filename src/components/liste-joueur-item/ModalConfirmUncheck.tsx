@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 
 export interface Props {
   modalConfirmUncheckIsOpen: boolean;
-  setModalConfirmUncheckIsOpen: (value: React.SetStateAction<boolean>) => void;
+  setModalConfirmUncheckIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   onCancel: (isChecked: boolean) => Promise<void>;
 }
 

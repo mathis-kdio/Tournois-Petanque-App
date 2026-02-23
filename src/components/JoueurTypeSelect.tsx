@@ -22,9 +22,9 @@ import { JoueurType as JoueurTypeEnum } from '../types/enums/joueurType';
 export interface Props {
   joueurType: JoueurTypeEnum | undefined;
   optionsTournoi: PreparationTournoiModel;
-  handleSetJoueurType: (
-    value: React.SetStateAction<JoueurTypeEnum | undefined>,
-  ) => void;
+  handleSetJoueurType: React.Dispatch<
+    React.SetStateAction<JoueurTypeEnum | undefined>
+  >;
 }
 
 const JoueurTypeSelect: React.FC<Props> = ({

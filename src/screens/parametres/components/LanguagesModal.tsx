@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 
 export interface Props {
   modalLanguagesOpen: boolean;
-  setModalLanguagesOpen: (value: React.SetStateAction<boolean>) => void;
+  setModalLanguagesOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const LanguagesModal: React.FC<Props> = ({

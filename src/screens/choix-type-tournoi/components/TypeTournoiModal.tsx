@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 export interface Props {
   modalType: TypeTournoi;
   showModal: boolean;
-  setShowModal: (value: React.SetStateAction<boolean>) => void;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const TypeTournoiModal: React.FC<Props> = ({

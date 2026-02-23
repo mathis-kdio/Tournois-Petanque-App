@@ -18,7 +18,7 @@ export interface Props {
   infosTournoi: TournoiModel;
   listeJoueurs: JoueurModel[];
   modalTournoiInfosIsOpen: boolean;
-  setModalTournoiInfosIsOpen: (value: React.SetStateAction<boolean>) => void;
+  setModalTournoiInfosIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ModalInfosTournoi: React.FC<Props> = ({

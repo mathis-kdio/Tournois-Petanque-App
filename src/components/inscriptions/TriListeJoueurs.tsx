@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 export interface Props {
   isOpen: boolean;
   onClose: () => void;
-  setTriType: (value: React.SetStateAction<Tri>) => void;
+  setTriType: React.Dispatch<React.SetStateAction<Tri>>;
 }
 
 const TriListeJoueurs: React.FC<Props> = ({ isOpen, onClose, setTriType }) => {

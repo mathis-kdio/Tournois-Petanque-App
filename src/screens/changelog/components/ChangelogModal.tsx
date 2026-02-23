@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 export interface Props {
   modalChangelogItem: ChangelogInterface;
   modalChangelogOpen: boolean;
-  openModalChangelog: (value: React.SetStateAction<boolean>) => void;
+  openModalChangelog: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ChangelogModal: React.FC<Props> = ({

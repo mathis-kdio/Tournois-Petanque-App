@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 export interface Props {
   isChecked: boolean;
   showCheckbox: boolean;
-  setModalConfirmUncheckIsOpen: (value: React.SetStateAction<boolean>) => void;
+  setModalConfirmUncheckIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   ajoutCheck: (isChecked: boolean) => Promise<void>;
 }
 

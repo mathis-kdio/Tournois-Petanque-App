@@ -19,7 +19,7 @@ import { Platform } from 'react-native';
 
 export interface Props {
   modalThemeOpen: boolean;
-  setModalThemeOpen: (value: React.SetStateAction<boolean>) => void;
+  setModalThemeOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ThemeModal: React.FC<Props> = ({ modalThemeOpen, setModalThemeOpen }) => {

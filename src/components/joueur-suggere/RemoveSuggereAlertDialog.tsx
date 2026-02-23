@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 export interface Props {
   id: number;
   modalRemoveIsOpen: boolean;
-  setModalRemoveIsOpen: (value: React.SetStateAction<boolean>) => void;
+  setModalRemoveIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const RemoveSuggereAlertDialog: React.FC<Props> = ({

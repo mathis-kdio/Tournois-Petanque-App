@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 export interface Props {
   listId: number;
   modalDeleteIsOpen: boolean;
-  setModalDeleteIsOpen: (value: React.SetStateAction<boolean>) => void;
+  setModalDeleteIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   onDelete: (id: number) => Promise<void>;
 }
 

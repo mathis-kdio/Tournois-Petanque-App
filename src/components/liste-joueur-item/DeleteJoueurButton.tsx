@@ -8,7 +8,7 @@ export interface Props {
   joueurUniqueBDDId: number;
   isInscription: boolean;
   typeEquipes: TypeEquipes;
-  setRenommerOn: (value: React.SetStateAction<boolean>) => void;
+  setRenommerOn: React.Dispatch<React.SetStateAction<boolean>>;
   onDeleteJoueur: (id: number) => Promise<void>;
 }
 

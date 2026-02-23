@@ -16,7 +16,7 @@ import { useClearData } from '../hooks/use-clear-data';
 
 export interface Props {
   alertOpen: boolean;
-  setAlertOpen: (value: React.SetStateAction<boolean>) => void;
+  setAlertOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ClearDataAlertDialog: React.FC<Props> = ({ alertOpen, setAlertOpen }) => {

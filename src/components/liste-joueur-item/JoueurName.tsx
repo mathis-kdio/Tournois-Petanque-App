@@ -6,8 +6,8 @@ import React from 'react';
 export interface Props {
   joueur: JoueurModel;
   renommerOn: boolean;
-  setRenommerOn: (value: React.SetStateAction<boolean>) => void;
-  setJoueurText: (value: React.SetStateAction<string>) => void;
+  setRenommerOn: React.Dispatch<React.SetStateAction<boolean>>;
+  setJoueurText: React.Dispatch<React.SetStateAction<string>>;
   handleRenommerJoueur: () => Promise<void>;
 }
 

@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 
 export interface Props {
   modalDeleteIsOpen: boolean;
-  setModalDeleteIsOpen: (value: React.SetStateAction<boolean>) => void;
+  setModalDeleteIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   tournoiId: number;
 }
 

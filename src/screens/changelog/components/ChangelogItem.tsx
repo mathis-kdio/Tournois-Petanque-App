@@ -6,10 +6,10 @@ import { useTranslation } from 'react-i18next';
 
 export interface Props {
   item: ChangelogInterface;
-  openModalChangelog: (value: React.SetStateAction<boolean>) => void;
-  setModalChangelogItem: (
-    value: React.SetStateAction<ChangelogInterface | undefined>,
-  ) => void;
+  openModalChangelog: React.Dispatch<React.SetStateAction<boolean>>;
+  setModalChangelogItem: React.Dispatch<
+    React.SetStateAction<ChangelogInterface | undefined>
+  >;
 }
 
 const ChangelogItem: React.FC<Props> = ({
