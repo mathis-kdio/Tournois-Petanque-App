@@ -57,14 +57,19 @@ const rankingMuliChances = (
   optionsTournoi: OptionsTournoiModel,
   victoires: Victoire[],
 ): Victoire[] => {
+  const { nbMatchs, nbTours } = optionsTournoi;
   for (let i = 0; i < victoires.length; i++) {
+    const joueurTournoiId = victoires[i].joueur.joueurTournoiId;
     let position = 1;
-    for (let j = 0; j < optionsTournoi.nbMatchs; j++) {
+    for (let j = 0; j < nbMatchs; j++) {
       const { score1, score2, equipe, manche } = listeMatchs[j];
       if (score1 !== undefined && score2 !== undefined) {
-        if (isJoueurInEquipe(i, equipe[0]) && score1 > score2) {
-          position += factorial(optionsTournoi.nbTours + 1 - manche);
-        } else if (isJoueurInEquipe(i, equipe[1]) && score2 > score1) {
+        if (isJoueurInEquipe(joueurTournoiId, equipe[0]) && score1 > score2) {
+          position += factorial(nbTours + 1 - manche);
+        } else if (
+          isJoueurInEquipe(joueurTournoiId, equipe[1]) &&
+          score2 > score1
+        ) {
           position += factorial(manche);
         }
       }
