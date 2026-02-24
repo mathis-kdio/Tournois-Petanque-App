@@ -1,4 +1,4 @@
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 
 const initialState = { listematchs: undefined };
 
@@ -38,9 +38,9 @@ function gestionMatchs(state = initialState, action) {
           listematchs: [...state.listematchs],
         };
         let listeJoueurs = nextState.listematchs.at(-1)
-          .listeJoueurs as Joueur[];
+          .listeJoueurs as JoueurModel[];
         let joueur = listeJoueurs.find(
-          (joueur) => joueur.id === action.value.playerId,
+          (joueur) => joueur.joueurTournoiId === action.value.playerId,
         );
         if (joueur) {
           joueur.name = action.value.newName;
@@ -54,9 +54,9 @@ function gestionMatchs(state = initialState, action) {
           listematchs: [...state.listematchs],
         };
         let listeJoueurs = nextState.listematchs.at(-1)
-          .listeJoueurs as Joueur[];
+          .listeJoueurs as JoueurModel[];
         let joueur = listeJoueurs.find(
-          (joueur) => joueur.id === action.value.playerId,
+          (joueur) => joueur.joueurTournoiId === action.value.playerId,
         );
         if (joueur) {
           joueur.isChecked = action.value.isChecked;
@@ -66,11 +66,11 @@ function gestionMatchs(state = initialState, action) {
     case 'COUPE_AJOUT_ADVERSAIRE': //action: 0: gagnants  1: id du match  2: id de l'équipe
       if (
         action.value.gagnant !== '' ||
-        action.value.matchId !== '' ||
+        action.value.nextMatchId !== '' ||
         action.value.equipeId !== ''
       ) {
         const matchs = [...state.listematchs];
-        matchs[action.value.matchId].equipe[action.value.equipeId] =
+        matchs[action.value.nextMatchId].equipe[action.value.equipeId] =
           action.value.gagnant;
         nextState = {
           ...state,

@@ -1,4 +1,5 @@
 import { JoueurGeneration } from '@/types/interfaces/joueur-generation.interface';
+import { EquipeGenerationType } from '@/types/interfaces/match-generation';
 
 export function testAffectationPossible(
   tour: number,
@@ -7,8 +8,8 @@ export function testAffectationPossible(
   speciauxIncompatibles: boolean,
   eviterMemeAdversaire: number,
   nbTours: number,
-  currentEquipe: [number, number, number, number],
-  currentAdversaire: [number, number, number, number],
+  currentEquipe: EquipeGenerationType,
+  currentAdversaire: EquipeGenerationType,
   listeJoueurs: JoueurGeneration[],
 ): boolean {
   const coequipiersActuels = currentEquipe.filter((id) => id !== -1);
@@ -18,7 +19,10 @@ export function testAffectationPossible(
     speciauxIncompatibles &&
     joueur.type &&
     coequipiersActuels.some(
-      (id) => listeJoueurs[id]?.type && listeJoueurs[id]?.type === joueur.type,
+      (id) =>
+        id !== undefined &&
+        listeJoueurs[id]?.type &&
+        listeJoueurs[id]?.type === joueur.type,
     )
   ) {
     return false;
@@ -30,9 +34,11 @@ export function testAffectationPossible(
     const maxRencontres =
       eviterMemeAdversaire === 50 ? Math.floor(nbTours / 2) : 1;
     for (const adversaire of adversairesActuels) {
-      const nbRencontres = occuAdversaire(joueur.allAdversaires, adversaire);
-      if (nbRencontres >= maxRencontres) {
-        return false;
+      if (adversaire !== undefined) {
+        const nbRencontres = occuAdversaire(joueur.allAdversaires, adversaire);
+        if (nbRencontres >= maxRencontres) {
+          return false;
+        }
       }
     }
   }
@@ -43,8 +49,10 @@ export function testAffectationPossible(
   }
 
   if (
-    coequipiersActuels.some((coequipierActuel) =>
-      joueur.allCoequipiers.includes(coequipierActuel),
+    coequipiersActuels.some(
+      (coequipierActuel) =>
+        coequipierActuel !== undefined &&
+        joueur.allCoequipiers.includes(coequipierActuel),
     )
   ) {
     return false;
@@ -59,13 +67,17 @@ function occuAdversaire(arr: number[], val: number) {
 
 export function updatePlayerRelationships(
   joueurs: JoueurGeneration[],
-  equipe: [number, number, number, number],
-  equipeAdverse: [number, number, number, number],
+  equipe: EquipeGenerationType,
+  equipeAdverse: EquipeGenerationType,
 ) {
   equipe.forEach((joueurId) => {
-    if (joueurId !== -1) {
-      const coequipiers = equipe.filter((id) => id !== -1 && id !== joueurId);
-      const adversaires = equipeAdverse.filter((id) => id !== -1);
+    if (joueurId && joueurId !== -1) {
+      const coequipiers = equipe.filter(
+        (id): id is number => id !== undefined && id !== -1 && id !== joueurId,
+      );
+      const adversaires = equipeAdverse.filter(
+        (id): id is number => id !== -1 && id !== undefined,
+      );
 
       const joueur = joueurs[joueurId];
       joueur.allCoequipiers.push(...coequipiers);

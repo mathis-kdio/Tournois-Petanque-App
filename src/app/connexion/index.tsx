@@ -1,16 +1,6 @@
-import { VStack } from '@/components/ui/vstack';
-import { Text } from '@/components/ui/text';
-import { ScrollView } from '@/components/ui/scroll-view';
-import { Input, InputField, InputSlot } from '@/components/ui/input';
-import { Button, ButtonText } from '@/components/ui/button';
-import React, { useState } from 'react';
-import { AppState } from 'react-native';
-import { supabaseClient } from '@/utils/supabase';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
+import { Button, ButtonText } from '@/components/ui/button';
 import { Divider } from '@/components/ui/divider';
-import { HStack } from '@/components/ui/hstack';
-import { FontAwesome5 } from '@expo/vector-icons';
 import {
   FormControl,
   FormControlError,
@@ -19,9 +9,19 @@ import {
   FormControlLabel,
   FormControlLabelText,
 } from '@/components/ui/form-control';
+import { HStack } from '@/components/ui/hstack';
 import { AlertCircleIcon } from '@/components/ui/icon';
-import { useTranslation } from 'react-i18next';
+import { Input, InputField, InputSlot } from '@/components/ui/input';
+import { ScrollView } from '@/components/ui/scroll-view';
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
+import { supabaseClient } from '@/utils/supabase';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { AppState } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive

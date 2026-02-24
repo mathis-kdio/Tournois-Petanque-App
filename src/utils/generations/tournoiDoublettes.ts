@@ -1,16 +1,16 @@
+import { Complement } from '@/types/enums/complement';
 import { JoueurType } from '@/types/enums/joueurType';
+import { ModeTournoi } from '@/types/enums/modeTournoi';
+import { TypeEquipes } from '@/types/enums/typeEquipes';
+import { TypeTournoi } from '@/types/enums/typeTournoi';
+import { JoueurGeneration } from '@/types/interfaces/joueur-generation.interface';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { MatchGeneration } from '@/types/interfaces/match-generation';
 import {
   calcNbMatchsParTour,
   shuffle,
   uniqueValueArrayRandOrder,
 } from './generation';
-import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { Complement } from '@/types/enums/complement';
-import { Joueur } from '@/types/interfaces/joueur';
-import { ModeTournoi } from '@/types/enums/modeTournoi';
-import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { Match } from '@/types/interfaces/match';
-import { JoueurGeneration } from '@/types/interfaces/joueur-generation.interface';
 import {
   testAffectationPossible,
   updatePlayerRelationships,
@@ -43,25 +43,23 @@ const testRegleJamaisMemeCoequipier = (
 };
 
 export const generationDoublettes = (
-  listeJoueurs: Joueur[],
+  listeJoueurs: JoueurModel[],
   nbTours: number,
-  complement: Complement,
+  complement: Complement | undefined,
   speciauxIncompatibles: boolean,
   jamaisMemeCoequipier: boolean,
   eviterMemeAdversaire: number,
 ) => {
   const nbjoueurs = listeJoueurs.length;
-  let matchs: Match[] = [];
   let idMatch = 0;
-  let joueursEnfants: Joueur[] = [];
-  let joueursTireurs: Joueur[] = [];
-  let joueursPointeurs: Joueur[] = [];
-  let joueursNonType: Joueur[] = [];
-  let joueursNonSpe: Joueur[] = [];
+  let joueursEnfants: JoueurModel[] = [];
+  let joueursTireurs: JoueurModel[] = [];
+  let joueursPointeurs: JoueurModel[] = [];
+  let joueursNonType: JoueurModel[] = [];
+  let joueursNonSpe: JoueurModel[] = [];
   let joueurs: JoueurGeneration[] = [];
 
-  //Initialisation des matchs dans un tableau
-  let nbMatchsParTour = calcNbMatchsParTour(
+  const nbMatchsParTour = calcNbMatchsParTour(
     nbjoueurs,
     TypeEquipes.DOUBLETTE,
     ModeTournoi.AVECNOMS,
@@ -70,6 +68,9 @@ export const generationDoublettes = (
   );
 
   const nbMatchs = nbTours * nbMatchsParTour;
+
+  //Initialisation des matchs dans un tableau
+  const matchs: MatchGeneration[] = [];
   idMatch = 0;
   for (let i = 1; i < nbTours + 1; i++) {
     for (let j = 0; j < nbMatchsParTour; j++) {
@@ -119,7 +120,7 @@ export const generationDoublettes = (
       joueursNonSpe.push(joueur);
     }
     joueurs.push({
-      id: joueur.id,
+      id: joueur.joueurTournoiId,
       name: joueur.name,
       type: joueur.type,
       isChecked: joueur.isChecked,
@@ -127,7 +128,8 @@ export const generationDoublettes = (
       allAdversaires: [],
     });
   }
-  let nbJoueursSpe = joueursEnfants.length;
+  const nbJoueursSpe = joueursEnfants.length;
+
   //Test s'il faut compléter des équipes
   //Si c'est le cas, alors on remplie de joueurs invisible pour le complément en mode tête à tête
   if (nbjoueurs % 4 !== 0) {
@@ -243,9 +245,11 @@ export const generationDoublettes = (
       idsJoueursSpe = uniqueValueArrayRandOrder(joueursEnfants.length);
       for (let j = 0; j < joueursEnfants.length; j++) {
         if (matchs[idMatch].equipe[0][1] === -1) {
-          matchs[idMatch].equipe[0][1] = joueursEnfants[idsJoueursSpe[j]].id;
+          matchs[idMatch].equipe[0][1] =
+            joueursEnfants[idsJoueursSpe[j]].joueurTournoiId;
         } else if (matchs[idMatch].equipe[1][1] === -1) {
-          matchs[idMatch].equipe[1][1] = joueursEnfants[idsJoueursSpe[j]].id;
+          matchs[idMatch].equipe[1][1] =
+            joueursEnfants[idsJoueursSpe[j]].joueurTournoiId;
           idMatch++;
         }
       }
@@ -297,7 +301,7 @@ export const generationDoublettes = (
       joueursNonType,
       speciauxIncompatibles,
     );
-    for (let j = 0; j < joueursNonSpe.length; ) {
+    for (let j = 0; j < joueursNonSpe.length; j) {
       let joueurId = random[j];
       let match = matchs[idMatch];
 
@@ -395,26 +399,26 @@ export const generationDoublettes = (
 };
 
 function _randomJoueursIds(
-  joueursPointeurs: Joueur[],
-  joueursTireurs: Joueur[],
-  joueursNonType: Joueur[],
+  joueursPointeurs: JoueurModel[],
+  joueursTireurs: JoueurModel[],
+  joueursNonType: JoueurModel[],
   speciauxIncompatibles: boolean,
 ): number[] {
-  let arrayIds: number[] = [];
-  let joueursPointeursId: number[] = [];
-  let joueursTireursId: number[] = [];
-  let joueursNonTypeId: number[] = [];
+  const arrayIds: number[] = [];
+  const joueursPointeursId: number[] = [];
+  const joueursTireursId: number[] = [];
+  const joueursNonTypeId: number[] = [];
   for (let i = 0; i < joueursPointeurs.length; i++) {
-    joueursPointeursId.push(joueursPointeurs[i].id);
+    joueursPointeursId.push(joueursPointeurs[i].joueurTournoiId);
   }
   for (let i = 0; i < joueursTireurs.length; i++) {
-    joueursTireursId.push(joueursTireurs[i].id);
+    joueursTireursId.push(joueursTireurs[i].joueurTournoiId);
   }
   for (let i = 0; i < joueursNonType.length; i++) {
-    joueursNonTypeId.push(joueursNonType[i].id);
+    joueursNonTypeId.push(joueursNonType[i].joueurTournoiId);
   }
 
-  if (speciauxIncompatibles === true) {
+  if (speciauxIncompatibles) {
     if (joueursPointeurs.length > joueursTireurs.length) {
       arrayIds.push(...shuffle(joueursPointeursId));
       joueursNonTypeId.push(...joueursTireursId);

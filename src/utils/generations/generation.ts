@@ -2,7 +2,7 @@ import { Complement } from '@/types/enums/complement';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { Joueur } from '@/types/interfaces/joueur';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 
 const rand0ToMax = (max: number) => {
   return Math.floor(Math.random() * (max + 1));
@@ -13,7 +13,7 @@ const countOccurrences = (arr: number[], val: number) =>
 
 export const uniqueValueArrayRandOrder = (arrayLength: number) => {
   const res = [];
-  for (let i = 0; i < arrayLength; ) {
+  for (let i = 0; i < arrayLength; i) {
     const random = rand0ToMax(arrayLength - 1);
     if (countOccurrences(res, random) < 1) {
       res.push(random);
@@ -28,7 +28,7 @@ export const calcNbMatchsParTour = (
   typeEquipes: TypeEquipes,
   modeTournoi: ModeTournoi,
   typeTournoi: TypeTournoi,
-  complement: Complement,
+  complement: Complement | undefined,
 ): number => {
   if (
     modeTournoi === ModeTournoi.AVECEQUIPES ||
@@ -97,9 +97,9 @@ export const shuffle = <T>(array: T[]): T[] => {
 };
 
 export const attributionEquipes = (
-  listesJoueurs: Joueur[],
+  listesJoueurs: JoueurModel[],
   typeEquipes: TypeEquipes,
-): Joueur[] => {
+): JoueurModel[] => {
   let joueursParEquipe: number;
   if (typeEquipes === TypeEquipes.TETEATETE) {
     joueursParEquipe = 1;

@@ -2,8 +2,8 @@
 // certain android devices (Xiaomi MIUI and others enforcing dark mode with view analyzing)
 import {
   AndroidConfig,
-  withAndroidStyles,
   ConfigPlugin,
+  withAndroidStyles,
 } from '@expo/config-plugins';
 
 const withDisableForcedDarkModeAndroid: ConfigPlugin = (config) => {

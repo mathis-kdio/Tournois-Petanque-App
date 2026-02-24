@@ -1,19 +1,15 @@
 import { VStack } from '@/components/ui/vstack';
+import { useEffect, useState } from 'react';
+import { Platform } from 'react-native';
 import {
+  AdsConsent,
   BannerAd,
   BannerAdSize,
   TestIds,
-  AdsConsent,
 } from 'react-native-google-mobile-ads';
-import { Platform } from 'react-native';
-import { useEffect, useState } from 'react';
 
 const AdMobInscriptionsBanner = () => {
   const [nonPersonalizedAdsOnly, setNonPersonalizedAdsOnly] = useState(false);
-
-  useEffect(() => {
-    fetchConsent();
-  }, []);
 
   const fetchConsent = async () => {
     const { createAPersonalisedAdsProfile, selectPersonalisedAds } =
@@ -26,6 +22,10 @@ const AdMobInscriptionsBanner = () => {
       setNonPersonalizedAdsOnly(true);
     }
   };
+
+  useEffect(() => {
+    fetchConsent();
+  }, []);
 
   let size = BannerAdSize.ANCHORED_ADAPTIVE_BANNER;
 

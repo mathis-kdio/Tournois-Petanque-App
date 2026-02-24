@@ -1,10 +1,10 @@
+import { Platform } from 'react-native';
 import {
+  AdEventType,
+  AdsConsent,
   InterstitialAd,
   TestIds,
-  AdsConsent,
-  AdEventType,
 } from 'react-native-google-mobile-ads';
-import { Platform } from 'react-native';
 
 const getUnitId = (): string => {
   if (__DEV__) {
@@ -27,7 +27,7 @@ const loadedListeners: (() => void)[] = [];
 const errorListeners: ((error: Error) => void)[] = [];
 const closedListeners: (() => void)[] = [];
 
-let timeoutId: number | null = null;
+let timeoutId: NodeJS.Timeout | null = null;
 
 export const initInterstitial = async () => {
   const { createAPersonalisedAdsProfile, selectPersonalisedAds } =

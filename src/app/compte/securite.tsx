@@ -1,20 +1,20 @@
-import { VStack } from '@/components/ui/vstack';
-import { ScrollView } from '@/components/ui/scroll-view';
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { Input, InputField, InputSlot } from '@/components/ui/input';
 import { Button, ButtonText } from '@/components/ui/button';
-import { supabaseClient } from '@/utils/supabase';
-import { Alert } from 'react-native';
 import {
   FormControl,
   FormControlLabel,
   FormControlLabelText,
 } from '@/components/ui/form-control';
-import { FontAwesome5 } from '@expo/vector-icons';
 import { Heading } from '@/components/ui/heading';
+import { Input, InputField, InputSlot } from '@/components/ui/input';
+import { ScrollView } from '@/components/ui/scroll-view';
+import { VStack } from '@/components/ui/vstack';
+import { supabaseClient } from '@/utils/supabase';
+import { FontAwesome5 } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Alert } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Securite = () => {
   const { t } = useTranslation();
@@ -46,33 +46,33 @@ const Securite = () => {
     }
 
     setIsLoading(true);
-    try {
-      // Mise à jour du mot de passe
-      const { error } = await supabaseClient.auth.updateUser({
-        password: newPassword,
-      });
 
-      if (error) {
-        Alert.alert('Erreur', error.message);
-        setError(true);
-      } else {
-        Alert.alert('Succès', 'Votre mot de passe a été changé avec succès.');
-      }
-    } catch (error) {
-      Alert.alert(
-        'Erreur',
-        'Une erreur est survenue lors du changement de mot de passe.',
-      );
+    // Mise à jour du mot de passe
+    const { error } = await supabaseClient.auth
+      .updateUser({
+        password: newPassword,
+      })
+      .catch(() => ({
+        error: new Error(
+          'Une erreur est survenue lors du changement de mot de passe.',
+        ),
+      }));
+
+    if (error) {
+      Alert.alert('Erreur', error.message);
       setError(true);
-    } finally {
-      setIsLoading(false);
+    } else {
+      Alert.alert('Succès', 'Votre mot de passe a été changé avec succès.');
       setError(false);
     }
+
+    setIsLoading(false);
   };
 
-  const handleInputChange =
-    (field: 'oldPassword' | 'newPassword' | 'confirmPassword') =>
-    (value: string) => {
+  const handleInputChange = (
+    field: 'oldPassword' | 'newPassword' | 'confirmPassword',
+  ) => {
+    return (value: string) => {
       switch (field) {
         case 'oldPassword':
           setOldPassword(value);
@@ -87,6 +87,7 @@ const Securite = () => {
           break;
       }
     };
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

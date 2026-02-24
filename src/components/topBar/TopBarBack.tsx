@@ -1,9 +1,9 @@
-import { Pressable } from '@/components/ui/pressable';
 import { HStack } from '@/components/ui/hstack';
+import { Pressable } from '@/components/ui/pressable';
 import { Text } from '@/components/ui/text';
-import * as React from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import * as React from 'react';
 
 interface Props {
   title: string;

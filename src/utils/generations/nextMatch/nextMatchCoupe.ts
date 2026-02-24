@@ -1,38 +1,41 @@
-import { Match } from '@/types/interfaces/match';
+export const nextMatchCoupe = (
+  matchId: number,
+  score1: number,
+  score2: number,
+  manche: number,
+  nbMatchs: number,
+) => {
+  const equipeNumber: 1 | 0 = score2 > score1 ? 1 : 0;
 
-export const nextMatchCoupe = (match: Match, nbMatchs: number) => {
-  let gagnant = match.equipe[0];
-  if (match.score2 > match.score1) {
-    gagnant = match.equipe[1];
-  }
-  let matchId = null;
+  let nextMatchId = null;
 
   let div = 2;
-  for (let i = 2; i <= match.manche; i++) {
+  for (let i = 2; i <= manche; i++) {
     div = div * 2;
   }
-  let nbMatchsManche = Math.floor((nbMatchs + 1) / div);
+  const nbMatchsManche = Math.floor((nbMatchs + 1) / div);
 
-  if (match.manche === 1) {
-    if (match.id % 2 !== 0) {
-      matchId = match.id + (nbMatchsManche - (match.id + 1) / 2);
+  if (manche === 1) {
+    if (matchId % 2 !== 0) {
+      nextMatchId = matchId + (nbMatchsManche - (matchId + 1) / 2);
     } else {
-      matchId = match.id + (nbMatchsManche - match.id / 2);
+      nextMatchId = matchId + (nbMatchsManche - matchId / 2);
     }
   } else {
     let nbMatchsAvantManche = (nbMatchs + 1) / 2;
-    for (let i = 1; i < match.manche - 1; i++) {
+    for (let i = 1; i < manche - 1; i++) {
       nbMatchsAvantManche += nbMatchsAvantManche / 2;
     }
-    matchId =
-      match.id +
-      (nbMatchsManche - Math.ceil((match.id % nbMatchsAvantManche) / 2));
+    nextMatchId =
+      matchId +
+      (nbMatchsManche - Math.ceil((matchId % nbMatchsAvantManche) / 2));
   }
 
-  let equipeId = match.id % 2;
-  const actionAjoutAdversaire = {
-    type: 'COUPE_AJOUT_ADVERSAIRE',
-    value: { gagnant: gagnant, matchId: matchId, equipeId: equipeId },
+  const nextEquipeNumber = (matchId % 2) as 0 | 1;
+
+  return {
+    equipeNumber,
+    gagnantMatchId: nextMatchId,
+    nextEquipeNumber,
   };
-  return actionAjoutAdversaire;
 };
