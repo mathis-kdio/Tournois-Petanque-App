@@ -11,10 +11,6 @@ import {
 const AdMobInscriptionsBanner = () => {
   const [nonPersonalizedAdsOnly, setNonPersonalizedAdsOnly] = useState(false);
 
-  useEffect(() => {
-    fetchConsent();
-  }, []);
-
   const fetchConsent = async () => {
     const { createAPersonalisedAdsProfile, selectPersonalisedAds } =
       await AdsConsent.getUserChoices();
@@ -26,6 +22,10 @@ const AdMobInscriptionsBanner = () => {
       setNonPersonalizedAdsOnly(true);
     }
   };
+
+  useEffect(() => {
+    fetchConsent();
+  }, []);
 
   let size = BannerAdSize.ANCHORED_ADAPTIVE_BANNER;
 
