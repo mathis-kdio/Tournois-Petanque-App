@@ -41,32 +41,32 @@ export default function Accueil() {
   const listesJoueurs = useSelector(
     (state: any) => state.listesJoueurs.listesJoueurs,
   );
-  //console.log(listesJoueurs);
+  console.log('listesJoueurs', listesJoueurs);
 
   const savedLists = useSelector(
     (state: any) => state.listesJoueurs.listesSauvegarde,
   );
-  //console.log(savedLists);
+  console.log('savedLists', savedLists);
 
   const listeMatchs = useSelector(
     (state: any) => state.gestionMatchs.listematchs,
   );
-  //console.log(listeMatchs);
+  console.log('listeMatchs', listeMatchs);
 
   const listeTournois = useSelector(
     (state: any) => state.listeTournois.listeTournois,
   );
-  //console.log(listeTournois);
+  console.log('listeTournois', listeTournois);
 
   const listeTerrains = useSelector(
     (state: any) => state.listeTerrains.listeTerrains,
   );
-  //console.log(listeTerrains);
+  console.log('listeTerrains', listeTerrains);
 
   const optionsTournoi = useSelector(
     (state: any) => state.optionsTournoi.options,
   );
-  //console.log(optionsTournoi);
+  console.log('optionsTournoi', optionsTournoi);
 
   const [appState, setAppState] = useState<AppStateStatus>(
     AppState.currentState,

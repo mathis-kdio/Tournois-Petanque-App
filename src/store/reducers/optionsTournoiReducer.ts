@@ -1,9 +1,19 @@
+import { ModeTournoi } from '@/types/enums/modeTournoi';
+import { TypeEquipes } from '@/types/enums/typeEquipes';
+
 const initialState = {
   options: {
-    type: null,
-    typeEquipes: null,
-    mode: null,
+    avecTerrains: false,
+    memesAdversaires: 50,
+    memesEquipes: false,
+    mode: ModeTournoi.AVECNOMS,
     modeCreationEquipes: null,
+    nbPtVictoire: 13,
+    nbTours: 5,
+    speciauxIncompatibles: true,
+    type: null,
+    typeEquipes: TypeEquipes.DOUBLETTE,
+    complement: undefined,
   },
 };
 
