@@ -115,7 +115,7 @@ export const useCreateTournoi = () => {
     equipesMatch: EquipesGenerationType,
     listeJoueurs: Joueur[],
   ) => {
-    // TODO Problème : va insérer des équipes qui peuvent déjà être présentes
+    // TODO Amélioration : si les équipes sont fixes (=/= mêlée-démêlée) alors ne pas insérer de nouvelle équipe
     const equipe1 = await EquipeRepository.insert(toNewEquipe(0));
     await addEquipesJoueur(equipe1.id, equipesMatch[0], listeJoueurs);
 
