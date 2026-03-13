@@ -1,6 +1,12 @@
-import { joueursSuggestion } from '@/db/schema';
+import {
+  joueursSuggestion,
+  NewJoueur,
+  NewJoueursListes,
+  NewPreparationTournoi,
+} from '@/db/schema';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { JoueursRepository } from '@/repositories/joueurs/joueursRepository';
+import { JoueursListesRepository } from '@/repositories/joueursListes/joueursListesRepository';
 import { JoueursSuggestionRepository } from '@/repositories/joueursSuggestion/joueursSuggestionRepository';
 import { ListesJoueursRepository } from '@/repositories/listesJoueurs/listesJoueursRepository';
 import { PreparationTournoisRepository } from '@/repositories/preparationTournoi/preparationTournoiRepository';
@@ -13,20 +19,31 @@ import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
+import {
+  ListeJoueurs,
+  ListeJoueursInfos,
+} from '@/types/interfaces/listeJoueurs';
+import { MemesAdversairesType } from '@/types/interfaces/preparationTournoiModel';
 
 // Redux state types
 interface ReduxListesJoueurs {
-  avecNoms: JoueurModel[];
-  sansNoms: JoueurModel[];
-  avecEquipes: JoueurModel[];
+  avecNoms: ReduxJoueurModel[];
+  sansNoms: ReduxJoueurModel[];
+  avecEquipes: ReduxJoueurModel[];
   historique: { id: number; name: string; nbTournois: number }[];
-  sauvegarde: JoueurModel[];
+  sauvegarde: ReduxJoueurModel[];
 }
 
+type ReduxJoueurModel = {
+  id: number;
+  name: string;
+  type: JoueurType | undefined;
+  equipe: number | undefined;
+  isChecked: boolean;
+};
+
 interface ReduxListesSauvegarde {
-  avecNoms: any[][];
-  sansNoms: any[][];
-  avecEquipes: any[][];
+  avecNoms: ListeJoueurs;
 }
 
 interface ReduxTournament {
@@ -45,7 +62,7 @@ interface ReduxMatch {
 
 interface ReduxOptionsTournoi {
   avecTerrains: boolean;
-  memesAdversaires: number;
+  memesAdversaires: MemesAdversairesType;
   memesEquipes: boolean;
   mode: ModeTournoi;
   modeCreationEquipes: ModeCreationEquipes | null;
@@ -82,22 +99,22 @@ export class DataMigrationService {
       console.log('Starting data migration from Redux to Drizzle ORM...');
 
       // Migrate players
-      /*await this.migratePlayers(listesJoueurs);
+      /*await this.migratePlayers(listesJoueurs);*/
 
       // Migrate player lists
-      await this.migratePlayerLists(listesJoueurs, listesSauvegarde);
+      await this.migratePlayerLists(listesSauvegarde);
 
       // Migrate tournaments
       await this.migrateTournaments(listeTournois);
 
       // Migrate matches
-      await this.migrateMatches(listeMatchs);
+      /*await this.migrateMatches(listeMatchs);*/
 
-      // Migrate tournament options
+      //Migrate tournament options
       await this.migrateTournamentOptions(optionsTournoi);
 
       // Migrate terrains (fields)
-      await this.migrateTerrains(listeTerrains);*/
+      /*await this.migrateTerrains(listeTerrains);*/
 
       // Migrate player suggestions from historique
       await this.migratePlayerSuggestions(listesJoueurs.historique);
@@ -142,22 +159,15 @@ export class DataMigrationService {
 
     // Convert Redux player format to Drizzle format
     // Note: The Redux player format might need adjustment based on actual data structure
-    const playersToInsert = allPlayers.map((player, index) => {
+    const playersToInsert = allPlayers.map((player) => {
       // Handle different player formats from Redux
-      const basePlayer = {
-        id: index + 1, // Auto-increment ID
-        joueurId: player.uniqueBDDId || index + 1,
+      const basePlayer: NewJoueur = {
+        joueurId: player.id,
         name: player.name || '',
-        type: player.type as JoueurType | undefined,
+        type: player.type,
         equipe: player.equipe,
         isChecked: player.isChecked || false,
       };
-
-      // Add debugging for the first few players to understand the structure
-      if (index < 3) {
-        console.log('Sample player data:', JSON.stringify(player, null, 2));
-        console.log('Converted player:', JSON.stringify(basePlayer, null, 2));
-      }
 
       return basePlayer;
     });
@@ -172,26 +182,20 @@ export class DataMigrationService {
   }
 
   private static async migratePlayerLists(
-    listesJoueurs: ReduxListesJoueurs,
     listesSauvegarde: ReduxListesSauvegarde,
-  ): Promise<void> {
+  ) {
     console.log('Migrating player lists...');
 
     // Migrate saved lists first
-    const savedLists = [
-      ...listesSauvegarde.avecNoms,
-      ...listesSauvegarde.sansNoms,
-      ...listesSauvegarde.avecEquipes,
-    ];
+    const savedLists = [...listesSauvegarde.avecNoms] as unknown[][];
 
     for (const savedList of savedLists) {
-      if (savedList.length === 0) continue;
+      const listeJoueursInfos = savedList.at(-1) as ListeJoueursInfos;
+      const listeJoueur = savedList.splice(-1) as ReduxJoueurModel[];
+      const listName = listeJoueursInfos?.name || '';
+      const listId = listeJoueursInfos.listId;
 
-      const listInfo = savedList[savedList.length - 1];
-      const listName = listInfo?.name || 'Saved List';
-      const listId = listInfo?.listId || Math.floor(Math.random() * 10000);
-
-      // Insert the list
+      // Insert de la liste
       const newList = await ListesJoueursRepository.insertListeJoueurs({
         id: listId,
         name: listName,
@@ -199,32 +203,26 @@ export class DataMigrationService {
         synced: 0,
       });
 
-      console.log(`Migrated saved list: ${listName} (ID: ${listId})`);
-    }
-
-    // Migrate current working lists
-    const listTypes: { key: keyof ReduxListesJoueurs; mode: ModeTournoi }[] = [
-      { key: 'avecNoms', mode: ModeTournoi.AVECNOMS },
-      { key: 'sansNoms', mode: ModeTournoi.SANSNOMS },
-      { key: 'avecEquipes', mode: ModeTournoi.AVECEQUIPES },
-    ];
-
-    for (const { key, mode } of listTypes) {
-      const players = listesJoueurs[key];
-      if (players.length === 0) continue;
-
-      // Create a list for current players
-      const listName = `${mode} - Current`;
-      const listId = Math.floor(Math.random() * 10000) + 10000;
-
-      await ListesJoueursRepository.insertListeJoueurs({
-        id: listId,
-        name: listName,
-        updatedAt: Date.now(),
-        synced: 0,
+      // Insertion joueurs de la liste
+      const listeNewJoueur = listeJoueur.map((joueurModel) => {
+        return {
+          joueurId: joueurModel.id,
+          name: joueurModel.name,
+          type: joueurModel.type,
+          equipe: joueurModel.equipe,
+          isChecked: false,
+        } as NewJoueur;
       });
+      const joueurs = await JoueursRepository.insertMultiples(listeNewJoueur);
+      const joueursListes = joueurs.map((joueur) => {
+        return {
+          joueurId: joueur.id,
+          listeId: newList[0].id,
+        } as NewJoueursListes;
+      });
+      await JoueursListesRepository.insertMultiple(joueursListes);
 
-      console.log(`Migrated current ${mode} list: ${listName} (ID: ${listId})`);
+      console.log(`Migrated saved list: ${listName} (ID: ${listId})`);
     }
   }
 
@@ -314,8 +312,8 @@ export class DataMigrationService {
     console.log('Migrating tournament options...');
 
     try {
-      const preparationData = {
-        id: 0, // Single preparation record
+      const preparationData: NewPreparationTournoi = {
+        id: 0,
         nbTours: optionsTournoi.nbTours,
         nbPtVictoire: optionsTournoi.nbPtVictoire,
         speciauxIncompatibles: optionsTournoi.speciauxIncompatibles,
@@ -377,13 +375,11 @@ export class DataMigrationService {
 
     try {
       for (const player of historique) {
-        if (player.name) {
-          await JoueursSuggestionRepository.insertOrUpdateOccurence({
-            name: player.name,
-            occurence: player.nbTournois,
-            cacher: false,
-          });
-        }
+        await JoueursSuggestionRepository.insertOrUpdateOccurence({
+          name: player.name,
+          occurence: player.nbTournois,
+          cacher: false,
+        });
       }
       console.log(`Migrated ${historique.length} player suggestions`);
     } catch (error) {

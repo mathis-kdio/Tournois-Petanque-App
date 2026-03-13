@@ -1,4 +1,3 @@
-import { DataMigrationWrapper } from '@/components/DataMigrationWrapper';
 import { AuthProvider } from '@/components/supabase/SessionProvider';
 import { GluestackUIProvider } from '@/components/ui/gluestack-ui-provider';
 import {
@@ -97,12 +96,10 @@ export default function RootLayout() {
           <AuthProvider>
             <ThemeProvider>
               <GluestackWrapper>
-                <DataMigrationWrapper>
-                  <I18nextProvider i18n={i18n} defaultNS={'common'}>
-                    <Stack screenOptions={{ headerShown: false }} />
-                    <StatusBarWrapper />
-                  </I18nextProvider>
-                </DataMigrationWrapper>
+                <I18nextProvider i18n={i18n} defaultNS={'common'}>
+                  <Stack screenOptions={{ headerShown: false }} />
+                  <StatusBarWrapper />
+                </I18nextProvider>
               </GluestackWrapper>
             </ThemeProvider>
           </AuthProvider>
