@@ -38,35 +38,37 @@ export default function Accueil() {
 
   const { actualTournoi } = useTournois();
 
+  console.log('==============OLD================');
   const listesJoueurs = useSelector(
     (state: any) => state.listesJoueurs.listesJoueurs,
   );
-  console.log('listesJoueurs', listesJoueurs);
+  console.log('listesJoueurs', JSON.stringify(listesJoueurs));
 
   const savedLists = useSelector(
     (state: any) => state.listesJoueurs.listesSauvegarde,
   );
-  console.log('savedLists', savedLists);
+  console.log('savedLists', JSON.stringify(savedLists));
 
   const listeMatchs = useSelector(
     (state: any) => state.gestionMatchs.listematchs,
   );
-  console.log('listeMatchs', listeMatchs);
+  console.log('listeMatchs', JSON.stringify(listeMatchs));
 
   const listeTournois = useSelector(
     (state: any) => state.listeTournois.listeTournois,
   );
-  console.log('listeTournois', listeTournois);
+  console.log('listeTournois', JSON.stringify(listeTournois));
 
   const listeTerrains = useSelector(
     (state: any) => state.listeTerrains.listeTerrains,
   );
-  console.log('listeTerrains', listeTerrains);
+  console.log('listeTerrains', JSON.stringify(listeTerrains));
 
   const optionsTournoi = useSelector(
     (state: any) => state.optionsTournoi.options,
   );
-  console.log('optionsTournoi', optionsTournoi);
+  console.log('optionsTournoi', JSON.stringify(optionsTournoi));
+  console.log('==============END OLD================');
 
   const [appState, setAppState] = useState<AppStateStatus>(
     AppState.currentState,
