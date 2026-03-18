@@ -44,10 +44,10 @@ export default function Accueil() {
   );
   console.log('listesJoueurs', JSON.stringify(listesJoueurs));
 
-  const savedLists = useSelector(
+  const listesSauvegarde = useSelector(
     (state: any) => state.listesJoueurs.listesSauvegarde,
   );
-  console.log('savedLists', JSON.stringify(savedLists));
+  console.log('listesSauvegarde', JSON.stringify(listesSauvegarde));
 
   const listeMatchs = useSelector(
     (state: any) => state.gestionMatchs.listematchs,

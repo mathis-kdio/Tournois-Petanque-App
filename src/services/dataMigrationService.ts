@@ -28,10 +28,7 @@ import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import {
-  ListeJoueurs,
-  ListeJoueursInfos,
-} from '@/types/interfaces/listeJoueurs';
+import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
 import { MemesAdversairesType } from '@/types/interfaces/preparationTournoiModel';
 
 // Redux state types
@@ -57,8 +54,15 @@ type ReduxHistoriqueJoueurs = {
   nbTournois: number;
 };
 
+type ReduxListesSauvegardeJoueurs = {
+  id: number;
+  name: string;
+  type: JoueurType | '';
+  equipe: number;
+};
+
 type ReduxListesSauvegarde = {
-  avecNoms: ListeJoueurs;
+  avecNoms: (ReduxListesSauvegardeJoueurs | ListeJoueursInfos)[][];
 };
 
 type ReduxTournament = {
@@ -94,7 +98,7 @@ type ReduxTournoiOptions = {
   mode: 'avecEquipes';
 };
 
-type ReduxTournoi = [ReduxMatch | ReduxTournoiOptions];
+type ReduxTournoi = (ReduxMatch | ReduxTournoiOptions)[];
 
 type ReduxOptionsPreparationTournoi = {
   avecTerrains: boolean;
@@ -138,7 +142,7 @@ export class DataMigrationService {
       //await this.migratePlayers(listesJoueurs);
 
       // Migrate player lists
-      await this.migratePlayerLists(listesSauvegarde);
+      await this.migratePlayerLists(listesSauvegarde); // TODO différence entre state.listesJoueurs.listesSauvegarde et state.listesJoueurs.listesJoueurs.sauvegarde ???
 
       // Migrate tournaments
       //await this.migrateTournaments(listeTournois);
@@ -227,11 +231,11 @@ export class DataMigrationService {
     console.log('Migrating player lists...');
 
     // Migrate saved lists first
-    const savedLists = [...listesSauvegarde.avecNoms] as unknown[][];
-
-    for (const savedList of savedLists) {
+    for (const savedList of listesSauvegarde.avecNoms) {
       const listeJoueursInfos = savedList.at(-1) as ListeJoueursInfos;
-      const listeJoueur = savedList.splice(-1) as ReduxJoueurModel[];
+      const listeJoueur = savedList.splice(
+        -1,
+      ) as ReduxListesSauvegardeJoueurs[];
       const listName = listeJoueursInfos?.name || '';
       const listId = listeJoueursInfos.listId;
 
@@ -476,9 +480,8 @@ export class DataMigrationService {
       console.log('No actual tournament');
       return;
     }
-
-    const a = listeMatchs.at(-1) as ReduxTournoiOptions;
-    await TournoisRepository.setActualTournoi(a.tournoiID, true);
+    const options = listeMatchs.at(-1) as ReduxTournoiOptions;
+    await TournoisRepository.setActualTournoi(options.tournoiID, true);
 
     console.log('Migrated actual tournament');
   }
