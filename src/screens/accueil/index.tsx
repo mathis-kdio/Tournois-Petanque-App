@@ -19,7 +19,6 @@ import { useNavigation, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AppState, AppStateStatus, Platform } from 'react-native';
-import { useSelector } from 'react-redux';
 
 const googleMarketReviews =
   'market://details?id=com.MK.PetanqueGCU&showAllReviews=true';
@@ -37,38 +36,6 @@ export default function Accueil() {
   const { session } = useAuth();
 
   const { actualTournoi } = useTournois();
-
-  console.log('==============OLD================');
-  const listesJoueurs = useSelector(
-    (state: any) => state.listesJoueurs.listesJoueurs,
-  );
-  console.log('listesJoueurs', JSON.stringify(listesJoueurs));
-
-  const listesSauvegarde = useSelector(
-    (state: any) => state.listesJoueurs.listesSauvegarde,
-  );
-  console.log('listesSauvegarde', JSON.stringify(listesSauvegarde));
-
-  const listeMatchs = useSelector(
-    (state: any) => state.gestionMatchs.listematchs,
-  );
-  console.log('listeMatchs', JSON.stringify(listeMatchs));
-
-  const listeTournois = useSelector(
-    (state: any) => state.listeTournois.listeTournois,
-  );
-  console.log('listeTournois', JSON.stringify(listeTournois));
-
-  const listeTerrains = useSelector(
-    (state: any) => state.listeTerrains.listeTerrains,
-  );
-  console.log('listeTerrains', JSON.stringify(listeTerrains));
-
-  const optionsTournoi = useSelector(
-    (state: any) => state.optionsTournoi.options,
-  );
-  console.log('optionsTournoi', JSON.stringify(optionsTournoi));
-  console.log('==============END OLD================');
 
   const [appState, setAppState] = useState<AppStateStatus>(
     AppState.currentState,

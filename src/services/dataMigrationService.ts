@@ -136,15 +136,15 @@ export class DataMigrationService {
     // Check if migration already completed
     const migrationCompleted = await this.checkMigrationCompleted();
     if (migrationCompleted) {
-      console.log('Migration already completed, skipping...');
+      console.log('Migration déjà complète');
       return false;
     }
 
     try {
-      console.log('Starting data migration from Redux to Drizzle ORM...');
+      console.log('Début de la migration');
 
       //Migrate Preparation Tournoi Options
-      await this.migratePreparationTournoiOptions(optionsTournoi);
+      await this.migratePreparationTournoi(optionsTournoi);
 
       // Migrate Joueurs Preparation Tournoi
       await this.migrateJoueursPreparationTournoi(listesJoueurs);
@@ -164,30 +164,25 @@ export class DataMigrationService {
       // Migrate player suggestions from historique
       await this.migratePlayerSuggestions(listesJoueurs.historique);
 
-      console.log('Data migration completed successfully!');
+      console.log('Fin de la migration avec succès');
       return true;
     } catch (error) {
-      console.error('Data migration failed:', error);
+      console.error('Echec de la migration:', error);
       return false;
     }
   }
 
   private static async checkMigrationCompleted(): Promise<boolean> {
-    try {
-      const db = getDrizzleDb();
-      // Check if we have any data in the database
-      const playerCount = await db.select().from(joueursSuggestion).limit(1);
-      return playerCount.length > 0;
-    } catch (error) {
-      console.error('Error checking migration status:', error);
-      return false;
-    }
+    const db = getDrizzleDb();
+    // Check if we have any data in the database
+    const playerCount = await db.select().from(joueursSuggestion).limit(1);
+    return playerCount.length > 0;
   }
 
   private static async migrateJoueursPreparationTournoi(
     listesJoueurs: ReduxListesJoueurs,
   ): Promise<void> {
-    console.log('Migrating preparation tournoi players...');
+    console.log('Début migration joueurs preparation tournoi');
 
     // Combine all player lists
     const allPlayers =
@@ -196,7 +191,7 @@ export class DataMigrationService {
         : listesJoueurs.avecNoms;
 
     if (allPlayers.length === 0) {
-      console.log('No players preparation tournoi to migrate');
+      console.log('Aucun joueur preparation tournoi à migrer');
       return;
     }
 
@@ -210,31 +205,26 @@ export class DataMigrationService {
       };
     });
 
-    try {
-      const joueurs = await JoueursRepository.insertMultiples(playersToInsert);
-      const joueursPreparationTournois: NewJoueursPreparationTournois[] =
-        joueurs.map((joueur) => {
-          return {
-            joueurId: joueur.id,
-            preparationTournoiId: 0,
-          };
-        });
-      await JoueursPreparationTournoisRepository.insert(
-        joueursPreparationTournois,
-      );
-      console.log(
-        `Migrated ${playersToInsert.length} players preparation tournoi`,
-      );
-    } catch (error) {
-      console.error('Error migrating players:', error);
-      throw error;
-    }
+    const joueurs = await JoueursRepository.insertMultiples(playersToInsert);
+    const joueursPreparationTournois: NewJoueursPreparationTournois[] =
+      joueurs.map((joueur) => {
+        return {
+          joueurId: joueur.id,
+          preparationTournoiId: 0,
+        };
+      });
+    await JoueursPreparationTournoisRepository.insert(
+      joueursPreparationTournois,
+    );
+    console.log(
+      `Fin migration joueurs preparation tournoi (${playersToInsert.length})`,
+    );
   }
 
   private static async migratePlayerLists(
     listesSauvegarde: ReduxListesSauvegarde,
   ) {
-    console.log('Migrating player lists...');
+    console.log('Début migration liste joueurs');
 
     // Migrate saved lists first
     for (const savedList of listesSauvegarde.avecNoms) {
@@ -253,9 +243,10 @@ export class DataMigrationService {
         synced: 0,
       });
       await this.migrateJoueursListe(listeJoueur, newList[0].id);
-
-      console.log(`Migrated saved list: ${listName} (ID: ${listId})`);
     }
+    console.log(
+      `Fin migration liste joueurs (${listesSauvegarde.avecNoms.length})`,
+    );
   }
 
   private static async migrateJoueursListe(
@@ -289,82 +280,66 @@ export class DataMigrationService {
   private static async migrateTournaments(
     listeTournois: ReduxTournament[],
   ): Promise<void> {
-    console.log('Migrating tournaments...');
+    console.log('Début migration tournois');
 
     if (listeTournois.length === 0) {
-      console.log('No tournaments to migrate');
+      console.log('Aucun tournoi à migrer');
       return;
     }
 
     for (const tournoiData of listeTournois) {
-      try {
-        const tournoiId = tournoiData.tournoiId;
-        const tournoiName = tournoiData.name || `${tournoiId}`;
+      const tournoiId = tournoiData.tournoiId;
+      const tournoiName = tournoiData.name || `${tournoiId}`;
 
-        // Extract tournament options from the tournament data
-        const options = tournoiData.tournoi.at(-1) as ReduxTournoiOptions;
+      console.log(`Début migration tournoi: ${tournoiName} (ID: ${tournoiId})`);
+      // Extract tournament options from the tournament data
+      const options = tournoiData.tournoi.at(-1) as ReduxTournoiOptions;
 
-        const newTournoi: NewTournoi = {
-          id: tournoiId,
-          name: tournoiName,
-          nbTours: options.nbTours,
-          nbMatchs: options.nbMatchs,
-          nbPtVictoire: options.nbPtVictoire || 13,
-          speciauxIncompatibles: options.speciauxIncompatibles || false,
-          memesEquipes: options.memesEquipes || false,
-          memesAdversaires: options.memesAdversaires || 50,
-          typeEquipes: options.typeEquipes,
-          typeTournoi: options.typeTournoi,
-          avecTerrains: options.avecTerrains || false,
-          mode: options.mode || ModeTournoi.AVECNOMS,
-          estTournoiActuel: false,
-          createAt: new Date(tournoiData.creationDate).getTime(),
-          updatedAt: new Date(tournoiData.updateDate).getTime(),
-        };
+      const newTournoi: NewTournoi = {
+        id: tournoiId,
+        name: tournoiName,
+        nbTours: options.nbTours,
+        nbMatchs: options.nbMatchs,
+        nbPtVictoire: options.nbPtVictoire || 13,
+        speciauxIncompatibles: options.speciauxIncompatibles || false,
+        memesEquipes: options.memesEquipes || false,
+        memesAdversaires: options.memesAdversaires || 50,
+        typeEquipes: options.typeEquipes,
+        typeTournoi: options.typeTournoi,
+        avecTerrains: options.avecTerrains || false,
+        mode: options.mode || ModeTournoi.AVECNOMS,
+        estTournoiActuel: false,
+        createAt: new Date(tournoiData.creationDate).getTime(),
+        updatedAt: new Date(tournoiData.updateDate).getTime(),
+      };
 
-        await TournoisRepository.insertTournoi(newTournoi);
-        console.log(`Migrated tournament: ${tournoiName} (ID: ${tournoiId})`);
+      await TournoisRepository.insertTournoi(newTournoi);
 
-        // Migrate tournament players
-        const joueurs = await this.migrateTournamentPlayers(
-          options.listeJoueurs,
-        );
+      console.log(`Début migration joueurs tournoi ${tournoiId}`);
+      const joueurs = await this.migrateTournamentPlayers(options.listeJoueurs);
+      console.log(`Fin migration joueurs tournoi`);
 
-        // Migrate tournament matches
-        const matches = tournoiData.tournoi.slice(0, -1) as ReduxMatch[];
-        await this.migrateTournamentMatches(tournoiId, matches, joueurs);
-      } catch (error) {
-        console.error(
-          `Error migrating tournament ${tournoiData.tournoiId}:`,
-          error,
-        );
-        continue;
-      }
+      console.log(`Début migration matchs tournoi ${tournoiId}`);
+      const matches = tournoiData.tournoi.slice(0, -1) as ReduxMatch[];
+      await this.migrateTournamentMatches(tournoiId, matches, joueurs);
+      console.log(`Fin migration matchs tournoi`);
+      console.log(`Fin migration tournoi: ${tournoiName} (ID: ${tournoiId})`);
     }
+    console.log('Fin migration tournois');
   }
 
   private static async migrateTournamentPlayers(
     joueurs: ReduxJoueur[],
   ): Promise<Joueur[]> {
-    console.log(`Migrating players for tournament`);
+    const playersToInsert: NewJoueur[] = joueurs.map((joueur) => ({
+      joueurId: joueur.id,
+      name: joueur.name,
+      type: joueur.type,
+      equipe: joueur.equipe,
+      isChecked: joueur.isChecked || false,
+    }));
 
-    try {
-      const playersToInsert: NewJoueur[] = joueurs.map((joueur) => ({
-        joueurId: joueur.id,
-        name: joueur.name,
-        type: joueur.type,
-        equipe: joueur.equipe,
-        isChecked: joueur.isChecked || false,
-      }));
-
-      const joueursBDD =
-        await JoueursRepository.insertMultiples(playersToInsert);
-      console.log(`Migrated ${joueurs.length} players for tournament`);
-      return joueursBDD;
-    } catch (error) {
-      console.error(`Error migrating players for tournament:`, error);
-      throw error;
-    }
+    return await JoueursRepository.insertMultiples(playersToInsert);
   }
 
   private static async migrateTournamentMatches(
@@ -372,61 +347,52 @@ export class DataMigrationService {
     matches: ReduxMatch[],
     joueurs: Joueur[],
   ): Promise<void> {
-    console.log(`Migrating matches for tournament...`);
+    let nextTeamId = 1;
+    for (const matchData of matches) {
+      // Create teams for this match
+      const newTeam1: NewEquipe = {
+        equipeId: nextTeamId,
+        updatedAt: Date.now(),
+        synced: 0,
+      };
+      nextTeamId++;
+      const createdTeam1 = await EquipeRepository.insert(newTeam1);
+      const newTeam2: NewEquipe = {
+        equipeId: nextTeamId,
+        updatedAt: Date.now(),
+        synced: 0,
+      };
+      const createdTeam2 = await EquipeRepository.insert(newTeam2);
+      nextTeamId++;
 
-    try {
-      let nextTeamId = 1;
-      for (const matchData of matches) {
-        // Create teams for this match
-        const newTeam1: NewEquipe = {
-          equipeId: nextTeamId,
-          updatedAt: Date.now(),
-          synced: 0,
-        };
-        nextTeamId++;
-        const createdTeam1 = await EquipeRepository.insert(newTeam1);
-        const newTeam2: NewEquipe = {
-          equipeId: nextTeamId,
-          updatedAt: Date.now(),
-          synced: 0,
-        };
-        const createdTeam2 = await EquipeRepository.insert(newTeam2);
-        nextTeamId++;
+      // Create the match
+      const newMatch: NewMatch = {
+        matchId: matchData.id,
+        tournoiId: tournoiId,
+        tourId: matchData.manche,
+        tourName: matchData.mancheName || `Tour ${matchData.manche}`,
+        equipe1: createdTeam1.id,
+        equipe2: createdTeam2.id,
+        score1: matchData.score1 || null,
+        score2: matchData.score2 || null,
+        terrainId: matchData.terrain?.id || null,
+        updatedAt: Date.now(),
+        synced: 0,
+      };
 
-        // Create the match
-        const newMatch: NewMatch = {
-          matchId: matchData.id,
-          tournoiId: tournoiId,
-          tourId: matchData.manche,
-          tourName: matchData.mancheName || `Tour ${matchData.manche}`,
-          equipe1: createdTeam1.id,
-          equipe2: createdTeam2.id,
-          score1: matchData.score1 || null,
-          score2: matchData.score2 || null,
-          terrainId: matchData.terrain?.id || null,
-          updatedAt: Date.now(),
-          synced: 0,
-        };
+      await MatchsRepository.insertMatch([newMatch]);
 
-        await MatchsRepository.insertMatch([newMatch]);
-
-        // Associate players with teams
-        await this.migrateJoueursEquipes(
-          matchData.equipe[0],
-          createdTeam1.id,
-          joueurs,
-        );
-        await this.migrateJoueursEquipes(
-          matchData.equipe[1],
-          createdTeam2.id,
-          joueurs,
-        );
-      }
-
-      console.log(`Migrated ${matches.length} matches for tournament`);
-    } catch (error) {
-      console.error(`Error migrating matches for tournament :`, error);
-      throw error;
+      // Associate players with teams
+      await this.migrateJoueursEquipes(
+        matchData.equipe[0],
+        createdTeam1.id,
+        joueurs,
+      );
+      await this.migrateJoueursEquipes(
+        matchData.equipe[1],
+        createdTeam2.id,
+        joueurs,
+      );
     }
   }
 
@@ -467,89 +433,74 @@ export class DataMigrationService {
     console.log('Fin migration tournoi actuel');
   }
 
-  private static async migratePreparationTournoiOptions(
+  private static async migratePreparationTournoi(
     optionsTournoi: ReduxOptionsPreparationTournoi,
   ): Promise<void> {
-    console.log('Migrating tournament options...');
+    console.log('Début migration preparation tournoi');
 
-    try {
-      const preparationData: NewPreparationTournoi = {
-        id: 0,
-        mode: optionsTournoi.mode,
-        nbTours: optionsTournoi.nbTours,
-        nbPtVictoire: optionsTournoi.nbPtVictoire,
-        speciauxIncompatibles: optionsTournoi.speciauxIncompatibles,
-        memesEquipes: optionsTournoi.memesEquipes,
-        memesAdversaires: optionsTournoi.memesAdversaires,
-        typeEquipes: optionsTournoi.typeEquipes,
-        typeTournoi: optionsTournoi.type,
-        avecTerrains: optionsTournoi.avecTerrains,
-        modeCreationEquipes: optionsTournoi.modeCreationEquipes,
-        complement: optionsTournoi.complement,
-      };
+    const preparationData: NewPreparationTournoi = {
+      id: 0,
+      mode: optionsTournoi.mode,
+      nbTours: optionsTournoi.nbTours,
+      nbPtVictoire: optionsTournoi.nbPtVictoire,
+      speciauxIncompatibles: optionsTournoi.speciauxIncompatibles,
+      memesEquipes: optionsTournoi.memesEquipes,
+      memesAdversaires: optionsTournoi.memesAdversaires,
+      typeEquipes: optionsTournoi.typeEquipes,
+      typeTournoi: optionsTournoi.type,
+      avecTerrains: optionsTournoi.avecTerrains,
+      modeCreationEquipes: optionsTournoi.modeCreationEquipes,
+      complement: optionsTournoi.complement,
+    };
 
-      await PreparationTournoisRepository.updatePreparationTournoi(
-        preparationData,
-      );
-      console.log('Migrated tournament options');
-    } catch (error) {
-      console.error('Error migrating tournament options:', error);
-      throw error;
-    }
+    await PreparationTournoisRepository.updatePreparationTournoi(
+      preparationData,
+    );
+    console.log('Fin migration preparation tournoi');
   }
 
   private static async migrateTerrainsPreparationTournois(
     listeTerrains: ReduxTerrain[],
   ): Promise<void> {
-    console.log('Migrating terrains...');
+    console.log('Début migration terrains');
 
     if (listeTerrains.length === 0) {
-      console.log('No terrains to migrate');
+      console.log('Accun terrains à migrer');
       return;
     }
 
-    try {
-      for (const terrain of listeTerrains) {
-        await TerrainsRepository.insert({
-          id: terrain.id,
-          name: terrain.name,
-          updatedAt: Date.now(),
-          synced: 0,
-        });
-        await TerrainsPreparationTournoisRepository.insert({
-          preparationTournoiId: 0,
-          terrainId: terrain.id,
-        });
-      }
-      console.log(`Migrated ${listeTerrains.length} terrains`);
-    } catch (error) {
-      console.error('Error migrating terrains:', error);
-      throw error;
+    for (const terrain of listeTerrains) {
+      await TerrainsRepository.insert({
+        id: terrain.id,
+        name: terrain.name,
+        updatedAt: Date.now(),
+        synced: 0,
+      });
+      await TerrainsPreparationTournoisRepository.insert({
+        preparationTournoiId: 0,
+        terrainId: terrain.id,
+      });
     }
+    console.log(`Fin migration terrains (${listeTerrains.length})`);
   }
 
   private static async migratePlayerSuggestions(
     historique: ReduxHistoriqueJoueurs[],
   ): Promise<void> {
-    console.log('Migrating player suggestions from historique...');
+    console.log('Début migration joueurs suggérés');
 
     if (historique.length === 0) {
-      console.log('No player suggestions to migrate');
+      console.log('Aucun joueur suggéré à migrer');
       return;
     }
 
-    try {
-      for (const player of historique) {
-        await JoueursSuggestionRepository.insertOrUpdateOccurence({
-          name: player.name.trim(),
-          occurence: player.nbTournois,
-          cacher: false,
-        });
-      }
-      console.log(`Migrated ${historique.length} player suggestions`);
-    } catch (error) {
-      console.error('Error migrating player suggestions:', error);
-      throw error;
+    for (const player of historique) {
+      await JoueursSuggestionRepository.insertOrUpdateOccurence({
+        name: player.name.trim(),
+        occurence: player.nbTournois,
+        cacher: false,
+      });
     }
+    console.log(`Fin migration joueurs suggérés (${historique.length})`);
   }
 }
