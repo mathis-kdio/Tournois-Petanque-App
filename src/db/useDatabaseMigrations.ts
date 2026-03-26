@@ -13,7 +13,7 @@ export function useDatabaseMigrations() {
     null,
   );
 
-  const [migrationDone, setMigrationDone] = useState(false);
+  const [databaseMigrationDone, setDatabaseMigrationDone] = useState(false);
 
   useEffect(() => {
     openDatabaseAsync(DATABASE_NAME, { enableChangeListener: true })
@@ -25,10 +25,10 @@ export function useDatabaseMigrations() {
         drizzleDbInstance = expoSQLiteDatabase;
         return migrate(expoSQLiteDatabase, migrations); // TODO ne fonctionne pas sur WEB https://github.com/drizzle-team/drizzle-orm/issues/1009
       })
-      .then((a) => setMigrationDone(true));
+      .then((a) => setDatabaseMigrationDone(true));
   }, []);
 
-  return { sqliteDatabase, migrationDone };
+  return { sqliteDatabase, databaseMigrationDone };
 }
 
 export function getDrizzleDb(): ExpoSQLiteDatabase {

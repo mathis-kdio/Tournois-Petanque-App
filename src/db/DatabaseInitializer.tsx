@@ -13,13 +13,13 @@ interface DatabaseInitializerProps {
 export const DatabaseInitializer: React.FC<DatabaseInitializerProps> = ({
   children,
 }) => {
-  const { sqliteDatabase, migrationDone } = useDatabaseMigrations();
+  const { sqliteDatabase, databaseMigrationDone } = useDatabaseMigrations();
 
   useDrizzleStudio(sqliteDatabase);
 
-  useDataMigration(migrationDone);
+  const dataMigrationDone = useDataMigration(databaseMigrationDone);
 
-  if (!migrationDone) {
+  if (!dataMigrationDone) {
     return (
       <HStack>
         <ActivityIndicator size="large" />
