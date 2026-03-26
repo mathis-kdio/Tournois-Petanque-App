@@ -85,6 +85,7 @@ type ReduxMatch = {
     id: number;
     name: string;
   };
+  mancheName?: string;
 };
 
 type ReduxTournoiOptions = {
@@ -215,7 +216,7 @@ export class DataMigrationService {
         joueurs.map((joueur) => {
           return {
             joueurId: joueur.id,
-            preparationTournoiId: 1,
+            preparationTournoiId: 0,
           };
         });
       await JoueursPreparationTournoisRepository.insert(
@@ -251,28 +252,38 @@ export class DataMigrationService {
         updatedAt: Date.now(),
         synced: 0,
       });
-
-      // Insertion joueurs de la liste
-      const listeNewJoueur = listeJoueur.map((joueurModel) => {
-        return {
-          joueurId: joueurModel.id,
-          name: joueurModel.name,
-          type: joueurModel.type,
-          equipe: joueurModel.equipe,
-          isChecked: false,
-        } as NewJoueur;
-      });
-      const joueurs = await JoueursRepository.insertMultiples(listeNewJoueur);
-      const joueursListes = joueurs.map((joueur) => {
-        return {
-          joueurId: joueur.id,
-          listeId: newList[0].id,
-        } as NewJoueursListes;
-      });
-      await JoueursListesRepository.insertMultiple(joueursListes);
+      await this.migrateJoueursListe(listeJoueur, newList[0].id);
 
       console.log(`Migrated saved list: ${listName} (ID: ${listId})`);
     }
+  }
+
+  private static async migrateJoueursListe(
+    listeJoueur: ReduxListesSauvegardeJoueurs[],
+    listeId: number,
+  ) {
+    if (listeJoueur.length === 0) {
+      return;
+    }
+    // Insertion joueurs de la liste
+    const listeNewJoueur: NewJoueur[] = listeJoueur.map((joueur) => {
+      return {
+        joueurId: joueur.id,
+        name: joueur.name,
+        type:
+          joueur.type.length !== 0 ? (joueur.type as JoueurType) : undefined,
+        equipe: joueur.equipe,
+        isChecked: false,
+      };
+    });
+    const joueurs = await JoueursRepository.insertMultiples(listeNewJoueur);
+    const joueursListes = joueurs.map((joueur) => {
+      return {
+        joueurId: joueur.id,
+        listeId: listeId,
+      } as NewJoueursListes;
+    });
+    await JoueursListesRepository.insertMultiple(joueursListes);
   }
 
   private static async migrateTournaments(
@@ -387,7 +398,7 @@ export class DataMigrationService {
           matchId: matchData.id,
           tournoiId: tournoiId,
           tourId: matchData.manche,
-          tourName: `Manche ${matchData.manche}`,
+          tourName: matchData.mancheName || `Tour ${matchData.manche}`,
           equipe1: createdTeam1.id,
           equipe2: createdTeam2.id,
           score1: matchData.score1 || null,
@@ -400,12 +411,12 @@ export class DataMigrationService {
         await MatchsRepository.insertMatch([newMatch]);
 
         // Associate players with teams
-        this.migrateJoueursEquipes(
+        await this.migrateJoueursEquipes(
           matchData.equipe[0],
           createdTeam1.id,
           joueurs,
         );
-        this.migrateJoueursEquipes(
+        await this.migrateJoueursEquipes(
           matchData.equipe[1],
           createdTeam2.id,
           joueurs,
@@ -423,7 +434,7 @@ export class DataMigrationService {
     equipe: [number, number, number, number],
     teamId: number,
     joueurs: Joueur[],
-  ) {
+  ): Promise<void> {
     for (const playerId of equipe.filter((id) => id !== -1)) {
       // Find the player in the database
       const joueur = joueurs.find((joueur) => joueur.joueurId === playerId);
@@ -444,16 +455,16 @@ export class DataMigrationService {
   private static async setActualTournament(
     listeMatchs: ReduxTournoi,
   ): Promise<void> {
-    console.log('Migrating actual tournament...');
+    console.log('Début migration tournoi actuel');
 
-    if (!listeMatchs) {
-      console.log('No actual tournament');
+    if (listeMatchs.length === 0) {
+      console.log('Pas de tournoi en cours');
       return;
     }
     const options = listeMatchs.at(-1) as ReduxTournoiOptions;
     await TournoisRepository.setActualTournoi(options.tournoiID, true);
 
-    console.log('Migrated actual tournament');
+    console.log('Fin migration tournoi actuel');
   }
 
   private static async migratePreparationTournoiOptions(
