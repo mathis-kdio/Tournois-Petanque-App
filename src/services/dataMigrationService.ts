@@ -1,20 +1,22 @@
 import {
-  joueurs,
+  Joueur,
   joueursSuggestion,
   NewJoueur,
   NewJoueursListes,
+  NewJoueursPreparationTournois,
   NewPreparationTournoi,
+  NewTournoi,
 } from '@/db/schema';
 import { NewEquipe } from '@/db/schema/equipe';
 import { NewEquipesJoueurs } from '@/db/schema/equipesJoueurs';
 import { NewMatch } from '@/db/schema/match';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { eq } from 'drizzle-orm';
 
 import { EquipeRepository } from '@/repositories/equipe/equipeRepository';
 import { EquipesJoueursRepository } from '@/repositories/equipesJoueurs/equipesJoueursRepository';
 import { JoueursRepository } from '@/repositories/joueurs/joueursRepository';
 import { JoueursListesRepository } from '@/repositories/joueursListes/joueursListesRepository';
+import { JoueursPreparationTournoisRepository } from '@/repositories/joueursPreparationTournois/joueursPreparationTournoiRepository';
 import { JoueursSuggestionRepository } from '@/repositories/joueursSuggestion/joueursSuggestionRepository';
 import { ListesJoueursRepository } from '@/repositories/listesJoueurs/listesJoueursRepository';
 import { MatchsRepository } from '@/repositories/matchs/matchsRepository';
@@ -33,19 +35,19 @@ import { MemesAdversairesType } from '@/types/interfaces/preparationTournoiModel
 
 // Redux state types
 interface ReduxListesJoueurs {
-  avecNoms: ReduxJoueurModel[];
-  sansNoms: ReduxJoueurModel[];
-  avecEquipes: ReduxJoueurModel[];
+  avecNoms: ReduxJoueur[];
+  sansNoms: ReduxJoueur[];
+  avecEquipes: ReduxJoueur[];
   historique: ReduxHistoriqueJoueurs[];
-  sauvegarde: ReduxJoueurModel[];
+  sauvegarde: ReduxJoueur[];
 }
 
-type ReduxJoueurModel = {
+type ReduxJoueur = {
   id: number;
   name: string;
-  type: JoueurType | undefined;
-  equipe: number | undefined;
-  isChecked: boolean;
+  type?: JoueurType | undefined;
+  equipe?: number | undefined;
+  isChecked?: boolean;
 };
 
 type ReduxHistoriqueJoueurs = {
@@ -66,7 +68,7 @@ type ReduxListesSauvegarde = {
 };
 
 type ReduxTournament = {
-  tournoi: any[];
+  tournoi: ReduxTournoi;
   tournoiId: number;
   creationDate: string;
   updateDate: string;
@@ -77,6 +79,8 @@ type ReduxMatch = {
   id: number;
   manche: number;
   equipe: [[number, number, number, number], [number, number, number, number]];
+  score1: number;
+  score2: number;
   terrain: {
     id: number;
     name: string;
@@ -93,9 +97,9 @@ type ReduxTournoiOptions = {
   memesAdversaires: MemesAdversairesType;
   typeEquipes: TypeEquipes;
   typeTournoi: TypeTournoi;
-  listeJoueurs: ReduxJoueurModel[];
+  listeJoueurs: ReduxJoueur[];
   avecTerrains: boolean;
-  mode: 'avecEquipes';
+  mode: ModeTournoi.AVECNOMS | ModeTournoi.SANSNOMS | ModeTournoi.AVECEQUIPES;
 };
 
 type ReduxTournoi = (ReduxMatch | ReduxTournoiOptions)[];
@@ -138,20 +142,20 @@ export class DataMigrationService {
     try {
       console.log('Starting data migration from Redux to Drizzle ORM...');
 
-      // Migrate players
-      //await this.migratePlayers(listesJoueurs);
+      //Migrate Preparation Tournoi Options
+      await this.migratePreparationTournoiOptions(optionsTournoi);
+
+      // Migrate Joueurs Preparation Tournoi
+      await this.migrateJoueursPreparationTournoi(listesJoueurs);
 
       // Migrate player lists
       await this.migratePlayerLists(listesSauvegarde); // TODO différence entre state.listesJoueurs.listesSauvegarde et state.listesJoueurs.listesJoueurs.sauvegarde ???
 
       // Migrate tournaments
-      //await this.migrateTournaments(listeTournois);
+      await this.migrateTournaments(listeTournois);
 
       // Set actual tournament
       await this.setActualTournament(listeMatchs);
-
-      //Migrate tournament options
-      await this.migrateTournamentOptions(optionsTournoi);
 
       // Migrate terrains
       await this.migrateTerrainsPreparationTournois(listeTerrains);
@@ -179,46 +183,47 @@ export class DataMigrationService {
     }
   }
 
-  private static async migratePlayers(
+  private static async migrateJoueursPreparationTournoi(
     listesJoueurs: ReduxListesJoueurs,
   ): Promise<void> {
-    console.log('Migrating players...');
+    console.log('Migrating preparation tournoi players...');
 
     // Combine all player lists
-    const allPlayers: ReduxJoueurModel[] = [
-      ...listesJoueurs.avecNoms,
-      ...listesJoueurs.sansNoms,
-      ...listesJoueurs.avecEquipes,
-      ...listesJoueurs.sauvegarde,
-    ];
+    const allPlayers =
+      listesJoueurs.avecEquipes.length !== 0
+        ? listesJoueurs.avecEquipes
+        : listesJoueurs.avecNoms;
 
     if (allPlayers.length === 0) {
-      console.log('No players to migrate');
+      console.log('No players preparation tournoi to migrate');
       return;
     }
 
-    // Convert Redux player format to Drizzle format
-    const playersToInsert = allPlayers
-      .filter((player) => player.name && player.name.trim() !== '') // Filter out empty names
-      .map((player) => {
-        const basePlayer: NewJoueur = {
-          joueurId: player.id,
-          name: player.name.trim(),
-          type: player.type,
-          equipe: player.equipe || 0,
-          isChecked: player.isChecked || false,
-        };
-        return basePlayer;
-      });
-
-    if (playersToInsert.length === 0) {
-      console.log('No valid players to migrate');
-      return;
-    }
+    const playersToInsert: NewJoueur[] = allPlayers.map((player) => {
+      return {
+        joueurId: player.id,
+        name: player.name,
+        type: player.type,
+        equipe: player.equipe || 0,
+        isChecked: player.isChecked || false,
+      };
+    });
 
     try {
-      await JoueursRepository.insertMultiples(playersToInsert);
-      console.log(`Migrated ${playersToInsert.length} players`);
+      const joueurs = await JoueursRepository.insertMultiples(playersToInsert);
+      const joueursPreparationTournois: NewJoueursPreparationTournois[] =
+        joueurs.map((joueur) => {
+          return {
+            joueurId: joueur.id,
+            preparationTournoiId: 1,
+          };
+        });
+      await JoueursPreparationTournoisRepository.insert(
+        joueursPreparationTournois,
+      );
+      console.log(
+        `Migrated ${playersToInsert.length} players preparation tournoi`,
+      );
     } catch (error) {
       console.error('Error migrating players:', error);
       throw error;
@@ -283,21 +288,12 @@ export class DataMigrationService {
     for (const tournoiData of listeTournois) {
       try {
         const tournoiId = tournoiData.tournoiId;
-        const tournoiName = tournoiData.name || `Tournoi ${tournoiId}`;
+        const tournoiName = tournoiData.name || `${tournoiId}`;
 
         // Extract tournament options from the tournament data
-        const options =
-          tournoiData.tournoi[tournoiData.tournoi.length - 1] || {};
+        const options = tournoiData.tournoi.at(-1) as ReduxTournoiOptions;
 
-        // Validate required fields
-        if (!options.nbTours || !options.nbMatchs) {
-          console.warn(
-            `Skipping tournament ${tournoiId}: missing required fields`,
-          );
-          continue;
-        }
-
-        const newTournoi = {
+        const newTournoi: NewTournoi = {
           id: tournoiId,
           name: tournoiName,
           nbTours: options.nbTours,
@@ -306,10 +302,10 @@ export class DataMigrationService {
           speciauxIncompatibles: options.speciauxIncompatibles || false,
           memesEquipes: options.memesEquipes || false,
           memesAdversaires: options.memesAdversaires || 50,
-          typeEquipes: options.typeEquipes || TypeEquipes.DOUBLETTE,
-          typeTournoi: options.typeTournoi || TypeTournoi.MELEDEMELE,
+          typeEquipes: options.typeEquipes,
+          typeTournoi: options.typeTournoi,
           avecTerrains: options.avecTerrains || false,
-          mode: options.mode || ModeTournoi.SANSNOMS,
+          mode: options.mode || ModeTournoi.AVECNOMS,
           estTournoiActuel: false,
           createAt: new Date(tournoiData.creationDate).getTime(),
           updatedAt: new Date(tournoiData.updateDate).getTime(),
@@ -319,15 +315,13 @@ export class DataMigrationService {
         console.log(`Migrated tournament: ${tournoiName} (ID: ${tournoiId})`);
 
         // Migrate tournament players
-        if (options.listeJoueurs && options.listeJoueurs.length > 0) {
-          await this.migrateTournamentPlayers(tournoiId, options.listeJoueurs);
-        }
+        const joueurs = await this.migrateTournamentPlayers(
+          options.listeJoueurs,
+        );
 
         // Migrate tournament matches
-        if (tournoiData.tournoi.length > 1) {
-          const matches = tournoiData.tournoi.slice(0, -1); // Exclude the last element (options)
-          await this.migrateTournamentMatches(tournoiId, matches);
-        }
+        const matches = tournoiData.tournoi.slice(0, -1) as ReduxMatch[];
+        await this.migrateTournamentMatches(tournoiId, matches, joueurs);
       } catch (error) {
         console.error(
           `Error migrating tournament ${tournoiData.tournoiId}:`,
@@ -339,38 +333,25 @@ export class DataMigrationService {
   }
 
   private static async migrateTournamentPlayers(
-    tournoiId: number,
-    players: ReduxJoueurModel[],
-  ): Promise<void> {
-    console.log(`Migrating players for tournament ${tournoiId}...`);
-
-    const validPlayers = players.filter(
-      (player) => player.name && player.name.trim() !== '',
-    );
-
-    if (validPlayers.length === 0) {
-      console.log(`No valid players to migrate for tournament ${tournoiId}`);
-      return;
-    }
+    joueurs: ReduxJoueur[],
+  ): Promise<Joueur[]> {
+    console.log(`Migrating players for tournament`);
 
     try {
-      const playersToInsert = validPlayers.map((player) => ({
-        joueurId: player.id,
-        name: player.name.trim(),
-        type: player.type,
-        equipe: player.equipe || 0,
-        isChecked: false,
+      const playersToInsert: NewJoueur[] = joueurs.map((joueur) => ({
+        joueurId: joueur.id,
+        name: joueur.name,
+        type: joueur.type,
+        equipe: joueur.equipe,
+        isChecked: joueur.isChecked || false,
       }));
 
-      await JoueursRepository.insertMultiples(playersToInsert);
-      console.log(
-        `Migrated ${validPlayers.length} players for tournament ${tournoiId}`,
-      );
+      const joueursBDD =
+        await JoueursRepository.insertMultiples(playersToInsert);
+      console.log(`Migrated ${joueurs.length} players for tournament`);
+      return joueursBDD;
     } catch (error) {
-      console.error(
-        `Error migrating players for tournament ${tournoiId}:`,
-        error,
-      );
+      console.error(`Error migrating players for tournament:`, error);
       throw error;
     }
   }
@@ -378,51 +359,37 @@ export class DataMigrationService {
   private static async migrateTournamentMatches(
     tournoiId: number,
     matches: ReduxMatch[],
+    joueurs: Joueur[],
   ): Promise<void> {
-    console.log(`Migrating matches for tournament ${tournoiId}...`);
-
-    if (matches.length === 0) {
-      console.log(`No matches to migrate for tournament ${tournoiId}`);
-      return;
-    }
+    console.log(`Migrating matches for tournament...`);
 
     try {
-      // Create a map to track created teams
-      const teamMap = new Map<number, number>();
       let nextTeamId = 1;
-
-      // Migrate teams and matches
       for (const matchData of matches) {
-        const manche = matchData.manche || 1;
-
         // Create teams for this match
-        const teamIds: number[] = [];
-        for (const teamPlayers of matchData.equipe) {
-          const teamKey = teamPlayers.join('-');
-
-          if (!teamMap.has(teamKey)) {
-            // Create new team
-            const newTeam: NewEquipe = {
-              equipeId: nextTeamId,
-              updatedAt: Date.now(),
-              synced: 0,
-            };
-            const createdTeam = await EquipeRepository.insert(newTeam);
-            teamMap.set(teamKey, createdTeam.id);
-            nextTeamId++;
-          }
-
-          teamIds.push(teamMap.get(teamKey)!);
-        }
+        const newTeam1: NewEquipe = {
+          equipeId: nextTeamId,
+          updatedAt: Date.now(),
+          synced: 0,
+        };
+        nextTeamId++;
+        const createdTeam1 = await EquipeRepository.insert(newTeam1);
+        const newTeam2: NewEquipe = {
+          equipeId: nextTeamId,
+          updatedAt: Date.now(),
+          synced: 0,
+        };
+        const createdTeam2 = await EquipeRepository.insert(newTeam2);
+        nextTeamId++;
 
         // Create the match
         const newMatch: NewMatch = {
           matchId: matchData.id,
           tournoiId: tournoiId,
-          tourId: manche,
-          tourName: `Manche ${manche}`,
-          equipe1: teamIds[0],
-          equipe2: teamIds[1],
+          tourId: matchData.manche,
+          tourName: `Manche ${matchData.manche}`,
+          equipe1: createdTeam1.id,
+          equipe2: createdTeam2.id,
           score1: matchData.score1 || null,
           score2: matchData.score2 || null,
           terrainId: matchData.terrain?.id || null,
@@ -433,41 +400,44 @@ export class DataMigrationService {
         await MatchsRepository.insertMatch([newMatch]);
 
         // Associate players with teams
-        for (let i = 0; i < matchData.equipe.length; i++) {
-          const teamPlayers = matchData.equipe[i];
-          const teamId = teamIds[i];
-
-          for (const playerId of teamPlayers.filter((id) => id !== -1)) {
-            // Find the player in the database
-            const players = await getDrizzleDb()
-              .select()
-              .from(joueurs)
-              .where(eq(joueurs.joueurId, playerId));
-
-            if (players.length > 0) {
-              const player = players[0];
-
-              // Create the player-team association
-              const newEquipeJoueur: NewEquipesJoueurs = {
-                joueurId: player.id,
-                equipeId: teamId,
-              };
-
-              await EquipesJoueursRepository.insert(newEquipeJoueur);
-            }
-          }
-        }
+        this.migrateJoueursEquipes(
+          matchData.equipe[0],
+          createdTeam1.id,
+          joueurs,
+        );
+        this.migrateJoueursEquipes(
+          matchData.equipe[1],
+          createdTeam2.id,
+          joueurs,
+        );
       }
 
-      console.log(
-        `Migrated ${matches.length} matches for tournament ${tournoiId}`,
-      );
+      console.log(`Migrated ${matches.length} matches for tournament`);
     } catch (error) {
-      console.error(
-        `Error migrating matches for tournament ${tournoiId}:`,
-        error,
-      );
+      console.error(`Error migrating matches for tournament :`, error);
       throw error;
+    }
+  }
+
+  private static async migrateJoueursEquipes(
+    equipe: [number, number, number, number],
+    teamId: number,
+    joueurs: Joueur[],
+  ) {
+    for (const playerId of equipe.filter((id) => id !== -1)) {
+      // Find the player in the database
+      const joueur = joueurs.find((joueur) => joueur.joueurId === playerId);
+      if (!joueur) {
+        throw Error('Aucun joueur correspond trouvé');
+      }
+
+      // Create the player-team association
+      const newEquipeJoueur: NewEquipesJoueurs = {
+        joueurId: joueur.id,
+        equipeId: teamId,
+      };
+
+      await EquipesJoueursRepository.insert(newEquipeJoueur);
     }
   }
 
@@ -486,7 +456,7 @@ export class DataMigrationService {
     console.log('Migrated actual tournament');
   }
 
-  private static async migrateTournamentOptions(
+  private static async migratePreparationTournoiOptions(
     optionsTournoi: ReduxOptionsPreparationTournoi,
   ): Promise<void> {
     console.log('Migrating tournament options...');
