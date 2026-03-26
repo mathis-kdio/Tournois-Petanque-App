@@ -373,9 +373,9 @@ export class DataMigrationService {
         tourName: matchData.mancheName || `Tour ${matchData.manche}`,
         equipe1: createdTeam1.id,
         equipe2: createdTeam2.id,
-        score1: matchData.score1 || null,
-        score2: matchData.score2 || null,
-        terrainId: matchData.terrain?.id || null,
+        score1: matchData.score1,
+        score2: matchData.score2,
+        terrainId: matchData.terrain?.id,
         updatedAt: Date.now(),
         synced: 0,
       };
