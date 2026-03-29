@@ -1,4 +1,4 @@
-import { HStack } from '@/components/ui/hstack';
+import { Center } from '@/components/ui/center';
 import { Text } from '@/components/ui/text';
 import { useDataMigration } from '@/hooks/useDataMigration';
 import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
@@ -21,10 +21,10 @@ export const DatabaseInitializer: React.FC<DatabaseInitializerProps> = ({
 
   if (!dataMigrationDone) {
     return (
-      <HStack>
-        <ActivityIndicator size="large" />
-        <Text>Initialisation de la base...</Text>
-      </HStack>
+      <Center className="flex-1">
+        <ActivityIndicator size="large" color="white" />
+        <Text className="text-white">Initialisation de la base...</Text>
+      </Center>
     );
   }
 
