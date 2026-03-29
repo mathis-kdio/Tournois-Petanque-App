@@ -58,7 +58,7 @@
     "@tauri-apps/plugin-fs": "^2.4.5",
     "@tauri-apps/plugin-opener": "^2.5.3",
     "drizzle-orm": "^0.45.2",
-    "expo": "^55.0.0",
+    "expo": "^55.0.9",
     "expo-build-properties": "~55.0.10",
     "expo-constants": "~55.0.9",
     "expo-dev-client": "~55.0.19",
