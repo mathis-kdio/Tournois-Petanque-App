@@ -7,6 +7,10 @@ export const JoueursListesRepository = {
     return getDrizzleDb().insert(joueursListes).values(newJoueursListes);
   },
 
+  insertMultiple(newJoueursListes: NewJoueursListes[]) {
+    return getDrizzleDb().insert(joueursListes).values(newJoueursListes);
+  },
+
   getInList(listeId: number) {
     return getDrizzleDb()
       .select()

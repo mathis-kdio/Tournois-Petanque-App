@@ -12,7 +12,7 @@ const rootPersistConfig = {
   storage: AsyncStorage,
 };
 
-export default createStore(
+export const store = createStore(
   persistCombineReducers(rootPersistConfig, {
     listesJoueurs,
     gestionMatchs,
@@ -21,3 +21,7 @@ export default createStore(
     optionsTournoi,
   }),
 );
+
+export type RootState = ReturnType<typeof store.getState>;
+
+export default store;

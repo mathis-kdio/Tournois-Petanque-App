@@ -1,5 +1,6 @@
-import { HStack } from '@/components/ui/hstack';
+import { Center } from '@/components/ui/center';
 import { Text } from '@/components/ui/text';
+import { useDataMigration } from '@/hooks/useDataMigration';
 import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
 import React from 'react';
 import { ActivityIndicator } from 'react-native';
@@ -12,16 +13,18 @@ interface DatabaseInitializerProps {
 export const DatabaseInitializer: React.FC<DatabaseInitializerProps> = ({
   children,
 }) => {
-  const { sqliteDatabase, expoSQLiteDatabase } = useDatabaseMigrations();
+  const { sqliteDatabase, databaseMigrationDone } = useDatabaseMigrations();
 
   useDrizzleStudio(sqliteDatabase);
 
-  if (!expoSQLiteDatabase) {
+  const dataMigrationDone = useDataMigration(databaseMigrationDone);
+
+  if (!dataMigrationDone) {
     return (
-      <HStack>
-        <ActivityIndicator size="large" />
-        <Text>Initialisation de la base...</Text>
-      </HStack>
+      <Center className="flex-1">
+        <ActivityIndicator size="large" color="white" />
+        <Text className="text-white">Initialisation de la base...</Text>
+      </Center>
     );
   }
 

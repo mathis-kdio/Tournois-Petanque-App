@@ -92,18 +92,18 @@ export default function RootLayout() {
   return (
     <Provider store={Store}>
       <PersistGate persistor={persistor}>
-        <DatabaseInitializer>
-          <AuthProvider>
-            <ThemeProvider>
-              <GluestackWrapper>
+        <AuthProvider>
+          <ThemeProvider>
+            <GluestackWrapper>
+              <DatabaseInitializer>
                 <I18nextProvider i18n={i18n} defaultNS={'common'}>
                   <Stack screenOptions={{ headerShown: false }} />
                   <StatusBarWrapper />
                 </I18nextProvider>
-              </GluestackWrapper>
-            </ThemeProvider>
-          </AuthProvider>
-        </DatabaseInitializer>
+              </DatabaseInitializer>
+            </GluestackWrapper>
+          </ThemeProvider>
+        </AuthProvider>
       </PersistGate>
     </Provider>
   );
