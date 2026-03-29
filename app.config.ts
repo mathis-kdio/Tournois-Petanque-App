@@ -60,6 +60,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   plugins: [
     ['expo-localization'],
+    ['expo-sharing'],
     [
       'expo-build-properties',
       {
