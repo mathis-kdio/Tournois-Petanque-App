@@ -65,8 +65,8 @@ type ReduxListesSauvegardeJoueurs = {
 
 type ReduxListesSauvegarde = {
   avecNoms: (ReduxListesSauvegardeJoueurs | ListeJoueursInfos)[][];
-  sansNoms: [];
-  avecEquipes: [];
+  sansNoms: never[];
+  avecEquipes: never[];
 };
 
 type ReduxTournament = {
@@ -131,7 +131,7 @@ export class DataMigrationService {
     listesJoueurs: ReduxListesJoueurs,
     listesSauvegarde: ReduxListesSauvegarde,
     listeTournois: ReduxTournament[],
-    listeMatchs: ReduxTournoi,
+    listeMatchs: ReduxTournoi | undefined,
     optionsTournoi: ReduxOptionsPreparationTournoi,
     listeTerrains: ReduxTerrain[],
   ): Promise<boolean> {
@@ -235,7 +235,7 @@ export class DataMigrationService {
 
     for (const savedList of listesSauvegarde.avecNoms) {
       const listeJoueursInfos = savedList.at(-1) as ListeJoueursInfos;
-      const listeJoueur = savedList.splice(
+      const listeJoueur = savedList.slice(
         0,
         -1,
       ) as ReduxListesSauvegardeJoueurs[];
@@ -427,11 +427,11 @@ export class DataMigrationService {
   }
 
   private static async setActualTournament(
-    listeMatchs: ReduxTournoi,
+    listeMatchs: ReduxTournoi | undefined,
   ): Promise<void> {
     console.log('Début migration tournoi actuel');
 
-    if (listeMatchs.length === 0) {
+    if (!listeMatchs || listeMatchs.length === 0) {
       console.log('Pas de tournoi en cours');
       return;
     }
