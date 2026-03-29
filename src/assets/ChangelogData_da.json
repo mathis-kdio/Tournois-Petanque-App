@@ -1,14 +1,28 @@
 {
+  "36": {
+    "id": "36",
+    "version": "2.4.2",
+    "infos": [
+      "- Rettelse og forbedring af PDF-eksport på computere"
+    ]
+  },
+  "35": {
+    "id": "35",
+    "version": "2.4.1",
+    "infos": [
+      "- Korrektion af PDF-eksport"
+    ]
+  },
   "34": {
     "id": "34",
     "version": "2.4.0",
     "infos": [
-      "- Ajout de la génération d'équipes aléatoirement plutôt que manuellement",
-      "- Ajout possibilité d'avoir un match avec un score différent de celui attendu",
-      "- Amélioration de l'affichage et de la création d'un tournoi mêlée",
-      "- Amélioration de l'équipe par défaut pour les tournois avec des équipes manuelles",
-      "- Correction des checkboxs et du renommage des joueurs dans un tournoi",
-      "- Ajout de textes non traduits"
+      "- Tilføjet tilfældig holdgenerering i stedet for manuel",
+      "- Tilføjet muligheden for at have en kamp med en anden score end den forventede",
+      "- Forbedret visning og oprettelse af en skiftende makker turnering",
+      "- Forbedret standardhold til turneringer med manuelle hold",
+      "- Rettelse af afkrydsningsfelter og omdøbning af spillere i en turnering",
+      "- Tilføjelse af ikke oversat tekst"
     ]
   },
   "33": {
