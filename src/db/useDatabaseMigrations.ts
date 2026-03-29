@@ -25,7 +25,7 @@ export function useDatabaseMigrations() {
         drizzleDbInstance = expoSQLiteDatabase;
         return migrate(expoSQLiteDatabase, migrations); // TODO ne fonctionne pas sur WEB https://github.com/drizzle-team/drizzle-orm/issues/1009
       })
-      .then((a) => setDatabaseMigrationDone(true));
+      .then(() => setDatabaseMigrationDone(true));
   }, []);
 
   return { sqliteDatabase, databaseMigrationDone };

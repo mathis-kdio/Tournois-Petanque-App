@@ -65,6 +65,8 @@ type ReduxListesSauvegardeJoueurs = {
 
 type ReduxListesSauvegarde = {
   avecNoms: (ReduxListesSauvegardeJoueurs | ListeJoueursInfos)[][];
+  sansNoms: [];
+  avecEquipes: [];
 };
 
 type ReduxTournament = {
@@ -226,10 +228,15 @@ export class DataMigrationService {
   ) {
     console.log('Début migration liste joueurs');
 
-    // Migrate saved lists first
+    if (listesSauvegarde.avecNoms.length === 0) {
+      console.log('Aucune liste joueurs à migrer');
+      return;
+    }
+
     for (const savedList of listesSauvegarde.avecNoms) {
       const listeJoueursInfos = savedList.at(-1) as ListeJoueursInfos;
       const listeJoueur = savedList.splice(
+        0,
         -1,
       ) as ReduxListesSauvegardeJoueurs[];
       const listName = listeJoueursInfos?.name || '';
@@ -254,6 +261,7 @@ export class DataMigrationService {
     listeId: number,
   ) {
     if (listeJoueur.length === 0) {
+      console.log(`Aucune joueur dans la liste ${listeId} à migrer`);
       return;
     }
     // Insertion joueurs de la liste
