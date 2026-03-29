@@ -1,6 +1,6 @@
-import { exists, BaseDirectory, writeFile } from '@tauri-apps/plugin-fs';
-import { openPath } from '@tauri-apps/plugin-opener';
 import { downloadDir, sep } from '@tauri-apps/api/path';
+import { BaseDirectory, exists, writeFile } from '@tauri-apps/plugin-fs';
+import { openPath } from '@tauri-apps/plugin-opener';
 import html2pdf from 'html2pdf.js';
 
 export const genererPdf = async (

@@ -1,35 +1,28 @@
-import { Match } from '@/types/interfaces/match';
-
 export const nextMatchMultiChances = (
-  match: Match,
+  matchId: number,
+  score1: number,
+  score2: number,
+  manche: number,
   nbMatchs: number,
   nbTours: number,
 ) => {
-  let gagnant = match.equipe[0];
-  let perdant = match.equipe[1];
-  if (match.score2 > match.score1) {
-    gagnant = match.equipe[1];
-    perdant = match.equipe[0];
-  }
+  const gagnantEquipeNumber: 0 | 1 = score2 > score1 ? 1 : 0;
+  const perdantEquipeNumber: 0 | 1 = score2 > score1 ? 0 : 1;
+
   const nbMatchsTour = nbMatchs / nbTours;
 
-  const offset = Math.ceil(
-    (match.id % (nbMatchsTour / 2 ** (match.manche - 1))) / 2,
-  );
-  const gagnantMatchId = match.id + nbMatchsTour - offset;
+  const offset = Math.ceil((matchId % (nbMatchsTour / 2 ** (manche - 1))) / 2);
+  const gagnantMatchId = matchId + nbMatchsTour - offset;
   const perdantMatchId =
-    match.id + nbMatchsTour + nbMatchsTour / 2 ** match.manche - offset;
+    matchId + nbMatchsTour + nbMatchsTour / 2 ** manche - offset;
 
-  const equipeId = match.id % 2;
-  const actionMultichancesAddNextMatch = {
-    type: 'MULTICHANCES_ADD_NEXT_MATCH',
-    value: {
-      gagnant: gagnant,
-      gagnantMatchId: gagnantMatchId,
-      perdant: perdant,
-      perdantMatchId: perdantMatchId,
-      equipeId: equipeId,
-    },
+  const nextEquipeNumber = (matchId % 2) as 0 | 1;
+
+  return {
+    gagnantEquipeNumber,
+    gagnantMatchId,
+    perdantEquipeNumber,
+    perdantMatchId,
+    nextEquipeNumber,
   };
-  return actionMultichancesAddNextMatch;
 };

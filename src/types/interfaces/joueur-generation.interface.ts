@@ -8,3 +8,12 @@ export interface JoueurGeneration {
   allCoequipiers: number[];
   allAdversaires: number[];
 }
+
+export interface JoueurGenerationTeteATete {
+  uniqueBDDId: number;
+  joueurTournoiId: number;
+  name: string;
+  type: JoueurType | undefined;
+  equipe: number[];
+  isChecked: boolean;
+}

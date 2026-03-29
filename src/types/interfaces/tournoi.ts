@@ -1,10 +1,12 @@
-import { Match } from './match';
-import { OptionsTournoi } from './optionsTournoi';
+import { MatchModel } from './matchModel';
+import { OptionsTournoiModel } from './optionsTournoiModel';
 
-export interface Tournoi {
+export interface TournoiModel {
   tournoiId: number;
   name?: string;
+  estTournoiActuel: boolean;
   creationDate: Date;
   updateDate: Date;
-  tournoi: [...Match[], OptionsTournoi];
+  matchs: MatchModel[];
+  options: OptionsTournoiModel;
 }

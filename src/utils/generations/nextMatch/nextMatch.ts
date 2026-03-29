@@ -1,23 +1,72 @@
+import { MatchsRepository } from '@/repositories/matchs/matchsRepository';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { nextMatchCoupe } from './nextMatchCoupe';
 import { nextMatchMultiChances } from './nextMatchMultiChances';
-import { Match } from '@/types/interfaces/match';
 
-export const nextMatch = (
-  match: Match,
+export const nextMatch = async (
+  matchId: number,
+  score1: number,
+  score2: number,
+  manche: number,
   nbMatchs: number,
   typeTournoi: TypeTournoi,
   nbTours: number,
+  tournoiId: number,
 ) => {
-  if (typeTournoi === TypeTournoi.COUPE && match.id + 1 < nbMatchs) {
-    //Tournoi de type Coupe sauf dernier match
-    return nextMatchCoupe(match, nbMatchs);
-  } else if (
-    typeTournoi === TypeTournoi.MULTICHANCES &&
-    match.manche < nbTours
-  ) {
-    //Tournoi de type Multi-Chances sauf matchs du dernier tour
-    return nextMatchMultiChances(match, nbMatchs, nbTours);
+  if (typeTournoi === TypeTournoi.COUPE && matchId + 1 < nbMatchs) {
+    //Tournoi de type Coupe sauf si dernier match
+    const { equipeNumber, gagnantMatchId, nextEquipeNumber } = nextMatchCoupe(
+      matchId,
+      score1,
+      score2,
+      manche,
+      nbMatchs,
+    );
+
+    const matchBDD = (await MatchsRepository.get(tournoiId, matchId))[0];
+    const equipeId = equipeNumber === 0 ? matchBDD.equipe1 : matchBDD.equipe2;
+
+    await MatchsRepository.updateMatchNext(
+      tournoiId,
+      equipeId,
+      gagnantMatchId,
+      nextEquipeNumber,
+    );
+  } else if (typeTournoi === TypeTournoi.MULTICHANCES && manche < nbTours) {
+    //Tournoi de type Multi-Chances sauf si matchs du dernier tour
+    const {
+      gagnantEquipeNumber,
+      gagnantMatchId,
+      perdantEquipeNumber,
+      perdantMatchId,
+      nextEquipeNumber,
+    } = nextMatchMultiChances(
+      matchId,
+      score1,
+      score2,
+      manche,
+      nbMatchs,
+      nbTours,
+    );
+
+    const matchBDD = (await MatchsRepository.get(tournoiId, matchId))[0];
+    const gagnantEquipeId =
+      gagnantEquipeNumber === 0 ? matchBDD.equipe1 : matchBDD.equipe2;
+    const perdantEquipeId =
+      perdantEquipeNumber === 0 ? matchBDD.equipe1 : matchBDD.equipe2;
+
+    await MatchsRepository.updateMatchNext(
+      tournoiId,
+      gagnantEquipeId,
+      gagnantMatchId,
+      nextEquipeNumber,
+    );
+    await MatchsRepository.updateMatchNext(
+      tournoiId,
+      perdantEquipeId,
+      perdantMatchId,
+      nextEquipeNumber,
+    );
   } else {
     return;
   }

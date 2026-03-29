@@ -1,28 +1,28 @@
-import { Pressable } from '@/components/ui/pressable';
 import { Menu, MenuItem, MenuItemLabel } from '@/components/ui/menu';
-import { useTranslation } from 'react-i18next';
+import { Pressable } from '@/components/ui/pressable';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { useNavigation, useRouter } from 'expo-router';
 import { CommonActions } from '@react-navigation/native';
+import { useNavigation, useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
 const BoutonMenuHeaderNav = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const navigation = useNavigation();
 
-  const _showOptions = () => {
+  const showOptions = () => {
     router.navigate('/tournoi/parametres-tournoi');
   };
 
-  const _showJoueurs = () => {
+  const showJoueurs = () => {
     router.navigate('/tournoi/joueurs-tournoi');
   };
 
-  const _showPDFExport = () => {
+  const showPDFExport = () => {
     router.navigate('/tournoi/pdf-export');
   };
 
-  const _showAccueil = () => {
+  const showAccueil = () => {
     navigation.dispatch(
       CommonActions.reset({
         routes: [{ name: 'index' }],
@@ -48,29 +48,21 @@ const BoutonMenuHeaderNav = () => {
       <MenuItem
         key="Joueurs"
         textValue={t('liste_joueurs')}
-        onPress={() => _showJoueurs()}
+        onPress={showJoueurs}
       >
         <MenuItemLabel size="sm">{t('liste_joueurs')}</MenuItemLabel>
       </MenuItem>
       <MenuItem
         key="Options"
         textValue={t('parametres_tournoi')}
-        onPress={() => _showOptions()}
+        onPress={showOptions}
       >
         <MenuItemLabel size="sm">{t('parametres_tournoi')}</MenuItemLabel>
       </MenuItem>
-      <MenuItem
-        key="PDF"
-        textValue={t('exporter_pdf')}
-        onPress={() => _showPDFExport()}
-      >
+      <MenuItem key="PDF" textValue={t('exporter_pdf')} onPress={showPDFExport}>
         <MenuItemLabel size="sm">{t('exporter_pdf')}</MenuItemLabel>
       </MenuItem>
-      <MenuItem
-        key="Accueil"
-        textValue={t('accueil')}
-        onPress={() => _showAccueil()}
-      >
+      <MenuItem key="Accueil" textValue={t('accueil')} onPress={showAccueil}>
         <MenuItemLabel size="sm">{t('accueil')}</MenuItemLabel>
       </MenuItem>
     </Menu>

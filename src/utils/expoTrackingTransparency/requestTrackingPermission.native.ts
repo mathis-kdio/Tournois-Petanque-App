@@ -1,6 +1,6 @@
 import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
-import { _adsConsentForm } from '../adMob/consentForm';
 import { AppStateStatus } from 'react-native';
+import { _adsConsentForm } from '../adMob/consentForm';
 
 export const _requestTrackingPermissions = (appState: AppStateStatus) => {
   requestTrackingPermissionsAsync().then((permissionResponse) => {
