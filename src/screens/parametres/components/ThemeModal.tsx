@@ -10,12 +10,9 @@ import {
   ModalHeader,
 } from '@/components/ui/modal';
 import { useTheme } from '@/components/ui/theme-provider/ThemeProvider';
-import { AppTheme, getThemeColor } from '@/utils/theme/theme';
+import { AppTheme } from '@/utils/theme/theme';
 import Item from '@components/Item';
-import { setBackgroundColorAsync } from 'expo-navigation-bar';
-import { setStatusBarBackgroundColor } from 'expo-status-bar';
 import { useTranslation } from 'react-i18next';
-import { Platform } from 'react-native';
 
 export interface Props {
   modalThemeOpen: boolean;
@@ -27,13 +24,6 @@ const ThemeModal: React.FC<Props> = ({ modalThemeOpen, setModalThemeOpen }) => {
   const { setTheme } = useTheme();
 
   const changeTheme = (theme: AppTheme) => {
-    if (Platform.OS === 'android') {
-      setTimeout(() => {
-        const color = getThemeColor(theme);
-        setStatusBarBackgroundColor(color);
-        setBackgroundColorAsync(color);
-      }, 200);
-    }
     setTheme(theme);
     setModalThemeOpen(false);
   };
