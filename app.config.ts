@@ -60,6 +60,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   plugins: [
     ['expo-localization'],
+    ['expo-router'],
+    ['expo-sharing'],
+    ['expo-sqlite'],
     [
       'expo-build-properties',
       {
@@ -155,8 +158,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         ],
       },
     ],
-    ['expo-router'],
-    ['expo-sqlite'],
+    ['@react-native-async-storage/expo-with-async-storage'],
   ],
   extra: {
     eas: {

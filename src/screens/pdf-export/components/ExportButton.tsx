@@ -7,7 +7,6 @@ import { genererPdf } from '@/utils/pdf/generate/genererPdf';
 import { generationPDFCoupe } from '@utils/pdf/coupe';
 import { generationPDFTournoi } from '@utils/pdf/tournoi';
 import { File, Paths } from 'expo-file-system';
-import * as FileSystem from 'expo-file-system/legacy';
 import * as IntentLauncher from 'expo-intent-launcher';
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
@@ -97,10 +96,8 @@ const ExportButton: React.FC<Props> = ({
       file.rename(fileNameExt);
 
       if (Platform.OS === 'android') {
-        // TODO : à remplacer par nouvelle API quand équivalent disponible : https://github.com/expo/expo/issues/39056
-        const contentUri = await FileSystem.getContentUriAsync(file.uri);
         IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
-          data: contentUri,
+          data: file.contentUri,
           flags: 1,
           type: 'application/pdf',
         }).then(() => toggleLoading());

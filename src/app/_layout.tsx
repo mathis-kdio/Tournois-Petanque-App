@@ -7,7 +7,7 @@ import {
 import { DatabaseInitializer } from '@/db/DatabaseInitializer';
 import '@/navigation/gesture-handler'; //https://reactnavigation.org/docs/stack-navigator/
 import { SELECTED_LANGUAGE_KEY } from '@/utils/async-storage/key';
-import { getTheme, getThemeColor } from '@/utils/theme/theme';
+import { getTheme } from '@/utils/theme/theme';
 import '@expo/metro-runtime'; //Fast-refresh web
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -15,13 +15,10 @@ import * as Sentry from '@sentry/react-native';
 import Store from '@store/configureStore';
 import { isRunningInExpoGo } from 'expo';
 import 'expo-dev-client';
-import { setBackgroundColorAsync } from 'expo-navigation-bar';
 import { Stack, useNavigationContainerRef } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
 import { cssInterop } from 'nativewind';
 import { ReactNode, useEffect } from 'react';
 import { I18nextProvider } from 'react-i18next';
-import { Platform } from 'react-native';
 import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/es/integration/react';
@@ -58,15 +55,6 @@ const GluestackWrapper = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const StatusBarWrapper = () => {
-  const { theme } = useTheme();
-  const color = getThemeColor(theme);
-  if (Platform.OS === 'android') {
-    setBackgroundColorAsync(color);
-  }
-  return <StatusBar backgroundColor={color} />;
-};
-
 export default function RootLayout() {
   let persistor = persistStore(Store);
 
@@ -98,7 +86,6 @@ export default function RootLayout() {
               <DatabaseInitializer>
                 <I18nextProvider i18n={i18n} defaultNS={'common'}>
                   <Stack screenOptions={{ headerShown: false }} />
-                  <StatusBarWrapper />
                 </I18nextProvider>
               </DatabaseInitializer>
             </GluestackWrapper>
