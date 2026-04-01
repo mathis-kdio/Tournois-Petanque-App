@@ -4,7 +4,9 @@ import { Button, ButtonText } from '@/components/ui/button';
 import { HStack } from '@/components/ui/hstack';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
+import { useTheme } from '@/components/ui/theme-provider/ThemeProvider';
 import { VStack } from '@/components/ui/vstack';
+import { getThemeColor } from '@/utils/theme/theme';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -15,6 +17,9 @@ type SearchParams = {
 };
 
 const ConfirmationEmail = () => {
+  const { theme } = useTheme();
+  const color = getThemeColor(theme);
+
   const { t } = useTranslation();
   const router = useRouter();
   const { email } = useLocalSearchParams<SearchParams>();
@@ -24,7 +29,7 @@ const ConfirmationEmail = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: color }}>
       <ScrollView className="h-1 bg-custom-background">
         <TopBarBack title={t('confirmation_email')} />
         <VStack className="px-10 justify-center items-center">

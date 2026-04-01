@@ -3,14 +3,19 @@ import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { Divider } from '@/components/ui/divider';
 import { LoaderIcon, TrashIcon } from '@/components/ui/icon';
 import { ScrollView } from '@/components/ui/scroll-view';
+import { useTheme } from '@/components/ui/theme-provider/ThemeProvider';
 import { VStack } from '@/components/ui/vstack';
 import { supabaseClient } from '@/utils/supabase';
+import { getThemeColor } from '@/utils/theme/theme';
 import Item from '@components/Item';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Compte = () => {
+  const { theme } = useTheme();
+  const color = getThemeColor(theme);
+
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -22,7 +27,7 @@ const Compte = () => {
   const supprimerCompte = () => { };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: color }}>
       <ScrollView className="h-1 bg-custom-background">
         <TopBarBack title={t('mon_compte')} />
         <VStack className="flex-1 px-10 justify-between">

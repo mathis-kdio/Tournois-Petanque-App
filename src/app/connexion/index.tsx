@@ -14,8 +14,10 @@ import { AlertCircleIcon } from '@/components/ui/icon';
 import { Input, InputField, InputSlot } from '@/components/ui/input';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
+import { useTheme } from '@/components/ui/theme-provider/ThemeProvider';
 import { VStack } from '@/components/ui/vstack';
 import { supabaseClient } from '@/utils/supabase';
+import { getThemeColor } from '@/utils/theme/theme';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -36,6 +38,9 @@ AppState.addEventListener('change', (state) => {
 });
 
 const Authentification = () => {
+  const { theme } = useTheme();
+  const color = getThemeColor(theme);
+
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -69,7 +74,7 @@ const Authentification = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: color }}>
       <ScrollView className="h-1 bg-custom-background">
         <TopBarBack title={t('authentification')} />
         <VStack className="flex-1 px-10 justify-between">
