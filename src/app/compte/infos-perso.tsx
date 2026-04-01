@@ -3,7 +3,9 @@ import TopBarBack from '@/components/topBar/TopBarBack';
 import { HStack } from '@/components/ui/hstack';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
+import { useTheme } from '@/components/ui/theme-provider/ThemeProvider';
 import { VStack } from '@/components/ui/vstack';
+import { getThemeColor } from '@/utils/theme/theme';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -17,6 +19,9 @@ interface UserDetail {
 }
 
 const InfosPerso = () => {
+  const { theme } = useTheme();
+  const color = getThemeColor(theme);
+
   const { t } = useTranslation();
   const { session } = useAuth();
 
@@ -47,7 +52,7 @@ const InfosPerso = () => {
 
   const detailsArray = Object.entries(userDetails);
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: color }}>
       <ScrollView className="h-1 bg-custom-background">
         <TopBarBack title={t('informations_personnelles')} />
         <VStack className="flex-1 px-10">
