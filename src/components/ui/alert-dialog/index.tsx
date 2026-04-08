@@ -1,9 +1,6 @@
 'use client';
 import { createAlertDialog } from '@gluestack-ui/core/alert-dialog/creator';
-import {
-  tva, useStyleContext,
-  withStyleContext
-} from '@gluestack-ui/utils/nativewind-utils';
+import { tva, useStyleContext, withStyleContext } from '@gluestack-ui/utils/nativewind-utils';
 import React from 'react';
 
 import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';

@@ -1,10 +1,7 @@
 'use client';
 import { createPopover } from '@gluestack-ui/core/popover/creator';
 import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
-import {
-  tva, useStyleContext,
-  withStyleContext
-} from '@gluestack-ui/utils/nativewind-utils';
+import { tva, useStyleContext, withStyleContext } from '@gluestack-ui/utils/nativewind-utils';
 import {
   AnimatePresence,
   Motion,

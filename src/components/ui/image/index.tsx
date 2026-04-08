@@ -1,4 +1,3 @@
-'use client';
 import { createImage } from '@gluestack-ui/core/image/creator';
 import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
 import { tva } from '@gluestack-ui/utils/nativewind-utils';

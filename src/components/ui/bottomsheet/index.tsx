@@ -1,3 +1,4 @@
+import { FocusScope } from '@gluestack-ui/utils/aria';
 import { tva } from '@gluestack-ui/utils/nativewind-utils';
 import GorhomBottomSheet, {
   BottomSheetHandle,
@@ -8,7 +9,6 @@ import GorhomBottomSheet, {
   BottomSheetSectionList as GorhomBottomSheetSectionList,
   BottomSheetView as GorhomBottomSheetView,
 } from '@gorhom/bottom-sheet';
-import { FocusScope } from '@react-native-aria/focus';
 import { cssInterop } from 'nativewind';
 import React, {
   createContext,
@@ -133,13 +133,14 @@ export const BottomSheetPortal = ({
 
 export const BottomSheetTrigger = ({
   className,
+  onPress,
   ...props
 }: PressableProps & { className?: string }) => {
   const { handleOpen } = useContext(BottomSheetContext);
   return (
     <Pressable
       onPress={(e) => {
-        props.onPress && props.onPress(e);
+        onPress?.(e);
         handleOpen();
       }}
       {...props}

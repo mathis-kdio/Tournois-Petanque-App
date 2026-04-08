@@ -2,11 +2,7 @@
 import { createAlert } from '@gluestack-ui/core/alert/creator';
 import { PrimitiveIcon, UIIcon } from '@gluestack-ui/core/icon/creator';
 import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
-import {
-  tva,
-  useStyleContext,
-  withStyleContext,
-} from '@gluestack-ui/utils/nativewind-utils';
+import { tva, useStyleContext, withStyleContext } from '@gluestack-ui/utils/nativewind-utils';
 import { cssInterop } from 'nativewind';
 import React from 'react';
 import { Text, View } from 'react-native';

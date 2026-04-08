@@ -1,24 +1,24 @@
-import React, { createContext, useMemo, useContext } from 'react';
 import {
   Table as ExpoTable,
-  THead as ExpoTHead,
   TBody as ExpoTBody,
-  TFoot as ExpoTFoot,
-  TR as ExpoTR,
   Caption as ExpoTCaption,
+  TFoot as ExpoTFoot,
+  THead as ExpoTHead,
+  TR as ExpoTR,
 } from '@expo/html-elements';
+import React, { createContext, useContext, useMemo } from 'react';
 
+import { Text, View } from 'react-native';
 import {
-  tableStyle,
-  tableHeaderStyle,
   tableBodyStyle,
+  tableCaptionStyle,
+  tableDataStyle,
   tableFooterStyle,
+  tableHeaderStyle,
   tableHeadStyle,
   tableRowStyleStyle,
-  tableDataStyle,
-  tableCaptionStyle,
+  tableStyle,
 } from './styles';
-import { Text, View } from 'react-native';
 
 const TableHeaderContext = createContext<{
   isHeaderRow: boolean;
@@ -50,7 +50,6 @@ const Table = React.forwardRef<
 >(({ className, ...props }, ref) => {
   return (
     <ExpoTable
-      // @ts-expect-error : ref type changed
       ref={ref}
       className={tableStyle({ class: className })}
       {...props}
@@ -70,7 +69,6 @@ const TableHeader = React.forwardRef<
   return (
     <TableHeaderContext.Provider value={contextValue}>
       <ExpoTHead
-        // @ts-expect-error : ref type changed
         ref={ref}
         className={tableHeaderStyle({ class: className })}
         {...props}
@@ -85,7 +83,6 @@ const TableBody = React.forwardRef<
 >(function TableBody({ className, ...props }, ref) {
   return (
     <ExpoTBody
-      // @ts-expect-error : ref type changed
       ref={ref}
       className={tableBodyStyle({ class: className })}
       {...props}
@@ -105,7 +102,6 @@ const TableFooter = React.forwardRef<
   return (
     <TableFooterContext.Provider value={contextValue}>
       <ExpoTFoot
-        // @ts-expect-error : ref type changed
         ref={ref}
         className={tableFooterStyle({ class: className })}
         {...props}
@@ -146,7 +142,6 @@ const TableRow = React.forwardRef<
 
   return (
     <ExpoTR
-      // @ts-expect-error : ref type changed
       ref={ref}
       className={tableRowStyleStyle({
         isHeaderRow,
@@ -187,7 +182,6 @@ const TableCaption = React.forwardRef<
 >(({ className, ...props }, ref) => {
   return (
     <ExpoTCaption
-      // @ts-expect-error : ref type changed
       ref={ref}
       className={tableCaptionStyle({ class: className })}
       {...props}
@@ -205,12 +199,7 @@ TableData.displayName = 'TableData';
 TableCaption.displayName = 'TableCaption';
 
 export {
-  Table,
-  TableHeader,
-  TableBody,
-  TableFooter,
-  TableHead,
-  TableRow,
-  TableData,
-  TableCaption,
+  Table, TableBody, TableCaption, TableData, TableFooter,
+  TableHead, TableHeader, TableRow
 };
+

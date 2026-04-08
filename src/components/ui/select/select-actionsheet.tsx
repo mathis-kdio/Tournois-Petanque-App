@@ -99,7 +99,7 @@ cssInterop(PrimitiveIcon, {
 const actionsheetStyle = tva({ base: 'w-full h-full web:pointer-events-none' });
 
 const actionsheetContentStyle = tva({
-  base: 'items-center rounded-tl-3xl rounded-tr-3xl p-2 bg-background-0 web:pointer-events-auto web:select-none shadow-lg',
+  base: 'items-center rounded-tl-3xl rounded-tr-3xl p-2 bg-background-0 web:pointer-events-auto web:select-none shadow-lg pb-safe',
 });
 
 const actionsheetItemStyle = tva({
@@ -350,10 +350,10 @@ const ActionsheetItemText = React.forwardRef<
     <UIActionsheet.ItemText
       className={actionsheetItemTextStyle({
         class: className,
-        isTruncated,
-        bold,
-        underline,
-        strikeThrough,
+        isTruncated: isTruncated as boolean,
+        bold: bold as boolean,
+        underline: underline as boolean,
+        strikeThrough: strikeThrough as boolean,
         size,
       })}
       ref={ref}
@@ -498,14 +498,14 @@ const ActionsheetSectionHeaderText = React.forwardRef<
     <UIActionsheet.SectionHeaderText
       className={actionsheetSectionHeaderTextStyle({
         class: className,
-        isTruncated,
-        bold,
-        underline,
-        strikeThrough,
+        isTruncated: isTruncated as boolean,
+        bold: bold as boolean,
+        underline: underline as boolean,
+        strikeThrough: strikeThrough as boolean,
         size,
-        sub,
-        italic,
-        highlight,
+        sub: sub as boolean,
+        italic: italic as boolean,
+        highlight: highlight as boolean,
       })}
       ref={ref}
       {...props}

@@ -1,11 +1,7 @@
 'use client';
 import { createToastHook } from '@gluestack-ui/core/toast/creator';
 import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
-import {
-  tva,
-  useStyleContext,
-  withStyleContext,
-} from '@gluestack-ui/utils/nativewind-utils';
+import { tva, useStyleContext, withStyleContext } from '@gluestack-ui/utils/nativewind-utils';
 import {
   AnimatePresence,
   Motion,

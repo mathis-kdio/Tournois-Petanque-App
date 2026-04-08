@@ -38,9 +38,7 @@ const tooltipTextStyle = tva({
 
   variants: {
     isTruncated: {
-      true: {
-        props: 'line-clamp-1 truncate',
-      },
+      true: 'line-clamp-1 truncate',
     },
     bold: {
       true: 'font-bold',

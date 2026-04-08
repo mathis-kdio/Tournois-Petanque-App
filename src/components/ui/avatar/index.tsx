@@ -5,11 +5,7 @@ import React from 'react';
 import { Image, Platform, Text, View } from 'react-native';
 
 import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
-import {
-  tva,
-  useStyleContext,
-  withStyleContext,
-} from '@gluestack-ui/utils/nativewind-utils';
+import { tva, useStyleContext, withStyleContext } from '@gluestack-ui/utils/nativewind-utils';
 const SCOPE = 'AVATAR';
 
 const UIAvatar = createAvatar({

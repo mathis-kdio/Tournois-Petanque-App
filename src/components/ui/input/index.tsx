@@ -2,10 +2,7 @@
 import { PrimitiveIcon, UIIcon } from '@gluestack-ui/core/icon/creator';
 import { createInput } from '@gluestack-ui/core/input/creator';
 import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
-import {
-  tva, useStyleContext,
-  withStyleContext
-} from '@gluestack-ui/utils/nativewind-utils';
+import { tva, useStyleContext, withStyleContext } from '@gluestack-ui/utils/nativewind-utils';
 import { cssInterop } from 'nativewind';
 import React from 'react';
 import { Pressable, TextInput, View } from 'react-native';
