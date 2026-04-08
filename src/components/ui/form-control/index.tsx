@@ -1,15 +1,15 @@
 'use client';
-import { Text, View } from 'react-native';
-import React from 'react';
-import { createFormControl } from '@gluestack-ui/form-control';
-import { tva } from '@gluestack-ui/nativewind-utils/tva';
+import { createFormControl } from '@gluestack-ui/core/form-control/creator';
+import { PrimitiveIcon, UIIcon } from '@gluestack-ui/core/icon/creator';
+import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
 import {
-  withStyleContext,
+  tva,
   useStyleContext,
-} from '@gluestack-ui/nativewind-utils/withStyleContext';
+  withStyleContext,
+} from '@gluestack-ui/utils/nativewind-utils';
 import { cssInterop } from 'nativewind';
-import type { VariantProps } from '@gluestack-ui/nativewind-utils';
-import { PrimitiveIcon, UIIcon } from '@gluestack-ui/icon';
+import React from 'react';
+import { Text, View } from 'react-native';
 
 const SCOPE = 'FORM_CONTROL';
 
@@ -457,12 +457,7 @@ FormControlHelperText.displayName = 'FormControlHelperText';
 
 export {
   FormControl,
-  FormControlError,
-  FormControlErrorText,
-  FormControlErrorIcon,
-  FormControlLabel,
-  FormControlLabelText,
-  FormControlLabelAstrick,
-  FormControlHelper,
-  FormControlHelperText,
+  FormControlError, FormControlErrorIcon, FormControlErrorText, FormControlHelper,
+  FormControlHelperText, FormControlLabel, FormControlLabelAstrick, FormControlLabelText
 };
+

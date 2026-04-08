@@ -1,5 +1,5 @@
+import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
 import React, { forwardRef } from 'react';
-import type { VariantProps } from '@gluestack-ui/nativewind-utils';
 import { Animated, Easing, Platform, View } from 'react-native';
 import { skeletonStyle, skeletonTextStyle } from './styles';
 
@@ -132,3 +132,4 @@ Skeleton.displayName = 'Skeleton';
 SkeletonText.displayName = 'SkeletonText';
 
 export { Skeleton, SkeletonText };
+

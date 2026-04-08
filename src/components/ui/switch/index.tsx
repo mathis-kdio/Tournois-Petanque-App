@@ -1,10 +1,9 @@
 'use client';
+import { createSwitch } from '@gluestack-ui/core/switch/creator';
+import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
+import { tva, withStyleContext } from '@gluestack-ui/utils/nativewind-utils';
 import React from 'react';
 import { Switch as RNSwitch } from 'react-native';
-import { createSwitch } from '@gluestack-ui/switch';
-import { tva } from '@gluestack-ui/nativewind-utils/tva';
-import { withStyleContext } from '@gluestack-ui/nativewind-utils/withStyleContext';
-import type { VariantProps } from '@gluestack-ui/nativewind-utils';
 
 const UISwitch = createSwitch({
   Root: withStyleContext(RNSwitch),
@@ -39,3 +38,4 @@ const Switch = React.forwardRef<
 
 Switch.displayName = 'Switch';
 export { Switch };
+

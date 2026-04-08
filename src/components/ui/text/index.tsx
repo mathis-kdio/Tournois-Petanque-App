@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { VariantProps } from '@gluestack-ui/nativewind-utils';
+import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
 import { Text as RNText } from 'react-native';
 import { textStyle } from './styles';
 
@@ -46,3 +46,4 @@ const Text = React.forwardRef<React.ComponentRef<typeof RNText>, ITextProps>(
 Text.displayName = 'Text';
 
 export { Text };
+

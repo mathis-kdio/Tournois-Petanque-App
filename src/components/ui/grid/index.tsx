@@ -1,19 +1,19 @@
-import React, {
-  useEffect,
-  useState,
-  createContext,
-  useContext,
-  useMemo,
-  forwardRef,
-} from 'react';
-import type { VariantProps } from '@gluestack-ui/nativewind-utils';
-import { View, Dimensions, Platform, ViewProps } from 'react-native';
-import { gridStyle, gridItemStyle } from './styles';
-import { cssInterop } from 'nativewind';
 import {
-  useBreakpointValue,
   getBreakPointValue,
+  useBreakpointValue,
 } from '@/components/ui/utils/use-break-point-value';
+import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
+import { cssInterop } from 'nativewind';
+import React, {
+  createContext,
+  forwardRef,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import { Dimensions, Platform, View, ViewProps } from 'react-native';
+import { gridItemStyle, gridStyle } from './styles';
 
 const { width: DEVICE_WIDTH } = Dimensions.get('window');
 
@@ -296,7 +296,7 @@ const GridItem = forwardRef<React.ComponentRef<typeof View>, IGridItemProps>(
             (((calculatedWidth - gutterOffset) * responsiveColSpan) /
               numColumns /
               calculatedWidth) *
-              100,
+            100,
             100
           ) + '%';
 
@@ -337,3 +337,4 @@ Grid.displayName = 'Grid';
 GridItem.displayName = 'GridItem';
 
 export { Grid, GridItem };
+

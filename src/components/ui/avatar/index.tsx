@@ -1,16 +1,16 @@
 'use client';
+import { createAvatar } from '@gluestack-ui/core/avatar/creator';
 import React from 'react';
-import { createAvatar } from '@gluestack-ui/avatar';
 
-import { View, Text, Image, Platform } from 'react-native';
+import { Image, Platform, Text, View } from 'react-native';
 
-import { tva } from '@gluestack-ui/nativewind-utils/tva';
+import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
 import {
-  withStyleContext,
+  tva,
   useStyleContext,
-} from '@gluestack-ui/nativewind-utils/withStyleContext';
+  withStyleContext,
+} from '@gluestack-ui/utils/nativewind-utils';
 const SCOPE = 'AVATAR';
-import type { VariantProps } from '@gluestack-ui/nativewind-utils';
 
 const UIAvatar = createAvatar({
   Root: withStyleContext(View, SCOPE),
@@ -182,4 +182,5 @@ const AvatarGroup = React.forwardRef<
   );
 });
 
-export { Avatar, AvatarBadge, AvatarFallbackText, AvatarImage, AvatarGroup };
+export { Avatar, AvatarBadge, AvatarFallbackText, AvatarGroup, AvatarImage };
+

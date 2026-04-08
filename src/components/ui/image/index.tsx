@@ -1,9 +1,9 @@
 'use client';
+import { createImage } from '@gluestack-ui/core/image/creator';
+import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
+import { tva } from '@gluestack-ui/utils/nativewind-utils';
 import React from 'react';
-import { createImage } from '@gluestack-ui/image';
 import { Platform, Image as RNImage } from 'react-native';
-import { tva } from '@gluestack-ui/nativewind-utils/tva';
-import type { VariantProps } from '@gluestack-ui/nativewind-utils';
 
 const imageStyle = tva({
   base: 'max-w-full',
@@ -47,3 +47,4 @@ const Image = React.forwardRef<
 
 Image.displayName = 'Image';
 export { Image };
+

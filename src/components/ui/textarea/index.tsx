@@ -1,13 +1,13 @@
 'use client';
-import React from 'react';
-import { createTextarea } from '@gluestack-ui/textarea';
-import { View, TextInput } from 'react-native';
-import { tva } from '@gluestack-ui/nativewind-utils/tva';
+import { createTextarea } from '@gluestack-ui/core/textarea/creator';
+import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
 import {
-  withStyleContext,
+  tva,
   useStyleContext,
-} from '@gluestack-ui/nativewind-utils/withStyleContext';
-import type { VariantProps } from '@gluestack-ui/nativewind-utils';
+  withStyleContext,
+} from '@gluestack-ui/utils/nativewind-utils';
+import React from 'react';
+import { TextInput, View } from 'react-native';
 
 const SCOPE = 'TEXTAREA';
 const UITextarea = createTextarea({
@@ -91,3 +91,4 @@ Textarea.displayName = 'Textarea';
 TextareaInput.displayName = 'TextareaInput';
 
 export { Textarea, TextareaInput };
+
