@@ -1,16 +1,15 @@
 'use client';
-import React from 'react';
-import { createTooltip } from '@gluestack-ui/tooltip';
-import { View, Text, ViewStyle } from 'react-native';
-import type { VariantProps } from '@gluestack-ui/nativewind-utils';
-import { tva } from '@gluestack-ui/nativewind-utils/tva';
-import { withStyleContext } from '@gluestack-ui/nativewind-utils/withStyleContext';
+import { createTooltip } from '@gluestack-ui/core/tooltip/creator';
+import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
+import { tva, withStyleContext } from '@gluestack-ui/utils/nativewind-utils';
 import {
-  Motion,
   AnimatePresence,
+  Motion,
   MotionComponentProps,
 } from '@legendapp/motion';
 import { cssInterop } from 'nativewind';
+import React from 'react';
+import { Text, View, ViewStyle } from 'react-native';
 
 type IMotionViewProps = React.ComponentProps<typeof View> &
   MotionComponentProps<typeof View, ViewStyle, unknown, unknown, unknown>;
@@ -39,9 +38,7 @@ const tooltipTextStyle = tva({
 
   variants: {
     isTruncated: {
-      true: {
-        props: 'line-clamp-1 truncate',
-      },
+      true: 'line-clamp-1 truncate',
     },
     bold: {
       true: 'font-bold',
@@ -131,3 +128,4 @@ TooltipContent.displayName = 'TooltipContent';
 TooltipText.displayName = 'TooltipText';
 
 export { Tooltip, TooltipContent, TooltipText };
+

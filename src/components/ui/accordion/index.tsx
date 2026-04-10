@@ -1,16 +1,12 @@
 'use client';
-import React from 'react';
-import { createAccordion } from '@gluestack-ui/accordion';
-import { View, Pressable, Text, Platform, TextProps } from 'react-native';
-import { tva } from '@gluestack-ui/nativewind-utils/tva';
-import type { VariantProps } from '@gluestack-ui/nativewind-utils';
-import {
-  withStyleContext,
-  useStyleContext,
-} from '@gluestack-ui/nativewind-utils/withStyleContext';
 import { H3 } from '@expo/html-elements';
+import { createAccordion } from '@gluestack-ui/core/accordion/creator';
+import { PrimitiveIcon, UIIcon } from '@gluestack-ui/core/icon/creator';
+import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
+import { tva, useStyleContext, withStyleContext } from '@gluestack-ui/utils/nativewind-utils';
 import { cssInterop } from 'nativewind';
-import { PrimitiveIcon, UIIcon } from '@gluestack-ui/icon';
+import React from 'react';
+import { Platform, Pressable, Text, TextProps, View } from 'react-native';
 
 const SCOPE = 'ACCORDION';
 /** Styles */
@@ -320,12 +316,6 @@ AccordionIcon.displayName = 'AccordionIcon';
 AccordionContent.displayName = 'AccordionContent';
 
 export {
-  Accordion,
-  AccordionItem,
-  AccordionHeader,
-  AccordionTrigger,
-  AccordionTitleText,
-  AccordionContentText,
-  AccordionIcon,
-  AccordionContent,
+  Accordion, AccordionContent, AccordionContentText, AccordionHeader, AccordionIcon, AccordionItem, AccordionTitleText, AccordionTrigger
 };
+

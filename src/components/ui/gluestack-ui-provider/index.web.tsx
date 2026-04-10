@@ -1,9 +1,9 @@
 'use client';
+import { OverlayProvider } from '@gluestack-ui/core/overlay/creator';
+import { ToastProvider } from '@gluestack-ui/core/toast/creator';
+import { setFlushStyles } from '@gluestack-ui/utils/nativewind-utils';
 import React, { useEffect, useLayoutEffect } from 'react';
 import { config } from './config';
-import { OverlayProvider } from '@gluestack-ui/overlay';
-import { ToastProvider } from '@gluestack-ui/toast';
-import { setFlushStyles } from '@gluestack-ui/nativewind-utils/flush';
 import { script } from './script';
 
 export type ThemeType = 'basic' | 'original';
@@ -25,7 +25,7 @@ export function GluestackUIProvider({
   mode = 'light',
   ...props
 }: {
-  theme: ThemeType; 
+  theme: ThemeType;
   mode?: ModeType;
   children?: React.ReactNode;
 }) {

@@ -1,15 +1,15 @@
 'use client';
-import React from 'react';
-import { createButton } from '@gluestack-ui/button';
-import { tva } from '@gluestack-ui/nativewind-utils/tva';
+import { createButton } from '@gluestack-ui/core/button/creator';
+import { PrimitiveIcon, UIIcon } from '@gluestack-ui/core/icon/creator';
 import {
-  withStyleContext,
+  tva,
   useStyleContext,
-} from '@gluestack-ui/nativewind-utils/withStyleContext';
+  withStyleContext,
+  type VariantProps,
+} from '@gluestack-ui/utils/nativewind-utils';
 import { cssInterop } from 'nativewind';
+import React from 'react';
 import { ActivityIndicator, Pressable, Text, View } from 'react-native';
-import type { VariantProps } from '@gluestack-ui/nativewind-utils';
-import { PrimitiveIcon, UIIcon } from '@gluestack-ui/icon';
 
 const SCOPE = 'BUTTON';
 
@@ -248,6 +248,7 @@ const buttonIconStyle = tva({
         'text-typography-500 data-[hover=true]:text-typography-600 data-[active=true]:text-typography-700',
       positive:
         'text-success-600 data-[hover=true]:text-success-600 data-[active=true]:text-success-700',
+
       negative:
         'text-error-600 data-[hover=true]:text-error-600 data-[active=true]:text-error-700',
       warning: // ajouté manuellement
@@ -320,29 +321,31 @@ type IButtonProps = Omit<
   VariantProps<typeof buttonStyle> & { className?: string };
 
 const Button = React.forwardRef<
-  React.ComponentRef<typeof UIButton>,
+  React.ElementRef<typeof UIButton>,
   IButtonProps
->(function Button(
-  { className, variant = 'solid', size = 'md', action = 'primary', ...props },
-  ref
-) {
-  return (
-    <UIButton
-      ref={ref}
-      {...props}
-      className={buttonStyle({ variant, size, action, class: className })}
-      context={{ variant, size, action }}
-    />
-  );
-});
+>(
+  (
+    { className, variant = 'solid', size = 'md', action = 'primary', ...props },
+    ref
+  ) => {
+    return (
+      <UIButton
+        ref={ref}
+        {...props}
+        className={buttonStyle({ variant, size, action, class: className })}
+        context={{ variant, size, action }}
+      />
+    );
+  }
+);
 
 type IButtonTextProps = React.ComponentPropsWithoutRef<typeof UIButton.Text> &
   VariantProps<typeof buttonTextStyle> & { className?: string };
 
 const ButtonText = React.forwardRef<
-  React.ComponentRef<typeof UIButton.Text>,
+  React.ElementRef<typeof UIButton.Text>,
   IButtonTextProps
->(function ButtonText({ className, variant, size, action, ...props }, ref) {
+>(({ className, variant, size, action, ...props }, ref) => {
   const {
     variant: parentVariant,
     size: parentSize,
@@ -379,9 +382,9 @@ type IButtonIcon = React.ComponentPropsWithoutRef<typeof UIButton.Icon> &
   };
 
 const ButtonIcon = React.forwardRef<
-  React.ComponentRef<typeof UIButton.Icon>,
+  React.ElementRef<typeof UIButton.Icon>,
   IButtonIcon
->(function ButtonIcon({ className, size, ...props }, ref) {
+>(({ className, size, ...props }, ref) => {
   const {
     variant: parentVariant,
     size: parentSize,
@@ -430,31 +433,33 @@ type IButtonGroupProps = React.ComponentPropsWithoutRef<typeof UIButton.Group> &
   VariantProps<typeof buttonGroupStyle>;
 
 const ButtonGroup = React.forwardRef<
-  React.ComponentRef<typeof UIButton.Group>,
+  React.ElementRef<typeof UIButton.Group>,
   IButtonGroupProps
->(function ButtonGroup(
-  {
-    className,
-    space = 'md',
-    isAttached = false,
-    flexDirection = 'column',
-    ...props
-  },
-  ref
-) {
-  return (
-    <UIButton.Group
-      className={buttonGroupStyle({
-        class: className,
-        space,
-        isAttached,
-        flexDirection,
-      })}
-      {...props}
-      ref={ref}
-    />
-  );
-});
+>(
+  (
+    {
+      className,
+      space = 'md',
+      isAttached = false,
+      flexDirection = 'column',
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <UIButton.Group
+        className={buttonGroupStyle({
+          class: className,
+          space,
+          isAttached,
+          flexDirection,
+        })}
+        {...props}
+        ref={ref}
+      />
+    );
+  }
+);
 
 Button.displayName = 'Button';
 ButtonText.displayName = 'ButtonText';
@@ -462,4 +467,5 @@ ButtonSpinner.displayName = 'ButtonSpinner';
 ButtonIcon.displayName = 'ButtonIcon';
 ButtonGroup.displayName = 'ButtonGroup';
 
-export { Button, ButtonText, ButtonSpinner, ButtonIcon, ButtonGroup };
+export { Button, ButtonGroup, ButtonIcon, ButtonSpinner, ButtonText };
+

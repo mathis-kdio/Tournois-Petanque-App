@@ -1,7 +1,7 @@
 'use client';
-import { ImageBackground as RNImageBackground } from 'react-native';
+import { tva } from '@gluestack-ui/utils/nativewind-utils';
 import React from 'react';
-import { tva } from '@gluestack-ui/nativewind-utils/tva';
+import { ImageBackground as RNImageBackground } from 'react-native';
 
 const imageBackgroundStyle = tva({});
 
@@ -23,3 +23,4 @@ const ImageBackground = React.forwardRef<
 ImageBackground.displayName = 'ImageBackground';
 
 export { ImageBackground };
+

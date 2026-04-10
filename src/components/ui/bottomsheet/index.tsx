@@ -1,15 +1,15 @@
+import { FocusScope } from '@gluestack-ui/utils/aria';
+import { tva } from '@gluestack-ui/utils/nativewind-utils';
 import GorhomBottomSheet, {
-  BottomSheetBackdrop as GorhomBottomSheetBackdrop,
-  BottomSheetView as GorhomBottomSheetView,
   BottomSheetHandle,
+  BottomSheetBackdrop as GorhomBottomSheetBackdrop,
+  BottomSheetFlatList as GorhomBottomSheetFlatList,
   BottomSheetTextInput as GorhomBottomSheetInput,
   BottomSheetScrollView as GorhomBottomSheetScrollView,
-  BottomSheetFlatList as GorhomBottomSheetFlatList,
   BottomSheetSectionList as GorhomBottomSheetSectionList,
+  BottomSheetView as GorhomBottomSheetView,
 } from '@gorhom/bottom-sheet';
-import { Platform } from 'react-native';
-import type { PressableProps, TextProps } from 'react-native';
-import { FocusScope } from '@react-native-aria/focus';
+import { cssInterop } from 'nativewind';
 import React, {
   createContext,
   useCallback,
@@ -18,9 +18,8 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Pressable, Text } from 'react-native';
-import { cssInterop } from 'nativewind';
-import { tva } from '@gluestack-ui/nativewind-utils/tva';
+import type { PressableProps, TextProps } from 'react-native';
+import { Platform, Pressable, Text } from 'react-native';
 
 const bottomSheetBackdropStyle = tva({
   base: 'absolute inset-0 flex-1 touch-none select-none bg-black opacity-0',
@@ -49,8 +48,8 @@ const BottomSheetContext = createContext<{
 }>({
   visible: false,
   bottomSheetRef: { current: null },
-  handleClose: () => {},
-  handleOpen: () => {},
+  handleClose: () => { },
+  handleOpen: () => { },
 });
 
 type IBottomSheetProps = React.ComponentProps<typeof GorhomBottomSheet>;
@@ -134,13 +133,14 @@ export const BottomSheetPortal = ({
 
 export const BottomSheetTrigger = ({
   className,
+  onPress,
   ...props
 }: PressableProps & { className?: string }) => {
   const { handleOpen } = useContext(BottomSheetContext);
   return (
     <Pressable
       onPress={(e) => {
-        props.onPress && props.onPress(e);
+        onPress?.(e);
         handleOpen();
       }}
       {...props}
@@ -206,14 +206,14 @@ export const BottomSheetContent = ({ ...props }: IBottomSheetContent) => {
   const keyDownHandlers = useMemo(() => {
     return Platform.OS === 'web'
       ? {
-          onKeyDown: (e: React.KeyboardEvent) => {
-            if (e.key === 'Escape') {
-              e.preventDefault();
-              handleClose();
-              return;
-            }
-          },
-        }
+        onKeyDown: (e: React.KeyboardEvent) => {
+          if (e.key === 'Escape') {
+            e.preventDefault();
+            handleClose();
+            return;
+          }
+        },
+      }
       : {};
   }, [handleClose]);
 

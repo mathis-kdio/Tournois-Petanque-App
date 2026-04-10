@@ -1,5 +1,5 @@
-import { SwitchProps } from 'react-native';
 import { cssInterop } from 'nativewind';
+import { SwitchProps } from 'react-native';
 import { Switch } from '.';
 
 type TrackColorInput = {
@@ -23,5 +23,5 @@ const StyledSwitchImpl = ({ trackColor, ...props }: CustomSwitchProps) => {
 };
 
 export const StyledSwitch = cssInterop(StyledSwitchImpl, {
-  trackColorclassName: 'trackColor'  
+  trackColorclassName: 'trackColor'
 });

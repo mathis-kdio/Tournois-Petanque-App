@@ -1,15 +1,11 @@
 'use client';
-import React from 'react';
-import { createRadio } from '@gluestack-ui/radio';
-import { Pressable, View, Platform, Text } from 'react-native';
-import { tva } from '@gluestack-ui/nativewind-utils/tva';
-import {
-  withStyleContext,
-  useStyleContext,
-} from '@gluestack-ui/nativewind-utils/withStyleContext';
+import { PrimitiveIcon, UIIcon } from '@gluestack-ui/core/icon/creator';
+import { createRadio } from '@gluestack-ui/core/radio/creator';
+import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
+import { tva, useStyleContext, withStyleContext } from '@gluestack-ui/utils/nativewind-utils';
 import { cssInterop } from 'nativewind';
-import type { VariantProps } from '@gluestack-ui/nativewind-utils';
-import { PrimitiveIcon, UIIcon } from '@gluestack-ui/icon';
+import React from 'react';
+import { Platform, Pressable, Text, View } from 'react-native';
 
 const SCOPE = 'Radio';
 
@@ -17,8 +13,8 @@ const UIRadio = createRadio({
   Root: (Platform.OS === 'web'
     ? withStyleContext(View, SCOPE)
     : withStyleContext(Pressable, SCOPE)) as ReturnType<
-    typeof withStyleContext<typeof Pressable>
-  >,
+      typeof withStyleContext<typeof Pressable>
+    >,
   Group: View,
   Icon: UIIcon,
   Indicator: View,
@@ -217,4 +213,5 @@ RadioIndicator.displayName = 'RadioIndicator';
 RadioLabel.displayName = 'RadioLabel';
 RadioIcon.displayName = 'RadioIcon';
 
-export { Radio, RadioGroup, RadioIndicator, RadioLabel, RadioIcon };
+export { Radio, RadioGroup, RadioIcon, RadioIndicator, RadioLabel };
+

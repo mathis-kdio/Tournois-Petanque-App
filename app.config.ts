@@ -1,8 +1,6 @@
-import { ConfigContext, ExpoConfig } from '@expo/config';
-
 const version = '2.4.2';
 
-export default ({ config }: ConfigContext): ExpoConfig => ({
+export default () => ({
   name: 'Tournois Pétanque App',
   slug: 'PetanqueGCU',
   version: version,
