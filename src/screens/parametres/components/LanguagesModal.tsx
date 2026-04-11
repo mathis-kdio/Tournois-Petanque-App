@@ -43,6 +43,7 @@ const LanguagesModal: React.FC<Props> = ({
   const drapeauPaysBas = require('@assets/images/drapeau-pays-bas.png');
   const drapeauAllemagne = require('@assets/images/drapeau-allemagne.png');
   const drapeauDanemark = require('@assets/images/drapeau-danemark.png');
+  const drapeauEspagne = require('@assets/images/drapeau-espagne.png');
   return (
     <Modal
       isOpen={modalLanguagesOpen}
@@ -110,6 +111,14 @@ const LanguagesModal: React.FC<Props> = ({
             type="modal"
             drapeau={drapeauDanemark}
           />
+          <Divider />
+          <Item
+            text={t('espagnol')}
+            action={() => handleChangeLanguage('es-ES')}
+            icon={''}
+            type="modal"
+            drapeau={drapeauEspagne}
+          />
           <Text className="text-center">{t('envie_aider_traduction')}</Text>
           <Pressable onPress={() => _openURL(crowdin)}>
             <Text className="text-center text-blue-500">
@@ -128,6 +137,9 @@ const LanguagesModal: React.FC<Props> = ({
           </Text>
           <Text className="text-center">
             {`\u2022`} tskalshoej ({t('danois_abreviation')})
+          </Text>
+          <Text className="text-center">
+            {`\u2022`} LorenzoF ({t('espagnol_abreviation')})
           </Text>
         </ModalBody>
       </ModalContent>
