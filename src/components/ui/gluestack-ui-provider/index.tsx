@@ -19,16 +19,18 @@ export function GluestackUIProvider({
   style?: ViewProps['style'];
 }) {
   const { colorScheme, setColorScheme } = useColorScheme();
+  const effectiveColorScheme = mode === 'system' ? colorScheme ?? 'light' : mode;
 
   useEffect(() => {
-    setColorScheme(mode);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode]);
+    if (mode !== 'system') {
+      setColorScheme(mode);
+    }
+  }, [mode, setColorScheme]);
 
   return (
     <View
       style={[
-        config[theme][colorScheme!],
+        config[theme][effectiveColorScheme],
         { flex: 1, height: '100%', width: '100%' },
         props.style,
       ]}
