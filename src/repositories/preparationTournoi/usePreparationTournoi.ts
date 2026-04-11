@@ -45,11 +45,8 @@ export const usePreparationTournoi = () => {
 
   const updateTypePreparationTournoi = async (typeTournoi: TypeTournoi) => {
     const res = await PreparationTournoisRepository.getPreparationTournoi();
-    if (res.length === 0) {
-      throw Error('PreparationTournoi undefined');
-    }
     const updated = {
-      ...res.at(0),
+      ...(res.at(0) || {}),
       id: 0,
       typeTournoi,
     };
