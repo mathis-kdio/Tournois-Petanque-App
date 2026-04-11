@@ -1,17 +1,20 @@
-import i18n from 'i18next';
-import * as Localization from 'expo-localization';
-import { initReactI18next } from 'react-i18next';
-import francais from '@assets/languages/fr.json';
 import changelogFR from '@assets/ChangelogData.json';
-import english from '@assets/languages/en.json';
-import changelogEN from '@assets/ChangelogData_en.json';
-import polonais from '@assets/languages/pl.json';
-import changelogPL from '@assets/ChangelogData_pl.json';
-import neerlandais from '@assets/languages/nl.json';
-import changelogNL from '@assets/ChangelogData_nl.json';
-import allemand from '@assets/languages/de.json';
-import danemark from '@assets/languages/da.json';
+import changelogDA from '@assets/ChangelogData_da.json';
 import changelogDE from '@assets/ChangelogData_de.json';
+import changelogEN from '@assets/ChangelogData_en.json';
+import changelogES from '@assets/ChangelogData_es.json';
+import changelogNL from '@assets/ChangelogData_nl.json';
+import changelogPL from '@assets/ChangelogData_pl.json';
+import danois from '@assets/languages/da.json';
+import allemand from '@assets/languages/de.json';
+import anglais from '@assets/languages/en.json';
+import espagnol from '@assets/languages/es.json';
+import francais from '@assets/languages/fr.json';
+import neerlandais from '@assets/languages/nl.json';
+import polonais from '@assets/languages/pl.json';
+import * as Localization from 'expo-localization';
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
@@ -25,11 +28,11 @@ i18n
         changelog: changelogFR,
       },
       'en-US': {
-        common: english.translation,
+        common: anglais.translation,
         changelog: changelogEN,
       },
       'en-GB': {
-        common: english.translation,
+        common: anglais.translation,
         changelog: changelogEN,
       },
       'pl-PL': {
@@ -45,8 +48,12 @@ i18n
         changelog: changelogDE,
       },
       'dk-DK': {
-        common: danemark.translation,
-        changelog: changelogDE,
+        common: danois.translation,
+        changelog: changelogDA,
+      },
+      'es-ES': {
+        common: espagnol.translation,
+        changelog: changelogES,
       },
       ns: ['common', 'changelog'],
       supportedLngs: [
@@ -77,6 +84,10 @@ i18n
         {
           code: 'dk-DK',
           locale: 'Danois - Danemark',
+        },
+        {
+          code: 'es-ES',
+          locale: 'Espagnol - Espagne',
         },
       ],
       defaultNS: 'common',
