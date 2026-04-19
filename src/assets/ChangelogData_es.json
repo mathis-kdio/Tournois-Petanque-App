@@ -59,18 +59,18 @@
     "infos": [
       "- Ajout écran de sélection du complément lorsque le nombre de joueurs ne permet pas de faire des matchs complets",
       "- Ajout pointeur, Tireur et Milieu en Triplette",
-      "- Ajout de la prise en compte des règles (jamais même coéquipier, etc) en Triplette",
-      "- Ajout Store Review",
-      "- Amélioration de l'export et de la mise en page des PDF",
+      "- Añadido el cumplimiento de reglas (nunca los mismos compañeros, etc.) en tripletas",
+      "- Añadida la solicitud de reseña en las tiendas",
+      "- Mejorada la exportación y el diseño de los PDF",
       "- Amélioration de la génération des matchs mêlée-démêlée doublette",
-      "- Amélioration de la navigation en arrière sur les écrans",
-      "- Mise à jour des traductions",
-      "- Mise à jour des dépendances",
-      "- Correction affichage du champ pour renommer un joueur",
-      "- Correction bug pub bloquante",
-      "- Correction sélection type du joueur",
-      "- Correction popup suppression joueur suggéré",
-      "- Correction crash après suppression du tournoi en cours",
+      "- Mejorada la navegación hacia atrás en las pantallas",
+      "- Actualización de traducciones",
+      "- Dependencias actualizadas",
+      "- Corregido el campo para renombrar un jugador",
+      "- Corregido de un error de anuncios bloqueante",
+      "- Corregido de la selección del tipo de jugador",
+      "- Corregido el popup al eliminar un jugador sugerido",
+      "- Corregido un cierre inesperado tras eliminar el torneo en curso",
       "- Correction nom d'une liste de joueur n'était conservée après une modification de la liste"
     ]
   },
@@ -78,8 +78,8 @@
     "id": "29",
     "version": "2.0.2",
     "infos": [
-      "- Traduction en allemand",
-      "- Mise à jour des traductions",
+      "- Traducción al alemán",
+      "- Actualización de traducciones",
       "- Correction bug calcul classement"
     ]
   },
@@ -87,7 +87,7 @@
     "id": "28",
     "version": "2.0.1",
     "infos": [
-      "- Mise à jour des traductions",
+      "- Actualización de traducciones",
       "- Mise à jour des dépendances",
       "- Correction bug écran des terrains",
       "- Correction bug suppression tournoi"
@@ -203,7 +203,7 @@
   },
   "17": {
     "id": "17",
-    "version": "1.10.0",
+    "version": " 1.10.0",
     "infos": [
       "- Ajout de création de listes de joueurs pouvant être chargées pendant l'inscription afin de gagner du temps.",
       "- Ajout de l'affichage de + de suggestions de joueurs.",
