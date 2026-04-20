@@ -13,9 +13,9 @@ const Compte = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const deconnexion = () => {
-    supabaseClient.auth.signOut();
-    router.navigate('');
+  const deconnexion = async () => {
+    router.navigate('.');
+    await supabaseClient.auth.signOut();
   };
 
   const supprimerCompte = () => { };
