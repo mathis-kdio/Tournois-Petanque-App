@@ -1,1 +1,0 @@
-CREATE UNIQUE INDEX `nameUniqueIndex` ON `joueurs_suggestion` (`name`);

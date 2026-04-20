@@ -1,1 +1,0 @@
-ALTER TABLE `tournoi` ADD `create_at` integer;
