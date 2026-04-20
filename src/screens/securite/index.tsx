@@ -1,0 +1,193 @@
+import TopBarBack from '@/components/topBar/TopBarBack';
+import { Button, ButtonText } from '@/components/ui/button';
+import {
+  FormControl,
+  FormControlLabel,
+  FormControlLabelText,
+} from '@/components/ui/form-control';
+import { Heading } from '@/components/ui/heading';
+import { Input, InputField, InputSlot } from '@/components/ui/input';
+import { ScrollView } from '@/components/ui/scroll-view';
+import { VStack } from '@/components/ui/vstack';
+import { supabaseClient } from '@/utils/supabase';
+import { FontAwesome5 } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Alert } from 'react-native';
+
+const Securite = () => {
+  const { t } = useTranslation();
+
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(true);
+
+  const mdpInput1 = React.createRef<any>();
+  const mdpInput2 = React.createRef<any>();
+  const mdpInput3 = React.createRef<any>();
+
+  const handleChangePassword = async () => {
+    if (oldPassword !== oldPassword) {
+      Alert.alert('Erreur', 'Ancien mot de passe incorrecte.');
+      setError(true);
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      Alert.alert('Erreur', 'Les mots de passe ne correspondent pas.');
+      setError(true);
+      return;
+    }
+
+    setIsLoading(true);
+
+    // Mise à jour du mot de passe
+    const { error } = await supabaseClient.auth
+      .updateUser({
+        password: newPassword,
+      })
+      .catch(() => ({
+        error: new Error(
+          'Une erreur est survenue lors du changement de mot de passe.',
+        ),
+      }));
+
+    if (error) {
+      Alert.alert('Erreur', error.message);
+      setError(true);
+    } else {
+      Alert.alert('Succès', 'Votre mot de passe a été changé avec succès.');
+      setError(false);
+    }
+
+    setIsLoading(false);
+  };
+
+  const handleInputChange = (
+    field: 'oldPassword' | 'newPassword' | 'confirmPassword',
+  ) => {
+    return (value: string) => {
+      switch (field) {
+        case 'oldPassword':
+          setOldPassword(value);
+          break;
+        case 'newPassword':
+          setNewPassword(value);
+          break;
+        case 'confirmPassword':
+          setConfirmPassword(value);
+          break;
+        default:
+          break;
+      }
+    };
+  };
+
+  return (
+    <ScrollView className="h-1 bg-custom-background">
+      <TopBarBack title={t('securite')} />
+      <VStack className="flex-1 px-10">
+        <VStack className="flex-1">
+          <Heading className="text-typography-white">
+            {t('changer_mdp')}
+          </Heading>
+          <FormControl isInvalid={error} isRequired={true} className="mb-5">
+            <FormControlLabel className="mb-1 *:text-typography-white">
+              <FormControlLabelText>{t('ancien_mdp')}</FormControlLabelText>
+            </FormControlLabel>
+            <Input className="border-custom-bg-inverse">
+              <InputField
+                className="text-typography-white placeholder:text-typography-white"
+                placeholder={t('ancien_mdp')}
+                secureTextEntry={!showOldPassword}
+                returnKeyType="next"
+                autoCapitalize={'none'}
+                onChangeText={handleInputChange('oldPassword')}
+                onSubmitEditing={() => mdpInput2.current.focus()}
+                ref={mdpInput1}
+              />
+              <InputSlot className="pr-3">
+                <FontAwesome5.Button
+                  name={showOldPassword ? 'eye' : 'eye-slash'}
+                  backgroundColor="#00000000"
+                  className="text-custom-bg-inverse"
+                  iconStyle={{ marginRight: 0 }}
+                  size={16}
+                  onPress={() => setShowOldPassword(!showOldPassword)}
+                />
+              </InputSlot>
+            </Input>
+          </FormControl>
+          <FormControl isInvalid={error} isRequired={true} className="mb-5">
+            <FormControlLabel className="mb-1 *:text-typography-white">
+              <FormControlLabelText>{t('nouveau_mdp')}</FormControlLabelText>
+            </FormControlLabel>
+            <Input className="border-custom-bg-inverse">
+              <InputField
+                className="text-typography-white placeholder:text-typography-white"
+                placeholder={t('nouveau_mdp')}
+                secureTextEntry={!showNewPassword}
+                returnKeyType="next"
+                autoCapitalize={'none'}
+                onChangeText={handleInputChange('newPassword')}
+                onSubmitEditing={() => mdpInput3.current.focus()}
+                ref={mdpInput2}
+              />
+              <InputSlot className="pr-3">
+                <FontAwesome5.Button
+                  name={showNewPassword ? 'eye' : 'eye-slash'}
+                  backgroundColor="#00000000"
+                  className="text-custom-bg-inverse"
+                  iconStyle={{ marginRight: 0 }}
+                  size={16}
+                  onPress={() => setShowNewPassword(!showNewPassword)}
+                />
+              </InputSlot>
+            </Input>
+          </FormControl>
+          <FormControl isInvalid={error} isRequired={true} className="mb-5">
+            <FormControlLabel className="mb-1 *:text-typography-white">
+              <FormControlLabelText>
+                {t('mot_de_passe_confirmation')}
+              </FormControlLabelText>
+            </FormControlLabel>
+            <Input className="border-custom-bg-inverse">
+              <InputField
+                className="text-typography-white placeholder:text-typography-white"
+                placeholder={t('confirmer_mdp')}
+                secureTextEntry={!showConfirmPassword}
+                autoCapitalize={'none'}
+                onChangeText={handleInputChange('confirmPassword')}
+                ref={mdpInput3}
+              />
+              <InputSlot className="pr-3">
+                <FontAwesome5.Button
+                  name={showConfirmPassword ? 'eye' : 'eye-slash'}
+                  backgroundColor="#00000000"
+                  className="text-custom-bg-inverse"
+                  iconStyle={{ marginRight: 0 }}
+                  size={16}
+                  onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+                />
+              </InputSlot>
+            </Input>
+          </FormControl>
+          <FormControl>
+            <Button onPress={handleChangePassword} disabled={isLoading}>
+              <ButtonText>
+                {isLoading ? t('chargement') : t('changer_mdp')}
+              </ButtonText>
+            </Button>
+          </FormControl>
+        </VStack>
+      </VStack>
+    </ScrollView>
+  );
+};
+
+export default Securite;

@@ -1,0 +1,68 @@
+import { useAuth } from '@/components/supabase/SessionProvider';
+import TopBarBack from '@/components/topBar/TopBarBack';
+import { HStack } from '@/components/ui/hstack';
+import { ScrollView } from '@/components/ui/scroll-view';
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+interface UserDetail {
+  Nom: { label: string; value: string };
+  Prenom: { label: string; value: string };
+  Email: { label: string; value: string };
+  Pays: { label: string; value: string };
+  Club: { label: string; value: string };
+}
+
+const InfosPerso = () => {
+  const { t } = useTranslation();
+  const { session } = useAuth();
+
+  const userDetailsInit: UserDetail = {
+    Nom: { label: 'nom', value: 'non_renseigne' },
+    Prenom: { label: 'prenom', value: 'non_renseigne' },
+    Email: { label: 'email', value: 'non_renseigne' },
+    Pays: { label: 'pays', value: 'non_renseigne' },
+    Club: { label: 'club', value: 'non_renseigne' },
+  };
+
+  const [userDetails, setUserDetails] = useState<UserDetail>(userDetailsInit);
+
+  useEffect(() => {
+    if (!session || session.user.email === undefined) {
+      return;
+    }
+    const email = session.user.email;
+
+    setUserDetails((prevState) => ({
+      ...prevState,
+      Email: {
+        ...prevState.Email,
+        value: email,
+      },
+    }));
+  }, [session]);
+
+  const detailsArray = Object.entries(userDetails);
+
+  return (
+    <ScrollView className="h-1 bg-custom-background">
+      <TopBarBack title={t('informations_personnelles')} />
+      <VStack className="flex-1 px-10">
+        {detailsArray.map(([key, detail], index) => (
+          <HStack key={index} className="mb-5">
+            <Text className="text-typography-white flex-1">
+              {t(detail.label)} :
+            </Text>
+            <Text className="text-typography-white flex-1">
+              {t(detail.value)}
+            </Text>
+          </HStack>
+        ))}
+      </VStack>
+    </ScrollView>
+  );
+};
+
+export default InfosPerso;
