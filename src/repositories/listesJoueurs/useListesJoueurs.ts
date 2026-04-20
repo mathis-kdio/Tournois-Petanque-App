@@ -27,7 +27,7 @@ export const useListesJoueurs = () => {
 
   const insertListeJoueurs = async () => {
     const newListesJoueurs: NewListesJoueurs = {
-      updatedAt: new Date().getUTCMilliseconds(),
+      updatedAt: Date.now(),
     };
 
     return (
