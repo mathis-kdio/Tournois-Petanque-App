@@ -46,8 +46,8 @@ function toNewTournoi(
     typeEquipes: typeEquipes,
     typeTournoi: typeTournoi,
     avecTerrains: avecTerrains,
-    createAt: 0,
-    updatedAt: 0,
+    createAt: Date.now(),
+    updatedAt: Date.now(),
   };
 }
 
