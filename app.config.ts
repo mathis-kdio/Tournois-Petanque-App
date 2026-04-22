@@ -83,8 +83,8 @@ export default () => ({
     [
       'expo-screen-orientation',
       {
-        'initialOrientation': 'DEFAULT',
-      }
+        initialOrientation: 'DEFAULT',
+      },
     ],
     [
       '@sentry/react-native/expo',
