@@ -4,7 +4,7 @@ export default () => ({
   name: 'Tournois Pétanque App',
   slug: 'PetanqueGCU',
   version: version,
-  orientation: 'portrait',
+  orientation: 'default',
   icon: './src/assets/icon.png',
   userInterfaceStyle: 'light',
   scheme: 'tournois-petanque-app',
@@ -79,6 +79,12 @@ export default () => ({
         userTrackingPermission:
           'This identifier will be used to deliver personalized ads to you.',
       },
+    ],
+    [
+      "expo-screen-orientation",
+      {
+        "initialOrientation": "DEFAULT"
+      }
     ],
     [
       '@sentry/react-native/expo',
