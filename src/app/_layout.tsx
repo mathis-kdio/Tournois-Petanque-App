@@ -82,11 +82,11 @@ export default function RootLayout() {
   useEffect(() => {
     const unlockScreenOerientation = async () => {
       if (Platform.OS !== 'web') {
-        await ScreenOrientation.unlockAsync()
+        await ScreenOrientation.unlockAsync();
       }
     }
-    unlockScreenOerientation()
-  }, [])
+    unlockScreenOerientation();
+  }, []);
 
   return (
     <Provider store={Store}>
