@@ -84,7 +84,7 @@ export default function RootLayout() {
       if (Platform.OS !== 'web') {
         await ScreenOrientation.unlockAsync();
       }
-    }
+    };
     unlockScreenOerientation();
   }, []);
 

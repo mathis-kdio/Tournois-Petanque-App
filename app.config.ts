@@ -83,7 +83,7 @@ export default () => ({
     [
       'expo-screen-orientation',
       {
-        'initialOrientation': 'DEFAULT'
+        'initialOrientation': 'DEFAULT',
       }
     ],
     [
