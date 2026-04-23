@@ -3,26 +3,26 @@
     "id": "36",
     "version": "2.4.2",
     "infos": [
-      "- Correction et amélioration de l'export PDF sur ordinateur"
+      "- Fixed and improved the PDF export on Desktop"
     ]
   },
   "35": {
     "id": "35",
     "version": "2.4.1",
     "infos": [
-      "- Correction de l'export PDF"
+      "- Fixed PDF export"
     ]
   },
   "34": {
     "id": "34",
     "version": "2.4.0",
     "infos": [
-      "- Ajout de la génération d'équipes aléatoirement plutôt que manuellement",
-      "- Ajout possibilité d'avoir un match avec un score différent de celui attendu",
-      "- Amélioration de l'affichage et de la création d'un tournoi mêlée",
-      "- Amélioration de l'équipe par défaut pour les tournois avec des équipes manuelles",
-      "- Correction des checkboxs et du renommage des joueurs dans un tournoi",
-      "- Ajout de textes non traduits"
+      "- Added support for generating teams randomly instead of manually",
+      "- Added support for games with scores different from the expected score",
+      "- Improvement of the display and creation of a mêlée tournament",
+      "- Improvement of the default team for tournaments for manually created teams",
+      "- Fixed the checkboxes and the renaming of players in a tournament",
+      "- Addition of untranslated text"
     ]
   },
   "33": {
