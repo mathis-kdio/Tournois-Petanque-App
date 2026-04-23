@@ -34,6 +34,21 @@ const JoueurTypeSelect: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
 
+  const getJoueurTypeLabel = (type: JoueurTypeEnum | undefined): string => {
+    switch (type) {
+      case JoueurTypeEnum.TIREUR:
+        return t('tireur');
+      case JoueurTypeEnum.POINTEUR:
+        return t('pointeur');
+      case JoueurTypeEnum.MILIEU:
+        return t('milieu');
+      case JoueurTypeEnum.ENFANT:
+        return t('enfant');
+      default:
+        return t('aucun_poste');
+    }
+  };
+
   const selectItemList = () => {
     const { mode, typeTournoi, typeEquipes } = optionsTournoi;
     if (
@@ -93,7 +108,7 @@ const JoueurTypeSelect: React.FC<Props> = ({
         <SelectInput
           className="text-typography-white placeholder:text-typography-white"
           placeholder={t('choisir_poste')}
-          value={joueurType}
+          value={getJoueurTypeLabel(joueurType)}
         />
         <SelectIcon
           className="mr-3 text-typography-white"
