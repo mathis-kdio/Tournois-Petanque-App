@@ -9,7 +9,7 @@ import { Tri } from '@/types/enums/tri';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ListRenderItem } from 'react-native';
 import InscriptionListeJoueursSuggestions from './InscriptionListeJoueursSuggestions';
@@ -53,36 +53,14 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
   const { t } = useTranslation();
   const router = useRouter();
 
-  const loadSavedList = () => {
+  const loadSavedList = useCallback(() => {
     router.navigate({
       pathname: '/listes-joueurs',
       params: {
         loadListScreen: 'true',
       },
     });
-  };
-
-  const buttonRemoveAllPlayers = (listeJoueurs: JoueurModel[]) => {
-    if (listeJoueurs.length === 0) {
-      return;
-    }
-    return (
-      <Button action="negative" onPress={() => setModalRemoveIsOpen(true)}>
-        <ButtonText>{t('supprimer_joueurs_bouton')}</ButtonText>
-      </Button>
-    );
-  };
-
-  const buttonLoadSavedList = () => {
-    if (loadListScreen) {
-      return;
-    }
-    return (
-      <Button action="primary" onPress={loadSavedList}>
-        <ButtonText>{t('charger_liste_joueurs_bouton')}</ButtonText>
-      </Button>
-    );
-  };
+  }, [router]);
 
   const { typeEquipes, mode, typeTournoi, modeCreationEquipes } =
     preparationTournoi;
@@ -90,16 +68,69 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
     throw Error('typeEquipes, mode ou typeTournoi manquant');
   }
 
-  if (triType === Tri.ID) {
-    listeJoueurs.sort((a, b) => a.joueurTournoiId - b.joueurTournoiId);
-  } else if (triType === Tri.ALPHA_ASC) {
-    listeJoueurs.sort((a, b) => a.name.localeCompare(b.name));
-  } else if (triType === Tri.ALPHA_DESC) {
-    listeJoueurs.sort((a, b) => b.name.localeCompare(a.name));
-  }
+  const sortedListeJoueurs = useMemo(() => {
+    return [...listeJoueurs].sort((a, b) => {
+      if (triType === Tri.ID) {
+        return a.joueurTournoiId - b.joueurTournoiId;
+      } else if (triType === Tri.ALPHA_ASC) {
+        return a.name.localeCompare(b.name);
+      } else if (triType === Tri.ALPHA_DESC) {
+        return b.name.localeCompare(a.name);
+      }
+      return 0;
+    });
+  }, [listeJoueurs, triType]);
+
   const avecEquipes =
     mode === ModeTournoi.AVECEQUIPES &&
     modeCreationEquipes === ModeCreationEquipes.MANUELLE;
+
+  const footerComponent = useMemo(() => {
+    const renderRemoveAllButton = () => {
+      if (sortedListeJoueurs.length === 0) {
+        return null;
+      }
+      return (
+        <Button action="negative" onPress={() => setModalRemoveIsOpen(true)}>
+          <ButtonText>{t('supprimer_joueurs_bouton')}</ButtonText>
+        </Button>
+      );
+    };
+
+    const renderLoadSavedListButton = () => {
+      if (loadListScreen) {
+        return null;
+      }
+      return (
+        <Button action="primary" onPress={loadSavedList}>
+          <ButtonText>{t('charger_liste_joueurs_bouton')}</ButtonText>
+        </Button>
+      );
+    };
+
+    return (
+      <VStack space="md" className="px-0">
+        <VStack space="sm" className="px-10">
+          {renderRemoveAllButton()}
+          {renderLoadSavedListButton()}
+        </VStack>
+        <InscriptionListeJoueursSuggestions
+          listeJoueurs={sortedListeJoueurs}
+          preparationTournoi={preparationTournoi}
+          onAddJoueur={onAddJoueur}
+        />
+      </VStack>
+    );
+  }, [
+    sortedListeJoueurs,
+    preparationTournoi,
+    onAddJoueur,
+    loadListScreen,
+    t,
+    loadSavedList,
+    setModalRemoveIsOpen,
+  ]);
+
   const renderItem: ListRenderItem<JoueurModel> = ({ item }) => (
     <ListeJoueurItem
       joueur={item}
@@ -109,7 +140,7 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
       modeTournoi={mode}
       typeTournoi={typeTournoi}
       showCheckbox={showCheckbox}
-      listesJoueurs={listeJoueurs}
+      listesJoueurs={sortedListeJoueurs}
       onDeleteJoueur={onDeleteJoueur}
       onAddEquipeJoueur={onAddEquipeJoueur}
       onUpdateName={onUpdateName}
@@ -120,23 +151,10 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
     <FlatList
       removeClippedSubviews={false}
       persistentScrollbar={true}
-      data={listeJoueurs}
-      keyExtractor={(item: JoueurModel) => item.joueurTournoiId.toString()}
+      data={sortedListeJoueurs}
+      keyExtractor={(item: JoueurModel) => item.uniqueBDDId.toString()}
       renderItem={renderItem}
-      ListFooterComponent={
-        <VStack space="md" className="flex-1">
-          <VStack space="sm" className="px-10">
-            {buttonRemoveAllPlayers(listeJoueurs)}
-            {buttonLoadSavedList()}
-          </VStack>
-          <InscriptionListeJoueursSuggestions
-            listeJoueurs={listeJoueurs}
-            preparationTournoi={preparationTournoi}
-            onAddJoueur={onAddJoueur}
-          />
-        </VStack>
-      }
-      className="h-1"
+      ListFooterComponent={footerComponent}
     />
   );
 };
