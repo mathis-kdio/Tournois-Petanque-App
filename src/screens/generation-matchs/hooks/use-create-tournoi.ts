@@ -101,9 +101,6 @@ export const useCreateTournoi = () => {
             (a) => a.joueurId === joueurIdEquipe,
           );
           if (!joueur) {
-            console.log('joueur', joueur);
-            console.log('listeJoueurs', listeJoueurs);
-            console.log('joueurIdEquipe', joueurIdEquipe);
             throw Error('joueur inconnu');
           }
           await EquipesJoueursRepository.insert(
@@ -203,8 +200,6 @@ export const useCreateTournoi = () => {
     const listeJoueurs = (
       await JoueursPreparationTournoisRepository.getMany()
     ).map((a) => a.joueurs);
-
-    console.log('matchModels', JSON.stringify(matchModels));
 
     const newMatchs = await Promise.all(
       matchModels.map(async (matchModel, index) => {

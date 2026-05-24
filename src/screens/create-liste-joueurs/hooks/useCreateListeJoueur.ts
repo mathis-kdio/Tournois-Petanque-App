@@ -39,7 +39,6 @@ export const useCreateListeJoueur = (listeId: number) => {
 
   const removeAllJoueursList = async (listId: number) => {
     const joueursListes = await JoueursListesRepository.getInList(listeId);
-    console.log(listId);
     await JoueursListesRepository.removeAllInList(listId);
     await JoueursRepository.delete(
       joueursListes.map((joueursListe) => joueursListe.joueurId),
