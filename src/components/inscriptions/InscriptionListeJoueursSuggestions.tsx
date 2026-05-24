@@ -10,7 +10,7 @@ import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { JoueurSuggestionModel } from '@/types/interfaces/joueurSuggestionModel';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 import { FontAwesome5 } from '@expo/vector-icons';
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ListRenderItem } from 'react-native';
 
@@ -32,19 +32,15 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
 
   const { joueursSuggestion } = useJoueursSuggestion();
 
-  const [suggestions, setSuggestions] = useState<JoueurSuggestionModel[]>([]);
-  const [nbSuggestions, setNbSuggestions] = useState(5);
-
-  useEffect(() => {
-    const fetchSuggestions = async () => {
-      const suggestionNonInscrits = joueursSuggestion.filter((suggestion) =>
+  const suggestions = useMemo(
+    () =>
+      joueursSuggestion.filter((suggestion) =>
         listeJoueurs.every((joueur) => joueur.name !== suggestion.name),
-      );
+      ),
+    [joueursSuggestion, listeJoueurs],
+  );
 
-      setSuggestions(suggestionNonInscrits);
-    };
-    fetchSuggestions();
-  }, [joueursSuggestion, listeJoueurs]);
+  const [nbSuggestions, setNbSuggestions] = useState(5);
 
   const buttonMoreSuggestedPlayers = () => {
     if (nbSuggestions >= suggestions.length) {
@@ -63,11 +59,12 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
     setNbSuggestions((prevState) => prevState + 5);
   };
 
+  const partialSuggested = suggestions.slice(0, nbSuggestions);
+
   if (suggestions.length === 0) {
-    return;
+    return null;
   }
 
-  const partialSuggested = suggestions.slice(0, nbSuggestions);
   const renderItem: ListRenderItem<JoueurSuggestionModel> = ({ item }) => (
     <JoueurSuggere
       joueur={item}
@@ -85,6 +82,7 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
         removeClippedSubviews={false}
         persistentScrollbar={true}
         data={partialSuggested}
+        extraData={nbSuggestions}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
       />

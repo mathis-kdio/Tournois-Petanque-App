@@ -46,7 +46,7 @@ const ListeResultats = () => {
         <Divider className="my-0.5" />
         <FlatList
           data={ranking(matchs, joueursTournoi, options)}
-          keyExtractor={(item) => item.joueur.joueurTournoiId.toString()}
+          keyExtractor={(item) => item.joueur.uniqueBDDId.toString()}
           renderItem={renderItem}
         />
       </VStack>

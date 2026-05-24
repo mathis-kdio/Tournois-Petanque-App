@@ -82,7 +82,7 @@ const JoueursTournoi = () => {
         <FlatList
           removeClippedSubviews={false}
           data={joueursTournoi}
-          keyExtractor={(item: JoueurModel) => item.joueurTournoiId.toString()}
+          keyExtractor={(item: JoueurModel) => item.uniqueBDDId.toString()}
           renderItem={renderItem}
         />
       </VStack>
