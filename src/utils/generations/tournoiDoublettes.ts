@@ -136,37 +136,39 @@ export const generationDoublettes = (
     if (complement === Complement.TETEATETE && nbjoueurs % 2 === 0) {
       joueurs.push({
         name: 'Complément 1',
-        type: JoueurType.ENFANT,
-        id: nbjoueurs,
+        type: JoueurType.COMPLEMENT,
+        id: -2,
         isChecked: false,
         allCoequipiers: [],
         allAdversaires: [],
       });
       joueurs.push({
         name: 'Complément 2',
-        type: JoueurType.ENFANT,
-        id: nbjoueurs + 1,
+        type: JoueurType.COMPLEMENT,
+        id: -3,
         isChecked: false,
         allCoequipiers: [],
         allAdversaires: [],
       });
 
       for (let i = 1; i < nbTours + 1; i++) {
-        matchs[nbMatchsParTour * i - 1].equipe[0][0] = nbjoueurs;
-        matchs[nbMatchsParTour * i - 1].equipe[1][0] = nbjoueurs + 1;
+        const match = matchs[nbMatchsParTour * i - 1];
+        match.equipe[0][0] = -2;
+        match.equipe[1][0] = -3;
       }
     } else if (complement === Complement.DEUXVSUN) {
       joueurs.push({
         name: 'Complément 1',
-        type: JoueurType.ENFANT,
-        id: nbjoueurs,
+        type: JoueurType.COMPLEMENT,
+        id: -2,
         isChecked: false,
         allCoequipiers: [],
         allAdversaires: [],
       });
 
       for (let i = 1; i < nbTours + 1; i++) {
-        matchs[nbMatchsParTour * i - 1].equipe[1][0] = nbjoueurs;
+        const match = matchs[nbMatchsParTour * i - 1];
+        match.equipe[1][0] = -2;
       }
     }
   }

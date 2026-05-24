@@ -86,7 +86,7 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
     const equipe = match.equipe[equipeId - 1];
     for (let i = 0; i < 4; i++) {
       const joueur = equipe[i];
-      if (joueur && joueur !== -1) {
+      if (joueur) {
         nomsJoueurs.push(displayName(joueur, equipeId));
       }
     }

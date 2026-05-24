@@ -95,12 +95,15 @@ export const useCreateTournoi = () => {
   ) => {
     return await Promise.all(
       equipeMatch.map(async (joueurIdEquipe) => {
-        if (joueurIdEquipe !== undefined && joueurIdEquipe !== -1) {
+        if (joueurIdEquipe !== undefined && joueurIdEquipe >= 0) {
           //Récupère le joueur de la BDD à partir du joueurId du match généré
           const joueur = listeJoueurs.find(
             (a) => a.joueurId === joueurIdEquipe,
           );
           if (!joueur) {
+            console.log('joueur', joueur);
+            console.log('listeJoueurs', listeJoueurs);
+            console.log('joueurIdEquipe', joueurIdEquipe);
             throw Error('joueur inconnu');
           }
           await EquipesJoueursRepository.insert(
@@ -200,6 +203,8 @@ export const useCreateTournoi = () => {
     const listeJoueurs = (
       await JoueursPreparationTournoisRepository.getMany()
     ).map((a) => a.joueurs);
+
+    console.log('matchModels', JSON.stringify(matchModels));
 
     const newMatchs = await Promise.all(
       matchModels.map(async (matchModel, index) => {

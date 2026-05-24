@@ -71,12 +71,12 @@ export function updatePlayerRelationships(
   equipeAdverse: EquipeGenerationType,
 ) {
   equipe.forEach((joueurId) => {
-    if (joueurId && joueurId !== -1) {
+    if (joueurId && joueurId >= 0) {
       const coequipiers = equipe.filter(
         (id): id is number => id !== undefined && id !== -1 && id !== joueurId,
       );
       const adversaires = equipeAdverse.filter(
-        (id): id is number => id !== -1 && id !== undefined,
+        (id): id is number => id !== undefined && id !== -1,
       );
 
       const joueur = joueurs[joueurId];

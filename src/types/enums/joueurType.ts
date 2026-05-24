@@ -3,4 +3,5 @@ export enum JoueurType {
   POINTEUR = 'pointeur',
   MILIEU = 'milieu',
   ENFANT = 'enfant',
+  COMPLEMENT = 'complement',
 }
