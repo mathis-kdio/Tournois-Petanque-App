@@ -120,42 +120,44 @@ export const generationTriplettes = (
     const complementIds: number[] = [];
     const complementCount = getNbComplements(complement);
 
+    let complementId = -1;
     for (let i = 0; i < complementCount; i++) {
-      const id = nbjoueurs + i;
       joueurs.push({
         name: 'Complement',
-        type: JoueurType.ENFANT,
-        id: id,
+        type: JoueurType.COMPLEMENT,
+        id: complementId,
         isChecked: false,
         allCoequipiers: [],
         allAdversaires: [],
       });
-      complementIds.push(id);
+      complementIds.push(complementId);
+      complementId--;
     }
 
     for (let i = 1; i < nbTours + 1; i++) {
-      const matchIndex = nbMatchsParTour * i - 1;
+      const match = matchs[nbMatchsParTour * i - 1];
+
       switch (complement) {
         case Complement.QUATREVSTROIS:
-          matchs[matchIndex].equipe[1][3] = complementIds[0];
+          match.equipe[1][3] = complementIds[0];
           break;
         case Complement.TETEATETE:
-          matchs[matchIndex].equipe[0][0] = complementIds[0];
-          matchs[matchIndex].equipe[0][1] = complementIds[1];
-          matchs[matchIndex].equipe[1][0] = complementIds[2];
-          matchs[matchIndex].equipe[1][1] = complementIds[3];
+          match.equipe[0][0] = complementIds[0];
+          match.equipe[0][1] = complementIds[1];
+          match.equipe[1][0] = complementIds[2];
+          match.equipe[1][1] = complementIds[3];
           break;
         case Complement.DEUXVSUN:
-          matchs[matchIndex].equipe[0][0] = complementIds[0];
-          matchs[matchIndex].equipe[1][0] = complementIds[1];
-          matchs[matchIndex].equipe[1][1] = complementIds[2];
+          match.equipe[0][0] = complementIds[0];
+          match.equipe[1][0] = complementIds[1];
+          match.equipe[1][1] = complementIds[2];
           break;
         case Complement.DOUBLETTES:
-          matchs[matchIndex].equipe[0][0] = complementIds[0];
-          matchs[matchIndex].equipe[1][0] = complementIds[1];
+          match.equipe[0][0] = complementIds[0];
+          match.equipe[1][0] = complementIds[1];
           break;
         case Complement.TROISVSDEUX:
-          matchs[matchIndex].equipe[1][0] = complementIds[0];
+          match.equipe[1][0] = complementIds[0];
           break;
       }
     }

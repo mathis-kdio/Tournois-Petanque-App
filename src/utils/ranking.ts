@@ -129,7 +129,7 @@ const victoiresPointsCalc = (
 
 export const isJoueurInEquipe = (joueurId: number, equipe: EquipeType) => {
   const res = equipe.find(
-    (joueur) => joueur && joueur !== -1 && joueur.joueurTournoiId === joueurId,
+    (joueur) => joueur && joueur.joueurTournoiId === joueurId,
   );
-  return res !== undefined && res !== -1;
+  return res !== undefined;
 };

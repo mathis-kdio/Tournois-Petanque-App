@@ -50,9 +50,7 @@ const MatchItem: React.FC<Props> = ({ match }) => {
   };
 
   const displayEquipe = (equipeType: EquipeType, equipeId: Equipe) => {
-    return equipeType
-      .filter((a) => !!a && a !== -1)
-      .map((b) => displayName(b, equipeId));
+    return equipeType.filter((a) => !!a).map((b) => displayName(b, equipeId));
   };
 
   const displayName = (joueur: JoueurModel, equipe: Equipe) => {
