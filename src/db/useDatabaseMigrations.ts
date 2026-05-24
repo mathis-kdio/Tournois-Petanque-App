@@ -28,28 +28,16 @@ export function useDatabaseMigrations() {
 
   useEffect(() => {
     openDatabaseAsync(DATABASE_NAME, { enableChangeListener: true })
-      .then((sqliteDatabase) => {
+      .then(async (sqliteDatabase) => {
         setSqliteDatabase(sqliteDatabase);
+        // Drizzle expo-sqlite ne fonctionne pas sur WEB https://github.com/drizzle-team/drizzle-orm/issues/1009
         if (Platform.OS === 'web') {
-          // ne fonctionne pas sur WEB https://github.com/drizzle-team/drizzle-orm/issues/1009
-          return runManualMigration(sqliteDatabase);
-        }
-        return sqliteDatabase;
-      })
-      .then((sqliteDatabase) => {
-        if (Platform.OS === 'web') {
+          await runManualMigration(sqliteDatabase);
           // On crée un proxy asynchrone pour Drizzle sur le Web
-          // Plus aucun appel synchrone ne sera fait -> PLUS BESOIN de SharedArrayBuffer !
-          return drizzleProxy(async (sql, params, method) => {
-            try {
-              // executeAsync ou une méthode équivalente selon expo-sqlite
-              const isReader = method === 'all' || method === 'get';
-              const result = await sqliteDatabase.getAllAsync(sql, params);
-              return { rows: result.map((row) => Object.values(row)) };
-            } catch (e) {
-              console.error('Erreur Query Proxy:', e);
-              return { rows: [] };
-            }
+          return drizzleProxy(async (sql, params) => {
+            // executeAsync ou une méthode équivalente selon expo-sqlite
+            const result = await sqliteDatabase.getAllAsync(sql, params);
+            return { rows: result.map((row) => Object.values(row)) };
           }) as any;
         } else {
           // Sur Mobile, on garde l'implémentation native ultra-rapide
@@ -59,7 +47,6 @@ export function useDatabaseMigrations() {
       .then((expoSQLiteDatabase) => {
         drizzleDbInstance = expoSQLiteDatabase;
         if (Platform.OS !== 'web') {
-          // TODO ne fonctionne pas sur WEB https://github.com/drizzle-team/drizzle-orm/issues/1009
           return migrate(expoSQLiteDatabase, migrations);
         }
       })

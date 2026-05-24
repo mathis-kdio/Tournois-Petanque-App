@@ -18,12 +18,7 @@ export default async function runManualMigration(db: SQLiteDatabase) {
   const executedHashes = new Set(executedMigrations.map((m) => m.hash));
 
   // 3. Récupérer la liste des migrations disponibles directement depuis l'objet
-  // On cible "migrations.migrations" qui contient vos fichiers SQL
   const migrationEntries = Object.entries(migrations.migrations);
-
-  console.log(
-    `🔍 Vérification des migrations (${migrationEntries.length} trouvées)...`,
-  );
 
   // 4. Parcourir chaque migration dans l'ordre
   for (const [migrationName, sqlContent] of migrationEntries) {
@@ -32,9 +27,7 @@ export default async function runManualMigration(db: SQLiteDatabase) {
       continue;
     }
 
-    console.log(`🚀 Application de la migration : ${migrationName}`);
-
-    // 5. On découpe les instructions selon le séparateur de Drizzle
+    // 5. Découper les instructions selon le séparateur de Drizzle
     const statements = sqlContent.split('--> statement-breakpoint');
 
     // 6. Exécution sécurisée dans une transaction dédiée à cette migration
@@ -44,26 +37,11 @@ export default async function runManualMigration(db: SQLiteDatabase) {
       for (const statement of statements) {
         const trimmed = statement.trim();
         if (trimmed.length > 0) {
-          try {
-            await db.execAsync(trimmed);
-          } catch (e: any) {
-            // Sécurité additionnelle pour éviter les blocages sur doublons d'éléments
-            if (e.message.includes('already exists')) {
-              console.log(
-                `ℹ️ Élément déjà présent (ignoré) : ${trimmed.substring(0, 40)}...`,
-              );
-            } else {
-              console.error(
-                `❌ Erreur critique dans ${migrationName} sur :`,
-                trimmed,
-              );
-              throw e;
-            }
-          }
+          await db.execAsync(trimmed);
         }
       }
 
-      // Sauvegarde du succès de la migration dans l'historique local
+      // 7. Sauvegarder la migration dans l'historique local
       await db.runAsync(
         'INSERT INTO "__drizzle_migrations" (hash, created_at) VALUES (?, ?);',
         [migrationName, Date.now()],
@@ -71,10 +49,6 @@ export default async function runManualMigration(db: SQLiteDatabase) {
 
       await db.execAsync('PRAGMA foreign_keys = ON;');
     });
-
-    console.log(`✅ Migration ${migrationName} appliquée avec succès.`);
   }
-
-  console.log("🎉 Toutes les migrations de l'historique sont à jour.");
   return db;
 }
