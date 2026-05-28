@@ -72,7 +72,7 @@ const CreateListeJoueur: React.FC<Props> = ({ type, idList }) => {
   const preparationTournoi: PreparationTournoiModel = {
     id: 0,
     typeEquipes: TypeEquipes.TETEATETE,
-    mode: ModeTournoi.AVECNOMS,
+    mode: ModeTournoi.SAUVEGARDE,
     typeTournoi: TypeTournoi.MELEDEMELE,
     avecTerrains: false,
   };
