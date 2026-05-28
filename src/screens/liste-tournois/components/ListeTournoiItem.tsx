@@ -94,7 +94,7 @@ const ListeTournoiItem: React.FC<Props> = ({ tournoi, showModalInfos }) => {
   };
 
   const tournoiName = () => {
-    const tournoiName = name ? name : `n°${tournoiId}`;
+    const tournoiName = name ? name : `n° ${tournoiId}`;
     if (renommerOn) {
       return (
         <Input className="border-custom-bg-inverse">

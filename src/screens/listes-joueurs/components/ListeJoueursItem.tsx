@@ -130,7 +130,7 @@ const ListeJoueursItem: React.FC<Props> = ({
 
   const listName = (listeJoueursInfos: ListeJoueursInfos) => {
     const { name, listId } = listeJoueursInfos;
-    let listName = name ? name : `n°' ${listId}`;
+    let listName = name ? name : `n° ${listId}`;
     if (renommerOn) {
       return (
         <Input className="border-custom-bg-inverse">
