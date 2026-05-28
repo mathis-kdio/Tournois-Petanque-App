@@ -413,7 +413,8 @@ export class DataMigrationService {
       // Find the player in the database
       const joueur = joueurs.find((joueur) => joueur.joueurId === playerId);
       if (!joueur) {
-        throw Error('Aucun joueur correspond trouvé');
+        //Si je joueur n'est pas trouvé c'est que c'est un joueur fantôme dans un match complément
+        continue;
       }
 
       // Create the player-team association
