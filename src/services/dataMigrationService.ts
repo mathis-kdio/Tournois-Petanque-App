@@ -339,8 +339,8 @@ export class DataMigrationService {
   private static async migrateTournamentPlayers(
     joueurs: ReduxJoueur[],
   ): Promise<Joueur[]> {
-    const playersToInsert: NewJoueur[] = joueurs.map((joueur) => ({
-      joueurId: joueur.id,
+    const playersToInsert: NewJoueur[] = joueurs.map((joueur, index) => ({
+      joueurId: index, // On utilise pas le joueur.id car celui-ci peut être corrompu
       name: joueur.name,
       type: joueur.type,
       equipe: joueur.equipe,
