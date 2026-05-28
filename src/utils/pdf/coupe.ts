@@ -84,7 +84,7 @@ export const generationPDFCoupe = (
             html += '<td class="no-border-bottom no-border-top">';
             if (matchs[matchId].equipe[0][jidx] !== undefined) {
               const joueur = matchs[matchId].equipe[0][jidx];
-              if (!joueur || joueur === -1) {
+              if (!joueur) {
                 throw Error;
               }
               if (joueur.name === undefined) {
@@ -123,7 +123,7 @@ export const generationPDFCoupe = (
             html += '<td class="text-right no-border-bottom no-border-top">';
             if (matchs[matchId].equipe[1][jidx] !== undefined) {
               const joueur = matchs[matchId].equipe[1][jidx];
-              if (!joueur || joueur === -1) {
+              if (!joueur) {
                 throw Error;
               }
               if (joueur.name === undefined) {

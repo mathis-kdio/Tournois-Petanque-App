@@ -120,7 +120,7 @@ export const generationTriplettes = (
     const complementIds: number[] = [];
     const complementCount = getNbComplements(complement);
 
-    let complementId = -1;
+    let complementId = -2;
     for (let i = 0; i < complementCount; i++) {
       joueurs.push({
         name: 'Complement',
