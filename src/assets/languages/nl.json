@@ -290,6 +290,7 @@
     "mode_creation_equipe": "Methoden voor het maken van teams",
     "choix_mode_creation_equipes": "Keuze voor de samenstelling van teams",
     "equipes_aleatoires": "Teams werden willekeurig gevormd",
-    "equipes_manuelles": "Handmatig gevormde teams"
+    "equipes_manuelles": "Handmatig gevormde teams",
+    "initialisation_base": "Initialisation de la base, veuillez ne pas fermer l'application..."
   }
 }
