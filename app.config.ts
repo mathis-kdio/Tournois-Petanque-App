@@ -23,7 +23,7 @@ export default () => ({
     supportsTablet: true,
     userInterfaceStyle: 'light',
     infoPlist: {
-      LSApplicationQueriesSchemes: ['mailto', 'mailto'],
+      LSApplicationQueriesSchemes: ['mailto', 'itms-apps'],
       ITSAppUsesNonExemptEncryption: false,
     },
     privacyManifests: {
