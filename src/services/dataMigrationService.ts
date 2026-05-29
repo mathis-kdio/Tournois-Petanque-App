@@ -59,7 +59,7 @@ type ReduxHistoriqueJoueurs = {
 type ReduxListesSauvegardeJoueurs = {
   id: number;
   name: string;
-  type: JoueurType | '';
+  type?: JoueurType | '';
   equipe: number;
 };
 
@@ -265,16 +265,20 @@ export class DataMigrationService {
       return;
     }
     // Insertion joueurs de la liste
-    const listeNewJoueur: NewJoueur[] = listeJoueur.map((joueur) => {
-      return {
-        joueurId: joueur.id,
-        name: joueur.name,
-        type:
-          joueur.type.length !== 0 ? (joueur.type as JoueurType) : undefined,
-        equipe: joueur.equipe,
-        isChecked: false,
-      };
-    });
+    const listeNewJoueur: NewJoueur[] = listeJoueur.map(
+      ({ id, name, type, equipe }) => {
+        return {
+          joueurId: id,
+          name,
+          type:
+            type !== undefined && type !== '' && type.length !== 0
+              ? type
+              : undefined,
+          equipe,
+          isChecked: false,
+        };
+      },
+    );
     const joueurs = await JoueursRepository.insertMultiples(listeNewJoueur);
     const joueursListes = joueurs.map((joueur) => {
       return {
