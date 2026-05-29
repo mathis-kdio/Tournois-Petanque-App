@@ -290,6 +290,7 @@
     "mode_creation_equipe": "Modo de creación de equipos",
     "choix_mode_creation_equipes": "Elección del modo de creación de equipos",
     "equipes_aleatoires": "Equipos creados aleatoriamente",
-    "equipes_manuelles": "Equipos creados manualmente"
+    "equipes_manuelles": "Equipos creados manualmente",
+    "initialisation_base": "Initialisation de la base, veuillez ne pas fermer l'application..."
   }
 }
