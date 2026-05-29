@@ -290,6 +290,7 @@
     "mode_creation_equipe": "Sådan opretter du hold",
     "choix_mode_creation_equipes": "Valg af, hvordan man opretter teams",
     "equipes_aleatoires": "Tilfældigt dannede hold",
-    "equipes_manuelles": "Manuelt dannede hold"
+    "equipes_manuelles": "Manuelt dannede hold",
+    "initialisation_base": "Initialisation de la base, veuillez ne pas fermer l'application..."
   }
 }
