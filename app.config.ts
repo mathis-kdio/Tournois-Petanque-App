@@ -20,7 +20,6 @@ export default () => ({
   assetBundlePatterns: ['**/*'],
   ios: {
     bundleIdentifier: 'TournoisPetanqueApp',
-    buildNumber: '2.1.2',
     supportsTablet: true,
     userInterfaceStyle: 'light',
     infoPlist: {
