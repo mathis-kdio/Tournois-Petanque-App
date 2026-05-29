@@ -290,6 +290,7 @@
     "mode_creation_equipe": "Team creation mode",
     "choix_mode_creation_equipes": "Team creation mode selection",
     "equipes_aleatoires": "Randomly formed teams",
-    "equipes_manuelles": "Manually formed teams"
+    "equipes_manuelles": "Manually formed teams",
+    "initialisation_base": "Initialisation de la base, veuillez ne pas fermer l'application..."
   }
 }

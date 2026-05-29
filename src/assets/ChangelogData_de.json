@@ -1,4 +1,17 @@
 {
+  "37": {
+    "id": "37",
+    "version": "3.0.0",
+    "infos": [
+      "- Refonte du système de sauvegarde des données au sein de l'application",
+      "- Migration des données de l'ancien système vers le nouveau",
+      "- Modernisation de l'architecture technique de l'application",
+      "- Ajout de la rotation de l'application",
+      "- Ajout de la traduction espagnole",
+      "- Ajout de textes non traduits",
+      "- Correction de l'affichage de certains éléments"
+    ]
+  },
   "36": {
     "id": "36",
     "version": "2.4.2",
