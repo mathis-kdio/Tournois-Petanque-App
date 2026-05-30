@@ -2,7 +2,7 @@ import { Box } from '@/components/ui/box';
 import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { FontAwesome5 } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 export interface Props {
   joueurUniqueBDDId: number;
@@ -19,21 +19,24 @@ const DeleteJoueurButton: React.FC<Props> = ({
   setRenommerOn,
   onDeleteJoueur,
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const isLoadingRef = useRef(false);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const { updateJoueursEquipe } = useJoueursPreparationTournois();
 
   const supprimerJoueur = async () => {
-    if (isLoading) return;
+    if (isLoadingRef.current) return;
 
-    setIsLoading(true);
+    isLoadingRef.current = true;
+    setIsDisabled(true);
     setRenommerOn(false);
 
     await onDeleteJoueur(joueurUniqueBDDId);
     if (typeEquipes === TypeEquipes.TETEATETE) {
       await updateJoueursEquipe();
     }
-    setIsLoading(false);
+    isLoadingRef.current = false;
+    setIsDisabled(false);
   };
 
   if (!isInscription) {
@@ -47,7 +50,7 @@ const DeleteJoueurButton: React.FC<Props> = ({
         backgroundColor="#E63535"
         iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
         onPress={supprimerJoueur}
-        disabled={isLoading}
+        disabled={isDisabled}
       />
     </Box>
   );
