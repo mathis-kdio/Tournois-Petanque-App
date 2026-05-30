@@ -32,7 +32,7 @@ function toNewJoueur(
 ): NewJoueur {
   return {
     joueurId: joueurTournoiId,
-    name: joueurName,
+    name: joueurName ?? '',
     type: joueurType,
     equipe: equipe,
     isChecked: false,
@@ -87,7 +87,7 @@ export const useJoueursPreparationTournois = () => {
       .map((joueur, index) =>
         toNewJoueur(
           nbJoueursInscrits + index,
-          joueur.name,
+          joueur.name ?? '',
           joueur.type ?? undefined,
           0,
         ),

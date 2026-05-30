@@ -1,0 +1,1 @@
+UPDATE joueurs SET name = '' WHERE name IS NULL;
