@@ -73,9 +73,9 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
       if (triType === Tri.ID) {
         return a.joueurTournoiId - b.joueurTournoiId;
       } else if (triType === Tri.ALPHA_ASC) {
-        return a.name.localeCompare(b.name);
+        return String(a.name ?? '').localeCompare(String(b.name ?? ''));
       } else if (triType === Tri.ALPHA_DESC) {
-        return b.name.localeCompare(a.name);
+        return String(b.name ?? '').localeCompare(String(a.name ?? ''));
       }
       return 0;
     });
