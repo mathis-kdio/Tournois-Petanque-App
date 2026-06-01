@@ -113,7 +113,8 @@ export const useTournois = () => {
           return true;
         }
       })
-      .map(toJoueurModel);
+      .map(toJoueurModel)
+      .sort((a, b) => a.joueurTournoiId - b.joueurTournoiId);
   }, [equipesWithJoueursTournoi]);
 
   const actualTournoiVM = useMemo(() => {
