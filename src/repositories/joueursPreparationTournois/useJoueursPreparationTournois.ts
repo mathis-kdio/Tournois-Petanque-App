@@ -95,6 +95,10 @@ export const useJoueursPreparationTournois = () => {
           0,
         ),
       );
+
+    if (newJoueurs.length === 0) {
+      return;
+    }
     const joueurs = await JoueursRepository.insertMultiples(newJoueurs);
 
     const newJoueursPreparationTournois = joueurs.map((joueur) =>
