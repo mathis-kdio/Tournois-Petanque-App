@@ -94,11 +94,11 @@ export default function RootLayout() {
         <AuthProvider>
           <ThemeProvider>
             <GluestackWrapper>
-              <DatabaseInitializer>
-                <I18nextProvider i18n={i18n} defaultNS={'common'}>
+              <I18nextProvider i18n={i18n} defaultNS={'common'}>
+                <DatabaseInitializer>
                   <Stack screenOptions={{ headerShown: false }} />
-                </I18nextProvider>
-              </DatabaseInitializer>
+                </DatabaseInitializer>
+              </I18nextProvider>
             </GluestackWrapper>
           </ThemeProvider>
         </AuthProvider>
