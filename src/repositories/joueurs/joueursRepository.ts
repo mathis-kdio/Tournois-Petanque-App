@@ -3,6 +3,10 @@ import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { eq, inArray } from 'drizzle-orm';
 
 export const JoueursRepository = {
+  getAll() {
+    return getDrizzleDb().select().from(joueurs);
+  },
+
   async insert(newJoueur: NewJoueur) {
     const result = (
       await getDrizzleDb().insert(joueurs).values(newJoueur).returning()

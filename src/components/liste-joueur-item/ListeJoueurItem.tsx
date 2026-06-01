@@ -56,12 +56,7 @@ const ListeJoueurItem: React.FC<Props> = ({
   const { isChecked, type, uniqueBDDId } = joueur;
 
   const handleRenommerJoueur = async () => {
-    if (joueurText === '') {
-      throw Error('joueurText doit au moins avoir 1 caractère');
-    }
-    if (isInscription) {
-      await onUpdateName(joueur, joueurText);
-    } else {
+    if (joueurText !== '') {
       await onUpdateName(joueur, joueurText);
     }
     setRenommerOn(false);

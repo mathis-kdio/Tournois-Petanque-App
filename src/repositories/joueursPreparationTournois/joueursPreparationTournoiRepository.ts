@@ -13,6 +13,10 @@ export type JoueursPreparationTournoisWithJoueur = {
 };
 
 export const JoueursPreparationTournoisRepository = {
+  getAll() {
+    return getDrizzleDb().select().from(joueursPreparationTournois);
+  },
+
   getMany() {
     return getDrizzleDb()
       .select()

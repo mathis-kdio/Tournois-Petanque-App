@@ -5,15 +5,9 @@ import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { useMemo } from 'react';
 import { JoueursRepository } from '../joueurs/joueursRepository';
 import { JoueursSuggestionRepository } from '../joueursSuggestion/joueursSuggestionRepository';
-import {
-  JoueursPreparationTournoisRepository,
-  JoueursPreparationTournoisWithJoueur,
-} from './joueursPreparationTournoiRepository';
+import { JoueursPreparationTournoisRepository } from './joueursPreparationTournoiRepository';
 
-function toJoueurModel(
-  preparationTournoi: JoueursPreparationTournoisWithJoueur,
-): JoueurModel {
-  const { joueurs } = preparationTournoi;
+function toJoueurModel(joueurs: Joueur): JoueurModel {
   return {
     uniqueBDDId: joueurs.id,
     joueurTournoiId: joueurs.joueurId,
@@ -50,12 +44,21 @@ export function toNewJoueursPreparationTournois(
 }
 
 export const useJoueursPreparationTournois = () => {
-  const { data } = useLiveQuery(JoueursPreparationTournoisRepository.getMany());
+  const { data: joueurs = [] } = useLiveQuery(JoueursRepository.getAll());
 
-  const actualJoueursPreparationTournoiVM = useMemo(
-    () => data.map(toJoueurModel) ?? [],
-    [data],
+  const { data: joueursPreparation = [] } = useLiveQuery(
+    JoueursPreparationTournoisRepository.getAll(),
   );
+
+  const actualJoueursPreparationTournoiVM = useMemo(() => {
+    if (!joueurs.length || !joueursPreparation.length) {
+      return [];
+    }
+    const idsEnPreparation = new Set(joueursPreparation.map((l) => l.joueurId));
+    return joueurs
+      .filter((t) => idsEnPreparation.has(t.id))
+      .map((t) => toJoueurModel(t));
+  }, [joueurs, joueursPreparation]);
 
   const addJoueursPreparationTournoi = async (
     joueurTournoiId: number,
