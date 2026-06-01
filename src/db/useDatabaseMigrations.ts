@@ -33,11 +33,19 @@ export function useDatabaseMigrations() {
         // Drizzle expo-sqlite ne fonctionne pas sur WEB https://github.com/drizzle-team/drizzle-orm/issues/1009
         if (Platform.OS === 'web') {
           await runManualMigration(sqliteDatabase);
-          // On crée un proxy asynchrone pour Drizzle sur le Web
-          return drizzleProxy(async (sql, params) => {
-            // executeAsync ou une méthode équivalente selon expo-sqlite
-            const result = await sqliteDatabase.getAllAsync(sql, params);
-            return { rows: result.map((row) => Object.values(row)) };
+
+          return drizzleProxy(async (sql, params, method) => {
+            try {
+              const result = await sqliteDatabase.getAllAsync(sql, params);
+              //console.log('SQL:', sql, 'Brut Web:', result, 'Method:', method);
+              if (method === 'all' || method === 'values') {
+                return { rows: result.map((row) => Object.values(row)) };
+              }
+              return { rows: result };
+            } catch (error) {
+              console.error('Erreur SQL Web:', error);
+              throw error;
+            }
           }) as any;
         } else {
           // Sur Mobile, on garde l'implémentation native ultra-rapide
