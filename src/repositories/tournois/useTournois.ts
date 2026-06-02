@@ -90,6 +90,7 @@ export const useTournois = () => {
     if (!fullMatchs) {
       return [];
     }
+    console.log('fullMatchs', fullMatchs);
     const allEquipes = fullMatchs.flatMap((fullMatch) => [
       fullMatch.m_equipe1,
       fullMatch.m_equipe2,

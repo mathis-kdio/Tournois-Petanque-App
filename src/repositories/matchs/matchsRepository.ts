@@ -1,7 +1,8 @@
-import { terrains } from '@/db/schema';
+import { equipe, terrains } from '@/db/schema';
 import { match, NewMatch } from '@/db/schema/match';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { and, eq, inArray, sql } from 'drizzle-orm';
+import { alias } from 'drizzle-orm/sqlite-core';
 
 export type FullMatch = {
   m_id: number;
@@ -16,6 +17,8 @@ export type FullMatch = {
   m_terrainId: number | null;
   m_updatedAt: number | null;
   m_synced: number | null;
+  e1_id: number;
+  e2_id: number;
 } & FullMatchTerrain;
 
 export type FullMatchTerrain = {
@@ -34,6 +37,8 @@ export const MatchsRepository = {
   },
 
   getFullMatchsTournoi(tournoiId: number) {
+    const equipe1 = alias(equipe, 'equipe1');
+    const equipe2 = alias(equipe, 'equipe2');
     return getDrizzleDb()
       .select({
         m_id: sql<number>`${match.id}`.as('m_id'),
@@ -48,6 +53,8 @@ export const MatchsRepository = {
         m_terrainId: sql<number | null>`${match.terrainId}`.as('m_terrainId'),
         m_updatedAt: sql<number | null>`${match.updatedAt}`.as('m_updatedAt'),
         m_synced: sql<number | null>`${match.synced}`.as('m_synced'),
+        e1_id: sql<number>`${equipe1.id}`.as('e1_id'),
+        e2_id: sql<number>`${equipe2.id}`.as('e2_id'),
         t_id: sql<number | null>`${terrains.id}`.as('t_id'),
         t_name: sql<string | null>`${terrains.name}`.as('t_name'),
         t_synced: sql<number | null>`${terrains.synced}`.as('t_synced'),
@@ -57,6 +64,8 @@ export const MatchsRepository = {
       })
       .from(match)
       .where(eq(match.tournoiId, tournoiId))
+      .innerJoin(equipe1, eq(equipe1.id, match.equipe1))
+      .innerJoin(equipe2, eq(equipe2.id, match.equipe2))
       .leftJoin(terrains, eq(terrains.id, match.terrainId));
   },
 

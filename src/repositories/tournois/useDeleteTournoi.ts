@@ -15,11 +15,11 @@ export const useDeleteTournoi = () => {
 
     const matchs = await MatchsRepository.getFullMatchsTournoi(tournoiId);
     matchs.map((match) => {
-      matchsId.add(match.match.m_id);
-      equipesIds.add(match.equipe1.e1_id);
-      equipesIds.add(match.equipe2.e2_id);
-      if (match.terrains) {
-        terrainsIds.add(match.terrains.t_id);
+      matchsId.add(match.m_id);
+      equipesIds.add(match.e1_id);
+      equipesIds.add(match.e2_id);
+      if (match.t_id) {
+        terrainsIds.add(match.t_id);
       }
     });
 
