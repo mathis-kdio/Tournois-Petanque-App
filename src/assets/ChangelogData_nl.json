@@ -1,4 +1,15 @@
 {
+  "38": {
+    "id": "38",
+    "version": "3.0.1",
+    "infos": [
+      "- Correction version PC",
+      "- Correction de renommage joueur",
+      "- Correction affichage équipes dans un tournoi lancé",
+      "- Correction tri des joueurs dans un tournoi lancé",
+      "- Correction chargement d'une liste de joueurs vide"
+    ]
+  },
   "37": {
     "id": "37",
     "version": "3.0.0",
