@@ -34,7 +34,7 @@ export function useDatabaseMigrations() {
         if (Platform.OS === 'web') {
           await runManualMigration(sqliteDatabase);
           // On crée un proxy asynchrone pour Drizzle sur le Web
-          return drizzleProxy(async (sql, params, method) => {
+          return drizzleProxy(async (sql, params) => {
             const result = await sqliteDatabase.getAllAsync(sql, params);
             return { rows: result.map((row) => Object.values(row)) };
           }) as any;
