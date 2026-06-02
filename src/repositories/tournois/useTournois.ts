@@ -38,7 +38,6 @@ function toTournoiModel(tournoi: Tournoi, matchs: MatchModel[]): TournoiModel {
 }
 
 function toTerrainModel(fullMatch: FullMatch): TerrainModel | undefined {
-  console.log('fullMatchTerrain', fullMatch);
   if (fullMatch.t_id === null || fullMatch.t_name === null) {
     return undefined;
   }
@@ -86,7 +85,6 @@ export const useTournois = () => {
     MatchsRepository.getFullMatchsTournoi(tournoiId),
     [tournoiId],
   );
-  console.log(JSON.stringify(fullMatchs));
 
   const equipesTournoiId = useMemo(() => {
     if (!fullMatchs) {
@@ -142,7 +140,6 @@ export const useTournois = () => {
     ) {
       return;
     }
-    console.log('fullMatchs', fullMatchs);
 
     const matchModels = fullMatchs.map((fullMatch) => {
       const equipe1JoueurModels = equipesWithJoueursTournoi

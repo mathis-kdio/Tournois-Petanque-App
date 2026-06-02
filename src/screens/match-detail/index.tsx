@@ -44,7 +44,7 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
     actualTournoi.options;
 
   const match = actualTournoi.matchs.find((match) => match.matchId === idMatch);
-  console.log('match', match);
+
   if (!match) {
     throw Error('match devrait être trouvé');
   }
