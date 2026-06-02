@@ -54,9 +54,7 @@ const ModalDeleteTournoi: React.FC<Props> = ({
           </AlertDialogCloseButton>
         </AlertDialogHeader>
         <AlertDialogBody>
-          <Text>
-            {t('supprimer_tournoi_modal_texte', { id: tournoiId + 1 })}
-          </Text>
+          <Text>{t('supprimer_tournoi_modal_texte', { id: tournoiId })}</Text>
         </AlertDialogBody>
         <AlertDialogFooter>
           <ButtonGroup flexDirection="row">
