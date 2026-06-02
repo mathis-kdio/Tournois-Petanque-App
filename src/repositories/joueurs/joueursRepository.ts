@@ -1,6 +1,16 @@
 import { equipesJoueurs, joueurs, joueursListes, NewJoueur } from '@/db/schema';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { eq, inArray } from 'drizzle-orm';
+import { JoueurType } from '@/types/enums/joueurType';
+import { eq, inArray, sql } from 'drizzle-orm';
+
+export interface Joueur_EquipesJoueurs {
+  j_equipe: number | null;
+  j_id: number;
+  j_isChecked: boolean | null;
+  j_joueurId: number;
+  j_name: string;
+  j_type: JoueurType | null;
+}
 
 export const JoueursRepository = {
   getAll() {
@@ -72,7 +82,27 @@ export const JoueursRepository = {
 
   getEquipes(equipeIds: number[]) {
     return getDrizzleDb()
-      .select()
+      .select({
+        joueurs: {
+          j_equipe: sql<number | null>`${joueurs.equipe}`.as('j_equipe'),
+          j_id: sql<number>`${joueurs.id}`.as('j_id'),
+          j_isChecked: sql<boolean | null>`${joueurs.isChecked}`.as(
+            'j_isChecked',
+          ),
+          j_joueurId: sql<number>`${joueurs.joueurId}`.as('j_joueurId'),
+          j_name: sql<string>`${joueurs.name}`.as('j_name'),
+          j_type: sql<JoueurType | null>`${joueurs.type}`.as('j_type'),
+        },
+        equipes_joueurs: {
+          ej_equipeId: sql<number>`${equipesJoueurs.equipeId}`.as(
+            'ej_equipeId',
+          ),
+          ej_id: sql<number>`${equipesJoueurs.id}`.as('ej_id'),
+          ej_joueurId: sql<number>`${equipesJoueurs.joueurId}`.as(
+            'ej_joueurId',
+          ),
+        },
+      })
       .from(joueurs)
       .where(inArray(equipesJoueurs.equipeId, equipeIds))
       .innerJoin(equipesJoueurs, eq(equipesJoueurs.joueurId, joueurs.id));
@@ -80,7 +110,14 @@ export const JoueursRepository = {
 
   getJoueursListe(listeId: number) {
     return getDrizzleDb()
-      .select()
+      .select({
+        equipe: joueurs.equipe,
+        id: joueurs.id,
+        isChecked: joueurs.isChecked,
+        joueurId: joueurs.joueurId,
+        name: joueurs.name,
+        type: joueurs.type,
+      })
       .from(joueurs)
       .where(eq(joueursListes.listeId, listeId))
       .innerJoin(joueursListes, eq(joueursListes.joueurId, joueurs.id));
