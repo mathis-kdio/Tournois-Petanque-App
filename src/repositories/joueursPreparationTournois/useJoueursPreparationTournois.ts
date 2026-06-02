@@ -80,21 +80,19 @@ export const useJoueursPreparationTournois = () => {
   };
 
   const addJoueursPreparationTournoiFromList = async (listeId: number) => {
-    const joueursInscrits =
+    const joueursInscrits: Joueur[] =
       await JoueursPreparationTournoisRepository.getMany();
     let nbJoueursInscrits = joueursInscrits.length;
 
     const joueursListe = await JoueursRepository.getJoueursListe(listeId);
-    const newJoueurs = joueursListe
-      .map((a) => a.joueurs)
-      .map((joueur, index) =>
-        toNewJoueur(
-          nbJoueursInscrits + index,
-          joueur.name,
-          joueur.type ?? undefined,
-          0,
-        ),
-      );
+    const newJoueurs = joueursListe.map((joueur, index) =>
+      toNewJoueur(
+        nbJoueursInscrits + index,
+        joueur.name,
+        joueur.type ?? undefined,
+        0,
+      ),
+    );
 
     if (newJoueurs.length === 0) {
       return;
@@ -115,29 +113,32 @@ export const useJoueursPreparationTournois = () => {
     await JoueursRepository.delete([joueur.id]);
 
     //Update JoueurId des autres joueurs inscrits
-    const joueurs = await JoueursPreparationTournoisRepository.getMany();
+    const joueurs: Joueur[] =
+      await JoueursPreparationTournoisRepository.getMany();
     await Promise.all(
       joueurs.map(
-        async ({ joueurs }, index) =>
-          await JoueursRepository.updateJoueurId(joueurs.id, index),
+        async (joueur, index) =>
+          await JoueursRepository.updateJoueurId(joueur.id, index),
       ),
     );
   };
 
   const updateJoueursEquipe = async () => {
-    const joueurs = await JoueursPreparationTournoisRepository.getMany();
+    const joueurs: Joueur[] =
+      await JoueursPreparationTournoisRepository.getMany();
     await Promise.all(
       joueurs.map(
-        async ({ joueurs }, index) =>
-          await JoueursRepository.updateEquipe(joueurs.id, index + 1),
+        async (joueur, index) =>
+          await JoueursRepository.updateEquipe(joueur.id, index + 1),
       ),
     );
   };
 
   const removeAllJoueursPreparationTournoi = async () => {
-    const joueur = await JoueursPreparationTournoisRepository.getMany();
+    const joueurs: Joueur[] =
+      await JoueursPreparationTournoisRepository.getMany();
     await JoueursPreparationTournoisRepository.deleteAll();
-    await JoueursRepository.delete(joueur.map((e) => e.joueurs.id));
+    await JoueursRepository.delete(joueurs.map((joueur) => joueur.id));
   };
 
   return {
