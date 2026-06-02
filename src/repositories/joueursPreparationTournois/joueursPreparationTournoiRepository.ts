@@ -13,9 +13,20 @@ export type JoueursPreparationTournoisWithJoueur = {
 };
 
 export const JoueursPreparationTournoisRepository = {
+  getAll() {
+    return getDrizzleDb().select().from(joueursPreparationTournois);
+  },
+
   getMany() {
     return getDrizzleDb()
-      .select()
+      .select({
+        equipe: joueurs.equipe,
+        id: joueurs.id,
+        isChecked: joueurs.isChecked,
+        joueurId: joueurs.joueurId,
+        name: joueurs.name,
+        type: joueurs.type,
+      })
       .from(joueursPreparationTournois)
       .innerJoin(joueurs, eq(joueursPreparationTournois.joueurId, joueurs.id))
       .where(eq(joueursPreparationTournois.preparationTournoiId, 0));

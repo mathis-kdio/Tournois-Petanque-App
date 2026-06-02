@@ -197,10 +197,8 @@ export const useCreateTournoi = () => {
     tournoiId: number,
   ) => {
     //Récupère la liste joueur du tournoi, permettra de retrouver le joueur de la BDD avec l'id associé aux matchs
-    const listeJoueurs = (
-      await JoueursPreparationTournoisRepository.getMany()
-    ).map((a) => a.joueurs);
-
+    const listeJoueurs: Joueur[] =
+      await JoueursPreparationTournoisRepository.getMany();
     const newMatchs = await Promise.all(
       matchModels.map(async (matchModel, index) => {
         const { equipe1, equipe2 } = await addEquipes(

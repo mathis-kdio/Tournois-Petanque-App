@@ -1,4 +1,4 @@
-import { NewJoueur } from '@/db/schema';
+import { Joueur, NewJoueur } from '@/db/schema';
 import { JoueursRepository } from '@/repositories/joueurs/joueursRepository';
 import { JoueursPreparationTournoisRepository } from '@/repositories/joueursPreparationTournois/joueursPreparationTournoiRepository';
 import { toNewJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
@@ -35,7 +35,7 @@ export const useInscriptionSansNom = () => {
   const clearJoueursAutresInscriptions = async () => {
     const joueurs = await JoueursPreparationTournoisRepository.getMany();
     await JoueursPreparationTournoisRepository.deleteAll();
-    await JoueursRepository.delete(joueurs.map(({ joueurs }) => joueurs.id));
+    await JoueursRepository.delete(joueurs.map((joueur: Joueur) => joueur.id));
   };
 
   return {

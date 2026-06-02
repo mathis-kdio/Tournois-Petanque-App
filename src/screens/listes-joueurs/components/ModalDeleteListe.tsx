@@ -56,7 +56,7 @@ const ModalDeleteListe: React.FC<Props> = ({
           </AlertDialogCloseButton>
         </AlertDialogHeader>
         <AlertDialogBody>
-          <Text>{t('supprimer_liste_modal_texte', { id: listId + 1 })}</Text>
+          <Text>{t('supprimer_liste_modal_texte', { id: listId })}</Text>
         </AlertDialogBody>
         <AlertDialogFooter>
           <ButtonGroup flexDirection="row">

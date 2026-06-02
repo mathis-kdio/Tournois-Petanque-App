@@ -5,15 +5,9 @@ import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { useMemo } from 'react';
 import { JoueursRepository } from '../joueurs/joueursRepository';
 import { JoueursSuggestionRepository } from '../joueursSuggestion/joueursSuggestionRepository';
-import {
-  JoueursPreparationTournoisRepository,
-  JoueursPreparationTournoisWithJoueur,
-} from './joueursPreparationTournoiRepository';
+import { JoueursPreparationTournoisRepository } from './joueursPreparationTournoiRepository';
 
-function toJoueurModel(
-  preparationTournoi: JoueursPreparationTournoisWithJoueur,
-): JoueurModel {
-  const { joueurs } = preparationTournoi;
+function toJoueurModel(joueurs: Joueur): JoueurModel {
   return {
     uniqueBDDId: joueurs.id,
     joueurTournoiId: joueurs.joueurId,
@@ -50,12 +44,21 @@ export function toNewJoueursPreparationTournois(
 }
 
 export const useJoueursPreparationTournois = () => {
-  const { data } = useLiveQuery(JoueursPreparationTournoisRepository.getMany());
+  const { data: joueurs = [] } = useLiveQuery(JoueursRepository.getAll());
 
-  const actualJoueursPreparationTournoiVM = useMemo(
-    () => data.map(toJoueurModel) ?? [],
-    [data],
+  const { data: joueursPreparation = [] } = useLiveQuery(
+    JoueursPreparationTournoisRepository.getAll(),
   );
+
+  const actualJoueursPreparationTournoiVM = useMemo(() => {
+    if (!joueurs.length || !joueursPreparation.length) {
+      return [];
+    }
+    const idsEnPreparation = new Set(joueursPreparation.map((l) => l.joueurId));
+    return joueurs
+      .filter((t) => idsEnPreparation.has(t.id))
+      .map((t) => toJoueurModel(t));
+  }, [joueurs, joueursPreparation]);
 
   const addJoueursPreparationTournoi = async (
     joueurTournoiId: number,
@@ -77,21 +80,23 @@ export const useJoueursPreparationTournois = () => {
   };
 
   const addJoueursPreparationTournoiFromList = async (listeId: number) => {
-    const joueursInscrits =
+    const joueursInscrits: Joueur[] =
       await JoueursPreparationTournoisRepository.getMany();
     let nbJoueursInscrits = joueursInscrits.length;
 
     const joueursListe = await JoueursRepository.getJoueursListe(listeId);
-    const newJoueurs = joueursListe
-      .map((a) => a.joueurs)
-      .map((joueur, index) =>
-        toNewJoueur(
-          nbJoueursInscrits + index,
-          joueur.name,
-          joueur.type ?? undefined,
-          0,
-        ),
-      );
+    const newJoueurs = joueursListe.map((joueur, index) =>
+      toNewJoueur(
+        nbJoueursInscrits + index,
+        joueur.name,
+        joueur.type ?? undefined,
+        0,
+      ),
+    );
+
+    if (newJoueurs.length === 0) {
+      return;
+    }
     const joueurs = await JoueursRepository.insertMultiples(newJoueurs);
 
     const newJoueursPreparationTournois = joueurs.map((joueur) =>
@@ -108,29 +113,32 @@ export const useJoueursPreparationTournois = () => {
     await JoueursRepository.delete([joueur.id]);
 
     //Update JoueurId des autres joueurs inscrits
-    const joueurs = await JoueursPreparationTournoisRepository.getMany();
+    const joueurs: Joueur[] =
+      await JoueursPreparationTournoisRepository.getMany();
     await Promise.all(
       joueurs.map(
-        async ({ joueurs }, index) =>
-          await JoueursRepository.updateJoueurId(joueurs.id, index),
+        async (joueur, index) =>
+          await JoueursRepository.updateJoueurId(joueur.id, index),
       ),
     );
   };
 
   const updateJoueursEquipe = async () => {
-    const joueurs = await JoueursPreparationTournoisRepository.getMany();
+    const joueurs: Joueur[] =
+      await JoueursPreparationTournoisRepository.getMany();
     await Promise.all(
       joueurs.map(
-        async ({ joueurs }, index) =>
-          await JoueursRepository.updateEquipe(joueurs.id, index + 1),
+        async (joueur, index) =>
+          await JoueursRepository.updateEquipe(joueur.id, index + 1),
       ),
     );
   };
 
   const removeAllJoueursPreparationTournoi = async () => {
-    const joueur = await JoueursPreparationTournoisRepository.getMany();
+    const joueurs: Joueur[] =
+      await JoueursPreparationTournoisRepository.getMany();
     await JoueursPreparationTournoisRepository.deleteAll();
-    await JoueursRepository.delete(joueur.map((e) => e.joueurs.id));
+    await JoueursRepository.delete(joueurs.map((joueur) => joueur.id));
   };
 
   return {

@@ -1,5 +1,19 @@
 # Change Log
 
+## [3.0.1] - 02-06-2026
+
+### Ajouté
+
+### Changement
+
+### Corrigé
+
+- Correction version PC
+- Correction de renommage joueur
+- Correction affichage équipes dans un tournoi lancé
+- Correction tri des joueurs dans un tournoi lancé
+- Correction chargement d'une liste de joueurs vide
+
 ## [3.0.0] - 28-05-2026
 
 ### Ajouté
