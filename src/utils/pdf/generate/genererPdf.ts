@@ -8,7 +8,7 @@ export const genererPdf = async (
   html: string,
 ): Promise<void> => {
   if ('__TAURI_INTERNALS__' in window) {
-    genererPdfTauri(fileName, html);
+    await genererPdfTauri(fileName, html);
   } else {
     genererPdfWeb(fileName, html);
   }
