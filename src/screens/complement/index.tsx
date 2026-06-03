@@ -79,7 +79,7 @@ const ChoixComplement: React.FC<Props> = ({ screenStackName }) => {
   );
 
   useEffect(() => {
-    if (!preparationTournoiVM || !joueurs) {
+    if (!preparationTournoiVM || !joueurs || joueurs.length === 0) {
       return;
     }
     const { typeEquipes } = preparationTournoiVM;
@@ -89,7 +89,7 @@ const ChoixComplement: React.FC<Props> = ({ screenStackName }) => {
     prepareComplements(typeEquipes, joueurs.length);
   }, [joueurs, preparationTournoiVM, prepareComplements]);
 
-  if (!preparationTournoiVM || !joueurs) {
+  if (!preparationTournoiVM || !joueurs || joueurs.length === 0) {
     return <Loading />;
   }
 
