@@ -80,10 +80,9 @@ const ListeTournoiItem: React.FC<Props> = ({ tournoi, showModalInfos }) => {
   };
 
   const updateNameTournoi = async () => {
-    if (tournoiNameText === '') {
-      return;
+    if (tournoiNameText !== '') {
+      await renameTournoi(tournoiId, tournoiNameText);
     }
-    await renameTournoi(tournoiId, tournoiNameText);
     setTournoiNameText('');
     setRenommerOn(false);
   };

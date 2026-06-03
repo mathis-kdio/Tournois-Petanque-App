@@ -86,10 +86,9 @@ const ListeJoueursItem: React.FC<Props> = ({
   };
 
   const renameList = async (listId: number) => {
-    if (listNameText === '') {
-      return;
+    if (listNameText !== '') {
+      await onUpdateName(listId, listNameText);
     }
-    await onUpdateName(listId, listNameText);
     setListNameText('');
     setRenommerOn(false);
   };
