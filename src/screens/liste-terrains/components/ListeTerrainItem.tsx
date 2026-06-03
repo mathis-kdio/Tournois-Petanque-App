@@ -53,14 +53,10 @@ const ListeTerrainItem: React.FC<Props> = ({ terrain }) => {
   };
 
   const renommerTerrain = async (terrain: TerrainModel) => {
-    if (terrainText === '') {
-      throw Error('renommerTerrain ne devrait pas être possible');
+    if (terrainText !== '') {
+      await renameTerrain(terrain.id, terrainText);
     }
-
     setRenommerOn(false);
-
-    await renameTerrain(terrain.id, terrainText);
-
     setTerrainText('');
   };
 
