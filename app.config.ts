@@ -86,7 +86,7 @@ export default () => ({
       },
     ],
     [
-      '@sentry/react-native/expo',
+      '@sentry/react-native',
       {
         url: 'https://sentry.io/',
         project: 'tournois-petanque-gcu',
