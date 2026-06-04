@@ -6,7 +6,7 @@ import { useTournois } from '@/repositories/tournois/useTournois';
 import MatchsManche from '@/screens/matchs/components/MatchsManche';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createMaterialTopTabNavigator } from 'expo-router/js-top-tabs';
 import { useTranslation } from 'react-i18next';
 
 export default function MatchsScreen() {

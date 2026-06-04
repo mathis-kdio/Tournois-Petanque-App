@@ -1,7 +1,7 @@
 import {
   createMaterialTopTabNavigator,
   MaterialTopTabNavigationOptions,
-} from '@react-navigation/material-top-tabs';
+} from 'expo-router/js-top-tabs';
 import { cssInterop } from 'nativewind';
 import React from 'react';
 import { ViewStyle } from 'react-native';

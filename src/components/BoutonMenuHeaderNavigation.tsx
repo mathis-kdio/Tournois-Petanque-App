@@ -1,8 +1,8 @@
 import { Menu, MenuItem, MenuItemLabel } from '@/components/ui/menu';
 import { Pressable } from '@/components/ui/pressable';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { CommonActions } from '@react-navigation/native';
 import { useNavigation, useRouter } from 'expo-router';
+import { CommonActions } from 'expo-router/react-navigation';
 import { useTranslation } from 'react-i18next';
 
 const BoutonMenuHeaderNav = () => {
