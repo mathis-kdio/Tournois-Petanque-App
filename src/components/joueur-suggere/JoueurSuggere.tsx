@@ -5,8 +5,9 @@ import { Text } from '@/components/ui/text';
 import { JoueurType as JoueurTypeEnum } from '@/types/enums/joueurType';
 import { JoueurSuggestionModel } from '@/types/interfaces/joueurSuggestionModel';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
-import { FontAwesome5 } from '@expo/vector-icons';
 import React, { useState } from 'react';
+import { Button, ButtonIcon } from '../ui/button';
+import { AddIcon, CloseIcon } from '../ui/icon';
 import RemoveSuggereAlertDialog from './RemoveSuggereAlertDialog';
 
 export interface Props {
@@ -49,20 +50,17 @@ const JoueurSuggere: React.FC<Props> = ({
         />
       </Box>
       <Box className="ml-2">
-        <FontAwesome5.Button
-          name="times"
-          backgroundColor="#E63535"
-          iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
+        <Button
+          className="bg-error-500"
           onPress={() => setModalRemoveIsOpen(true)}
-        />
+        >
+          <ButtonIcon as={CloseIcon} />
+        </Button>
       </Box>
       <Box className="ml-2">
-        <FontAwesome5.Button
-          name="plus"
-          backgroundColor="#348352"
-          iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
-          onPress={addJoueur}
-        />
+        <Button className="bg-success-500" onPress={addJoueur}>
+          <ButtonIcon as={AddIcon} />
+        </Button>
       </Box>
       <RemoveSuggereAlertDialog
         id={id}

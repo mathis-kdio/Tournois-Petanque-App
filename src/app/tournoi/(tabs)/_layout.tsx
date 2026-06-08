@@ -3,7 +3,7 @@ import { StyledTabs } from '@/components/navigation/styled-tabs';
 import { Text } from '@/components/ui/text';
 import { useTheme } from '@/components/ui/theme-provider/ThemeProvider';
 import { useTournois } from '@/repositories/tournois/useTournois';
-import { FontAwesome5 } from '@expo/vector-icons';
+import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { Tabs } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
@@ -47,7 +47,7 @@ export default function TabLayout() {
           headerRight: () => <BoutonMenuHeaderNav />,
           tabBarLabel: t('resultats_classement_navigation_title'),
           tabBarIcon: ({ color }) => (
-            <FontAwesome5 name="trophy" size={28} color={color} />
+            <FontAwesome name="trophy" size={28} color={color} />
           ),
         }}
       />
@@ -63,7 +63,7 @@ export default function TabLayout() {
           headerRight: () => <BoutonMenuHeaderNav />,
           tabBarLabel: t('matchs_details_navigation_title'),
           tabBarIcon: ({ color }) => (
-            <FontAwesome5 name="bars" size={28} color={color} />
+            <FontAwesome name="bars" size={28} color={color} />
           ),
         }}
       />

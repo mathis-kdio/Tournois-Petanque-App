@@ -5,7 +5,7 @@ import { Text } from '@/components/ui/text';
 import { useTournois } from '@/repositories/tournois/useTournois';
 import MatchsManche from '@/screens/matchs/components/MatchsManche';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { FontAwesome5 } from '@expo/vector-icons';
+import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { createMaterialTopTabNavigator } from 'expo-router/js-top-tabs';
 import { useTranslation } from 'react-i18next';
 
@@ -34,7 +34,8 @@ export default function MatchsScreen() {
   const topTabItemLabel = (numero: number) => {
     let iconColor = '#ffda00';
     let textColor = 'text-yellow-400';
-    let iconName = 'battery-half';
+    type IconBattery = 'battery-half' | 'battery-full' | 'battery-empty';
+    let iconName: IconBattery = 'battery-half';
     const matchsManche = matchs.filter((match) => match.manche === numero);
     let matchsRestant = matchsManche.length;
     if (matchsManche) {
@@ -62,7 +63,7 @@ export default function MatchsScreen() {
         <Text className="text-typography-white text-lg mr-2">
           {getTitle(numero)}
         </Text>
-        <FontAwesome5 name={iconName} size={20} color={iconColor} />
+        <FontAwesome name={iconName} size={18} color={iconColor} />
         <Text className={`${textColor} ml-1`} size="xl">
           {matchsRestant.toString()}
         </Text>

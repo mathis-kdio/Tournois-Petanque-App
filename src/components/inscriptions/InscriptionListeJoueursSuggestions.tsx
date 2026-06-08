@@ -9,7 +9,7 @@ import { JoueurType } from '@/types/enums/joueurType';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { JoueurSuggestionModel } from '@/types/interfaces/joueurSuggestionModel';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
-import { FontAwesome5 } from '@expo/vector-icons';
+import FontAwesome from '@react-native-vector-icons/fontawesome';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ListRenderItem } from 'react-native';
@@ -48,9 +48,9 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
     }
     return (
       <Button action="primary" onPress={showMoreSuggestedPlayers}>
-        <FontAwesome5 name="chevron-down" className="text-custom-text-button" />
+        <FontAwesome name="chevron-down" className="text-custom-text-button" />
         <ButtonText>{t('plus_suggestions_joueurs_bouton')}</ButtonText>
-        <FontAwesome5 name="chevron-down" className="text-custom-text-button" />
+        <FontAwesome name="chevron-down" className="text-custom-text-button" />
       </Button>
     );
   };

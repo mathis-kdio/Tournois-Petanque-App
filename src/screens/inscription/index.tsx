@@ -1,5 +1,5 @@
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { Button, ButtonText } from '@/components/ui/button';
+import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import {
   Checkbox,
   CheckboxIcon,
@@ -17,13 +17,18 @@ import {
   FormControlLabelText,
 } from '@/components/ui/form-control';
 import { HStack } from '@/components/ui/hstack';
-import { AlertCircleIcon, CheckIcon } from '@/components/ui/icon';
+import {
+  AlertCircleIcon,
+  CheckIcon,
+  EyeIcon,
+  EyeOffIcon,
+} from '@/components/ui/icon';
 import { Input, InputField, InputSlot } from '@/components/ui/input';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { supabaseClient } from '@/utils/supabase';
-import { FontAwesome5 } from '@expo/vector-icons';
+import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -156,21 +161,17 @@ const Inscription = () => {
                 ref={mdpInput1}
               />
               <InputSlot className="pr-3">
-                <FontAwesome5.Button
-                  name={showPassword1 ? 'eye' : 'eye-slash'}
-                  backgroundColor="#00000000"
-                  className="text-custom-bg-inverse"
-                  iconStyle={{ marginRight: 0 }}
-                  size={16}
+                <Button
+                  className="bg-transparent text-custom-bg-inverse"
                   onPress={() => setShowPassword1(!showPassword1)}
-                />
+                >
+                  <ButtonIcon as={showPassword1 ? EyeOffIcon : EyeIcon} />
+                </Button>
               </InputSlot>
             </Input>
             <FormControlError>
               <FormControlErrorIcon as={AlertCircleIcon} />
-              <FormControlErrorText>
-                {t('mdp_non_valide')}
-              </FormControlErrorText>
+              <FormControlErrorText>{t('mdp_non_valide')}</FormControlErrorText>
             </FormControlError>
             <FormControlHelper>
               <FormControlHelperText className="text-typography-white">
@@ -198,21 +199,17 @@ const Inscription = () => {
                 ref={mdpInput2}
               />
               <InputSlot className="pr-3">
-                <FontAwesome5.Button
-                  name={showPassword2 ? 'eye' : 'eye-slash'}
-                  backgroundColor="#00000000"
-                  className="text-custom-bg-inverse"
-                  iconStyle={{ marginRight: 0 }}
-                  size={16}
+                <Button
+                  className="bg-transparent text-custom-bg-inverse"
                   onPress={() => setShowPassword2(!showPassword2)}
-                />
+                >
+                  <ButtonIcon as={showPassword1 ? EyeOffIcon : EyeIcon} />
+                </Button>
               </InputSlot>
             </Input>
             <FormControlError>
               <FormControlErrorIcon as={AlertCircleIcon} />
-              <FormControlErrorText>
-                {t('mdp_non_valide')}
-              </FormControlErrorText>
+              <FormControlErrorText>{t('mdp_non_valide')}</FormControlErrorText>
             </FormControlError>
             <FormControlHelper>
               <FormControlHelperText className="text-typography-white">
@@ -261,7 +258,7 @@ const Inscription = () => {
               variant="outline"
               isDisabled={true}
             >
-              <FontAwesome5
+              <FontAwesome
                 name="apple"
                 className="text-custom-bg-inverse"
                 size={18}
@@ -275,14 +272,12 @@ const Inscription = () => {
               variant="outline"
               isDisabled={true}
             >
-              <FontAwesome5
+              <FontAwesome
                 name="google"
                 size={14}
                 className="text-custom-bg-inverse mr-2"
               />
-              <ButtonText className="text-typography-white">
-                Google
-              </ButtonText>
+              <ButtonText className="text-typography-white">Google</ButtonText>
             </Button>
           </HStack>
         </VStack>

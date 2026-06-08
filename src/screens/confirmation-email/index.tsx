@@ -4,7 +4,7 @@ import { HStack } from '@/components/ui/hstack';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import MaterialCommunityIcons from '@react-native-vector-icons/material-icons';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
@@ -22,7 +22,7 @@ const ConfirmationEmail: React.FC<Props> = ({ email }) => {
       <VStack className="px-10 justify-center items-center">
         <HStack className="justify-center">
           <MaterialCommunityIcons
-            name="email-check-outline"
+            name="mark-email-read"
             size={128}
             className="text-custom-bg-inverse"
           />

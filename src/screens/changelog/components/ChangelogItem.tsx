@@ -27,7 +27,7 @@ const ChangelogItem: React.FC<Props> = ({
           openModalChangelog(true);
           setModalChangelogItem(item);
         }}
-        icon={''}
+        icon={null}
         type={''}
         drapeau={undefined}
       />

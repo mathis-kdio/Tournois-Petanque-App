@@ -7,7 +7,10 @@ import { VStack } from '@/components/ui/vstack';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import CardButton from '@components/buttons/CardButton';
-import { FontAwesome5 } from '@expo/vector-icons';
+import {
+  FontAwesome,
+  FontAwesomeIconName,
+} from '@react-native-vector-icons/fontawesome';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -26,27 +29,27 @@ const ChoixTypeTournoi = () => {
     {
       type: TypeTournoi.MELEDEMELE,
       text: t('type_melee_demelee'),
-      icons: ['random'],
+      icons: ['random'] as FontAwesomeIconName[],
     },
     {
       type: TypeTournoi.MELEE,
       text: t('type_melee'),
-      icons: ['people-arrows'],
+      icons: ['users'] as FontAwesomeIconName[],
     },
     {
       type: TypeTournoi.CHAMPIONNAT,
       text: t('type_championnat'),
-      icons: ['table'],
+      icons: ['table'] as FontAwesomeIconName[],
     },
     {
       type: TypeTournoi.COUPE,
       text: t('type_coupe'),
-      icons: ['trophy'],
+      icons: ['trophy'] as FontAwesomeIconName[],
     },
     {
       type: TypeTournoi.MULTICHANCES,
       text: t('type_multi_chances'),
-      icons: ['code-branch'],
+      icons: ['code-fork'] as FontAwesomeIconName[],
     },
   ];
 
@@ -89,7 +92,7 @@ const ChoixTypeTournoi = () => {
               onPress={() => setState(type)}
               className="flex-row justify-center mt-2"
             >
-              <FontAwesome5
+              <FontAwesome
                 name="info-circle"
                 className="text-custom-bg-inverse"
                 size={24}

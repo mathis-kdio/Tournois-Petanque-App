@@ -2,14 +2,16 @@ import { HStack } from '@/components/ui/hstack';
 import { Image } from '@/components/ui/image';
 import { Pressable } from '@/components/ui/pressable';
 import { Text } from '@/components/ui/text';
-import { FontAwesome5 } from '@expo/vector-icons';
+import FontAwesome, {
+  FontAwesomeIconName,
+} from '@react-native-vector-icons/fontawesome';
 import * as React from 'react';
 import { ImageSourcePropType } from 'react-native';
 
 export interface Props {
   text: string;
   action: () => void;
-  icon: string;
+  icon: FontAwesomeIconName | null;
   type: string;
   drapeau: string | ImageSourcePropType | undefined;
 }
@@ -28,19 +30,20 @@ const Item: React.FC<Props> = ({ text, action, icon, type, drapeau }) => {
     <Pressable onPress={() => action()}>
       <HStack className="m-2 items-center justify-between">
         <HStack className="items-center">
-          {drapeau === undefined ? (
-            <FontAwesome5
+          {icon !== null ? (
+            <FontAwesome
               name={icon}
               size={16}
-              style={{ marginRight: 5 }}
-              className={iconColor}
+              className={`${iconColor} pr-2`}
             />
-          ) : (
+          ) : drapeau !== undefined ? (
             <Image source={drapeau} alt="drapeau" size="xs" />
+          ) : (
+            <></>
           )}
           <Text className={`${colorTxt} text-md`}>{text}</Text>
         </HStack>
-        <FontAwesome5 name="arrow-right" size={20} className={iconColor} />
+        <FontAwesome name="arrow-right" size={18} className={iconColor} />
       </HStack>
     </Pressable>
   );

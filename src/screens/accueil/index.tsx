@@ -11,7 +11,7 @@ import { useTournois } from '@/repositories/tournois/useTournois';
 import { _adsConsentForm } from '@/utils/adMob/consentForm';
 import { _requestTrackingPermissions } from '@/utils/expoTrackingTransparency/requestTrackingPermission';
 import CardButton from '@components/buttons/CardButton';
-import { FontAwesome5 } from '@expo/vector-icons';
+import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { _openPlateformLink, _openURL } from '@utils/link';
 import Constants from 'expo-constants';
 import { useNavigation, useRouter } from 'expo-router';
@@ -81,7 +81,7 @@ export default function Accueil() {
     } else {
       return (
         <Box className="bg-secondary-500 flex-1 items-center rounded-3xl py-5">
-          <FontAwesome5
+          <FontAwesome
             name="play"
             className="text-custom-text-button"
             size={24}
@@ -161,10 +161,10 @@ export default function Accueil() {
                 onPress={() => _openURL(facebook)}
                 className="items-center bg-custom-dark-blue rounded-3xl p-3"
               >
-                <FontAwesome5
+                <FontAwesome
                   name="facebook"
                   className="text-custom-text-button"
-                  size={20}
+                  size={24}
                 />
                 <Text className="color-custom-text-button">
                   {t('rejoindre_page_fb')}
@@ -174,10 +174,10 @@ export default function Accueil() {
                 onPress={() => _openURL(website)}
                 className="items-center bg-custom-dark-blue rounded-3xl p-3"
               >
-                <FontAwesome5
+                <FontAwesome
                   name="globe"
                   className="text-custom-text-button"
-                  size={20}
+                  size={24}
                 />
                 <Text className="color-custom-text-button">
                   {t('voir_website')}
@@ -191,30 +191,30 @@ export default function Accueil() {
                 }
                 className="flex-1 items-center bg-custom-dark-blue rounded-3xl p-2"
               >
-                <FontAwesome5
+                <FontAwesome
                   name="star"
                   className="text-custom-text-button"
-                  size={20}
+                  size={24}
                 />
               </Pressable>
               <Pressable
                 onPress={() => _openURL(encodeURI(mail))}
                 className="flex-1 items-center bg-custom-dark-blue rounded-3xl p-2"
               >
-                <FontAwesome5
+                <FontAwesome
                   name="envelope"
                   className="text-custom-text-button"
-                  size={20}
+                  size={24}
                 />
               </Pressable>
               <Pressable
                 onPress={() => router.navigate('/parametres')}
                 className="flex-1 items-center bg-custom-dark-blue rounded-3xl p-2"
               >
-                <FontAwesome5
+                <FontAwesome
                   name="wrench"
                   className="text-custom-text-button"
-                  size={20}
+                  size={24}
                 />
               </Pressable>
             </HStack>

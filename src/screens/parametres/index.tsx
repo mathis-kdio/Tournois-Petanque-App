@@ -89,7 +89,7 @@ const Parametres = () => {
               <Item
                 text={t('changer_theme')}
                 action={() => setModalThemeOpen(true)}
-                icon="palette"
+                icon="paint-brush"
                 type={''}
                 drapeau={undefined}
               />
@@ -105,7 +105,7 @@ const Parametres = () => {
               <Item
                 text={t('modifier_consentement')}
                 action={() => _adsConsentShowForm()}
-                icon="ad"
+                icon="buysellads"
                 type={''}
                 drapeau={undefined}
               />
@@ -113,7 +113,7 @@ const Parametres = () => {
               <Item
                 text={t('supprimer_donnees')}
                 action={() => setAlertOpen(true)}
-                icon="trash-alt"
+                icon="trash-o"
                 type="danger"
                 drapeau={undefined}
               />
