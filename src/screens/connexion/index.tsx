@@ -151,7 +151,7 @@ const Authentification = () => {
             >
               <FontAwesome
                 name="apple"
-                className="text-custom-bg-inverse"
+                className="!text-custom-bg-inverse"
                 size={18}
                 style={{ marginRight: 5 }}
               />
@@ -166,7 +166,7 @@ const Authentification = () => {
               <FontAwesome
                 name="google"
                 size={14}
-                className="text-custom-bg-inverse mr-2"
+                className="!text-custom-bg-inverse mr-2"
               />
               <ButtonText className="text-typography-white">Google</ButtonText>
             </Button>

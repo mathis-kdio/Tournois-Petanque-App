@@ -44,7 +44,7 @@ const CardButton: React.FC<Props> = ({ text, icons, navigate, newBadge }) => {
               key={index}
               name={icon}
               size={24}
-              className="text-custom-text-button"
+              className="!text-custom-text-button"
             />
           ))}
         </HStack>

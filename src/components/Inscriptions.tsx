@@ -64,7 +64,11 @@ const Inscription: React.FC<Props> = ({
         onPress={() => setShowCheckbox(!showCheckbox)}
         className="my-1 flex-row items-center"
       >
-        <FontAwesome name={icon} size={15} className="text-custom-bg-inverse" />
+        <FontAwesome
+          name={icon}
+          size={15}
+          className="!text-custom-bg-inverse"
+        />
         <Text className="text-typography-white text-md">
           {` ${text} ${t('case_a_cocher')}`}
         </Text>
@@ -82,7 +86,7 @@ const Inscription: React.FC<Props> = ({
           <MaterialCommunityIcons
             name="sort"
             size={24}
-            className="text-custom-bg-inverse"
+            className="!text-custom-bg-inverse"
           />
           <Text className="text-typography-white text-md">{` ${t('trier_joueurs')}`}</Text>
         </Pressable>

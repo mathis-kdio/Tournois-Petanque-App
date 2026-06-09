@@ -18,13 +18,13 @@ export interface Props {
 
 const Item: React.FC<Props> = ({ text, action, icon, type, drapeau }) => {
   let colorTxt = 'text-typography-white';
-  let iconColor = 'text-custom-bg-inverse';
+  let iconColor = '!text-custom-bg-inverse';
   if (type === 'danger') {
     colorTxt = 'text-red-500';
-    iconColor = 'text-red-500';
+    iconColor = '!text-red-500';
   } else if (type === 'modal') {
     colorTxt = 'text-custom-text-modal';
-    iconColor = 'text-custom-text-modal';
+    iconColor = '!text-custom-text-modal';
   }
   return (
     <Pressable onPress={() => action()}>

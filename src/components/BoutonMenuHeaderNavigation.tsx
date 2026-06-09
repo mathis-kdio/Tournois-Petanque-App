@@ -39,7 +39,7 @@ const BoutonMenuHeaderNav = () => {
             <FontAwesome
               name="bars"
               size={28}
-              className="text-custom-bg-inverse"
+              className="!text-custom-bg-inverse"
             />
           </Pressable>
         );

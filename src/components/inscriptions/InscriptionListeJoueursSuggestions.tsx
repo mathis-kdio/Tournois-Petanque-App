@@ -48,9 +48,9 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
     }
     return (
       <Button action="primary" onPress={showMoreSuggestedPlayers}>
-        <FontAwesome name="chevron-down" className="text-custom-text-button" />
+        <FontAwesome name="chevron-down" className="!text-custom-text-button" />
         <ButtonText>{t('plus_suggestions_joueurs_bouton')}</ButtonText>
-        <FontAwesome name="chevron-down" className="text-custom-text-button" />
+        <FontAwesome name="chevron-down" className="!text-custom-text-button" />
       </Button>
     );
   };
