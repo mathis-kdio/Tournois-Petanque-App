@@ -93,7 +93,7 @@ export default () => ({
         organization: 'tournois-petanque-app',
       },
     ],
-    ['./plugins-build/withDisableForcedDarkModeAndroid.js'],
+    ['./plugins/builds/withDisableForcedDarkModeAndroid.js'],
     [
       'expo-dev-client',
       {
