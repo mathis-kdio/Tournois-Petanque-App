@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@expo/html-elements": "0.12.5",
-    "@gluestack-ui/core": "3.0.22",
+    "@gluestack-ui/core": "3.0.24",
     "@gluestack-ui/utils": "3.0.21",
     "@gluestack/ui-next-adapter": "3.0.3",
     "@gorhom/bottom-sheet": "5.2.14",
@@ -84,7 +84,7 @@
     "@types/react": "19.2.14",
     "babel-plugin-inline-import": "3.0.0",
     "babel-plugin-module-resolver": "5.0.3",
-    "babel-preset-expo": "56.0.14",
+    "babel-preset-expo": "56.0.15",
     "drizzle-kit": "1.0.0-rc.3",
     "eslint": "9.39.4",
     "eslint-config-expo": "56.0.4",
