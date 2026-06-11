@@ -26,16 +26,16 @@ function toNewJoueursListes(joueur: Joueur, listeId: number): NewJoueursListes {
 }
 
 export const useCreateListeJoueur = (listeId: number) => {
-  const { data: joueursJoueursListes } = useLiveQuery(
+  const { data: joueursListe } = useLiveQuery(
     JoueursRepository.getJoueursListe(listeId),
   );
 
   const listeJoueursVM = useMemo(() => {
-    if (!joueursJoueursListes.length) {
+    if (!joueursListe.length) {
       return [];
     }
-    return joueursJoueursListes.map((jjl) => toJoueurModel(jjl.joueurs));
-  }, [joueursJoueursListes]);
+    return joueursListe.map((joueur) => toJoueurModel(joueur));
+  }, [joueursListe]);
 
   const removeAllJoueursList = async (listId: number) => {
     const joueursListes = await JoueursListesRepository.getInList(listeId);
@@ -53,8 +53,8 @@ export const useCreateListeJoueur = (listeId: number) => {
     const joueurs = await JoueursRepository.getJoueursListe(listeId);
     await Promise.all(
       joueurs.map(
-        async ({ joueurs }, index) =>
-          await JoueursRepository.updateJoueurId(joueurs.id, index),
+        async (joueur, index) =>
+          await JoueursRepository.updateJoueurId(joueur.id, index),
       ),
     );
   };

@@ -67,7 +67,7 @@ const LanguagesModal: React.FC<Props> = ({
           <Item
             text={t('francais')}
             action={() => handleChangeLanguage('fr-FR')}
-            icon={''}
+            icon={null}
             type="modal"
             drapeau={drapeauFrance}
           />
@@ -75,7 +75,7 @@ const LanguagesModal: React.FC<Props> = ({
           <Item
             text={t('anglais')}
             action={() => handleChangeLanguage('en-US')}
-            icon={''}
+            icon={null}
             type="modal"
             drapeau={drapeauUSA}
           />
@@ -83,7 +83,7 @@ const LanguagesModal: React.FC<Props> = ({
           <Item
             text={t('polonais')}
             action={() => handleChangeLanguage('pl-PL')}
-            icon={''}
+            icon={null}
             type="modal"
             drapeau={drapeauPologne}
           />
@@ -91,7 +91,7 @@ const LanguagesModal: React.FC<Props> = ({
           <Item
             text={t('neerlandais')}
             action={() => handleChangeLanguage('nl-NL')}
-            icon={''}
+            icon={null}
             type="modal"
             drapeau={drapeauPaysBas}
           />
@@ -99,7 +99,7 @@ const LanguagesModal: React.FC<Props> = ({
           <Item
             text={t('allemand')}
             action={() => handleChangeLanguage('de-DE')}
-            icon={''}
+            icon={null}
             type="modal"
             drapeau={drapeauAllemagne}
           />
@@ -107,7 +107,7 @@ const LanguagesModal: React.FC<Props> = ({
           <Item
             text={t('danois')}
             action={() => handleChangeLanguage('dk-DK')}
-            icon={''}
+            icon={null}
             type="modal"
             drapeau={drapeauDanemark}
           />
@@ -115,7 +115,7 @@ const LanguagesModal: React.FC<Props> = ({
           <Item
             text={t('espagnol')}
             action={() => handleChangeLanguage('es-ES')}
-            icon={''}
+            icon={null}
             type="modal"
             drapeau={drapeauEspagne}
           />

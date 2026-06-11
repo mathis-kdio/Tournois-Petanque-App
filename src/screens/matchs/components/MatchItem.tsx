@@ -6,7 +6,7 @@ import { VStack } from '@/components/ui/vstack';
 import { EquipeType } from '@/types/interfaces/equipeType';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { MatchModel } from '@/types/interfaces/matchModel';
-import { FontAwesome5 } from '@expo/vector-icons';
+import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -32,7 +32,7 @@ const MatchItem: React.FC<Props> = ({ match }) => {
       <HStack>
         <Box className="flex-1 items-center">
           {score1Int > score2Int && (
-            <FontAwesome5 name="trophy" size={20} color="#ffda00" />
+            <FontAwesome name="trophy" size={30} color="#ffda00" />
           )}
         </Box>
         <Box className="flex-1">
@@ -42,7 +42,7 @@ const MatchItem: React.FC<Props> = ({ match }) => {
         </Box>
         <Box className="flex-1 items-center">
           {score2Int > score1Int && (
-            <FontAwesome5 name="trophy" size={20} color="#ffda00" />
+            <FontAwesome name="trophy" size={30} color="#ffda00" />
           )}
         </Box>
       </HStack>

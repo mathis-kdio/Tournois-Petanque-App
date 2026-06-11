@@ -1,4 +1,4 @@
-const version = '3.0.0';
+const version = '3.0.1';
 
 export default () => ({
   name: 'Tournois Pétanque App',
@@ -20,11 +20,10 @@ export default () => ({
   assetBundlePatterns: ['**/*'],
   ios: {
     bundleIdentifier: 'TournoisPetanqueApp',
-    buildNumber: '2.1.2',
     supportsTablet: true,
     userInterfaceStyle: 'light',
     infoPlist: {
-      LSApplicationQueriesSchemes: ['mailto', 'mailto'],
+      LSApplicationQueriesSchemes: ['mailto', 'itms-apps'],
       ITSAppUsesNonExemptEncryption: false,
     },
     privacyManifests: {
@@ -87,14 +86,14 @@ export default () => ({
       },
     ],
     [
-      '@sentry/react-native/expo',
+      '@sentry/react-native',
       {
         url: 'https://sentry.io/',
         project: 'tournois-petanque-gcu',
         organization: 'tournois-petanque-app',
       },
     ],
-    ['./plugins-build/withDisableForcedDarkModeAndroid.js'],
+    ['./plugins/builds/withDisableForcedDarkModeAndroid.js'],
     [
       'expo-dev-client',
       {
@@ -169,5 +168,8 @@ export default () => ({
       projectId: 'a9524187-3720-46fc-8d6e-6e9e7211bda7',
     },
     appVersion: version,
+  },
+  experiment: {
+    onDemandFilesystem: false,
   },
 });

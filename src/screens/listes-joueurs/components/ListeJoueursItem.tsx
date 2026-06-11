@@ -1,14 +1,17 @@
 import { Box } from '@/components/ui/box';
-import { Button, ButtonText } from '@/components/ui/button';
+import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { HStack } from '@/components/ui/hstack';
+import { CheckIcon, CloseIcon, EditIcon } from '@/components/ui/icon';
 import { Input, InputField } from '@/components/ui/input';
 import { Text } from '@/components/ui/text';
 import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { IIconComponentType } from '@gluestack-ui/core/lib/esm/icon/creator/createIcon';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ColorValue } from 'react-native';
+import { SvgProps } from 'react-native-svg';
 import ModalDeleteListe from './ModalDeleteListe';
 
 export interface Props {
@@ -56,40 +59,39 @@ const ListeJoueursItem: React.FC<Props> = ({
   };
 
   const showRenameList = (listId: number) => {
-    let name: string;
+    let name: IIconComponentType<
+      | SvgProps
+      | { fill?: ColorValue | undefined; stroke?: ColorValue | undefined }
+    >;
     let bgColor: string;
     let action;
     if (!renommerOn) {
-      name = 'edit';
-      bgColor = '#004282';
+      name = EditIcon;
+      bgColor = 'bg-primary-500';
       action = () => setRenommerOn(true);
     } else if (listNameText === '') {
-      name = 'times';
-      bgColor = '#5F5F5F';
+      name = CloseIcon;
+      bgColor = 'bg-[#5F5F5F]';
       action = () => setRenommerOn(false);
     } else {
-      name = 'check';
-      bgColor = '#348352';
+      name = CheckIcon;
+      bgColor = 'bg-success-500';
       action = () => renameList(listId);
     }
 
     return (
       <Box>
-        <FontAwesome5.Button
-          name={name}
-          backgroundColor={bgColor}
-          iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
-          onPress={action}
-        />
+        <Button className={bgColor} onPress={action}>
+          <ButtonIcon as={name} />
+        </Button>
       </Box>
     );
   };
 
   const renameList = async (listId: number) => {
-    if (listNameText === '') {
-      return;
+    if (listNameText !== '') {
+      await onUpdateName(listId, listNameText);
     }
-    await onUpdateName(listId, listNameText);
     setListNameText('');
     setRenommerOn(false);
   };
@@ -112,12 +114,12 @@ const ListeJoueursItem: React.FC<Props> = ({
           <Button action="primary" onPress={() => modifyList(listId)}>
             <ButtonText>{t('modifier')}</ButtonText>
           </Button>
-          <FontAwesome5.Button
-            name="times"
-            backgroundColor="#E63535"
-            iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
+          <Button
+            className="bg-error-500"
             onPress={() => setModalDeleteIsOpen(true)}
-          />
+          >
+            <ButtonIcon as={CloseIcon} />
+          </Button>
         </HStack>
       );
     }

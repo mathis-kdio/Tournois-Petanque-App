@@ -92,7 +92,7 @@ const ExportButton: React.FC<Props> = ({
       }
 
       const file = new File(uri);
-      file.move(Paths.cache);
+      file.moveSync(Paths.cache);
       file.rename(fileNameExt);
 
       if (Platform.OS === 'android') {

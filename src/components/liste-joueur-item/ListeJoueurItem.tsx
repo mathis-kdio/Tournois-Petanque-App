@@ -5,6 +5,7 @@ import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import React, { useState } from 'react';
+import { Text } from '../ui/text';
 import DeleteJoueurButton from './DeleteJoueurButton';
 import EquipePicker from './EquipePicker';
 import JoueurCheckox from './JoueurCheckox';
@@ -56,12 +57,7 @@ const ListeJoueurItem: React.FC<Props> = ({
   const { isChecked, type, uniqueBDDId } = joueur;
 
   const handleRenommerJoueur = async () => {
-    if (joueurText === '') {
-      throw Error('joueurText doit au moins avoir 1 caractère');
-    }
-    if (isInscription) {
-      await onUpdateName(joueur, joueurText);
-    } else {
+    if (joueurText !== '') {
       await onUpdateName(joueur, joueurText);
     }
     setRenommerOn(false);
@@ -103,13 +99,19 @@ const ListeJoueurItem: React.FC<Props> = ({
       </HStack>
       <HStack className={`${flexsize[1]} justify-end`}>
         {avecEquipes === true && (
-          <HStack className={`${flexsize[2]}`}>
-            <EquipePicker
-              joueur={joueur}
-              typeEquipes={typeEquipes}
-              listesJoueurs={listesJoueurs}
-              onAddEquipeJoueur={onAddEquipeJoueur}
-            />
+          <HStack className={`${flexsize[2]} items-center justify-center`}>
+            {isInscription ? (
+              <EquipePicker
+                joueur={joueur}
+                typeEquipes={typeEquipes}
+                listesJoueurs={listesJoueurs}
+                onAddEquipeJoueur={onAddEquipeJoueur}
+              />
+            ) : (
+              <Text className="text-typography-white text-xl font-bold">
+                {joueur.equipe}
+              </Text>
+            )}
           </HStack>
         )}
         <HStack className={`${flexsize[3]}`}>

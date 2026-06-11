@@ -20,7 +20,6 @@ import { MatchGeneration } from '@/types/interfaces/match-generation';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 import { screenStackNameType } from '@/types/types/searchParams';
 import { generationMelee } from '@/utils/generations/tournoi-melee';
-import { CommonActions } from '@react-navigation/native';
 import { generationChampionnat } from '@utils/generations/championnat';
 import { generationCoupe } from '@utils/generations/coupe';
 import {
@@ -32,6 +31,7 @@ import { generationDoublettes } from '@utils/generations/tournoiDoublettes';
 import { generationTeteATete } from '@utils/generations/tournoiTeteATete';
 import { generationTriplettes } from '@utils/generations/tournoiTriplettes';
 import { useNavigation } from 'expo-router';
+import { CommonActions } from 'expo-router/react-navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import GenerationLoading from './components/GenerationLoading';

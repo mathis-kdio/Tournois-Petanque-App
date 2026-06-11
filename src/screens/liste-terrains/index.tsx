@@ -30,7 +30,7 @@ const ListeTerrains: React.FC<Props> = ({ screenStackName }) => {
   }
 
   const ajoutTerrain = async () => {
-    await insertTerrain('');
+    await insertTerrain(`Terrain ${terrains.length + 1}`);
   };
 
   const renderItem: ListRenderItem<TerrainModel> = ({ item }) => (

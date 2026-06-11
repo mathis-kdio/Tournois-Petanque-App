@@ -1,5 +1,5 @@
-import { CommonActions } from '@react-navigation/native';
 import { useFocusEffect, useNavigation } from 'expo-router';
+import { CommonActions } from 'expo-router/react-navigation';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, BackHandler } from 'react-native';

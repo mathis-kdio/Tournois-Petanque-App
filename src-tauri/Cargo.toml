@@ -1,6 +1,6 @@
 [package]
 name = "app"
-version = "3.0.0"
+version = "3.0.1"
 description = "Créer un tournoi de pétanque et ajouter les scores n'a jamais été aussi simple !"
 authors = ["Mathis Cadio"]
 license = ""
@@ -12,7 +12,7 @@ build = "src/build.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "2.5.6", features = [] }
+tauri-build = { version = "2.6.2", features = [] }
 
 [dependencies]
 serde_json = "1.0"

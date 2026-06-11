@@ -12,8 +12,8 @@ import { Heading } from '@/components/ui/heading';
 import { CloseIcon, Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { useDeleteTournoi } from '@/repositories/tournois/useDeleteTournoi';
-import { CommonActions } from '@react-navigation/native';
 import { useNavigation } from 'expo-router';
+import { CommonActions } from 'expo-router/react-navigation';
 import { useTranslation } from 'react-i18next';
 
 export interface Props {
