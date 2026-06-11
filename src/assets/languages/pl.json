@@ -290,6 +290,7 @@
     "mode_creation_equipe": "Tryb tworzenia drużyn",
     "choix_mode_creation_equipes": "Wybór trybu tworzenia drużyn",
     "equipes_aleatoires": "Drużyny utworzone losowo",
-    "equipes_manuelles": "Drużyny utworzone ręcznie"
+    "equipes_manuelles": "Drużyny utworzone ręcznie",
+    "initialisation_base": "Initialisation de la base, veuillez ne pas fermer l'application..."
   }
 }
