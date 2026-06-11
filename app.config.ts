@@ -169,4 +169,7 @@ export default () => ({
     },
     appVersion: version,
   },
+  experiment: {
+    onDemandFilesystem: false,
+  },
 });
