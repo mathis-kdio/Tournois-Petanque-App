@@ -4,7 +4,7 @@ import { JoueurType } from '@/types/enums/joueurType';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { FontAwesome5 } from '@expo/vector-icons';
+import FontAwesome from '@react-native-vector-icons/fontawesome';
 import React from 'react';
 
 export interface Props {
@@ -32,7 +32,7 @@ const JoueurTypeIcon: React.FC<Props> = ({
     return (
       <Box>
         {joueurType === JoueurType.ENFANT && (
-          <FontAwesome5 name="child" color="darkgray" size={24} />
+          <FontAwesome name="child" color="darkgray" size={24} />
         )}
         {joueurType === JoueurType.TIREUR && (
           <Image
@@ -54,7 +54,7 @@ const JoueurTypeIcon: React.FC<Props> = ({
     return (
       <Box>
         {joueurType === JoueurType.ENFANT && (
-          <FontAwesome5 name="child" color="darkgray" size={24} />
+          <FontAwesome name="child" color="darkgray" size={24} />
         )}
       </Box>
     );

@@ -9,8 +9,9 @@ import '@/navigation/gesture-handler'; //https://reactnavigation.org/docs/stack-
 import { SELECTED_LANGUAGE_KEY } from '@/utils/async-storage/key';
 import { getTheme } from '@/utils/theme/theme';
 import '@expo/metro-runtime'; //Fast-refresh web
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import FontAwesome from '@react-native-vector-icons/fontawesome';
+import MaterialCommunityIcons from '@react-native-vector-icons/material-icons';
 import * as Sentry from '@sentry/react-native';
 import Store from '@store/configureStore';
 import { isRunningInExpoGo } from 'expo';
@@ -27,7 +28,7 @@ import { PersistGate } from 'redux-persist/es/integration/react';
 import '../../global.css';
 import i18n from '../../i18n';
 
-cssInterop(FontAwesome5, { className: 'style' });
+cssInterop(FontAwesome, { className: 'style' });
 cssInterop(MaterialCommunityIcons, { className: 'style' });
 
 const navigationIntegration = Sentry.reactNavigationIntegration({

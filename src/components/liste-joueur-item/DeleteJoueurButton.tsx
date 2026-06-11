@@ -1,8 +1,9 @@
 import { Box } from '@/components/ui/box';
 import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
-import { FontAwesome5 } from '@expo/vector-icons';
 import React, { useState } from 'react';
+import { Button, ButtonIcon } from '../ui/button';
+import { CloseIcon } from '../ui/icon';
 
 export interface Props {
   joueurUniqueBDDId: number;
@@ -42,13 +43,13 @@ const DeleteJoueurButton: React.FC<Props> = ({
 
   return (
     <Box className="ml-2">
-      <FontAwesome5.Button
-        name="times"
-        backgroundColor="#E63535"
-        iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
+      <Button
+        isDisabled={isLoading}
+        className="bg-error-500"
         onPress={supprimerJoueur}
-        disabled={isLoading}
-      />
+      >
+        <ButtonIcon as={CloseIcon} />
+      </Button>
     </Box>
   );
 };

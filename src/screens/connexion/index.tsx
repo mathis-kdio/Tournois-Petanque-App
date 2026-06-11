@@ -1,5 +1,5 @@
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { Button, ButtonText } from '@/components/ui/button';
+import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { Divider } from '@/components/ui/divider';
 import {
   FormControl,
@@ -10,13 +10,13 @@ import {
   FormControlLabelText,
 } from '@/components/ui/form-control';
 import { HStack } from '@/components/ui/hstack';
-import { AlertCircleIcon } from '@/components/ui/icon';
+import { AlertCircleIcon, EyeIcon, EyeOffIcon } from '@/components/ui/icon';
 import { Input, InputField, InputSlot } from '@/components/ui/input';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { supabaseClient } from '@/utils/supabase';
-import { FontAwesome5 } from '@expo/vector-icons';
+import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -103,14 +103,12 @@ const Authentification = () => {
                 ref={mdpInput}
               />
               <InputSlot className="pr-3">
-                <FontAwesome5.Button
-                  name={showPassword ? 'eye' : 'eye-slash'}
-                  backgroundColor="#00000000"
-                  className="text-custom-bg-inverse"
-                  iconStyle={{ marginRight: 0 }}
-                  size={16}
+                <Button
+                  className="bg-transparent text-custom-bg-inverse"
                   onPress={() => setShowPassword(!showPassword)}
-                />
+                >
+                  <ButtonIcon as={showPassword ? EyeOffIcon : EyeIcon} />
+                </Button>
               </InputSlot>
             </Input>
             <FormControlError>
@@ -151,9 +149,9 @@ const Authentification = () => {
               variant="outline"
               isDisabled={true}
             >
-              <FontAwesome5
+              <FontAwesome
                 name="apple"
-                className="text-custom-bg-inverse"
+                className="!text-custom-bg-inverse"
                 size={18}
                 style={{ marginRight: 5 }}
               />
@@ -165,14 +163,12 @@ const Authentification = () => {
               variant="outline"
               isDisabled={true}
             >
-              <FontAwesome5
+              <FontAwesome
                 name="google"
                 size={14}
-                className="text-custom-bg-inverse mr-2"
+                className="!text-custom-bg-inverse mr-2"
               />
-              <ButtonText className="text-typography-white">
-                Google
-              </ButtonText>
+              <ButtonText className="text-typography-white">Google</ButtonText>
             </Button>
           </HStack>
         </VStack>
@@ -181,11 +177,7 @@ const Authentification = () => {
           <Text className="text-typography-white self-center" size="lg">
             {t('pas_encore_compte')}
           </Text>
-          <Button
-            size="lg"
-            isDisabled={loading}
-            onPress={() => inscription()}
-          >
+          <Button size="lg" isDisabled={loading} onPress={() => inscription()}>
             <ButtonText>{t('creer_un_compte')}</ButtonText>
           </Button>
         </VStack>

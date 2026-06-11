@@ -1,11 +1,12 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "baseUrl": ".",
     "strict": true,
     "jsxImportSource": "nativewind",
     "paths": {
-      "tailwind.config": ["./tailwind.config.js"],
+      "tailwind.config": [
+        "./tailwind.config.js"
+      ],
       "@/*": [
         "./src/*"
       ],
@@ -29,6 +30,9 @@
       ],
       "@utils/*": [
         "./src/utils/*"
+      ],
+      "*": [
+        "./*"
       ]
     }
   },

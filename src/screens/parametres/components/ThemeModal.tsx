@@ -56,7 +56,7 @@ const ThemeModal: React.FC<Props> = ({ modalThemeOpen, setModalThemeOpen }) => {
           <Item
             text={t('clair')}
             action={() => changeTheme('light')}
-            icon={'sun'}
+            icon={'sun-o'}
             type="modal"
             drapeau={undefined}
           />
@@ -64,7 +64,7 @@ const ThemeModal: React.FC<Props> = ({ modalThemeOpen, setModalThemeOpen }) => {
           <Item
             text={t('sombre')}
             action={() => changeTheme('dark')}
-            icon={'moon'}
+            icon={'moon-o'}
             type="modal"
             drapeau={undefined}
           />

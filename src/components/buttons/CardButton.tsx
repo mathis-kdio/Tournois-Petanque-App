@@ -3,11 +3,14 @@ import { HStack } from '@/components/ui/hstack';
 import { Pressable } from '@/components/ui/pressable';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { FontAwesome5 } from '@expo/vector-icons';
+import {
+  FontAwesome,
+  FontAwesomeIconName,
+} from '@react-native-vector-icons/fontawesome';
 
 interface Props {
   text: string;
-  icons: string[];
+  icons: FontAwesomeIconName[];
   navigate: () => void;
   newBadge: boolean;
 }
@@ -26,9 +29,9 @@ const CardButton: React.FC<Props> = ({ text, icons, navigate, newBadge }) => {
             action="error"
             className="rounded-full"
           >
-            <FontAwesome5 name="bolt" color="#EF4444" size={12} />
+            <FontAwesome name="bolt" color="#EF4444" size={12} />
             <BadgeText className="mx-2">Nouveau</BadgeText>
-            <FontAwesome5 name="bolt" color="#EF4444" size={12} />
+            <FontAwesome name="bolt" color="#EF4444" size={12} />
           </Badge>
         </HStack>
       ) : (
@@ -37,11 +40,11 @@ const CardButton: React.FC<Props> = ({ text, icons, navigate, newBadge }) => {
       <VStack className="items-center">
         <HStack space="md">
           {icons.map((icon, index) => (
-            <FontAwesome5
+            <FontAwesome
               key={index}
               name={icon}
               size={24}
-              className="text-custom-text-button"
+              className="!text-custom-text-button"
             />
           ))}
         </HStack>

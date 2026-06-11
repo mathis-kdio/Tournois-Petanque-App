@@ -86,14 +86,14 @@ export default () => ({
       },
     ],
     [
-      '@sentry/react-native/expo',
+      '@sentry/react-native',
       {
         url: 'https://sentry.io/',
         project: 'tournois-petanque-gcu',
         organization: 'tournois-petanque-app',
       },
     ],
-    ['./plugins-build/withDisableForcedDarkModeAndroid.js'],
+    ['./plugins/builds/withDisableForcedDarkModeAndroid.js'],
     [
       'expo-dev-client',
       {
@@ -168,5 +168,8 @@ export default () => ({
       projectId: 'a9524187-3720-46fc-8d6e-6e9e7211bda7',
     },
     appVersion: version,
+  },
+  experiment: {
+    onDemandFilesystem: false,
   },
 });

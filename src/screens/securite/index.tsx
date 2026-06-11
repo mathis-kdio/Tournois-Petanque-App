@@ -1,16 +1,16 @@
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { Button, ButtonText } from '@/components/ui/button';
+import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import {
   FormControl,
   FormControlLabel,
   FormControlLabelText,
 } from '@/components/ui/form-control';
 import { Heading } from '@/components/ui/heading';
+import { EyeIcon, EyeOffIcon } from '@/components/ui/icon';
 import { Input, InputField, InputSlot } from '@/components/ui/input';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { VStack } from '@/components/ui/vstack';
 import { supabaseClient } from '@/utils/supabase';
-import { FontAwesome5 } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
@@ -112,14 +112,12 @@ const Securite = () => {
                 ref={mdpInput1}
               />
               <InputSlot className="pr-3">
-                <FontAwesome5.Button
-                  name={showOldPassword ? 'eye' : 'eye-slash'}
-                  backgroundColor="#00000000"
-                  className="text-custom-bg-inverse"
-                  iconStyle={{ marginRight: 0 }}
-                  size={16}
+                <Button
+                  className="bg-transparent text-custom-bg-inverse"
                   onPress={() => setShowOldPassword(!showOldPassword)}
-                />
+                >
+                  <ButtonIcon as={showOldPassword ? EyeOffIcon : EyeIcon} />
+                </Button>
               </InputSlot>
             </Input>
           </FormControl>
@@ -139,14 +137,12 @@ const Securite = () => {
                 ref={mdpInput2}
               />
               <InputSlot className="pr-3">
-                <FontAwesome5.Button
-                  name={showNewPassword ? 'eye' : 'eye-slash'}
-                  backgroundColor="#00000000"
-                  className="text-custom-bg-inverse"
-                  iconStyle={{ marginRight: 0 }}
-                  size={16}
+                <Button
+                  className="bg-transparent text-custom-bg-inverse"
                   onPress={() => setShowNewPassword(!showNewPassword)}
-                />
+                >
+                  <ButtonIcon as={showNewPassword ? EyeOffIcon : EyeIcon} />
+                </Button>
               </InputSlot>
             </Input>
           </FormControl>
@@ -166,14 +162,12 @@ const Securite = () => {
                 ref={mdpInput3}
               />
               <InputSlot className="pr-3">
-                <FontAwesome5.Button
-                  name={showConfirmPassword ? 'eye' : 'eye-slash'}
-                  backgroundColor="#00000000"
-                  className="text-custom-bg-inverse"
-                  iconStyle={{ marginRight: 0 }}
-                  size={16}
+                <Button
+                  className="bg-transparent text-custom-bg-inverse"
                   onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-                />
+                >
+                  <ButtonIcon as={showConfirmPassword ? EyeOffIcon : EyeIcon} />
+                </Button>
               </InputSlot>
             </Input>
           </FormControl>

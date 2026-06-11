@@ -1,15 +1,18 @@
 import { Box } from '@/components/ui/box';
-import { Button, ButtonText } from '@/components/ui/button';
+import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { HStack } from '@/components/ui/hstack';
+import { CheckIcon, CloseIcon, EditIcon, InfoIcon } from '@/components/ui/icon';
 import { Input, InputField } from '@/components/ui/input';
 import { Text } from '@/components/ui/text';
 import { useTournois } from '@/repositories/tournois/useTournois';
 import { TournoiModel } from '@/types/interfaces/tournoi';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { CommonActions } from '@react-navigation/native';
+import { IIconComponentType } from '@gluestack-ui/core/lib/esm/icon/creator/createIcon';
 import { useNavigation } from 'expo-router';
+import { CommonActions } from 'expo-router/react-navigation';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ColorValue } from 'react-native';
+import { SvgProps } from 'react-native-svg';
 import ModalDeleteTournoi from './ModalDeleteTournoi';
 
 export interface Props {
@@ -50,31 +53,31 @@ const ListeTournoiItem: React.FC<Props> = ({ tournoi, showModalInfos }) => {
   };
 
   const showRenameTournoi = () => {
-    let name: string;
+    let name: IIconComponentType<
+      | SvgProps
+      | { fill?: ColorValue | undefined; stroke?: ColorValue | undefined }
+    >;
     let bgColor: string;
     let action;
     if (!renommerOn) {
-      name = 'edit';
-      bgColor = '#004282';
+      name = EditIcon;
+      bgColor = 'bg-primary-500';
       action = () => setRenommerOn(true);
     } else if (tournoiNameText === '') {
-      name = 'times';
-      bgColor = '#5F5F5F';
+      name = CloseIcon;
+      bgColor = 'bg-[#5F5F5F]';
       action = () => setRenommerOn(false);
     } else {
-      name = 'check';
-      bgColor = '#348352';
+      name = CheckIcon;
+      bgColor = 'bg-success-500';
       action = () => updateNameTournoi();
     }
 
     return (
       <Box>
-        <FontAwesome5.Button
-          name={name}
-          backgroundColor={bgColor}
-          iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
-          onPress={action}
-        />
+        <Button className={bgColor} onPress={action}>
+          <ButtonIcon as={name} />
+        </Button>
       </Box>
     );
   };
@@ -120,12 +123,9 @@ const ListeTournoiItem: React.FC<Props> = ({ tournoi, showModalInfos }) => {
       <Box className="flex-1">{tournoiName()}</Box>
       <HStack space="sm">
         {showRenameTournoi()}
-        <FontAwesome5.Button
-          name="info-circle"
-          backgroundColor="#004282"
-          iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
-          onPress={() => showModalInfos(tournoi)}
-        />
+        <Button action="primary" onPress={() => showModalInfos(tournoi)}>
+          <ButtonIcon as={InfoIcon} />
+        </Button>
         <Button
           isDisabled={estTournoiActuel}
           action="primary"
@@ -133,13 +133,14 @@ const ListeTournoiItem: React.FC<Props> = ({ tournoi, showModalInfos }) => {
         >
           <ButtonText>{t('charger')}</ButtonText>
         </Button>
-        <FontAwesome5.Button
-          disabled={estTournoiActuel}
-          name="times"
-          backgroundColor={estTournoiActuel ? '#C0C0C0' : '#E63535'}
-          iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
+        <Button
+          isDisabled={estTournoiActuel}
+          action="primary"
           onPress={() => setModalDeleteIsOpen(true)}
-        />
+          className={estTournoiActuel ? 'bg-[#C0C0C0]' : 'bg-error-500'}
+        >
+          <ButtonIcon as={CloseIcon} />
+        </Button>
       </HStack>
       {modalSupprimerTournoi()}
     </HStack>

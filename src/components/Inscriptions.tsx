@@ -7,7 +7,8 @@ import { JoueurType as JoueurTypeEnum } from '@/types/enums/joueurType';
 import { Tri } from '@/types/enums/tri';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import FontAwesome from '@react-native-vector-icons/fontawesome';
+import MaterialCommunityIcons from '@react-native-vector-icons/material-icons';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable } from 'react-native';
@@ -63,10 +64,10 @@ const Inscription: React.FC<Props> = ({
         onPress={() => setShowCheckbox(!showCheckbox)}
         className="my-1 flex-row items-center"
       >
-        <FontAwesome5
+        <FontAwesome
           name={icon}
           size={15}
-          className="text-custom-bg-inverse"
+          className="!text-custom-bg-inverse"
         />
         <Text className="text-typography-white text-md">
           {` ${text} ${t('case_a_cocher')}`}
@@ -85,7 +86,7 @@ const Inscription: React.FC<Props> = ({
           <MaterialCommunityIcons
             name="sort"
             size={24}
-            className="text-custom-bg-inverse"
+            className="!text-custom-bg-inverse"
           />
           <Text className="text-typography-white text-md">{` ${t('trier_joueurs')}`}</Text>
         </Pressable>

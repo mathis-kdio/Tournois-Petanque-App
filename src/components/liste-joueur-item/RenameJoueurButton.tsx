@@ -1,6 +1,10 @@
 import { Box } from '@/components/ui/box';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { IIconComponentType } from '@gluestack-ui/core/lib/esm/icon/creator/createIcon';
 import React from 'react';
+import { ColorValue } from 'react-native';
+import { SvgProps } from 'react-native-svg';
+import { Button, ButtonIcon } from '../ui/button';
+import { CheckIcon, CloseIcon, EditIcon } from '../ui/icon';
 
 export interface Props {
   renommerOn: boolean;
@@ -15,31 +19,31 @@ const RenameJoueurButton: React.FC<Props> = ({
   joueurText,
   handleRenommerJoueur,
 }) => {
-  let name: string;
+  let name: IIconComponentType<
+    | SvgProps
+    | { fill?: ColorValue | undefined; stroke?: ColorValue | undefined }
+  >;
   let bgColor: string;
   let action;
   if (!renommerOn) {
-    name = 'edit';
-    bgColor = '#004282';
+    name = EditIcon;
+    bgColor = 'bg-primary-500';
     action = () => setRenommerOn(true);
   } else if (joueurText === '') {
-    name = 'times';
-    bgColor = '#5F5F5F';
+    name = CloseIcon;
+    bgColor = 'bg-[#5F5F5F]';
     action = () => setRenommerOn(false);
   } else {
-    name = 'check';
-    bgColor = '#348352';
+    name = CheckIcon;
+    bgColor = 'bg-success-500';
     action = async () => await handleRenommerJoueur();
   }
 
   return (
     <Box>
-      <FontAwesome5.Button
-        name={name}
-        backgroundColor={bgColor}
-        iconStyle={{ paddingHorizontal: 2, marginRight: 0 }}
-        onPress={action}
-      />
+      <Button className={bgColor} onPress={action}>
+        <ButtonIcon as={name} />
+      </Button>
     </Box>
   );
 };
