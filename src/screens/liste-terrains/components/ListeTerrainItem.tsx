@@ -12,10 +12,11 @@ import { ColorValue } from 'react-native';
 import { SvgProps } from 'react-native-svg';
 
 export interface Props {
+  index: number;
   terrain: TerrainModel;
 }
 
-const ListeTerrainItem: React.FC<Props> = ({ terrain }) => {
+const ListeTerrainItem: React.FC<Props> = ({ index, terrain }) => {
   const [renommerOn, setRenommerOn] = useState(false);
   const [terrainText, setTerrainText] = useState('');
 
@@ -85,7 +86,7 @@ const ListeTerrainItem: React.FC<Props> = ({ terrain }) => {
     } else {
       return (
         <Text className="text-typography-white">
-          {`${terrain.id + 1}- ${terrain.name}`}
+          {`${index}- ${terrain.name}`}
         </Text>
       );
     }

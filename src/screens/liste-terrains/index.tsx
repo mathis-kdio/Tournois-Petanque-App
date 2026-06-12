@@ -33,8 +33,8 @@ const ListeTerrains: React.FC<Props> = ({ screenStackName }) => {
     await insertTerrain(`Terrain ${terrains.length + 1}`);
   };
 
-  const renderItem: ListRenderItem<TerrainModel> = ({ item }) => (
-    <ListeTerrainItem terrain={item} />
+  const renderItem: ListRenderItem<TerrainModel> = ({ item, index }) => (
+    <ListeTerrainItem index={index + 1} terrain={item} />
   );
 
   return (
