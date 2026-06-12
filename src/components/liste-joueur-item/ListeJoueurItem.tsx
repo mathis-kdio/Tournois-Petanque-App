@@ -70,8 +70,8 @@ const ListeJoueurItem: React.FC<Props> = ({
   };
 
   const flexsize = avecEquipes
-    ? ['basis-6/12', 'basis-6/12', 'basis-6/12', 'basis-3/12']
-    : ['basis-9/12', 'basis-3/12', 'basis-0/12', 'basis-6/12'];
+    ? ['basis-6/12', 'basis-6/12']
+    : ['basis-9/12', 'basis-3/12'];
   return (
     <HStack className="flex flex-row border border-custom-bg-inverse rounded-xl m-1 px-1 items-center">
       <HStack className={`${flexsize[0]}`}>
@@ -99,7 +99,7 @@ const ListeJoueurItem: React.FC<Props> = ({
       </HStack>
       <HStack className={`${flexsize[1]} justify-end`}>
         {avecEquipes === true && (
-          <HStack className={`${flexsize[2]} items-center justify-center`}>
+          <HStack className="flex-1 justify-end items-center px-2">
             {isInscription ? (
               <EquipePicker
                 joueur={joueur}
@@ -114,7 +114,7 @@ const ListeJoueurItem: React.FC<Props> = ({
             )}
           </HStack>
         )}
-        <HStack className={`${flexsize[3]}`}>
+        <HStack>
           <RenameJoueurButton
             renommerOn={renommerOn}
             setRenommerOn={setRenommerOn}
@@ -122,7 +122,7 @@ const ListeJoueurItem: React.FC<Props> = ({
             handleRenommerJoueur={handleRenommerJoueur}
           />
         </HStack>
-        <HStack className={`${flexsize[3]}`}>
+        <HStack>
           <DeleteJoueurButton
             joueurUniqueBDDId={uniqueBDDId}
             isInscription={isInscription}
