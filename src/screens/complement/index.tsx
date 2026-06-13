@@ -10,7 +10,7 @@ import ComplementCard from '@/screens/complement/components/ComplementCard';
 import { Complement } from '@/types/enums/complement';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { screenStackNameType } from '@/types/types/searchParams';
-import { useCallback, useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export interface Props {
@@ -23,8 +23,6 @@ const ChoixComplement: React.FC<Props> = ({ screenStackName }) => {
   const { preparationTournoiVM } = usePreparationTournoi();
 
   const { joueurs } = useJoueursPreparationTournois();
-
-  const [options, setOptions] = useState<Complement[]>([]);
 
   const complementDoublette = (nbJoueurs: number): Complement[] => {
     switch (nbJoueurs % 4) {
@@ -62,32 +60,21 @@ const ChoixComplement: React.FC<Props> = ({ screenStackName }) => {
     }
   };
 
-  const prepareComplements = useCallback(
-    (typeEquipes: TypeEquipes, nbJoueurs: number) => {
-      switch (typeEquipes) {
-        case TypeEquipes.TETEATETE:
-          throw new Error('Complement TETEATETE impossible');
-        case TypeEquipes.DOUBLETTE:
-          setOptions(complementDoublette(nbJoueurs));
-          break;
-        case TypeEquipes.TRIPLETTE:
-          setOptions(complementTriplette(nbJoueurs));
-          break;
-      }
-    },
-    [],
-  );
-
-  useEffect(() => {
+  const options = useMemo(() => {
     if (!preparationTournoiVM || !joueurs || joueurs.length === 0) {
-      return;
+      return [];
     }
-    const { typeEquipes } = preparationTournoiVM;
-    if (!typeEquipes) {
-      return;
+    switch (preparationTournoiVM.typeEquipes) {
+      case TypeEquipes.TETEATETE:
+        throw new Error('Complement TETEATETE impossible');
+      case TypeEquipes.DOUBLETTE:
+        return complementDoublette(joueurs.length);
+      case TypeEquipes.TRIPLETTE:
+        return complementTriplette(joueurs.length);
+      default:
+        return [];
     }
-    prepareComplements(typeEquipes, joueurs.length);
-  }, [joueurs, preparationTournoiVM, prepareComplements]);
+  }, [preparationTournoiVM, joueurs]);
 
   if (!preparationTournoiVM || !joueurs || joueurs.length === 0) {
     return <Loading />;
