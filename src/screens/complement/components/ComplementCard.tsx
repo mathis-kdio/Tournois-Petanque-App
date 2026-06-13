@@ -3,6 +3,7 @@ import { VStack } from '@/components/ui/vstack';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import { Complement } from '@/types/enums/complement';
 import { screenStackNameType } from '@/types/types/searchParams';
+import { FontAwesomeIconName } from '@react-native-vector-icons/fontawesome';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
@@ -36,42 +37,43 @@ const ComplementCard: React.FC<Props> = ({
 
   const complementTextMap: Record<
     Complement,
-    { text: string; icons: string[] }
+    { text: string; icons: FontAwesomeIconName[] }
   > = {
     [Complement.TETEATETE]: {
       text: t('1contre1'),
-      icons: ['user-alt', 'handshake', 'user-alt'],
+      icons: ['user', 'handshake-o', 'user'],
     },
     [Complement.DOUBLETTES]: {
       text: t('2contre2'),
-      icons: ['user-friends', 'handshake', 'user-friends'],
+      icons: ['user', 'user', 'handshake-o', 'user', 'user'],
     },
     [Complement.TRIPLETTE]: {
       text: t('3contre3'),
-      icons: ['users', 'handshake', 'users'],
+      icons: ['users', 'handshake-o', 'users'],
     },
     [Complement.DEUXVSUN]: {
       text: t('2contre1'),
-      icons: ['user-friends', 'handshake', 'user-alt'],
+      icons: ['user', 'user', 'handshake-o', 'user'],
     },
     [Complement.TROISVSDEUX]: {
       text: t('3contre2'),
-      icons: ['users', 'handshake', 'user-friends'],
+      icons: ['users', 'handshake-o', 'user', 'user'],
     },
     [Complement.QUATREVSTROIS]: {
       text: t('4contre3'),
-      icons: ['users', 'handshake', 'users'],
+      icons: ['users', 'user', 'handshake-o', 'users'],
     },
     [Complement.TROIS_VS_TROIS_ET_TROIS_VS_DEUX]: {
       text: t('3contre3_et_3contre2'),
       icons: [
         'users',
-        'handshake',
+        'handshake-o',
         'users',
         'plus',
         'users',
-        'handshake',
-        'user-friends',
+        'handshake-o',
+        'user',
+        'user',
       ],
     },
   };
