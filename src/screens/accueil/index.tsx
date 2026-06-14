@@ -7,6 +7,7 @@ import { Pressable } from '@/components/ui/pressable';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
+import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import { useTournois } from '@/repositories/tournois/useTournois';
 import { _adsConsentForm } from '@/utils/adMob/consentForm';
 import { _requestTrackingPermissions } from '@/utils/expoTrackingTransparency/requestTrackingPermission';
@@ -34,6 +35,8 @@ export default function Accueil() {
   const router = useRouter();
   const navigation = useNavigation();
   const { session } = useAuth();
+
+  const { resetPreparationTournoi } = usePreparationTournoi();
 
   const { actualTournoi } = useTournois();
 
@@ -114,6 +117,11 @@ export default function Accueil() {
     }
   };
 
+  const goToTypeTournoi = async () => {
+    await resetPreparationTournoi();
+    router.navigate('/inscriptions/choix-type-tournoi');
+  };
+
   const version = Constants.expoConfig?.extra?.appVersion;
 
   return (
@@ -134,9 +142,7 @@ export default function Accueil() {
               <CardButton
                 text={t('nouveau_tournoi')}
                 icons={['plus']}
-                navigate={() =>
-                  router.navigate('/inscriptions/choix-type-tournoi')
-                }
+                navigate={goToTypeTournoi}
                 newBadge={false}
               />
             </HStack>
