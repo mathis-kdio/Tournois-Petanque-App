@@ -43,6 +43,23 @@ export const usePreparationTournoi = () => {
       : undefined;
   }, [preparationTournoi]);
 
+  const resetPreparationTournoi = async () => {
+    await PreparationTournoisRepository.delete();
+  };
+
+  const resetComplementPreparationTournoi = async () => {
+    const res = await PreparationTournoisRepository.getPreparationTournoi();
+    if (res.length === 0) {
+      throw Error('PreparationTournoi undefined');
+    }
+    const updated = {
+      ...res.at(0),
+      id: 0,
+      complement: null,
+    };
+    await PreparationTournoisRepository.updatePreparationTournoi(updated);
+  };
+
   const updateTypePreparationTournoi = async (typeTournoi: TypeTournoi) => {
     const res = await PreparationTournoisRepository.getPreparationTournoi();
     const updated = {
@@ -112,6 +129,8 @@ export const usePreparationTournoi = () => {
 
   return {
     preparationTournoiVM: preparationTournoiVM,
+    resetPreparationTournoi,
+    resetComplementPreparationTournoi,
     updateTypePreparationTournoi,
     updateModePreparationTournoi,
     updateOptionsPreparationTournoi,

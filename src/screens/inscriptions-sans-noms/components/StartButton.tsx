@@ -1,4 +1,5 @@
 import { Button, ButtonText } from '@/components/ui/button';
+import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 import { useRouter } from 'expo-router';
@@ -19,6 +20,7 @@ const StartButton: React.FC<Props> = ({
   const { t } = useTranslation();
   const router = useRouter();
 
+  const { resetComplementPreparationTournoi } = usePreparationTournoi();
   const { addJoueurs, clearJoueursAutresInscriptions } =
     useInscriptionSansNom();
 
@@ -41,6 +43,8 @@ const StartButton: React.FC<Props> = ({
     await clearJoueursAutresInscriptions();
 
     await addJoueurs(nbJoueurNormaux, nbJoueurEnfants);
+
+    await resetComplementPreparationTournoi();
 
     router.navigate({
       pathname: `/inscriptions/${getNextScreen(choixComplement)}`,
