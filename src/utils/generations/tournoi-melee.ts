@@ -76,19 +76,25 @@ export const generationMelee = (
       const match = matchs[idMatch];
       //Affectation equipe 1
       const equipe1 = match.equipe[0];
+      let equipeAffectation = equipes[randomEquipesIds[j]];
       if (equipe1[0] === -1) {
-        equipe1[0] = equipes[randomEquipesIds[j]].joueurs[0];
+        equipe1[0] = equipeAffectation.joueurs[0];
         if (
           typeEquipes === TypeEquipes.DOUBLETTE ||
           typeEquipes === TypeEquipes.TRIPLETTE
         ) {
-          equipe1[1] = equipes[randomEquipesIds[j]].joueurs[1];
+          equipe1[1] = equipeAffectation.joueurs[1];
         }
         if (typeEquipes === TypeEquipes.TRIPLETTE) {
-          equipe1[2] = equipes[randomEquipesIds[j]].joueurs[2];
+          equipe1[2] = equipeAffectation.joueurs[2];
         }
         j++;
-        breaker = 0;
+        if (equipes[randomEquipesIds[j]] === undefined) {
+          return { echecGeneration: true };
+        } else {
+          breaker = 0;
+          equipeAffectation = equipes[randomEquipesIds[j]];
+        }
       }
       //Affectation Equipe 2
       const equipe2 = match.equipe[1];
@@ -106,18 +112,18 @@ export const generationMelee = (
       );
 
       if (equipe2[0] === -1 && affectationPossible) {
-        equipe2[0] = equipes[randomEquipesIds[j]].joueurs[0];
+        equipe2[0] = equipeAffectation.joueurs[0];
         if (
           typeEquipes === TypeEquipes.DOUBLETTE ||
           typeEquipes === TypeEquipes.TRIPLETTE
         ) {
-          equipe2[1] = equipes[randomEquipesIds[j]].joueurs[1];
+          equipe2[1] = equipeAffectation.joueurs[1];
         }
         if (typeEquipes === TypeEquipes.TRIPLETTE) {
-          equipe2[2] = equipes[randomEquipesIds[j]].joueurs[2];
+          equipe2[2] = equipeAffectation.joueurs[2];
         }
         equipes[equipe1Id].adversesId.push(randomEquipesIds[j]);
-        equipes[randomEquipesIds[j]].adversesId.push(equipe1Id);
+        equipeAffectation.adversesId.push(equipe1Id);
 
         j++;
         breaker = 0;
