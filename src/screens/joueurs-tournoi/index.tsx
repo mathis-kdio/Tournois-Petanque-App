@@ -3,16 +3,18 @@ import Loading from '@/components/Loading';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { Box } from '@/components/ui/box';
 import { Button, ButtonText } from '@/components/ui/button';
-import { FlatList } from '@/components/ui/flat-list';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { useJoueurs } from '@/repositories/joueurs/useJoueurs';
 import { useTournois } from '@/repositories/tournois/useTournois';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
+import {
+  LegendList,
+  LegendListRenderItemProps,
+} from '@legendapp/list/react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { ListRenderItem } from 'react-native';
 
 const JoueursTournoi = () => {
   const { t } = useTranslation();
@@ -52,7 +54,7 @@ const JoueursTournoi = () => {
     await checkJoueur(joueurModel.uniqueBDDId, isChecked);
   };
 
-  const renderItem: ListRenderItem<JoueurModel> = ({ item }) => {
+  const renderItem = ({ item }: LegendListRenderItemProps<JoueurModel>) => {
     const { mode, typeEquipes, typeTournoi } = options;
     return (
       <ListeJoueurItem
@@ -79,11 +81,12 @@ const JoueursTournoi = () => {
         {t('nombre_joueurs', { nb: joueursTournoi.length })}
       </Text>
       <VStack className="flex-1 my-2">
-        <FlatList
+        <LegendList
           removeClippedSubviews={false}
           data={joueursTournoi}
-          keyExtractor={(item: JoueurModel) => item.uniqueBDDId.toString()}
+          keyExtractor={(item) => item.uniqueBDDId.toString()}
           renderItem={renderItem}
+          recycleItems
         />
       </VStack>
       <Box className="px-10 mb-2">

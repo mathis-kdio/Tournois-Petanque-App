@@ -1,7 +1,6 @@
 import Loading from '@/components/Loading';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { Button, ButtonText } from '@/components/ui/button';
-import { FlatList } from '@/components/ui/flat-list';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
@@ -10,8 +9,11 @@ import { useTerrainsPreparationTournois } from '@/repositories/terrainsPreparati
 import ListeTerrainItem from '@/screens/liste-terrains/components/ListeTerrainItem';
 import { TerrainModel } from '@/types/interfaces/terrainModel';
 import { screenStackNameType } from '@/types/types/searchParams';
+import {
+  LegendList,
+  LegendListRenderItemProps,
+} from '@legendapp/list/react-native';
 import { useTranslation } from 'react-i18next';
-import { ListRenderItem } from 'react-native';
 import StartButton from './components/StartButton';
 
 export interface Props {
@@ -33,7 +35,10 @@ const ListeTerrains: React.FC<Props> = ({ screenStackName }) => {
     await insertTerrain(`Terrain ${terrains.length + 1}`);
   };
 
-  const renderItem: ListRenderItem<TerrainModel> = ({ item, index }) => (
+  const renderItem = ({
+    item,
+    index,
+  }: LegendListRenderItemProps<TerrainModel>) => (
     <ListeTerrainItem index={index + 1} terrain={item} />
   );
 
@@ -44,13 +49,13 @@ const ListeTerrains: React.FC<Props> = ({ screenStackName }) => {
         {t('nombre_terrains', { nb: terrains.length })}
       </Text>
       <VStack className="flex-1 my-2">
-        <FlatList
+        <LegendList
           persistentScrollbar={true}
           data={terrains}
-          initialNumToRender={20}
-          keyExtractor={(item: TerrainModel) => item.id.toString()}
+          keyExtractor={(item) => item.id.toString()}
           renderItem={renderItem}
           className="h-1"
+          recycleItems
         />
       </VStack>
       <VStack space="lg" className="px-10">

@@ -1,6 +1,5 @@
 import ListeJoueurItem from '@/components/liste-joueur-item/ListeJoueurItem';
 import { Button, ButtonText } from '@/components/ui/button';
-import { FlatList } from '@/components/ui/flat-list';
 import { VStack } from '@/components/ui/vstack';
 import { JoueurType as JoueurTypeEnum } from '@/types/enums/joueurType';
 import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
@@ -8,10 +7,13 @@ import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { Tri } from '@/types/enums/tri';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import {
+  LegendList,
+  LegendListRenderItemProps,
+} from '@legendapp/list/react-native';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ListRenderItem } from 'react-native';
 import InscriptionListeJoueursSuggestions from './InscriptionListeJoueursSuggestions';
 
 export interface Props {
@@ -131,7 +133,7 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
     setModalRemoveIsOpen,
   ]);
 
-  const renderItem: ListRenderItem<JoueurModel> = ({ item }) => (
+  const renderItem = ({ item }: LegendListRenderItemProps<JoueurModel>) => (
     <ListeJoueurItem
       joueur={item}
       isInscription={true}
@@ -148,13 +150,14 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
     />
   );
   return (
-    <FlatList
+    <LegendList
       removeClippedSubviews={false}
       persistentScrollbar={true}
       data={sortedListeJoueurs}
-      keyExtractor={(item: JoueurModel) => item.uniqueBDDId.toString()}
+      keyExtractor={(item) => item.uniqueBDDId.toString()}
       renderItem={renderItem}
       ListFooterComponent={footerComponent}
+      recycleItems
     />
   );
 };

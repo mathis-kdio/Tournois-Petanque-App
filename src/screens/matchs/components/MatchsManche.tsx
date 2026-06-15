@@ -1,11 +1,13 @@
 import Loading from '@/components/Loading';
-import { FlatList } from '@/components/ui/flat-list';
 import { VStack } from '@/components/ui/vstack';
 import useExitAlertOnBack from '@/components/with-exit-alert/with-exit-alert';
 import { useTournois } from '@/repositories/tournois/useTournois';
 import MatchItem from '@/screens/matchs/components/MatchItem';
 import { MatchModel } from '@/types/interfaces/matchModel';
-import { ListRenderItem } from 'react-native';
+import {
+  LegendList,
+  LegendListRenderItemProps,
+} from '@legendapp/list/react-native';
 
 interface Props {
   mancheNumber: number;
@@ -20,9 +22,9 @@ const MatchsManche: React.FC<Props> = ({ mancheNumber }) => {
     return <Loading />;
   }
 
-  const { options, matchs } = actualTournoi;
+  const { matchs } = actualTournoi;
 
-  const renderItem: ListRenderItem<MatchModel> = ({ item }) => {
+  const renderItem = ({ item }: LegendListRenderItemProps<MatchModel>) => {
     return <MatchItem match={item} />;
   };
 
@@ -30,11 +32,11 @@ const MatchsManche: React.FC<Props> = ({ mancheNumber }) => {
 
   return (
     <VStack className="flex-1 bg-custom-background">
-      <FlatList
+      <LegendList
         data={matchsManche}
-        initialNumToRender={options.nbMatchs}
-        keyExtractor={(item: MatchModel) => item.matchId.toString()}
+        keyExtractor={(item) => item.matchId.toString()}
         renderItem={renderItem}
+        recycleItems
       />
     </VStack>
   );
