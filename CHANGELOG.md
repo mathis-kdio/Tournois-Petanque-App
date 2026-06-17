@@ -1,5 +1,22 @@
 # Change Log
 
+## [3.0.2] - 17-06-2026
+
+### Ajouté
+
+### Changement
+
+- Mise à jour des dépendances
+
+### Corrigé
+
+- Fix latence ajout et suppression joueur
+- Fix génération tournoi mêlée
+- Fix lancement génération tournoi bloqué
+- Fix position boutons ListeJoueurItem grands écrans
+- Fix renommage
+- Fix nom terrain
+
 ## [3.0.1] - 02-06-2026
 
 ### Ajouté
