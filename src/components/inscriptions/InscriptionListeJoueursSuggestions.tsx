@@ -1,7 +1,6 @@
 import JoueurSuggere from '@/components/joueur-suggere/JoueurSuggere';
 import { Box } from '@/components/ui/box';
 import { Button, ButtonText } from '@/components/ui/button';
-import { FlatList } from '@/components/ui/flat-list';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { useJoueursSuggestion } from '@/repositories/joueursSuggestion/useJoueursSuggestion';
@@ -9,10 +8,13 @@ import { JoueurType } from '@/types/enums/joueurType';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { JoueurSuggestionModel } from '@/types/interfaces/joueurSuggestionModel';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import {
+  LegendList,
+  LegendListRenderItemProps,
+} from '@legendapp/list/react-native';
 import FontAwesome from '@react-native-vector-icons/fontawesome';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ListRenderItem } from 'react-native';
 
 export interface Props {
   listeJoueurs: JoueurModel[];
@@ -65,7 +67,9 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
     return null;
   }
 
-  const renderItem: ListRenderItem<JoueurSuggestionModel> = ({ item }) => (
+  const renderItem = ({
+    item,
+  }: LegendListRenderItemProps<JoueurSuggestionModel>) => (
     <JoueurSuggere
       joueur={item}
       optionsTournoi={preparationTournoi}
@@ -78,13 +82,13 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
       <Text className="text-typography-white text-xl text-center">
         {t('suggestions_joueurs')}
       </Text>
-      <FlatList
-        removeClippedSubviews={false}
+      <LegendList
         persistentScrollbar={true}
         data={partialSuggested}
         extraData={nbSuggestions}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
+        recycleItems
       />
       <Box className="px-10 pb-2">{buttonMoreSuggestedPlayers()}</Box>
     </VStack>

@@ -1,12 +1,14 @@
 import TopBarBack from '@/components/topBar/TopBarBack';
-import { FlatList } from '@/components/ui/flat-list';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { Changelog as ChangelogInterface } from '@/types/interfaces/changelog';
 import ChangelogData from '@assets/ChangelogData.json';
+import {
+  LegendList,
+  LegendListRenderItemProps,
+} from '@legendapp/list/react-native';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ListRenderItem } from 'react-native';
 import ChangelogItem from './components/ChangelogItem';
 import ChangelogModal from './components/ChangelogModal';
 
@@ -31,7 +33,9 @@ const Changelog = () => {
     );
   };
 
-  const renderItem: ListRenderItem<ChangelogInterface> = ({ item }) => {
+  const renderItem = ({
+    item,
+  }: LegendListRenderItemProps<ChangelogInterface>) => {
     return (
       <ChangelogItem
         item={item}
@@ -48,11 +52,12 @@ const Changelog = () => {
         <Text className="text-xl text-typography-white mb-1">
           {t('nouveautes')}
         </Text>
-        <FlatList
+        <LegendList
           data={Object.values(ChangelogData).reverse()}
-          keyExtractor={(item: ChangelogInterface) => item.id.toString()}
+          keyExtractor={(item) => item.id.toString()}
           renderItem={renderItem}
           className="h-1 border border-custom-bg-inverse rounded-lg"
+          recycleItems
         />
       </VStack>
       {modalChangelog()}

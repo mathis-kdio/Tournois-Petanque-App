@@ -1,15 +1,17 @@
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { Box } from '@/components/ui/box';
 import { Button, ButtonText } from '@/components/ui/button';
-import { FlatList } from '@/components/ui/flat-list';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { useListesJoueurs } from '@/repositories/listesJoueurs/useListesJoueurs';
 import ListeJoueursItem from '@/screens/listes-joueurs/components/ListeJoueursItem';
 import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
+import {
+  LegendList,
+  LegendListRenderItemProps,
+} from '@legendapp/list/react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { ListRenderItem } from 'react-native';
 
 type SearchParams = {
   loadListScreen?: string;
@@ -56,7 +58,9 @@ const ListesJoueurs = () => {
     }
   };
 
-  const renderItem: ListRenderItem<ListeJoueursInfos> = ({ item }) => (
+  const renderItem = ({
+    item,
+  }: LegendListRenderItemProps<ListeJoueursInfos>) => (
     <ListeJoueursItem
       listeJoueursInfos={item}
       loadListScreen={loadListScreen === 'true'}
@@ -73,14 +77,12 @@ const ListesJoueurs = () => {
       </Text>
       <Box className="px-10">{addListButton()}</Box>
       <VStack className="flex-1 my-2">
-        <FlatList
+        <LegendList
           data={allListesJoueurs}
-          initialNumToRender={20}
-          keyExtractor={(item: ListeJoueursInfos) => {
-            return item.listId.toString();
-          }}
+          keyExtractor={(item) => item.listId.toString()}
           renderItem={renderItem}
           className="h-1"
+          recycleItems
         />
       </VStack>
     </VStack>
