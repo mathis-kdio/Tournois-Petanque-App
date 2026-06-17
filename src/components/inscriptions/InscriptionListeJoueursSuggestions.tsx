@@ -83,7 +83,6 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
         {t('suggestions_joueurs')}
       </Text>
       <LegendList
-        removeClippedSubviews={false}
         persistentScrollbar={true}
         data={partialSuggested}
         extraData={nbSuggestions}

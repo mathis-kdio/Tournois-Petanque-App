@@ -82,7 +82,6 @@ const JoueursTournoi = () => {
       </Text>
       <VStack className="flex-1 my-2">
         <LegendList
-          removeClippedSubviews={false}
           data={joueursTournoi}
           keyExtractor={(item) => item.uniqueBDDId.toString()}
           renderItem={renderItem}

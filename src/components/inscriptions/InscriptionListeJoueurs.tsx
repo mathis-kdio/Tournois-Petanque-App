@@ -151,7 +151,6 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
   );
   return (
     <LegendList
-      removeClippedSubviews={false}
       persistentScrollbar={true}
       data={sortedListeJoueurs}
       keyExtractor={(item) => item.uniqueBDDId.toString()}
