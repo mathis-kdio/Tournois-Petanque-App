@@ -1,6 +1,4 @@
 import { Box } from '@/components/ui/box';
-import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
-import { TypeEquipes } from '@/types/enums/typeEquipes';
 import React, { useState } from 'react';
 import { Button, ButtonIcon } from '../ui/button';
 import { CloseIcon } from '../ui/icon';
@@ -8,7 +6,6 @@ import { CloseIcon } from '../ui/icon';
 export interface Props {
   joueurUniqueBDDId: number;
   isInscription: boolean;
-  typeEquipes: TypeEquipes;
   setRenommerOn: React.Dispatch<React.SetStateAction<boolean>>;
   onDeleteJoueur: (id: number) => Promise<void>;
 }
@@ -16,13 +13,10 @@ export interface Props {
 const DeleteJoueurButton: React.FC<Props> = ({
   joueurUniqueBDDId,
   isInscription,
-  typeEquipes,
   setRenommerOn,
   onDeleteJoueur,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-
-  const { updateJoueursEquipe } = useJoueursPreparationTournois();
 
   const supprimerJoueur = async () => {
     if (isLoading) return;
@@ -31,9 +25,6 @@ const DeleteJoueurButton: React.FC<Props> = ({
     setRenommerOn(false);
 
     await onDeleteJoueur(joueurUniqueBDDId);
-    if (typeEquipes === TypeEquipes.TETEATETE) {
-      await updateJoueursEquipe();
-    }
     setIsLoading(false);
   };
 
