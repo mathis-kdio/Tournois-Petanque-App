@@ -24,6 +24,7 @@ const InscriptionsAvecNoms = () => {
     addJoueursPreparationTournoi,
     removeJoueursPreparationTournoi,
     removeAllJoueursPreparationTournoi,
+    updateJoueursEquipe,
   } = useJoueursPreparationTournois();
 
   const equipeAuto = () => {
@@ -79,7 +80,18 @@ const InscriptionsAvecNoms = () => {
   };
 
   const handleDeleteJoueur = async (id: number) => {
+    if (!preparationTournoiVM) {
+      throw Error('preparationTournoiVM devrait être défini');
+    }
+    const { typeEquipes } = preparationTournoiVM;
+    if (!typeEquipes) {
+      throw Error('typeEquipes devrait être défini');
+    }
+
     await removeJoueursPreparationTournoi(id);
+    if (typeEquipes === TypeEquipes.TETEATETE) {
+      await updateJoueursEquipe();
+    }
   };
 
   const handleAddEquipeJoueur = async (

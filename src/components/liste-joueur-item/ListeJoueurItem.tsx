@@ -126,7 +126,6 @@ const ListeJoueurItem: React.FC<Props> = ({
           <DeleteJoueurButton
             joueurUniqueBDDId={uniqueBDDId}
             isInscription={isInscription}
-            typeEquipes={typeEquipes}
             setRenommerOn={setRenommerOn}
             onDeleteJoueur={onDeleteJoueur}
           />

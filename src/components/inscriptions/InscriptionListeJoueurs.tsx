@@ -149,6 +149,7 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
       onCheckJoueur={onCheckJoueur}
     />
   );
+
   return (
     <LegendList
       persistentScrollbar={true}
