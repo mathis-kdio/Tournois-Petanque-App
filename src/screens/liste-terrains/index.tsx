@@ -48,16 +48,13 @@ const ListeTerrains: React.FC<Props> = ({ screenStackName }) => {
       <Text className="text-typography-white text-xl text-center">
         {t('nombre_terrains', { nb: terrains.length })}
       </Text>
-      <VStack className="flex-1 my-2">
-        <LegendList
-          persistentScrollbar={true}
-          data={terrains}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={renderItem}
-          className="h-1"
-          recycleItems
-        />
-      </VStack>
+      <LegendList
+        data={terrains}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderItem}
+        className="flex-1 h-1"
+        recycleItems
+      />
       <VStack space="lg" className="px-10">
         <Button action="primary" onPress={() => ajoutTerrain()}>
           <ButtonText>{t('ajouter_terrain')}</ButtonText>

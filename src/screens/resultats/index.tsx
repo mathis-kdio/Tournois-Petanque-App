@@ -50,6 +50,7 @@ const ListeResultats = () => {
           data={ranking(matchs, joueursTournoi, options)}
           keyExtractor={(item) => item.joueur.uniqueBDDId.toString()}
           renderItem={renderItem}
+          className="flex-1"
           recycleItems
         />
       </VStack>

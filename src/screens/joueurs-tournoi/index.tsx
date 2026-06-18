@@ -80,14 +80,13 @@ const JoueursTournoi = () => {
       <Text className="text-typography-white text-xl text-center">
         {t('nombre_joueurs', { nb: joueursTournoi.length })}
       </Text>
-      <VStack className="flex-1 my-2">
-        <LegendList
-          data={joueursTournoi}
-          keyExtractor={(item) => item.uniqueBDDId.toString()}
-          renderItem={renderItem}
-          recycleItems
-        />
-      </VStack>
+      <LegendList
+        data={joueursTournoi}
+        keyExtractor={(item) => item.uniqueBDDId.toString()}
+        renderItem={renderItem}
+        className="flex-1"
+        recycleItems
+      />
       <Box className="px-10 mb-2">
         <Button action="primary" onPress={() => retourMatchs()}>
           <ButtonText>{t('retour_liste_matchs_bouton')}</ButtonText>

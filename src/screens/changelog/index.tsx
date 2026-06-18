@@ -56,7 +56,7 @@ const Changelog = () => {
           data={Object.values(ChangelogData).reverse()}
           keyExtractor={(item) => item.id.toString()}
           renderItem={renderItem}
-          className="h-1 border border-custom-bg-inverse rounded-lg"
+          className="flex-1 h-1 border border-custom-bg-inverse rounded-lg"
           recycleItems
         />
       </VStack>

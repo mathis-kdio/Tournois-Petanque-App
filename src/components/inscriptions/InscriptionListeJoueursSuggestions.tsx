@@ -83,7 +83,6 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
         {t('suggestions_joueurs')}
       </Text>
       <LegendList
-        persistentScrollbar={true}
         data={partialSuggested}
         extraData={nbSuggestions}
         keyExtractor={(item) => item.id.toString()}

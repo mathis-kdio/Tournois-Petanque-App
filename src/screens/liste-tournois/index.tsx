@@ -56,15 +56,13 @@ export default function ListeTournois() {
       <Text className="text-typography-white text-xl text-center px-10">
         {t('nombre_tournois', { nb: listeTournois.length })}
       </Text>
-      <VStack className="flex-1 my-2">
-        <LegendList
-          data={listeTournois}
-          keyExtractor={(item) => item.tournoiId.toString()}
-          renderItem={renderItem}
-          className="h-1"
-          recycleItems
-        />
-      </VStack>
+      <LegendList
+        data={listeTournois}
+        keyExtractor={(item) => item.tournoiId.toString()}
+        renderItem={renderItem}
+        className="flex-1 h-1"
+        recycleItems
+      />
       {modalTournoiInfos()}
     </VStack>
   );

@@ -152,10 +152,10 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
 
   return (
     <LegendList
-      persistentScrollbar={true}
       data={sortedListeJoueurs}
       keyExtractor={(item) => item.uniqueBDDId.toString()}
       renderItem={renderItem}
+      className="flex-1"
       ListFooterComponent={footerComponent}
       recycleItems
     />

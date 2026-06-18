@@ -76,15 +76,13 @@ const ListesJoueurs = () => {
         {t('nombre_listes', { nb: allListesJoueurs.length })}
       </Text>
       <Box className="px-10">{addListButton()}</Box>
-      <VStack className="flex-1 my-2">
-        <LegendList
-          data={allListesJoueurs}
-          keyExtractor={(item) => item.listId.toString()}
-          renderItem={renderItem}
-          className="h-1"
-          recycleItems
-        />
-      </VStack>
+      <LegendList
+        data={allListesJoueurs}
+        keyExtractor={(item) => item.listId.toString()}
+        renderItem={renderItem}
+        className="flex-1 h-1"
+        recycleItems
+      />
     </VStack>
   );
 };
