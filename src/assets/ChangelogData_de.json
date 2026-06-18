@@ -1,4 +1,17 @@
 {
+  "39": {
+    "id": "39",
+    "version": "3.0.2",
+    "infos": [
+      "- Mise à jour des dépendances",
+      "- Fix latence ajout et suppression joueur",
+      "- Fix génération tournoi mêlée",
+      "- Fix lancement génération tournoi bloqué",
+      "- Fix position boutons ListeJoueurItem grands écrans",
+      "- Fix renommage",
+      "- Fix nom terrain"
+    ]
+  },
   "38": {
     "id": "38",
     "version": "3.0.1",
