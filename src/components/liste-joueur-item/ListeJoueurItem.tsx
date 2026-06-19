@@ -7,7 +7,7 @@ import { JoueurModel } from '@/types/interfaces/joueurModel';
 import React, { useState } from 'react';
 import { Text } from '../ui/text';
 import DeleteJoueurButton from './DeleteJoueurButton';
-import EquipePicker from './EquipePicker';
+import EquipePicker from './equipe-picker/EquipePicker';
 import JoueurCheckox from './JoueurCheckox';
 import JoueurName from './JoueurName';
 import JoueurTypeIcon from './JoueurTypeIcon';
