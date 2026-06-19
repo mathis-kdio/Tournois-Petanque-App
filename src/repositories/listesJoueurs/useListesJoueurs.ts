@@ -1,7 +1,6 @@
 import { ListesJoueurs, NewListesJoueurs } from '@/db/schema';
 import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { useMemo } from 'react';
 import { JoueursRepository } from '../joueurs/joueursRepository';
 import { JoueursListesRepository } from '../joueursListes/joueursListesRepository';
 import { ListesJoueursRepository } from './listesJoueursRepository';
@@ -41,15 +40,15 @@ export const useListesJoueurs = () => {
     ListesJoueursRepository.getAllListesJoueurs(),
   );
 
-  const allListesJoueursVM = useMemo(() => {
+  const allListesJoueursVM = () => {
     if (!listesJoueurs.length) {
       return [];
     }
     return listesJoueurs.map(toListeJoueursInfos);
-  }, [listesJoueurs]);
+  };
 
   return {
-    allListesJoueurs: allListesJoueursVM,
+    allListesJoueurs: allListesJoueursVM(),
     insertListeJoueurs,
     deleteListeJoueurs,
     renameListeJoueurs,

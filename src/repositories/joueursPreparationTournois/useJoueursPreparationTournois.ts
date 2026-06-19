@@ -144,7 +144,7 @@ export const useJoueursPreparationTournois = () => {
   };
 
   return {
-    joueurs: actualJoueursPreparationTournoiVM,
+    joueurs: actualJoueursPreparationTournoiVM(),
     addJoueursPreparationTournoi,
     addJoueursPreparationTournoiFromList,
     removeJoueursPreparationTournoi,

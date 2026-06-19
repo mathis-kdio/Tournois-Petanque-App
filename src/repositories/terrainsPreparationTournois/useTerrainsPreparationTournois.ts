@@ -69,7 +69,7 @@ export function useTerrainsPreparationTournois() {
   };
 
   return {
-    terrains: terrainsVm,
+    terrains: terrainsVm(),
     insertTerrain,
     deleteTerrain,
     renameTerrain,

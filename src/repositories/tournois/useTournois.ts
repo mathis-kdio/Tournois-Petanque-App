@@ -193,7 +193,7 @@ export const useTournois = () => {
   };
 
   return {
-    actualTournoi: actualTournoiVM,
+    actualTournoi: actualTournoiVM(),
     joueursTournoi: joueursTournoi,
     listeTournois: listeTournoisVM,
     setActualTournoi,

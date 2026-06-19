@@ -1,7 +1,6 @@
 import { JoueursSuggestion } from '@/db/schema';
 import { JoueurSuggestionModel } from '@/types/interfaces/joueurSuggestionModel';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { useMemo } from 'react';
 import { JoueursSuggestionRepository } from './joueursSuggestionRepository';
 
 const toJoueurSuggestionModel = (
@@ -20,13 +19,12 @@ const cacherSuggestion = async (suggestionId: number) => {
 export const useJoueursSuggestion = () => {
   const { data: joueurs } = useLiveQuery(JoueursSuggestionRepository.get());
 
-  const joueursSuggestionVM = useMemo(
-    () => joueurs.map(toJoueurSuggestionModel) ?? [],
-    [joueurs],
-  );
+  const joueursSuggestionVM = () => {
+    return joueurs.map(toJoueurSuggestionModel) ?? [];
+  };
 
   return {
-    joueursSuggestion: joueursSuggestionVM,
+    joueursSuggestion: joueursSuggestionVM(),
     cacherSuggestion,
   };
 };

@@ -9,7 +9,6 @@ import {
   PreparationTournoiModel,
 } from '@/types/interfaces/preparationTournoiModel';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { useMemo } from 'react';
 import { PreparationTournoisRepository } from './preparationTournoiRepository';
 
 function toPreparationTournoiModel(
@@ -121,14 +120,14 @@ export const usePreparationTournoi = () => {
     PreparationTournoisRepository.getPreparationTournoi(),
   );
 
-  const preparationTournoiVM = useMemo(() => {
+  const preparationTournoiVM = () => {
     return preparationTournoi.length
       ? toPreparationTournoiModel(preparationTournoi[0])
       : undefined;
-  }, [preparationTournoi]);
+  };
 
   return {
-    preparationTournoiVM: preparationTournoiVM,
+    preparationTournoiVM: preparationTournoiVM(),
     resetPreparationTournoi,
     resetComplementPreparationTournoi,
     updateTypePreparationTournoi,
