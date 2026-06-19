@@ -6,6 +6,7 @@ const { default: reactDoctor } = require('eslint-plugin-react-doctor');
 module.exports = defineConfig([
   expoConfig,
   eslintPluginPrettierRecommended,
+  reactDoctor.configs.recommended,
   reactDoctor.configs['react-native'],
   {
     ignores: [
