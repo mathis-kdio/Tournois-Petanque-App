@@ -5,7 +5,7 @@ import { HStack } from '@/components/ui/hstack';
 import { Input, InputField } from '@/components/ui/input';
 import { JoueurType as JoueurTypeEnum } from '@/types/enums/joueurType';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export interface Props {
@@ -26,12 +26,12 @@ const InscriptionForm: React.FC<Props> = ({
     undefined,
   );
   const [etatBouton, setEtatBouton] = useState(false);
-  const [joueurText, setJoueurText] = useState('');
+  const joueurText = useRef('');
 
-  const addPlayerTextInput = React.createRef<any>();
+  const addPlayerTextInput = useRef<any>(null);
 
   const ajoutJoueurTextInputChanged = (text: string) => {
-    setJoueurText(text);
+    joueurText.current = text;
     setEtatBouton(text !== '');
   };
 
@@ -43,13 +43,13 @@ const InscriptionForm: React.FC<Props> = ({
   }, [addPlayerTextInput, etatBouton]);
 
   const ajoutJoueurFormulaire = async () => {
-    if (joueurText === '') {
+    if (joueurText.current === '') {
       return;
     }
 
-    await onAddJoueur(joueurText, joueurType);
+    await onAddJoueur(joueurText.current, joueurType);
 
-    setJoueurText('');
+    joueurText.current = '';
     setJoueurType(undefined);
     setEtatBouton(false);
   };
