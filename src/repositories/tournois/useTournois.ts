@@ -114,7 +114,7 @@ export const useTournois = () => {
     [equipesTournoiId],
   );
 
-  const joueursTournoi = () => {
+  const joueursTournoiVM = () => {
     if (!equipesWithJoueursTournoi || equipesWithJoueursTournoi.length === 0) {
       return;
     }
@@ -194,8 +194,8 @@ export const useTournois = () => {
 
   return {
     actualTournoi: actualTournoiVM(),
-    joueursTournoi: joueursTournoi,
-    listeTournois: listeTournoisVM,
+    joueursTournoi: joueursTournoiVM(),
+    listeTournois: listeTournoisVM(),
     setActualTournoi,
     renameTournoi,
   };

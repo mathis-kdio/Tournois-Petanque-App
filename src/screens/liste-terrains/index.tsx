@@ -23,11 +23,11 @@ export interface Props {
 const ListeTerrains: React.FC<Props> = ({ screenStackName }) => {
   const { t } = useTranslation();
 
-  const { preparationTournoiVM } = usePreparationTournoi();
+  const { preparationTournoi } = usePreparationTournoi();
   const { joueurs } = useJoueursPreparationTournois();
   const { terrains, insertTerrain } = useTerrainsPreparationTournois();
 
-  if (!preparationTournoiVM || !joueurs || !terrains) {
+  if (!preparationTournoi || !joueurs || !terrains) {
     return <Loading />;
   }
 
@@ -64,7 +64,7 @@ const ListeTerrains: React.FC<Props> = ({ screenStackName }) => {
           screenStackName={screenStackName}
           joueursModel={joueurs}
           terrainsModel={terrains}
-          preparationTournoiModel={preparationTournoiVM}
+          preparationTournoiModel={preparationTournoi}
         />
       </VStack>
     </VStack>

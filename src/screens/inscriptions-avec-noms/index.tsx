@@ -16,7 +16,7 @@ import StartButton from './components/StartButton';
 const InscriptionsAvecNoms = () => {
   const { t } = useTranslation();
 
-  const { preparationTournoiVM } = usePreparationTournoi();
+  const { preparationTournoi } = usePreparationTournoi();
 
   const { renameJoueur, checkJoueur, addEquipeJoueur } = useJoueurs();
   const {
@@ -28,10 +28,10 @@ const InscriptionsAvecNoms = () => {
   } = useJoueursPreparationTournois();
 
   const equipeAuto = () => {
-    if (!preparationTournoiVM) {
-      throw Error('preparationTournoiVM devrait être défini');
+    if (!preparationTournoi) {
+      throw Error('preparationTournoi devrait être défini');
     }
-    const { typeEquipes } = preparationTournoiVM;
+    const { typeEquipes } = preparationTournoi;
     if (!typeEquipes) {
       throw Error('typeEquipes devrait être défini');
     }
@@ -80,10 +80,10 @@ const InscriptionsAvecNoms = () => {
   };
 
   const handleDeleteJoueur = async (id: number) => {
-    if (!preparationTournoiVM) {
-      throw Error('preparationTournoiVM devrait être défini');
+    if (!preparationTournoi) {
+      throw Error('preparationTournoi devrait être défini');
     }
-    const { typeEquipes } = preparationTournoiVM;
+    const { typeEquipes } = preparationTournoi;
     if (!typeEquipes) {
       throw Error('typeEquipes devrait être défini');
     }
@@ -116,7 +116,7 @@ const InscriptionsAvecNoms = () => {
     await removeAllJoueursPreparationTournoi();
   };
 
-  if (!preparationTournoiVM || !joueurs) {
+  if (!preparationTournoi || !joueurs) {
     return <Loading />;
   }
 
@@ -129,7 +129,7 @@ const InscriptionsAvecNoms = () => {
         </Text>
         <Inscriptions
           listeJoueurs={joueurs}
-          preparationTournoi={preparationTournoiVM}
+          preparationTournoi={preparationTournoi}
           loadListScreen={false}
           onAddJoueur={handleAddJoueur}
           onDeleteJoueur={handleDeleteJoueur}
@@ -140,7 +140,7 @@ const InscriptionsAvecNoms = () => {
         />
         <Box className="px-10">
           <StartButton
-            preparationTournoi={preparationTournoiVM}
+            preparationTournoi={preparationTournoi}
             listeJoueurs={joueurs}
           />
         </Box>

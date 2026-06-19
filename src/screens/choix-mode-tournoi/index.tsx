@@ -27,7 +27,7 @@ const ChoixModeTournoi = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const { preparationTournoiVM, updateModePreparationTournoi } =
+  const { preparationTournoi, updateModePreparationTournoi } =
     usePreparationTournoi();
 
   const [typeEquipes, setTypeEquipes] = useState(TypeEquipes.DOUBLETTE);
@@ -36,13 +36,13 @@ const ChoixModeTournoi = () => {
     ModeCreationEquipes.MANUELLE,
   );
 
-  if (!preparationTournoiVM) {
+  if (!preparationTournoi) {
     return <Loading />;
   }
 
   const nextStep = async () => {
     let finalModeTournoi = modeTournoi;
-    const { typeTournoi } = preparationTournoiVM;
+    const { typeTournoi } = preparationTournoi;
     if (typeTournoi !== TypeTournoi.MELEDEMELE) {
       finalModeTournoi = ModeTournoi.AVECEQUIPES;
     }
@@ -76,7 +76,7 @@ const ChoixModeTournoi = () => {
   const validButton = () => {
     let buttonDisabled = false;
     let title = t('valider_et_options');
-    const { typeTournoi } = preparationTournoiVM;
+    const { typeTournoi } = preparationTournoi;
     if (
       typeTournoi === TypeTournoi.CHAMPIONNAT ||
       typeTournoi === TypeTournoi.COUPE ||
@@ -97,7 +97,7 @@ const ChoixModeTournoi = () => {
   };
 
   const modeTournoiComponent = () => {
-    const { typeTournoi } = preparationTournoiVM;
+    const { typeTournoi } = preparationTournoi;
     if (typeTournoi !== TypeTournoi.MELEDEMELE) {
       return;
     }
@@ -135,7 +135,7 @@ const ChoixModeTournoi = () => {
   };
 
   const typeEquipeComponent = () => {
-    const { typeTournoi } = preparationTournoiVM;
+    const { typeTournoi } = preparationTournoi;
     if (typeTournoi === TypeTournoi.MELEDEMELE) {
       return;
     }

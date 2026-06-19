@@ -35,7 +35,7 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
 
   const { t } = useTranslation();
 
-  const { preparationTournoiVM, updateOptionsPreparationTournoi } =
+  const { preparationTournoi, updateOptionsPreparationTournoi } =
     usePreparationTournoi();
 
   const defaultNbTours = 5;
@@ -51,7 +51,7 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
   );
   const [avecTerrains, setAvecTerrains] = useState(false);
 
-  if (!preparationTournoiVM) {
+  if (!preparationTournoi) {
     return <Loading />;
   }
 

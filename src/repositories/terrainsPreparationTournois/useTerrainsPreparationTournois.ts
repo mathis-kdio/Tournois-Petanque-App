@@ -55,7 +55,7 @@ export function useTerrainsPreparationTournois() {
     TerrainsPreparationTournoisRepository.getIdsInPreparation(0),
   );
 
-  const terrainsVm = () => {
+  const terrainsVM = () => {
     if (!tousLesTerrains.length || !liaisons.length) {
       return [];
     }
@@ -69,7 +69,7 @@ export function useTerrainsPreparationTournois() {
   };
 
   return {
-    terrains: terrainsVm(),
+    terrains: terrainsVM(),
     insertTerrain,
     deleteTerrain,
     renameTerrain,

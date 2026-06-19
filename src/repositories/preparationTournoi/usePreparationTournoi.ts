@@ -127,7 +127,7 @@ export const usePreparationTournoi = () => {
   };
 
   return {
-    preparationTournoiVM: preparationTournoiVM(),
+    preparationTournoi: preparationTournoiVM(),
     resetPreparationTournoi,
     resetComplementPreparationTournoi,
     updateTypePreparationTournoi,
