@@ -31,6 +31,22 @@ function toNewTerrainsPreparationTournois(
   };
 }
 
+const insertTerrain = async (terrainName: string) => {
+  const terrain = await TerrainsRepository.insert(toNewTerrain(terrainName));
+  await TerrainsPreparationTournoisRepository.insert(
+    toNewTerrainsPreparationTournois(terrain, 0),
+  );
+};
+
+const deleteTerrain = async (terrainId: number) => {
+  await TerrainsPreparationTournoisRepository.delete(terrainId);
+  await TerrainsRepository.delete([terrainId]);
+};
+
+const renameTerrain = async (terrainId: number, name: string) => {
+  await TerrainsRepository.rename(terrainId, name);
+};
+
 export function useTerrainsPreparationTournois() {
   const { data: tousLesTerrains = [] } = useLiveQuery(
     TerrainsRepository.getAll(),
@@ -49,22 +65,6 @@ export function useTerrainsPreparationTournois() {
       .filter((t) => idsEnPreparation.has(t.id))
       .map((t) => toTerrainModel(t));
   }, [tousLesTerrains, liaisons]);
-
-  const insertTerrain = async (terrainName: string) => {
-    const terrain = await TerrainsRepository.insert(toNewTerrain(terrainName));
-    await TerrainsPreparationTournoisRepository.insert(
-      toNewTerrainsPreparationTournois(terrain, 0),
-    );
-  };
-
-  const deleteTerrain = async (terrainId: number) => {
-    await TerrainsPreparationTournoisRepository.delete(terrainId);
-    await TerrainsRepository.delete([terrainId]);
-  };
-
-  const renameTerrain = async (terrainId: number, name: string) => {
-    await TerrainsRepository.rename(terrainId, name);
-  };
 
   return {
     terrains: terrainsVm,

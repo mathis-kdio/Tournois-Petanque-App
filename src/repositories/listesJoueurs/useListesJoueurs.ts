@@ -13,6 +13,29 @@ function toListeJoueursInfos(lJ: ListesJoueurs): ListeJoueursInfos {
   };
 }
 
+const insertListeJoueurs = async () => {
+  const newListesJoueurs: NewListesJoueurs = {
+    updatedAt: Date.now(),
+  };
+
+  return (
+    await ListesJoueursRepository.insertListeJoueurs(newListesJoueurs)
+  )[0];
+};
+
+const deleteListeJoueurs = async (id: number) => {
+  const joueursListes = await JoueursListesRepository.getInList(id);
+  await JoueursListesRepository.removeAllInList(id);
+  await ListesJoueursRepository.deleteListeJoueurs(id);
+  await JoueursRepository.delete(
+    joueursListes.map((joueursListe) => joueursListe.joueurId),
+  );
+};
+
+const renameListeJoueurs = async (id: number, name: string) => {
+  await ListesJoueursRepository.renameListeJoueurs(id, name);
+};
+
 export const useListesJoueurs = () => {
   const { data: listesJoueurs } = useLiveQuery(
     ListesJoueursRepository.getAllListesJoueurs(),
@@ -24,29 +47,6 @@ export const useListesJoueurs = () => {
     }
     return listesJoueurs.map(toListeJoueursInfos);
   }, [listesJoueurs]);
-
-  const insertListeJoueurs = async () => {
-    const newListesJoueurs: NewListesJoueurs = {
-      updatedAt: Date.now(),
-    };
-
-    return (
-      await ListesJoueursRepository.insertListeJoueurs(newListesJoueurs)
-    )[0];
-  };
-
-  const deleteListeJoueurs = async (id: number) => {
-    const joueursListes = await JoueursListesRepository.getInList(id);
-    await JoueursListesRepository.removeAllInList(id);
-    await ListesJoueursRepository.deleteListeJoueurs(id);
-    await JoueursRepository.delete(
-      joueursListes.map((joueursListe) => joueursListe.joueurId),
-    );
-  };
-
-  const renameListeJoueurs = async (id: number, name: string) => {
-    await ListesJoueursRepository.renameListeJoueurs(id, name);
-  };
 
   return {
     allListesJoueurs: allListesJoueursVM,

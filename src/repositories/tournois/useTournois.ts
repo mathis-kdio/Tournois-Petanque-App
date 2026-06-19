@@ -74,6 +74,10 @@ function toJoueurModel(joueur: Joueur_EquipesJoueurs): JoueurModel {
   };
 }
 
+const renameTournoi = async (id: number, name: string) => {
+  await TournoisRepository.renameTournoi(id, name);
+};
+
 export const useTournois = () => {
   const { data: tournois = [] } = useLiveQuery(
     TournoisRepository.getTournois(),
@@ -187,10 +191,6 @@ export const useTournois = () => {
       );
     }
     await TournoisRepository.setActualTournoi(id, true);
-  };
-
-  const renameTournoi = async (id: number, name: string) => {
-    await TournoisRepository.renameTournoi(id, name);
   };
 
   return {
