@@ -1,3 +1,4 @@
+import JoueurName from '@/components/JoueurName';
 import Loading from '@/components/Loading';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { Box } from '@/components/ui/box';
@@ -10,7 +11,6 @@ import { VStack } from '@/components/ui/vstack';
 import { useMatchs } from '@/repositories/matchs/useMatchs';
 import { useTournois } from '@/repositories/tournois/useTournois';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
-import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { requestReview } from '@/utils/storeReview/StoreReview';
 import AdMobMatchDetailBanner from '@components/adMob/AdMobMatchDetailBanner';
 import { nextMatch } from '@utils/generations/nextMatch/nextMatch';
@@ -18,7 +18,7 @@ import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-type EquipeId = 1 | 2;
+export type EquipeId = 1 | 2;
 
 export interface Props {
   idMatch: number;
@@ -59,35 +59,15 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
     );
   };
 
-  const displayName = (joueur: JoueurModel, equipeId: EquipeId) => {
-    if (equipeId === 1) {
-      return (
-        <Text
-          key={joueur.joueurTournoiId}
-          className="text-typography-white text-md text-left"
-        >
-          {`${joueur.joueurTournoiId + 1} ${joueur.name}`}
-        </Text>
-      );
-    } else {
-      return (
-        <Text
-          key={joueur.joueurTournoiId}
-          className="text-typography-white text-md text-right"
-        >
-          {`${joueur.name} ${joueur.joueurTournoiId + 1}`}
-        </Text>
-      );
-    }
-  };
-
   const displayEquipe = (equipeId: EquipeId) => {
     const nomsJoueurs = [];
     const equipe = match.equipe[equipeId - 1];
     for (let i = 0; i < 4; i++) {
       const joueur = equipe[i];
       if (joueur) {
-        nomsJoueurs.push(displayName(joueur, equipeId));
+        nomsJoueurs.push(
+          <JoueurName joueur={joueur} equipeId={equipeId} size={'md'} />,
+        );
       }
     }
     return nomsJoueurs;
