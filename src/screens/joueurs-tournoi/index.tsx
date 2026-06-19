@@ -16,6 +16,16 @@ import {
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
+const onDeleteJoueur = () => {
+  throw new Error('Impossible de supprimer un joueur dans un tournoi lancé');
+};
+
+const onAddEquipeJoueur = () => {
+  throw new Error(
+    "Impossible d'ajouter une équipe à un joueur dans un tournoi lancé",
+  );
+};
+
 const JoueursTournoi = () => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -31,16 +41,6 @@ const JoueursTournoi = () => {
 
   const retourMatchs = () => {
     router.navigate('/tournoi');
-  };
-
-  const onDeleteJoueur = () => {
-    throw new Error('Impossible de supprimer un joueur dans un tournoi lancé');
-  };
-
-  const onAddEquipeJoueur = () => {
-    throw new Error(
-      "Impossible d'ajouter une équipe à un joueur dans un tournoi lancé",
-    );
   };
 
   const onUpdateName = async (joueurModel: JoueurModel, name: string) => {

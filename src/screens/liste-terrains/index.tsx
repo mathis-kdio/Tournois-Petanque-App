@@ -20,6 +20,13 @@ export interface Props {
   screenStackName: screenStackNameType;
 }
 
+const renderItem = ({
+  item,
+  index,
+}: LegendListRenderItemProps<TerrainModel>) => (
+  <ListeTerrainItem index={index + 1} terrain={item} />
+);
+
 const ListeTerrains: React.FC<Props> = ({ screenStackName }) => {
   const { t } = useTranslation();
 
@@ -34,13 +41,6 @@ const ListeTerrains: React.FC<Props> = ({ screenStackName }) => {
   const ajoutTerrain = async () => {
     await insertTerrain(`Terrain ${terrains.length + 1}`);
   };
-
-  const renderItem = ({
-    item,
-    index,
-  }: LegendListRenderItemProps<TerrainModel>) => (
-    <ListeTerrainItem index={index + 1} terrain={item} />
-  );
 
   return (
     <VStack className="flex-1 bg-custom-background">

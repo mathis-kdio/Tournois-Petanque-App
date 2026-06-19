@@ -13,6 +13,10 @@ interface Props {
   mancheNumber: number;
 }
 
+const renderItem = ({ item }: LegendListRenderItemProps<MatchModel>) => {
+  return <MatchItem match={item} />;
+};
+
 const MatchsManche: React.FC<Props> = ({ mancheNumber }) => {
   useExitAlertOnBack();
 
@@ -23,10 +27,6 @@ const MatchsManche: React.FC<Props> = ({ mancheNumber }) => {
   }
 
   const { matchs } = actualTournoi;
-
-  const renderItem = ({ item }: LegendListRenderItemProps<MatchModel>) => {
-    return <MatchItem match={item} />;
-  };
 
   const matchsManche = matchs.filter((match) => match.manche === mancheNumber);
 
