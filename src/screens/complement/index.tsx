@@ -10,7 +10,6 @@ import ComplementCard from '@/screens/complement/components/ComplementCard';
 import { Complement } from '@/types/enums/complement';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { screenStackNameType } from '@/types/types/searchParams';
-import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export interface Props {
@@ -53,15 +52,15 @@ const getComplementTriplette = (nbJoueurs: number): Complement[] => {
 const ChoixComplement: React.FC<Props> = ({ screenStackName }) => {
   const { t } = useTranslation();
 
-  const { preparationTournoiVM } = usePreparationTournoi();
+  const { preparationTournoi } = usePreparationTournoi();
 
   const { joueurs } = useJoueursPreparationTournois();
 
-  const options = useMemo(() => {
-    if (!preparationTournoiVM || !joueurs || joueurs.length === 0) {
+  const options = () => {
+    if (!preparationTournoi || !joueurs || joueurs.length === 0) {
       return [];
     }
-    switch (preparationTournoiVM.typeEquipes) {
+    switch (preparationTournoi.typeEquipes) {
       case TypeEquipes.TETEATETE:
         throw new Error('Complement TETEATETE impossible');
       case TypeEquipes.DOUBLETTE:
@@ -71,13 +70,13 @@ const ChoixComplement: React.FC<Props> = ({ screenStackName }) => {
       default:
         return [];
     }
-  }, [preparationTournoiVM, joueurs]);
+  };
 
-  if (!preparationTournoiVM || !joueurs || joueurs.length === 0) {
+  if (!preparationTournoi || !joueurs || joueurs.length === 0) {
     return <Loading />;
   }
 
-  const { typeEquipes, avecTerrains } = preparationTournoiVM;
+  const { typeEquipes, avecTerrains } = preparationTournoi;
   if (!typeEquipes) {
     throw Error('typeEquipes manquant');
   }
@@ -94,14 +93,14 @@ const ChoixComplement: React.FC<Props> = ({ screenStackName }) => {
         <Text size={'lg'} className="text-typography-white text-center">
           {t('choix_complement_title_2')}
         </Text>
-        {options.map((complement, index) => (
+        {options().map((complement, index) => (
           <VStack key={index}>
             <ComplementCard
               complement={complement}
               screenStackName={screenStackName}
               avecTerrains={avecTerrains}
             />
-            {index + 1 !== options.length && <Divider className="mt-5 h-1" />}
+            {index + 1 !== options().length && <Divider className="mt-5 h-1" />}
           </VStack>
         ))}
       </VStack>

@@ -5,7 +5,6 @@ import { JoueursSuggestionRepository } from '@/repositories/joueursSuggestion/jo
 import { JoueurType } from '@/types/enums/joueurType';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { useMemo } from 'react';
 
 function toJoueurModel(joueur: Joueur): JoueurModel {
   return {
@@ -25,17 +24,40 @@ function toNewJoueursListes(joueur: Joueur, listeId: number): NewJoueursListes {
   };
 }
 
+const addJoueurInList = async (
+  joueurName: string,
+  joueurType: JoueurType | undefined,
+  listeId: number,
+) => {
+  const joueursListe = await JoueursListesRepository.getInList(listeId);
+
+  const newJoueur: NewJoueur = {
+    joueurId: joueursListe.length,
+    name: joueurName,
+    type: joueurType,
+    equipe: undefined,
+    isChecked: false,
+  };
+  const joueur = await JoueursRepository.insert(newJoueur);
+  await JoueursListesRepository.insert(toNewJoueursListes(joueur, listeId));
+
+  await JoueursSuggestionRepository.insertOrUpdateOccurence({
+    name: joueurName,
+    occurence: 1,
+  });
+};
+
 export const useCreateListeJoueur = (listeId: number) => {
   const { data: joueursListe } = useLiveQuery(
     JoueursRepository.getJoueursListe(listeId),
   );
 
-  const listeJoueursVM = useMemo(() => {
+  const listeJoueursVM = () => {
     if (!joueursListe.length) {
       return [];
     }
     return joueursListe.map((joueur) => toJoueurModel(joueur));
-  }, [joueursListe]);
+  };
 
   const removeAllJoueursList = async (listId: number) => {
     const joueursListes = await JoueursListesRepository.getInList(listeId);
@@ -59,31 +81,8 @@ export const useCreateListeJoueur = (listeId: number) => {
     );
   };
 
-  const addJoueurInList = async (
-    joueurName: string,
-    joueurType: JoueurType | undefined,
-    listeId: number,
-  ) => {
-    const joueursListe = await JoueursListesRepository.getInList(listeId);
-
-    const newJoueur: NewJoueur = {
-      joueurId: joueursListe.length,
-      name: joueurName,
-      type: joueurType,
-      equipe: undefined,
-      isChecked: false,
-    };
-    const joueur = await JoueursRepository.insert(newJoueur);
-    await JoueursListesRepository.insert(toNewJoueursListes(joueur, listeId));
-
-    await JoueursSuggestionRepository.insertOrUpdateOccurence({
-      name: joueurName,
-      occurence: 1,
-    });
-  };
-
   return {
-    listeJoueurs: listeJoueursVM,
+    listeJoueurs: listeJoueursVM(),
     removeAllJoueursList,
     removeJoueurList,
     addJoueurInList,
