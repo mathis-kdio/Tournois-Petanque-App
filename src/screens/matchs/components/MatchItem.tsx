@@ -1,6 +1,7 @@
 import { Box } from '@/components/ui/box';
 import { Divider } from '@/components/ui/divider';
 import { HStack } from '@/components/ui/hstack';
+import { Pressable } from '@/components/ui/pressable';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { EquipeType } from '@/types/interfaces/equipeType';
@@ -10,7 +11,6 @@ import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { TouchableOpacity } from 'react-native';
 
 export interface Props {
   match: MatchModel;
@@ -101,7 +101,7 @@ const MatchItem: React.FC<Props> = ({ match }) => {
   };
 
   return (
-    <TouchableOpacity onPress={() => navigateMatchDetail()}>
+    <Pressable onPress={() => navigateMatchDetail()}>
       <VStack className="m-2">
         {displayTitle()}
         <HStack className="items-center">
@@ -111,7 +111,7 @@ const MatchItem: React.FC<Props> = ({ match }) => {
         </HStack>
       </VStack>
       <Divider />
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
