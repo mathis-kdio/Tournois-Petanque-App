@@ -11,7 +11,7 @@ import { Input, InputField, InputSlot } from '@/components/ui/input';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { VStack } from '@/components/ui/vstack';
 import { supabaseClient } from '@/utils/supabase';
-import React, { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 
@@ -27,9 +27,9 @@ const Securite = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(true);
 
-  const mdpInput1 = React.createRef<any>();
-  const mdpInput2 = React.createRef<any>();
-  const mdpInput3 = React.createRef<any>();
+  const mdpInput1 = useRef<any>(null);
+  const mdpInput2 = useRef<any>(null);
+  const mdpInput3 = useRef<any>(null);
 
   const handleChangePassword = async () => {
     if (oldPassword !== oldPassword) {

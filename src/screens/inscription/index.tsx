@@ -30,7 +30,7 @@ import { VStack } from '@/components/ui/vstack';
 import { supabaseClient } from '@/utils/supabase';
 import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 
@@ -49,8 +49,8 @@ const Inscription = () => {
   const [passwordIncorrect, setPasswordIncorrect] = useState(false);
   const [password2Incorrect, setPassword2Incorrect] = useState(false);
 
-  const mdpInput1 = React.createRef<any>();
-  const mdpInput2 = React.createRef<any>();
+  const mdpInput1 = useRef<any>(null);
+  const mdpInput2 = useRef<any>(null);
 
   const validEmailTest = (email: string): boolean => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;

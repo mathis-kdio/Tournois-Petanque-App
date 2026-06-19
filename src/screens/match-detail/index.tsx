@@ -15,7 +15,7 @@ import { requestReview } from '@/utils/storeReview/StoreReview';
 import AdMobMatchDetailBanner from '@components/adMob/AdMobMatchDetailBanner';
 import { nextMatch } from '@utils/generations/nextMatch/nextMatch';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export type EquipeId = 1 | 2;
@@ -31,7 +31,7 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
   const [score1, setScore1] = useState<string | undefined>(undefined);
   const [score2, setScore2] = useState<string | undefined>(undefined);
 
-  const secondInput = React.createRef<any>();
+  const secondInput = useRef<any>(null);
 
   const { updateScore, resetScore } = useMatchs();
   const { actualTournoi } = useTournois();

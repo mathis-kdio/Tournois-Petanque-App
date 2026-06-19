@@ -18,7 +18,7 @@ import { VStack } from '@/components/ui/vstack';
 import { supabaseClient } from '@/utils/supabase';
 import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const Authentification = () => {
@@ -31,7 +31,7 @@ const Authentification = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loginIncorrect, setLoginIncorrect] = useState(false);
 
-  const mdpInput = React.createRef<any>();
+  const mdpInput = useRef<any>(null);
 
   const signInWithEmail = async () => {
     setLoading(true);
