@@ -85,6 +85,7 @@ const JoueursTournoi = () => {
         keyExtractor={(item) => item.uniqueBDDId.toString()}
         renderItem={renderItem}
         className="flex-1"
+        getItemType={() => 'ListeJoueurItem'}
         recycleItems
       />
       <Box className="px-10 mb-2">

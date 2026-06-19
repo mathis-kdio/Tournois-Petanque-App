@@ -53,6 +53,7 @@ const ListeTerrains: React.FC<Props> = ({ screenStackName }) => {
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
         className="flex-1 h-1"
+        getItemType={() => 'ListeTerrainItem'}
         recycleItems
       />
       <VStack space="lg" className="px-10">

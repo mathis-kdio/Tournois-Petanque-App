@@ -103,6 +103,7 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
           setModalRemoveIsOpen={setModalRemoveIsOpen}
         />
       }
+      getItemType={() => 'ListeJoueurItem'}
       recycleItems
     />
   );

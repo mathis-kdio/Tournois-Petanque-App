@@ -51,6 +51,7 @@ const ListeResultats = () => {
           keyExtractor={(item) => item.joueur.uniqueBDDId.toString()}
           renderItem={renderItem}
           className="flex-1"
+          getItemType={() => 'ListeResultatItem'}
           recycleItems
         />
       </VStack>

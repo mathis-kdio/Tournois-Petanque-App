@@ -61,6 +61,7 @@ export default function ListeTournois() {
         keyExtractor={(item) => item.tournoiId.toString()}
         renderItem={renderItem}
         className="flex-1 h-1"
+        getItemType={() => 'ListeTournoiItem'}
         recycleItems
       />
       {modalTournoiInfos()}

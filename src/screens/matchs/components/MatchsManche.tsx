@@ -37,6 +37,7 @@ const MatchsManche: React.FC<Props> = ({ mancheNumber }) => {
         keyExtractor={(item) => item.matchId.toString()}
         renderItem={renderItem}
         className="flex-1"
+        getItemType={() => 'MatchItem'}
         recycleItems
       />
     </VStack>

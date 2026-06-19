@@ -87,6 +87,7 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
         extraData={nbSuggestions}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
+        getItemType={() => 'JoueurSuggere'}
         recycleItems
       />
       <Box className="px-10 pb-2">{buttonMoreSuggestedPlayers()}</Box>
