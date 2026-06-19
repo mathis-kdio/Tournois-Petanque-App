@@ -15,6 +15,7 @@ import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import EquipePickerItem from './EquipePickerItem';
 
 export interface Props {
   joueur: JoueurModel;
@@ -35,16 +36,6 @@ const EquipePicker: React.FC<Props> = ({
   const { t } = useTranslation();
 
   const { equipe } = joueur;
-
-  const equipePickerItem = (equipe: number) => {
-    return (
-      <SelectItem
-        label={equipe.toString()}
-        value={equipe.toString()}
-        key={equipe}
-      />
-    );
-  };
 
   const ajoutEquipe = async (equipeId: number) => {
     await onAddEquipeJoueur(joueur, equipeId);
@@ -71,7 +62,7 @@ const EquipePicker: React.FC<Props> = ({
         (typeEquipes === TypeEquipes.TRIPLETTE && count < 3) ||
         equipe === equipId
       ) {
-        return [equipePickerItem(equipId)];
+        return [<EquipePickerItem equipe={equipId} key={equipId} />];
       }
       return [];
     },
