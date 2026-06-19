@@ -5,7 +5,6 @@ import { MatchModel } from '@/types/interfaces/matchModel';
 import { TerrainModel } from '@/types/interfaces/terrainModel';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { useMemo } from 'react';
 import {
   Joueur_EquipesJoueurs,
   JoueursRepository,
@@ -90,7 +89,7 @@ export const useTournois = () => {
     [tournoiId],
   );
 
-  const equipesTournoiId = useMemo(() => {
+  const equipesTournoiId = () => {
     if (!fullMatchs) {
       return [];
     }
@@ -108,33 +107,29 @@ export const useTournois = () => {
         return true;
       }
     });
-  }, [fullMatchs]);
+  };
 
   const { data: equipesWithJoueursTournoi } = useLiveQuery(
-    JoueursRepository.getEquipes(equipesTournoiId),
+    JoueursRepository.getEquipes(equipesTournoiId()),
     [equipesTournoiId],
   );
 
-  const joueursTournoi = useMemo(() => {
+  const joueursTournoi = () => {
     if (!equipesWithJoueursTournoi || equipesWithJoueursTournoi.length === 0) {
       return;
     }
     const joueursIds = new Set();
-    return equipesWithJoueursTournoi
-      .map(({ joueurs }) => joueurs)
-      .filter(({ j_id }) => {
-        if (joueursIds.has(j_id)) {
-          return false;
-        } else {
-          joueursIds.add(j_id);
-          return true;
-        }
-      })
-      .map(toJoueurModel)
-      .sort((a, b) => a.joueurTournoiId - b.joueurTournoiId);
-  }, [equipesWithJoueursTournoi]);
+    const result = equipesWithJoueursTournoi.reduce((acc, { joueurs: j }) => {
+      if (!joueursIds.has(j.j_id)) {
+        joueursIds.add(j.j_id);
+        acc.push(toJoueurModel(j));
+      }
+      return acc;
+    }, [] as JoueurModel[]);
+    return result.sort((a, b) => a.joueurTournoiId - b.joueurTournoiId);
+  };
 
-  const actualTournoiVM = useMemo(() => {
+  const actualTournoiVM = () => {
     if (
       !tournoiActuel ||
       !fullMatchs ||
@@ -146,23 +141,29 @@ export const useTournois = () => {
     }
 
     const matchModels = fullMatchs.map((fullMatch) => {
-      const equipe1JoueurModels = equipesWithJoueursTournoi
-        .filter(
-          ({ equipes_joueurs }) =>
-            equipes_joueurs.ej_equipeId === fullMatch.m_equipe1,
-        )
-        .map(({ joueurs }) => toJoueurModel(joueurs));
+      const equipe1JoueurModels = equipesWithJoueursTournoi.reduce(
+        (acc, { equipes_joueurs, joueurs }) => {
+          if (equipes_joueurs.ej_equipeId === fullMatch.m_equipe1) {
+            acc.push(toJoueurModel(joueurs));
+          }
+          return acc;
+        },
+        [] as JoueurModel[],
+      );
       const equipe1: EquipeType = [
         ...equipe1JoueurModels.slice(0, 4),
         ...Array(Math.max(0, 4 - equipe1JoueurModels.length)).fill(undefined),
       ] as EquipeType;
 
-      const equipe2JoueurModels = equipesWithJoueursTournoi
-        .filter(
-          ({ equipes_joueurs }) =>
-            equipes_joueurs.ej_equipeId === fullMatch.m_equipe2,
-        )
-        .map(({ joueurs }) => toJoueurModel(joueurs));
+      const equipe2JoueurModels = equipesWithJoueursTournoi.reduce(
+        (acc, { equipes_joueurs, joueurs }) => {
+          if (equipes_joueurs.ej_equipeId === fullMatch.m_equipe2) {
+            acc.push(toJoueurModel(joueurs));
+          }
+          return acc;
+        },
+        [] as JoueurModel[],
+      );
       const equipe2: EquipeType = [
         ...equipe2JoueurModels.slice(0, 4),
         ...Array(Math.max(0, 4 - equipe2JoueurModels.length)).fill(undefined),
@@ -171,24 +172,22 @@ export const useTournois = () => {
       return toMatchmodel(fullMatch, equipe1, equipe2);
     });
     return toTournoiModel(tournoiActuel, matchModels);
-  }, [tournoiActuel, fullMatchs, equipesWithJoueursTournoi]);
+  };
 
   const { data: allTournois } = useLiveQuery(
     TournoisRepository.getAllTournois(),
   );
-  const listeTournoisVM = useMemo(() => {
+  const listeTournoisVM = () => {
     if (!allTournois) {
       return;
     }
     return allTournois.map((tournoi) => toTournoiModel(tournoi, [])) ?? [];
-  }, [allTournois]);
+  };
 
   const setActualTournoi = async (id: number) => {
-    if (actualTournoiVM) {
-      await TournoisRepository.setActualTournoi(
-        actualTournoiVM.tournoiId,
-        false,
-      );
+    const actualTournoi = actualTournoiVM();
+    if (actualTournoi) {
+      await TournoisRepository.setActualTournoi(actualTournoi.tournoiId, false);
     }
     await TournoisRepository.setActualTournoi(id, true);
   };

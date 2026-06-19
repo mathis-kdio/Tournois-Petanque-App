@@ -2,7 +2,6 @@ import { NewTerrain, Terrain } from '@/db/schema';
 import { NewTerrainsPreparationTournois } from '@/db/schema/terrainsPreparationTournoi';
 import { TerrainModel } from '@/types/interfaces/terrainModel';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { useMemo } from 'react';
 import { TerrainsRepository } from '../terrains/terrainsRepository';
 import { TerrainsPreparationTournoisRepository } from './terrainsPreparationTournoiRepository';
 
@@ -56,15 +55,18 @@ export function useTerrainsPreparationTournois() {
     TerrainsPreparationTournoisRepository.getIdsInPreparation(0),
   );
 
-  const terrainsVm = useMemo(() => {
+  const terrainsVm = () => {
     if (!tousLesTerrains.length || !liaisons.length) {
       return [];
     }
     const idsEnPreparation = new Set(liaisons.map((l) => l.terrainId));
-    return tousLesTerrains
-      .filter((t) => idsEnPreparation.has(t.id))
-      .map((t) => toTerrainModel(t));
-  }, [tousLesTerrains, liaisons]);
+    return tousLesTerrains.reduce((acc, t) => {
+      if (idsEnPreparation.has(t.id)) {
+        acc.push(toTerrainModel(t));
+      }
+      return acc;
+    }, [] as TerrainModel[]);
+  };
 
   return {
     terrains: terrainsVm,

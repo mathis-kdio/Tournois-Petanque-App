@@ -2,7 +2,6 @@ import { Joueur, NewJoueur, NewJoueursPreparationTournois } from '@/db/schema';
 import { JoueurType } from '@/types/enums/joueurType';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { useMemo } from 'react';
 import { JoueursRepository } from '../joueurs/joueursRepository';
 import { JoueursSuggestionRepository } from '../joueursSuggestion/joueursSuggestionRepository';
 import { JoueursPreparationTournoisRepository } from './joueursPreparationTournoiRepository';
@@ -131,15 +130,18 @@ export const useJoueursPreparationTournois = () => {
     JoueursPreparationTournoisRepository.getAll(),
   );
 
-  const actualJoueursPreparationTournoiVM = useMemo(() => {
+  const actualJoueursPreparationTournoiVM = () => {
     if (!joueurs.length || !joueursPreparation.length) {
       return [];
     }
     const idsEnPreparation = new Set(joueursPreparation.map((l) => l.joueurId));
-    return joueurs
-      .filter((t) => idsEnPreparation.has(t.id))
-      .map((t) => toJoueurModel(t));
-  }, [joueurs, joueursPreparation]);
+    return joueurs.reduce((acc, t) => {
+      if (idsEnPreparation.has(t.id)) {
+        acc.push(toJoueurModel(t));
+      }
+      return acc;
+    }, [] as JoueurModel[]);
+  };
 
   return {
     joueurs: actualJoueursPreparationTournoiVM,
