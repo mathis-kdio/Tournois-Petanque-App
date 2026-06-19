@@ -21,6 +21,14 @@ export interface Props {
   idList: number;
 }
 
+const preparationTournoi: PreparationTournoiModel = {
+  id: 0,
+  typeEquipes: TypeEquipes.TETEATETE,
+  mode: ModeTournoi.SAUVEGARDE,
+  typeTournoi: TypeTournoi.MELEDEMELE,
+  avecTerrains: false,
+};
+
 const CreateListeJoueur: React.FC<Props> = ({ type, idList }) => {
   const { t } = useTranslation();
 
@@ -68,14 +76,6 @@ const CreateListeJoueur: React.FC<Props> = ({ type, idList }) => {
   if (!listeJoueurs) {
     return <Loading />;
   }
-
-  const preparationTournoi: PreparationTournoiModel = {
-    id: 0,
-    typeEquipes: TypeEquipes.TETEATETE,
-    mode: ModeTournoi.SAUVEGARDE,
-    typeTournoi: TypeTournoi.MELEDEMELE,
-    avecTerrains: false,
-  };
 
   return (
     <VStack className="flex-1 bg-custom-background">
