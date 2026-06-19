@@ -17,48 +17,45 @@ export interface Props {
   screenStackName: screenStackNameType;
 }
 
+const getComplementDoublette = (nbJoueurs: number): Complement[] => {
+  switch (nbJoueurs % 4) {
+    case 1:
+      return [Complement.TROISVSDEUX];
+    case 2:
+      return [Complement.TETEATETE, Complement.TRIPLETTE];
+    case 3:
+      if (nbJoueurs === 7) {
+        return [Complement.DEUXVSUN];
+      }
+      return [Complement.DEUXVSUN, Complement.TROIS_VS_TROIS_ET_TROIS_VS_DEUX];
+    default:
+      throw new Error('Nombre de joueurs ne nécessitant pas un complément');
+  }
+};
+
+const getComplementTriplette = (nbJoueurs: number): Complement[] => {
+  switch (nbJoueurs % 6) {
+    case 1:
+      return [Complement.QUATREVSTROIS];
+    case 2:
+      return [Complement.TETEATETE];
+    case 3:
+      return [Complement.DEUXVSUN];
+    case 4:
+      return [Complement.DOUBLETTES];
+    case 5:
+      return [Complement.TROISVSDEUX];
+    default:
+      throw new Error('Nombre de joueurs ne nécessitant pas un complément');
+  }
+};
+
 const ChoixComplement: React.FC<Props> = ({ screenStackName }) => {
   const { t } = useTranslation();
 
   const { preparationTournoiVM } = usePreparationTournoi();
 
   const { joueurs } = useJoueursPreparationTournois();
-
-  const complementDoublette = (nbJoueurs: number): Complement[] => {
-    switch (nbJoueurs % 4) {
-      case 1:
-        return [Complement.TROISVSDEUX];
-      case 2:
-        return [Complement.TETEATETE, Complement.TRIPLETTE];
-      case 3:
-        if (nbJoueurs === 7) {
-          return [Complement.DEUXVSUN];
-        }
-        return [
-          Complement.DEUXVSUN,
-          Complement.TROIS_VS_TROIS_ET_TROIS_VS_DEUX,
-        ];
-      default:
-        throw new Error('Nombre de joueurs ne nécessitant pas un complément');
-    }
-  };
-
-  const complementTriplette = (nbJoueurs: number): Complement[] => {
-    switch (nbJoueurs % 6) {
-      case 1:
-        return [Complement.QUATREVSTROIS];
-      case 2:
-        return [Complement.TETEATETE];
-      case 3:
-        return [Complement.DEUXVSUN];
-      case 4:
-        return [Complement.DOUBLETTES];
-      case 5:
-        return [Complement.TROISVSDEUX];
-      default:
-        throw new Error('Nombre de joueurs ne nécessitant pas un complément');
-    }
-  };
 
   const options = useMemo(() => {
     if (!preparationTournoiVM || !joueurs || joueurs.length === 0) {
@@ -68,9 +65,9 @@ const ChoixComplement: React.FC<Props> = ({ screenStackName }) => {
       case TypeEquipes.TETEATETE:
         throw new Error('Complement TETEATETE impossible');
       case TypeEquipes.DOUBLETTE:
-        return complementDoublette(joueurs.length);
+        return getComplementDoublette(joueurs.length);
       case TypeEquipes.TRIPLETTE:
-        return complementTriplette(joueurs.length);
+        return getComplementTriplette(joueurs.length);
       default:
         return [];
     }
