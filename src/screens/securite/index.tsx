@@ -15,38 +15,102 @@ import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 
+type SecuriteState = {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+  showOldPassword: boolean;
+  showNewPassword: boolean;
+  showConfirmPassword: boolean;
+  isLoading: boolean;
+  error: boolean;
+};
+
+const initialState: SecuriteState = {
+  oldPassword: '',
+  newPassword: '',
+  confirmPassword: '',
+  showOldPassword: false,
+  showNewPassword: false,
+  showConfirmPassword: false,
+  isLoading: false,
+  error: false,
+};
+
 const Securite = () => {
   const { t } = useTranslation();
+  const [state, setState] = useState<SecuriteState>(initialState);
 
-  const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [showOldPassword, setShowOldPassword] = useState(false);
-  const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(true);
+  const {
+    oldPassword,
+    newPassword,
+    confirmPassword,
+    showOldPassword,
+    showNewPassword,
+    showConfirmPassword,
+    isLoading,
+    error,
+  } = state;
 
   const mdpInput1 = useRef<any>(null);
   const mdpInput2 = useRef<any>(null);
   const mdpInput3 = useRef<any>(null);
 
+  const setField = (
+    field: 'oldPassword' | 'newPassword' | 'confirmPassword',
+    value: string,
+  ) => {
+    setState((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const toggleShowPassword = (
+    field: 'showOldPassword' | 'showNewPassword' | 'showConfirmPassword',
+  ) => {
+    setState((prev) => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
+  };
+
+  const setLoading = (value: boolean) => {
+    setState((prev) => ({
+      ...prev,
+      isLoading: value,
+    }));
+  };
+
+  const setErrorState = (value: boolean) => {
+    setState((prev) => ({
+      ...prev,
+      error: value,
+    }));
+  };
+
   const handleChangePassword = async () => {
-    if (oldPassword !== oldPassword) {
+    // TODO comparaison avec oldPassword de l'utilisateur à faire
+    if (!oldPassword.trim() || oldPassword !== oldPassword) {
       Alert.alert('Erreur', 'Ancien mot de passe incorrecte.');
-      setError(true);
+      setErrorState(true);
+      return;
+    }
+
+    if (!newPassword.trim() || !confirmPassword.trim()) {
+      Alert.alert('Erreur', 'Veuillez saisir un nouveau mot de passe valide.');
+      setErrorState(true);
       return;
     }
 
     if (newPassword !== confirmPassword) {
       Alert.alert('Erreur', 'Les mots de passe ne correspondent pas.');
-      setError(true);
+      setErrorState(true);
       return;
     }
 
-    setIsLoading(true);
+    setLoading(true);
 
-    // Mise à jour du mot de passe
     const { error } = await supabaseClient.auth
       .updateUser({
         password: newPassword,
@@ -59,32 +123,20 @@ const Securite = () => {
 
     if (error) {
       Alert.alert('Erreur', error.message);
-      setError(true);
+      setErrorState(true);
     } else {
       Alert.alert('Succès', 'Votre mot de passe a été changé avec succès.');
-      setError(false);
+      setErrorState(false);
     }
 
-    setIsLoading(false);
+    setLoading(false);
   };
 
   const handleInputChange = (
     field: 'oldPassword' | 'newPassword' | 'confirmPassword',
   ) => {
     return (value: string) => {
-      switch (field) {
-        case 'oldPassword':
-          setOldPassword(value);
-          break;
-        case 'newPassword':
-          setNewPassword(value);
-          break;
-        case 'confirmPassword':
-          setConfirmPassword(value);
-          break;
-        default:
-          break;
-      }
+      setField(field, value);
     };
   };
 
@@ -114,7 +166,7 @@ const Securite = () => {
               <InputSlot className="pr-3">
                 <Button
                   className="bg-transparent text-custom-bg-inverse"
-                  onPress={() => setShowOldPassword(!showOldPassword)}
+                  onPress={() => toggleShowPassword('showOldPassword')}
                 >
                   <ButtonIcon as={showOldPassword ? EyeOffIcon : EyeIcon} />
                 </Button>
@@ -139,7 +191,7 @@ const Securite = () => {
               <InputSlot className="pr-3">
                 <Button
                   className="bg-transparent text-custom-bg-inverse"
-                  onPress={() => setShowNewPassword(!showNewPassword)}
+                  onPress={() => toggleShowPassword('showNewPassword')}
                 >
                   <ButtonIcon as={showNewPassword ? EyeOffIcon : EyeIcon} />
                 </Button>
@@ -164,7 +216,7 @@ const Securite = () => {
               <InputSlot className="pr-3">
                 <Button
                   className="bg-transparent text-custom-bg-inverse"
-                  onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+                  onPress={() => toggleShowPassword('showConfirmPassword')}
                 >
                   <ButtonIcon as={showConfirmPassword ? EyeOffIcon : EyeIcon} />
                 </Button>
