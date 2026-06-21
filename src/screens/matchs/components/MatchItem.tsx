@@ -1,11 +1,10 @@
-import JoueurName from '@/components/JoueurName';
+import JoueurName, { EquipeId } from '@/components/JoueurName';
 import { Box } from '@/components/ui/box';
 import { Divider } from '@/components/ui/divider';
 import { HStack } from '@/components/ui/hstack';
 import { Pressable } from '@/components/ui/pressable';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { EquipeId } from '@/screens/match-detail';
 import { EquipeType } from '@/types/interfaces/equipeType';
 import { MatchModel } from '@/types/interfaces/matchModel';
 import FontAwesome from '@react-native-vector-icons/fontawesome';

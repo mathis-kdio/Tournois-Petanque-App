@@ -1,7 +1,8 @@
 import { Text } from '@/components/ui/text';
-import { EquipeId } from '@/screens/match-detail';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import React from 'react';
+
+export type EquipeId = 1 | 2;
 
 export interface Props {
   joueur: JoueurModel;

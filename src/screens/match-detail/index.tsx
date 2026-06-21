@@ -1,4 +1,4 @@
-import JoueurName from '@/components/JoueurName';
+import JoueurName, { EquipeId } from '@/components/JoueurName';
 import Loading from '@/components/Loading';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { Box } from '@/components/ui/box';
@@ -17,8 +17,6 @@ import { nextMatch } from '@utils/generations/nextMatch/nextMatch';
 import { useRouter } from 'expo-router';
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-export type EquipeId = 1 | 2;
 
 export interface Props {
   idMatch: number;
