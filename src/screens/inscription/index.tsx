@@ -30,59 +30,99 @@ import { VStack } from '@/components/ui/vstack';
 import { supabaseClient } from '@/utils/supabase';
 import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { useRouter } from 'expo-router';
-import { useRef, useState } from 'react';
+import { useReducer, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
+
+const validEmailTest = (email: string): boolean => {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return emailRegex.test(email);
+};
+
+const validPasswordTest = (password: string): boolean => {
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/;
+  return passwordRegex.test(password);
+};
+
+type FormState = {
+  loading: boolean;
+  email: string;
+  password: string;
+  password2: string;
+  conditionsCheckbox: boolean;
+  showPassword1: boolean;
+  showPassword2: boolean;
+  emailIncorrect: boolean;
+  passwordIncorrect: boolean;
+  password2Incorrect: boolean;
+};
+
+const initialFormState: FormState = {
+  loading: false,
+  email: '',
+  password: '',
+  password2: '',
+  conditionsCheckbox: false,
+  showPassword1: false,
+  showPassword2: false,
+  emailIncorrect: false,
+  passwordIncorrect: false,
+  password2Incorrect: false,
+};
 
 const Inscription = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [password2, setPassword2] = useState('');
-  const [conditionsCheckbox, setConditionsCheckbox] = useState(false);
-  const [showPassword1, setShowPassword1] = useState(false);
-  const [showPassword2, setShowPassword2] = useState(false);
-  const [emailIncorrect, setEmailIncorrect] = useState(false);
-  const [passwordIncorrect, setPasswordIncorrect] = useState(false);
-  const [password2Incorrect, setPassword2Incorrect] = useState(false);
+  const [formState, dispatch] = useReducer(
+    (state: FormState, action: Partial<FormState>) => ({
+      ...state,
+      ...action,
+    }),
+    initialFormState,
+  );
+
+  const {
+    loading,
+    email,
+    password,
+    password2,
+    conditionsCheckbox,
+    showPassword1,
+    showPassword2,
+    emailIncorrect,
+    passwordIncorrect,
+    password2Incorrect,
+  } = formState;
 
   const mdpInput1 = useRef<any>(null);
   const mdpInput2 = useRef<any>(null);
 
-  const validEmailTest = (email: string): boolean => {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return emailRegex.test(email);
-  };
-
-  const validPasswordTest = (password: string): boolean => {
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/;
-    return passwordRegex.test(password);
-  };
-
   const signUpWithEmail = async () => {
-    let isValidEmail = validEmailTest(email);
-    let isValidPassword = validPasswordTest(password);
-    let isValidPassword2 = password2 === password;
-    setEmailIncorrect(!isValidEmail);
-    setPasswordIncorrect(!isValidPassword);
-    setPassword2Incorrect(!isValidPassword2);
+    const isValidEmail = validEmailTest(email);
+    const isValidPassword = validPasswordTest(password);
+    const isValidPassword2 = password2 === password;
+
+    dispatch({
+      emailIncorrect: !isValidEmail,
+      passwordIncorrect: !isValidPassword,
+      password2Incorrect: !isValidPassword2,
+    });
+
     if (!isValidEmail || !isValidPassword || !isValidPassword2) {
       return;
     }
 
-    setLoading(true);
+    dispatch({ loading: true });
     const {
       data: { session },
       error,
     } = await supabaseClient.auth.signUp({
-      email: email,
-      password: password,
+      email,
+      password,
     });
-    setLoading(false);
+    dispatch({ loading: false });
 
     console.log(session);
     if (error) {
@@ -93,7 +133,7 @@ const Inscription = () => {
         router.navigate({
           pathname: '/connexion/confirmation-email',
           params: {
-            email: email,
+            email,
           },
         });
       }
@@ -130,7 +170,7 @@ const Inscription = () => {
                 keyboardType="email-address"
                 returnKeyType="next"
                 autoCapitalize="none"
-                onChangeText={(text) => setEmail(text)}
+                onChangeText={(text) => dispatch({ email: text })}
                 onSubmitEditing={() => mdpInput1.current.focus()}
               />
             </Input>
@@ -156,14 +196,14 @@ const Inscription = () => {
                 secureTextEntry={!showPassword1}
                 returnKeyType="next"
                 autoCapitalize={'none'}
-                onChangeText={(text) => setPassword(text)}
+                onChangeText={(text) => dispatch({ password: text })}
                 onSubmitEditing={() => mdpInput2.current.focus()}
                 ref={mdpInput1}
               />
               <InputSlot className="pr-3">
                 <Button
                   className="bg-transparent text-custom-bg-inverse"
-                  onPress={() => setShowPassword1(!showPassword1)}
+                  onPress={() => dispatch({ showPassword1: !showPassword1 })}
                 >
                   <ButtonIcon as={showPassword1 ? EyeOffIcon : EyeIcon} />
                 </Button>
@@ -195,15 +235,15 @@ const Inscription = () => {
                 placeholder={t('mot_de_passe')}
                 secureTextEntry={!showPassword2}
                 autoCapitalize={'none'}
-                onChangeText={(text) => setPassword2(text)}
+                onChangeText={(text) => dispatch({ password2: text })}
                 ref={mdpInput2}
               />
               <InputSlot className="pr-3">
                 <Button
                   className="bg-transparent text-custom-bg-inverse"
-                  onPress={() => setShowPassword2(!showPassword2)}
+                  onPress={() => dispatch({ showPassword2: !showPassword2 })}
                 >
-                  <ButtonIcon as={showPassword1 ? EyeOffIcon : EyeIcon} />
+                  <ButtonIcon as={showPassword2 ? EyeOffIcon : EyeIcon} />
                 </Button>
               </InputSlot>
             </Input>
@@ -224,7 +264,9 @@ const Inscription = () => {
           >
             <Checkbox
               value="conditionsCheckbox"
-              onChange={() => setConditionsCheckbox(!conditionsCheckbox)}
+              onChange={() =>
+                dispatch({ conditionsCheckbox: !conditionsCheckbox })
+              }
             >
               <CheckboxIndicator className="mr-2">
                 <CheckboxIcon
