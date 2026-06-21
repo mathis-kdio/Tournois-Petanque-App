@@ -6,6 +6,7 @@ import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { useJoueurs } from '@/repositories/joueurs/useJoueurs';
+import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
 import { useTournois } from '@/repositories/tournois/useTournois';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
@@ -30,7 +31,8 @@ const JoueursTournoi = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const { actualTournoi, joueursTournoi } = useTournois();
+  const { actualTournoi } = useActualTournoi();
+  const { joueursTournoi } = useTournois();
   const { renameJoueur, checkJoueur } = useJoueurs();
 
   if (!actualTournoi || !joueursTournoi) {

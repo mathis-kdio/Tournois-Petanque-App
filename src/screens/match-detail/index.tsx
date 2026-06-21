@@ -9,7 +9,7 @@ import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { useMatchs } from '@/repositories/matchs/useMatchs';
-import { useTournois } from '@/repositories/tournois/useTournois';
+import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { requestReview } from '@/utils/storeReview/StoreReview';
 import AdMobMatchDetailBanner from '@components/adMob/AdMobMatchDetailBanner';
@@ -31,8 +31,8 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
 
   const secondInput = useRef<any>(null);
 
-  const { updateScore, resetScore } = useMatchs();
-  const { actualTournoi } = useTournois();
+  const { actualTournoi } = useActualTournoi();
+  const { updateScore, resetScore } = useMatchs(actualTournoi);
 
   if (!actualTournoi) {
     return <Loading />;

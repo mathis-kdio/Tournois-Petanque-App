@@ -4,7 +4,7 @@ import { Button, ButtonText } from '@/components/ui/button';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { useTournois } from '@/repositories/tournois/useTournois';
+import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,7 +16,7 @@ const ParametresTournoi = () => {
 
   const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false);
 
-  const { actualTournoi } = useTournois();
+  const { actualTournoi } = useActualTournoi();
 
   if (!actualTournoi) {
     return <Loading />;

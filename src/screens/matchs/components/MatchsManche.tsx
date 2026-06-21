@@ -1,7 +1,7 @@
 import Loading from '@/components/Loading';
 import { VStack } from '@/components/ui/vstack';
 import useExitAlertOnBack from '@/components/with-exit-alert/with-exit-alert';
-import { useTournois } from '@/repositories/tournois/useTournois';
+import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
 import MatchItem from '@/screens/matchs/components/MatchItem';
 import { MatchModel } from '@/types/interfaces/matchModel';
 import {
@@ -20,7 +20,7 @@ const renderItem = ({ item }: LegendListRenderItemProps<MatchModel>) => {
 const MatchsManche: React.FC<Props> = ({ mancheNumber }) => {
   useExitAlertOnBack();
 
-  const { actualTournoi } = useTournois();
+  const { actualTournoi } = useActualTournoi();
 
   if (!actualTournoi) {
     return <Loading />;

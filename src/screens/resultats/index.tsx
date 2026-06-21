@@ -3,6 +3,7 @@ import { Divider } from '@/components/ui/divider';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
+import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
 import { useTournois } from '@/repositories/tournois/useTournois';
 import ListeResultatItem from '@/screens/resultats/components/ListeResultatItem';
 import { Victoire } from '@/types/interfaces/victoire';
@@ -16,7 +17,8 @@ import { useTranslation } from 'react-i18next';
 const ListeResultats = () => {
   const { t } = useTranslation();
 
-  const { actualTournoi, joueursTournoi } = useTournois();
+  const { actualTournoi } = useActualTournoi();
+  const { joueursTournoi } = useTournois();
 
   if (!actualTournoi || !joueursTournoi) {
     return <Loading />;

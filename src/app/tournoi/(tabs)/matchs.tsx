@@ -2,7 +2,7 @@ import Loading from '@/components/Loading';
 import { StyledTopTabs } from '@/components/navigation/styled-top-tabs';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
-import { useTournois } from '@/repositories/tournois/useTournois';
+import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
 import MatchsManche from '@/screens/matchs/components/MatchsManche';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import FontAwesome from '@react-native-vector-icons/fontawesome';
@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 export default function MatchsScreen() {
   const { t } = useTranslation();
   const { Screen } = createMaterialTopTabNavigator();
-  const { actualTournoi } = useTournois();
+  const { actualTournoi } = useActualTournoi();
 
   if (!actualTournoi) {
     return <Loading />;
