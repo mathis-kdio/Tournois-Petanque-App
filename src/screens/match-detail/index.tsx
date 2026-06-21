@@ -64,7 +64,12 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
       const joueur = equipe[i];
       if (joueur) {
         nomsJoueurs.push(
-          <JoueurName joueur={joueur} equipeId={equipeId} size={'md'} />,
+          <JoueurName
+            key={joueur.uniqueBDDId}
+            joueur={joueur}
+            equipeId={equipeId}
+            size={'md'}
+          />,
         );
       }
     }
