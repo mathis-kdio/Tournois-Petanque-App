@@ -29,7 +29,7 @@ const InscriptionListeJoueursFooter: React.FC<Props> = ({
     <VStack space="md" className="px-0">
       <VStack space="sm" className="px-10">
         <RemoveAllButton setModalRemoveIsOpen={setModalRemoveIsOpen} />
-        {loadListScreen && <LoadSavedListButton />}
+        {!loadListScreen && <LoadSavedListButton />}
       </VStack>
       <InscriptionListeJoueursSuggestions
         listeJoueurs={listeJoueurs}
