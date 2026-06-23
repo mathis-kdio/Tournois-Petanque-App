@@ -20,27 +20,27 @@ export interface Props {
   screenStackName: screenStackNameType;
 }
 
+const renderItem = ({
+  item,
+  index,
+}: LegendListRenderItemProps<TerrainModel>) => (
+  <ListeTerrainItem index={index + 1} terrain={item} />
+);
+
 const ListeTerrains: React.FC<Props> = ({ screenStackName }) => {
   const { t } = useTranslation();
 
-  const { preparationTournoiVM } = usePreparationTournoi();
+  const { preparationTournoi } = usePreparationTournoi();
   const { joueurs } = useJoueursPreparationTournois();
   const { terrains, insertTerrain } = useTerrainsPreparationTournois();
 
-  if (!preparationTournoiVM || !joueurs || !terrains) {
+  if (!preparationTournoi || !joueurs || !terrains) {
     return <Loading />;
   }
 
   const ajoutTerrain = async () => {
     await insertTerrain(`Terrain ${terrains.length + 1}`);
   };
-
-  const renderItem = ({
-    item,
-    index,
-  }: LegendListRenderItemProps<TerrainModel>) => (
-    <ListeTerrainItem index={index + 1} terrain={item} />
-  );
 
   return (
     <VStack className="flex-1 bg-custom-background">
@@ -53,6 +53,7 @@ const ListeTerrains: React.FC<Props> = ({ screenStackName }) => {
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
         className="flex-1 h-1"
+        getItemType={() => 'ListeTerrainItem'}
         recycleItems
       />
       <VStack space="lg" className="px-10">
@@ -63,7 +64,7 @@ const ListeTerrains: React.FC<Props> = ({ screenStackName }) => {
           screenStackName={screenStackName}
           joueursModel={joueurs}
           terrainsModel={terrains}
-          preparationTournoiModel={preparationTournoiVM}
+          preparationTournoiModel={preparationTournoi}
         />
       </VStack>
     </VStack>

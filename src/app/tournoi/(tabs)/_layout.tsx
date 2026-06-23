@@ -2,7 +2,7 @@ import BoutonMenuHeaderNav from '@/components/BoutonMenuHeaderNavigation';
 import { StyledTabs } from '@/components/navigation/styled-tabs';
 import { Text } from '@/components/ui/text';
 import { useTheme } from '@/components/ui/theme-provider/ThemeProvider';
-import { useTournois } from '@/repositories/tournois/useTournois';
+import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
 import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { Tabs } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -12,7 +12,7 @@ export default function TabLayout() {
 
   const { theme } = useTheme();
 
-  const { actualTournoi } = useTournois();
+  const { actualTournoi } = useActualTournoi();
 
   if (!actualTournoi) {
     return;

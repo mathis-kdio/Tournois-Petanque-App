@@ -6,6 +6,7 @@ import { ScrollView } from '@/components/ui/scroll-view';
 import { StyledSwitch } from '@/components/ui/switch/styled-switch';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
+import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
 import { useTournois } from '@/repositories/tournois/useTournois';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -18,7 +19,8 @@ const PDFExport = () => {
   const [ajoutClassement, setAjoutClassement] = useState(true);
   const [affichageCompact, setAffichageCompact] = useState(false);
 
-  const { actualTournoi, joueursTournoi } = useTournois();
+  const { actualTournoi } = useActualTournoi();
+  const { joueursTournoi } = useTournois();
 
   if (!actualTournoi || !joueursTournoi) {
     return <Loading />;

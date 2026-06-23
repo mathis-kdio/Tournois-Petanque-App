@@ -8,7 +8,7 @@ import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
-import { useTournois } from '@/repositories/tournois/useTournois';
+import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
 import { _adsConsentForm } from '@/utils/adMob/consentForm';
 import { _requestTrackingPermissions } from '@/utils/expoTrackingTransparency/requestTrackingPermission';
 import CardButton from '@components/buttons/CardButton';
@@ -38,7 +38,7 @@ export default function Accueil() {
 
   const { resetPreparationTournoi } = usePreparationTournoi();
 
-  const { actualTournoi } = useTournois();
+  const { actualTournoi } = useActualTournoi();
 
   const [appState, setAppState] = useState<AppStateStatus>(
     AppState.currentState,

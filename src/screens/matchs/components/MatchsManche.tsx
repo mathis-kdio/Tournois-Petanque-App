@@ -1,7 +1,7 @@
 import Loading from '@/components/Loading';
 import { VStack } from '@/components/ui/vstack';
 import useExitAlertOnBack from '@/components/with-exit-alert/with-exit-alert';
-import { useTournois } from '@/repositories/tournois/useTournois';
+import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
 import MatchItem from '@/screens/matchs/components/MatchItem';
 import { MatchModel } from '@/types/interfaces/matchModel';
 import {
@@ -13,20 +13,20 @@ interface Props {
   mancheNumber: number;
 }
 
+const renderItem = ({ item }: LegendListRenderItemProps<MatchModel>) => {
+  return <MatchItem match={item} />;
+};
+
 const MatchsManche: React.FC<Props> = ({ mancheNumber }) => {
   useExitAlertOnBack();
 
-  const { actualTournoi } = useTournois();
+  const { actualTournoi } = useActualTournoi();
 
   if (!actualTournoi) {
     return <Loading />;
   }
 
   const { matchs } = actualTournoi;
-
-  const renderItem = ({ item }: LegendListRenderItemProps<MatchModel>) => {
-    return <MatchItem match={item} />;
-  };
 
   const matchsManche = matchs.filter((match) => match.manche === mancheNumber);
 
@@ -37,6 +37,7 @@ const MatchsManche: React.FC<Props> = ({ mancheNumber }) => {
         keyExtractor={(item) => item.matchId.toString()}
         renderItem={renderItem}
         className="flex-1"
+        getItemType={() => 'MatchItem'}
         recycleItems
       />
     </VStack>

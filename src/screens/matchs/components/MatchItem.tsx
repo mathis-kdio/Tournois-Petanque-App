@@ -1,22 +1,33 @@
+import JoueurName, { EquipeId } from '@/components/JoueurName';
 import { Box } from '@/components/ui/box';
 import { Divider } from '@/components/ui/divider';
 import { HStack } from '@/components/ui/hstack';
+import { Pressable } from '@/components/ui/pressable';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { EquipeType } from '@/types/interfaces/equipeType';
-import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { MatchModel } from '@/types/interfaces/matchModel';
 import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { TouchableOpacity } from 'react-native';
 
 export interface Props {
   match: MatchModel;
 }
 
-type Equipe = 0 | 1;
+const displayEquipe = (equipeType: EquipeType, equipeId: EquipeId) => {
+  return equipeType.map((joueurModel) =>
+    joueurModel ? (
+      <JoueurName
+        key={joueurModel.uniqueBDDId}
+        joueur={joueurModel}
+        equipeId={equipeId}
+        size="xl"
+      />
+    ) : null,
+  );
+};
 
 const MatchItem: React.FC<Props> = ({ match }) => {
   const { t } = useTranslation();
@@ -49,34 +60,6 @@ const MatchItem: React.FC<Props> = ({ match }) => {
     );
   };
 
-  const displayEquipe = (equipeType: EquipeType, equipeId: Equipe) => {
-    return equipeType.filter((a) => !!a).map((b) => displayName(b, equipeId));
-  };
-
-  const displayName = (joueur: JoueurModel, equipe: Equipe) => {
-    if (equipe === 0) {
-      return (
-        <Text
-          key={joueur.joueurTournoiId}
-          className="text-typography-white text-left"
-          size="xl"
-        >
-          {`${joueur.joueurTournoiId + 1} ${joueur.name}`}
-        </Text>
-      );
-    } else {
-      return (
-        <Text
-          key={joueur.joueurTournoiId}
-          className="text-typography-white text-right"
-          size="xl"
-        >
-          {`${joueur.name} ${joueur.joueurTournoiId + 1}`}
-        </Text>
-      );
-    }
-  };
-
   const displayScore = () => {
     return (
       <HStack className="justify-center">
@@ -101,17 +84,17 @@ const MatchItem: React.FC<Props> = ({ match }) => {
   };
 
   return (
-    <TouchableOpacity onPress={() => navigateMatchDetail()}>
+    <Pressable onPress={() => navigateMatchDetail()}>
       <VStack className="m-2">
         {displayTitle()}
         <HStack className="items-center">
-          <Box className="flex-1">{displayEquipe(equipe[0], 0)}</Box>
+          <Box className="flex-1">{displayEquipe(equipe[0], 1)}</Box>
           <Box className="flex-1">{displayScore()}</Box>
-          <Box className="flex-1">{displayEquipe(equipe[1], 1)}</Box>
+          <Box className="flex-1">{displayEquipe(equipe[1], 2)}</Box>
         </HStack>
       </VStack>
       <Divider />
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

@@ -15,17 +15,17 @@ interface UserDetail {
   Club: { label: string; value: string };
 }
 
+const userDetailsInit: UserDetail = {
+  Nom: { label: 'nom', value: 'non_renseigne' },
+  Prenom: { label: 'prenom', value: 'non_renseigne' },
+  Email: { label: 'email', value: 'non_renseigne' },
+  Pays: { label: 'pays', value: 'non_renseigne' },
+  Club: { label: 'club', value: 'non_renseigne' },
+};
+
 const InfosPerso = () => {
   const { t } = useTranslation();
   const { session } = useAuth();
-
-  const userDetailsInit: UserDetail = {
-    Nom: { label: 'nom', value: 'non_renseigne' },
-    Prenom: { label: 'prenom', value: 'non_renseigne' },
-    Email: { label: 'email', value: 'non_renseigne' },
-    Pays: { label: 'pays', value: 'non_renseigne' },
-    Club: { label: 'club', value: 'non_renseigne' },
-  };
 
   const [userDetails, setUserDetails] = useState<UserDetail>(userDetailsInit);
 

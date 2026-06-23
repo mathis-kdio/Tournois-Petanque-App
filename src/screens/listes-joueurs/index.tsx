@@ -81,6 +81,7 @@ const ListesJoueurs = () => {
         keyExtractor={(item) => item.listId.toString()}
         renderItem={renderItem}
         className="flex-1 h-1"
+        getItemType={() => 'ListeJoueursItem'}
         recycleItems
       />
     </VStack>

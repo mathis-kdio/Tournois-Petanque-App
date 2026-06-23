@@ -5,21 +5,21 @@ import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
-import React, { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import StartButton from './components/StartButton';
 
 const InscriptionsSansNoms = () => {
   const { t } = useTranslation();
 
-  const { preparationTournoiVM } = usePreparationTournoi();
+  const { preparationTournoi } = usePreparationTournoi();
 
   const [nbJoueurNormaux, setNbJoueurNormaux] = useState(0);
   const [nbJoueurEnfants, setNbJoueurEnfants] = useState(0);
 
-  const secondInput = React.createRef<any>();
+  const secondInput = useRef<any>(null);
 
-  if (!preparationTournoiVM) {
+  if (!preparationTournoi) {
     return <Loading />;
   }
 
@@ -74,7 +74,7 @@ const InscriptionsSansNoms = () => {
           {t('joueurs_enfants_explication')}
         </Text>
         <StartButton
-          preparationTournoiModel={preparationTournoiVM}
+          preparationTournoiModel={preparationTournoi}
           nbJoueurNormaux={nbJoueurNormaux}
           nbJoueurEnfants={nbJoueurEnfants}
         />

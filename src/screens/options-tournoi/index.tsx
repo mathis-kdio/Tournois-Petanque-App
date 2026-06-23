@@ -23,7 +23,7 @@ import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePrep
 import { MemesAdversairesType } from '@/types/interfaces/preparationTournoiModel';
 import { screenStackNameType } from '@/types/types/searchParams';
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export interface Props {
@@ -35,23 +35,22 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
 
   const { t } = useTranslation();
 
-  const { preparationTournoiVM, updateOptionsPreparationTournoi } =
+  const { preparationTournoi, updateOptionsPreparationTournoi } =
     usePreparationTournoi();
 
   const defaultNbTours = 5;
   const defaultNbPtVictoire = 13;
 
-  const [speciauxIncompatibles, setSpeciauxIncompatibles] = useState(true);
-  const [memesEquipes, setMemesEquipes] = useState(true);
-  const [memesAdversaires, setMemesAdversaires] =
-    useState<MemesAdversairesType>(50);
+  const speciauxIncompatibles = useRef(true);
+  const memesEquipes = useRef(true);
+  const memesAdversaires = useRef<MemesAdversairesType>(50);
   const [nbTours, setNbTours] = useState<number | undefined>(defaultNbTours);
   const [nbPtVictoire, setNbPtVictoire] = useState<number | undefined>(
     defaultNbPtVictoire,
   );
-  const [avecTerrains, setAvecTerrains] = useState(false);
+  const avecTerrains = useRef(false);
 
-  if (!preparationTournoiVM) {
+  if (!preparationTournoi) {
     return <Loading />;
   }
 
@@ -67,7 +66,7 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
     if (value !== 0 && value !== 50 && value !== 100) {
       throw Error('value slider memesAdversaires non prise en charge');
     }
-    setMemesAdversaires(value);
+    memesAdversaires.current = value;
   };
 
   const nextStep = async () => {
@@ -77,10 +76,10 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
     await updateOptionsPreparationTournoi(
       nbTours,
       nbPtVictoire,
-      speciauxIncompatibles,
-      memesEquipes,
-      memesAdversaires,
-      avecTerrains,
+      speciauxIncompatibles.current,
+      memesEquipes.current,
+      memesAdversaires.current,
+      avecTerrains.current,
     );
 
     router.navigate(`/inscriptions/${screenStackName}`);
@@ -150,7 +149,7 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
           <VStack space="md">
             <Checkbox
               value="speciauxIncompatibles"
-              onChange={() => setSpeciauxIncompatibles((prev) => !prev)}
+              onChange={(bool) => (speciauxIncompatibles.current = bool)}
               aria-label={t('choix_regle_speciaux')}
               defaultIsChecked
               size="md"
@@ -167,7 +166,7 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
             </Checkbox>
             <Checkbox
               value="memesEquipes"
-              onChange={() => setMemesEquipes((prev) => !prev)}
+              onChange={(bool) => (memesEquipes.current = bool)}
               aria-label={t('choix_regle_equipes')}
               defaultIsChecked
               size="md"
@@ -215,7 +214,7 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
           <VStack>
             <Checkbox
               value="avecTerrains"
-              onChange={() => setAvecTerrains((prev) => !prev)}
+              onChange={(bool) => (avecTerrains.current = bool)}
               aria-label={t('choix_option_terrains')}
               size="md"
             >

@@ -18,8 +18,6 @@ const Compte = () => {
     await supabaseClient.auth.signOut();
   };
 
-  const supprimerCompte = () => { };
-
   return (
     <ScrollView className="h-1 bg-custom-background">
       <TopBarBack title={t('mon_compte')} />
@@ -51,11 +49,7 @@ const Compte = () => {
               {t('forcer_synchronisation')}
             </ButtonText>
           </Button>
-          <Button
-            action="negative"
-            isDisabled={true}
-            onPress={() => supprimerCompte()}
-          >
+          <Button action="negative" isDisabled={true}>
             <ButtonIcon as={TrashIcon} />
             <ButtonText className="ml-2">{t('supprimer_compte')}</ButtonText>
           </Button>

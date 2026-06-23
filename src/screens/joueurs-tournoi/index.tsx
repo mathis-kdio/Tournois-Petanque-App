@@ -6,6 +6,7 @@ import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { useJoueurs } from '@/repositories/joueurs/useJoueurs';
+import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
 import { useTournois } from '@/repositories/tournois/useTournois';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
@@ -16,11 +17,22 @@ import {
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
+const onDeleteJoueur = () => {
+  throw new Error('Impossible de supprimer un joueur dans un tournoi lancé');
+};
+
+const onAddEquipeJoueur = () => {
+  throw new Error(
+    "Impossible d'ajouter une équipe à un joueur dans un tournoi lancé",
+  );
+};
+
 const JoueursTournoi = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const { actualTournoi, joueursTournoi } = useTournois();
+  const { actualTournoi } = useActualTournoi();
+  const { joueursTournoi } = useTournois();
   const { renameJoueur, checkJoueur } = useJoueurs();
 
   if (!actualTournoi || !joueursTournoi) {
@@ -31,16 +43,6 @@ const JoueursTournoi = () => {
 
   const retourMatchs = () => {
     router.navigate('/tournoi');
-  };
-
-  const onDeleteJoueur = () => {
-    throw new Error('Impossible de supprimer un joueur dans un tournoi lancé');
-  };
-
-  const onAddEquipeJoueur = () => {
-    throw new Error(
-      "Impossible d'ajouter une équipe à un joueur dans un tournoi lancé",
-    );
   };
 
   const onUpdateName = async (joueurModel: JoueurModel, name: string) => {
@@ -85,6 +87,7 @@ const JoueursTournoi = () => {
         keyExtractor={(item) => item.uniqueBDDId.toString()}
         renderItem={renderItem}
         className="flex-1"
+        getItemType={() => 'ListeJoueurItem'}
         recycleItems
       />
       <Box className="px-10 mb-2">

@@ -169,7 +169,8 @@ export default () => ({
     },
     appVersion: version,
   },
-  experiment: {
+  experiments: {
     onDemandFilesystem: false,
+    reactCompiler: true,
   },
 });

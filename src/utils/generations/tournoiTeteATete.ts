@@ -89,7 +89,8 @@ export const generationTeteATete = (
               random[j],
             );
             //+1 si joueur en cours d'affectation a déjà joué dans la même équipe
-            totPartiesJ1 += joueurs[joueur1].equipe.includes(random[j]) ? 1 : 0;
+            const equipeDuJoueur1 = new Set<number>(joueurs[joueur1].equipe);
+            totPartiesJ1 += equipeDuJoueur1.has(random[j]) ? 1 : 0;
 
             //Règle eviterMemeAdversaire choix dans slider options (0: seul match possible, 50: la moitié des matchs, 100: tous les matchs = règle désactivée)
             let maxNbMatchs = 1;

@@ -1,9 +1,7 @@
-import { useTournois } from '../tournois/useTournois';
+import { TournoiModel } from '@/types/interfaces/tournoi';
 import { MatchsRepository } from './matchsRepository';
 
-export const useMatchs = () => {
-  const { actualTournoi } = useTournois();
-
+export const useMatchs = (actualTournoi: TournoiModel | undefined) => {
   const updateScore = async (
     matchId: number,
     score1: number,

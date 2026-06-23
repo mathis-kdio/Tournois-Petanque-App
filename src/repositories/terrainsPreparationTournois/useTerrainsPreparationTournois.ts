@@ -2,7 +2,6 @@ import { NewTerrain, Terrain } from '@/db/schema';
 import { NewTerrainsPreparationTournois } from '@/db/schema/terrainsPreparationTournoi';
 import { TerrainModel } from '@/types/interfaces/terrainModel';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { useMemo } from 'react';
 import { TerrainsRepository } from '../terrains/terrainsRepository';
 import { TerrainsPreparationTournoisRepository } from './terrainsPreparationTournoiRepository';
 
@@ -31,6 +30,22 @@ function toNewTerrainsPreparationTournois(
   };
 }
 
+const insertTerrain = async (terrainName: string) => {
+  const terrain = await TerrainsRepository.insert(toNewTerrain(terrainName));
+  await TerrainsPreparationTournoisRepository.insert(
+    toNewTerrainsPreparationTournois(terrain, 0),
+  );
+};
+
+const deleteTerrain = async (terrainId: number) => {
+  await TerrainsPreparationTournoisRepository.delete(terrainId);
+  await TerrainsRepository.delete([terrainId]);
+};
+
+const renameTerrain = async (terrainId: number, name: string) => {
+  await TerrainsRepository.rename(terrainId, name);
+};
+
 export function useTerrainsPreparationTournois() {
   const { data: tousLesTerrains = [] } = useLiveQuery(
     TerrainsRepository.getAll(),
@@ -40,34 +55,21 @@ export function useTerrainsPreparationTournois() {
     TerrainsPreparationTournoisRepository.getIdsInPreparation(0),
   );
 
-  const terrainsVm = useMemo(() => {
+  const terrainsVM = () => {
     if (!tousLesTerrains.length || !liaisons.length) {
       return [];
     }
     const idsEnPreparation = new Set(liaisons.map((l) => l.terrainId));
-    return tousLesTerrains
-      .filter((t) => idsEnPreparation.has(t.id))
-      .map((t) => toTerrainModel(t));
-  }, [tousLesTerrains, liaisons]);
-
-  const insertTerrain = async (terrainName: string) => {
-    const terrain = await TerrainsRepository.insert(toNewTerrain(terrainName));
-    await TerrainsPreparationTournoisRepository.insert(
-      toNewTerrainsPreparationTournois(terrain, 0),
-    );
-  };
-
-  const deleteTerrain = async (terrainId: number) => {
-    await TerrainsPreparationTournoisRepository.delete(terrainId);
-    await TerrainsRepository.delete([terrainId]);
-  };
-
-  const renameTerrain = async (terrainId: number, name: string) => {
-    await TerrainsRepository.rename(terrainId, name);
+    return tousLesTerrains.reduce((acc, t) => {
+      if (idsEnPreparation.has(t.id)) {
+        acc.push(toTerrainModel(t));
+      }
+      return acc;
+    }, [] as TerrainModel[]);
   };
 
   return {
-    terrains: terrainsVm,
+    terrains: terrainsVM(),
     insertTerrain,
     deleteTerrain,
     renameTerrain,

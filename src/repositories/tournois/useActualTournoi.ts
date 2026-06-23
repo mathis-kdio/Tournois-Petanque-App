@@ -1,15 +1,16 @@
 import { Tournoi } from '@/db/schema/tournoi';
+import { EquipeType } from '@/types/interfaces/equipeType';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { MatchModel } from '@/types/interfaces/matchModel';
+import { TerrainModel } from '@/types/interfaces/terrainModel';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import {
   Joueur_EquipesJoueurs,
   JoueursRepository,
 } from '../joueurs/joueursRepository';
-import { MatchsRepository } from '../matchs/matchsRepository';
+import { FullMatch, MatchsRepository } from '../matchs/matchsRepository';
 import { TournoisRepository } from './tournoisRepository';
-import { useActualTournoi } from './useActualTournoi';
 
 function toTournoiModel(tournoi: Tournoi, matchs: MatchModel[]): TournoiModel {
   return {
@@ -35,6 +36,32 @@ function toTournoiModel(tournoi: Tournoi, matchs: MatchModel[]): TournoiModel {
   };
 }
 
+function toTerrainModel(fullMatch: FullMatch): TerrainModel | undefined {
+  if (fullMatch.t_id === null || fullMatch.t_name === null) {
+    return undefined;
+  }
+  return {
+    id: fullMatch.t_id,
+    name: fullMatch.t_name,
+  };
+}
+
+function toMatchmodel(
+  fullMatch: FullMatch,
+  equipe1: EquipeType,
+  equipe2: EquipeType,
+): MatchModel {
+  return {
+    matchId: fullMatch.m_matchId,
+    score1: fullMatch.m_score1 ?? undefined,
+    score2: fullMatch.m_score2 ?? undefined,
+    manche: fullMatch.m_tourId,
+    mancheName: fullMatch.m_tourName ?? undefined,
+    equipe: [equipe1, equipe2],
+    terrain: toTerrainModel(fullMatch),
+  };
+}
+
 function toJoueurModel(joueur: Joueur_EquipesJoueurs): JoueurModel {
   return {
     uniqueBDDId: joueur.j_id,
@@ -46,13 +73,7 @@ function toJoueurModel(joueur: Joueur_EquipesJoueurs): JoueurModel {
   };
 }
 
-const renameTournoi = async (id: number, name: string) => {
-  await TournoisRepository.renameTournoi(id, name);
-};
-
-export const useTournois = () => {
-  const { actualTournoi } = useActualTournoi();
-
+export const useActualTournoi = () => {
   const { data: tournois = [] } = useLiveQuery(
     TournoisRepository.getTournois(),
   );
@@ -89,42 +110,52 @@ export const useTournois = () => {
     [equipesTournoiId],
   );
 
-  const joueursTournoiVM = () => {
-    if (!equipesWithJoueursTournoi || equipesWithJoueursTournoi.length === 0) {
+  const actualTournoiVM = () => {
+    if (
+      !tournoiActuel ||
+      !fullMatchs ||
+      !fullMatchs.length ||
+      !equipesWithJoueursTournoi ||
+      !equipesWithJoueursTournoi.length
+    ) {
       return;
     }
-    const joueursIds = new Set();
-    const result = equipesWithJoueursTournoi.reduce((acc, { joueurs: j }) => {
-      if (!joueursIds.has(j.j_id)) {
-        joueursIds.add(j.j_id);
-        acc.push(toJoueurModel(j));
-      }
-      return acc;
-    }, [] as JoueurModel[]);
-    return result.sort((a, b) => a.joueurTournoiId - b.joueurTournoiId);
-  };
 
-  const { data: allTournois } = useLiveQuery(
-    TournoisRepository.getAllTournois(),
-  );
-  const listeTournoisVM = () => {
-    if (!allTournois) {
-      return;
-    }
-    return allTournois.map((tournoi) => toTournoiModel(tournoi, [])) ?? [];
-  };
+    const matchModels = fullMatchs.map((fullMatch) => {
+      const equipe1JoueurModels = equipesWithJoueursTournoi.reduce(
+        (acc, { equipes_joueurs, joueurs }) => {
+          if (equipes_joueurs.ej_equipeId === fullMatch.m_equipe1) {
+            acc.push(toJoueurModel(joueurs));
+          }
+          return acc;
+        },
+        [] as JoueurModel[],
+      );
+      const equipe1: EquipeType = [
+        ...equipe1JoueurModels.slice(0, 4),
+        ...Array(Math.max(0, 4 - equipe1JoueurModels.length)).fill(undefined),
+      ] as EquipeType;
 
-  const setActualTournoi = async (id: number) => {
-    if (actualTournoi) {
-      await TournoisRepository.setActualTournoi(actualTournoi.tournoiId, false);
-    }
-    await TournoisRepository.setActualTournoi(id, true);
+      const equipe2JoueurModels = equipesWithJoueursTournoi.reduce(
+        (acc, { equipes_joueurs, joueurs }) => {
+          if (equipes_joueurs.ej_equipeId === fullMatch.m_equipe2) {
+            acc.push(toJoueurModel(joueurs));
+          }
+          return acc;
+        },
+        [] as JoueurModel[],
+      );
+      const equipe2: EquipeType = [
+        ...equipe2JoueurModels.slice(0, 4),
+        ...Array(Math.max(0, 4 - equipe2JoueurModels.length)).fill(undefined),
+      ] as EquipeType;
+
+      return toMatchmodel(fullMatch, equipe1, equipe2);
+    });
+    return toTournoiModel(tournoiActuel, matchModels);
   };
 
   return {
-    joueursTournoi: joueursTournoiVM(),
-    listeTournois: listeTournoisVM(),
-    setActualTournoi,
-    renameTournoi,
+    actualTournoi: actualTournoiVM(),
   };
 };

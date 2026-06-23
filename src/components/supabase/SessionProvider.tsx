@@ -1,13 +1,19 @@
 import { Session, User } from '@supabase/supabase-js';
 import { supabaseClient } from '@utils/supabase';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, use, useEffect, useState } from 'react';
 
 // create a context for authentication
 const AuthContext = createContext<{
   session: Session | null | undefined;
   user: User | null | undefined;
   signOut: () => void;
-}>({ session: null, user: null, signOut: () => { } });
+}>({
+  session: null,
+  user: null,
+  signOut: () => {
+    console.log('signOut');
+  },
+});
 
 export const AuthProvider = ({ children }: any) => {
   const [user, setUser] = useState<User>();
@@ -57,5 +63,5 @@ export const AuthProvider = ({ children }: any) => {
 
 // export the useAuth hook
 export const useAuth = () => {
-  return useContext(AuthContext);
+  return use(AuthContext);
 };

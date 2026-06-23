@@ -413,11 +413,15 @@ export class DataMigrationService {
     teamId: number,
     joueurs: Joueur[],
   ): Promise<void> {
+    const joueursMap = new Map<number, Joueur>(
+      joueurs.map((joueur) => [joueur.joueurId, joueur]),
+    );
+
     for (const playerId of equipe.filter((id) => id !== -1)) {
       // Find the player in the database
-      const joueur = joueurs.find((joueur) => joueur.joueurId === playerId);
+      const joueur = joueursMap.get(playerId);
       if (!joueur) {
-        //Si je joueur n'est pas trouvé c'est que c'est un joueur fantôme dans un match complément
+        //Si le joueur n'est pas trouvé c'est que c'est un joueur fantôme dans un match complément
         continue;
       }
 

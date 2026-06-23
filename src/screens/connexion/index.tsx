@@ -18,33 +18,35 @@ import { VStack } from '@/components/ui/vstack';
 import { supabaseClient } from '@/utils/supabase';
 import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const Authentification = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [loginIncorrect, setLoginIncorrect] = useState(false);
+  const [formState, setFormState] = useState({
+    email: '',
+    password: '',
+    loading: false,
+    showPassword: false,
+    loginIncorrect: false,
+  });
 
-  const mdpInput = React.createRef<any>();
+  const mdpInput = useRef<any>(null);
 
   const signInWithEmail = async () => {
-    setLoading(true);
+    setFormState((prev) => ({ ...prev, loading: true }));
     const { error, data } = await supabaseClient.auth.signInWithPassword({
-      email: email,
-      password: password,
+      email: formState.email,
+      password: formState.password,
     });
-    setLoading(false);
+    setFormState((prev) => ({ ...prev, loading: false }));
 
     console.log(data);
     console.log(error);
     if (error) {
-      setLoginIncorrect(true);
+      setFormState((prev) => ({ ...prev, loginIncorrect: true }));
     } else {
       router.navigate('/');
     }
@@ -60,7 +62,7 @@ const Authentification = () => {
       <VStack className="flex-1 px-10 justify-between">
         <VStack className="mb-5">
           <FormControl
-            isInvalid={loginIncorrect}
+            isInvalid={formState.loginIncorrect}
             isRequired={true}
             className="mb-5"
           >
@@ -74,7 +76,9 @@ const Authentification = () => {
                 keyboardType="email-address"
                 returnKeyType="next"
                 autoCapitalize="none"
-                onChangeText={(text) => setEmail(text)}
+                onChangeText={(text) =>
+                  setFormState((prev) => ({ ...prev, email: text }))
+                }
                 onSubmitEditing={() => mdpInput.current.focus()}
               />
             </Input>
@@ -86,7 +90,7 @@ const Authentification = () => {
             </FormControlError>
           </FormControl>
           <FormControl
-            isInvalid={loginIncorrect}
+            isInvalid={formState.loginIncorrect}
             isRequired={true}
             className="mb-5"
           >
@@ -97,17 +101,26 @@ const Authentification = () => {
               <InputField
                 className="text-typography-white placeholder:text-typography-white"
                 placeholder={t('mot_de_passe')}
-                secureTextEntry={!showPassword}
+                secureTextEntry={!formState.showPassword}
                 autoCapitalize={'none'}
-                onChangeText={(text) => setPassword(text)}
+                onChangeText={(text) =>
+                  setFormState((prev) => ({ ...prev, password: text }))
+                }
                 ref={mdpInput}
               />
               <InputSlot className="pr-3">
                 <Button
                   className="bg-transparent text-custom-bg-inverse"
-                  onPress={() => setShowPassword(!showPassword)}
+                  onPress={() =>
+                    setFormState((prev) => ({
+                      ...prev,
+                      showPassword: !prev.showPassword,
+                    }))
+                  }
                 >
-                  <ButtonIcon as={showPassword ? EyeOffIcon : EyeIcon} />
+                  <ButtonIcon
+                    as={formState.showPassword ? EyeOffIcon : EyeIcon}
+                  />
                 </Button>
               </InputSlot>
             </Input>
@@ -131,7 +144,7 @@ const Authentification = () => {
           <FormControl>
             <Button
               size="lg"
-              isDisabled={loading}
+              isDisabled={formState.loading}
               onPress={() => signInWithEmail()}
             >
               <ButtonText>{t('se_connecter')}</ButtonText>
@@ -177,7 +190,11 @@ const Authentification = () => {
           <Text className="text-typography-white self-center" size="lg">
             {t('pas_encore_compte')}
           </Text>
-          <Button size="lg" isDisabled={loading} onPress={() => inscription()}>
+          <Button
+            size="lg"
+            isDisabled={formState.loading}
+            onPress={() => inscription()}
+          >
             <ButtonText>{t('creer_un_compte')}</ButtonText>
           </Button>
         </VStack>

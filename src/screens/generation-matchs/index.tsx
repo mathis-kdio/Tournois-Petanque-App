@@ -44,7 +44,7 @@ export interface Props {
 const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
   const navigation = useNavigation();
 
-  const { preparationTournoiVM } = usePreparationTournoi();
+  const { preparationTournoi } = usePreparationTournoi();
   const { joueurs } = useJoueursPreparationTournois();
   const { terrains } = useTerrainsPreparationTournois();
   const { addTournoi, addMatchs, clearPreparationTournois } =
@@ -341,20 +341,20 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
   );
 
   useEffect(() => {
-    if (!preparationTournoiVM) {
+    if (!preparationTournoi) {
       return;
     }
 
     const timer = setTimeout(async () => {
-      await lanceurGeneration(preparationTournoiVM);
+      await lanceurGeneration(preparationTournoi);
     }, 1000);
 
     return () => {
       clearTimeout(timer);
     };
-  }, [lanceurGeneration, preparationTournoiVM]);
+  }, [lanceurGeneration, preparationTournoi]);
 
-  if (!preparationTournoiVM || !joueurs.length) {
+  if (!preparationTournoi || !joueurs.length) {
     return <Loading />;
   }
 
