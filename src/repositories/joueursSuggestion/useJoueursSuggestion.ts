@@ -12,10 +12,6 @@ const toJoueurSuggestionModel = (
   };
 };
 
-const cacherSuggestion = async (suggestionId: number) => {
-  await JoueursSuggestionRepository.cacherSuggestion(suggestionId);
-};
-
 export const useJoueursSuggestion = () => {
   const { data: joueurs } = useLiveQuery(JoueursSuggestionRepository.get());
 
@@ -25,6 +21,5 @@ export const useJoueursSuggestion = () => {
 
   return {
     joueursSuggestion: joueursSuggestionVM(),
-    cacherSuggestion,
   };
 };

@@ -13,7 +13,7 @@ import {
   LegendListRenderItemProps,
 } from '@legendapp/list/react-native';
 import FontAwesome from '@react-native-vector-icons/fontawesome';
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export interface Props {
@@ -34,13 +34,10 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
 
   const { joueursSuggestion } = useJoueursSuggestion();
 
-  const suggestions = useMemo(
-    () =>
-      joueursSuggestion.filter((suggestion) =>
-        listeJoueurs.every((joueur) => joueur.name !== suggestion.name),
-      ),
-    [joueursSuggestion, listeJoueurs],
-  );
+  const suggestions = () =>
+    joueursSuggestion.filter((suggestion) =>
+      listeJoueurs.every((joueur) => joueur.name !== suggestion.name),
+    );
 
   const [nbSuggestions, setNbSuggestions] = useState(5);
 
@@ -61,7 +58,7 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
     setNbSuggestions((prevState) => prevState + 5);
   };
 
-  const partialSuggested = suggestions.slice(0, nbSuggestions);
+  const partialSuggested = suggestions().slice(0, nbSuggestions);
 
   if (suggestions.length === 0) {
     return null;

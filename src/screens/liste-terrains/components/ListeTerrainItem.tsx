@@ -4,7 +4,10 @@ import { HStack } from '@/components/ui/hstack';
 import { CheckIcon, CloseIcon, EditIcon } from '@/components/ui/icon';
 import { Input, InputField } from '@/components/ui/input';
 import { Text } from '@/components/ui/text';
-import { useTerrainsPreparationTournois } from '@/repositories/terrainsPreparationTournois/useTerrainsPreparationTournois';
+import {
+  deleteTerrain,
+  renameTerrain,
+} from '@/repositories/terrainsPreparationTournois/terrainsPreparationTournoisActions';
 import { TerrainModel } from '@/types/interfaces/terrainModel';
 import { IIconComponentType } from '@gluestack-ui/core/lib/esm/icon/creator/createIcon';
 import React, { useState } from 'react';
@@ -19,8 +22,6 @@ export interface Props {
 const ListeTerrainItem: React.FC<Props> = ({ index, terrain }) => {
   const [renommerOn, setRenommerOn] = useState(false);
   const [terrainText, setTerrainText] = useState('');
-
-  const { deleteTerrain, renameTerrain } = useTerrainsPreparationTournois();
 
   const supprimerTerrain = async (terrain: TerrainModel) => {
     setRenommerOn(false);

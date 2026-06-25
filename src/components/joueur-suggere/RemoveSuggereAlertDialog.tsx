@@ -11,7 +11,7 @@ import { Button, ButtonGroup, ButtonText } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { CloseIcon, Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
-import { useJoueursSuggestion } from '@/repositories/joueursSuggestion/useJoueursSuggestion';
+import { cacherSuggestion } from '@/repositories/joueursSuggestion/joueursSuggestionActions';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -27,8 +27,6 @@ const RemoveSuggereAlertDialog: React.FC<Props> = ({
   setModalRemoveIsOpen,
 }) => {
   const { t } = useTranslation();
-
-  const { cacherSuggestion } = useJoueursSuggestion();
 
   const removeSuggere = async () => {
     await cacherSuggestion(id);

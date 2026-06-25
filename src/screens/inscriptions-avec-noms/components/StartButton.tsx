@@ -1,5 +1,5 @@
 import { Button, ButtonText } from '@/components/ui/button';
-import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { resetComplementPreparationTournoi } from '@/repositories/preparationTournoi/preparationTournoiActions';
 import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
@@ -17,8 +17,6 @@ export interface Props {
 const StartButton: React.FC<Props> = ({ preparationTournoi, listeJoueurs }) => {
   const { t } = useTranslation();
   const router = useRouter();
-
-  const { resetComplementPreparationTournoi } = usePreparationTournoi();
 
   const { mode, typeTournoi, typeEquipes, modeCreationEquipes, avecTerrains } =
     preparationTournoi;

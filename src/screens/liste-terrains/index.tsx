@@ -5,6 +5,7 @@ import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { insertTerrain } from '@/repositories/terrainsPreparationTournois/terrainsPreparationTournoisActions';
 import { useTerrainsPreparationTournois } from '@/repositories/terrainsPreparationTournois/useTerrainsPreparationTournois';
 import ListeTerrainItem from '@/screens/liste-terrains/components/ListeTerrainItem';
 import { TerrainModel } from '@/types/interfaces/terrainModel';
@@ -32,7 +33,7 @@ const ListeTerrains: React.FC<Props> = ({ screenStackName }) => {
 
   const { preparationTournoi } = usePreparationTournoi();
   const { joueurs } = useJoueursPreparationTournois();
-  const { terrains, insertTerrain } = useTerrainsPreparationTournois();
+  const { terrains } = useTerrainsPreparationTournois();
 
   if (!preparationTournoi || !joueurs || !terrains) {
     return <Loading />;

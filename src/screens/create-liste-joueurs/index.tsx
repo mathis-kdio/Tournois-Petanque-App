@@ -3,7 +3,11 @@ import TopBarBack from '@/components/topBar/TopBarBack';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { useJoueurs } from '@/repositories/joueurs/useJoueurs';
+import {
+  addEquipeJoueur,
+  checkJoueur,
+  renameJoueur,
+} from '@/repositories/joueurs/joueursActions';
 import { JoueurType } from '@/types/enums/joueurType';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
@@ -14,6 +18,11 @@ import { listeType } from '@/types/types/searchParams';
 import Inscriptions from '@components/Inscriptions';
 import { useTranslation } from 'react-i18next';
 import SubmitButton from './components/SubmitButton';
+import {
+  addJoueurInList,
+  removeAllJoueursList,
+  removeJoueurList,
+} from './hooks/createListeJoueurAction';
 import { useCreateListeJoueur } from './hooks/useCreateListeJoueur';
 
 export interface Props {
@@ -29,16 +38,28 @@ const preparationTournoi: PreparationTournoiModel = {
   avecTerrains: false,
 };
 
+const handleAddEquipeJoueur = async (
+  joueurModel: JoueurModel,
+  equipeId: number,
+) => {
+  await addEquipeJoueur(joueurModel.uniqueBDDId, equipeId);
+};
+
+const handleUpdateName = async (joueurModel: JoueurModel, name: string) => {
+  await renameJoueur(joueurModel.uniqueBDDId, name);
+};
+
+const handleCheckJoueur = async (
+  joueurModel: JoueurModel,
+  isChecked: boolean,
+) => {
+  await checkJoueur(joueurModel.uniqueBDDId, isChecked);
+};
+
 const CreateListeJoueur: React.FC<Props> = ({ type, idList }) => {
   const { t } = useTranslation();
 
-  const { renameJoueur, checkJoueur, addEquipeJoueur } = useJoueurs();
-  const {
-    listeJoueurs,
-    removeAllJoueursList,
-    removeJoueurList,
-    addJoueurInList,
-  } = useCreateListeJoueur(idList);
+  const { listeJoueurs } = useCreateListeJoueur(idList);
 
   const handleAddJoueur = async (
     joueurName: string,
@@ -48,25 +69,7 @@ const CreateListeJoueur: React.FC<Props> = ({ type, idList }) => {
   };
 
   const handleDeleteJoueur = async (id: number) => {
-    await removeJoueurList(id);
-  };
-
-  const handleAddEquipeJoueur = async (
-    joueurModel: JoueurModel,
-    equipeId: number,
-  ) => {
-    await addEquipeJoueur(joueurModel.uniqueBDDId, equipeId);
-  };
-
-  const handleUpdateName = async (joueurModel: JoueurModel, name: string) => {
-    await renameJoueur(joueurModel.uniqueBDDId, name);
-  };
-
-  const handleCheckJoueur = async (
-    joueurModel: JoueurModel,
-    isChecked: boolean,
-  ) => {
-    await checkJoueur(joueurModel.uniqueBDDId, isChecked);
+    await removeJoueurList(idList, id);
   };
 
   const handleDeleteAllJoueurs = async () => {

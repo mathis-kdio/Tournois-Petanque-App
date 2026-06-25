@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/slider';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
+import { updateOptionsPreparationTournoi } from '@/repositories/preparationTournoi/preparationTournoiActions';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import { MemesAdversairesType } from '@/types/interfaces/preparationTournoiModel';
 import { screenStackNameType } from '@/types/types/searchParams';
@@ -35,8 +36,7 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
 
   const { t } = useTranslation();
 
-  const { preparationTournoi, updateOptionsPreparationTournoi } =
-    usePreparationTournoi();
+  const { preparationTournoi } = usePreparationTournoi();
 
   const defaultNbTours = 5;
   const defaultNbPtVictoire = 13;

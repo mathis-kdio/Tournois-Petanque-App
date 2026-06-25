@@ -122,7 +122,10 @@ const addEquipes = async (
   return { equipe1, equipe2 };
 };
 
-const addMatchs = async (matchModels: MatchGeneration[], tournoiId: number) => {
+export const addMatchs = async (
+  matchModels: MatchGeneration[],
+  tournoiId: number,
+) => {
   //Récupère la liste joueur du tournoi, permettra de retrouver le joueur de la BDD avec l'id associé aux matchs
   const listeJoueurs: Joueur[] =
     await JoueursPreparationTournoisRepository.getMany();
@@ -138,7 +141,7 @@ const addMatchs = async (matchModels: MatchGeneration[], tournoiId: number) => {
   await MatchsRepository.insertMatch(newMatchs);
 };
 
-const addTournoi = async (
+export const addTournoi = async (
   preparationTournoiModel: PreparationTournoiModel,
 ): Promise<Tournoi> => {
   const {
@@ -205,16 +208,8 @@ const addTournoi = async (
   )[0] as Tournoi;
 };
 
-const clearPreparationTournois = async () => {
+export const clearPreparationTournois = async () => {
   await JoueursPreparationTournoisRepository.deleteAll();
   await TerrainsPreparationTournoisRepository.deleteAll();
   await PreparationTournoisRepository.delete();
-};
-
-export const useCreateTournoi = () => {
-  return {
-    addTournoi,
-    addMatchs,
-    clearPreparationTournois,
-  };
 };

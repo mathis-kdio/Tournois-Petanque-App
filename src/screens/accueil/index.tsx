@@ -7,7 +7,7 @@ import { Pressable } from '@/components/ui/pressable';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { resetPreparationTournoi } from '@/repositories/preparationTournoi/preparationTournoiActions';
 import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
 import { _adsConsentForm } from '@/utils/adMob/consentForm';
 import { _requestTrackingPermissions } from '@/utils/expoTrackingTransparency/requestTrackingPermission';
@@ -35,8 +35,6 @@ export default function Accueil() {
   const router = useRouter();
   const navigation = useNavigation();
   const { session } = useAuth();
-
-  const { resetPreparationTournoi } = usePreparationTournoi();
 
   const { actualTournoi } = useActualTournoi();
 

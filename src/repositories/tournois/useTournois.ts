@@ -9,7 +9,6 @@ import {
 } from '../joueurs/joueursRepository';
 import { MatchsRepository } from '../matchs/matchsRepository';
 import { TournoisRepository } from './tournoisRepository';
-import { useActualTournoi } from './useActualTournoi';
 
 function toTournoiModel(tournoi: Tournoi, matchs: MatchModel[]): TournoiModel {
   return {
@@ -46,13 +45,7 @@ function toJoueurModel(joueur: Joueur_EquipesJoueurs): JoueurModel {
   };
 }
 
-const renameTournoi = async (id: number, name: string) => {
-  await TournoisRepository.renameTournoi(id, name);
-};
-
 export const useTournois = () => {
-  const { actualTournoi } = useActualTournoi();
-
   const { data: tournois = [] } = useLiveQuery(
     TournoisRepository.getTournois(),
   );
@@ -114,17 +107,8 @@ export const useTournois = () => {
     return allTournois.map((tournoi) => toTournoiModel(tournoi, [])) ?? [];
   };
 
-  const setActualTournoi = async (id: number) => {
-    if (actualTournoi) {
-      await TournoisRepository.setActualTournoi(actualTournoi.tournoiId, false);
-    }
-    await TournoisRepository.setActualTournoi(id, true);
-  };
-
   return {
     joueursTournoi: joueursTournoiVM(),
     listeTournois: listeTournoisVM(),
-    setActualTournoi,
-    renameTournoi,
   };
 };

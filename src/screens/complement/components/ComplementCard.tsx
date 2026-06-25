@@ -1,6 +1,6 @@
 import CardButton from '@/components/buttons/CardButton';
 import { VStack } from '@/components/ui/vstack';
-import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { updateComplementPreparationTournoi } from '@/repositories/preparationTournoi/preparationTournoiActions';
 import { Complement } from '@/types/enums/complement';
 import { screenStackNameType } from '@/types/types/searchParams';
 import { FontAwesomeIconName } from '@react-native-vector-icons/fontawesome';
@@ -20,8 +20,6 @@ const ComplementCard: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
-
-  const { updateComplementPreparationTournoi } = usePreparationTournoi();
 
   const navigate = async () => {
     await updateComplementPreparationTournoi(complement);
