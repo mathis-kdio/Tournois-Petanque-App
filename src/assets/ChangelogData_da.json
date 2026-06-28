@@ -3,10 +3,10 @@
     "id": "39",
     "version": "3.0.2",
     "infos": [
-      "- Mise à jour des dépendances",
-      "- Fix latence ajout et suppression joueur",
-      "- Fix génération tournoi mêlée",
-      "- Fix lancement génération tournoi bloqué",
+      "- Opdater afhængigheder",
+      "- Rettelse af latenstid ved tilføjelse og fjernelse af spillere",
+      "- Rettelse i generering af skiftende makker",
+      "- Rettelse af blokering af turneringsgenerering",
       "- Fix position boutons ListeJoueurItem grands écrans",
       "- Fix renommage",
       "- Fix nom terrain"
