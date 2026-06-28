@@ -179,7 +179,7 @@
     "allemand_abreviation": "DE",
     "danois": "Dansk",
     "danois_abreviation": "DK",
-    "espagnol": "Espagnol",
+    "espagnol": "Spansk",
     "espagnol_abreviation": "ES",
     "envie_aider_traduction": "Vil du hjælpe med oversættelsen?",
     "texte_lien_traduction": "Det er denne vej!",
@@ -291,6 +291,6 @@
     "choix_mode_creation_equipes": "Valg af, hvordan man opretter teams",
     "equipes_aleatoires": "Tilfældigt dannede hold",
     "equipes_manuelles": "Manuelt dannede hold",
-    "initialisation_base": "Initialisation de la base, veuillez ne pas fermer l'application..."
+    "initialisation_base": "Initialiserer databasen, luk venligst ikke programmet..."
   }
 }
