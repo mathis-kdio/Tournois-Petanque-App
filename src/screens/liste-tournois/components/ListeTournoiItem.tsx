@@ -7,7 +7,7 @@ import { Text } from '@/components/ui/text';
 import {
   renameTournoi,
   setActualTournoi,
-} from '@/repositories/tournois/tournoisAction';
+} from '@/repositories/tournois/tournoisActions';
 import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import { IIconComponentType } from '@gluestack-ui/core/lib/esm/icon/creator/createIcon';

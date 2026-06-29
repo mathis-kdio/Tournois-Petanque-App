@@ -10,7 +10,7 @@ import { VStack } from '@/components/ui/vstack';
 import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import { useTerrainsPreparationTournois } from '@/repositories/terrainsPreparationTournois/useTerrainsPreparationTournois';
-import { setActualTournoi } from '@/repositories/tournois/tournoisAction';
+import { setActualTournoi } from '@/repositories/tournois/tournoisActions';
 import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
 import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';

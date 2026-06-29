@@ -11,7 +11,7 @@ import { Button, ButtonGroup, ButtonText } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { CloseIcon, Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
-import { deleteTournoi } from '@/repositories/tournois/useDeleteTournoi';
+import { deleteTournoi } from '@/repositories/tournois/deleteTournoiActions';
 import { useNavigation } from 'expo-router';
 import { CommonActions } from 'expo-router/react-navigation';
 import { useTranslation } from 'react-i18next';
