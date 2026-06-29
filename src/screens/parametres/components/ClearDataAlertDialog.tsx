@@ -12,7 +12,7 @@ import { Heading } from '@/components/ui/heading';
 import { CloseIcon, Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { useTranslation } from 'react-i18next';
-import { clearData } from '../hooks/use-clear-data';
+import { clearData } from '../hooks/clear-data-actions';
 
 export interface Props {
   alertOpen: boolean;
