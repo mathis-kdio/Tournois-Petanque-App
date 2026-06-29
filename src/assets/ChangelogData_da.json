@@ -3,37 +3,37 @@
     "id": "39",
     "version": "3.0.2",
     "infos": [
-      "- Mise à jour des dépendances",
-      "- Fix latence ajout et suppression joueur",
-      "- Fix génération tournoi mêlée",
-      "- Fix lancement génération tournoi bloqué",
-      "- Fix position boutons ListeJoueurItem grands écrans",
-      "- Fix renommage",
-      "- Fix nom terrain"
+      "- Opdater afhængigheder",
+      "- Rettelse af latenstid ved tilføjelse og fjernelse af spillere",
+      "- Rettelse i generering af skiftende makker",
+      "- Rettelse af blokering af turneringsgenerering",
+      "- Faste knapplaceringer for PlayerListItem på store skærme",
+      "- Rettelse af omdøbning",
+      "- Retter bane navn"
     ]
   },
   "38": {
     "id": "38",
     "version": "3.0.1",
     "infos": [
-      "- Correction version PC",
-      "- Correction de renommage joueur",
-      "- Correction affichage équipes dans un tournoi lancé",
-      "- Correction tri des joueurs dans un tournoi lancé",
-      "- Correction chargement d'une liste de joueurs vide"
+      "- Rettelse af PC-version",
+      "- Rettelse af omdøbning af spiller",
+      "- Rettelse af visning af hold i en turnering",
+      "- Rettelse af sortering af spillere i en turnering",
+      "- Rettelse af et problem, hvor en tom spillerliste blev indlæst"
     ]
   },
   "37": {
     "id": "37",
     "version": "3.0.0",
     "infos": [
-      "- Refonte du système de sauvegarde des données au sein de l'application",
-      "- Migration des données de l'ancien système vers le nouveau",
-      "- Modernisation de l'architecture technique de l'application",
-      "- Ajout de la rotation de l'application",
-      "- Ajout de la traduction espagnole",
-      "- Ajout de textes non traduits",
-      "- Correction de l'affichage de certains éléments"
+      "- Redesign af databackup systemet i applikationen",
+      "- Migrering af data fra det gamle system til det nye",
+      "- Modernisering af applikationens tekniske arkitektur",
+      "- Tilføjet applikations rotation",
+      "- Tilføjet spansk oversættelse",
+      "- Tilføjelse af uoversat tekst",
+      "- Korrektion af visningen af ​​visse elementer"
     ]
   },
   "36": {
