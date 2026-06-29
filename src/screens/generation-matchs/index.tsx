@@ -113,13 +113,7 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
 
       await clearPreparationTournois();
     },
-    [
-      actualTournoi,
-      addTournoi,
-      setActualTournoi,
-      addMatchs,
-      clearPreparationTournois,
-    ],
+    [actualTournoi],
   );
 
   const generation = useCallback(
