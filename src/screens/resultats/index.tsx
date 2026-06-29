@@ -18,9 +18,9 @@ const ListeResultats = () => {
   const { t } = useTranslation();
 
   const { actualTournoi } = useActualTournoi();
-  const { joueursTournoi } = useJoueursActualTournoi();
+  const { joueursActualTournoi } = useJoueursActualTournoi();
 
-  if (!actualTournoi || !joueursTournoi) {
+  if (!actualTournoi || !joueursActualTournoi) {
     return <Loading />;
   }
 
@@ -49,7 +49,7 @@ const ListeResultats = () => {
         </HStack>
         <Divider className="my-0.5" />
         <LegendList
-          data={ranking(matchs, joueursTournoi, options)}
+          data={ranking(matchs, joueursActualTournoi, options)}
           keyExtractor={(item) => item.joueur.uniqueBDDId.toString()}
           renderItem={renderItem}
           className="flex-1"

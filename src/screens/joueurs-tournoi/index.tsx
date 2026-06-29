@@ -43,9 +43,9 @@ const JoueursTournoi = () => {
   const router = useRouter();
 
   const { actualTournoi } = useActualTournoi();
-  const { joueursTournoi } = useJoueursActualTournoi();
+  const { joueursActualTournoi } = useJoueursActualTournoi();
 
-  if (!actualTournoi || !joueursTournoi) {
+  if (!actualTournoi || !joueursActualTournoi) {
     return <Loading />;
   }
 
@@ -66,7 +66,7 @@ const JoueursTournoi = () => {
         modeTournoi={mode}
         typeTournoi={typeTournoi}
         showCheckbox={true}
-        listesJoueurs={joueursTournoi}
+        listesJoueurs={joueursActualTournoi}
         onDeleteJoueur={onDeleteJoueur}
         onAddEquipeJoueur={onAddEquipeJoueur}
         onUpdateName={onUpdateName}
@@ -79,10 +79,10 @@ const JoueursTournoi = () => {
     <VStack className="flex-1 bg-custom-background">
       <TopBarBack title={t('liste_joueurs_inscrits_navigation_title')} />
       <Text className="text-typography-white text-xl text-center">
-        {t('nombre_joueurs', { nb: joueursTournoi.length })}
+        {t('nombre_joueurs', { nb: joueursActualTournoi.length })}
       </Text>
       <LegendList
-        data={joueursTournoi}
+        data={joueursActualTournoi}
         keyExtractor={(item) => item.uniqueBDDId.toString()}
         renderItem={renderItem}
         className="flex-1"

@@ -21,7 +21,7 @@ export default function ListeTournois() {
   const [infosTournoi, setInfosTournoi] = useState<TournoiModel | undefined>(
     undefined,
   );
-  const { joueursTournoi } = useJoueursActualTournoi();
+  const { joueursActualTournoi } = useJoueursActualTournoi();
   const { listeTournois } = useListeTournois();
 
   const showModalInfos = (tournoi: TournoiModel) => {
@@ -30,13 +30,13 @@ export default function ListeTournois() {
   };
 
   const modalTournoiInfos = () => {
-    if (!infosTournoi || !joueursTournoi) {
+    if (!infosTournoi || !joueursActualTournoi) {
       return;
     }
     return (
       <ModalInfosTournoi
         infosTournoi={infosTournoi}
-        listeJoueurs={joueursTournoi}
+        listeJoueurs={joueursActualTournoi}
         modalTournoiInfosIsOpen={modalTournoiInfosIsOpen}
         setModalTournoiInfosIsOpen={setModalTournoiInfosIsOpen}
       />

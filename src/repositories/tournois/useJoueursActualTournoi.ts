@@ -55,7 +55,7 @@ export const useJoueursActualTournoi = () => {
     [equipesTournoiId],
   );
 
-  const joueursTournoiVM = () => {
+  const joueursActualTournoiVM = () => {
     if (!equipesWithJoueursTournoi || equipesWithJoueursTournoi.length === 0) {
       return;
     }
@@ -71,6 +71,6 @@ export const useJoueursActualTournoi = () => {
   };
 
   return {
-    joueursTournoi: joueursTournoiVM(),
+    joueursActualTournoi: joueursActualTournoiVM(),
   };
 };
