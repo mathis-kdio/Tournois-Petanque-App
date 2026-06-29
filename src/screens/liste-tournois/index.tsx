@@ -2,6 +2,7 @@ import Loading from '@/components/Loading';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
+import { useJoueursActualTournoi } from '@/repositories/tournois/useJoueursActualTournoi';
 import { useTournois } from '@/repositories/tournois/useTournois';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import {
@@ -21,11 +22,11 @@ export default function ListeTournois() {
   const [infosTournoi, setInfosTournoi] = useState<TournoiModel | undefined>(
     undefined,
   );
-  const { listeTournois, joueursTournoi } = useTournois();
-
   if (!listeTournois) {
     return <Loading />;
   }
+  const { joueursTournoi } = useJoueursActualTournoi();
+  const { listeTournois } = useTournois();
 
   const showModalInfos = (tournoi: TournoiModel) => {
     setModalTournoiInfosIsOpen(true);

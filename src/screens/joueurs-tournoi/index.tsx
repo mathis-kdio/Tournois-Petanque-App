@@ -10,7 +10,7 @@ import {
   renameJoueur,
 } from '@/repositories/joueurs/joueursActions';
 import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
-import { useTournois } from '@/repositories/tournois/useTournois';
+import { useJoueursActualTournoi } from '@/repositories/tournois/useJoueursActualTournoi';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import {
@@ -43,7 +43,7 @@ const JoueursTournoi = () => {
   const router = useRouter();
 
   const { actualTournoi } = useActualTournoi();
-  const { joueursTournoi } = useTournois();
+  const { joueursTournoi } = useJoueursActualTournoi();
 
   if (!actualTournoi || !joueursTournoi) {
     return <Loading />;

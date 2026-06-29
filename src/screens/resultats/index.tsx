@@ -4,7 +4,7 @@ import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
-import { useTournois } from '@/repositories/tournois/useTournois';
+import { useJoueursActualTournoi } from '@/repositories/tournois/useJoueursActualTournoi';
 import ListeResultatItem from '@/screens/resultats/components/ListeResultatItem';
 import { Victoire } from '@/types/interfaces/victoire';
 import {
@@ -18,7 +18,7 @@ const ListeResultats = () => {
   const { t } = useTranslation();
 
   const { actualTournoi } = useActualTournoi();
-  const { joueursTournoi } = useTournois();
+  const { joueursTournoi } = useJoueursActualTournoi();
 
   if (!actualTournoi || !joueursTournoi) {
     return <Loading />;
