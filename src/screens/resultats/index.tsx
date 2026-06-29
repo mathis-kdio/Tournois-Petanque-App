@@ -4,7 +4,7 @@ import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
-import { useTournois } from '@/repositories/tournois/useTournois';
+import { useJoueursActualTournoi } from '@/repositories/tournois/useJoueursActualTournoi';
 import ListeResultatItem from '@/screens/resultats/components/ListeResultatItem';
 import { Victoire } from '@/types/interfaces/victoire';
 import {
@@ -18,9 +18,9 @@ const ListeResultats = () => {
   const { t } = useTranslation();
 
   const { actualTournoi } = useActualTournoi();
-  const { joueursTournoi } = useTournois();
+  const { joueursActualTournoi } = useJoueursActualTournoi();
 
-  if (!actualTournoi || !joueursTournoi) {
+  if (!actualTournoi || !joueursActualTournoi) {
     return <Loading />;
   }
 
@@ -49,7 +49,7 @@ const ListeResultats = () => {
         </HStack>
         <Divider className="my-0.5" />
         <LegendList
-          data={ranking(matchs, joueursTournoi, options)}
+          data={ranking(matchs, joueursActualTournoi, options)}
           keyExtractor={(item) => item.joueur.uniqueBDDId.toString()}
           renderItem={renderItem}
           className="flex-1"

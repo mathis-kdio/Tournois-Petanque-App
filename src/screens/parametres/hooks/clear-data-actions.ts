@@ -11,7 +11,7 @@ import { TerrainsRepository } from '@/repositories/terrains/terrainsRepository';
 import { TerrainsPreparationTournoisRepository } from '@/repositories/terrainsPreparationTournois/terrainsPreparationTournoiRepository';
 import { TournoisRepository } from '@/repositories/tournois/tournoisRepository';
 
-const clearData = async () => {
+export const clearData = async () => {
   await JoueursSuggestionRepository.deleteAll();
   await JoueursListesRepository.deleteAll();
   await ListesJoueursRepository.deleteAll();
@@ -24,10 +24,4 @@ const clearData = async () => {
   await EquipesJoueursRepository.deleteAll();
   await EquipeRepository.deleteAll();
   await JoueursRepository.deleteAll();
-};
-
-export const useClearData = () => {
-  return {
-    clearData,
-  };
 };

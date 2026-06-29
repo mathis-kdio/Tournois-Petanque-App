@@ -4,7 +4,10 @@ import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { useInscriptionSansNom } from '../hooks/use-inscription-sans-noms';
+import {
+  addJoueurs,
+  clearJoueursAutresInscriptions,
+} from '../hooks/inscription-sans-noms-actions';
 
 export interface Props {
   preparationTournoiModel: PreparationTournoiModel;
@@ -19,9 +22,6 @@ const StartButton: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
-
-  const { addJoueurs, clearJoueursAutresInscriptions } =
-    useInscriptionSansNom();
 
   const { typeEquipes, avecTerrains } = preparationTournoiModel;
   if (!typeEquipes) {

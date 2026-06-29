@@ -7,7 +7,7 @@ import { StyledSwitch } from '@/components/ui/switch/styled-switch';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
-import { useTournois } from '@/repositories/tournois/useTournois';
+import { useJoueursActualTournoi } from '@/repositories/tournois/useJoueursActualTournoi';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ExportButton from './components/ExportButton';
@@ -20,9 +20,9 @@ const PDFExport = () => {
   const [affichageCompact, setAffichageCompact] = useState(false);
 
   const { actualTournoi } = useActualTournoi();
-  const { joueursTournoi } = useTournois();
+  const { joueursActualTournoi } = useJoueursActualTournoi();
 
-  if (!actualTournoi || !joueursTournoi) {
+  if (!actualTournoi || !joueursActualTournoi) {
     return <Loading />;
   }
 
@@ -77,7 +77,7 @@ const PDFExport = () => {
         </HStack>
         <ExportButton
           tournoi={actualTournoi}
-          listeJoueurs={joueursTournoi}
+          listeJoueurs={joueursActualTournoi}
           affichageScore={ajoutScore}
           affichageClassement={ajoutClassement}
           affichageCompact={affichageCompact}

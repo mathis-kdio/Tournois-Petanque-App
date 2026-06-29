@@ -32,7 +32,7 @@ export const useJoueursPreparationTournois = () => {
     JoueursPreparationTournoisRepository.getAll(),
   );
 
-  const actualJoueursPreparationTournoiVM = () => {
+  const joueursPreparationTournoisVM = () => {
     if (!joueurs.length || !joueursPreparation.length) {
       return [];
     }
@@ -46,6 +46,6 @@ export const useJoueursPreparationTournois = () => {
   };
 
   return {
-    joueurs: actualJoueursPreparationTournoiVM(),
+    joueursPreparationTournois: joueursPreparationTournoisVM(),
   };
 };

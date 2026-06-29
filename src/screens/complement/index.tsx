@@ -54,25 +54,34 @@ const ChoixComplement: React.FC<Props> = ({ screenStackName }) => {
 
   const { preparationTournoi } = usePreparationTournoi();
 
-  const { joueurs } = useJoueursPreparationTournois();
+  const { joueursPreparationTournois } = useJoueursPreparationTournois();
 
   const options = () => {
-    if (!preparationTournoi || !joueurs || joueurs.length === 0) {
+    if (
+      !preparationTournoi ||
+      !joueursPreparationTournois ||
+      joueursPreparationTournois.length === 0
+    ) {
       return [];
     }
+    const nbJoueurs = joueursPreparationTournois.length;
     switch (preparationTournoi.typeEquipes) {
       case TypeEquipes.TETEATETE:
         throw new Error('Complement TETEATETE impossible');
       case TypeEquipes.DOUBLETTE:
-        return getComplementDoublette(joueurs.length);
+        return getComplementDoublette(nbJoueurs);
       case TypeEquipes.TRIPLETTE:
-        return getComplementTriplette(joueurs.length);
+        return getComplementTriplette(nbJoueurs);
       default:
         return [];
     }
   };
 
-  if (!preparationTournoi || !joueurs || joueurs.length === 0) {
+  if (
+    !preparationTournoi ||
+    !joueursPreparationTournois ||
+    joueursPreparationTournois.length === 0
+  ) {
     return <Loading />;
   }
 

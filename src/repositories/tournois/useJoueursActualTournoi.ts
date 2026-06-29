@@ -1,7 +1,4 @@
-import { Tournoi } from '@/db/schema/tournoi';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
-import { MatchModel } from '@/types/interfaces/matchModel';
-import { TournoiModel } from '@/types/interfaces/tournoi';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import {
   Joueur_EquipesJoueurs,
@@ -9,30 +6,6 @@ import {
 } from '../joueurs/joueursRepository';
 import { MatchsRepository } from '../matchs/matchsRepository';
 import { TournoisRepository } from './tournoisRepository';
-
-function toTournoiModel(tournoi: Tournoi, matchs: MatchModel[]): TournoiModel {
-  return {
-    tournoiId: tournoi.id,
-    name: tournoi.name || undefined,
-    estTournoiActuel: tournoi.estTournoiActuel,
-    creationDate: new Date(tournoi.createAt),
-    updateDate: new Date(tournoi.updatedAt),
-    matchs: matchs,
-    options: {
-      tournoiID: tournoi.id,
-      nbTours: tournoi.nbTours,
-      nbMatchs: tournoi.nbMatchs,
-      nbPtVictoire: tournoi.nbPtVictoire,
-      speciauxIncompatibles: tournoi.speciauxIncompatibles,
-      memesEquipes: tournoi.memesEquipes,
-      memesAdversaires: tournoi.memesAdversaires,
-      typeEquipes: tournoi.typeEquipes,
-      typeTournoi: tournoi.typeTournoi,
-      avecTerrains: tournoi.avecTerrains,
-      mode: tournoi.mode,
-    },
-  };
-}
 
 function toJoueurModel(joueur: Joueur_EquipesJoueurs): JoueurModel {
   return {
@@ -45,7 +18,7 @@ function toJoueurModel(joueur: Joueur_EquipesJoueurs): JoueurModel {
   };
 }
 
-export const useTournois = () => {
+export const useJoueursActualTournoi = () => {
   const { data: tournois = [] } = useLiveQuery(
     TournoisRepository.getTournois(),
   );
@@ -82,7 +55,7 @@ export const useTournois = () => {
     [equipesTournoiId],
   );
 
-  const joueursTournoiVM = () => {
+  const joueursActualTournoiVM = () => {
     if (!equipesWithJoueursTournoi || equipesWithJoueursTournoi.length === 0) {
       return;
     }
@@ -97,18 +70,7 @@ export const useTournois = () => {
     return result.sort((a, b) => a.joueurTournoiId - b.joueurTournoiId);
   };
 
-  const { data: allTournois } = useLiveQuery(
-    TournoisRepository.getAllTournois(),
-  );
-  const listeTournoisVM = () => {
-    if (!allTournois) {
-      return;
-    }
-    return allTournois.map((tournoi) => toTournoiModel(tournoi, [])) ?? [];
-  };
-
   return {
-    joueursTournoi: joueursTournoiVM(),
-    listeTournois: listeTournoisVM(),
+    joueursActualTournoi: joueursActualTournoiVM(),
   };
 };

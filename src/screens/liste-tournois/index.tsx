@@ -1,8 +1,8 @@
-import Loading from '@/components/Loading';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { useTournois } from '@/repositories/tournois/useTournois';
+import { useJoueursActualTournoi } from '@/repositories/tournois/useJoueursActualTournoi';
+import { useListeTournois } from '@/repositories/tournois/useListeTournois';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import {
   LegendList,
@@ -21,11 +21,8 @@ export default function ListeTournois() {
   const [infosTournoi, setInfosTournoi] = useState<TournoiModel | undefined>(
     undefined,
   );
-  const { listeTournois, joueursTournoi } = useTournois();
-
-  if (!listeTournois) {
-    return <Loading />;
-  }
+  const { joueursActualTournoi } = useJoueursActualTournoi();
+  const { listeTournois } = useListeTournois();
 
   const showModalInfos = (tournoi: TournoiModel) => {
     setModalTournoiInfosIsOpen(true);
@@ -33,13 +30,13 @@ export default function ListeTournois() {
   };
 
   const modalTournoiInfos = () => {
-    if (!infosTournoi || !joueursTournoi) {
+    if (!infosTournoi || !joueursActualTournoi) {
       return;
     }
     return (
       <ModalInfosTournoi
         infosTournoi={infosTournoi}
-        listeJoueurs={joueursTournoi}
+        listeJoueurs={joueursActualTournoi}
         modalTournoiInfosIsOpen={modalTournoiInfosIsOpen}
         setModalTournoiInfosIsOpen={setModalTournoiInfosIsOpen}
       />

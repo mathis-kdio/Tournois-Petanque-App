@@ -50,7 +50,7 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
   const navigation = useNavigation();
 
   const { preparationTournoi } = usePreparationTournoi();
-  const { joueurs } = useJoueursPreparationTournois();
+  const { joueursPreparationTournois } = useJoueursPreparationTournois();
   const { terrains } = useTerrainsPreparationTournois();
   const { actualTournoi } = useActualTournoi();
 
@@ -144,9 +144,12 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
         mode === ModeTournoi.AVECEQUIPES &&
         modeCreationEquipes === ModeCreationEquipes.ALEATOIRE
       ) {
-        listeJoueursInscrits = attributionEquipes(joueurs, typeEquipes);
+        listeJoueursInscrits = attributionEquipes(
+          joueursPreparationTournois,
+          typeEquipes,
+        );
       } else {
-        listeJoueursInscrits = joueurs;
+        listeJoueursInscrits = joueursPreparationTournois;
       }
 
       let matchs: MatchGeneration[] | undefined = undefined;
@@ -311,12 +314,12 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
       //Si génération valide alors return 2
       return 2;
     },
-    [ajoutMatchs, joueurs, terrains],
+    [ajoutMatchs, joueursPreparationTournois, terrains],
   );
 
   const lanceurGeneration = useCallback(
     async (preparationTournoiModel: PreparationTournoiModel) => {
-      const nbjoueurs = joueurs.length;
+      const nbjoueurs = joueursPreparationTournois.length;
       const nbEssaisPossibles = nbjoueurs * nbjoueurs;
       let nbGenerationsRatee = 0;
       let returnType = 0;
@@ -339,7 +342,7 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
         setIsLoading(false);
       }
     },
-    [generation, joueurs],
+    [generation, joueursPreparationTournois],
   );
 
   useEffect(() => {
@@ -356,7 +359,7 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
     };
   }, [lanceurGeneration, preparationTournoi]);
 
-  if (!preparationTournoi || !joueurs.length) {
+  if (!preparationTournoi || !joueursPreparationTournois.length) {
     return <Loading />;
   }
 

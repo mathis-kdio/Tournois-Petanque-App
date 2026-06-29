@@ -12,7 +12,7 @@ import { Heading } from '@/components/ui/heading';
 import { CloseIcon, Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { useTranslation } from 'react-i18next';
-import { useClearData } from '../hooks/use-clear-data';
+import { clearData } from '../hooks/clear-data-actions';
 
 export interface Props {
   alertOpen: boolean;
@@ -21,8 +21,6 @@ export interface Props {
 
 const ClearDataAlertDialog: React.FC<Props> = ({ alertOpen, setAlertOpen }) => {
   const { t } = useTranslation();
-
-  const { clearData } = useClearData();
 
   const handleClearData = async () => {
     setAlertOpen(false);

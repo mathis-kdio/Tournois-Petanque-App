@@ -32,10 +32,10 @@ const ListeTerrains: React.FC<Props> = ({ screenStackName }) => {
   const { t } = useTranslation();
 
   const { preparationTournoi } = usePreparationTournoi();
-  const { joueurs } = useJoueursPreparationTournois();
+  const { joueursPreparationTournois } = useJoueursPreparationTournois();
   const { terrains } = useTerrainsPreparationTournois();
 
-  if (!preparationTournoi || !joueurs || !terrains) {
+  if (!preparationTournoi || !joueursPreparationTournois || !terrains) {
     return <Loading />;
   }
 
@@ -63,7 +63,7 @@ const ListeTerrains: React.FC<Props> = ({ screenStackName }) => {
         </Button>
         <StartButton
           screenStackName={screenStackName}
-          joueursModel={joueurs}
+          joueursModel={joueursPreparationTournois}
           terrainsModel={terrains}
           preparationTournoiModel={preparationTournoi}
         />

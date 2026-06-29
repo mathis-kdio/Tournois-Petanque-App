@@ -4,7 +4,10 @@ import { JoueursPreparationTournoisRepository } from '@/repositories/joueursPrep
 import { toNewJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import { JoueurType } from '@/types/enums/joueurType';
 
-const addJoueurs = async (nbJoueurNormaux: number, nbJoueurEnfants: number) => {
+export const addJoueurs = async (
+  nbJoueurNormaux: number,
+  nbJoueurEnfants: number,
+) => {
   const joueurs: NewJoueur[] = [
     ...Array.from({ length: nbJoueurNormaux }, (_, i) => ({
       joueurId: i,
@@ -26,15 +29,8 @@ const addJoueurs = async (nbJoueurNormaux: number, nbJoueurEnfants: number) => {
   await JoueursPreparationTournoisRepository.insert(joueursPreparationTournois);
 };
 
-const clearJoueursAutresInscriptions = async () => {
+export const clearJoueursAutresInscriptions = async () => {
   const joueurs = await JoueursPreparationTournoisRepository.getMany();
   await JoueursPreparationTournoisRepository.deleteAll();
   await JoueursRepository.delete(joueurs.map((joueur: Joueur) => joueur.id));
-};
-
-export const useInscriptionSansNom = () => {
-  return {
-    addJoueurs,
-    clearJoueursAutresInscriptions,
-  };
 };
