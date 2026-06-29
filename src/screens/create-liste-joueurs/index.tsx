@@ -23,7 +23,7 @@ import {
   removeAllJoueursList,
   removeJoueurList,
 } from './hooks/createListeJoueurActions';
-import { useCreateListeJoueur } from './hooks/useCreateListeJoueur';
+import { useListeJoueurListeId } from './hooks/useListeJoueurListeId';
 
 export interface Props {
   type: listeType;
@@ -59,7 +59,7 @@ const handleCheckJoueur = async (
 const CreateListeJoueur: React.FC<Props> = ({ type, idList }) => {
   const { t } = useTranslation();
 
-  const { listeJoueurs } = useCreateListeJoueur(idList);
+  const { listeJoueurListeId } = useListeJoueurListeId(idList);
 
   const handleAddJoueur = async (
     joueurName: string,
@@ -76,7 +76,7 @@ const CreateListeJoueur: React.FC<Props> = ({ type, idList }) => {
     await removeAllJoueursList(idList);
   };
 
-  if (!listeJoueurs) {
+  if (!listeJoueurListeId) {
     return <Loading />;
   }
 
@@ -85,11 +85,11 @@ const CreateListeJoueur: React.FC<Props> = ({ type, idList }) => {
       <TopBarBack title={t('creation_liste_joueurs_navigation_title')} />
       <VStack className="flex-1 justify-between">
         <Text className="text-typography-white text-xl text-center">
-          {t('nombre_joueurs', { nb: listeJoueurs.length })}
+          {t('nombre_joueurs', { nb: listeJoueurListeId.length })}
         </Text>
         <Inscriptions
           loadListScreen={true}
-          listeJoueurs={listeJoueurs}
+          listeJoueurs={listeJoueurListeId}
           preparationTournoi={preparationTournoi}
           onAddJoueur={handleAddJoueur}
           onDeleteJoueur={handleDeleteJoueur}
@@ -99,7 +99,7 @@ const CreateListeJoueur: React.FC<Props> = ({ type, idList }) => {
           onDeleteAllJoueurs={handleDeleteAllJoueurs}
         />
         <Box className="px-10">
-          <SubmitButton type={type} listeJoueurs={listeJoueurs} />
+          <SubmitButton type={type} listeJoueurs={listeJoueurListeId} />
         </Box>
       </VStack>
     </VStack>

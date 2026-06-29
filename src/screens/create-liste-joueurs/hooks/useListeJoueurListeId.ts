@@ -14,12 +14,12 @@ function toJoueurModel(joueur: Joueur): JoueurModel {
   };
 }
 
-export const useCreateListeJoueur = (listeId: number) => {
+export const useListeJoueurListeId = (listeId: number) => {
   const { data: joueursListe } = useLiveQuery(
     JoueursRepository.getJoueursListe(listeId),
   );
 
-  const listeJoueursVM = () => {
+  const listeJoueurListeIdVM = () => {
     if (!joueursListe.length) {
       return [];
     }
@@ -27,6 +27,6 @@ export const useCreateListeJoueur = (listeId: number) => {
   };
 
   return {
-    listeJoueurs: listeJoueursVM(),
+    listeJoueurListeId: listeJoueurListeIdVM(),
   };
 };
