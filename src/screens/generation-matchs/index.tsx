@@ -40,7 +40,7 @@ import {
   addMatchs,
   addTournoi,
   clearPreparationTournois,
-} from './hooks/createTournoiAction';
+} from './hooks/createTournoiActions';
 
 export interface Props {
   screenStackName: screenStackNameType;

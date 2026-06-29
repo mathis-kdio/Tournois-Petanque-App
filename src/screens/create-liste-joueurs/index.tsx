@@ -22,7 +22,7 @@ import {
   addJoueurInList,
   removeAllJoueursList,
   removeJoueurList,
-} from './hooks/createListeJoueurAction';
+} from './hooks/createListeJoueurActions';
 import { useCreateListeJoueur } from './hooks/useCreateListeJoueur';
 
 export interface Props {
