@@ -50,7 +50,7 @@ const InscriptionsAvecNoms = () => {
 
   const { preparationTournoi } = usePreparationTournoi();
 
-  const { joueurs } = useJoueursPreparationTournois();
+  const { joueursPreparationTournois } = useJoueursPreparationTournois();
 
   const equipeAuto = () => {
     if (!preparationTournoi) {
@@ -62,13 +62,13 @@ const InscriptionsAvecNoms = () => {
     }
 
     if (typeEquipes === TypeEquipes.TETEATETE) {
-      return joueurs.length + 1;
+      return joueursPreparationTournois.length + 1;
     } else {
       const nbJoueursParEquipe = typeEquipes === TypeEquipes.DOUBLETTE ? 2 : 3;
 
       // Compter le nombre de joueurs par équipe
       const joueursParEquipe: { [key: number]: number } = {};
-      joueurs.forEach((joueur) => {
+      joueursPreparationTournois.forEach((joueur) => {
         if (joueur.equipe) {
           joueursParEquipe[joueur.equipe] =
             (joueursParEquipe[joueur.equipe] || 0) + 1;
@@ -97,7 +97,7 @@ const InscriptionsAvecNoms = () => {
     const equipe = equipeAuto();
 
     await addJoueursPreparationTournoi(
-      joueurs.length,
+      joueursPreparationTournois.length,
       joueurName,
       joueurType,
       equipe,
@@ -119,7 +119,7 @@ const InscriptionsAvecNoms = () => {
     }
   };
 
-  if (!preparationTournoi || !joueurs) {
+  if (!preparationTournoi || !joueursPreparationTournois) {
     return <Loading />;
   }
 
@@ -128,10 +128,10 @@ const InscriptionsAvecNoms = () => {
       <TopBarBack title={t('inscription_avec_noms_navigation_title')} />
       <VStack className="flex-1">
         <Text className="text-typography-white text-xl text-center">
-          {t('nombre_joueurs', { nb: joueurs.length })}
+          {t('nombre_joueurs', { nb: joueursPreparationTournois.length })}
         </Text>
         <Inscriptions
-          listeJoueurs={joueurs}
+          listeJoueurs={joueursPreparationTournois}
           preparationTournoi={preparationTournoi}
           loadListScreen={false}
           onAddJoueur={handleAddJoueur}
@@ -144,7 +144,7 @@ const InscriptionsAvecNoms = () => {
         <Box className="px-10">
           <StartButton
             preparationTournoi={preparationTournoi}
-            listeJoueurs={joueurs}
+            listeJoueurs={joueursPreparationTournois}
           />
         </Box>
       </VStack>

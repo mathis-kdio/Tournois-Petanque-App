@@ -46,6 +46,6 @@ export const useJoueursPreparationTournois = () => {
   };
 
   return {
-    joueurs: joueursPreparationTournoisVM(),
+    joueursPreparationTournois: joueursPreparationTournoisVM(),
   };
 };
