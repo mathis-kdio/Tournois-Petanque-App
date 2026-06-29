@@ -4,7 +4,11 @@ import { HStack } from '@/components/ui/hstack';
 import { CheckIcon, CloseIcon, EditIcon, InfoIcon } from '@/components/ui/icon';
 import { Input, InputField } from '@/components/ui/input';
 import { Text } from '@/components/ui/text';
-import { useTournois } from '@/repositories/tournois/useTournois';
+import {
+  renameTournoi,
+  setActualTournoi,
+} from '@/repositories/tournois/tournoisActions';
+import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import { IIconComponentType } from '@gluestack-ui/core/lib/esm/icon/creator/createIcon';
 import { useNavigation } from 'expo-router';
@@ -23,17 +27,16 @@ export interface Props {
 const ListeTournoiItem: React.FC<Props> = ({ tournoi, showModalInfos }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const { actualTournoi } = useActualTournoi();
 
   const [renommerOn, setRenommerOn] = useState(false);
   const [tournoiNameText, setTournoiNameText] = useState('');
   const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false);
 
-  const { renameTournoi, setActualTournoi } = useTournois();
-
   const { tournoiId, name, estTournoiActuel } = tournoi;
 
   const chargerTournoi = async () => {
-    await setActualTournoi(tournoiId);
+    await setActualTournoi(actualTournoi, tournoiId);
 
     navigation.dispatch(
       CommonActions.reset({

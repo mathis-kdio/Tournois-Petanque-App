@@ -5,7 +5,7 @@ import { MatchsRepository } from '../matchs/matchsRepository';
 import { TerrainsRepository } from '../terrains/terrainsRepository';
 import { TournoisRepository } from './tournoisRepository';
 
-const deleteTournoi = async (tournoiId: number) => {
+export const deleteTournoi = async (tournoiId: number) => {
   const matchsId = new Set<number>();
   const joueursIds = new Set<number>();
   const equipesIds = new Set<number>();
@@ -39,10 +39,4 @@ const deleteTournoi = async (tournoiId: number) => {
   await JoueursRepository.delete(Array.from(joueursIds));
 
   await TerrainsRepository.delete(Array.from(terrainsIds));
-};
-
-export const useDeleteTournoi = () => {
-  return {
-    deleteTournoi,
-  };
 };

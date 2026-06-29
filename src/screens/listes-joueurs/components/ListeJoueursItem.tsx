@@ -4,7 +4,7 @@ import { HStack } from '@/components/ui/hstack';
 import { CheckIcon, CloseIcon, EditIcon } from '@/components/ui/icon';
 import { Input, InputField } from '@/components/ui/input';
 import { Text } from '@/components/ui/text';
-import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
+import { addJoueursPreparationTournoiFromList } from '@/repositories/joueursPreparationTournois/joueursPreparationTournoisActions';
 import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
 import { IIconComponentType } from '@gluestack-ui/core/lib/esm/icon/creator/createIcon';
 import { useRouter } from 'expo-router';
@@ -29,9 +29,6 @@ const ListeJoueursItem: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
-
-  const { addJoueursPreparationTournoiFromList } =
-    useJoueursPreparationTournois();
 
   const [renommerOn, setRenommerOn] = useState(false);
   const [listNameText, setListNameText] = useState('');

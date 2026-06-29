@@ -3,7 +3,17 @@ import TopBarBack from '@/components/topBar/TopBarBack';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { useJoueurs } from '@/repositories/joueurs/useJoueurs';
+import {
+  addEquipeJoueur,
+  checkJoueur,
+  renameJoueur,
+} from '@/repositories/joueurs/joueursActions';
+import {
+  addJoueursPreparationTournoi,
+  removeAllJoueursPreparationTournoi,
+  removeJoueursPreparationTournoi,
+  updateJoueursEquipe,
+} from '@/repositories/joueursPreparationTournois/joueursPreparationTournoisActions';
 import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import { JoueurType } from '@/types/enums/joueurType';
@@ -13,19 +23,34 @@ import Inscriptions from '@components/Inscriptions';
 import { useTranslation } from 'react-i18next';
 import StartButton from './components/StartButton';
 
+const handleDeleteAllJoueurs = async () => {
+  await removeAllJoueursPreparationTournoi();
+};
+
+const handleAddEquipeJoueur = async (
+  joueurModel: JoueurModel,
+  equipeId: number,
+) => {
+  await addEquipeJoueur(joueurModel.uniqueBDDId, equipeId);
+};
+
+const handleUpdateName = async (joueurModel: JoueurModel, name: string) => {
+  await renameJoueur(joueurModel.uniqueBDDId, name);
+};
+
+const handleCheckJoueur = async (
+  joueurModel: JoueurModel,
+  isChecked: boolean,
+) => {
+  await checkJoueur(joueurModel.uniqueBDDId, isChecked);
+};
+
 const InscriptionsAvecNoms = () => {
   const { t } = useTranslation();
 
   const { preparationTournoi } = usePreparationTournoi();
 
-  const { renameJoueur, checkJoueur, addEquipeJoueur } = useJoueurs();
-  const {
-    joueurs,
-    addJoueursPreparationTournoi,
-    removeJoueursPreparationTournoi,
-    removeAllJoueursPreparationTournoi,
-    updateJoueursEquipe,
-  } = useJoueursPreparationTournois();
+  const { joueurs } = useJoueursPreparationTournois();
 
   const equipeAuto = () => {
     if (!preparationTournoi) {
@@ -92,28 +117,6 @@ const InscriptionsAvecNoms = () => {
     if (typeEquipes === TypeEquipes.TETEATETE) {
       await updateJoueursEquipe();
     }
-  };
-
-  const handleAddEquipeJoueur = async (
-    joueurModel: JoueurModel,
-    equipeId: number,
-  ) => {
-    await addEquipeJoueur(joueurModel.uniqueBDDId, equipeId);
-  };
-
-  const handleUpdateName = async (joueurModel: JoueurModel, name: string) => {
-    await renameJoueur(joueurModel.uniqueBDDId, name);
-  };
-
-  const handleCheckJoueur = async (
-    joueurModel: JoueurModel,
-    isChecked: boolean,
-  ) => {
-    await checkJoueur(joueurModel.uniqueBDDId, isChecked);
-  };
-
-  const handleDeleteAllJoueurs = async () => {
-    await removeAllJoueursPreparationTournoi();
   };
 
   if (!preparationTournoi || !joueurs) {

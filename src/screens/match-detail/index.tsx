@@ -8,7 +8,7 @@ import { Input, InputField } from '@/components/ui/input';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { useMatchs } from '@/repositories/matchs/useMatchs';
+import { resetScore, updateScore } from '@/repositories/matchs/matchsActions';
 import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { requestReview } from '@/utils/storeReview/StoreReview';
@@ -32,7 +32,6 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
   const secondInput = useRef<any>(null);
 
   const { actualTournoi } = useActualTournoi();
-  const { updateScore, resetScore } = useMatchs(actualTournoi);
 
   if (!actualTournoi) {
     return <Loading />;
@@ -84,7 +83,7 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
     if (isNaN(nombreScore1) || isNaN(nombreScore2)) {
       throw Error('score1 ou score2 pas un nombre');
     }
-    await updateScore(match.matchId, nombreScore1, nombreScore2);
+    await updateScore(actualTournoi, match.matchId, nombreScore1, nombreScore2);
 
     //Actualise les matchs suivants si nécessaire selon le type de tournoi (COUPE & MULTICHANCES)
     await nextMatch(
@@ -102,7 +101,7 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
   };
 
   const supprimerResultat = async () => {
-    await resetScore(match.matchId);
+    await resetScore(actualTournoi, match.matchId);
     router.back();
   };
 

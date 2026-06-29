@@ -4,7 +4,7 @@ import { Pressable } from '@/components/ui/pressable';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
+import { updateTypePreparationTournoi } from '@/repositories/preparationTournoi/preparationTournoiActions';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import CardButton from '@components/buttons/CardButton';
 import {
@@ -19,8 +19,6 @@ import TypeTournoiModal from './components/TypeTournoiModal';
 const ChoixTypeTournoi = () => {
   const { t } = useTranslation();
   const router = useRouter();
-
-  const { updateTypePreparationTournoi } = usePreparationTournoi();
 
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState<TypeTournoi | undefined>();

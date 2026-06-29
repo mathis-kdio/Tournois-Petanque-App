@@ -10,7 +10,8 @@ import { VStack } from '@/components/ui/vstack';
 import { useJoueursPreparationTournois } from '@/repositories/joueursPreparationTournois/useJoueursPreparationTournois';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import { useTerrainsPreparationTournois } from '@/repositories/terrainsPreparationTournois/useTerrainsPreparationTournois';
-import { useTournois } from '@/repositories/tournois/useTournois';
+import { setActualTournoi } from '@/repositories/tournois/tournoisActions';
+import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
 import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
@@ -35,7 +36,11 @@ import { CommonActions } from 'expo-router/react-navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import GenerationLoading from './components/GenerationLoading';
-import { useCreateTournoi } from './hooks/use-create-tournoi';
+import {
+  addMatchs,
+  addTournoi,
+  clearPreparationTournois,
+} from './hooks/createTournoiActions';
 
 export interface Props {
   screenStackName: screenStackNameType;
@@ -47,10 +52,7 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
   const { preparationTournoi } = usePreparationTournoi();
   const { joueurs } = useJoueursPreparationTournois();
   const { terrains } = useTerrainsPreparationTournois();
-  const { addTournoi, addMatchs, clearPreparationTournois } =
-    useCreateTournoi();
-
-  const { setActualTournoi } = useTournois();
+  const { actualTournoi } = useActualTournoi();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isGenerationEnd, setIsGenerationEnd] = useState(false);
@@ -105,13 +107,13 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
       optionsTournoi: PreparationTournoiModel,
     ) => {
       const tournoi = await addTournoi(optionsTournoi);
-      await setActualTournoi(tournoi.id);
+      await setActualTournoi(actualTournoi, tournoi.id);
 
       await addMatchs(matchs, tournoi.id);
 
       await clearPreparationTournois();
     },
-    [addTournoi, setActualTournoi, addMatchs, clearPreparationTournois],
+    [actualTournoi],
   );
 
   const generation = useCallback(

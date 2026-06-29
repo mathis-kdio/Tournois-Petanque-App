@@ -14,6 +14,7 @@ import {
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
+import { updateModePreparationTournoi } from '@/repositories/preparationTournoi/preparationTournoiActions';
 import { usePreparationTournoi } from '@/repositories/preparationTournoi/usePreparationTournoi';
 import { ModeCreationEquipes } from '@/types/enums/modeCreationEquipes';
 import { ModeTournoi } from '@/types/enums/modeTournoi';
@@ -27,8 +28,7 @@ const ChoixModeTournoi = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const { preparationTournoi, updateModePreparationTournoi } =
-    usePreparationTournoi();
+  const { preparationTournoi } = usePreparationTournoi();
 
   const [typeEquipes, setTypeEquipes] = useState(TypeEquipes.DOUBLETTE);
   const [modeTournoi, setModeTournoi] = useState(ModeTournoi.AVECNOMS);

@@ -11,7 +11,7 @@ import { Button, ButtonGroup, ButtonText } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { CloseIcon, Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
-import { useDeleteTournoi } from '@/repositories/tournois/useDeleteTournoi';
+import { deleteTournoi } from '@/repositories/tournois/deleteTournoiActions';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -21,18 +21,16 @@ export interface Props {
   tournoiId: number;
 }
 
+const supprimerTournoi = async (tournoiId: number) => {
+  await deleteTournoi(tournoiId);
+};
+
 const ModalDeleteTournoi: React.FC<Props> = ({
   modalDeleteIsOpen,
   setModalDeleteIsOpen,
   tournoiId,
 }) => {
   const { t } = useTranslation();
-
-  const { deleteTournoi } = useDeleteTournoi();
-
-  const supprimerTournoi = async (tournoiId: number) => {
-    await deleteTournoi(tournoiId);
-  };
 
   return (
     <AlertDialog

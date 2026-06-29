@@ -3,6 +3,11 @@ import { Box } from '@/components/ui/box';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
+import {
+  deleteListeJoueurs,
+  insertListeJoueurs,
+  renameListeJoueurs,
+} from '@/repositories/listesJoueurs/listesJoueursActions';
 import { useListesJoueurs } from '@/repositories/listesJoueurs/useListesJoueurs';
 import ListeJoueursItem from '@/screens/listes-joueurs/components/ListeJoueursItem';
 import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
@@ -17,25 +22,20 @@ type SearchParams = {
   loadListScreen?: string;
 };
 
+const handleDelete = async (id: number) => {
+  await deleteListeJoueurs(id);
+};
+
+const handleUpdateName = async (id: number, name: string) => {
+  await renameListeJoueurs(id, name);
+};
+
 const ListesJoueurs = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const { loadListScreen = 'false' } = useLocalSearchParams<SearchParams>();
 
-  const {
-    allListesJoueurs,
-    deleteListeJoueurs,
-    renameListeJoueurs,
-    insertListeJoueurs,
-  } = useListesJoueurs();
-
-  const handleDelete = async (id: number) => {
-    await deleteListeJoueurs(id);
-  };
-
-  const handleUpdateName = async (id: number, name: string) => {
-    await renameListeJoueurs(id, name);
-  };
+  const { allListesJoueurs } = useListesJoueurs();
 
   const addList = async () => {
     const listeJoueurs = await insertListeJoueurs();
