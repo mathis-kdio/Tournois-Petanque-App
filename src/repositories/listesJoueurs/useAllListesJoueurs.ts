@@ -10,7 +10,7 @@ function toListeJoueursInfos(lJ: ListesJoueurs): ListeJoueursInfos {
   };
 }
 
-export const useListesJoueurs = () => {
+export const useAllListesJoueurs = () => {
   const { data: listesJoueurs } = useLiveQuery(
     ListesJoueursRepository.getAllListesJoueurs(),
   );

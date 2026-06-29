@@ -8,7 +8,7 @@ import {
   insertListeJoueurs,
   renameListeJoueurs,
 } from '@/repositories/listesJoueurs/listesJoueursActions';
-import { useListesJoueurs } from '@/repositories/listesJoueurs/useListesJoueurs';
+import { useAllListesJoueurs } from '@/repositories/listesJoueurs/useAllListesJoueurs';
 import ListeJoueursItem from '@/screens/listes-joueurs/components/ListeJoueursItem';
 import { ListeJoueursInfos } from '@/types/interfaces/listeJoueurs';
 import {
@@ -35,7 +35,7 @@ const ListesJoueurs = () => {
   const router = useRouter();
   const { loadListScreen = 'false' } = useLocalSearchParams<SearchParams>();
 
-  const { allListesJoueurs } = useListesJoueurs();
+  const { allListesJoueurs } = useAllListesJoueurs();
 
   const addList = async () => {
     const listeJoueurs = await insertListeJoueurs();
