@@ -28,7 +28,7 @@ function toTournoiModel(tournoi: Tournoi, matchs: MatchModel[]): TournoiModel {
   };
 }
 
-export const useTournois = () => {
+export const useListeTournois = () => {
   const { data: allTournois } = useLiveQuery(
     TournoisRepository.getAllTournois(),
   );
