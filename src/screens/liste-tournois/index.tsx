@@ -1,8 +1,9 @@
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { useJoueursActualTournoi } from '@/repositories/tournois/useJoueursActualTournoi';
+import { getJoueursTournoi } from '@/repositories/tournois/tournoisActions';
 import { useListeTournois } from '@/repositories/tournois/useListeTournois';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import {
   LegendList,
@@ -21,26 +22,15 @@ export default function ListeTournois() {
   const [infosTournoi, setInfosTournoi] = useState<TournoiModel | undefined>(
     undefined,
   );
-  const { joueursActualTournoi } = useJoueursActualTournoi();
+  const [listeJoueurs, setListeJoueurs] = useState<JoueurModel[]>([]);
+
   const { listeTournois } = useListeTournois();
 
-  const showModalInfos = (tournoi: TournoiModel) => {
+  const showModalInfos = async (tournoi: TournoiModel) => {
     setModalTournoiInfosIsOpen(true);
     setInfosTournoi(tournoi);
-  };
-
-  const modalTournoiInfos = () => {
-    if (!infosTournoi || !joueursActualTournoi) {
-      return;
-    }
-    return (
-      <ModalInfosTournoi
-        infosTournoi={infosTournoi}
-        listeJoueurs={joueursActualTournoi}
-        modalTournoiInfosIsOpen={modalTournoiInfosIsOpen}
-        setModalTournoiInfosIsOpen={setModalTournoiInfosIsOpen}
-      />
-    );
+    const joueurs = await getJoueursTournoi(tournoi.tournoiId);
+    setListeJoueurs(joueurs);
   };
 
   const renderItem = ({ item }: LegendListRenderItemProps<TournoiModel>) => (
@@ -61,7 +51,14 @@ export default function ListeTournois() {
         getItemType={() => 'ListeTournoiItem'}
         recycleItems
       />
-      {modalTournoiInfos()}
+      {modalTournoiInfosIsOpen && infosTournoi && listeJoueurs && (
+        <ModalInfosTournoi
+          infosTournoi={infosTournoi}
+          listeJoueurs={listeJoueurs}
+          modalTournoiInfosIsOpen={modalTournoiInfosIsOpen}
+          setModalTournoiInfosIsOpen={setModalTournoiInfosIsOpen}
+        />
+      )}
     </VStack>
   );
 }
