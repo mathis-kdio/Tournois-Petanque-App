@@ -1,5 +1,21 @@
 # Change Log
 
+## [3.0.3] - 01-07-2026
+
+### Ajouté
+
+### Changement
+
+- Mise à jour des dépendances
+- Mise à jour des traductions
+- Amélioration performances et maintenabilité
+
+### Corrigé
+
+- Fix affichage listes sur ordinateur
+- Fix nombre joueurs popup anciens tournois
+- Fix id et equipe nouveau joueur lors de l'inscription
+
 ## [3.0.2] - 17-06-2026
 
 ### Ajouté

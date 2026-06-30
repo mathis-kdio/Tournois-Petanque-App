@@ -1,4 +1,4 @@
-const version = '3.0.2';
+const version = '3.0.3';
 
 export default () => ({
   name: 'Tournois Pétanque App',
