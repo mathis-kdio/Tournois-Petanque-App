@@ -1,5 +1,6 @@
 import { Joueur, NewJoueur } from '@/db/schema';
 import { JoueurType } from '@/types/enums/joueurType';
+import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { JoueursRepository } from '../joueurs/joueursRepository';
 import { JoueursSuggestionRepository } from '../joueursSuggestion/joueursSuggestionRepository';
 import { JoueursPreparationTournoisRepository } from './joueursPreparationTournoiRepository';
@@ -19,6 +20,22 @@ function toNewJoueur(
     isChecked: false,
   };
 }
+
+function toJoueurModel(joueur: Joueur): JoueurModel {
+  return {
+    uniqueBDDId: joueur.id,
+    joueurTournoiId: joueur.joueurId,
+    name: joueur.name,
+    type: joueur.type ?? undefined,
+    equipe: joueur.equipe ?? undefined,
+    isChecked: joueur.isChecked ?? false,
+  };
+}
+
+export const getAllJoueursPreparationTournoi = async () => {
+  const joueurs = await JoueursPreparationTournoisRepository.getMany();
+  return joueurs.map(toJoueurModel);
+};
 
 export const addJoueursPreparationTournoi = async (
   joueurTournoiId: number,

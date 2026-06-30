@@ -10,6 +10,7 @@ import {
 } from '@/repositories/joueurs/joueursActions';
 import {
   addJoueursPreparationTournoi,
+  getAllJoueursPreparationTournoi,
   removeAllJoueursPreparationTournoi,
   removeJoueursPreparationTournoi,
   updateJoueursEquipe,
@@ -52,7 +53,7 @@ const InscriptionsAvecNoms = () => {
 
   const { joueursPreparationTournois } = useJoueursPreparationTournois();
 
-  const equipeAuto = () => {
+  const equipeAuto = (joueursPrepa: JoueurModel[]) => {
     if (!preparationTournoi) {
       throw Error('preparationTournoi devrait être défini');
     }
@@ -62,13 +63,13 @@ const InscriptionsAvecNoms = () => {
     }
 
     if (typeEquipes === TypeEquipes.TETEATETE) {
-      return joueursPreparationTournois.length + 1;
+      return joueursPrepa.length + 1;
     } else {
       const nbJoueursParEquipe = typeEquipes === TypeEquipes.DOUBLETTE ? 2 : 3;
 
       // Compter le nombre de joueurs par équipe
       const joueursParEquipe: { [key: number]: number } = {};
-      joueursPreparationTournois.forEach((joueur) => {
+      joueursPrepa.forEach((joueur) => {
         if (joueur.equipe) {
           joueursParEquipe[joueur.equipe] =
             (joueursParEquipe[joueur.equipe] || 0) + 1;
@@ -94,10 +95,11 @@ const InscriptionsAvecNoms = () => {
     joueurName: string,
     joueurType: JoueurType | undefined,
   ) => {
-    const equipe = equipeAuto();
+    const listeJoueursPrepa = await getAllJoueursPreparationTournoi();
+    const equipe = equipeAuto(listeJoueursPrepa);
 
     await addJoueursPreparationTournoi(
-      joueursPreparationTournois.length,
+      listeJoueursPrepa.length,
       joueurName,
       joueurType,
       equipe,
