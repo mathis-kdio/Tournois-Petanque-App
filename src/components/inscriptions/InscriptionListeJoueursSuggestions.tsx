@@ -60,7 +60,7 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
 
   const partialSuggested = suggestions().slice(0, nbSuggestions);
 
-  if (suggestions.length === 0) {
+  if (suggestions().length === 0) {
     return null;
   }
 
