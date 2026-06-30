@@ -1,17 +1,16 @@
 import { Tournoi } from '@/db/schema/tournoi';
-import { MatchModel } from '@/types/interfaces/matchModel';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { TournoisRepository } from './tournoisRepository';
 
-function toTournoiModel(tournoi: Tournoi, matchs: MatchModel[]): TournoiModel {
+function toTournoiModel(tournoi: Tournoi): TournoiModel {
   return {
     tournoiId: tournoi.id,
     name: tournoi.name || undefined,
     estTournoiActuel: tournoi.estTournoiActuel,
     creationDate: new Date(tournoi.createAt),
     updateDate: new Date(tournoi.updatedAt),
-    matchs: matchs,
+    matchs: [],
     options: {
       tournoiID: tournoi.id,
       nbTours: tournoi.nbTours,
@@ -36,7 +35,7 @@ export const useListeTournois = () => {
     if (!allTournois) {
       return [];
     }
-    return allTournois.map((tournoi) => toTournoiModel(tournoi, []));
+    return allTournois.map((tournoi) => toTournoiModel(tournoi));
   };
 
   return {

@@ -1,7 +1,7 @@
-import { equipe, terrains } from '@/db/schema';
+import { equipe, equipesJoueurs, joueurs, terrains } from '@/db/schema';
 import { match, NewMatch } from '@/db/schema/match';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { and, eq, inArray, sql } from 'drizzle-orm';
+import { and, eq, inArray, or, sql } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/sqlite-core';
 
 export type FullMatch = {
@@ -27,6 +27,15 @@ export type FullMatchTerrain = {
   t_updatedAt: number | null;
   t_synced: number | null;
 };
+
+export interface JoueursTournoi {
+  j_id: number;
+  j_joueurId: number;
+  j_name: string;
+  j_type: string | null;
+  j_equipe: number | null;
+  j_isChecked: number | null;
+}
 
 export const MatchsRepository = {
   get(tournoiId: number, matchId: number) {
@@ -67,6 +76,33 @@ export const MatchsRepository = {
       .innerJoin(equipe1, eq(equipe1.id, match.equipe1))
       .innerJoin(equipe2, eq(equipe2.id, match.equipe2))
       .leftJoin(terrains, eq(terrains.id, match.terrainId));
+  },
+
+  getJoueursTournoi(tournoiId: number) {
+    const e1 = alias(equipe, 'e1');
+    const e2 = alias(equipe, 'e2');
+
+    return getDrizzleDb()
+      .selectDistinct({
+        j_id: sql<number>`${joueurs.id}`.as('j_id'),
+        j_joueurId: sql<number>`${joueurs.joueurId}`.as('j_joueurId'),
+        j_name: sql<string>`${joueurs.name}`.as('j_name'),
+        j_type: sql<string | null>`${joueurs.type}`.as('j_type'),
+        j_equipe: sql<number | null>`${joueurs.equipe}`.as('j_equipe'),
+        j_isChecked: sql<number | null>`${joueurs.isChecked}`.as('j_isChecked'),
+      })
+      .from(match)
+      .where(eq(match.tournoiId, tournoiId))
+      .innerJoin(e1, eq(e1.id, match.equipe1))
+      .innerJoin(e2, eq(e2.id, match.equipe2))
+      .innerJoin(
+        equipesJoueurs,
+        or(
+          eq(equipesJoueurs.equipeId, e1.id),
+          eq(equipesJoueurs.equipeId, e2.id),
+        ),
+      )
+      .innerJoin(joueurs, eq(joueurs.id, equipesJoueurs.joueurId));
   },
 
   insertMatch(newMatchs: NewMatch[]) {
