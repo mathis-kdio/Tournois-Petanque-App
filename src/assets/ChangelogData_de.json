@@ -1,4 +1,16 @@
 {
+  "40": {
+    "id": "40",
+    "version": "3.0.3",
+    "infos": [
+      "- Mise à jour des dépendances",
+      "- Mise à jour des traductions",
+      "- Amélioration performances et maintenabilité",
+      "- Fix affichage listes sur ordinateur",
+      "- Fix nombre joueurs popup anciens tournois",
+      "- Fix id et equipe nouveau joueur lors de l'inscription"
+    ]
+  },
   "39": {
     "id": "39",
     "version": "3.0.2",
