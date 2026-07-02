@@ -1,13 +1,19 @@
 'use client';
-import { PrimitiveIcon, UIIcon } from '@gluestack-ui/core/icon/creator';
+import { UIIcon } from '@gluestack-ui/core/icon/creator';
 import { createRadio } from '@gluestack-ui/core/radio/creator';
 import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
 import { tva, useStyleContext, withStyleContext } from '@gluestack-ui/utils/nativewind-utils';
-import { cssInterop } from 'nativewind';
+import { styled } from 'nativewind';
 import React from 'react';
 import { Platform, Pressable, Text, View } from 'react-native';
 
 const SCOPE = 'Radio';
+
+const StyledIcon = styled(UIIcon, {
+  className: {
+    target: 'style',
+  },
+});
 
 const UIRadio = createRadio({
   Root: (Platform.OS === 'web'
@@ -16,26 +22,14 @@ const UIRadio = createRadio({
       typeof withStyleContext<typeof Pressable>
     >,
   Group: View,
-  Icon: UIIcon,
+  Icon: StyledIcon,
   Indicator: View,
   Label: Text,
 });
 
-cssInterop(PrimitiveIcon, {
-  className: {
-    target: 'style',
-    nativeStyleToProp: {
-      height: true,
-      width: true,
-      fill: true,
-      color: 'classNameColor',
-      stroke: true,
-    },
-  },
-});
 
 const radioStyle = tva({
-  base: 'group/radio flex-row justify-start items-center web:cursor-pointer data-[disabled=true]:web:cursor-not-allowed',
+  base: 'group/radio flex-row justify-start items-center gap-2 web:cursor-pointer data-[disabled=true]:web:cursor-not-allowed data-[disabled=true]:opacity-50',
   variants: {
     size: {
       sm: 'gap-1.5',
@@ -46,12 +40,11 @@ const radioStyle = tva({
 });
 
 const radioGroupStyle = tva({
-  base: 'gap-2',
+  base: 'gap-3',
 });
 
 const radioIconStyle = tva({
-  base: 'rounded-full justify-center items-center text-primary-800 fill-primary-800',
-
+  base: 'rounded-full absolute stroke-none fill-primary h-2 w-2',
   parentVariants: {
     size: {
       sm: 'h-[9px] w-[9px]',
@@ -62,7 +55,7 @@ const radioIconStyle = tva({
 });
 
 const radioIndicatorStyle = tva({
-  base: 'justify-center items-center bg-transparent border-outline-400 border-2 rounded-full data-[focus-visible=true]:web:outline-2 data-[focus-visible=true]:web:outline-primary-700 data-[focus-visible=true]:web:outline data-[checked=true]:border-primary-600 data-[checked=true]:bg-transparent data-[hover=true]:border-outline-500 data-[hover=true]:bg-transparent data-[hover=true]:data-[checked=true]:bg-transparent data-[hover=true]:data-[checked=true]:border-primary-700 data-[hover=true]:data-[invalid=true]:border-error-700 data-[hover=true]:data-[disabled=true]:opacity-40 data-[hover=true]:data-[disabled=true]:border-outline-400 data-[hover=true]:data-[disabled=true]:data-[invalid=true]:border-error-400 data-[active=true]:bg-transparent data-[active=true]:border-primary-800 data-[invalid=true]:border-error-700 data-[disabled=true]:opacity-40 data-[disabled=true]:data-[checked=true]:border-outline-400 data-[disabled=true]:data-[checked=true]:bg-transparent data-[disabled=true]:data-[invalid=true]:border-error-400',
+  base: 'relative justify-center items-center aspect-square h-4 w-4 shrink-0 rounded-full border border-border  dark:bg-input/30 shadow-xs web:outline-none web:data-[focus-visible=true]:ring-[3px] web:data-[focus-visible=true]:ring-ring/50 web:data-[focus-visible=true]:border-ring data-[invalid=true]:ring-destructive/20 data-[invalid=true]:border-destructive data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50',
   parentVariants: {
     size: {
       sm: 'h-4 w-4',
@@ -73,7 +66,7 @@ const radioIndicatorStyle = tva({
 });
 
 const radioLabelStyle = tva({
-  base: 'text-typography-600 data-[checked=true]:text-typography-900 data-[hover=true]:text-typography-900 data-[hover=true]:data-[disabled=true]:text-typography-600 data-[hover=true]:data-[disabled=true]:data-[checked=true]:text-typography-900 data-[active=true]:text-typography-900 data-[active=true]:data-[checked=true]:text-typography-900 data-[disabled=true]:opacity-40 web:select-none',
+  base: 'text-foreground text-sm font-medium web:select-none web:cursor-pointer data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50 font-body',
   parentVariants: {
     size: {
       '2xs': 'text-2xs',
@@ -207,6 +200,7 @@ const RadioIcon = React.forwardRef<
   );
 });
 
+
 Radio.displayName = 'Radio';
 RadioGroup.displayName = 'RadioGroup';
 RadioIndicator.displayName = 'RadioIndicator';
@@ -214,4 +208,3 @@ RadioLabel.displayName = 'RadioLabel';
 RadioIcon.displayName = 'RadioIcon';
 
 export { Radio, RadioGroup, RadioIcon, RadioIndicator, RadioLabel };
-
