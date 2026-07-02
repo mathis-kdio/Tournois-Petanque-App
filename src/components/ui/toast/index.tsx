@@ -2,45 +2,34 @@
 import { createToastHook } from '@gluestack-ui/core/toast/creator';
 import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
 import { tva, useStyleContext, withStyleContext } from '@gluestack-ui/utils/nativewind-utils';
-import {
-  AnimatePresence,
-  Motion,
-  MotionComponentProps,
-} from '@legendapp/motion';
-import { cssInterop } from 'nativewind';
+import { styled } from 'nativewind';
 import React from 'react';
-import { AccessibilityInfo, Text, View, ViewStyle } from 'react-native';
-
-type IMotionViewProps = React.ComponentProps<typeof View> &
-  MotionComponentProps<typeof View, ViewStyle, unknown, unknown, unknown>;
-
-const MotionView = Motion.View as React.ComponentType<IMotionViewProps>;
-
-const useToast = createToastHook(MotionView, AnimatePresence);
+import { AccessibilityInfo, Text, View } from 'react-native';
+import Animated, { SlideInUp } from 'react-native-reanimated';
+const useToast = createToastHook(View);
 const SCOPE = 'TOAST';
-
-cssInterop(MotionView, { className: 'style' });
-
+const AnimatedView = Animated.createAnimatedComponent(View);
+const StyledAnimatedView = styled(AnimatedView, { className: 'style' });
 const toastStyle = tva({
-  base: 'p-4 m-1 rounded-md gap-1 web:pointer-events-auto shadow-hard-5 border-outline-100',
+  base: 'p-4 m-1 rounded-md gap-1 web:pointer-events-auto border-border',
   variants: {
     action: {
-      error: 'bg-error-800',
-      warning: 'bg-warning-700',
-      success: 'bg-success-700',
-      info: 'bg-info-700',
-      muted: 'bg-background-800',
+      error: 'bg-popover text-popover-foreground',
+      warning: 'bg-popover text-popover-foreground',
+      success: 'bg-popover text-popover-foreground',
+      info: 'bg-popover text-popover-foreground',
+      muted: 'bg-popover text-popover-foreground',
     },
 
     variant: {
-      solid: '',
-      outline: 'border bg-background-0',
+      solid: 'border border-border bg-popover shadow-soft-4',
+      outline: 'border border-border bg-popover',
     },
   },
 });
 
 const toastTitleStyle = tva({
-  base: 'text-typography-0 font-medium font-body tracking-md text-left',
+  base: 'font-medium font-body tracking-md text-left',
   variants: {
     isTruncated: {
       true: '',
@@ -71,7 +60,7 @@ const toastTitleStyle = tva({
   parentVariants: {
     variant: {
       solid: '',
-      outline: '',
+      outline: 'text-foreground',
     },
     action: {
       error: '',
@@ -83,29 +72,54 @@ const toastTitleStyle = tva({
   },
   parentCompoundVariants: [
     {
+      variant: 'solid',
+      action: 'error',
+      class: 'text-destructive-foreground',
+    },
+    {
+      variant: 'solid',
+      action: 'warning',
+      class: 'text-accent-foreground',
+    },
+    {
+      variant: 'solid',
+      action: 'success',
+      class: 'text-secondary-foreground',
+    },
+    {
+      variant: 'solid',
+      action: 'info',
+      class: 'text-popover-foreground',
+    },
+    {
+      variant: 'solid',
+      action: 'muted',
+      class: 'text-muted-foreground',
+    },
+    {
       variant: 'outline',
       action: 'error',
-      class: 'text-error-800',
+      class: 'text-destructive',
     },
     {
       variant: 'outline',
       action: 'warning',
-      class: 'text-warning-800',
+      class: 'text-accent-foreground',
     },
     {
       variant: 'outline',
       action: 'success',
-      class: 'text-success-800',
+      class: 'text-secondary-foreground',
     },
     {
       variant: 'outline',
       action: 'info',
-      class: 'text-info-800',
+      class: 'text-popover-foreground',
     },
     {
       variant: 'outline',
       action: 'muted',
-      class: 'text-background-800',
+      class: 'text-muted-foreground',
     },
   ],
 });
@@ -141,13 +155,13 @@ const toastDescriptionStyle = tva({
   },
   parentVariants: {
     variant: {
-      solid: 'text-typography-50',
-      outline: 'text-typography-900',
+      solid: 'text-muted-foreground',
+      outline: 'text-muted-foreground',
     },
   },
 });
 
-const Root = withStyleContext(View, SCOPE);
+const Root = withStyleContext(StyledAnimatedView, SCOPE);
 type IToastProps = React.ComponentProps<typeof Root> & {
   className?: string;
 } & VariantProps<typeof toastStyle>;
@@ -160,6 +174,7 @@ const Toast = React.forwardRef<React.ComponentRef<typeof Root>, IToastProps>(
     return (
       <Root
         ref={ref}
+        entering={SlideInUp}
         className={toastStyle({ variant, action, class: className })}
         context={{ variant, action }}
         {...props}
