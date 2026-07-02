@@ -1,13 +1,13 @@
-import React, { createContext, useContext, useMemo } from 'react';
+import React, { createContext, useMemo, useContext } from 'react';
 import {
-  tableBodyStyle,
-  tableCaptionStyle,
-  tableDataStyle,
-  tableFooterStyle,
+  tableStyle,
   tableHeaderStyle,
+  tableBodyStyle,
+  tableFooterStyle,
   tableHeadStyle,
   tableRowStyleStyle,
-  tableStyle,
+  tableDataStyle,
+  tableCaptionStyle,
 } from './styles';
 
 const TableHeaderContext = createContext<{
@@ -146,7 +146,12 @@ TableData.displayName = 'TableData';
 TableCaption.displayName = 'TableCaption';
 
 export {
-  Table, TableBody, TableCaption, TableData, TableFooter,
-  TableHead, TableHeader, TableRow
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableHead,
+  TableRow,
+  TableData,
+  TableCaption,
 };
-
