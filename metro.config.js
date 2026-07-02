@@ -17,4 +17,4 @@ config.server.enhanceMiddleware = (middleware) => {
 // Nécessaire pour Drizzle
 config.resolver.sourceExts.push('sql');
 
-module.exports = withNativeWind(config, { input: './global.css' });
+module.exports = withNativeWind(config);

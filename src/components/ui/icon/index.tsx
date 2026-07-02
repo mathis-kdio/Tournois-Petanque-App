@@ -1,8 +1,14 @@
-import { createIcon, IPrimitiveIcon, PrimitiveIcon, Svg } from '@gluestack-ui/core/icon/creator';
-import { tva, VariantProps } from '@gluestack-ui/utils/nativewind-utils';
-import { cssInterop } from 'nativewind';
 import React from 'react';
+import { createIcon } from '@gluestack-ui/core/icon/creator';
 import { Path } from 'react-native-svg';
+import { tva } from '@gluestack-ui/utils/nativewind-utils';
+import { styled } from 'nativewind';
+import { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
+import {
+  PrimitiveIcon,
+  IPrimitiveIcon,
+  Svg,
+} from '@gluestack-ui/core/icon/creator';
 
 export const UIIcon = createIcon({
   Root: PrimitiveIcon,
@@ -12,7 +18,7 @@ export const UIIcon = createIcon({
 >;
 
 const iconStyle = tva({
-  base: 'text-typography-950 fill-none pointer-events-none',
+  base: 'text-foreground fill-none pointer-events-none',
   variants: {
     size: {
       '2xs': 'h-3 w-3',
@@ -25,18 +31,7 @@ const iconStyle = tva({
   },
 });
 
-cssInterop(UIIcon, {
-  className: {
-    target: 'style',
-    nativeStyleToProp: {
-      height: true,
-      width: true,
-      fill: true,
-      color: 'classNameColor',
-      stroke: true,
-    },
-  },
-});
+const StyledUIIcon = styled(UIIcon, { className: "style" });
 
 type IIConProps = IPrimitiveIcon &
   VariantProps<typeof iconStyle> &
@@ -46,7 +41,7 @@ const Icon = React.forwardRef<React.ComponentRef<typeof UIIcon>, IIConProps>(
   function Icon({ size = 'md', className, ...props }, ref) {
     if (typeof size === 'number') {
       return (
-        <UIIcon
+        <StyledUIIcon
           ref={ref}
           {...props}
           className={iconStyle({ class: className })}
@@ -58,7 +53,7 @@ const Icon = React.forwardRef<React.ComponentRef<typeof UIIcon>, IIConProps>(
       size === undefined
     ) {
       return (
-        <UIIcon
+        <StyledUIIcon
           ref={ref}
           {...props}
           className={iconStyle({ class: className })}
@@ -66,7 +61,7 @@ const Icon = React.forwardRef<React.ComponentRef<typeof UIIcon>, IIConProps>(
       );
     }
     return (
-      <UIIcon
+      <StyledUIIcon
         ref={ref}
         {...props}
         className={iconStyle({ size, class: className })}
@@ -253,7 +248,7 @@ ArrowDownIcon.displayName = 'ArrowDownIcon';
 ArrowRightIcon.displayName = 'ArrowRightIcon';
 ArrowLeftIcon.displayName = 'ArrowLeftIcon';
 
-export { ArrowDownIcon, ArrowLeftIcon, ArrowRightIcon, ArrowUpIcon };
+export { ArrowUpIcon, ArrowDownIcon, ArrowRightIcon, ArrowLeftIcon };
 
 const AtSignIcon = createIcon({
   Root: Svg,
@@ -419,7 +414,7 @@ const CheckCircleIcon = createIcon({
 CheckIcon.displayName = 'CheckIcon';
 CheckCircleIcon.displayName = 'CheckCircleIcon';
 
-export { CheckCircleIcon, CheckIcon };
+export { CheckIcon, CheckCircleIcon };
 
 const ChevronUpIcon = createIcon({
   Root: Svg,
@@ -558,12 +553,13 @@ ChevronsRightIcon.displayName = 'ChevronsRightIcon';
 ChevronsUpDownIcon.displayName = 'ChevronsUpDownIcon';
 
 export {
+  ChevronUpIcon,
   ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   ChevronsLeftIcon,
   ChevronsRightIcon,
-  ChevronsUpDownIcon, ChevronUpIcon
+  ChevronsUpDownIcon,
 };
 
 const CircleIcon = createIcon({
@@ -661,7 +657,7 @@ const CloseCircleIcon = createIcon({
 CloseIcon.displayName = 'CloseIcon';
 CloseCircleIcon.displayName = 'CloseCircleIcon';
 
-export { CloseCircleIcon, CloseIcon };
+export { CloseIcon, CloseCircleIcon };
 
 const CopyIcon = createIcon({
   Root: Svg,
@@ -1008,7 +1004,7 @@ const ExternalLinkIcon = createIcon({
 });
 
 ExternalLinkIcon.displayName = 'ExternalLinkIcon';
-export { ExternalLinkIcon, LinkIcon };
+export { LinkIcon, ExternalLinkIcon };
 
 const LoaderIcon = createIcon({
   Root: Svg,
@@ -1296,7 +1292,7 @@ const Repeat1Icon = createIcon({
 });
 
 Repeat1Icon.displayName = 'Repeat1Icon';
-export { Repeat1Icon, RepeatIcon };
+export { RepeatIcon, Repeat1Icon };
 
 const SearchIcon = createIcon({
   Root: Svg,
@@ -1579,4 +1575,3 @@ const UnlockIcon = createIcon({
 
 UnlockIcon.displayName = 'UnlockIcon';
 export { UnlockIcon };
-

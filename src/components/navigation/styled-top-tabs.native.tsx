@@ -2,7 +2,7 @@ import {
   createMaterialTopTabNavigator,
   MaterialTopTabNavigationOptions,
 } from 'expo-router/js-top-tabs';
-import { cssInterop } from 'nativewind';
+import { styled } from 'nativewind';
 import React from 'react';
 import { ViewStyle } from 'react-native';
 
@@ -25,7 +25,7 @@ const StyledTopTabsImpl = ({
   return <TopTab.Navigator {...props} />;
 };
 
-export const StyledTopTabs = cssInterop(StyledTopTabsImpl, {
+export const StyledTopTabs = styled(StyledTopTabsImpl, {
   tabBarClassName: 'tabBarStyle',
   tabBarIndicatorClassName: 'tabBarIndicatorStyle',
 });

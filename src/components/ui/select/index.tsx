@@ -1,26 +1,30 @@
 'use client';
 
-import { PrimitiveIcon, UIIcon } from '@gluestack-ui/core/icon/creator';
-import { createSelect } from '@gluestack-ui/core/select/creator';
-import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
-import { tva, useStyleContext, withStyleContext } from '@gluestack-ui/utils/nativewind-utils';
-import { cssInterop } from 'nativewind';
 import React from 'react';
-import { Pressable, TextInput, View } from 'react-native';
+import { tva } from '@gluestack-ui/utils/nativewind-utils';
+import { UIIcon } from '@gluestack-ui/core/icon/creator';
+import {
+  withStyleContext,
+  useStyleContext,
+} from '@gluestack-ui/utils/nativewind-utils';
+import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
+import { createSelect } from '@gluestack-ui/core/select/creator';
+import { styled } from 'nativewind';
 import {
   Actionsheet,
-  ActionsheetBackdrop,
   ActionsheetContent,
-  ActionsheetDragIndicator,
-  ActionsheetDragIndicatorWrapper,
-  ActionsheetFlatList,
   ActionsheetItem,
   ActionsheetItemText,
+  ActionsheetDragIndicator,
+  ActionsheetDragIndicatorWrapper,
+  ActionsheetBackdrop,
   ActionsheetScrollView,
-  ActionsheetSectionHeaderText,
-  ActionsheetSectionList,
   ActionsheetVirtualizedList,
+  ActionsheetFlatList,
+  ActionsheetSectionList,
+  ActionsheetSectionHeaderText,
 } from './select-actionsheet';
+import { Pressable, View, TextInput } from 'react-native';
 
 const SelectTriggerWrapper = React.forwardRef<
   React.ComponentRef<typeof Pressable>,
@@ -30,7 +34,7 @@ const SelectTriggerWrapper = React.forwardRef<
 });
 
 const selectIconStyle = tva({
-  base: 'text-background-500 fill-none',
+  base: 'text-foreground/50 fill-none',
   parentVariants: {
     size: {
       '2xs': 'h-3 w-3',
@@ -48,7 +52,7 @@ const selectStyle = tva({
 });
 
 const selectTriggerStyle = tva({
-  base: 'border border-background-300 rounded flex-row items-center overflow-hidden data-[hover=true]:border-outline-400 data-[focus=true]:border-primary-700 data-[disabled=true]:opacity-40 data-[disabled=true]:data-[hover=true]:border-background-300',
+  base: 'border border-border rounded flex-row items-center overflow-hidden data-[hover=true]:border-primary/80 data-[focus=true]:border-primary/80 data-[disabled=true]:opacity-40 data-[disabled=true]:data-[hover=true]:border-border/80',
   variants: {
     size: {
       xl: 'min-h-12',
@@ -58,17 +62,17 @@ const selectTriggerStyle = tva({
     },
     variant: {
       underlined:
-        'border-0 border-b rounded-none data-[hover=true]:border-primary-700 data-[focus=true]:border-primary-700 data-[focus=true]:web:shadow-[inset_0_-1px_0_0] data-[focus=true]:web:shadow-primary-700 data-[invalid=true]:border-error-700 data-[invalid=true]:web:shadow-error-700',
+        'border-0 border-b rounded-none data-[hover=true]:border-primary/80 data-[focus=true]:border-primary/80 data-[focus=true]:web:shadow-[inset_0_-1px_0_0] data-[focus=true]:web:shadow-primary/80 data-[invalid=true]:border-destructive data-[invalid=true]:web:shadow-destructive',
       outline:
-        'data-[focus=true]:border-primary-700 data-[focus=true]:web:shadow-[inset_0_0_0_1px] data-[focus=true]:data-[hover=true]:web:shadow-primary-600 data-[invalid=true]:web:shadow-[inset_0_0_0_1px] data-[invalid=true]:border-error-700 data-[invalid=true]:web:shadow-error-700 data-[invalid=true]:data-[hover=true]:border-error-700',
+        'data-[focus=true]:border-primary/80 data-[focus=true]:web:shadow-[inset_0_0_0_1px] data-[focus=true]:data-[hover=true]:web:shadow-primary/80 data-[invalid=true]:web:shadow-[inset_0_0_0_1px] data-[invalid=true]:border-destructive data-[invalid=true]:web:shadow-destructive data-[invalid=true]:data-[hover=true]:border-destructive',
       rounded:
-        'rounded-full data-[focus=true]:border-primary-700 data-[focus=true]:web:shadow-[inset_0_0_0_1px] data-[focus=true]:web:shadow-primary-700 data-[invalid=true]:border-error-700 data-[invalid=true]:web:shadow-error-700',
+        'rounded-full data-[focus=true]:border-primary/80 data-[focus=true]:web:shadow-[inset_0_0_0_1px] data-[focus=true]:web:shadow-primary/80 data-[invalid=true]:border-destructive data-[invalid=true]:web:shadow-destructive',
     },
   },
 });
 
 const selectInputStyle = tva({
-  base: 'px-3 placeholder:text-typography-500 web:w-full h-full text-typography-900 pointer-events-none web:outline-none ios:leading-[0px] py-0',
+  base: 'px-3 placeholder:text-foreground/50 web:w-full h-full text-foreground/90 pointer-events-none web:outline-none ios:leading-[0px] py-0',
   parentVariants: {
     size: {
       xl: 'text-xl',
@@ -84,12 +88,18 @@ const selectInputStyle = tva({
   },
 });
 
+const StyledIcon = styled(UIIcon, {
+  className: {
+    target: 'style',
+  },
+});
+
 const UISelect = createSelect(
   {
     Root: View,
     Trigger: withStyleContext(SelectTriggerWrapper),
     Input: TextInput,
-    Icon: UIIcon,
+    Icon: StyledIcon,
   },
   {
     Portal: Actionsheet,
@@ -106,25 +116,6 @@ const UISelect = createSelect(
     SectionHeaderText: ActionsheetSectionHeaderText,
   }
 );
-
-cssInterop(UISelect, { className: 'style' });
-cssInterop(UISelect.Input, {
-  className: { target: 'style', nativeStyleToProp: { textAlign: true } },
-});
-cssInterop(SelectTriggerWrapper, { className: 'style' });
-
-cssInterop(PrimitiveIcon, {
-  className: {
-    target: 'style',
-    nativeStyleToProp: {
-      height: true,
-      width: true,
-      fill: true,
-      color: 'classNameColor',
-      stroke: true,
-    },
-  },
-});
 
 type ISelectProps = VariantProps<typeof selectStyle> &
   React.ComponentProps<typeof UISelect> & { className?: string };
@@ -255,9 +246,19 @@ const SelectSectionList = UISelect.SectionList;
 const SelectSectionHeaderText = UISelect.SectionHeaderText;
 
 export {
-  Select, SelectBackdrop,
+  Select,
+  SelectTrigger,
+  SelectInput,
+  SelectIcon,
+  SelectPortal,
+  SelectBackdrop,
   SelectContent,
   SelectDragIndicator,
-  SelectDragIndicatorWrapper, SelectFlatList, SelectIcon, SelectInput, SelectItem, SelectPortal, SelectScrollView, SelectSectionHeaderText, SelectSectionList, SelectTrigger, SelectVirtualizedList
+  SelectDragIndicatorWrapper,
+  SelectItem,
+  SelectScrollView,
+  SelectVirtualizedList,
+  SelectFlatList,
+  SelectSectionList,
+  SelectSectionHeaderText,
 };
-
