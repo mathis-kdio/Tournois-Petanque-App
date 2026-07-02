@@ -1,5 +1,5 @@
 import React from 'react';
-import { gridItemStyle, gridStyle } from './styles';
+import { gridStyle, gridItemStyle } from './styles';
 
 import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
 
@@ -64,4 +64,3 @@ Grid.displayName = 'Grid';
 GridItem.displayName = 'GridItem';
 
 export { Grid, GridItem };
-

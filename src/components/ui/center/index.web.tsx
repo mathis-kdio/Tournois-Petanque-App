@@ -18,4 +18,3 @@ const Center = React.forwardRef<HTMLDivElement, ICenterProps>(function Center(
 Center.displayName = 'Center';
 
 export { Center };
-
