@@ -1,7 +1,7 @@
-import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
-import React from 'react';
 import { View, ViewProps } from 'react-native';
+import React from 'react';
 import { centerStyle } from './styles';
+import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
 
 type ICenterProps = ViewProps & VariantProps<typeof centerStyle>;
 
@@ -20,4 +20,3 @@ const Center = React.forwardRef<React.ComponentRef<typeof View>, ICenterProps>(
 Center.displayName = 'Center';
 
 export { Center };
-
