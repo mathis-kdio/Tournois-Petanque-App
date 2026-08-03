@@ -48,7 +48,7 @@ const CardButton: React.FC<Props> = ({ text, icons, navigate, newBadge }) => {
             />
           ))}
         </HStack>
-        <Text className="color-custom-text-button">{text}</Text>
+        <Text className="text-custom-text-button">{text}</Text>
       </VStack>
     </Pressable>
   );

@@ -87,7 +87,7 @@ export default function Accueil() {
             className="!text-custom-text-button"
             size={24}
           />
-          <Text className="color-custom-text-button">{t('aucun_tournoi')}</Text>
+          <Text className="text-custom-text-button">{t('aucun_tournoi')}</Text>
         </Box>
       );
     }
@@ -170,7 +170,7 @@ export default function Accueil() {
                   className="!text-custom-text-button"
                   size={24}
                 />
-                <Text className="color-custom-text-button">
+                <Text className="text-custom-text-button">
                   {t('rejoindre_page_fb')}
                 </Text>
               </Pressable>
@@ -183,7 +183,7 @@ export default function Accueil() {
                   className="!text-custom-text-button"
                   size={24}
                 />
-                <Text className="color-custom-text-button">
+                <Text className="text-custom-text-button">
                   {t('voir_website')}
                 </Text>
               </Pressable>
@@ -227,7 +227,7 @@ export default function Accueil() {
                 onPress={() => _openURL(gcuWebsite)}
                 className="items-center bg-custom-dark-blue rounded-3xl p-3"
               >
-                <Text className="color-custom-text-button text-md">
+                <Text className="text-custom-text-button text-md">
                   {t('decouvrir_gcu')}
                 </Text>
               </Pressable>
