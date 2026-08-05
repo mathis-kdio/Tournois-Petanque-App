@@ -81,10 +81,10 @@ export default function Accueil() {
       );
     } else {
       return (
-        <Box className="bg-secondary-500 flex-1 items-center rounded-3xl py-5">
+        <Box className="bg-gray-500 flex-1 items-center rounded-3xl py-5">
           <FontAwesome
             name="play"
-            className="!text-custom-text-button"
+            className="text-custom-text-button!"
             size={24}
           />
           <Text className="text-custom-text-button">{t('aucun_tournoi')}</Text>
@@ -167,7 +167,7 @@ export default function Accueil() {
               >
                 <FontAwesome
                   name="facebook"
-                  className="!text-custom-text-button"
+                  className="text-custom-text-button!"
                   size={24}
                 />
                 <Text className="text-custom-text-button">
@@ -180,7 +180,7 @@ export default function Accueil() {
               >
                 <FontAwesome
                   name="globe"
-                  className="!text-custom-text-button"
+                  className="text-custom-text-button!"
                   size={24}
                 />
                 <Text className="text-custom-text-button">
@@ -197,7 +197,7 @@ export default function Accueil() {
               >
                 <FontAwesome
                   name="star"
-                  className="!text-custom-text-button"
+                  className="text-custom-text-button!"
                   size={24}
                 />
               </Pressable>
@@ -207,7 +207,7 @@ export default function Accueil() {
               >
                 <FontAwesome
                   name="envelope"
-                  className="!text-custom-text-button"
+                  className="text-custom-text-button!"
                   size={24}
                 />
               </Pressable>
@@ -217,7 +217,7 @@ export default function Accueil() {
               >
                 <FontAwesome
                   name="wrench"
-                  className="!text-custom-text-button"
+                  className="text-custom-text-button!"
                   size={24}
                 />
               </Pressable>
@@ -236,10 +236,10 @@ export default function Accueil() {
         </VStack>
       </ScrollView>
       <VStack>
-        <Text className="text-center text-typography-white text-md">
+        <Text className="text-center text-foreground text-md">
           {t('developpe_par')} Mathis Cadio
         </Text>
-        <Text className="text-center text-typography-white text-md">
+        <Text className="text-center text-foreground text-md">
           {t('version')} {version}
         </Text>
       </VStack>

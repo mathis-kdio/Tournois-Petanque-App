@@ -76,11 +76,11 @@ const EquipePicker: React.FC<Props> = ({
     >
       <SelectTrigger className="flex flex-row border-custom-bg-inverse">
         <SelectInput
-          className="basis-5/6 text-typography-white placeholder:text-typography-white"
+          className="basis-5/6 text-foreground placeholder:text-foreground"
           placeholder={t('choix_equipe')}
         />
         <SelectIcon
-          className="basis-1/6 mr-3 text-typography-white"
+          className="basis-1/6 mr-3 text-foreground"
           as={ChevronDownIcon}
         />
       </SelectTrigger>

@@ -66,12 +66,12 @@ const Authentification = () => {
             isRequired={true}
             className="mb-5"
           >
-            <FormControlLabel className="mb-1 *:text-typography-white">
+            <FormControlLabel className="mb-1 *:text-foreground">
               <FormControlLabelText>{t('email')}</FormControlLabelText>
             </FormControlLabel>
             <Input className="border-custom-bg-inverse">
               <InputField
-                className="text-typography-white placeholder:text-typography-white"
+                className="text-foreground placeholder:text-foreground"
                 placeholder={t('email_adresse')}
                 keyboardType="email-address"
                 returnKeyType="next"
@@ -94,12 +94,12 @@ const Authentification = () => {
             isRequired={true}
             className="mb-5"
           >
-            <FormControlLabel className="mb-1 *:text-typography-white">
+            <FormControlLabel className="mb-1 *:text-foreground">
               <FormControlLabelText>{t('mot_de_passe')}</FormControlLabelText>
             </FormControlLabel>
             <Input className="border-custom-bg-inverse">
               <InputField
-                className="text-typography-white placeholder:text-typography-white"
+                className="text-foreground placeholder:text-foreground"
                 placeholder={t('mot_de_passe')}
                 secureTextEntry={!formState.showPassword}
                 autoCapitalize={'none'}
@@ -131,12 +131,12 @@ const Authentification = () => {
               </FormControlErrorText>
             </FormControlError>
             <Button
-              className="text-typography-white self-end"
+              className="text-foreground self-end"
               size="sm"
               variant="link"
               isDisabled={true}
             >
-              <ButtonText className="text-typography-white">
+              <ButtonText className="text-foreground">
                 {t('mot_de_passe_oublie')}
               </ButtonText>
             </Button>
@@ -152,7 +152,7 @@ const Authentification = () => {
           </FormControl>
         </VStack>
         <VStack space="md">
-          <Text className="text-typography-white self-center" size="lg">
+          <Text className="text-foreground self-center" size="lg">
             {t('ou_connecter_avec')}
           </Text>
           <HStack className="flex" space="lg">
@@ -164,11 +164,11 @@ const Authentification = () => {
             >
               <FontAwesome
                 name="apple"
-                className="!text-custom-bg-inverse"
+                className="text-custom-bg-inverse!"
                 size={18}
                 style={{ marginRight: 5 }}
               />
-              <ButtonText className="text-typography-white">Apple</ButtonText>
+              <ButtonText className="text-foreground">Apple</ButtonText>
             </Button>
             <Button
               className="grow"
@@ -179,15 +179,15 @@ const Authentification = () => {
               <FontAwesome
                 name="google"
                 size={14}
-                className="!text-custom-bg-inverse mr-2"
+                className="text-custom-bg-inverse! mr-2"
               />
-              <ButtonText className="text-typography-white">Google</ButtonText>
+              <ButtonText className="text-foreground">Google</ButtonText>
             </Button>
           </HStack>
         </VStack>
         <Divider className="my-5" />
         <VStack space="md">
-          <Text className="text-typography-white self-center" size="lg">
+          <Text className="text-foreground self-center" size="lg">
             {t('pas_encore_compte')}
           </Text>
           <Button

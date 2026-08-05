@@ -67,9 +67,9 @@ const Inscription: React.FC<Props> = ({
         <FontAwesome
           name={icon}
           size={15}
-          className="!text-custom-bg-inverse"
+          className="text-custom-bg-inverse!"
         />
-        <Text className="text-typography-white text-md">
+        <Text className="text-foreground text-md">
           {` ${text} ${t('case_a_cocher')}`}
         </Text>
       </Pressable>
@@ -86,9 +86,9 @@ const Inscription: React.FC<Props> = ({
           <MaterialCommunityIcons
             name="sort"
             size={24}
-            className="!text-custom-bg-inverse"
+            className="text-custom-bg-inverse!"
           />
-          <Text className="text-typography-white text-md">{` ${t('trier_joueurs')}`}</Text>
+          <Text className="text-foreground text-md">{` ${t('trier_joueurs')}`}</Text>
         </Pressable>
         <TriListeJoueurs
           isOpen={showTri}

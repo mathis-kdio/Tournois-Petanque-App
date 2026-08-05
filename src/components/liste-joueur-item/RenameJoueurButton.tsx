@@ -27,7 +27,7 @@ const RenameJoueurButton: React.FC<Props> = ({
   let action;
   if (!renommerOn) {
     name = EditIcon;
-    bgColor = 'bg-primary-500';
+    bgColor = 'bg-primary';
     action = () => setRenommerOn(true);
   } else if (joueurText === '') {
     name = CloseIcon;
@@ -35,7 +35,7 @@ const RenameJoueurButton: React.FC<Props> = ({
     action = () => setRenommerOn(false);
   } else {
     name = CheckIcon;
-    bgColor = 'bg-success-500';
+    bgColor = 'bg-green-500';
     action = async () => await handleRenommerJoueur();
   }
 

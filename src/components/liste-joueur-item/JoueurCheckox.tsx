@@ -42,13 +42,12 @@ const JoueurCheckox: React.FC<Props> = ({
         value="joueurCheckbox"
         onChange={onCheckboxChange}
         aria-label={t('checkbox_inscription_joueuritem')}
-        size="md"
         isChecked={isChecked}
       >
-        <CheckboxIndicator className="mr-2 border-typography-white data-[checked=true]:bg-custom-background data-[checked=true]:border-typography-white">
+        <CheckboxIndicator className="mr-2 border-foreground data-[checked=true]:bg-custom-background data-[checked=true]:border-foreground">
           <CheckboxIcon
             as={CheckIcon}
-            className="text-typography-white bg-custom-background"
+            className="text-foreground bg-custom-background"
           />
         </CheckboxIndicator>
         <CheckboxLabel />

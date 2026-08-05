@@ -92,12 +92,10 @@ const ChoixTypeTournoi = () => {
             >
               <FontAwesome
                 name="info-circle"
-                className="!text-custom-bg-inverse"
+                className="text-custom-bg-inverse!"
                 size={24}
               />
-              <Text className="text-typography-white">
-                {` ${t('savoir_plus')}`}
-              </Text>
+              <Text className="text-foreground">{` ${t('savoir_plus')}`}</Text>
             </Pressable>
           </VStack>
         ))}

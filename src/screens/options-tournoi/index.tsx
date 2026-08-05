@@ -100,12 +100,7 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
       btnDisabled = false;
     }
     return (
-      <Button
-        action="primary"
-        isDisabled={btnDisabled}
-        onPress={nextStep}
-        size="md"
-      >
+      <Button isDisabled={btnDisabled} onPress={nextStep}>
         <ButtonText>{btnTitle}</ButtonText>
       </Button>
     );
@@ -118,12 +113,12 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
         <VStack space="4xl" className="px-10">
           <VStack space="md">
             <VStack>
-              <Text className="text-typography-white text-md">
+              <Text className="text-foreground text-md">
                 {t('indiquer_nombre_tours')}{' '}
               </Text>
               <Input className="border-custom-bg-inverse">
                 <InputField
-                  className="text-typography-white placeholder:text-typography-white"
+                  className="text-foreground placeholder:text-foreground"
                   placeholder={t('nombre_placeholder')}
                   keyboardType="numeric"
                   defaultValue={defaultNbTours.toString()}
@@ -132,12 +127,12 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
               </Input>
             </VStack>
             <VStack>
-              <Text className="text-typography-white text-md">
+              <Text className="text-foreground text-md">
                 {t('indiquer_nombre_points_victoire')}{' '}
               </Text>
               <Input className="border-custom-bg-inverse">
                 <InputField
-                  className="text-typography-white placeholder:text-typography-white"
+                  className="text-foreground placeholder:text-foreground"
                   placeholder={t('nombre_placeholder')}
                   keyboardType="numeric"
                   defaultValue={defaultNbPtVictoire.toString()}
@@ -152,15 +147,14 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
               onChange={(bool) => (speciauxIncompatibles.current = bool)}
               aria-label={t('choix_regle_speciaux')}
               defaultIsChecked
-              size="md"
             >
               <CheckboxIndicator className="mr-2 border-custom-bg-inverse">
                 <CheckboxIcon
                   as={CheckIcon}
-                  className="text-typography-white bg-custom-background"
+                  className="text-foreground bg-custom-background"
                 />
               </CheckboxIndicator>
-              <CheckboxLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white data-[hover=true]:data-[checked=true]:text-typography-white">
+              <CheckboxLabel className="text-foreground data-[hover=true]:text-foreground data-[checked=true]:text-foreground data-[hover=true]:data-[checked=true]:text-foreground">
                 {t('options_regle_speciaux')}
               </CheckboxLabel>
             </Checkbox>
@@ -169,26 +163,25 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
               onChange={(bool) => (memesEquipes.current = bool)}
               aria-label={t('choix_regle_equipes')}
               defaultIsChecked
-              size="md"
             >
               <CheckboxIndicator className="mr-2 border-custom-bg-inverse">
                 <CheckboxIcon
                   as={CheckIcon}
-                  className="text-typography-white bg-custom-background"
+                  className="text-foreground bg-custom-background"
                 />
               </CheckboxIndicator>
-              <CheckboxLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white data-[hover=true]:data-[checked=true]:text-typography-white">
+              <CheckboxLabel className="text-foreground data-[hover=true]:text-foreground data-[checked=true]:text-foreground data-[hover=true]:data-[checked=true]:text-foreground">
                 {t('options_regle_equipes')}
               </CheckboxLabel>
             </Checkbox>
           </VStack>
           <VStack>
-            <Text className="text-typography-white text-md">
+            <Text className="text-foreground text-md">
               {t('options_regle_adversaires')}
             </Text>
             <HStack className="justify-between">
-              <Text className="text-typography-white">{t('1_seul_match')}</Text>
-              <Text className="text-typography-white">
+              <Text className="text-foreground">{t('1_seul_match')}</Text>
+              <Text className="text-foreground">
                 {t('pourcent_matchs', { pourcent: '100' })}
               </Text>
             </HStack>
@@ -206,7 +199,7 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
               <SliderThumb />
             </Slider>
             <HStack className="justify-center">
-              <Text className="text-typography-white">
+              <Text className="text-foreground">
                 {t('pourcent_matchs', { pourcent: '50' })}
               </Text>
             </HStack>
@@ -216,15 +209,14 @@ const OptionsTournoi: React.FC<Props> = ({ screenStackName }) => {
               value="avecTerrains"
               onChange={(bool) => (avecTerrains.current = bool)}
               aria-label={t('choix_option_terrains')}
-              size="md"
             >
               <CheckboxIndicator className="mr-2 border-custom-bg-inverse">
                 <CheckboxIcon
                   as={CheckIcon}
-                  className="text-typography-white bg-custom-background"
+                  className="text-foreground bg-custom-background"
                 />
               </CheckboxIndicator>
-              <CheckboxLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white data-[hover=true]:data-[checked=true]:text-typography-white">
+              <CheckboxLabel className="text-foreground data-[hover=true]:text-foreground data-[checked=true]:text-foreground data-[hover=true]:data-[checked=true]:text-foreground">
                 {t('options_terrains_explications')}
               </CheckboxLabel>
             </Checkbox>

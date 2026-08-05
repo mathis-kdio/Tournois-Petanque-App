@@ -78,7 +78,7 @@ const JoueursTournoi = () => {
   return (
     <VStack className="flex-1 bg-custom-background">
       <TopBarBack title={t('liste_joueurs_inscrits_navigation_title')} />
-      <Text className="text-typography-white text-xl text-center">
+      <Text className="text-foreground text-xl text-center">
         {t('nombre_joueurs', { nb: joueursActualTournoi.length })}
       </Text>
       <LegendList

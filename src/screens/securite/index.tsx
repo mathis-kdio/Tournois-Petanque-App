@@ -145,16 +145,14 @@ const Securite = () => {
       <TopBarBack title={t('securite')} />
       <VStack className="flex-1 px-10">
         <VStack className="flex-1">
-          <Heading className="text-typography-white">
-            {t('changer_mdp')}
-          </Heading>
+          <Heading className="text-foreground">{t('changer_mdp')}</Heading>
           <FormControl isInvalid={error} isRequired={true} className="mb-5">
-            <FormControlLabel className="mb-1 *:text-typography-white">
+            <FormControlLabel className="mb-1 *:text-foreground">
               <FormControlLabelText>{t('ancien_mdp')}</FormControlLabelText>
             </FormControlLabel>
             <Input className="border-custom-bg-inverse">
               <InputField
-                className="text-typography-white placeholder:text-typography-white"
+                className="text-foreground placeholder:text-foreground"
                 placeholder={t('ancien_mdp')}
                 secureTextEntry={!showOldPassword}
                 returnKeyType="next"
@@ -174,12 +172,12 @@ const Securite = () => {
             </Input>
           </FormControl>
           <FormControl isInvalid={error} isRequired={true} className="mb-5">
-            <FormControlLabel className="mb-1 *:text-typography-white">
+            <FormControlLabel className="mb-1 *:text-foreground">
               <FormControlLabelText>{t('nouveau_mdp')}</FormControlLabelText>
             </FormControlLabel>
             <Input className="border-custom-bg-inverse">
               <InputField
-                className="text-typography-white placeholder:text-typography-white"
+                className="text-foreground placeholder:text-foreground"
                 placeholder={t('nouveau_mdp')}
                 secureTextEntry={!showNewPassword}
                 returnKeyType="next"
@@ -199,14 +197,14 @@ const Securite = () => {
             </Input>
           </FormControl>
           <FormControl isInvalid={error} isRequired={true} className="mb-5">
-            <FormControlLabel className="mb-1 *:text-typography-white">
+            <FormControlLabel className="mb-1 *:text-foreground">
               <FormControlLabelText>
                 {t('mot_de_passe_confirmation')}
               </FormControlLabelText>
             </FormControlLabel>
             <Input className="border-custom-bg-inverse">
               <InputField
-                className="text-typography-white placeholder:text-typography-white"
+                className="text-foreground placeholder:text-foreground"
                 placeholder={t('confirmer_mdp')}
                 secureTextEntry={!showConfirmPassword}
                 autoCapitalize={'none'}

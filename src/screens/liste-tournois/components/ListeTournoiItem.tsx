@@ -64,7 +64,7 @@ const ListeTournoiItem: React.FC<Props> = ({ tournoi, showModalInfos }) => {
     let action;
     if (!renommerOn) {
       name = EditIcon;
-      bgColor = 'bg-primary-500';
+      bgColor = 'bg-primary';
       action = () => setRenommerOn(true);
     } else if (tournoiNameText === '') {
       name = CloseIcon;
@@ -72,7 +72,7 @@ const ListeTournoiItem: React.FC<Props> = ({ tournoi, showModalInfos }) => {
       action = () => setRenommerOn(false);
     } else {
       name = CheckIcon;
-      bgColor = 'bg-success-500';
+      bgColor = 'bg-green-500';
       action = () => updateNameTournoi();
     }
 
@@ -104,7 +104,7 @@ const ListeTournoiItem: React.FC<Props> = ({ tournoi, showModalInfos }) => {
       return (
         <Input className="border-custom-bg-inverse">
           <InputField
-            className="text-typography-white placeholder:text-typography-white"
+            className="text-foreground placeholder:text-foreground"
             placeholder={tournoiName}
             autoFocus={true}
             onChangeText={tournoiTextInputChanged}
@@ -114,7 +114,7 @@ const ListeTournoiItem: React.FC<Props> = ({ tournoi, showModalInfos }) => {
       );
     } else {
       return (
-        <Text className="text-typography-white">
+        <Text className="text-foreground">
           {`${t('tournoi')} ${tournoiName}`}
         </Text>
       );
@@ -140,7 +140,7 @@ const ListeTournoiItem: React.FC<Props> = ({ tournoi, showModalInfos }) => {
           isDisabled={estTournoiActuel}
           action="primary"
           onPress={() => setModalDeleteIsOpen(true)}
-          className={estTournoiActuel ? 'bg-[#C0C0C0]' : 'bg-error-500'}
+          className={estTournoiActuel ? 'bg-[#C0C0C0]' : 'bg-red-500'}
         >
           <ButtonIcon as={CloseIcon} />
         </Button>

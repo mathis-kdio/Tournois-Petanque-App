@@ -49,9 +49,7 @@ const Changelog = () => {
     <VStack className="flex-1 bg-custom-background">
       <TopBarBack title={t('nouveautes')} />
       <VStack className="flex-1 px-10">
-        <Text className="text-xl text-typography-white mb-1">
-          {t('nouveautes')}
-        </Text>
+        <Text className="text-xl text-foreground mb-1">{t('nouveautes')}</Text>
         <LegendList
           data={Object.values(ChangelogData).reverse()}
           keyExtractor={(item) => item.id.toString()}

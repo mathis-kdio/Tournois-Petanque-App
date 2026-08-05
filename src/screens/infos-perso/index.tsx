@@ -52,12 +52,8 @@ const InfosPerso = () => {
       <VStack className="flex-1 px-10">
         {detailsArray.map(([key, detail], index) => (
           <HStack key={index} className="mb-5">
-            <Text className="text-typography-white flex-1">
-              {t(detail.label)} :
-            </Text>
-            <Text className="text-typography-white flex-1">
-              {t(detail.value)}
-            </Text>
+            <Text className="text-foreground flex-1">{t(detail.label)} :</Text>
+            <Text className="text-foreground flex-1">{t(detail.value)}</Text>
           </HStack>
         ))}
       </VStack>

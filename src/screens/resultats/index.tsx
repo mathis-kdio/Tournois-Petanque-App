@@ -34,16 +34,16 @@ const ListeResultats = () => {
     <VStack className="flex-1 bg-custom-background">
       <VStack className="flex-1 justify-between">
         <HStack className="flex px-2">
-          <Text className="basis-2/5 text-typography-white text-lg">
+          <Text className="basis-2/5 text-foreground text-lg">
             {t('place')}
           </Text>
-          <Text className="basis-1/5 text-center text-typography-white text-lg">
+          <Text className="basis-1/5 text-center text-foreground text-lg">
             {t('victoire')}
           </Text>
-          <Text className="basis-1/5 text-center text-typography-white text-lg">
+          <Text className="basis-1/5 text-center text-foreground text-lg">
             {t('m_j')}
           </Text>
-          <Text className="basis-1/5 text-right text-typography-white text-lg">
+          <Text className="basis-1/5 text-right text-foreground text-lg">
             {t('point')}
           </Text>
         </HStack>

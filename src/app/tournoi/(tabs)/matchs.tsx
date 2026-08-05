@@ -47,11 +47,11 @@ export default function MatchsScreen() {
         0,
       );
       if (count === matchsManche.length) {
-        textColor = 'text-success-500';
+        textColor = 'text-green-500';
         iconColor = 'green';
         iconName = 'battery-full';
       } else if (count === 0) {
-        textColor = 'text-error-500';
+        textColor = 'text-red-500';
         iconColor = 'red';
         iconName = 'battery-empty';
       }
@@ -60,9 +60,7 @@ export default function MatchsScreen() {
 
     return (
       <HStack className="items-center">
-        <Text className="text-typography-white text-lg mr-2">
-          {getTitle(numero)}
-        </Text>
+        <Text className="text-foreground text-lg mr-2">{getTitle(numero)}</Text>
         <FontAwesome name={iconName} size={18} color={iconColor} />
         <Text className={`${textColor} ml-1`} size="xl">
           {matchsRestant.toString()}

@@ -160,12 +160,12 @@ const Inscription = () => {
             isRequired={true}
             className="mb-5"
           >
-            <FormControlLabel className="mb-1 *:text-typography-white">
+            <FormControlLabel className="mb-1 *:text-foreground">
               <FormControlLabelText>{t('email')}</FormControlLabelText>
             </FormControlLabel>
             <Input className="border-custom-bg-inverse">
               <InputField
-                className="text-typography-white placeholder:text-typography-white"
+                className="text-foreground placeholder:text-foreground"
                 placeholder={t('email_adresse')}
                 keyboardType="email-address"
                 returnKeyType="next"
@@ -186,12 +186,12 @@ const Inscription = () => {
             isRequired={true}
             className="mb-5"
           >
-            <FormControlLabel className="mb-1 *:text-typography-white">
+            <FormControlLabel className="mb-1 *:text-foreground">
               <FormControlLabelText>{t('mot_de_passe')}</FormControlLabelText>
             </FormControlLabel>
             <Input className="border-custom-bg-inverse">
               <InputField
-                className="text-typography-white placeholder:text-typography-white"
+                className="text-foreground placeholder:text-foreground"
                 placeholder={t('mot_de_passe')}
                 secureTextEntry={!showPassword1}
                 returnKeyType="next"
@@ -214,7 +214,7 @@ const Inscription = () => {
               <FormControlErrorText>{t('mdp_non_valide')}</FormControlErrorText>
             </FormControlError>
             <FormControlHelper>
-              <FormControlHelperText className="text-typography-white">
+              <FormControlHelperText className="text-foreground">
                 {t('mdp_consignes')}
               </FormControlHelperText>
             </FormControlHelper>
@@ -224,14 +224,14 @@ const Inscription = () => {
             isRequired={true}
             className="mb-5"
           >
-            <FormControlLabel className="mb-1 *:text-typography-white">
+            <FormControlLabel className="mb-1 *:text-foreground">
               <FormControlLabelText>
                 {t('mot_de_passe_confirmation')}
               </FormControlLabelText>
             </FormControlLabel>
             <Input className="border-custom-bg-inverse">
               <InputField
-                className="text-typography-white placeholder:text-typography-white"
+                className="text-foreground placeholder:text-foreground"
                 placeholder={t('mot_de_passe')}
                 secureTextEntry={!showPassword2}
                 autoCapitalize={'none'}
@@ -252,7 +252,7 @@ const Inscription = () => {
               <FormControlErrorText>{t('mdp_non_valide')}</FormControlErrorText>
             </FormControlError>
             <FormControlHelper>
-              <FormControlHelperText className="text-typography-white">
+              <FormControlHelperText className="text-foreground">
                 {t('mdp_non_identique')}
               </FormControlHelperText>
             </FormControlHelper>
@@ -271,10 +271,10 @@ const Inscription = () => {
               <CheckboxIndicator className="mr-2">
                 <CheckboxIcon
                   as={CheckIcon}
-                  className="text-typography-white bg-custom-background"
+                  className="text-foreground bg-custom-background"
                 />
               </CheckboxIndicator>
-              <CheckboxLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white data-[hover=true]:data-[checked=true]:text-typography-white">
+              <CheckboxLabel className="text-foreground data-[hover=true]:text-foreground data-[checked=true]:text-foreground data-[hover=true]:data-[checked=true]:text-foreground">
                 {t('accepte_termes_conditions')}
               </CheckboxLabel>
             </Checkbox>
@@ -290,7 +290,7 @@ const Inscription = () => {
           </FormControl>
         </VStack>
         <VStack space="md">
-          <Text className="text-typography-white self-center" size="lg">
+          <Text className="text-foreground self-center" size="lg">
             {t('ou_creer_compte_avec')}
           </Text>
           <HStack className="flex" space="lg">
@@ -302,11 +302,11 @@ const Inscription = () => {
             >
               <FontAwesome
                 name="apple"
-                className="!text-custom-bg-inverse"
+                className="text-custom-bg-inverse!"
                 size={18}
                 style={{ marginRight: 5 }}
               />
-              <ButtonText className="text-typography-white">Apple</ButtonText>
+              <ButtonText className="text-foreground">Apple</ButtonText>
             </Button>
             <Button
               className="grow"
@@ -317,9 +317,9 @@ const Inscription = () => {
               <FontAwesome
                 name="google"
                 size={14}
-                className="!text-custom-bg-inverse mr-2"
+                className="text-custom-bg-inverse! mr-2"
               />
-              <ButtonText className="text-typography-white">Google</ButtonText>
+              <ButtonText className="text-foreground">Google</ButtonText>
             </Button>
           </HStack>
         </VStack>

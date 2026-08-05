@@ -31,7 +31,7 @@ const PDFExport = () => {
       <TopBarBack title={t('exporter_pdf_navigation_title')} />
       <VStack space="xl" className="flex-1 px-10 justify-center">
         <HStack>
-          <Text className="text-typography-white mr-3">
+          <Text className="text-foreground mr-3">
             {t('export_pdf_ajout_scores')}
           </Text>
           <Box className="justify-center">
@@ -46,7 +46,7 @@ const PDFExport = () => {
           </Box>
         </HStack>
         <HStack>
-          <Text className="text-typography-white mr-3">
+          <Text className="text-foreground mr-3">
             {t('export_pdf_ajout_classement')}
           </Text>
           <Box className="justify-center">
@@ -61,7 +61,7 @@ const PDFExport = () => {
           </Box>
         </HStack>
         <HStack>
-          <Text className="text-typography-white mr-3">
+          <Text className="text-foreground mr-3">
             {t('export_pdf_affichage_compact')}
           </Text>
           <Box className="justify-center">

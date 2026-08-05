@@ -37,16 +37,16 @@ const InscriptionsSansNoms = () => {
     <ScrollView className="h-1 bg-custom-background">
       <TopBarBack title={t('inscription_sans_noms_navigation_title')} />
       <VStack space="2xl" className="flex-1 px-10">
-        <Text className="text-typography-white text-center text-xl">
+        <Text className="text-foreground text-center text-xl">
           {t('nombre_joueurs', { nb: nbJoueurNormaux + nbJoueurEnfants })}
         </Text>
         <VStack>
-          <Text className="text-typography-white text-md">
+          <Text className="text-foreground text-md">
             {t('nombre_joueurs_adultes')}
           </Text>
           <Input className="border-custom-bg-inverse">
             <InputField
-              className="text-typography-white placeholder:text-typography-white"
+              className="text-foreground placeholder:text-foreground"
               placeholder={t('nombre_placeholder')}
               keyboardType="number-pad"
               returnKeyType="next"
@@ -57,12 +57,12 @@ const InscriptionsSansNoms = () => {
           </Input>
         </VStack>
         <VStack>
-          <Text className="text-typography-white text-md">
+          <Text className="text-foreground text-md">
             {t('nombre_joueurs_enfants')}
           </Text>
           <Input className="border-custom-bg-inverse">
             <InputField
-              className="text-typography-white placeholder:text-typography-white"
+              className="text-foreground placeholder:text-foreground"
               placeholder={t('nombre_placeholder')}
               keyboardType="number-pad"
               onChangeText={textInputJoueursEnfants}
@@ -70,7 +70,7 @@ const InscriptionsSansNoms = () => {
             />
           </Input>
         </VStack>
-        <Text className="text-typography-white">
+        <Text className="text-foreground">
           {t('joueurs_enfants_explication')}
         </Text>
         <StartButton

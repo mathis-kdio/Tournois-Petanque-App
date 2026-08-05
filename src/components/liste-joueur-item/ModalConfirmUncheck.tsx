@@ -35,33 +35,34 @@ const ModalConfirmUncheck: React.FC<Props> = ({
       <AlertDialogBackdrop />
       <AlertDialogContent>
         <AlertDialogHeader>
-          <Heading className="color-custom-text-modal">
+          <Heading className="text-custom-text-modal">
             {t('confirmer_uncheck_modal_titre')}
           </Heading>
           <AlertDialogCloseButton>
             <Icon
               as={CloseIcon}
               size="md"
-              className="stroke-background-400 group-[:hover]/modal-close-button:stroke-background-700 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900"
+              className="stroke-gray-600 group-[:hover]/modal-close-button:stroke-gray-300 group-active/modal-close-button:stroke-gray-100 group-focus-visible/modal-close-button:stroke-gray-100"
             />
           </AlertDialogCloseButton>
         </AlertDialogHeader>
         <AlertDialogBody>
-          <Text>{t('confirmer_uncheck_modal_texte')}</Text>
+          <Text className="text-custom-text-modal">
+            {t('confirmer_uncheck_modal_texte')}
+          </Text>
         </AlertDialogBody>
         <AlertDialogFooter>
           <ButtonGroup flexDirection="row">
             <Button
               variant="outline"
-              action="secondary"
               onPress={() => setModalConfirmUncheckIsOpen(false)}
             >
-              <ButtonText className="color-custom-text-modal">
+              <ButtonText className="text-custom-text-modal">
                 {t('annuler')}
               </ButtonText>
             </Button>
             <Button
-              action="negative"
+              variant="destructive"
               onPress={async () => await onCancel(false)}
             >
               <ButtonText>{t('oui')}</ButtonText>

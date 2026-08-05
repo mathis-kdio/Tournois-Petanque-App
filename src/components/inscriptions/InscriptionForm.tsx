@@ -59,7 +59,7 @@ const InscriptionForm: React.FC<Props> = ({
       <Box className="flex-1">
         <Input className="border-custom-bg-inverse">
           <InputField
-            className="text-typography-white placeholder:text-typography-white"
+            className="text-foreground placeholder:text-foreground"
             placeholder={t('nom')}
             autoFocus={true}
             keyboardType="default"
@@ -77,12 +77,7 @@ const InscriptionForm: React.FC<Props> = ({
         />
       </Box>
       <Box>
-        <Button
-          action="positive"
-          isDisabled={!etatBouton}
-          onPress={ajoutJoueurFormulaire}
-          size="md"
-        >
+        <Button isDisabled={!etatBouton} onPress={ajoutJoueurFormulaire}>
           <ButtonText>{t('ajouter')}</ButtonText>
         </Button>
       </Box>

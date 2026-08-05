@@ -96,10 +96,10 @@ const ChoixComplement: React.FC<Props> = ({ screenStackName }) => {
     <ScrollView className="h-1 bg-custom-background">
       <TopBarBack title={t('choix_complement')} />
       <VStack space="2xl" className="flex-1 px-10">
-        <Text size={'lg'} className="text-typography-white text-center">
+        <Text size={'lg'} className="text-foreground text-center">
           {t('choix_complement_title_1', { nbModulo: nbModulo })}
         </Text>
-        <Text size={'lg'} className="text-typography-white text-center">
+        <Text size={'lg'} className="text-foreground text-center">
           {t('choix_complement_title_2')}
         </Text>
         {options().map((complement, index) => (

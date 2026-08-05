@@ -40,7 +40,7 @@ const Fanny: React.FC<Props> = ({ joueur, matchs, options }) => {
         alt="Fanny"
         source={require('@assets/images/fanny.png')}
       />
-      <Text className="text-typography-white text-lg">X{nbFanny}</Text>
+      <Text className="text-foreground text-lg">X{nbFanny}</Text>
     </HStack>
   );
 };

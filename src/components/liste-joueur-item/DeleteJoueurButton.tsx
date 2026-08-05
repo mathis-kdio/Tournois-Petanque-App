@@ -36,7 +36,7 @@ const DeleteJoueurButton: React.FC<Props> = ({
     <Box className="ml-2">
       <Button
         isDisabled={isLoading}
-        className="bg-error-500"
+        className="bg-red-500"
         onPress={supprimerJoueur}
       >
         <ButtonIcon as={CloseIcon} />

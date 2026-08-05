@@ -10,7 +10,7 @@ const RemoveAllButton: React.FC<Props> = ({ setModalRemoveIsOpen }) => {
   const { t } = useTranslation();
 
   return (
-    <Button action="negative" onPress={() => setModalRemoveIsOpen(true)}>
+    <Button variant="destructive" onPress={() => setModalRemoveIsOpen(true)}>
       <ButtonText>{t('supprimer_joueurs_bouton')}</ButtonText>
     </Button>
   );

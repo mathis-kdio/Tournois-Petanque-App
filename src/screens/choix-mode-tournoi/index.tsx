@@ -85,12 +85,7 @@ const ChoixModeTournoi = () => {
       title = t('valider_et_inscriptions');
     }
     return (
-      <Button
-        action="primary"
-        isDisabled={buttonDisabled}
-        onPress={() => nextStep()}
-        size="md"
-      >
+      <Button isDisabled={buttonDisabled} onPress={() => nextStep()}>
         <ButtonText>{title}</ButtonText>
       </Button>
     );
@@ -103,7 +98,7 @@ const ChoixModeTournoi = () => {
     }
     return (
       <VStack>
-        <Text className="text-typography-white text-2xl text-center">
+        <Text className="text-foreground text-2xl text-center">
           {t('mode_tournoi')}
         </Text>
         <RadioGroup
@@ -116,7 +111,7 @@ const ChoixModeTournoi = () => {
               <RadioIndicator className="mr-2 border-custom-bg-inverse">
                 <RadioIcon as={CircleIcon} className="fill-custom-bg-inverse" />
               </RadioIndicator>
-              <RadioLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white data-[hover=true]:data-[checked=true]:text-typography-white">
+              <RadioLabel className="text-foreground data-[hover=true]:text-foreground data-[checked=true]:text-foreground data-[hover=true]:data-[checked=true]:text-foreground">
                 {t('melee_demelee_avec_nom')}
               </RadioLabel>
             </Radio>
@@ -124,7 +119,7 @@ const ChoixModeTournoi = () => {
               <RadioIndicator className="mr-2 border-custom-bg-inverse">
                 <RadioIcon as={CircleIcon} className="fill-custom-bg-inverse" />
               </RadioIndicator>
-              <RadioLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white data-[hover=true]:data-[checked=true]:text-typography-white">
+              <RadioLabel className="text-foreground data-[hover=true]:text-foreground data-[checked=true]:text-foreground data-[hover=true]:data-[checked=true]:text-foreground">
                 {t('melee_demelee_sans_nom')}
               </RadioLabel>
             </Radio>
@@ -141,7 +136,7 @@ const ChoixModeTournoi = () => {
     }
     return (
       <VStack>
-        <Text className="text-typography-white text-2xl text-center mb-4">
+        <Text className="text-foreground text-2xl text-center mb-4">
           {t('mode_creation_equipe')}
         </Text>
         <RadioGroup
@@ -159,7 +154,7 @@ const ChoixModeTournoi = () => {
                       className="fill-custom-bg-inverse"
                     />
                   </RadioIndicator>
-                  <RadioLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white">
+                  <RadioLabel className="text-foreground data-[hover=true]:text-foreground data-[checked=true]:text-foreground">
                     {t(
                       mode === ModeCreationEquipes.ALEATOIRE
                         ? 'equipes_aleatoires'
@@ -180,7 +175,7 @@ const ChoixModeTournoi = () => {
       <TopBarBack title={t('mode_tournoi')} />
       <VStack className="flex-1 px-10 justify-between">
         <VStack space="4xl">
-          <Text className="text-typography-white text-2xl text-center">
+          <Text className="text-foreground text-2xl text-center">
             {t('type_equipes')}
           </Text>
           <RadioGroup
@@ -196,7 +191,7 @@ const ChoixModeTournoi = () => {
                     className="fill-custom-bg-inverse"
                   />
                 </RadioIndicator>
-                <RadioLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white data-[hover=true]:data-[checked=true]:text-typography-white">
+                <RadioLabel className="text-foreground data-[hover=true]:text-foreground data-[checked=true]:text-foreground data-[hover=true]:data-[checked=true]:text-foreground">
                   {t('tete_a_tete')}
                 </RadioLabel>
               </Radio>
@@ -207,7 +202,7 @@ const ChoixModeTournoi = () => {
                     className="fill-custom-bg-inverse"
                   />
                 </RadioIndicator>
-                <RadioLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white data-[hover=true]:data-[checked=true]:text-typography-white">
+                <RadioLabel className="text-foreground data-[hover=true]:text-foreground data-[checked=true]:text-foreground data-[hover=true]:data-[checked=true]:text-foreground">
                   {t('doublettes')}
                 </RadioLabel>
               </Radio>
@@ -218,7 +213,7 @@ const ChoixModeTournoi = () => {
                     className="fill-custom-bg-inverse"
                   />
                 </RadioIndicator>
-                <RadioLabel className="text-typography-white data-[hover=true]:text-typography-white data-[checked=true]:text-typography-white data-[hover=true]:data-[checked=true]:text-typography-white">
+                <RadioLabel className="text-foreground data-[hover=true]:text-foreground data-[checked=true]:text-foreground data-[hover=true]:data-[checked=true]:text-foreground">
                   {t('triplettes')}
                 </RadioLabel>
               </Radio>

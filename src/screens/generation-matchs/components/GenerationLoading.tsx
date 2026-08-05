@@ -59,7 +59,7 @@ const GenerationLoading: React.FC<Props> = ({
         <HStack>
           <Loading />
         </HStack>
-        <Text className="text-typography-white">
+        <Text className="text-foreground">
           {t('attente_generation_matchs')}
         </Text>
       </VStack>
@@ -69,8 +69,8 @@ const GenerationLoading: React.FC<Props> = ({
   const { textInfo, textError } = getTexts();
   return (
     <VStack>
-      <Text className="text-typography-white text-center">{textInfo}</Text>
-      <Text className="text-typography-white text-center">{textError}</Text>
+      <Text className="text-foreground text-center">{textInfo}</Text>
+      <Text className="text-foreground text-center">{textError}</Text>
       <Button action="primary" onPress={() => retourInscription()}>
         <ButtonText>{t('retour_inscription')}</ButtonText>
       </Button>

@@ -108,7 +108,7 @@ const ListeJoueurItem: React.FC<Props> = ({
                 onAddEquipeJoueur={onAddEquipeJoueur}
               />
             ) : (
-              <Text className="text-typography-white text-xl font-bold">
+              <Text className="text-foreground text-xl font-bold">
                 {joueur.equipe}
               </Text>
             )}
