@@ -119,26 +119,30 @@ const LanguagesModal: React.FC<Props> = ({
             type="modal"
             drapeau={drapeauEspagne}
           />
-          <Text className="text-center">{t('envie_aider_traduction')}</Text>
+          <Text className="text-center text-custom-text-modal">
+            {t('envie_aider_traduction')}
+          </Text>
           <Pressable onPress={() => _openURL(crowdin)}>
             <Text className="text-center text-blue-500">
               {t('texte_lien_traduction')}
             </Text>
           </Pressable>
-          <Text className="text-center">{t('remerciements_traduction')}</Text>
-          <Text className="text-center">
+          <Text className="text-center text-custom-text-modal">
+            {t('remerciements_traduction')}
+          </Text>
+          <Text className="text-center text-custom-text-modal">
             {`\u2022`} NMieczynska ({t('polonais_abreviation')})
           </Text>
-          <Text className="text-center">
+          <Text className="text-center text-custom-text-modal">
             {`\u2022`} GerKos653 ({t('neerlandais_abreviation')})
           </Text>
-          <Text className="text-center">
+          <Text className="text-center text-custom-text-modal">
             {`\u2022`} MHofmann ({t('allemand_abreviation')})
           </Text>
-          <Text className="text-center">
+          <Text className="text-center text-custom-text-modal">
             {`\u2022`} tskalshoej ({t('danois_abreviation')})
           </Text>
-          <Text className="text-center">
+          <Text className="text-center text-custom-text-modal">
             {`\u2022`} LorenzoF ({t('espagnol_abreviation')})
           </Text>
         </ModalBody>

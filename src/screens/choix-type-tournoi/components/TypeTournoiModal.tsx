@@ -65,7 +65,7 @@ const TypeTournoiModal: React.FC<Props> = ({
           </ModalCloseButton>
         </ModalHeader>
         <ModalBody>
-          <Text>{infos.text}</Text>
+          <Text className="text-custom-text-modal">{infos.text}</Text>
         </ModalBody>
       </ModalContent>
     </Modal>

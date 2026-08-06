@@ -44,7 +44,7 @@ const ChangelogModal: React.FC<Props> = ({
           </ModalCloseButton>
         </ModalHeader>
         <ModalBody>
-          <Text>
+          <Text className="text-custom-text-modal">
             {t(`${modalChangelogItem.id}.infos`, {
               ns: 'changelog',
               returnObjects: true,
