@@ -37,7 +37,7 @@ const ListeTerrainItem: React.FC<Props> = ({ index, terrain }) => {
     let action;
     if (!renommerOn) {
       name = EditIcon;
-      bgColor = 'bg-primary-500';
+      bgColor = 'bg-primary';
       action = () => setRenommerOn(true);
     } else if (terrainText === '') {
       name = CloseIcon;
@@ -45,7 +45,7 @@ const ListeTerrainItem: React.FC<Props> = ({ index, terrain }) => {
       action = () => setRenommerOn(false);
     } else {
       name = CheckIcon;
-      bgColor = 'bg-success-500';
+      bgColor = 'bg-green-500';
       action = () => renommerTerrain(terrain);
     }
 
@@ -76,7 +76,7 @@ const ListeTerrainItem: React.FC<Props> = ({ index, terrain }) => {
       return (
         <Input className="border-custom-bg-inverse">
           <InputField
-            className="text-typography-white placeholder:text-typography-white"
+            className="text-foreground placeholder:text-foreground"
             placeholder={terrain.name}
             autoFocus={true}
             onChangeText={(text) => terrainTxtInputChanged(text)}
@@ -86,9 +86,7 @@ const ListeTerrainItem: React.FC<Props> = ({ index, terrain }) => {
       );
     } else {
       return (
-        <Text className="text-typography-white">
-          {`${index}- ${terrain.name}`}
-        </Text>
+        <Text className="text-foreground">{`${index}- ${terrain.name}`}</Text>
       );
     }
   };
@@ -99,7 +97,7 @@ const ListeTerrainItem: React.FC<Props> = ({ index, terrain }) => {
       <HStack space="md">
         {renommerButton(terrain)}
         <Button
-          className="bg-error-500"
+          className="bg-red-500"
           onPress={() => supprimerTerrain(terrain)}
         >
           <ButtonIcon as={CloseIcon} />

@@ -64,7 +64,7 @@ const ListeJoueursItem: React.FC<Props> = ({
     let action;
     if (!renommerOn) {
       name = EditIcon;
-      bgColor = 'bg-primary-500';
+      bgColor = 'bg-primary';
       action = () => setRenommerOn(true);
     } else if (listNameText === '') {
       name = CloseIcon;
@@ -72,7 +72,7 @@ const ListeJoueursItem: React.FC<Props> = ({
       action = () => setRenommerOn(false);
     } else {
       name = CheckIcon;
-      bgColor = 'bg-success-500';
+      bgColor = 'bg-green-500';
       action = () => renameList(listId);
     }
 
@@ -112,7 +112,7 @@ const ListeJoueursItem: React.FC<Props> = ({
             <ButtonText>{t('modifier')}</ButtonText>
           </Button>
           <Button
-            className="bg-error-500"
+            className="bg-red-500"
             onPress={() => setModalDeleteIsOpen(true)}
           >
             <ButtonIcon as={CloseIcon} />
@@ -134,7 +134,7 @@ const ListeJoueursItem: React.FC<Props> = ({
       return (
         <Input className="border-custom-bg-inverse">
           <InputField
-            className="text-typography-white placeholder:text-typography-white"
+            className="text-foreground placeholder:text-foreground"
             placeholder={listName}
             autoFocus={true}
             onChangeText={(text) => listTextInputChanged(text)}
@@ -144,9 +144,7 @@ const ListeJoueursItem: React.FC<Props> = ({
       );
     } else {
       return (
-        <Text className="text-typography-white">
-          {`${t('liste')} ${listName}`}
-        </Text>
+        <Text className="text-foreground">{`${t('liste')} ${listName}`}</Text>
       );
     }
   };

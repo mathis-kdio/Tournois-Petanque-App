@@ -106,14 +106,11 @@ const JoueurTypeSelect: React.FC<Props> = ({
     >
       <SelectTrigger variant="rounded" className="border-custom-bg-inverse">
         <SelectInput
-          className="text-typography-white placeholder:text-typography-white"
+          className="text-foreground placeholder:text-foreground"
           placeholder={t('choisir_poste')}
           value={getJoueurTypeLabel(joueurType)}
         />
-        <SelectIcon
-          className="mr-3 text-typography-white"
-          as={ChevronDownIcon}
-        />
+        <SelectIcon className="mr-3 text-foreground" as={ChevronDownIcon} />
       </SelectTrigger>
       <SelectPortal>
         <SelectBackdrop />

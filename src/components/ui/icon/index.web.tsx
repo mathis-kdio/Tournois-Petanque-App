@@ -1,13 +1,15 @@
-import { createIcon, PrimitiveIcon, Svg } from '@gluestack-ui/core/icon/creator';
-import { tva, VariantProps } from '@gluestack-ui/utils/nativewind-utils';
 import React from 'react';
+import { createIcon } from '@gluestack-ui/core/icon/creator';
+import { tva } from '@gluestack-ui/utils/nativewind-utils';
+import { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
+import { PrimitiveIcon, Svg } from '@gluestack-ui/core/icon/creator';
 
 export const UIIcon = createIcon({
   Root: PrimitiveIcon,
 });
 
 const iconStyle = tva({
-  base: 'text-typography-950 fill-none pointer-events-none',
+  base: 'text-foreground fill-none pointer-events-none',
   variants: {
     size: {
       '2xs': 'h-3 w-3',
@@ -23,10 +25,10 @@ const iconStyle = tva({
 export const Icon = React.forwardRef<
   React.ComponentRef<typeof UIIcon>,
   React.ComponentPropsWithoutRef<typeof UIIcon> &
-  VariantProps<typeof iconStyle> & {
-    height?: number | string;
-    width?: number | string;
-  }
+    VariantProps<typeof iconStyle> & {
+      height?: number | string;
+      width?: number | string;
+    }
 >(function Icon({ size = 'md', className, ...props }, ref) {
   if (typeof size === 'number') {
     return (
@@ -74,10 +76,10 @@ const createIconUI = ({ ...props }: ParameterTypes) => {
   return React.forwardRef<
     React.ComponentRef<typeof UIIcon>,
     React.ComponentPropsWithoutRef<typeof UIIcon> &
-    VariantProps<typeof iconStyle> & {
-      height?: number | string;
-      width?: number | string;
-    }
+      VariantProps<typeof iconStyle> & {
+        height?: number | string;
+        width?: number | string;
+      }
   >(function UIIcon({ className, ...inComingprops }, ref) {
     const calculateClassName = React.useMemo(() => {
       return className === undefined
@@ -243,7 +245,7 @@ ArrowDownIcon.displayName = 'ArrowDownIcon';
 ArrowRightIcon.displayName = 'ArrowRightIcon';
 ArrowLeftIcon.displayName = 'ArrowLeftIcon';
 
-export { ArrowDownIcon, ArrowLeftIcon, ArrowRightIcon, ArrowUpIcon };
+export { ArrowUpIcon, ArrowDownIcon, ArrowRightIcon, ArrowLeftIcon };
 
 const AtSignIcon = createIcon({
   Root: Svg,
@@ -409,7 +411,7 @@ const CheckCircleIcon = createIcon({
 CheckIcon.displayName = 'CheckIcon';
 CheckCircleIcon.displayName = 'CheckCircleIcon';
 
-export { CheckCircleIcon, CheckIcon };
+export { CheckIcon, CheckCircleIcon };
 
 const ChevronUpIcon = createIcon({
   Root: Svg,
@@ -548,12 +550,13 @@ ChevronsRightIcon.displayName = 'ChevronsRightIcon';
 ChevronsUpDownIcon.displayName = 'ChevronsUpDownIcon';
 
 export {
+  ChevronUpIcon,
   ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   ChevronsLeftIcon,
   ChevronsRightIcon,
-  ChevronsUpDownIcon, ChevronUpIcon
+  ChevronsUpDownIcon,
 };
 
 const CircleIcon = createIcon({
@@ -650,7 +653,7 @@ const CloseCircleIcon = createIcon({
 CloseIcon.displayName = 'CloseIcon';
 CloseCircleIcon.displayName = 'CloseCircleIcon';
 
-export { CloseCircleIcon, CloseIcon };
+export { CloseIcon, CloseCircleIcon };
 
 const CopyIcon = createIcon({
   Root: Svg,
@@ -997,7 +1000,7 @@ const ExternalLinkIcon = createIcon({
 });
 
 ExternalLinkIcon.displayName = 'ExternalLinkIcon';
-export { ExternalLinkIcon, LinkIcon };
+export { LinkIcon, ExternalLinkIcon };
 
 const LoaderIcon = createIcon({
   Root: Svg,
@@ -1285,7 +1288,7 @@ const Repeat1Icon = createIcon({
 });
 
 Repeat1Icon.displayName = 'Repeat1Icon';
-export { Repeat1Icon, RepeatIcon };
+export { RepeatIcon, Repeat1Icon };
 
 const SearchIcon = createIcon({
   Root: Svg,
@@ -1568,4 +1571,3 @@ const UnlockIcon = createIcon({
 
 UnlockIcon.displayName = 'UnlockIcon';
 export { UnlockIcon };
-

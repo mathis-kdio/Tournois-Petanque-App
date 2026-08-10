@@ -46,7 +46,7 @@ const ListeTerrains: React.FC<Props> = ({ screenStackName }) => {
   return (
     <VStack className="flex-1 bg-custom-background">
       <TopBarBack title={t('liste_terrains_navigation_title')} />
-      <Text className="text-typography-white text-xl text-center">
+      <Text className="text-foreground text-xl text-center">
         {t('nombre_terrains', { nb: terrains.length })}
       </Text>
       <LegendList

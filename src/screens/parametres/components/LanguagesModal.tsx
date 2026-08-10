@@ -52,14 +52,14 @@ const LanguagesModal: React.FC<Props> = ({
       <ModalBackdrop />
       <ModalContent className="max-h-5/6">
         <ModalHeader>
-          <Heading className="color-custom-text-modal">
+          <Heading className="text-custom-text-modal">
             {t('languages_disponibles')}
           </Heading>
           <ModalCloseButton>
             <Icon
               as={CloseIcon}
               size="md"
-              className="stroke-background-400 group-[:hover]/modal-close-button:stroke-background-700 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900"
+              className="stroke-gray-600 group-[:hover]/modal-close-button:stroke-gray-300 group-active/modal-close-button:stroke-gray-100 group-focus-visible/modal-close-button:stroke-gray-100"
             />
           </ModalCloseButton>
         </ModalHeader>
@@ -119,26 +119,30 @@ const LanguagesModal: React.FC<Props> = ({
             type="modal"
             drapeau={drapeauEspagne}
           />
-          <Text className="text-center">{t('envie_aider_traduction')}</Text>
+          <Text className="text-center text-custom-text-modal">
+            {t('envie_aider_traduction')}
+          </Text>
           <Pressable onPress={() => _openURL(crowdin)}>
             <Text className="text-center text-blue-500">
               {t('texte_lien_traduction')}
             </Text>
           </Pressable>
-          <Text className="text-center">{t('remerciements_traduction')}</Text>
-          <Text className="text-center">
+          <Text className="text-center text-custom-text-modal">
+            {t('remerciements_traduction')}
+          </Text>
+          <Text className="text-center text-custom-text-modal">
             {`\u2022`} NMieczynska ({t('polonais_abreviation')})
           </Text>
-          <Text className="text-center">
+          <Text className="text-center text-custom-text-modal">
             {`\u2022`} GerKos653 ({t('neerlandais_abreviation')})
           </Text>
-          <Text className="text-center">
+          <Text className="text-center text-custom-text-modal">
             {`\u2022`} MHofmann ({t('allemand_abreviation')})
           </Text>
-          <Text className="text-center">
+          <Text className="text-center text-custom-text-modal">
             {`\u2022`} tskalshoej ({t('danois_abreviation')})
           </Text>
-          <Text className="text-center">
+          <Text className="text-center text-custom-text-modal">
             {`\u2022`} LorenzoF ({t('espagnol_abreviation')})
           </Text>
         </ModalBody>

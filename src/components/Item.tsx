@@ -17,7 +17,7 @@ export interface Props {
 }
 
 const Item: React.FC<Props> = ({ text, action, icon, type, drapeau }) => {
-  let colorTxt = 'text-typography-white';
+  let colorTxt = 'text-foreground';
   let iconColor = '!text-custom-bg-inverse';
   if (type === 'danger') {
     colorTxt = 'text-red-500';

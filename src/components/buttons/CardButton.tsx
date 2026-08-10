@@ -23,12 +23,7 @@ const CardButton: React.FC<Props> = ({ text, icons, navigate, newBadge }) => {
     >
       {newBadge ? (
         <HStack className="mt-20">
-          <Badge
-            size="lg"
-            variant="outline"
-            action="error"
-            className="rounded-full"
-          >
+          <Badge variant="destructive" className="rounded-full">
             <FontAwesome name="bolt" color="#EF4444" size={12} />
             <BadgeText className="mx-2">Nouveau</BadgeText>
             <FontAwesome name="bolt" color="#EF4444" size={12} />
@@ -44,11 +39,11 @@ const CardButton: React.FC<Props> = ({ text, icons, navigate, newBadge }) => {
               key={index}
               name={icon}
               size={24}
-              className="!text-custom-text-button"
+              className="text-custom-text-button!"
             />
           ))}
         </HStack>
-        <Text className="color-custom-text-button">{text}</Text>
+        <Text className="text-custom-text-button">{text}</Text>
       </VStack>
     </Pressable>
   );

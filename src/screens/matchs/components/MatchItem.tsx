@@ -47,7 +47,7 @@ const MatchItem: React.FC<Props> = ({ match }) => {
           )}
         </Box>
         <Box className="flex-1">
-          <Text className="text-typography-white text-2xl p-0.5 text-center">
+          <Text className="text-foreground text-2xl p-0.5 text-center">
             {txt}
           </Text>
         </Box>
@@ -63,13 +63,9 @@ const MatchItem: React.FC<Props> = ({ match }) => {
   const displayScore = () => {
     return (
       <HStack className="justify-center">
-        <Text className="text-typography-white text-2xl p-2">
-          {score1 ?? '?'}
-        </Text>
-        <Text className="text-typography-white text-2xl p-2"> VS </Text>
-        <Text className="text-typography-white text-2xl p-2">
-          {score2 ?? '?'}
-        </Text>
+        <Text className="text-foreground text-2xl p-2">{score1 ?? '?'}</Text>
+        <Text className="text-foreground text-2xl p-2"> VS </Text>
+        <Text className="text-foreground text-2xl p-2">{score2 ?? '?'}</Text>
       </HStack>
     );
   };

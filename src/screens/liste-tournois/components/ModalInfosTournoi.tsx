@@ -62,51 +62,51 @@ const ModalInfosTournoi: React.FC<Props> = ({
             <Icon
               as={CloseIcon}
               size="md"
-              className="stroke-background-400 group-[:hover]/modal-close-button:stroke-background-700 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900"
+              className="stroke-gray-600 group-[:hover]/modal-close-button:stroke-gray-300 group-active/modal-close-button:stroke-gray-100 group-focus-visible/modal-close-button:stroke-gray-100"
             />
           </ModalCloseButton>
         </ModalHeader>
         <ModalBody>
-          <Text>{`${t('id_modal_informations_tournoi')} ${tournoiId}`}</Text>
-          <Text>
+          <Text className="text-custom-text-modal">{`${t('id_modal_informations_tournoi')} ${tournoiId}`}</Text>
+          <Text className="text-custom-text-modal">
             {`${t('nom_modal_informations_tournoi')} ${name ? name : t('sans_nom')}`}
           </Text>
-          <Text>
+          <Text className="text-custom-text-modal">
             {`${t('creation_modal_informations_tournoi')} ${creationDateFormat}`}
           </Text>
-          <Text>
+          <Text className="text-custom-text-modal">
             {`${t('derniere_modification_modal_informations_tournoi')} ${updateDateFormat}`}
           </Text>
-          <Text>
+          <Text className="text-custom-text-modal">
             {`${t('nombre_joueurs_modal_informations_tournoi')} ${listeJoueurs.length}`}
           </Text>
-          <Text>
+          <Text className="text-custom-text-modal">
             {`${t('type_tournoi_modal_informations_tournoi')} ${typeTournoi}`}
           </Text>
-          <Text>
+          <Text className="text-custom-text-modal">
             {`${t('type_equipes_modal_informations_tournoi')} ${typeEquipes}`}
           </Text>
-          <Text>
+          <Text className="text-custom-text-modal">
             {`${t('nombre_tours_modal_informations_tournoi')} ${nbTours}`}
           </Text>
-          <Text>
+          <Text className="text-custom-text-modal">
             {`${t('nombre_matchs_modal_informations_tournoi')} ${nbMatchs}`}
           </Text>
-          <Text>
+          <Text className="text-custom-text-modal">
             {`${t('nombre_points_victoire_modal_informations_tournoi')} ${nbPtVictoire ? nbPtVictoire : 13}`}
           </Text>
           {complement && (
-            <Text>
+            <Text className="text-custom-text-modal">
               {`${t('complement_modal_informations_tournoi')} ${complement}`}
             </Text>
           )}
-          <Text>
+          <Text className="text-custom-text-modal">
             {`${t('regle_equipes_differentes_modal_informations_tournoi')} ${memesEquipes ? t('oui') : t('non')}`}
           </Text>
-          <Text>
+          <Text className="text-custom-text-modal">
             {`${t('regle_adversaires_modal_informations_tournoi')} ${memesAdversaires === 0 ? t('1_match') : t('pourcent_matchs', { pourcent: memesAdversaires })}`}
           </Text>
-          <Text>
+          <Text className="text-custom-text-modal">
             {`${t('regle_speciaux_modal_informations_tournoi')} ${speciauxIncompatibles ? t('oui') : t('non')}`}
           </Text>
         </ModalBody>

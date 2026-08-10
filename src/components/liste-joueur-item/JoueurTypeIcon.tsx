@@ -38,14 +38,14 @@ const JoueurTypeIcon: React.FC<Props> = ({
           <Image
             source={require('@assets/images/tireur.png')}
             alt="tireur"
-            className="w-[30px] h-[30px]"
+            className="w-7.5 h-7.5"
           />
         )}
         {joueurType === JoueurType.POINTEUR && (
           <Image
             source={require('@assets/images/pointeur.png')}
             alt="tireur"
-            className="w-[30px] h-[30px]"
+            className="w-7.5 h-7.5"
           />
         )}
       </Box>

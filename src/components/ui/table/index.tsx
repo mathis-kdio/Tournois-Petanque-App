@@ -1,24 +1,24 @@
+import React, { createContext, useMemo, useContext } from 'react';
 import {
   Table as ExpoTable,
-  TBody as ExpoTBody,
-  Caption as ExpoTCaption,
-  TFoot as ExpoTFoot,
   THead as ExpoTHead,
+  TBody as ExpoTBody,
+  TFoot as ExpoTFoot,
   TR as ExpoTR,
+  Caption as ExpoTCaption,
 } from '@expo/html-elements';
-import React, { createContext, useContext, useMemo } from 'react';
 
-import { Text, View } from 'react-native';
 import {
-  tableBodyStyle,
-  tableCaptionStyle,
-  tableDataStyle,
-  tableFooterStyle,
+  tableStyle,
   tableHeaderStyle,
+  tableBodyStyle,
+  tableFooterStyle,
   tableHeadStyle,
   tableRowStyleStyle,
-  tableStyle,
+  tableDataStyle,
+  tableCaptionStyle,
 } from './styles';
+import { Text, View } from 'react-native';
 
 const TableHeaderContext = createContext<{
   isHeaderRow: boolean;
@@ -199,7 +199,12 @@ TableData.displayName = 'TableData';
 TableCaption.displayName = 'TableCaption';
 
 export {
-  Table, TableBody, TableCaption, TableData, TableFooter,
-  TableHead, TableHeader, TableRow
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableHead,
+  TableRow,
+  TableData,
+  TableCaption,
 };
-

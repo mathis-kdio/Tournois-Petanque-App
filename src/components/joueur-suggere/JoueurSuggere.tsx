@@ -38,7 +38,7 @@ const JoueurSuggere: React.FC<Props> = ({
   return (
     <HStack className="border border-custom-bg-inverse rounded-xl m-1 px-1 items-center">
       <Box className="flex-1">
-        <Text className="text-typography-white text-xl font-bold break-words">
+        <Text className="text-foreground text-xl font-bold wrap-break-word">
           {name}
         </Text>
       </Box>
@@ -51,14 +51,14 @@ const JoueurSuggere: React.FC<Props> = ({
       </Box>
       <Box className="ml-2">
         <Button
-          className="bg-error-500"
+          className="bg-red-500"
           onPress={() => setModalRemoveIsOpen(true)}
         >
           <ButtonIcon as={CloseIcon} />
         </Button>
       </Box>
       <Box className="ml-2">
-        <Button className="bg-success-500" onPress={addJoueur}>
+        <Button className="bg-green-500" onPress={addJoueur}>
           <ButtonIcon as={AddIcon} />
         </Button>
       </Box>

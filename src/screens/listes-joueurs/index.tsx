@@ -72,7 +72,7 @@ const ListesJoueurs = () => {
   return (
     <VStack className="flex-1 bg-custom-background">
       <TopBarBack title={t('listes_joueurs_navigation_title')} />
-      <Text className="text-typography-white text-xl text-center">
+      <Text className="text-foreground text-xl text-center">
         {t('nombre_listes', { nb: allListesJoueurs.length })}
       </Text>
       <Box className="px-10">{addListButton()}</Box>

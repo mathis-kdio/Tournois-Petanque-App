@@ -84,7 +84,7 @@ const CreateListeJoueur: React.FC<Props> = ({ type, idList }) => {
     <VStack className="flex-1 bg-custom-background">
       <TopBarBack title={t('creation_liste_joueurs_navigation_title')} />
       <VStack className="flex-1 justify-between">
-        <Text className="text-typography-white text-xl text-center">
+        <Text className="text-foreground text-xl text-center">
           {t('nombre_joueurs', { nb: listeJoueurListeId.length })}
         </Text>
         <Inscriptions

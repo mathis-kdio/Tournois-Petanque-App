@@ -17,10 +17,10 @@ const TopBarBack: React.FC<Props> = ({ title }) => {
         <FontAwesome
           name="arrow-left"
           size={16}
-          className="!text-custom-bg-inverse"
+          className="text-custom-bg-inverse!"
         />
       </Pressable>
-      <Text className="text-xl text-typography-white">{title}</Text>
+      <Text className="text-xl text-foreground">{title}</Text>
     </HStack>
   );
 };

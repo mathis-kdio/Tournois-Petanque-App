@@ -24,14 +24,14 @@ const ConfirmationEmail: React.FC<Props> = ({ email }) => {
           <MaterialCommunityIcons
             name="mark-email-read"
             size={128}
-            className="!text-custom-bg-inverse"
+            className="text-custom-bg-inverse!"
           />
         </HStack>
-        <Text className="text-typography-white">
+        <Text className="text-foreground">
           {t('confirmation_email_text_1')}
         </Text>
-        <Text className="text-typography-white">{email}</Text>
-        <Text className="text-typography-white">
+        <Text className="text-foreground">{email}</Text>
+        <Text className="text-foreground">
           {t('confirmation_email_text_2')}
         </Text>
         <Button onPress={() => router.navigate('/')} className="mt-2">

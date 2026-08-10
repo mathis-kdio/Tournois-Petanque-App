@@ -16,7 +16,7 @@ const LoadSavedListButton = () => {
   };
 
   return (
-    <Button action="primary" onPress={loadSavedList}>
+    <Button onPress={loadSavedList}>
       <ButtonText>{t('charger_liste_joueurs_bouton')}</ButtonText>
     </Button>
   );

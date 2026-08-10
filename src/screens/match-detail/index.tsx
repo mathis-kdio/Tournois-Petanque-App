@@ -51,9 +51,7 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
   const displayTitle = () => {
     const { matchId, terrain } = match;
     const title = terrain ? terrain.name : `${t('match_numero')}${matchId + 1}`;
-    return (
-      <Text className="text-typography-white text-xl text-center">{title}</Text>
-    );
+    return <Text className="text-foreground text-xl text-center">{title}</Text>;
   };
 
   const displayEquipe = (equipeId: EquipeId) => {
@@ -168,18 +166,18 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
             <HStack className="items-center">
               <Box className="flex-2">{displayEquipe(1)}</Box>
               <Box className="flex-1 items-center">
-                <Text className="text-typography-white text-xl">{t('vs')}</Text>
+                <Text className="text-foreground text-xl">{t('vs')}</Text>
               </Box>
               <Box className="flex-2">{displayEquipe(2)}</Box>
             </HStack>
             <HStack space="lg">
               <Box className="flex-1">
-                <Text className="text-typography-white text-md">
+                <Text className="text-foreground text-md">
                   {t('score_equipe_1')}{' '}
                 </Text>
                 <Input className="border-custom-bg-inverse">
                   <InputField
-                    className="text-typography-white placeholder:text-typography-white"
+                    className="text-foreground placeholder:text-foreground"
                     placeholder={t('score_placeholder', {
                       scoreVictoire: nbPtVictoire,
                     })}
@@ -196,12 +194,12 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
                 </Input>
               </Box>
               <Box className="flex-1">
-                <Text className="text-typography-white text-md self-end">
+                <Text className="text-foreground text-md self-end">
                   {t('score_equipe_2')}{' '}
                 </Text>
                 <Input className="border-custom-bg-inverse">
                   <InputField
-                    className="text-typography-white placeholder:text-typography-white"
+                    className="text-foreground placeholder:text-foreground"
                     placeholder={t('score_placeholder', {
                       scoreVictoire: nbPtVictoire,
                     })}

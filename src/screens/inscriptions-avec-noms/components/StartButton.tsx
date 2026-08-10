@@ -160,7 +160,6 @@ const StartButton: React.FC<Props> = ({ preparationTournoi, listeJoueurs }) => {
       isDisabled={btnDisabled}
       action={btnDisabled ? 'negative' : 'positive'}
       onPress={() => commencer(choixComplement)}
-      size="md"
       className="h-min min-h-10"
     >
       <ButtonText>{title}</ButtonText>

@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { cssInterop } from 'nativewind';
+import { styled } from 'nativewind';
 import { TextStyle, ViewStyle } from 'react-native';
 
 const StyledTabsImpl = ({
@@ -21,7 +21,7 @@ const StyledTabsImpl = ({
   return <Tabs {...props} />;
 };
 
-export const StyledTabs = cssInterop(StyledTabsImpl, {
+export const StyledTabs = styled(StyledTabsImpl, {
   tabBarClassName: 'tabBarStyle',
   tabBarActiveTintColorClassName: 'tabBarActiveTintColor',
   headerClassName: 'headerStyle',

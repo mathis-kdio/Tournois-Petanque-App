@@ -1,63 +1,58 @@
 'use client';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { OverlayProvider } from '@gluestack-ui/core/overlay/creator';
 import { ToastProvider } from '@gluestack-ui/core/toast/creator';
-import { setFlushStyles } from '@gluestack-ui/utils/nativewind-utils';
-import React, { useEffect, useLayoutEffect } from 'react';
-import { config } from './config';
 import { script } from './script';
+import { config } from './config';
 
 export type ThemeType = 'basic' | 'original';
 export type ModeType = 'light' | 'dark' | 'system';
-
-const variableStyleTagId = 'nativewind-style';
-const createStyle = (styleTagId: string) => {
-  const style = document.createElement('style');
-  style.id = styleTagId;
-  style.appendChild(document.createTextNode(''));
-  return style;
-};
 
 export const useSafeLayoutEffect =
   typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 export function GluestackUIProvider({
-  theme,
+  theme = 'basic',
   mode = 'light',
   ...props
 }: {
-  theme: ThemeType;
+  theme?: ThemeType;
   mode?: ModeType;
   children?: React.ReactNode;
 }) {
-  let cssVariablesWithMode = ``;
-  let themeConfig = config[theme]
-  Object.keys(themeConfig).forEach((configKey) => {
-    cssVariablesWithMode += configKey === 'dark' ? `\n .dark {\n ` : `\n:root {\n`;
-    const cssVariables = Object.keys(
-      themeConfig[configKey as keyof typeof themeConfig]
-    ).reduce((acc: string, curr: string) => {
-      acc += `${curr}:${themeConfig[configKey as keyof typeof themeConfig][curr]}; `;
-      return acc;
-    }, '');
-    cssVariablesWithMode += `${cssVariables} \n}`;
-  });
-
-  setFlushStyles(cssVariablesWithMode);
+  // Determiner le mode effectif
+  const effectiveMode = mode === 'system' 
+    ? (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+    : mode;
 
   const handleMediaQuery = React.useCallback((e: MediaQueryListEvent) => {
-    script(e.matches ? 'dark' : 'light');
-  }, []);
+    const newMode = e.matches ? 'dark' : 'light';
+    script(newMode);
+    applyThemeClasses(theme, newMode);
+  }, [theme]);
+
+  // Appliquer les classes de theme
+  const applyThemeClasses = React.useCallback((theme: ThemeType, mode: ModeType) => {
+    const documentElement = document.documentElement;
+    if (!documentElement) return;
+    
+    // Retirer toutes les classes de theme existantes
+    Object.keys(config).forEach(themeName => {
+      ['light', 'dark'].forEach(modeName => {
+        documentElement.classList.remove(`${themeName}-${modeName}`);
+      });
+    });
+    
+    // Ajouter la classe du theme et mode actuel
+    documentElement.classList.add(`${theme}-${mode}`);
+    
+    // Appliquer le color scheme
+    documentElement.style.colorScheme = mode;
+  }, [theme]);
 
   useSafeLayoutEffect(() => {
-    if (mode !== 'system') {
-      const documentElement = document.documentElement;
-      if (documentElement) {
-        documentElement.classList.add(mode);
-        documentElement.classList.remove(mode === 'light' ? 'dark' : 'light');
-        documentElement.style.colorScheme = mode;
-      }
-    }
-  }, [mode, theme]);
+    applyThemeClasses(theme, effectiveMode);
+  }, [theme, effectiveMode, applyThemeClasses]);
 
   useSafeLayoutEffect(() => {
     if (mode !== 'system') return;
@@ -68,28 +63,12 @@ export function GluestackUIProvider({
     return () => media.removeListener(handleMediaQuery);
   }, [handleMediaQuery]);
 
-  useSafeLayoutEffect(() => {
-    if (typeof window === 'undefined') return;
-    const documentElement = document.documentElement;
-    if (!documentElement) return
-    const head = documentElement.querySelector('head');
-    if (!head) return;
-
-    const nodeToRemove = document.querySelector(`[id='${variableStyleTagId}']`);
-    if (nodeToRemove) {
-      head.removeChild(nodeToRemove)
-    }
-    let style = createStyle(variableStyleTagId);
-    style.innerHTML = cssVariablesWithMode;
-    head.appendChild(style);
-  }, [mode, theme]);
-
   return (
     <>
       <script
         suppressHydrationWarning
         dangerouslySetInnerHTML={{
-          __html: `(${script.toString()})('${mode}')`,
+          __html: `(${script.toString()})('${effectiveMode}')`,
         }}
       />
       <OverlayProvider>

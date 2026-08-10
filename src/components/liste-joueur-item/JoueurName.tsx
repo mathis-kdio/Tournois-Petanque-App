@@ -27,9 +27,9 @@ const JoueurName: React.FC<Props> = ({
 
   if (renommerOn) {
     return (
-      <Input variant="underlined">
+      <Input>
         <InputField
-          className="text-typography-white placeholder:text-typography-white"
+          className="text-foreground placeholder:text-foreground"
           placeholder={name}
           autoFocus={true}
           onChangeText={joueurTxtInputChanged}
@@ -39,7 +39,7 @@ const JoueurName: React.FC<Props> = ({
     );
   } else {
     return (
-      <Text className="text-typography-white text-xl font-bold break-words">
+      <Text className="text-foreground text-xl font-bold wrap-break-word">
         {`${joueurTournoiId + 1}-${name}`}
       </Text>
     );

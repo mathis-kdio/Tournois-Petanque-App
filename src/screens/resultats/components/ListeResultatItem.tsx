@@ -35,22 +35,18 @@ const ListeResultatItem: React.FC<Props> = ({ victoire, matchs, options }) => {
     <VStack>
       <HStack className="flex px-2 py-0.5">
         <HStack className="basis-2/5">
-          <Text className="text-typography-white text-lg">
-            {`${position} - `}
-          </Text>
-          <Text className="text-typography-white text-lg">
-            {getName(joueur)}
-          </Text>
+          <Text className="text-foreground text-lg">{`${position} - `}</Text>
+          <Text className="text-foreground text-lg">{getName(joueur)}</Text>
         </HStack>
-        <Text className="basis-1/5 text-center text-typography-white text-lg">
+        <Text className="basis-1/5 text-center text-foreground text-lg">
           {victoires}
         </Text>
-        <Text className="basis-1/5 text-center text-typography-white text-lg">
+        <Text className="basis-1/5 text-center text-foreground text-lg">
           {nbMatchs}
         </Text>
         <HStack className="basis-1/5 justify-end">
           <Fanny joueur={joueur} matchs={matchs} options={options} />
-          <Text className="text-typography-white text-lg">{` ${points}`}</Text>
+          <Text className="text-foreground text-lg">{` ${points}`}</Text>
         </HStack>
       </HStack>
       <Divider />

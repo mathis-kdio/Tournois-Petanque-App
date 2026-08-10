@@ -34,17 +34,17 @@ const ChangelogModal: React.FC<Props> = ({
       <ModalBackdrop />
       <ModalContent className="max-h-5/6">
         <ModalHeader>
-          <Heading className="color-custom-text-modal">{title}</Heading>
+          <Heading className="text-custom-text-modal">{title}</Heading>
           <ModalCloseButton>
             <Icon
               as={CloseIcon}
               size="md"
-              className="stroke-background-400 group-[:hover]/modal-close-button:stroke-background-700 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900"
+              className="stroke-gray-600 group-[:hover]/modal-close-button:stroke-gray-300 group-active/modal-close-button:stroke-gray-100 group-focus-visible/modal-close-button:stroke-gray-100"
             />
           </ModalCloseButton>
         </ModalHeader>
         <ModalBody>
-          <Text>
+          <Text className="text-custom-text-modal">
             {t(`${modalChangelogItem.id}.infos`, {
               ns: 'changelog',
               returnObjects: true,
