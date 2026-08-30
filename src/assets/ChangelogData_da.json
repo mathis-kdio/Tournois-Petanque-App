@@ -3,12 +3,12 @@
     "id": "40",
     "version": "3.0.3",
     "infos": [
-      "- Mise à jour des dépendances",
-      "- Mise à jour des traductions",
-      "- Amélioration performances et maintenabilité",
-      "- Fix affichage listes sur ordinateur",
-      "- Fix nombre joueurs popup anciens tournois",
-      "- Fix id et equipe nouveau joueur lors de l'inscription"
+      "- Opdater afhængigheder",
+      "- Opdaterede oversættelser",
+      "- Forbedret ydeevne og vedligeholdelses venlighed",
+      "- Retter visning af lister på computer",
+      "- Rettede antallet af spillere i popup-vinduet for tidligere turneringer",
+      "- Fast ID og hold for nye spillere ved registrering"
     ]
   },
   "39": {
