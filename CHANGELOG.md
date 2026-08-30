@@ -1,5 +1,16 @@
 # Change Log
 
+## [3.0.4] - 30-08-2026
+
+### Ajouté
+
+### Changement
+
+- Mise à jour des dépendances
+- Mise à jour des traductions
+
+### Corrigé
+
 ## [3.0.3] - 01-07-2026
 
 ### Ajouté
