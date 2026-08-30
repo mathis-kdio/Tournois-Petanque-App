@@ -1,4 +1,12 @@
 {
+  "41": {
+    "id": "41",
+    "version": "3.0.4",
+    "infos": [
+      "- Mise à jour des dépendances",
+      "- Mise à jour des traductions"
+    ]
+  },
   "40": {
     "id": "40",
     "version": "3.0.3",
