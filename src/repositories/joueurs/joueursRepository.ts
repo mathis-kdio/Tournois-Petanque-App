@@ -118,8 +118,8 @@ export const JoueursRepository = {
         name: joueurs.name,
         type: joueurs.type,
       })
-      .from(joueurs)
+      .from(joueursListes)
       .where(eq(joueursListes.listeId, listeId))
-      .innerJoin(joueursListes, eq(joueursListes.joueurId, joueurs.id));
+      .innerJoin(joueurs, eq(joueurs.id, joueursListes.joueurId));
   },
 };
