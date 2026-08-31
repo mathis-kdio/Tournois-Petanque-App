@@ -11,8 +11,8 @@
     "id": "40",
     "version": "3.0.3",
     "infos": [
-      "- Mise à jour des dépendances",
-      "- Mise à jour des traductions",
+      "- Update dependencies",
+      "- Updated translations",
       "- Amélioration performances et maintenabilité",
       "- Fix affichage listes sur ordinateur",
       "- Fix nombre joueurs popup anciens tournois",
@@ -23,7 +23,7 @@
     "id": "39",
     "version": "3.0.2",
     "infos": [
-      "- Mise à jour des dépendances",
+      "- Update dependencies",
       "- Fix latence ajout et suppression joueur",
       "- Fix génération tournoi mêlée",
       "- Fix lancement génération tournoi bloqué",
