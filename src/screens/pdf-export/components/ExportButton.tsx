@@ -103,7 +103,9 @@ const ExportButton: React.FC<Props> = ({
         }).then(() => toggleLoading());
       } else if (Platform.OS === 'ios') {
         if (await Sharing.isAvailableAsync()) {
-          Sharing.shareAsync(file.uri).then(() => toggleLoading());
+          setTimeout(() => {
+            Sharing.shareAsync(file.uri).finally(() => toggleLoading());
+          }, 0);
         } else {
           toggleLoading();
         }
