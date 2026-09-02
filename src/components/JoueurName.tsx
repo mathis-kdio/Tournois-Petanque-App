@@ -25,7 +25,8 @@ const JoueurName: React.FC<Props> = ({ joueur, equipeId, size }) => {
     return (
       <Text
         key={joueur.joueurTournoiId}
-        className="text-typography-white text-md text-right"
+        className="text-typography-white text-right"
+        size={size}
       >
         {`${joueur.name} ${joueur.joueurTournoiId + 1}`}
       </Text>
