@@ -190,6 +190,8 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
                     keyboardType="decimal-pad"
                     returnKeyType="next"
                     maxLength={2}
+                    autoComplete="off"
+                    textContentType="none"
                     onChangeText={(text) => ajoutScoreTextInputChanged(text, 1)}
                     onSubmitEditing={() => secondInput.current.focus()}
                   />
@@ -210,6 +212,8 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
                     }
                     keyboardType="decimal-pad"
                     maxLength={2}
+                    autoComplete="off"
+                    textContentType="none"
                     onChangeText={(text) => ajoutScoreTextInputChanged(text, 2)}
                     ref={secondInput}
                   />
