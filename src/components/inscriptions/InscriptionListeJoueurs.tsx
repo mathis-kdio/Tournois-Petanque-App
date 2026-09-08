@@ -9,7 +9,8 @@ import {
   LegendList,
   LegendListRenderItemProps,
 } from '@legendapp/list/react-native';
-import React from 'react';
+import React, { useMemo } from 'react';
+import { getTeamCounts } from '@/utils/teamUtils';
 import InscriptionListeJoueursFooter from './liste-joueurs-footer/ListeJoueursFooter';
 
 export interface Props {
@@ -54,7 +55,9 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
     throw Error('typeEquipes, mode ou typeTournoi manquant');
   }
 
-  const sortedListeJoueurs = () => {
+  // Memoize sorted list to prevent O(N log N) sorting on every render
+  // eslint-disable-next-line react-doctor/react-compiler-no-manual-memoization
+  const sortedListeJoueurs = useMemo(() => {
     // eslint-disable-next-line react-doctor/js-tosorted-immutable
     return [...listeJoueurs].sort((a, b) => {
       if (triType === Tri.ID) {
@@ -66,7 +69,13 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
       }
       return 0;
     });
-  };
+  }, [listeJoueurs, triType]);
+
+  // Pre-compute team counts once for all players - O(N) instead of O(N*M)
+  // eslint-disable-next-line react-doctor/react-compiler-no-manual-memoization
+  const teamCounts = useMemo(() => {
+    return getTeamCounts(listeJoueurs);
+  }, [listeJoueurs]);
 
   const avecEquipes =
     mode === ModeTournoi.AVECEQUIPES &&
@@ -81,7 +90,8 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
       modeTournoi={mode}
       typeTournoi={typeTournoi}
       showCheckbox={showCheckbox}
-      listesJoueurs={sortedListeJoueurs()}
+      listesJoueurs={sortedListeJoueurs}
+      teamCounts={teamCounts}
       onDeleteJoueur={onDeleteJoueur}
       onAddEquipeJoueur={onAddEquipeJoueur}
       onUpdateName={onUpdateName}
@@ -91,13 +101,13 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
 
   return (
     <LegendList
-      data={sortedListeJoueurs()}
+      data={sortedListeJoueurs}
       keyExtractor={(item) => item.uniqueBDDId.toString()}
       renderItem={renderItem}
       className="flex-1"
       ListFooterComponent={
         <InscriptionListeJoueursFooter
-          listeJoueurs={sortedListeJoueurs()}
+          listeJoueurs={sortedListeJoueurs}
           preparationTournoi={preparationTournoi}
           loadListScreen={loadListScreen}
           onAddJoueur={onAddJoueur}
@@ -110,4 +120,4 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
   );
 };
 
-export default InscriptionListeJoueurs;
+export default React.memo(InscriptionListeJoueurs);

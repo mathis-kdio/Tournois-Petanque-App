@@ -21,6 +21,7 @@ export interface Props {
   joueur: JoueurModel;
   typeEquipes: TypeEquipes;
   listesJoueurs: JoueurModel[];
+  teamCounts: Record<number, number>;
   onAddEquipeJoueur: (
     joueurModel: JoueurModel,
     equipeId: number,
@@ -31,6 +32,7 @@ const EquipePicker: React.FC<Props> = ({
   joueur,
   typeEquipes,
   listesJoueurs,
+  teamCounts,
   onAddEquipeJoueur,
 }) => {
   const { t } = useTranslation();
@@ -50,18 +52,21 @@ const EquipePicker: React.FC<Props> = ({
     nbEquipes = Math.ceil(nbJoueur / 3);
   }
 
+  // Determine max players per team based on team type
+  const maxPerTeam =
+    typeEquipes === TypeEquipes.TETEATETE
+      ? 1
+      : typeEquipes === TypeEquipes.DOUBLETTE
+      ? 2
+      : 3;
+
+  // Use pre-computed teamCounts instead of recalculating with reduce on every render
+  // This reduces O(N*M) to O(M) where N = players, M = teams
   const pickerItem = Array.from({ length: nbEquipes }, (_, i) => i + 1).flatMap(
     (equipId) => {
-      const count = listesJoueurs.reduce(
-        (counter, joueur) => (joueur.equipe === equipId ? counter++ : counter),
-        0,
-      );
-      if (
-        (typeEquipes === TypeEquipes.TETEATETE && count < 1) ||
-        (typeEquipes === TypeEquipes.DOUBLETTE && count < 2) ||
-        (typeEquipes === TypeEquipes.TRIPLETTE && count < 3) ||
-        equipe === equipId
-      ) {
+      // Get count from pre-computed teamCounts - O(1) lookup
+      const count = teamCounts[equipId] || 0;
+      if (count < maxPerTeam || equipe === equipId) {
         return [<EquipePickerItem equipe={equipId} key={equipId} />];
       }
       return [];
@@ -98,4 +103,4 @@ const EquipePicker: React.FC<Props> = ({
   );
 };
 
-export default EquipePicker;
+export default React.memo(EquipePicker);
