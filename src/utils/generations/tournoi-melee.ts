@@ -77,10 +77,8 @@ export const generationMelee = (
 
       //Affectation equipe 1
       const equipe1Match = match.equipe[0];
-      let equipe1Id = undefined;
       let equipeAffectation = equipes[randomEquipesIds[j]];
       if (equipe1Match[0] === -1) {
-        equipe1Id = randomEquipesIds[j];
         equipe1Match[0] = equipeAffectation.joueurs[0];
         if (
           typeEquipes === TypeEquipes.DOUBLETTE ||
@@ -96,14 +94,24 @@ export const generationMelee = (
           continue;
         } else {
           breaker = 0;
-          equipeAffectation = equipes[randomEquipesIds[j]];
         }
       }
 
       //Affectation Equipe 2
-      if (equipe1Id !== undefined) {
+      equipeAffectation = equipes[randomEquipesIds[j]];
+      const joueursIdEquipe1 = equipe1Match.filter(
+        (id): id is number => id !== undefined && id !== -1,
+      );
+      const equipe1Id = equipes.findIndex((equipeGeneration) =>
+        joueursIdEquipe1.every((joueurId) =>
+          equipeGeneration.joueurs.includes(joueurId),
+        ),
+      );
+
+      if (equipe1Id !== -1) {
         //Règle eviterMemeAdversaire
         const affectationPossible = testRegleEviterMemeAdversaire(
+          tour,
           equipes[equipe1Id],
           randomEquipesIds[j],
           eviterMemeAdversaire,
@@ -111,7 +119,6 @@ export const generationMelee = (
         );
 
         const equipe2Match = match.equipe[1];
-
         if (equipe2Match[0] === -1 && affectationPossible) {
           equipe2Match[0] = equipeAffectation.joueurs[0];
           if (
@@ -125,10 +132,12 @@ export const generationMelee = (
           }
           equipes[equipe1Id].adversesId.push(randomEquipesIds[j]);
           equipeAffectation.adversesId.push(equipe1Id);
-        }
 
-        j++;
-        breaker = 0;
+          j++;
+          breaker = 0;
+        } else {
+          breaker++;
+        }
       } else {
         breaker++;
       }
@@ -155,11 +164,16 @@ export const generationMelee = (
 };
 
 const testRegleEviterMemeAdversaire = (
+  tour: number,
   equipe1: EquipeGeneration,
   randomEquipesId: number,
   eviterMemeAdversaire: number,
   nbTours: number,
 ) => {
+  if (tour === 0) {
+    return true;
+  }
+
   const nbRencontres = equipe1.adversesId.filter(
     (el) => el === randomEquipesId,
   ).length;
