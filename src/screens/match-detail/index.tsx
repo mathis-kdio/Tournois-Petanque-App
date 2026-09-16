@@ -14,9 +14,10 @@ import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { requestReview } from '@/utils/storeReview/StoreReview';
 import AdMobMatchDetailBanner from '@components/adMob/AdMobMatchDetailBanner';
 import { nextMatch } from '@utils/generations/nextMatch/nextMatch';
-import { useRouter } from 'expo-router';
-import React, { useRef, useState } from 'react';
+import { useFocusEffect, useRouter } from 'expo-router';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Platform } from 'react-native';
 
 export interface Props {
   idMatch: number;
@@ -25,6 +26,8 @@ export interface Props {
 const MatchDetail: React.FC<Props> = ({ idMatch }) => {
   const { t } = useTranslation();
   const router = useRouter();
+  const isNavigatingBack = useRef(false);
+  const isProcessing = useRef(false);
 
   const [score1, setScore1] = useState<string | undefined>(undefined);
   const [score2, setScore2] = useState<string | undefined>(undefined);
@@ -32,6 +35,25 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
   const secondInput = useRef<any>(null);
 
   const { actualTournoi } = useActualTournoi();
+
+  // Cleanup lors du focus/blur pour éviter les problèmes de synchronisation Fabric
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        // Réinitialiser les flags lors de la sortie de l'écran
+        isNavigatingBack.current = false;
+        isProcessing.current = false;
+      };
+    }, [])
+  );
+
+  // Nettoyage lors du démontage
+  useEffect(() => {
+    return () => {
+      isNavigatingBack.current = false;
+      isProcessing.current = false;
+    };
+  }, []);
 
   if (!actualTournoi) {
     return <Loading />;
@@ -76,33 +98,89 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
   };
 
   const envoyerResultat = async () => {
-    await requestReview();
-
-    const nombreScore1 = parseInt(score1 ?? '');
-    const nombreScore2 = parseInt(score2 ?? '');
-    if (isNaN(nombreScore1) || isNaN(nombreScore2)) {
-      throw Error('score1 ou score2 pas un nombre');
+    // Empêcher les appels multiples
+    if (isProcessing.current || isNavigatingBack.current) {
+      return;
     }
-    await updateScore(actualTournoi, match.matchId, nombreScore1, nombreScore2);
+    
+    isProcessing.current = true;
+    
+    try {
+      await requestReview();
 
-    //Actualise les matchs suivants si nécessaire selon le type de tournoi (COUPE & MULTICHANCES)
-    await nextMatch(
-      match.matchId,
-      nombreScore1,
-      nombreScore2,
-      match.manche,
-      nbMatchs,
-      typeTournoi,
-      nbTours,
-      tournoiID,
-    );
+      const nombreScore1 = parseInt(score1 ?? '');
+      const nombreScore2 = parseInt(score2 ?? '');
+      if (isNaN(nombreScore1) || isNaN(nombreScore2)) {
+        throw Error('score1 ou score2 pas un nombre');
+      }
+      await updateScore(actualTournoi, match.matchId, nombreScore1, nombreScore2);
 
-    router.back();
+      //Actualise les matchs suivants si nécessaire selon le type de tournoi (COUPE & MULTICHANCES)
+      await nextMatch(
+        match.matchId,
+        nombreScore1,
+        nombreScore2,
+        match.manche,
+        nbMatchs,
+        typeTournoi,
+        nbTours,
+        tournoiID,
+      );
+
+      // Navigation différée pour laisser le temps à Fabric de se synchroniser
+      isNavigatingBack.current = true;
+      
+      // Utiliser requestAnimationFrame pour une meilleure synchronisation avec Fabric
+      if (Platform.OS === 'android') {
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            router.back();
+            isProcessing.current = false;
+            isNavigatingBack.current = false;
+          }, 50);
+        });
+      } else {
+        router.back();
+        isProcessing.current = false;
+        isNavigatingBack.current = false;
+      }
+    } catch (error) {
+      isProcessing.current = false;
+      throw error;
+    }
   };
 
   const supprimerResultat = async () => {
-    await resetScore(actualTournoi, match.matchId);
-    router.back();
+    // Empêcher les appels multiples
+    if (isProcessing.current || isNavigatingBack.current) {
+      return;
+    }
+    
+    isProcessing.current = true;
+    
+    try {
+      await resetScore(actualTournoi, match.matchId);
+      
+      // Navigation différée pour Android/Fabric
+      isNavigatingBack.current = true;
+      
+      if (Platform.OS === 'android') {
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            router.back();
+            isProcessing.current = false;
+            isNavigatingBack.current = false;
+          }, 50);
+        });
+      } else {
+        router.back();
+        isProcessing.current = false;
+        isNavigatingBack.current = false;
+      }
+    } catch (error) {
+      isProcessing.current = false;
+      throw error;
+    }
   };
 
   const boutonValider = () => {
@@ -149,7 +227,7 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
 
     return (
       <Button
-        isDisabled={btnDisabled}
+        isDisabled={btnDisabled || isProcessing.current}
         action={action}
         onPress={envoyerResultat}
       >
@@ -222,7 +300,7 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
             </HStack>
           </VStack>
           <VStack space="lg" className="my-5">
-            <Button action="negative" onPress={supprimerResultat}>
+            <Button action="negative" onPress={supprimerResultat} isDisabled={isProcessing.current}>
               <ButtonText>{t('supprimer_score')}</ButtonText>
             </Button>
             {boutonValider()}

@@ -8,13 +8,17 @@ import {
   LegendList,
   LegendListRenderItemProps,
 } from '@legendapp/list/react-native';
+import React, { memo, useMemo } from 'react';
 
 interface Props {
   mancheNumber: number;
 }
 
+// Memoized MatchItem pour éviter les rendus inutiles
+const MemoizedMatchItem = memo(MatchItem);
+
 const renderItem = ({ item }: LegendListRenderItemProps<MatchModel>) => {
-  return <MatchItem match={item} />;
+  return <MemoizedMatchItem match={item} />;
 };
 
 const MatchsManche: React.FC<Props> = ({ mancheNumber }) => {
@@ -28,7 +32,10 @@ const MatchsManche: React.FC<Props> = ({ mancheNumber }) => {
 
   const { matchs } = actualTournoi;
 
-  const matchsManche = matchs.filter((match) => match.manche === mancheNumber);
+  // Memoize les matchs filtrés pour éviter les recalculs
+  const matchsManche = useMemo(() => {
+    return matchs.filter((match) => match.manche === mancheNumber);
+  }, [matchs, mancheNumber]);
 
   return (
     <VStack className="flex-1 bg-custom-background">
@@ -43,5 +50,8 @@ const MatchsManche: React.FC<Props> = ({ mancheNumber }) => {
     </VStack>
   );
 };
+
+// Exporter avec memo pour éviter les rendus inutiles du parent
+export default memo(MatchsManche);
 
 export default MatchsManche;

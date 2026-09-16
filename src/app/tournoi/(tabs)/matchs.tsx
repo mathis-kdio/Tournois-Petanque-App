@@ -7,7 +7,9 @@ import MatchsManche from '@/screens/matchs/components/MatchsManche';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { createMaterialTopTabNavigator } from 'expo-router/js-top-tabs';
+import { useFocusEffect } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import React, { useCallback, useMemo } from 'react';
 
 export default function MatchsScreen() {
   const { t } = useTranslation();
@@ -31,7 +33,8 @@ export default function MatchsScreen() {
     return `${t('tour')} ${numero}`;
   };
 
-  const topTabItemLabel = (numero: number) => {
+  // Memoize topTabItemLabel pour éviter les recalculs inutiles
+  const topTabItemLabel = useCallback((numero: number) => {
     let iconColor = '#ffda00';
     let textColor = 'text-yellow-400';
     type IconBattery = 'battery-half' | 'battery-full' | 'battery-empty';
@@ -69,28 +72,32 @@ export default function MatchsScreen() {
         </Text>
       </HStack>
     );
-  };
+  }, [matchs, options.typeTournoi]);
+
+  // Memoize les screens pour éviter les recréations
+  const renderScreen = useCallback((i: number) => (
+    <Screen
+      key={`tour-${i + 1}`}
+      name={`tour-${i + 1}`}
+      options={{
+        tabBarLabel: () => topTabItemLabel(i + 1),
+      }}
+    >
+      {() => <MatchsManche mancheNumber={i + 1} />}
+    </Screen>
+  ), [topTabItemLabel]);
 
   return (
     <StyledTopTabs
       screenOptions={{
         title: t('liste_matchs_navigation_title'),
         tabBarScrollEnabled: true,
+        lazy: true, // Charger les écrans paresseusement pour éviter les problèmes de mémoire
       }}
       tabBarClassName="bg-custom-background"
       tabBarIndicatorClassName="bg-custom-bg-inverse"
     >
-      {Array.from({ length: options.nbTours }, (_, i) => (
-        <Screen
-          key={i}
-          name={`tour-${i + 1}`}
-          options={{
-            tabBarLabel: () => topTabItemLabel(i + 1),
-          }}
-        >
-          {() => <MatchsManche mancheNumber={i + 1} />}
-        </Screen>
-      ))}
+      {Array.from({ length: options.nbTours }, (_, i) => renderScreen(i))}
     </StyledTopTabs>
   );
 }
