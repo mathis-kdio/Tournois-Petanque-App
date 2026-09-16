@@ -5,12 +5,12 @@ import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { Tri } from '@/types/enums/tri';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import { getTeamCounts } from '@/utils/teamUtils';
 import {
   LegendList,
   LegendListRenderItemProps,
 } from '@legendapp/list/react-native';
 import React, { useMemo } from 'react';
-import { getTeamCounts } from '@/utils/teamUtils';
 import InscriptionListeJoueursFooter from './liste-joueurs-footer/ListeJoueursFooter';
 
 export interface Props {
@@ -120,4 +120,4 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
   );
 };
 
-export default React.memo(InscriptionListeJoueurs);
+export default InscriptionListeJoueurs;

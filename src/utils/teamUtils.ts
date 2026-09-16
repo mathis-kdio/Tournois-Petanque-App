@@ -5,7 +5,9 @@ import { JoueurModel } from '@/types/interfaces/joueurModel';
  * Count players per team efficiently.
  * O(N) complexity where N = number of players.
  */
-export const getTeamCounts = (players: JoueurModel[]): Record<number, number> => {
+export const getTeamCounts = (
+  players: JoueurModel[],
+): Record<number, number> => {
   const counts: Record<number, number> = {};
   players.forEach((player) => {
     if (player.equipe !== undefined) {

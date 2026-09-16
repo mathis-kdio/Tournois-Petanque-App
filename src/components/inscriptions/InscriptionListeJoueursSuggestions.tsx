@@ -92,4 +92,4 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
   );
 };
 
-export default React.memo(InscriptionListeJoueursSuggestions);
+export default InscriptionListeJoueursSuggestions;

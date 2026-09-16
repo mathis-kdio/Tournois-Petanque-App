@@ -57,8 +57,8 @@ const EquipePicker: React.FC<Props> = ({
     typeEquipes === TypeEquipes.TETEATETE
       ? 1
       : typeEquipes === TypeEquipes.DOUBLETTE
-      ? 2
-      : 3;
+        ? 2
+        : 3;
 
   // Use pre-computed teamCounts instead of recalculating with reduce on every render
   // This reduces O(N*M) to O(M) where N = players, M = teams
@@ -103,4 +103,4 @@ const EquipePicker: React.FC<Props> = ({
   );
 };
 
-export default React.memo(EquipePicker);
+export default EquipePicker;

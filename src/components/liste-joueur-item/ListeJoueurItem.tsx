@@ -143,4 +143,4 @@ const ListeJoueurItem: React.FC<Props> = ({
   );
 };
 
-export default React.memo(ListeJoueurItem);
+export default ListeJoueurItem;
