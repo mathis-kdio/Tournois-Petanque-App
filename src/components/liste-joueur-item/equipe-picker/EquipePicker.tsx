@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/select';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { getMaxPlayersPerTeam } from '@/utils/teamUtils';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import EquipePickerItem from './EquipePickerItem';
@@ -52,19 +53,10 @@ const EquipePicker: React.FC<Props> = ({
     nbEquipes = Math.ceil(nbJoueur / 3);
   }
 
-  // Determine max players per team based on team type
-  const maxPerTeam =
-    typeEquipes === TypeEquipes.TETEATETE
-      ? 1
-      : typeEquipes === TypeEquipes.DOUBLETTE
-        ? 2
-        : 3;
+  const maxPerTeam = getMaxPlayersPerTeam(typeEquipes);
 
-  // Use pre-computed teamCounts instead of recalculating with reduce on every render
-  // This reduces O(N*M) to O(M) where N = players, M = teams
   const pickerItem = Array.from({ length: nbEquipes }, (_, i) => i + 1).flatMap(
     (equipId) => {
-      // Get count from pre-computed teamCounts - O(1) lookup
       const count = teamCounts[equipId] || 0;
       if (count < maxPerTeam || equipe === equipId) {
         return [<EquipePickerItem equipe={equipId} key={equipId} />];

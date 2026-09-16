@@ -34,7 +34,6 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
 
   const { joueursSuggestion } = useJoueursSuggestion();
 
-  // React Compiler will automatically memoize this value
   const suggestions = joueursSuggestion.filter((suggestion) =>
     listeJoueurs.every((joueur) => joueur.name !== suggestion.name),
   );
