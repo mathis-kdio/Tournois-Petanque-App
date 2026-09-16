@@ -4,7 +4,6 @@ import { JoueurModel } from '@/types/interfaces/joueurModel';
 export const getTeamCounts = (
   players: JoueurModel[],
 ): Record<number, number> => {
-  console.log('getTeamCounts');
   const counts: Record<number, number> = {};
   players.forEach((player) => {
     if (player.equipe !== undefined) {
