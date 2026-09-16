@@ -82,20 +82,17 @@ const MatchItem: React.FC<Props> = ({ match }) => {
     }
     isNavigating.current = true;
     
-    // Utiliser requestAnimationFrame pour synchroniser avec le prochain frame
-    requestAnimationFrame(() => {
-      router.navigate({
-        pathname: '/tournoi/match-detail',
-        params: {
-          idMatch: match.matchId,
-        },
-      });
+    router.navigate({
+      pathname: '/tournoi/match-detail',
+      params: {
+        idMatch: match.matchId,
+      },
     });
     
-    // Réinitialiser le flag après un délai pour éviter les blocages
+    // Réinitialiser le flag après la navigation complète
     setTimeout(() => {
       isNavigating.current = false;
-    }, 1000);
+    }, 500);
   };
 
   return (

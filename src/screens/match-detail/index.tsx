@@ -17,7 +17,6 @@ import { nextMatch } from '@utils/generations/nextMatch/nextMatch';
 import { useFocusEffect, useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Platform } from 'react-native';
 
 export interface Props {
   idMatch: number;
@@ -104,6 +103,7 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
     }
     
     isProcessing.current = true;
+    isNavigatingBack.current = true;
     
     try {
       await requestReview();
@@ -127,26 +127,14 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
         tournoiID,
       );
 
-      // Navigation différée pour laisser le temps à Fabric de se synchroniser
-      isNavigatingBack.current = true;
-      
-      // Utiliser requestAnimationFrame pour une meilleure synchronisation avec Fabric
-      if (Platform.OS === 'android') {
-        requestAnimationFrame(() => {
-          setTimeout(() => {
-            router.back();
-            isProcessing.current = false;
-            isNavigatingBack.current = false;
-          }, 50);
-        });
-      } else {
-        router.back();
-        isProcessing.current = false;
-        isNavigatingBack.current = false;
-      }
+      router.back();
     } catch (error) {
       isProcessing.current = false;
+      isNavigatingBack.current = false;
       throw error;
+    } finally {
+      isProcessing.current = false;
+      isNavigatingBack.current = false;
     }
   };
 
@@ -157,29 +145,18 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
     }
     
     isProcessing.current = true;
+    isNavigatingBack.current = true;
     
     try {
       await resetScore(actualTournoi, match.matchId);
-      
-      // Navigation différée pour Android/Fabric
-      isNavigatingBack.current = true;
-      
-      if (Platform.OS === 'android') {
-        requestAnimationFrame(() => {
-          setTimeout(() => {
-            router.back();
-            isProcessing.current = false;
-            isNavigatingBack.current = false;
-          }, 50);
-        });
-      } else {
-        router.back();
-        isProcessing.current = false;
-        isNavigatingBack.current = false;
-      }
+      router.back();
     } catch (error) {
       isProcessing.current = false;
+      isNavigatingBack.current = false;
       throw error;
+    } finally {
+      isProcessing.current = false;
+      isNavigatingBack.current = false;
     }
   };
 

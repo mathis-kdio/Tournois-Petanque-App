@@ -53,5 +53,3 @@ const MatchsManche: React.FC<Props> = ({ mancheNumber }) => {
 
 // Exporter avec memo pour éviter les rendus inutiles du parent
 export default memo(MatchsManche);
-
-export default MatchsManche;

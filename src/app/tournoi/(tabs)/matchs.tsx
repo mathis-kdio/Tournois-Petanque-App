@@ -7,9 +7,8 @@ import MatchsManche from '@/screens/matchs/components/MatchsManche';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { createMaterialTopTabNavigator } from 'expo-router/js-top-tabs';
-import { useFocusEffect } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 
 export default function MatchsScreen() {
   const { t } = useTranslation();
