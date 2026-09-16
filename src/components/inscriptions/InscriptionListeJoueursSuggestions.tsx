@@ -34,10 +34,9 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
 
   const { joueursSuggestion } = useJoueursSuggestion();
 
-  const suggestions = () =>
-    joueursSuggestion.filter((suggestion) =>
-      listeJoueurs.every((joueur) => joueur.name !== suggestion.name),
-    );
+  const suggestions = joueursSuggestion.filter((suggestion) =>
+    listeJoueurs.every((joueur) => joueur.name !== suggestion.name),
+  );
 
   const [nbSuggestions, setNbSuggestions] = useState(5);
 
@@ -58,9 +57,9 @@ const InscriptionListeJoueursSuggestions: React.FC<Props> = ({
     setNbSuggestions((prevState) => prevState + 5);
   };
 
-  const partialSuggested = suggestions().slice(0, nbSuggestions);
+  const partialSuggested = suggestions.slice(0, nbSuggestions);
 
-  if (suggestions().length === 0) {
+  if (suggestions.length === 0) {
     return null;
   }
 

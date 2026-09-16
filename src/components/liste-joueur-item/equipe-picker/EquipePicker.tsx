@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/select';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
+import { getMaxPlayersPerTeam } from '@/utils/teamUtils';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import EquipePickerItem from './EquipePickerItem';
@@ -21,6 +22,7 @@ export interface Props {
   joueur: JoueurModel;
   typeEquipes: TypeEquipes;
   listesJoueurs: JoueurModel[];
+  teamCounts: Record<number, number>;
   onAddEquipeJoueur: (
     joueurModel: JoueurModel,
     equipeId: number,
@@ -31,6 +33,7 @@ const EquipePicker: React.FC<Props> = ({
   joueur,
   typeEquipes,
   listesJoueurs,
+  teamCounts,
   onAddEquipeJoueur,
 }) => {
   const { t } = useTranslation();
@@ -50,18 +53,12 @@ const EquipePicker: React.FC<Props> = ({
     nbEquipes = Math.ceil(nbJoueur / 3);
   }
 
+  const maxPerTeam = getMaxPlayersPerTeam(typeEquipes);
+
   const pickerItem = Array.from({ length: nbEquipes }, (_, i) => i + 1).flatMap(
     (equipId) => {
-      const count = listesJoueurs.reduce(
-        (counter, joueur) => (joueur.equipe === equipId ? counter++ : counter),
-        0,
-      );
-      if (
-        (typeEquipes === TypeEquipes.TETEATETE && count < 1) ||
-        (typeEquipes === TypeEquipes.DOUBLETTE && count < 2) ||
-        (typeEquipes === TypeEquipes.TRIPLETTE && count < 3) ||
-        equipe === equipId
-      ) {
+      const count = teamCounts[equipId] || 0;
+      if (count < maxPerTeam || equipe === equipId) {
         return [<EquipePickerItem equipe={equipId} key={equipId} />];
       }
       return [];

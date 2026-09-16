@@ -5,6 +5,7 @@ import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { Tri } from '@/types/enums/tri';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { PreparationTournoiModel } from '@/types/interfaces/preparationTournoiModel';
+import { getTeamCounts } from '@/utils/teamUtils';
 import {
   LegendList,
   LegendListRenderItemProps,
@@ -68,6 +69,8 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
     });
   };
 
+  const teamCounts = getTeamCounts(listeJoueurs);
+
   const avecEquipes =
     mode === ModeTournoi.AVECEQUIPES &&
     modeCreationEquipes === ModeCreationEquipes.MANUELLE;
@@ -82,6 +85,7 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
       typeTournoi={typeTournoi}
       showCheckbox={showCheckbox}
       listesJoueurs={sortedListeJoueurs()}
+      teamCounts={teamCounts}
       onDeleteJoueur={onDeleteJoueur}
       onAddEquipeJoueur={onAddEquipeJoueur}
       onUpdateName={onUpdateName}

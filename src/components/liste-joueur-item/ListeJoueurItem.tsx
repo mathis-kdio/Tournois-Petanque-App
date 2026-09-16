@@ -23,6 +23,7 @@ export interface Props {
   typeTournoi: TypeTournoi;
   showCheckbox: boolean;
   listesJoueurs: JoueurModel[];
+  teamCounts: Record<number, number>;
   onDeleteJoueur: (id: number) => Promise<void>;
   onAddEquipeJoueur: (
     joueurModel: JoueurModel,
@@ -44,6 +45,7 @@ const ListeJoueurItem: React.FC<Props> = ({
   typeTournoi,
   showCheckbox,
   listesJoueurs,
+  teamCounts,
   onDeleteJoueur,
   onAddEquipeJoueur,
   onUpdateName,
@@ -105,6 +107,7 @@ const ListeJoueurItem: React.FC<Props> = ({
                 joueur={joueur}
                 typeEquipes={typeEquipes}
                 listesJoueurs={listesJoueurs}
+                teamCounts={teamCounts}
                 onAddEquipeJoueur={onAddEquipeJoueur}
               />
             ) : (
