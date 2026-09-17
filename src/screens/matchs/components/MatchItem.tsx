@@ -9,7 +9,7 @@ import { EquipeType } from '@/types/interfaces/equipeType';
 import { MatchModel } from '@/types/interfaces/matchModel';
 import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { useRouter } from 'expo-router';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export interface Props {
@@ -32,7 +32,8 @@ const displayEquipe = (equipeType: EquipeType, equipeId: EquipeId) => {
 const MatchItem: React.FC<Props> = ({ match }) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const isNavigating = useRef(false);
+  const [isNavigating, setIsNavigating] = useState(false);
+  const isNavigatingRef = useRef(false);
 
   const { matchId, equipe, terrain, score1, score2 } = match;
 
@@ -76,11 +77,12 @@ const MatchItem: React.FC<Props> = ({ match }) => {
   };
 
   const navigateMatchDetail = () => {
-    // Empêcher les navigations multiples rapides
-    if (isNavigating.current) {
+    if (isNavigatingRef.current) {
       return;
     }
-    isNavigating.current = true;
+
+    isNavigatingRef.current = true;
+    setIsNavigating(true);
 
     router.navigate({
       pathname: '/tournoi/match-detail',
@@ -89,18 +91,14 @@ const MatchItem: React.FC<Props> = ({ match }) => {
       },
     });
 
-    // Réinitialiser le flag après la navigation complète
     setTimeout(() => {
-      isNavigating.current = false;
+      isNavigatingRef.current = false;
+      setIsNavigating(false);
     }, 500);
   };
 
   return (
-    <Pressable
-      onPress={navigateMatchDetail}
-      // Désactiver pendant la navigation pour éviter les clics multiples
-      isDisabled={isNavigating.current}
-    >
+    <Pressable onPress={navigateMatchDetail} disabled={isNavigating}>
       <VStack className="m-2">
         {displayTitle()}
         <HStack className="items-center">

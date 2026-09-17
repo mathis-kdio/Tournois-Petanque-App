@@ -14,11 +14,8 @@ interface Props {
   mancheNumber: number;
 }
 
-// Memoized MatchItem pour éviter les rendus inutiles
-const MemoizedMatchItem = MatchItem;
-
 const renderItem = ({ item }: LegendListRenderItemProps<MatchModel>) => {
-  return <MemoizedMatchItem match={item} />;
+  return <MatchItem match={item} />;
 };
 
 const MatchsManche: React.FC<Props> = ({ mancheNumber }) => {
@@ -32,15 +29,12 @@ const MatchsManche: React.FC<Props> = ({ mancheNumber }) => {
 
   const { matchs } = actualTournoi;
 
-  // Memoize les matchs filtrés pour éviter les recalculs
-  const matchsManche = () => {
-    return matchs.filter((match) => match.manche === mancheNumber);
-  };
+  const matchsManche = matchs.filter((match) => match.manche === mancheNumber);
 
   return (
     <VStack className="flex-1 bg-custom-background">
       <LegendList
-        data={matchsManche()}
+        data={matchsManche}
         keyExtractor={(item) => item.matchId.toString()}
         renderItem={renderItem}
         className="flex-1"
@@ -51,5 +45,4 @@ const MatchsManche: React.FC<Props> = ({ mancheNumber }) => {
   );
 };
 
-// Exporter avec memo pour éviter les rendus inutiles du parent
 export default MatchsManche;

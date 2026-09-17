@@ -31,7 +31,6 @@ export default function MatchsScreen() {
     return `${t('tour')} ${numero}`;
   };
 
-  // Memoize topTabItemLabel pour éviter les recalculs inutiles
   const topTabItemLabel = (numero: number) => {
     let iconColor = '#ffda00';
     let textColor = 'text-yellow-400';
@@ -72,7 +71,6 @@ export default function MatchsScreen() {
     );
   };
 
-  // Memoize les screens pour éviter les recréations
   const renderScreen = (i: number) => (
     <Screen
       key={`tour-${i + 1}`}
@@ -90,7 +88,7 @@ export default function MatchsScreen() {
       screenOptions={{
         title: t('liste_matchs_navigation_title'),
         tabBarScrollEnabled: true,
-        lazy: true, // Charger les écrans paresseusement pour éviter les problèmes de mémoire
+        lazy: true,
       }}
       tabBarClassName="bg-custom-background"
       tabBarIndicatorClassName="bg-custom-bg-inverse"
