@@ -8,7 +8,6 @@ import {
   LegendList,
   LegendListRenderItemProps,
 } from '@legendapp/list/react-native';
-import React from 'react';
 
 interface Props {
   mancheNumber: number;

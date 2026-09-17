@@ -77,12 +77,11 @@ const MatchItem: React.FC<Props> = ({ match }) => {
   };
 
   const navigateMatchDetail = () => {
-    if (isNavigatingRef.current) {
+    if (isNavigating || isNavigatingRef.current) {
       return;
     }
-
-    isNavigatingRef.current = true;
     setIsNavigating(true);
+    isNavigatingRef.current = true;
 
     router.navigate({
       pathname: '/tournoi/match-detail',
@@ -92,8 +91,8 @@ const MatchItem: React.FC<Props> = ({ match }) => {
     });
 
     setTimeout(() => {
-      isNavigatingRef.current = false;
       setIsNavigating(false);
+      isNavigatingRef.current = false;
     }, 500);
   };
 
@@ -112,5 +111,4 @@ const MatchItem: React.FC<Props> = ({ match }) => {
   );
 };
 
-// Exporter avec memo pour éviter les rendus inutiles
 export default MatchItem;
