@@ -81,14 +81,14 @@ const MatchItem: React.FC<Props> = ({ match }) => {
       return;
     }
     isNavigating.current = true;
-    
+
     router.navigate({
       pathname: '/tournoi/match-detail',
       params: {
         idMatch: match.matchId,
       },
     });
-    
+
     // Réinitialiser le flag après la navigation complète
     setTimeout(() => {
       isNavigating.current = false;
@@ -96,7 +96,7 @@ const MatchItem: React.FC<Props> = ({ match }) => {
   };
 
   return (
-    <Pressable 
+    <Pressable
       onPress={navigateMatchDetail}
       // Désactiver pendant la navigation pour éviter les clics multiples
       isDisabled={isNavigating.current}
@@ -115,4 +115,4 @@ const MatchItem: React.FC<Props> = ({ match }) => {
 };
 
 // Exporter avec memo pour éviter les rendus inutiles
-export default React.memo(MatchItem);
+export default MatchItem;

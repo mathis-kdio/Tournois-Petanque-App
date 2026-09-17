@@ -8,7 +8,6 @@ import { TypeTournoi } from '@/types/enums/typeTournoi';
 import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { createMaterialTopTabNavigator } from 'expo-router/js-top-tabs';
 import { useTranslation } from 'react-i18next';
-import React, { useCallback } from 'react';
 
 export default function MatchsScreen() {
   const { t } = useTranslation();
@@ -33,7 +32,7 @@ export default function MatchsScreen() {
   };
 
   // Memoize topTabItemLabel pour éviter les recalculs inutiles
-  const topTabItemLabel = useCallback((numero: number) => {
+  const topTabItemLabel = (numero: number) => {
     let iconColor = '#ffda00';
     let textColor = 'text-yellow-400';
     type IconBattery = 'battery-half' | 'battery-full' | 'battery-empty';
@@ -71,10 +70,10 @@ export default function MatchsScreen() {
         </Text>
       </HStack>
     );
-  }, [matchs, options.typeTournoi]);
+  };
 
   // Memoize les screens pour éviter les recréations
-  const renderScreen = useCallback((i: number) => (
+  const renderScreen = (i: number) => (
     <Screen
       key={`tour-${i + 1}`}
       name={`tour-${i + 1}`}
@@ -84,7 +83,7 @@ export default function MatchsScreen() {
     >
       {() => <MatchsManche mancheNumber={i + 1} />}
     </Screen>
-  ), [topTabItemLabel]);
+  );
 
   return (
     <StyledTopTabs

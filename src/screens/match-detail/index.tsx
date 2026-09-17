@@ -15,7 +15,7 @@ import { requestReview } from '@/utils/storeReview/StoreReview';
 import AdMobMatchDetailBanner from '@components/adMob/AdMobMatchDetailBanner';
 import { nextMatch } from '@utils/generations/nextMatch/nextMatch';
 import { useFocusEffect, useRouter } from 'expo-router';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export interface Props {
@@ -36,15 +36,13 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
   const { actualTournoi } = useActualTournoi();
 
   // Cleanup lors du focus/blur pour éviter les problèmes de synchronisation Fabric
-  useFocusEffect(
-    useCallback(() => {
-      return () => {
-        // Réinitialiser les flags lors de la sortie de l'écran
-        isNavigatingBack.current = false;
-        isProcessing.current = false;
-      };
-    }, [])
-  );
+  useFocusEffect(() => {
+    return () => {
+      // Réinitialiser les flags lors de la sortie de l'écran
+      isNavigatingBack.current = false;
+      isProcessing.current = false;
+    };
+  });
 
   // Nettoyage lors du démontage
   useEffect(() => {
@@ -101,10 +99,10 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
     if (isProcessing.current || isNavigatingBack.current) {
       return;
     }
-    
+
     isProcessing.current = true;
     isNavigatingBack.current = true;
-    
+
     try {
       await requestReview();
 
@@ -113,7 +111,12 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
       if (isNaN(nombreScore1) || isNaN(nombreScore2)) {
         throw Error('score1 ou score2 pas un nombre');
       }
-      await updateScore(actualTournoi, match.matchId, nombreScore1, nombreScore2);
+      await updateScore(
+        actualTournoi,
+        match.matchId,
+        nombreScore1,
+        nombreScore2,
+      );
 
       //Actualise les matchs suivants si nécessaire selon le type de tournoi (COUPE & MULTICHANCES)
       await nextMatch(
@@ -143,10 +146,10 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
     if (isProcessing.current || isNavigatingBack.current) {
       return;
     }
-    
+
     isProcessing.current = true;
     isNavigatingBack.current = true;
-    
+
     try {
       await resetScore(actualTournoi, match.matchId);
       router.back();
@@ -277,7 +280,11 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
             </HStack>
           </VStack>
           <VStack space="lg" className="my-5">
-            <Button action="negative" onPress={supprimerResultat} isDisabled={isProcessing.current}>
+            <Button
+              action="negative"
+              onPress={supprimerResultat}
+              isDisabled={isProcessing.current}
+            >
               <ButtonText>{t('supprimer_score')}</ButtonText>
             </Button>
             {boutonValider()}
