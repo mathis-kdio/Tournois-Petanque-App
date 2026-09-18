@@ -71,26 +71,29 @@ export default function MatchsScreen() {
     );
   };
 
+  const renderScreen = (i: number) => (
+    <Screen
+      key={`tour-${i + 1}`}
+      name={`tour-${i + 1}`}
+      options={{
+        tabBarLabel: () => topTabItemLabel(i + 1),
+      }}
+    >
+      {() => <MatchsManche mancheNumber={i + 1} />}
+    </Screen>
+  );
+
   return (
     <StyledTopTabs
       screenOptions={{
         title: t('liste_matchs_navigation_title'),
         tabBarScrollEnabled: true,
+        lazy: true,
       }}
       tabBarClassName="bg-custom-background"
       tabBarIndicatorClassName="bg-custom-bg-inverse"
     >
-      {Array.from({ length: options.nbTours }, (_, i) => (
-        <Screen
-          key={i}
-          name={`tour-${i + 1}`}
-          options={{
-            tabBarLabel: () => topTabItemLabel(i + 1),
-          }}
-        >
-          {() => <MatchsManche mancheNumber={i + 1} />}
-        </Screen>
-      ))}
+      {Array.from({ length: options.nbTours }, (_, i) => renderScreen(i))}
     </StyledTopTabs>
   );
 }

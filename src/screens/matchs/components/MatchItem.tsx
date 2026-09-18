@@ -9,7 +9,7 @@ import { EquipeType } from '@/types/interfaces/equipeType';
 import { MatchModel } from '@/types/interfaces/matchModel';
 import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export interface Props {
@@ -32,6 +32,8 @@ const displayEquipe = (equipeType: EquipeType, equipeId: EquipeId) => {
 const MatchItem: React.FC<Props> = ({ match }) => {
   const { t } = useTranslation();
   const router = useRouter();
+  const [isNavigating, setIsNavigating] = useState(false);
+  const isNavigatingRef = useRef(false);
 
   const { matchId, equipe, terrain, score1, score2 } = match;
 
@@ -75,16 +77,27 @@ const MatchItem: React.FC<Props> = ({ match }) => {
   };
 
   const navigateMatchDetail = () => {
+    if (isNavigating || isNavigatingRef.current) {
+      return;
+    }
+    setIsNavigating(true);
+    isNavigatingRef.current = true;
+
     router.navigate({
       pathname: '/tournoi/match-detail',
       params: {
         idMatch: match.matchId,
       },
     });
+
+    setTimeout(() => {
+      setIsNavigating(false);
+      isNavigatingRef.current = false;
+    }, 500);
   };
 
   return (
-    <Pressable onPress={() => navigateMatchDetail()}>
+    <Pressable onPress={navigateMatchDetail} disabled={isNavigating}>
       <VStack className="m-2">
         {displayTitle()}
         <HStack className="items-center">

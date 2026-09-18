@@ -14,7 +14,7 @@ import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { requestReview } from '@/utils/storeReview/StoreReview';
 import AdMobMatchDetailBanner from '@components/adMob/AdMobMatchDetailBanner';
 import { nextMatch } from '@utils/generations/nextMatch/nextMatch';
-import { useRouter } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -25,6 +25,8 @@ export interface Props {
 const MatchDetail: React.FC<Props> = ({ idMatch }) => {
   const { t } = useTranslation();
   const router = useRouter();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const isNavigatingBack = useRef(false);
 
   const [score1, setScore1] = useState<string | undefined>(undefined);
   const [score2, setScore2] = useState<string | undefined>(undefined);
@@ -32,6 +34,13 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
   const secondInput = useRef<any>(null);
 
   const { actualTournoi } = useActualTournoi();
+
+  useFocusEffect(() => {
+    return () => {
+      isNavigatingBack.current = false;
+      setIsProcessing(false);
+    };
+  });
 
   if (!actualTournoi) {
     return <Loading />;
@@ -76,6 +85,12 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
   };
 
   const envoyerResultat = async () => {
+    if (isProcessing || isNavigatingBack.current) {
+      return;
+    }
+    setIsProcessing(true);
+    isNavigatingBack.current = true;
+
     await requestReview();
 
     const nombreScore1 = parseInt(score1 ?? '');
@@ -98,11 +113,23 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
     );
 
     router.back();
+
+    setIsProcessing(false);
+    isNavigatingBack.current = false;
   };
 
   const supprimerResultat = async () => {
+    if (isProcessing || isNavigatingBack.current) {
+      return;
+    }
+    setIsProcessing(true);
+    isNavigatingBack.current = true;
+
     await resetScore(actualTournoi, match.matchId);
     router.back();
+
+    setIsProcessing(false);
+    isNavigatingBack.current = false;
   };
 
   const boutonValider = () => {
@@ -149,7 +176,7 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
 
     return (
       <Button
-        isDisabled={btnDisabled}
+        isDisabled={btnDisabled || isProcessing}
         action={action}
         onPress={envoyerResultat}
       >
@@ -179,7 +206,7 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
                 </Text>
                 <Input className="border-custom-bg-inverse">
                   <InputField
-                    className="text-typography-white placeholder:text-typography-white"
+                    className="text-typography-white"
                     placeholder={t('score_placeholder', {
                       scoreVictoire: nbPtVictoire,
                     })}
@@ -203,7 +230,7 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
                 </Text>
                 <Input className="border-custom-bg-inverse">
                   <InputField
-                    className="text-typography-white placeholder:text-typography-white"
+                    className="text-typography-white"
                     placeholder={t('score_placeholder', {
                       scoreVictoire: nbPtVictoire,
                     })}
@@ -222,7 +249,11 @@ const MatchDetail: React.FC<Props> = ({ idMatch }) => {
             </HStack>
           </VStack>
           <VStack space="lg" className="my-5">
-            <Button action="negative" onPress={supprimerResultat}>
+            <Button
+              action="negative"
+              onPress={supprimerResultat}
+              isDisabled={isProcessing}
+            >
               <ButtonText>{t('supprimer_score')}</ButtonText>
             </Button>
             {boutonValider()}
