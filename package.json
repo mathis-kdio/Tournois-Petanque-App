@@ -16,7 +16,11 @@
     "build:plugins": "tsc -p tsconfig.plugins.json",
     "ts:check": "tsc",
     "lint": "eslint .",
-    "prebuild": "npm run build:plugins"
+    "prebuild": "npm run build:plugins",
+    "test": "jest --watchAll",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:ci": "jest --ci --coverage --maxWorkers=2"
   },
   "dependencies": {
     "@expo/html-elements": "0.12.5",
@@ -81,7 +85,11 @@
   "devDependencies": {
     "@babel/core": "7.29.7",
     "@expo/metro-runtime": "~57.0.14",
+    "@react-native/jest-preset": "^0.86.3",
     "@tauri-apps/cli": "^2.11.4",
+    "@testing-library/jest-native": "^5.4.3",
+    "@testing-library/react-native": "^14.0.1",
+    "@types/jest": "^30.0.0",
     "@types/react": "^19.2.17",
     "babel-plugin-inline-import": "3.0.0",
     "babel-plugin-module-resolver": "5.0.3",
@@ -92,6 +100,8 @@
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.6",
     "eslint-plugin-react-doctor": "^0.5.8",
+    "jest": "^30.5.2",
+    "jest-expo": "~57.0.0",
     "jscodeshift": "0.15.2",
     "prettier": "^3.9.4",
     "typescript": "6.0.3"

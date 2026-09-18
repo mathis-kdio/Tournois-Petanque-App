@@ -9,6 +9,7 @@
 .expo/settings.json
 node_modules
 dist
+coverage
 .extra
 serviceAccountKeyPath.json
 .env.local
