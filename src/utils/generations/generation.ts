@@ -4,21 +4,11 @@ import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 
-const rand0ToMax = (max: number) => {
-  return Math.floor(Math.random() * (max + 1));
-};
-
-const countOccurrences = (arr: number[], val: number) =>
-  arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
-
 export const uniqueValueArrayRandOrder = (arrayLength: number) => {
-  const res = [];
-  for (let i = 0; i < arrayLength; i) {
-    const random = rand0ToMax(arrayLength - 1);
-    if (countOccurrences(res, random) < 1) {
-      res.push(random);
-      i++;
-    }
+  const res = Array.from({ length: arrayLength }, (_, index) => index);
+  for (let i = res.length - 1; i > 0; i--) {
+    const random = Math.floor(Math.random() * (i + 1));
+    [res[i], res[random]] = [res[random], res[i]];
   }
   return res;
 };
@@ -89,8 +79,8 @@ export const calcNbMatchsParTour = (
 };
 
 export const shuffle = <T>(array: T[]): T[] => {
-  for (let i = array.length - 1; i >= 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+  for (let i = 0; i < array.length - 1; i++) {
+    const j = i + Math.floor(Math.random() * (array.length - i));
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
