@@ -17,9 +17,10 @@
     "ts:check": "tsc",
     "lint": "eslint .",
     "prebuild": "npm run build:plugins",
-    "test": "jest --watchAll",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
+    "test": "jest --runInBand",
+    "test:watch": "jest --runInBand --watch",
+    "test:watch-all": "jest --runInBand --watchAll",
+    "test:coverage": "jest --runInBand --coverage",
     "test:ci": "jest --ci --coverage --maxWorkers=2"
   },
   "dependencies": {
