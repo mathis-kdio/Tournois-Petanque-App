@@ -40,6 +40,12 @@ export default defineConfig({
     // URL de base : le serveur web Expo (port 8081 par défaut).
     baseURL: 'http://localhost:8081',
 
+    // Force la locale du navigateur en français.
+    // expo-localization (web) lit `navigator.languages` / `navigator.language`
+    // pour initialiser i18next ; sans cela, l'app s'affiche en anglais (en-US).
+    // L'option `locale` émule ces deux valeurs + l'en-tête Accept-Language.
+    locale: 'fr-FR',
+
     // Captures d'écran et trace uniquement en cas d'échec.
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',

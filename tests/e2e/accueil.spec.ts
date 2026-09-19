@@ -20,14 +20,16 @@ test.describe('Page d\'accueil', () => {
     await expect(page.getByAltText(/Logo de l'application/i)).toBeVisible();
 
     // Bouton d'authentification (utilisateur non connecté).
+    // Utilise le composant Button Gluestack → <button> natif, le rôle est fiable.
     await expect(page.getByRole('button', { name: 'Authentification' })).toBeVisible();
 
-    // Bouton de création d'un nouveau tournoi.
-    await expect(page.getByRole('button', { name: 'Nouveau Tournoi' })).toBeVisible();
-
-    // Accès aux anciens tournois et aux listes de joueurs.
-    await expect(page.getByRole('button', { name: 'Mes anciens tournois' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Mes listes de joueurs' })).toBeVisible();
+    // Les boutons ci-dessous utilisent CardButton → Pressable → <div role="button">.
+    // Sur web, le nom accessible calculé inclut le glyphe de l'icône FontAwesome,
+    // ce qui rend getByRole('button', { name: ... }) peu fiable.
+    // On cible donc directement le texte rendu par le composant <Text>.
+    await expect(page.getByText('Nouveau Tournoi')).toBeVisible();
+    await expect(page.getByText('Mes anciens tournois')).toBeVisible();
+    await expect(page.getByText('Mes listes de joueurs')).toBeVisible();
 
     // Indication qu'aucun tournoi n'est en cours (état initial).
     await expect(page.getByText('Pas de tournoi en cours')).toBeVisible();
