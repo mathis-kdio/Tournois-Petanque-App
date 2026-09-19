@@ -43,3 +43,4 @@ jobs:
         with:
           skip-step: all
           coverage-file: ./report.json
+          base-coverage-file: ./report.json
