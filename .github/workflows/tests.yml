@@ -34,3 +34,9 @@ jobs:
           name: coverage-report
           path: coverage
           retention-days: 14
+
+      - name: Collect test coverage
+        if: always()
+        uses: ArtiomTr/jest-coverage-report-action@v2
+        with:
+          coverage-file: ./coverage/coverage-final.json
