@@ -14,7 +14,7 @@ describe('nextMatchMultiChances', () => {
       expect(result.perdantEquipeNumber).toBe(0);
     });
 
-    it('retourne gagnant = equipe1 (0) en cas d\'égalité', () => {
+    it("retourne gagnant = equipe1 (0) en cas d'égalité", () => {
       const result = nextMatchMultiChances(0, 7, 7, 1, 8, 2);
       expect(result.gagnantEquipeNumber).toBe(0);
       expect(result.perdantEquipeNumber).toBe(1);

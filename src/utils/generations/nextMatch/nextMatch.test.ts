@@ -24,7 +24,9 @@ describe('nextMatch', () => {
 
     beforeEach(() => {
       (MatchsRepository.get as jest.Mock).mockResolvedValue([mockMatch]);
-      (MatchsRepository.updateMatchNext as jest.Mock).mockResolvedValue(undefined);
+      (MatchsRepository.updateMatchNext as jest.Mock).mockResolvedValue(
+        undefined,
+      );
     });
 
     it('met à jour le match suivant quand matchId + 1 < nbMatchs', async () => {
@@ -36,8 +38,8 @@ describe('nextMatch', () => {
       expect(MatchsRepository.updateMatchNext).toHaveBeenCalledWith(
         tournoiId,
         101, // equipeNumber 0 → equipe1
-        4,   // gagnantMatchId
-        0,   // nextEquipeNumber
+        4, // gagnantMatchId
+        0, // nextEquipeNumber
       );
     });
 
@@ -68,8 +70,8 @@ describe('nextMatch', () => {
       expect(MatchsRepository.updateMatchNext).toHaveBeenCalledWith(
         tournoiId,
         101, // equipeNumber 0 → equipe1
-        4,   // gagnantMatchId
-        1,   // nextEquipeNumber
+        4, // gagnantMatchId
+        1, // nextEquipeNumber
       );
     });
   });
@@ -79,7 +81,9 @@ describe('nextMatch', () => {
 
     beforeEach(() => {
       (MatchsRepository.get as jest.Mock).mockResolvedValue([mockMatch]);
-      (MatchsRepository.updateMatchNext as jest.Mock).mockResolvedValue(undefined);
+      (MatchsRepository.updateMatchNext as jest.Mock).mockResolvedValue(
+        undefined,
+      );
     });
 
     it('met à jour le match du gagnant et du perdant quand manche < nbTours', async () => {
@@ -94,16 +98,16 @@ describe('nextMatch', () => {
       expect(MatchsRepository.updateMatchNext).toHaveBeenCalledWith(
         tournoiId,
         201, // gagnantEquipeNumber 0 → equipe1
-        4,   // gagnantMatchId
-        0,   // nextEquipeNumber
+        4, // gagnantMatchId
+        0, // nextEquipeNumber
       );
 
       // Mise à jour du perdant
       expect(MatchsRepository.updateMatchNext).toHaveBeenCalledWith(
         tournoiId,
         202, // perdantEquipeNumber 1 → equipe2
-        6,   // perdantMatchId
-        0,   // nextEquipeNumber
+        6, // perdantMatchId
+        0, // nextEquipeNumber
       );
     });
 

@@ -12,7 +12,7 @@ describe('nextMatchCoupe', () => {
       expect(result.equipeNumber).toBe(1);
     });
 
-    it('retourne equipeNumber 0 en cas d\'égalité (score1 === score2)', () => {
+    it("retourne equipeNumber 0 en cas d'égalité (score1 === score2)", () => {
       const result = nextMatchCoupe(0, 7, 7, 1, 7);
       expect(result.equipeNumber).toBe(0);
     });
