@@ -1,3 +1,4 @@
+import { MatchsRepository } from '@/repositories/matchs/matchsRepository';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { nextMatch } from './nextMatch';
 
@@ -8,9 +9,6 @@ jest.mock('@/repositories/matchs/matchsRepository', () => ({
     updateMatchNext: jest.fn(),
   },
 }));
-
-// Import après le mock pour récupérer la version mockée
-const { MatchsRepository } = require('@/repositories/matchs/matchsRepository');
 
 describe('nextMatch', () => {
   const tournoiId = 1;
