@@ -39,8 +39,17 @@ jobs:
 
       - name: Collect test coverage
         if: always()
+        id: coverage
         uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           skip-step: all
           coverage-file: ./report.json
           base-coverage-file: ./report.json
+          output: report-markdown
+
+      - name: Publish coverage comment
+        if: always()
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: coverage-report
+          message: ${{ steps.coverage.outputs.report }}
