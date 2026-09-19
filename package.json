@@ -21,7 +21,7 @@
     "test:watch": "jest --runInBand --watch",
     "test:watch-all": "jest --runInBand --watchAll",
     "test:coverage": "jest --runInBand --coverage",
-    "test:ci": "jest --ci --coverage --maxWorkers=2"
+    "test:ci": "jest --ci --coverage --json --testLocationInResults --outputFile=report.json --maxWorkers=2"
   },
   "dependencies": {
     "@expo/html-elements": "0.12.5",
