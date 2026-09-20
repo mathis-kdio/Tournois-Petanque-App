@@ -4,6 +4,7 @@ on:
   push:
     branches: ["main"]
   pull_request:
+  workflow_dispatch:
 
 jobs:
   test:
@@ -28,6 +29,14 @@ jobs:
 
       - name: Run unit tests
         run: npm run test:ci
+
+      - name: Publish Jest test results
+        if: always()
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          check_name: Jest Unit Tests
+          comment_title: Jest Unit Tests
+          files: junit.xml
 
       - name: Upload coverage report
         if: always()

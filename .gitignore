@@ -13,3 +13,12 @@ coverage
 .extra
 serviceAccountKeyPath.json
 .env.local
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# Jest JUnit report
+/junit.xml
