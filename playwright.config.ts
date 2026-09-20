@@ -30,7 +30,11 @@ export default defineConfig({
 
   // Rapports : HTML en local, ligne + JSON en CI.
   reporter: process.env.CI
-    ? [['line'], ['html', { open: 'never' }], ['junit', { outputFile: 'test-results/junit.xml' }]]
+    ? [
+      ['line'],
+      ['html', { open: 'never' }],
+      ['junit', { outputFile: 'test-results/junit.xml' }],
+    ]
     : [['list'], ['html', { open: 'never' }]],
 
   // Dossier de sortie des artefacts (captures, traces, vidéos).
