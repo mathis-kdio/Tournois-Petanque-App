@@ -1,5 +1,20 @@
 # Change Log
 
+## [3.0.5] - 20-09-2026
+
+### Ajouté
+
+### Changement
+
+- Autorisation des tirets dans les mots de passe
+
+### Corrigé
+
+- Affichage des joueurs lors de l'inscription dans une liste
+- Affichage des noms de joueurs
+- Performances sur certains écrans
+- Génération des tournois mêlée
+
 ## [3.0.4] - 30-08-2026
 
 ### Ajouté
