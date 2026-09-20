@@ -19,3 +19,6 @@ serviceAccountKeyPath.json
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Jest JUnit report
+/junit.xml
