@@ -2,7 +2,7 @@
 const config = {
   preset: 'jest-expo',
   setupFilesAfterEnv: ['./jest.setup.js'],
-  testPathIgnorePatterns: ['/node_modules/', '/android/', '/ios/', '/dist/'],
+  testPathIgnorePatterns: ['/node_modules/', '/android/', '/ios/', '/dist/', '/tests/e2e/'],
   maxWorkers: 1,
   transformIgnorePatterns: [
     'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@sentry/react-native|native-base|react-native-svg|@gluestack-ui|@legendapp|nativewind|react-native-reanimated|react-native-gesture-handler|react-native-screens|react-native-safe-area-context|react-native-pager-view|react-native-tab-view|react-native-worklets|drizzle-orm)',
