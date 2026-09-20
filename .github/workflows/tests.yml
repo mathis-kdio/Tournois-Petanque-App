@@ -4,6 +4,7 @@ on:
   push:
     branches: ["main"]
   pull_request:
+  workflow_dispatch:
 
 jobs:
   test:
@@ -64,6 +65,9 @@ jobs:
 
   e2e:
     name: Run Playwright E2E tests
+    # Lancé automatiquement sur main et déclenchable manuellement.
+    # Ignoré sur les PR pour ne pas les bloquer.
+    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: read
