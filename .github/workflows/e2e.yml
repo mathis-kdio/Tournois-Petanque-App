@@ -4,10 +4,22 @@ on:
   push:
     branches: ["main"]
   workflow_dispatch:
+  issue_comment:
+    types: [created]
 
 jobs:
   e2e:
     name: Run Playwright E2E tests
+    # Se déclenche :
+    # - automatiquement sur push vers main
+    # - manuellement via l'onglet Actions
+    # - depuis une PR en commentant "/e2e"
+    if: |
+      github.event_name == 'push' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issue_comment' &&
+       github.event.issue.pull_request &&
+       contains(github.event.comment.body, '/e2e'))
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -16,6 +28,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
+        with:
+          # Pour les commentaires de PR, on récupère le code de la PR.
+          # Pour les autres événements, on utilise le ref par défaut.
+          ref: ${{ github.event.issue.pull_request && format('refs/pull/{0}/head', github.event.issue.number) || '' }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
