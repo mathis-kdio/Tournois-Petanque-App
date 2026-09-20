@@ -1,4 +1,15 @@
 {
+  "42": {
+    "id": "42",
+    "version": "3.0.5",
+    "infos": [
+      "- Autorisation des tirets dans les mots de passe",
+      "- Correction de l'affichage des joueurs lors de l'inscription dans une liste",
+      "- Correction de l'affichage des noms de joueurs",
+      "- Correction des performances sur certains écrans",
+      "- Correction de la génération des tournois mêlée"
+    ]
+  },
   "41": {
     "id": "41",
     "version": "3.0.4",
