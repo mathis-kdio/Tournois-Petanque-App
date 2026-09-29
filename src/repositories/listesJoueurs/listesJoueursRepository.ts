@@ -36,4 +36,11 @@ export const ListesJoueursRepository = {
   deleteAll() {
     return getDrizzleDb().delete(listesJoueurs);
   },
+
+  softDeleteAll() {
+    return getDrizzleDb()
+      .update(listesJoueurs)
+      .set(stampForDelete())
+      .where(eq(listesJoueurs.deleted, false));
+  },
 };

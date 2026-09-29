@@ -31,6 +31,6 @@ export const addJoueurs = async (
 
 export const clearJoueursAutresInscriptions = async () => {
   const joueurs = await JoueursPreparationTournoisRepository.getMany();
-  await JoueursPreparationTournoisRepository.deleteAll();
+  await JoueursPreparationTournoisRepository.softDeleteAll();
   await JoueursRepository.delete(joueurs.map((joueur: Joueur) => joueur.id));
 };

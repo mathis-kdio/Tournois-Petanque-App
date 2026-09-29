@@ -135,6 +135,13 @@ export const MatchsRepository = {
     return getDrizzleDb().delete(match);
   },
 
+  softDeleteAll() {
+    return getDrizzleDb()
+      .update(match)
+      .set(stampForDelete())
+      .where(eq(match.deleted, false));
+  },
+
   updateScore(id: string, score1: number, score2: number) {
     return getDrizzleDb()
       .update(match)

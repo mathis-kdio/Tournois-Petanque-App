@@ -57,6 +57,13 @@ export const JoueursRepository = {
     return getDrizzleDb().delete(joueurs);
   },
 
+  softDeleteAll() {
+    return getDrizzleDb()
+      .update(joueurs)
+      .set(stampForDelete())
+      .where(eq(joueurs.deleted, false));
+  },
+
   updateName(id: string, name: string) {
     return getDrizzleDb()
       .update(joueurs)

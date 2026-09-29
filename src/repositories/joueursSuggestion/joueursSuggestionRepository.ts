@@ -1,5 +1,5 @@
 import { joueursSuggestion, NewJoueursSuggestion } from '@/db/schema';
-import { stampForSync } from '@/db/sync/stampForSync';
+import { stampForDelete, stampForSync } from '@/db/sync/stampForSync';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { uuidv7 } from '@/utils/uuid/uuidv7';
 import { and, desc, eq, sql } from 'drizzle-orm';
@@ -40,5 +40,12 @@ export const JoueursSuggestionRepository = {
 
   deleteAll() {
     return getDrizzleDb().delete(joueursSuggestion);
+  },
+
+  softDeleteAll() {
+    return getDrizzleDb()
+      .update(joueursSuggestion)
+      .set(stampForDelete())
+      .where(eq(joueursSuggestion.deleted, false));
   },
 };

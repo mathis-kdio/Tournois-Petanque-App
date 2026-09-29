@@ -2,7 +2,7 @@ import { Equipe, equipe, NewEquipe } from '@/db/schema';
 import { stampForDelete, stampForSync } from '@/db/sync/stampForSync';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { uuidv7 } from '@/utils/uuid/uuidv7';
-import { inArray } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 
 export const EquipeRepository = {
   async insert(newEquipe: NewEquipe): Promise<Equipe> {
@@ -23,5 +23,12 @@ export const EquipeRepository = {
 
   deleteAll() {
     return getDrizzleDb().delete(equipe);
+  },
+
+  softDeleteAll() {
+    return getDrizzleDb()
+      .update(equipe)
+      .set(stampForDelete())
+      .where(eq(equipe.deleted, false));
   },
 };

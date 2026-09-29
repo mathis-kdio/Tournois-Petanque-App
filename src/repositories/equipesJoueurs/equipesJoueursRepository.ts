@@ -5,9 +5,9 @@ import {
 } from '@/db/schema/equipesJoueurs';
 import { stampForDelete, stampForSync } from '@/db/sync/stampForSync';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { uuidv7 } from '@/utils/uuid/uuidv7';
 import { JoueurType } from '@/types/enums/joueurType';
-import { inArray } from 'drizzle-orm';
+import { uuidv7 } from '@/utils/uuid/uuidv7';
+import { eq, inArray } from 'drizzle-orm';
 
 export type FullEquipeJoueur = {
   equipes_joueurs: {
@@ -44,5 +44,12 @@ export const EquipesJoueursRepository = {
 
   deleteAll() {
     return getDrizzleDb().delete(equipesJoueurs);
+  },
+
+  softDeleteAll() {
+    return getDrizzleDb()
+      .update(equipesJoueurs)
+      .set(stampForDelete())
+      .where(eq(equipesJoueurs.deleted, false));
   },
 };

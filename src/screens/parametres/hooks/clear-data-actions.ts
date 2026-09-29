@@ -12,16 +12,16 @@ import { TerrainsPreparationTournoisRepository } from '@/repositories/terrainsPr
 import { TournoisRepository } from '@/repositories/tournois/tournoisRepository';
 
 export const clearData = async () => {
-  await JoueursSuggestionRepository.deleteAll();
-  await JoueursListesRepository.deleteAll();
-  await ListesJoueursRepository.deleteAll();
-  await PreparationTournoisRepository.deleteAll();
-  await JoueursPreparationTournoisRepository.deleteAll();
-  await TerrainsPreparationTournoisRepository.deleteAll();
-  await MatchsRepository.deleteAll();
-  await TerrainsRepository.deleteAll();
-  await TournoisRepository.deleteAll();
-  await EquipesJoueursRepository.deleteAll();
-  await EquipeRepository.deleteAll();
-  await JoueursRepository.deleteAll();
+  await JoueursSuggestionRepository.softDeleteAll();
+  await JoueursListesRepository.softDeleteAll();
+  await ListesJoueursRepository.softDeleteAll();
+  await PreparationTournoisRepository.softDeleteAll();
+  await JoueursPreparationTournoisRepository.softDeleteAll();
+  await TerrainsPreparationTournoisRepository.softDeleteAll();
+  await MatchsRepository.softDeleteAll();
+  await TerrainsRepository.softDeleteAll();
+  await TournoisRepository.softDeleteAll();
+  await EquipesJoueursRepository.softDeleteAll();
+  await EquipeRepository.softDeleteAll();
+  await JoueursRepository.softDeleteAll();
 };
