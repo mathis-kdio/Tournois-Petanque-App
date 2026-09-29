@@ -31,7 +31,7 @@ export interface Props {
 }
 
 const preparationTournoi: PreparationTournoiModel = {
-  id: 0,
+  id: '0',
   typeEquipes: TypeEquipes.TETEATETE,
   mode: ModeTournoi.SAUVEGARDE,
   typeTournoi: TypeTournoi.MELEDEMELE,

@@ -24,7 +24,7 @@ export const useJoueursActualTournoi = () => {
   );
 
   const tournoiActuel = tournois.find((tournoi) => tournoi.estTournoiActuel);
-  const tournoiId = tournoiActuel ? tournoiActuel.id : -1;
+  const tournoiId = tournoiActuel ? tournoiActuel.id : '';
   const { data: fullMatchs } = useLiveQuery(
     MatchsRepository.getFullMatchsTournoi(tournoiId),
     [tournoiId],
@@ -39,7 +39,7 @@ export const useJoueursActualTournoi = () => {
       fullMatch.m_equipe2,
     ]);
 
-    const equipes = new Set();
+    const equipes = new Set<string>();
     return allEquipes.filter((equipeId) => {
       if (equipes.has(equipeId)) {
         return false;
@@ -52,14 +52,14 @@ export const useJoueursActualTournoi = () => {
 
   const { data: equipesWithJoueursTournoi } = useLiveQuery(
     JoueursRepository.getEquipes(equipesTournoiId()),
-    [equipesTournoiId],
+    [equipesTournoiId()],
   );
 
   const joueursActualTournoiVM = () => {
     if (!equipesWithJoueursTournoi || equipesWithJoueursTournoi.length === 0) {
       return;
     }
-    const joueursIds = new Set();
+    const joueursIds = new Set<string>();
     const result = equipesWithJoueursTournoi.reduce((acc, { joueurs: j }) => {
       if (!joueursIds.has(j.j_id)) {
         joueursIds.add(j.j_id);
