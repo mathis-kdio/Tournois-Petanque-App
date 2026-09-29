@@ -17,7 +17,7 @@ import { CommonActions } from 'expo-router/react-navigation';
 import { useTranslation } from 'react-i18next';
 
 export interface Props {
-  tournoiId: number;
+  tournoiId: string;
   modalDeleteIsOpen: boolean;
   setModalDeleteIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -30,7 +30,7 @@ const DeleteTournoiModal: React.FC<Props> = ({
   const { t } = useTranslation();
   const navigation = useNavigation();
 
-  const supprimerTournoi = (tournoiId: number) => {
+  const supprimerTournoi = (tournoiId: string) => {
     setModalDeleteIsOpen(false);
     navigation.dispatch(
       CommonActions.reset({

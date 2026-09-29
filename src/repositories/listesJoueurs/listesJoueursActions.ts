@@ -5,7 +5,7 @@ import { ListesJoueursRepository } from './listesJoueursRepository';
 
 export const insertListeJoueurs = async () => {
   const newListesJoueurs: NewListesJoueurs = {
-    updatedAt: Date.now(),
+    updatedAt: new Date(),
   };
 
   return (
@@ -13,7 +13,7 @@ export const insertListeJoueurs = async () => {
   )[0];
 };
 
-export const deleteListeJoueurs = async (id: number) => {
+export const deleteListeJoueurs = async (id: string) => {
   const joueursListes = await JoueursListesRepository.getInList(id);
   await JoueursListesRepository.removeAllInList(id);
   await ListesJoueursRepository.deleteListeJoueurs(id);
@@ -22,6 +22,6 @@ export const deleteListeJoueurs = async (id: number) => {
   );
 };
 
-export const renameListeJoueurs = async (id: number, name: string) => {
+export const renameListeJoueurs = async (id: string, name: string) => {
   await ListesJoueursRepository.renameListeJoueurs(id, name);
 };

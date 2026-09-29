@@ -17,7 +17,7 @@ export function useTerrainsPreparationTournois() {
   );
 
   const { data: liaisons = [] } = useLiveQuery(
-    TerrainsPreparationTournoisRepository.getIdsInPreparation(0),
+    TerrainsPreparationTournoisRepository.getIdsInPreparation('0'),
   );
 
   const terrainsVM = () => {

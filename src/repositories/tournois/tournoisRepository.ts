@@ -1,39 +1,60 @@
 import { NewTournoi, tournoi } from '@/db/schema/tournoi';
+import { stampForDelete, stampForSync } from '@/db/sync/stampForSync';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { desc, eq } from 'drizzle-orm';
 
 export const TournoisRepository = {
   getAllTournois() {
-    return getDrizzleDb().select().from(tournoi);
+    return getDrizzleDb()
+      .select()
+      .from(tournoi)
+      .where(eq(tournoi.deleted, false));
   },
 
   getTournois() {
-    return getDrizzleDb().select().from(tournoi).orderBy(desc(tournoi.id));
+    return getDrizzleDb()
+      .select()
+      .from(tournoi)
+      .where(eq(tournoi.deleted, false))
+      .orderBy(desc(tournoi.id));
   },
 
   insertTournoi(newTournoi: NewTournoi) {
-    return getDrizzleDb().insert(tournoi).values(newTournoi).returning();
+    return getDrizzleDb()
+      .insert(tournoi)
+      .values({ ...newTournoi, ...stampForSync() })
+      .returning();
   },
 
-  deleteTournoi(id: number) {
-    return getDrizzleDb().delete(tournoi).where(eq(tournoi.id, id));
+  deleteTournoi(id: string) {
+    return getDrizzleDb()
+      .update(tournoi)
+      .set(stampForDelete())
+      .where(eq(tournoi.id, id));
   },
 
   deleteAll() {
     return getDrizzleDb().delete(tournoi);
   },
 
-  setActualTournoi(id: number, estTournoiActuel: boolean) {
+  softDeleteAll() {
     return getDrizzleDb()
       .update(tournoi)
-      .set({ estTournoiActuel: estTournoiActuel })
+      .set(stampForDelete())
+      .where(eq(tournoi.deleted, false));
+  },
+
+  setActualTournoi(id: string, estTournoiActuel: boolean) {
+    return getDrizzleDb()
+      .update(tournoi)
+      .set({ estTournoiActuel, ...stampForSync() })
       .where(eq(tournoi.id, id));
   },
 
-  renameTournoi(id: number, name: string) {
+  renameTournoi(id: string, name: string) {
     return getDrizzleDb()
       .update(tournoi)
-      .set({ name })
+      .set({ name, ...stampForSync() })
       .where(eq(tournoi.id, id));
   },
 };

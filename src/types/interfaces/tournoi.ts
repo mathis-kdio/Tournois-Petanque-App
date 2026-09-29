@@ -2,7 +2,7 @@ import { MatchModel } from './matchModel';
 import { OptionsTournoiModel } from './optionsTournoiModel';
 
 export interface TournoiModel {
-  tournoiId: number;
+  tournoiId: string;
   name?: string;
   estTournoiActuel: boolean;
   creationDate: Date;

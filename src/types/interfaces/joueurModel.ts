@@ -1,7 +1,7 @@
 import { JoueurType } from '../enums/joueurType';
 
 export interface JoueurModel {
-  uniqueBDDId: number;
+  uniqueBDDId: string;
   joueurTournoiId: number;
   name: string;
   type: JoueurType | undefined;
