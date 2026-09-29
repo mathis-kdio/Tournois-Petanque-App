@@ -6,7 +6,10 @@
 --
 -- Cette migration Drizzle ne fait donc que :
 --   1. Créer la table `sync_state` ;
---   2. Ajouter les colonnes `synced`, `updated_at`, `deleted` manquantes sur les tables existantes.
+--   2. Ajouter les colonnes `synced`, `updated_at`, `deleted` manquantes sur les tables synchronisées.
+--
+-- NB : `preparation_tournoi`, `joueurs_preparation_tournois`, `terrains_preparation_tournois`
+-- ne sont PAS synchronisées (état transitoire de création de tournoi) — pas de colonnes sync.
 --
 -- Le snapshot Drizzle reflète le schéma final (IDs text), ce qui empêche `drizzle-kit generate`
 -- de régénérer ces changements. La conversion effective des IDs est assurée par `runUuidMigration`.
@@ -27,20 +30,12 @@ ALTER TABLE `joueurs` ADD `deleted` integer DEFAULT false NOT NULL;--> statement
 ALTER TABLE `joueurs_listes` ADD `synced` integer DEFAULT false NOT NULL;--> statement-breakpoint
 ALTER TABLE `joueurs_listes` ADD `updated_at` integer DEFAULT 0 NOT NULL;--> statement-breakpoint
 ALTER TABLE `joueurs_listes` ADD `deleted` integer DEFAULT false NOT NULL;--> statement-breakpoint
-ALTER TABLE `joueurs_preparation_tournois` ADD `synced` integer DEFAULT false NOT NULL;--> statement-breakpoint
-ALTER TABLE `joueurs_preparation_tournois` ADD `updated_at` integer DEFAULT 0 NOT NULL;--> statement-breakpoint
-ALTER TABLE `joueurs_preparation_tournois` ADD `deleted` integer DEFAULT false NOT NULL;--> statement-breakpoint
 ALTER TABLE `joueurs_suggestion` ADD `synced` integer DEFAULT false NOT NULL;--> statement-breakpoint
 ALTER TABLE `joueurs_suggestion` ADD `updated_at` integer DEFAULT 0 NOT NULL;--> statement-breakpoint
 ALTER TABLE `joueurs_suggestion` ADD `deleted` integer DEFAULT false NOT NULL;--> statement-breakpoint
 ALTER TABLE `listes_joueurs` ADD `deleted` integer DEFAULT false NOT NULL;--> statement-breakpoint
 ALTER TABLE `match` ADD `deleted` integer DEFAULT false NOT NULL;--> statement-breakpoint
-ALTER TABLE `preparation_tournoi` ADD `synced` integer DEFAULT false NOT NULL;--> statement-breakpoint
-ALTER TABLE `preparation_tournoi` ADD `updated_at` integer DEFAULT 0 NOT NULL;--> statement-breakpoint
-ALTER TABLE `preparation_tournoi` ADD `deleted` integer DEFAULT false NOT NULL;--> statement-breakpoint
 ALTER TABLE `terrains` ADD `deleted` integer DEFAULT false NOT NULL;--> statement-breakpoint
-ALTER TABLE `terrains_preparation_tournois` ADD `synced` integer DEFAULT false NOT NULL;--> statement-breakpoint
-ALTER TABLE `terrains_preparation_tournois` ADD `updated_at` integer DEFAULT 0 NOT NULL;--> statement-breakpoint
-ALTER TABLE `terrains_preparation_tournois` ADD `deleted` integer DEFAULT false NOT NULL;--> statement-breakpoint
 ALTER TABLE `tournoi` ADD `synced` integer DEFAULT false NOT NULL;--> statement-breakpoint
-ALTER TABLE `tournoi` ADD `deleted` integer DEFAULT false NOT NULL;
+ALTER TABLE `tournoi` ADD `deleted` integer DEFAULT false NOT NULL;--> statement-breakpoint
+CREATE UNIQUE INDEX `nameUniqueIndex` ON `joueurs_suggestion` (`name`);

@@ -1,7 +1,7 @@
 {
   "version": "7",
   "dialect": "sqlite",
-  "id": "9c483667-38a5-410f-a879-5748e625c39a",
+  "id": "e9dab686-ffca-4649-86c6-89923c64f170",
   "prevIds": [
     "1661fd72-df54-4487-a87e-3963725227de"
   ],
@@ -345,36 +345,6 @@
       "default": null,
       "generated": null,
       "name": "preparation_tournoi_id",
-      "entityType": "columns",
-      "table": "joueurs_preparation_tournois"
-    },
-    {
-      "type": "integer",
-      "notNull": true,
-      "autoincrement": false,
-      "default": "false",
-      "generated": null,
-      "name": "synced",
-      "entityType": "columns",
-      "table": "joueurs_preparation_tournois"
-    },
-    {
-      "type": "integer",
-      "notNull": true,
-      "autoincrement": false,
-      "default": null,
-      "generated": null,
-      "name": "updated_at",
-      "entityType": "columns",
-      "table": "joueurs_preparation_tournois"
-    },
-    {
-      "type": "integer",
-      "notNull": true,
-      "autoincrement": false,
-      "default": "false",
-      "generated": null,
-      "name": "deleted",
       "entityType": "columns",
       "table": "joueurs_preparation_tournois"
     },
@@ -749,36 +719,6 @@
       "table": "preparation_tournoi"
     },
     {
-      "type": "integer",
-      "notNull": true,
-      "autoincrement": false,
-      "default": "false",
-      "generated": null,
-      "name": "synced",
-      "entityType": "columns",
-      "table": "preparation_tournoi"
-    },
-    {
-      "type": "integer",
-      "notNull": true,
-      "autoincrement": false,
-      "default": null,
-      "generated": null,
-      "name": "updated_at",
-      "entityType": "columns",
-      "table": "preparation_tournoi"
-    },
-    {
-      "type": "integer",
-      "notNull": true,
-      "autoincrement": false,
-      "default": "false",
-      "generated": null,
-      "name": "deleted",
-      "entityType": "columns",
-      "table": "preparation_tournoi"
-    },
-    {
       "type": "text",
       "notNull": false,
       "autoincrement": false,
@@ -895,36 +835,6 @@
       "default": null,
       "generated": null,
       "name": "preparation_tournoi_id",
-      "entityType": "columns",
-      "table": "terrains_preparation_tournois"
-    },
-    {
-      "type": "integer",
-      "notNull": true,
-      "autoincrement": false,
-      "default": "false",
-      "generated": null,
-      "name": "synced",
-      "entityType": "columns",
-      "table": "terrains_preparation_tournois"
-    },
-    {
-      "type": "integer",
-      "notNull": true,
-      "autoincrement": false,
-      "default": null,
-      "generated": null,
-      "name": "updated_at",
-      "entityType": "columns",
-      "table": "terrains_preparation_tournois"
-    },
-    {
-      "type": "integer",
-      "notNull": true,
-      "autoincrement": false,
-      "default": "false",
-      "generated": null,
-      "name": "deleted",
       "entityType": "columns",
       "table": "terrains_preparation_tournois"
     },
