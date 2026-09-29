@@ -66,10 +66,12 @@ ce qui limite la casse dans l'UI.
 
 `equipe`, `match`, `terrains`, `listes_joueurs` ont déjà `updated_at` + `synced`. Il faut :
 
-- les **généraliser** à toutes les tables, y compris `joueurs`, `tournoi`, `preparation_tournoi`,
-  et les tables de jointure (`equipes_joueurs`, `joueurs_listes`, `joueurs_preparation_tournois`,
-  `terrains_preparation_tournois`) et `joueurs_suggestion` ;
-- ajouter partout :
+- les **généraliser** à toutes les tables synchronisées, y compris `joueurs`, `tournoi`,
+  et les tables de jointure (`equipes_joueurs`, `joueurs_listes`) et `joueurs_suggestion` ;
+- **exception** : `preparation_tournoi`, `joueurs_preparation_tournois`,
+  `terrains_preparation_tournois` ne sont **pas** synchronisées (état transitoire de création
+  de tournoi, effacé une fois le tournoi généré) — pas de colonnes sync sur ces 3 tables ;
+- ajouter partout (sur les tables synchronisées) :
 
 ```ts
 synced: integer({ mode: 'boolean' }).default(false).notNull(),   // outbox : en attente de push
@@ -190,11 +192,12 @@ src/services/sync/
 
 ```ts
 // push : parents d'abord ; pull : ordre inverse (FK locales satisfaites à l'insert)
+// NB : preparation_tournoi, joueurs_preparation_tournois, terrains_preparation_tournois
+// ne sont pas synchronisées (état transitoire) — absentes du PUSH_ORDER.
 const PUSH_ORDER = [
   'joueurs_suggestion', 'joueurs', 'listes_joueurs',
-  'terrains', 'preparation_tournoi', 'tournoi',
+  'terrains', 'tournoi',
   'joueurs_listes', 'equipe', 'equipes_joueurs',
-  'joueurs_preparation_tournois', 'terrains_preparation_tournois',
   'match',
 ];
 ```
@@ -287,7 +290,7 @@ purgées. Purge locale ensuite (comme logout). Aucune donnée orpheline possible
 
 | Phase | Contenu | Fichiers principaux |
 | --- | --- | --- |
-| **1. IDs + colonnes sync** | Migration UUID v7 + mapping, `synced/updatedAt/deleted` sur les 12 tables, `sync_state`, helper `stampForSync`, repositories refactorés (delete → tombstone) | `src/db/schema/*`, `drizzle/` (migration), `src/repositories/*`, `src/db/runManualMigration.ts` (web) |
+| **1. IDs + colonnes sync** | Migration UUID v7 + mapping, `synced/updatedAt/deleted` sur les 9 tables synchronisées, `sync_state`, helper `stampForSync`, repositories refactorés (delete → tombstone) | `src/db/schema/*`, `drizzle/` (migration), `src/repositories/*`, `src/db/runManualMigration.ts` (web) |
 | **2. Schéma distant** | SQL Supabase (tables miroirs, RLS, triggers LWW serveur, cron purge), mappers type-safe | `supabase/migrations/*.sql`, `src/services/sync/syncMappers/*` |
 | **3. Moteur** | `syncEngine` (push/pull/verrou/curseur/clockOffset), `syncTrigger` (NetInfo + AppState + debounce), tests Jest du moteur avec base sqlite in-memory | `src/services/sync/*`, `tests/` |
 | **4. Cycle de vie** | Adoption au login, purge au logout, suppression compte, écran « récupération des données », journal des purges | `src/services/sync/syncAccount.ts`, `src/app/compte/*`, `src/components/supabase/SessionProvider.tsx` |
