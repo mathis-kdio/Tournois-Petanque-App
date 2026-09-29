@@ -1,7 +1,6 @@
 import { NewTournoi, tournoi } from '@/db/schema/tournoi';
 import { stampForDelete, stampForSync } from '@/db/sync/stampForSync';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { uuidv7 } from '@/utils/uuid/uuidv7';
 import { desc, eq } from 'drizzle-orm';
 
 export const TournoisRepository = {
@@ -23,7 +22,7 @@ export const TournoisRepository = {
   insertTournoi(newTournoi: NewTournoi) {
     return getDrizzleDb()
       .insert(tournoi)
-      .values({ ...newTournoi, id: uuidv7(), ...stampForSync() })
+      .values({ ...newTournoi, ...stampForSync() })
       .returning();
   },
 

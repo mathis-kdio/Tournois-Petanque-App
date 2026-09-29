@@ -1,7 +1,6 @@
 import { joueursSuggestion, NewJoueursSuggestion } from '@/db/schema';
 import { stampForDelete, stampForSync } from '@/db/sync/stampForSync';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { uuidv7 } from '@/utils/uuid/uuidv7';
 import { and, desc, eq, sql } from 'drizzle-orm';
 
 export const JoueursSuggestionRepository = {
@@ -21,7 +20,7 @@ export const JoueursSuggestionRepository = {
   insertOrUpdateOccurence(newJoueursSuggestion: NewJoueursSuggestion) {
     return getDrizzleDb()
       .insert(joueursSuggestion)
-      .values({ ...newJoueursSuggestion, id: uuidv7(), ...stampForSync() })
+      .values({ ...newJoueursSuggestion, ...stampForSync() })
       .onConflictDoUpdate({
         target: joueursSuggestion.name,
         set: {

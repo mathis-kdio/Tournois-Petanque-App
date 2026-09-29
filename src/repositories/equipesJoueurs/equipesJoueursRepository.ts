@@ -6,7 +6,6 @@ import {
 import { stampForDelete, stampForSync } from '@/db/sync/stampForSync';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { JoueurType } from '@/types/enums/joueurType';
-import { uuidv7 } from '@/utils/uuid/uuidv7';
 import { eq, inArray } from 'drizzle-orm';
 
 export type FullEquipeJoueur = {
@@ -30,7 +29,7 @@ export const EquipesJoueursRepository = {
     return (
       await getDrizzleDb()
         .insert(equipesJoueurs)
-        .values({ ...newEquipesJoueurs, id: uuidv7(), ...stampForSync() })
+        .values({ ...newEquipesJoueurs, ...stampForSync() })
         .returning()
     )[0];
   },

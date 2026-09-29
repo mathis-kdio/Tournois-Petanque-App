@@ -1,23 +1,19 @@
 import { joueursListes, NewJoueursListes } from '@/db/schema';
 import { stampForDelete, stampForSync } from '@/db/sync/stampForSync';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { uuidv7 } from '@/utils/uuid/uuidv7';
 import { and, eq } from 'drizzle-orm';
 
 export const JoueursListesRepository = {
   insert(newJoueursListes: NewJoueursListes) {
     return getDrizzleDb()
       .insert(joueursListes)
-      .values({ ...newJoueursListes, id: uuidv7(), ...stampForSync() });
+      .values({ ...newJoueursListes, ...stampForSync() });
   },
 
   insertMultiple(newJoueursListes: NewJoueursListes[]) {
-    const now = new Date();
     const values = newJoueursListes.map((j) => ({
       ...j,
-      id: uuidv7(),
-      updatedAt: now,
-      synced: false,
+      ...stampForSync(),
     }));
     return getDrizzleDb().insert(joueursListes).values(values);
   },

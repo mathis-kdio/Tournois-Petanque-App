@@ -2,7 +2,6 @@ import { equipesJoueurs, joueurs, joueursListes, NewJoueur } from '@/db/schema';
 import { stampForDelete, stampForSync } from '@/db/sync/stampForSync';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { JoueurType } from '@/types/enums/joueurType';
-import { uuidv7 } from '@/utils/uuid/uuidv7';
 import { and, eq, inArray, sql } from 'drizzle-orm';
 
 export interface Joueur_EquipesJoueurs {
@@ -26,7 +25,7 @@ export const JoueursRepository = {
     const result = (
       await getDrizzleDb()
         .insert(joueurs)
-        .values({ ...newJoueur, id: uuidv7(), ...stampForSync() })
+        .values({ ...newJoueur, ...stampForSync() })
         .returning()
     ).at(0);
     if (!result) {
@@ -36,12 +35,9 @@ export const JoueursRepository = {
   },
 
   insertMultiples(newJoueurs: NewJoueur[]) {
-    const now = new Date();
     const values = newJoueurs.map((j) => ({
       ...j,
-      id: uuidv7(),
-      updatedAt: now,
-      synced: false,
+      ...stampForSync(),
     }));
     return getDrizzleDb().insert(joueurs).values(values).returning();
   },

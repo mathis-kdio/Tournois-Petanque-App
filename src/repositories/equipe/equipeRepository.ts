@@ -1,7 +1,6 @@
 import { Equipe, equipe, NewEquipe } from '@/db/schema';
 import { stampForDelete, stampForSync } from '@/db/sync/stampForSync';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { uuidv7 } from '@/utils/uuid/uuidv7';
 import { eq, inArray } from 'drizzle-orm';
 
 export const EquipeRepository = {
@@ -9,7 +8,7 @@ export const EquipeRepository = {
     return (
       await getDrizzleDb()
         .insert(equipe)
-        .values({ ...newEquipe, id: uuidv7(), ...stampForSync() })
+        .values({ ...newEquipe, ...stampForSync() })
         .returning()
     )[0];
   },

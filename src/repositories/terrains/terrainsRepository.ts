@@ -1,7 +1,6 @@
 import { NewTerrain, terrains } from '@/db/schema';
 import { stampForDelete, stampForSync } from '@/db/sync/stampForSync';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { uuidv7 } from '@/utils/uuid/uuidv7';
 import { eq, inArray } from 'drizzle-orm';
 
 export const TerrainsRepository = {
@@ -16,7 +15,7 @@ export const TerrainsRepository = {
     const result = (
       await getDrizzleDb()
         .insert(terrains)
-        .values({ ...terrain, id: uuidv7(), ...stampForSync() })
+        .values({ ...terrain, ...stampForSync() })
         .returning()
     ).at(0);
     if (!result) {

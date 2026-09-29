@@ -4,10 +4,8 @@ import {
   JoueursPreparationTournois,
   NewJoueursPreparationTournois,
 } from '@/db/schema/joueursPreparationTournois';
-import { stampForDelete, stampForSync } from '@/db/sync/stampForSync';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { uuidv7 } from '@/utils/uuid/uuidv7';
-import { and, eq, inArray } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 
 export type JoueursPreparationTournoisWithJoueur = {
   joueurs_preparation_tournois: JoueursPreparationTournois;
@@ -16,10 +14,7 @@ export type JoueursPreparationTournoisWithJoueur = {
 
 export const JoueursPreparationTournoisRepository = {
   getAll() {
-    return getDrizzleDb()
-      .select()
-      .from(joueursPreparationTournois)
-      .where(eq(joueursPreparationTournois.deleted, false));
+    return getDrizzleDb().select().from(joueursPreparationTournois);
   },
 
   getMany() {
@@ -34,35 +29,22 @@ export const JoueursPreparationTournoisRepository = {
       })
       .from(joueursPreparationTournois)
       .innerJoin(joueurs, eq(joueursPreparationTournois.joueurId, joueurs.id))
-      .where(
-        and(
-          eq(joueursPreparationTournois.deleted, false),
-          eq(joueurs.deleted, false),
-        ),
-      );
+      .where(eq(joueurs.deleted, false));
   },
 
   insert(newJoueursPreparationTournois: NewJoueursPreparationTournois[]) {
-    const now = new Date();
-    const values = newJoueursPreparationTournois.map((j) => ({
-      ...j,
-      id: uuidv7(),
-      updatedAt: now,
-      synced: false,
-    }));
-    return getDrizzleDb().insert(joueursPreparationTournois).values(values);
+    return getDrizzleDb()
+      .insert(joueursPreparationTournois)
+      .values(newJoueursPreparationTournois);
   },
 
   delete(joueurIds: string[]) {
     return getDrizzleDb()
-      .update(joueursPreparationTournois)
-      .set(stampForDelete())
+      .delete(joueursPreparationTournois)
       .where(inArray(joueursPreparationTournois.joueurId, joueurIds));
   },
 
   deleteAll() {
-    return getDrizzleDb()
-      .update(joueursPreparationTournois)
-      .set(stampForDelete());
+    return getDrizzleDb().delete(joueursPreparationTournois);
   },
 };

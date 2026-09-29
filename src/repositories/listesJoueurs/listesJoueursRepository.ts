@@ -1,7 +1,6 @@
 import { listesJoueurs, NewListesJoueurs } from '@/db/schema/listesJoueurs';
 import { stampForDelete, stampForSync } from '@/db/sync/stampForSync';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { uuidv7 } from '@/utils/uuid/uuidv7';
 import { eq } from 'drizzle-orm';
 
 export const ListesJoueursRepository = {
@@ -12,10 +11,10 @@ export const ListesJoueursRepository = {
       .where(eq(listesJoueurs.deleted, false));
   },
 
-  insertListeJoueurs(newListesJoueurs: Omit<NewListesJoueurs, 'id'>) {
+  insertListeJoueurs(newListesJoueurs: NewListesJoueurs) {
     return getDrizzleDb()
       .insert(listesJoueurs)
-      .values({ ...newListesJoueurs, id: uuidv7(), ...stampForSync() })
+      .values({ ...newListesJoueurs, ...stampForSync() })
       .returning();
   },
 
