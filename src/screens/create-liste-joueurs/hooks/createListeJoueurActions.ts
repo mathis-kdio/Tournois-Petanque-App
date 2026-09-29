@@ -4,7 +4,7 @@ import { JoueursListesRepository } from '@/repositories/joueursListes/joueursLis
 import { JoueursSuggestionRepository } from '@/repositories/joueursSuggestion/joueursSuggestionRepository';
 import { JoueurType } from '@/types/enums/joueurType';
 
-function toNewJoueursListes(joueur: Joueur, listeId: number): NewJoueursListes {
+function toNewJoueursListes(joueur: Joueur, listeId: string): NewJoueursListes {
   return {
     joueurId: joueur.id,
     listeId: listeId,
@@ -14,7 +14,7 @@ function toNewJoueursListes(joueur: Joueur, listeId: number): NewJoueursListes {
 export const addJoueurInList = async (
   joueurName: string,
   joueurType: JoueurType | undefined,
-  listeId: number,
+  listeId: string,
 ) => {
   const joueursListe = await JoueursListesRepository.getInList(listeId);
 
@@ -34,7 +34,7 @@ export const addJoueurInList = async (
   });
 };
 
-export const removeAllJoueursList = async (listeId: number) => {
+export const removeAllJoueursList = async (listeId: string) => {
   const joueursListes = await JoueursListesRepository.getInList(listeId);
   await JoueursListesRepository.removeAllInList(listeId);
   await JoueursRepository.delete(
@@ -43,8 +43,8 @@ export const removeAllJoueursList = async (listeId: number) => {
 };
 
 export const removeJoueurList = async (
-  listeId: number,
-  joueurUniqueBDDId: number,
+  listeId: string,
+  joueurUniqueBDDId: string,
 ) => {
   await JoueursListesRepository.removeJoueurId(joueurUniqueBDDId);
   await JoueursRepository.delete([joueurUniqueBDDId]);
