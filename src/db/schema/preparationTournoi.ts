@@ -4,10 +4,13 @@ import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { MemesAdversairesType } from '@/types/interfaces/preparationTournoiModel';
+import { uuidv7 } from '@/utils/uuid/uuidv7';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 export const preparationTournoi = sqliteTable('preparation_tournoi', {
-  id: text('id').primaryKey(),
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => uuidv7()),
   nbTours: integer('nbTours'),
   nbPtVictoire: integer('nbPtVictoire'),
   speciauxIncompatibles: integer('speciauxIncompatibles', { mode: 'boolean' }),
@@ -21,9 +24,6 @@ export const preparationTournoi = sqliteTable('preparation_tournoi', {
   avecTerrains: integer('avecTerrains', { mode: 'boolean' })
     .default(false)
     .notNull(),
-  synced: integer('synced', { mode: 'boolean' }).default(false).notNull(),
-  updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
-  deleted: integer('deleted', { mode: 'boolean' }).default(false).notNull(),
 });
 
 export type PreparationTournoi = typeof preparationTournoi.$inferSelect;

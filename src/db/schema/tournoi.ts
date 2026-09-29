@@ -2,10 +2,13 @@ import { ModeTournoi } from '@/types/enums/modeTournoi';
 import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import { MemesAdversairesType } from '@/types/interfaces/preparationTournoiModel';
+import { uuidv7 } from '@/utils/uuid/uuidv7';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 export const tournoi = sqliteTable('tournoi', {
-  id: text('id').primaryKey(),
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => uuidv7()),
   name: text('name').notNull(),
   nbTours: integer('nbTours').notNull(),
   nbMatchs: integer('nbMatchs').notNull(),
@@ -35,7 +38,9 @@ export const tournoi = sqliteTable('tournoi', {
   }).notNull(),
   estTournoiActuel: integer('estTournoiActuel', { mode: 'boolean' }).notNull(),
   createAt: integer('create_at', { mode: 'timestamp_ms' }).notNull(),
-  updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
+  updatedAt: integer('updated_at', { mode: 'timestamp_ms' })
+    .notNull()
+    .$defaultFn(() => new Date(Date.now())),
   synced: integer('synced', { mode: 'boolean' }).default(false).notNull(),
   deleted: integer('deleted', { mode: 'boolean' }).default(false).notNull(),
 });

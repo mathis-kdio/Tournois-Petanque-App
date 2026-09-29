@@ -4,7 +4,7 @@ import { JoueursListesRepository } from '../joueursListes/joueursListesRepositor
 import { ListesJoueursRepository } from './listesJoueursRepository';
 
 export const insertListeJoueurs = async () => {
-  const newListesJoueurs: Omit<NewListesJoueurs, 'id'> = {
+  const newListesJoueurs: NewListesJoueurs = {
     updatedAt: new Date(),
   };
 

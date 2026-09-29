@@ -1,10 +1,13 @@
+import { uuidv7 } from '@/utils/uuid/uuidv7';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { equipe } from './equipe';
 import { terrains } from './terrain';
 import { tournoi } from './tournoi';
 
 export const match = sqliteTable('match', {
-  id: text('id').primaryKey(),
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => uuidv7()),
   matchId: integer('match_id').notNull(),
   tournoiId: text('tournoi_id')
     .references(() => tournoi.id)
@@ -21,7 +24,9 @@ export const match = sqliteTable('match', {
   score2: integer('score2'),
   terrainId: text('terrain_id').references(() => terrains.id),
   synced: integer('synced', { mode: 'boolean' }).default(false).notNull(),
-  updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
+  updatedAt: integer('updated_at', { mode: 'timestamp_ms' })
+    .notNull()
+    .$defaultFn(() => new Date(Date.now())),
   deleted: integer('deleted', { mode: 'boolean' }).default(false).notNull(),
 });
 
