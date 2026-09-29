@@ -15,9 +15,9 @@ export const clearData = async () => {
   await JoueursSuggestionRepository.softDeleteAll();
   await JoueursListesRepository.softDeleteAll();
   await ListesJoueursRepository.softDeleteAll();
-  await PreparationTournoisRepository.softDeleteAll();
-  await JoueursPreparationTournoisRepository.softDeleteAll();
-  await TerrainsPreparationTournoisRepository.softDeleteAll();
+  await PreparationTournoisRepository.deleteAll();
+  await JoueursPreparationTournoisRepository.deleteAll();
+  await TerrainsPreparationTournoisRepository.deleteAll();
   await MatchsRepository.softDeleteAll();
   await TerrainsRepository.softDeleteAll();
   await TournoisRepository.softDeleteAll();
