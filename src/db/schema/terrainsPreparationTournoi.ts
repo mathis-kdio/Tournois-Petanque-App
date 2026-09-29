@@ -1,17 +1,20 @@
-import { integer, sqliteTable } from 'drizzle-orm/sqlite-core';
+import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { preparationTournoi } from './preparationTournoi';
 import { terrains } from './terrain';
 
 export const terrainsPreparationTournois = sqliteTable(
   'terrains_preparation_tournois',
   {
-    id: integer('id').primaryKey(),
-    terrainId: integer('terrain_id')
+    id: text('id').primaryKey(),
+    terrainId: text('terrain_id')
       .references(() => terrains.id)
       .notNull(),
-    preparationTournoiId: integer('preparation_tournoi_id')
+    preparationTournoiId: text('preparation_tournoi_id')
       .references(() => preparationTournoi.id)
       .notNull(),
+    synced: integer('synced', { mode: 'boolean' }).default(false).notNull(),
+    updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
+    deleted: integer('deleted', { mode: 'boolean' }).default(false).notNull(),
   },
 );
 

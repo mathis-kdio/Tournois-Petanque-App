@@ -7,18 +7,23 @@ import { MemesAdversairesType } from '@/types/interfaces/preparationTournoiModel
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 export const preparationTournoi = sqliteTable('preparation_tournoi', {
-  id: integer('id').primaryKey(),
-  nbTours: integer(),
-  nbPtVictoire: integer(),
-  speciauxIncompatibles: integer({ mode: 'boolean' }),
-  memesEquipes: integer({ mode: 'boolean' }),
-  memesAdversaires: integer().$type<MemesAdversairesType>(),
-  typeTournoi: text().$type<TypeTournoi>(),
-  typeEquipes: text().$type<TypeEquipes>(),
-  mode: text().$type<ModeTournoi>(),
-  modeCreationEquipes: text().$type<ModeCreationEquipes>(),
-  complement: text().$type<Complement>(),
-  avecTerrains: integer({ mode: 'boolean' }).default(false).notNull(),
+  id: text('id').primaryKey(),
+  nbTours: integer('nbTours'),
+  nbPtVictoire: integer('nbPtVictoire'),
+  speciauxIncompatibles: integer('speciauxIncompatibles', { mode: 'boolean' }),
+  memesEquipes: integer('memesEquipes', { mode: 'boolean' }),
+  memesAdversaires: integer('memesAdversaires').$type<MemesAdversairesType>(),
+  typeTournoi: text('typeTournoi').$type<TypeTournoi>(),
+  typeEquipes: text('typeEquipes').$type<TypeEquipes>(),
+  mode: text('mode').$type<ModeTournoi>(),
+  modeCreationEquipes: text('modeCreationEquipes').$type<ModeCreationEquipes>(),
+  complement: text('complement').$type<Complement>(),
+  avecTerrains: integer('avecTerrains', { mode: 'boolean' })
+    .default(false)
+    .notNull(),
+  synced: integer('synced', { mode: 'boolean' }).default(false).notNull(),
+  updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
+  deleted: integer('deleted', { mode: 'boolean' }).default(false).notNull(),
 });
 
 export type PreparationTournoi = typeof preparationTournoi.$inferSelect;
