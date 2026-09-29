@@ -4,8 +4,10 @@ import {
   JoueursPreparationTournois,
   NewJoueursPreparationTournois,
 } from '@/db/schema/joueursPreparationTournois';
+import { stampForDelete, stampForSync } from '@/db/sync/stampForSync';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { eq, inArray } from 'drizzle-orm';
+import { uuidv7 } from '@/utils/uuid/uuidv7';
+import { and, eq, inArray } from 'drizzle-orm';
 
 export type JoueursPreparationTournoisWithJoueur = {
   joueurs_preparation_tournois: JoueursPreparationTournois;
@@ -14,7 +16,10 @@ export type JoueursPreparationTournoisWithJoueur = {
 
 export const JoueursPreparationTournoisRepository = {
   getAll() {
-    return getDrizzleDb().select().from(joueursPreparationTournois);
+    return getDrizzleDb()
+      .select()
+      .from(joueursPreparationTournois)
+      .where(eq(joueursPreparationTournois.deleted, false));
   },
 
   getMany() {
@@ -29,24 +34,35 @@ export const JoueursPreparationTournoisRepository = {
       })
       .from(joueursPreparationTournois)
       .innerJoin(joueurs, eq(joueursPreparationTournois.joueurId, joueurs.id))
-      .where(eq(joueursPreparationTournois.preparationTournoiId, 0));
+      .where(
+        and(
+          eq(joueursPreparationTournois.deleted, false),
+          eq(joueurs.deleted, false),
+        ),
+      );
   },
 
   insert(newJoueursPreparationTournois: NewJoueursPreparationTournois[]) {
-    return getDrizzleDb()
-      .insert(joueursPreparationTournois)
-      .values(newJoueursPreparationTournois);
+    const now = new Date();
+    const values = newJoueursPreparationTournois.map((j) => ({
+      ...j,
+      id: uuidv7(),
+      updatedAt: now,
+      synced: false,
+    }));
+    return getDrizzleDb().insert(joueursPreparationTournois).values(values);
   },
 
-  delete(joueurIds: number[]) {
+  delete(joueurIds: string[]) {
     return getDrizzleDb()
-      .delete(joueursPreparationTournois)
+      .update(joueursPreparationTournois)
+      .set(stampForDelete())
       .where(inArray(joueursPreparationTournois.joueurId, joueurIds));
   },
 
   deleteAll() {
     return getDrizzleDb()
-      .delete(joueursPreparationTournois)
-      .where(eq(joueursPreparationTournois.preparationTournoiId, 0));
+      .update(joueursPreparationTournois)
+      .set(stampForDelete());
   },
 };

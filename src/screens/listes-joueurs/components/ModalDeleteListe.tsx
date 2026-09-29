@@ -17,10 +17,10 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 export interface Props {
-  listId: number;
+  listId: string;
   modalDeleteIsOpen: boolean;
   setModalDeleteIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  onDelete: (id: number) => Promise<void>;
+  onDelete: (id: string) => Promise<void>;
 }
 
 const ModalDeleteListe: React.FC<Props> = ({
@@ -31,7 +31,7 @@ const ModalDeleteListe: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
 
-  const _removeList = async (listId: number) => {
+  const _removeList = async (listId: string) => {
     await onDelete(listId);
     setModalDeleteIsOpen(false);
   };

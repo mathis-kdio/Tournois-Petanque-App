@@ -18,10 +18,10 @@ import { useTranslation } from 'react-i18next';
 export interface Props {
   modalDeleteIsOpen: boolean;
   setModalDeleteIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  tournoiId: number;
+  tournoiId: string;
 }
 
-const supprimerTournoi = async (tournoiId: number) => {
+const supprimerTournoi = async (tournoiId: string) => {
   await deleteTournoi(tournoiId);
 };
 

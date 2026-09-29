@@ -1,16 +1,24 @@
 import { Equipe, equipe, NewEquipe } from '@/db/schema';
+import { stampForDelete, stampForSync } from '@/db/sync/stampForSync';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
+import { uuidv7 } from '@/utils/uuid/uuidv7';
 import { inArray } from 'drizzle-orm';
 
 export const EquipeRepository = {
   async insert(newEquipe: NewEquipe): Promise<Equipe> {
     return (
-      await getDrizzleDb().insert(equipe).values(newEquipe).returning()
+      await getDrizzleDb()
+        .insert(equipe)
+        .values({ ...newEquipe, id: uuidv7(), ...stampForSync() })
+        .returning()
     )[0];
   },
 
-  delete(idlist: number[]) {
-    return getDrizzleDb().delete(equipe).where(inArray(equipe.id, idlist));
+  delete(idlist: string[]) {
+    return getDrizzleDb()
+      .update(equipe)
+      .set(stampForDelete())
+      .where(inArray(equipe.id, idlist));
   },
 
   deleteAll() {

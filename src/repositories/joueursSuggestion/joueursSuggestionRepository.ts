@@ -1,30 +1,40 @@
 import { joueursSuggestion, NewJoueursSuggestion } from '@/db/schema';
+import { stampForSync } from '@/db/sync/stampForSync';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { desc, eq, sql } from 'drizzle-orm';
+import { uuidv7 } from '@/utils/uuid/uuidv7';
+import { and, desc, eq, sql } from 'drizzle-orm';
 
 export const JoueursSuggestionRepository = {
   get() {
     return getDrizzleDb()
       .select()
       .from(joueursSuggestion)
-      .where(eq(joueursSuggestion.cacher, false))
+      .where(
+        and(
+          eq(joueursSuggestion.cacher, false),
+          eq(joueursSuggestion.deleted, false),
+        ),
+      )
       .orderBy(desc(joueursSuggestion.occurence));
   },
 
   insertOrUpdateOccurence(newJoueursSuggestion: NewJoueursSuggestion) {
     return getDrizzleDb()
       .insert(joueursSuggestion)
-      .values(newJoueursSuggestion)
+      .values({ ...newJoueursSuggestion, id: uuidv7(), ...stampForSync() })
       .onConflictDoUpdate({
         target: joueursSuggestion.name,
-        set: { occurence: sql`${joueursSuggestion.occurence} + 1` },
+        set: {
+          occurence: sql`${joueursSuggestion.occurence} + 1`,
+          ...stampForSync(),
+        },
       });
   },
 
-  cacherSuggestion(id: number) {
+  cacherSuggestion(id: string) {
     return getDrizzleDb()
       .update(joueursSuggestion)
-      .set({ cacher: true })
+      .set({ cacher: true, ...stampForSync() })
       .where(eq(joueursSuggestion.id, id));
   },
 

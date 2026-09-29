@@ -1,32 +1,50 @@
 import { joueursListes, NewJoueursListes } from '@/db/schema';
+import { stampForDelete, stampForSync } from '@/db/sync/stampForSync';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
-import { eq } from 'drizzle-orm';
+import { uuidv7 } from '@/utils/uuid/uuidv7';
+import { and, eq } from 'drizzle-orm';
 
 export const JoueursListesRepository = {
   insert(newJoueursListes: NewJoueursListes) {
-    return getDrizzleDb().insert(joueursListes).values(newJoueursListes);
+    return getDrizzleDb()
+      .insert(joueursListes)
+      .values({ ...newJoueursListes, id: uuidv7(), ...stampForSync() });
   },
 
   insertMultiple(newJoueursListes: NewJoueursListes[]) {
-    return getDrizzleDb().insert(joueursListes).values(newJoueursListes);
+    const now = new Date();
+    const values = newJoueursListes.map((j) => ({
+      ...j,
+      id: uuidv7(),
+      updatedAt: now,
+      synced: false,
+    }));
+    return getDrizzleDb().insert(joueursListes).values(values);
   },
 
-  getInList(listeId: number) {
+  getInList(listeId: string) {
     return getDrizzleDb()
       .select()
       .from(joueursListes)
-      .where(eq(joueursListes.listeId, listeId));
+      .where(
+        and(
+          eq(joueursListes.listeId, listeId),
+          eq(joueursListes.deleted, false),
+        ),
+      );
   },
 
-  removeJoueurId(joueurId: number) {
+  removeJoueurId(joueurId: string) {
     return getDrizzleDb()
-      .delete(joueursListes)
+      .update(joueursListes)
+      .set(stampForDelete())
       .where(eq(joueursListes.joueurId, joueurId));
   },
 
-  removeAllInList(listeId: number) {
+  removeAllInList(listeId: string) {
     return getDrizzleDb()
-      .delete(joueursListes)
+      .update(joueursListes)
+      .set(stampForDelete())
       .where(eq(joueursListes.listeId, listeId));
   },
 
