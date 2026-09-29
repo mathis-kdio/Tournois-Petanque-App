@@ -26,6 +26,9 @@ export const JoueursPreparationTournoisRepository = {
         joueurId: joueurs.joueurId,
         name: joueurs.name,
         type: joueurs.type,
+        synced: joueurs.synced,
+        updatedAt: joueurs.updatedAt,
+        deleted: joueurs.deleted,
       })
       .from(joueursPreparationTournois)
       .innerJoin(joueurs, eq(joueursPreparationTournois.joueurId, joueurs.id))
