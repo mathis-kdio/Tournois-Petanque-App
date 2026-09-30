@@ -197,24 +197,19 @@ export class DataMigrationService {
       return;
     }
 
-    const playersToInsert: NewJoueur[] = allPlayers.map((player) => {
-      return {
-        joueurId: player.id,
-        name: player.name,
-        type: player.type,
-        equipe: player.equipe || 0,
-        isChecked: player.isChecked || false,
-      };
-    });
-
+    const playersToInsert: NewJoueur[] = allPlayers.map((player) => ({
+      joueurId: player.id,
+      name: player.name,
+      type: player.type,
+      equipe: player.equipe || 0,
+      isChecked: player.isChecked || false,
+    }));
     const joueurs = await JoueursRepository.insertMultiples(playersToInsert);
     const joueursPreparationTournois: NewJoueursPreparationTournois[] =
-      joueurs.map((joueur) => {
-        return {
-          joueurId: joueur.id,
-          preparationTournoiId: 0,
-        };
-      });
+      joueurs.map((joueur) => ({
+        joueurId: joueur.id,
+        preparationTournoiId: '0',
+      }));
     await JoueursPreparationTournoisRepository.insert(
       joueursPreparationTournois,
     );
@@ -240,14 +235,10 @@ export class DataMigrationService {
         -1,
       ) as ReduxListesSauvegardeJoueurs[];
       const listName = listeJoueursInfos?.name || '';
-      const listId = listeJoueursInfos.listId;
 
       // Insert de la liste
       const newList = await ListesJoueursRepository.insertListeJoueurs({
-        id: listId,
         name: listName,
-        updatedAt: Date.now(),
-        synced: 0,
       });
       await this.migrateJoueursListe(listeJoueur, newList[0].id);
     }
@@ -301,14 +292,13 @@ export class DataMigrationService {
 
     for (const tournoiData of listeTournois) {
       const tournoiId = tournoiData.tournoiId;
-      const tournoiName = tournoiData.name || `${tournoiId}`;
+      const tournoiName = tournoiData.name || String(tournoiId);
 
       console.log(`Début migration tournoi: ${tournoiName} (ID: ${tournoiId})`);
       // Extract tournament options from the tournament data
       const options = tournoiData.tournoi.at(-1) as ReduxTournoiOptions;
 
       const newTournoi: NewTournoi = {
-        id: tournoiId,
         name: tournoiName,
         nbTours: options.nbTours,
         nbMatchs: options.nbMatchs,
@@ -321,8 +311,8 @@ export class DataMigrationService {
         avecTerrains: options.avecTerrains || false,
         mode: options.mode || ModeTournoi.AVECNOMS,
         estTournoiActuel: false,
-        createAt: new Date(tournoiData.creationDate).getTime(),
-        updatedAt: new Date(tournoiData.updateDate).getTime(),
+        createAt: new Date(tournoiData.creationDate),
+        updatedAt: new Date(tournoiData.updateDate),
       };
 
       await TournoisRepository.insertTournoi(newTournoi);
@@ -456,7 +446,7 @@ export class DataMigrationService {
     console.log('Début migration preparation tournoi');
 
     const preparationData: NewPreparationTournoi = {
-      id: 0,
+      id: '0',
       mode: optionsTournoi.mode,
       nbTours: optionsTournoi.nbTours,
       nbPtVictoire: optionsTournoi.nbPtVictoire,
@@ -487,15 +477,13 @@ export class DataMigrationService {
     }
 
     for (const terrain of listeTerrains) {
-      await TerrainsRepository.insert({
-        id: terrain.id,
+      const insertedTerrain = await TerrainsRepository.insert({
         name: terrain.name,
-        updatedAt: Date.now(),
-        synced: 0,
       });
+      this.terrainIdMap.set(terrain.id, insertedTerrain.id);
       await TerrainsPreparationTournoisRepository.insert({
-        preparationTournoiId: 0,
-        terrainId: terrain.id,
+        preparationTournoiId: '0',
+        terrainId: insertedTerrain.id,
       });
     }
     console.log(`Fin migration terrains (${listeTerrains.length})`);
