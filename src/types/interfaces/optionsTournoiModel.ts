@@ -5,7 +5,7 @@ import { TypeTournoi } from '../enums/typeTournoi';
 import { MemesAdversairesType } from './preparationTournoiModel';
 
 export interface OptionsTournoiModel {
-  tournoiID: number;
+  tournoiID: string;
   nbTours: number;
   nbMatchs: number;
   nbPtVictoire: number;

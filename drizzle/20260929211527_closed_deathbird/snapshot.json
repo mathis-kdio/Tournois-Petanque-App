@@ -1,0 +1,1324 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "id": "e9dab686-ffca-4649-86c6-89923c64f170",
+  "prevIds": [
+    "1661fd72-df54-4487-a87e-3963725227de"
+  ],
+  "ddl": [
+    {
+      "name": "equipe",
+      "entityType": "tables"
+    },
+    {
+      "name": "equipes_joueurs",
+      "entityType": "tables"
+    },
+    {
+      "name": "joueurs",
+      "entityType": "tables"
+    },
+    {
+      "name": "joueurs_listes",
+      "entityType": "tables"
+    },
+    {
+      "name": "joueurs_preparation_tournois",
+      "entityType": "tables"
+    },
+    {
+      "name": "joueurs_suggestion",
+      "entityType": "tables"
+    },
+    {
+      "name": "listes_joueurs",
+      "entityType": "tables"
+    },
+    {
+      "name": "match",
+      "entityType": "tables"
+    },
+    {
+      "name": "preparation_tournoi",
+      "entityType": "tables"
+    },
+    {
+      "name": "sync_state",
+      "entityType": "tables"
+    },
+    {
+      "name": "terrains",
+      "entityType": "tables"
+    },
+    {
+      "name": "terrains_preparation_tournois",
+      "entityType": "tables"
+    },
+    {
+      "name": "tournoi",
+      "entityType": "tables"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "equipe"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "equipe_id",
+      "entityType": "columns",
+      "table": "equipe"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "synced",
+      "entityType": "columns",
+      "table": "equipe"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "table": "equipe"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "deleted",
+      "entityType": "columns",
+      "table": "equipe"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "equipes_joueurs"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "joueur_id",
+      "entityType": "columns",
+      "table": "equipes_joueurs"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "equipe_id",
+      "entityType": "columns",
+      "table": "equipes_joueurs"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "synced",
+      "entityType": "columns",
+      "table": "equipes_joueurs"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "table": "equipes_joueurs"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "deleted",
+      "entityType": "columns",
+      "table": "equipes_joueurs"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "joueurs"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "joueur_id",
+      "entityType": "columns",
+      "table": "joueurs"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "name",
+      "entityType": "columns",
+      "table": "joueurs"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "type",
+      "entityType": "columns",
+      "table": "joueurs"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "equipe",
+      "entityType": "columns",
+      "table": "joueurs"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "isChecked",
+      "entityType": "columns",
+      "table": "joueurs"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "synced",
+      "entityType": "columns",
+      "table": "joueurs"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "table": "joueurs"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "deleted",
+      "entityType": "columns",
+      "table": "joueurs"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "joueurs_listes"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "joueur_id",
+      "entityType": "columns",
+      "table": "joueurs_listes"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "liste_id",
+      "entityType": "columns",
+      "table": "joueurs_listes"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "synced",
+      "entityType": "columns",
+      "table": "joueurs_listes"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "table": "joueurs_listes"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "deleted",
+      "entityType": "columns",
+      "table": "joueurs_listes"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "joueurs_preparation_tournois"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "joueur_id",
+      "entityType": "columns",
+      "table": "joueurs_preparation_tournois"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "preparation_tournoi_id",
+      "entityType": "columns",
+      "table": "joueurs_preparation_tournois"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "joueurs_suggestion"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "name",
+      "entityType": "columns",
+      "table": "joueurs_suggestion"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "occurence",
+      "entityType": "columns",
+      "table": "joueurs_suggestion"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "cacher",
+      "entityType": "columns",
+      "table": "joueurs_suggestion"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "synced",
+      "entityType": "columns",
+      "table": "joueurs_suggestion"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "table": "joueurs_suggestion"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "deleted",
+      "entityType": "columns",
+      "table": "joueurs_suggestion"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "listes_joueurs"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "name",
+      "entityType": "columns",
+      "table": "listes_joueurs"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "synced",
+      "entityType": "columns",
+      "table": "listes_joueurs"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "table": "listes_joueurs"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "deleted",
+      "entityType": "columns",
+      "table": "listes_joueurs"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "match"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "match_id",
+      "entityType": "columns",
+      "table": "match"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "tournoi_id",
+      "entityType": "columns",
+      "table": "match"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "tour_id",
+      "entityType": "columns",
+      "table": "match"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "tour_name",
+      "entityType": "columns",
+      "table": "match"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "equipe1_id",
+      "entityType": "columns",
+      "table": "match"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "equipe2_id",
+      "entityType": "columns",
+      "table": "match"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "score1",
+      "entityType": "columns",
+      "table": "match"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "score2",
+      "entityType": "columns",
+      "table": "match"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "terrain_id",
+      "entityType": "columns",
+      "table": "match"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "synced",
+      "entityType": "columns",
+      "table": "match"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "table": "match"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "deleted",
+      "entityType": "columns",
+      "table": "match"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "preparation_tournoi"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "nbTours",
+      "entityType": "columns",
+      "table": "preparation_tournoi"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "nbPtVictoire",
+      "entityType": "columns",
+      "table": "preparation_tournoi"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "speciauxIncompatibles",
+      "entityType": "columns",
+      "table": "preparation_tournoi"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "memesEquipes",
+      "entityType": "columns",
+      "table": "preparation_tournoi"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "memesAdversaires",
+      "entityType": "columns",
+      "table": "preparation_tournoi"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "typeTournoi",
+      "entityType": "columns",
+      "table": "preparation_tournoi"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "typeEquipes",
+      "entityType": "columns",
+      "table": "preparation_tournoi"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "mode",
+      "entityType": "columns",
+      "table": "preparation_tournoi"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "modeCreationEquipes",
+      "entityType": "columns",
+      "table": "preparation_tournoi"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "complement",
+      "entityType": "columns",
+      "table": "preparation_tournoi"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "avecTerrains",
+      "entityType": "columns",
+      "table": "preparation_tournoi"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "user_id",
+      "entityType": "columns",
+      "table": "sync_state"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "last_pulled_at",
+      "entityType": "columns",
+      "table": "sync_state"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "clock_offset",
+      "entityType": "columns",
+      "table": "sync_state"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "purged_at",
+      "entityType": "columns",
+      "table": "sync_state"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "terrains"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "name",
+      "entityType": "columns",
+      "table": "terrains"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "synced",
+      "entityType": "columns",
+      "table": "terrains"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "table": "terrains"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "deleted",
+      "entityType": "columns",
+      "table": "terrains"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "terrains_preparation_tournois"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "terrain_id",
+      "entityType": "columns",
+      "table": "terrains_preparation_tournois"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "preparation_tournoi_id",
+      "entityType": "columns",
+      "table": "terrains_preparation_tournois"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "tournoi"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "name",
+      "entityType": "columns",
+      "table": "tournoi"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "nbTours",
+      "entityType": "columns",
+      "table": "tournoi"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "nbMatchs",
+      "entityType": "columns",
+      "table": "tournoi"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "nbPtVictoire",
+      "entityType": "columns",
+      "table": "tournoi"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "speciauxIncompatibles",
+      "entityType": "columns",
+      "table": "tournoi"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "memesEquipes",
+      "entityType": "columns",
+      "table": "tournoi"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "memesAdversaires",
+      "entityType": "columns",
+      "table": "tournoi"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "typeEquipes",
+      "entityType": "columns",
+      "table": "tournoi"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "typeTournoi",
+      "entityType": "columns",
+      "table": "tournoi"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "avecTerrains",
+      "entityType": "columns",
+      "table": "tournoi"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "mode",
+      "entityType": "columns",
+      "table": "tournoi"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "estTournoiActuel",
+      "entityType": "columns",
+      "table": "tournoi"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "create_at",
+      "entityType": "columns",
+      "table": "tournoi"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "table": "tournoi"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "synced",
+      "entityType": "columns",
+      "table": "tournoi"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "deleted",
+      "entityType": "columns",
+      "table": "tournoi"
+    },
+    {
+      "columns": [
+        "joueur_id"
+      ],
+      "tableTo": "joueurs",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "equipes_joueurs_joueur_id_joueurs_id_fk",
+      "entityType": "fks",
+      "table": "equipes_joueurs"
+    },
+    {
+      "columns": [
+        "equipe_id"
+      ],
+      "tableTo": "equipe",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "equipes_joueurs_equipe_id_equipe_id_fk",
+      "entityType": "fks",
+      "table": "equipes_joueurs"
+    },
+    {
+      "columns": [
+        "joueur_id"
+      ],
+      "tableTo": "joueurs",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "joueurs_listes_joueur_id_joueurs_id_fk",
+      "entityType": "fks",
+      "table": "joueurs_listes"
+    },
+    {
+      "columns": [
+        "liste_id"
+      ],
+      "tableTo": "listes_joueurs",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "joueurs_listes_liste_id_listes_joueurs_id_fk",
+      "entityType": "fks",
+      "table": "joueurs_listes"
+    },
+    {
+      "columns": [
+        "joueur_id"
+      ],
+      "tableTo": "joueurs",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "joueurs_preparation_tournois_joueur_id_joueurs_id_fk",
+      "entityType": "fks",
+      "table": "joueurs_preparation_tournois"
+    },
+    {
+      "columns": [
+        "preparation_tournoi_id"
+      ],
+      "tableTo": "preparation_tournoi",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "joueurs_preparation_tournois_preparation_tournoi_id_preparation_tournoi_id_fk",
+      "entityType": "fks",
+      "table": "joueurs_preparation_tournois"
+    },
+    {
+      "columns": [
+        "tournoi_id"
+      ],
+      "tableTo": "tournoi",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "match_tournoi_id_tournoi_id_fk",
+      "entityType": "fks",
+      "table": "match"
+    },
+    {
+      "columns": [
+        "equipe1_id"
+      ],
+      "tableTo": "equipe",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "match_equipe1_id_equipe_id_fk",
+      "entityType": "fks",
+      "table": "match"
+    },
+    {
+      "columns": [
+        "equipe2_id"
+      ],
+      "tableTo": "equipe",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "match_equipe2_id_equipe_id_fk",
+      "entityType": "fks",
+      "table": "match"
+    },
+    {
+      "columns": [
+        "terrain_id"
+      ],
+      "tableTo": "terrains",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "match_terrain_id_terrains_id_fk",
+      "entityType": "fks",
+      "table": "match"
+    },
+    {
+      "columns": [
+        "terrain_id"
+      ],
+      "tableTo": "terrains",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "terrains_preparation_tournois_terrain_id_terrains_id_fk",
+      "entityType": "fks",
+      "table": "terrains_preparation_tournois"
+    },
+    {
+      "columns": [
+        "preparation_tournoi_id"
+      ],
+      "tableTo": "preparation_tournoi",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "terrains_preparation_tournois_preparation_tournoi_id_preparation_tournoi_id_fk",
+      "entityType": "fks",
+      "table": "terrains_preparation_tournois"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "equipe_pk",
+      "table": "equipe",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "equipes_joueurs_pk",
+      "table": "equipes_joueurs",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "joueurs_pk",
+      "table": "joueurs",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "joueurs_listes_pk",
+      "table": "joueurs_listes",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "joueurs_preparation_tournois_pk",
+      "table": "joueurs_preparation_tournois",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "joueurs_suggestion_pk",
+      "table": "joueurs_suggestion",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "listes_joueurs_pk",
+      "table": "listes_joueurs",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "match_pk",
+      "table": "match",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "preparation_tournoi_pk",
+      "table": "preparation_tournoi",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "user_id"
+      ],
+      "nameExplicit": false,
+      "name": "sync_state_pk",
+      "table": "sync_state",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "terrains_pk",
+      "table": "terrains",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "terrains_preparation_tournois_pk",
+      "table": "terrains_preparation_tournois",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "tournoi_pk",
+      "table": "tournoi",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        {
+          "value": "name",
+          "isExpression": false
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "origin": "manual",
+      "name": "nameUniqueIndex",
+      "entityType": "indexes",
+      "table": "joueurs_suggestion"
+    }
+  ],
+  "renames": []
+}

@@ -1,11 +1,12 @@
 import { equipesJoueurs, joueurs, joueursListes, NewJoueur } from '@/db/schema';
+import { stampForDelete, stampForSync } from '@/db/sync/stampForSync';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { JoueurType } from '@/types/enums/joueurType';
-import { eq, inArray, sql } from 'drizzle-orm';
+import { and, eq, inArray, sql } from 'drizzle-orm';
 
 export interface Joueur_EquipesJoueurs {
   j_equipe: number | null;
-  j_id: number;
+  j_id: string;
   j_isChecked: boolean | null;
   j_joueurId: number;
   j_name: string;
@@ -14,12 +15,18 @@ export interface Joueur_EquipesJoueurs {
 
 export const JoueursRepository = {
   getAll() {
-    return getDrizzleDb().select().from(joueurs);
+    return getDrizzleDb()
+      .select()
+      .from(joueurs)
+      .where(eq(joueurs.deleted, false));
   },
 
   async insert(newJoueur: NewJoueur) {
     const result = (
-      await getDrizzleDb().insert(joueurs).values(newJoueur).returning()
+      await getDrizzleDb()
+        .insert(joueurs)
+        .values({ ...newJoueur, ...stampForSync() })
+        .returning()
     ).at(0);
     if (!result) {
       throw new Error('Insert operation returned undefined');
@@ -28,51 +35,65 @@ export const JoueursRepository = {
   },
 
   insertMultiples(newJoueurs: NewJoueur[]) {
-    return getDrizzleDb().insert(joueurs).values(newJoueurs).returning();
+    const values = newJoueurs.map((j) => ({
+      ...j,
+      ...stampForSync(),
+    }));
+    return getDrizzleDb().insert(joueurs).values(values).returning();
   },
 
-  delete(id: number[]) {
-    return getDrizzleDb().delete(joueurs).where(inArray(joueurs.id, id));
+  delete(id: string[]) {
+    return getDrizzleDb()
+      .update(joueurs)
+      .set(stampForDelete())
+      .where(inArray(joueurs.id, id));
   },
 
   deleteAll() {
     return getDrizzleDb().delete(joueurs);
   },
 
-  updateName(id: number, name: string) {
+  softDeleteAll() {
     return getDrizzleDb()
       .update(joueurs)
-      .set({ name })
+      .set(stampForDelete())
+      .where(eq(joueurs.deleted, false));
+  },
+
+  updateName(id: string, name: string) {
+    return getDrizzleDb()
+      .update(joueurs)
+      .set({ name, ...stampForSync() })
       .where(eq(joueurs.id, id));
   },
 
-  updateJoueurId(id: number, joueurId: number) {
+  updateJoueurId(id: string, joueurId: number) {
     return getDrizzleDb()
       .update(joueurs)
-      .set({ joueurId })
+      .set({ joueurId, ...stampForSync() })
       .where(eq(joueurs.id, id));
   },
 
-  updateCheck(id: number, isChecked: boolean) {
+  updateCheck(id: string, isChecked: boolean) {
     return getDrizzleDb()
       .update(joueurs)
-      .set({ isChecked })
+      .set({ isChecked, ...stampForSync() })
       .where(eq(joueurs.id, id));
   },
 
-  updateEquipe(id: number, equipeId: number) {
+  updateEquipe(id: string, equipeId: number) {
     return getDrizzleDb()
       .update(joueurs)
-      .set({ equipe: equipeId })
+      .set({ equipe: equipeId, ...stampForSync() })
       .where(eq(joueurs.id, id));
   },
 
-  async select(uniqueBDDId: number) {
+  async select(uniqueBDDId: string) {
     const result = (
       await getDrizzleDb()
         .select()
         .from(joueurs)
-        .where(eq(joueurs.id, uniqueBDDId))
+        .where(and(eq(joueurs.id, uniqueBDDId), eq(joueurs.deleted, false)))
     ).at(0);
     if (!result) {
       throw new Error('Joueur not found');
@@ -80,12 +101,12 @@ export const JoueursRepository = {
     return result;
   },
 
-  getEquipes(equipeIds: number[]) {
+  getEquipes(equipeIds: string[]) {
     return getDrizzleDb()
       .select({
         joueurs: {
           j_equipe: sql<number | null>`${joueurs.equipe}`.as('j_equipe'),
-          j_id: sql<number>`${joueurs.id}`.as('j_id'),
+          j_id: sql<string>`${joueurs.id}`.as('j_id'),
           j_isChecked: sql<boolean | null>`${joueurs.isChecked}`.as(
             'j_isChecked',
           ),
@@ -94,21 +115,27 @@ export const JoueursRepository = {
           j_type: sql<JoueurType | null>`${joueurs.type}`.as('j_type'),
         },
         equipes_joueurs: {
-          ej_equipeId: sql<number>`${equipesJoueurs.equipeId}`.as(
+          ej_equipeId: sql<string>`${equipesJoueurs.equipeId}`.as(
             'ej_equipeId',
           ),
-          ej_id: sql<number>`${equipesJoueurs.id}`.as('ej_id'),
-          ej_joueurId: sql<number>`${equipesJoueurs.joueurId}`.as(
+          ej_id: sql<string>`${equipesJoueurs.id}`.as('ej_id'),
+          ej_joueurId: sql<string>`${equipesJoueurs.joueurId}`.as(
             'ej_joueurId',
           ),
         },
       })
       .from(joueurs)
-      .where(inArray(equipesJoueurs.equipeId, equipeIds))
+      .where(
+        and(
+          inArray(equipesJoueurs.equipeId, equipeIds),
+          eq(joueurs.deleted, false),
+          eq(equipesJoueurs.deleted, false),
+        ),
+      )
       .innerJoin(equipesJoueurs, eq(equipesJoueurs.joueurId, joueurs.id));
   },
 
-  getJoueursListe(listeId: number) {
+  getJoueursListe(listeId: string) {
     return getDrizzleDb()
       .select({
         equipe: joueurs.equipe,
@@ -119,7 +146,13 @@ export const JoueursRepository = {
         type: joueurs.type,
       })
       .from(joueursListes)
-      .where(eq(joueursListes.listeId, listeId))
+      .where(
+        and(
+          eq(joueursListes.listeId, listeId),
+          eq(joueursListes.deleted, false),
+          eq(joueurs.deleted, false),
+        ),
+      )
       .innerJoin(joueurs, eq(joueurs.id, joueursListes.joueurId));
   },
 };

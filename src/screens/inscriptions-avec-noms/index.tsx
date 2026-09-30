@@ -106,7 +106,7 @@ const InscriptionsAvecNoms = () => {
     );
   };
 
-  const handleDeleteJoueur = async (id: number) => {
+  const handleDeleteJoueur = async (id: string) => {
     if (!preparationTournoi) {
       throw Error('preparationTournoi devrait être défini');
     }

@@ -3,18 +3,19 @@ import {
   equipesJoueurs,
   NewEquipesJoueurs,
 } from '@/db/schema/equipesJoueurs';
+import { stampForDelete, stampForSync } from '@/db/sync/stampForSync';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { JoueurType } from '@/types/enums/joueurType';
-import { inArray } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 
 export type FullEquipeJoueur = {
   equipes_joueurs: {
-    id: number;
-    joueurId: number;
-    equipeId: number;
+    id: string;
+    joueurId: string;
+    equipeId: string;
   };
   joueurs: {
-    id: number;
+    id: string;
     joueurId: number;
     name: string;
     type: JoueurType | null;
@@ -28,18 +29,26 @@ export const EquipesJoueursRepository = {
     return (
       await getDrizzleDb()
         .insert(equipesJoueurs)
-        .values(newEquipesJoueurs)
+        .values({ ...newEquipesJoueurs, ...stampForSync() })
         .returning()
     )[0];
   },
 
-  delete(idlist: number[]) {
+  delete(idlist: string[]) {
     return getDrizzleDb()
-      .delete(equipesJoueurs)
+      .update(equipesJoueurs)
+      .set(stampForDelete())
       .where(inArray(equipesJoueurs.id, idlist));
   },
 
   deleteAll() {
     return getDrizzleDb().delete(equipesJoueurs);
+  },
+
+  softDeleteAll() {
+    return getDrizzleDb()
+      .update(equipesJoueurs)
+      .set(stampForDelete())
+      .where(eq(equipesJoueurs.deleted, false));
   },
 };

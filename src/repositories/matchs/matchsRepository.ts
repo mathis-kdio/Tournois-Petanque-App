@@ -1,35 +1,36 @@
 import { equipe, equipesJoueurs, joueurs, terrains } from '@/db/schema';
 import { match, NewMatch } from '@/db/schema/match';
+import { stampForDelete, stampForSync } from '@/db/sync/stampForSync';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { and, eq, inArray, or, sql } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/sqlite-core';
 
 export type FullMatch = {
-  m_id: number;
+  m_id: string;
   m_matchId: number;
-  m_tournoiId: number;
+  m_tournoiId: string;
   m_tourId: number;
   m_tourName: string | null;
-  m_equipe1: number;
-  m_equipe2: number;
+  m_equipe1: string;
+  m_equipe2: string;
   m_score1: number | null;
   m_score2: number | null;
-  m_terrainId: number | null;
+  m_terrainId: string | null;
   m_updatedAt: number | null;
-  m_synced: number | null;
-  e1_id: number;
-  e2_id: number;
+  m_synced: boolean | null;
+  e1_id: string;
+  e2_id: string;
 } & FullMatchTerrain;
 
 export type FullMatchTerrain = {
-  t_id: number | null;
+  t_id: string | null;
   t_name: string | null;
   t_updatedAt: number | null;
-  t_synced: number | null;
+  t_synced: boolean | null;
 };
 
 export interface JoueursTournoi {
-  j_id: number;
+  j_id: string;
   j_joueurId: number;
   j_name: string;
   j_type: string | null;
@@ -38,53 +39,59 @@ export interface JoueursTournoi {
 }
 
 export const MatchsRepository = {
-  get(tournoiId: number, matchId: number) {
+  get(tournoiId: string, matchId: number) {
     return getDrizzleDb()
       .select()
       .from(match)
-      .where(and(eq(match.tournoiId, tournoiId), eq(match.matchId, matchId)));
+      .where(
+        and(
+          eq(match.tournoiId, tournoiId),
+          eq(match.matchId, matchId),
+          eq(match.deleted, false),
+        ),
+      );
   },
 
-  getFullMatchsTournoi(tournoiId: number) {
+  getFullMatchsTournoi(tournoiId: string) {
     const equipe1 = alias(equipe, 'equipe1');
     const equipe2 = alias(equipe, 'equipe2');
     return getDrizzleDb()
       .select({
-        m_id: sql<number>`${match.id}`.as('m_id'),
+        m_id: sql<string>`${match.id}`.as('m_id'),
         m_matchId: sql<number>`${match.matchId}`.as('m_matchId'),
-        m_tournoiId: sql<number>`${match.tournoiId}`.as('m_tournoiId'),
+        m_tournoiId: sql<string>`${match.tournoiId}`.as('m_tournoiId'),
         m_tourId: sql<number>`${match.tourId}`.as('m_tourId'),
         m_tourName: sql<string | null>`${match.tourName}`.as('m_tourName'),
-        m_equipe1: sql<number>`${match.equipe1}`.as('m_equipe1'),
-        m_equipe2: sql<number>`${match.equipe2}`.as('m_equipe2'),
+        m_equipe1: sql<string>`${match.equipe1}`.as('m_equipe1'),
+        m_equipe2: sql<string>`${match.equipe2}`.as('m_equipe2'),
         m_score1: sql<number | null>`${match.score1}`.as('m_score1'),
         m_score2: sql<number | null>`${match.score2}`.as('m_score2'),
-        m_terrainId: sql<number | null>`${match.terrainId}`.as('m_terrainId'),
+        m_terrainId: sql<string | null>`${match.terrainId}`.as('m_terrainId'),
         m_updatedAt: sql<number | null>`${match.updatedAt}`.as('m_updatedAt'),
-        m_synced: sql<number | null>`${match.synced}`.as('m_synced'),
-        e1_id: sql<number>`${equipe1.id}`.as('e1_id'),
-        e2_id: sql<number>`${equipe2.id}`.as('e2_id'),
-        t_id: sql<number | null>`${terrains.id}`.as('t_id'),
+        m_synced: sql<boolean | null>`${match.synced}`.as('m_synced'),
+        e1_id: sql<string>`${equipe1.id}`.as('e1_id'),
+        e2_id: sql<string>`${equipe2.id}`.as('e2_id'),
+        t_id: sql<string | null>`${terrains.id}`.as('t_id'),
         t_name: sql<string | null>`${terrains.name}`.as('t_name'),
-        t_synced: sql<number | null>`${terrains.synced}`.as('t_synced'),
+        t_synced: sql<boolean | null>`${terrains.synced}`.as('t_synced'),
         t_updatedAt: sql<number | null>`${terrains.updatedAt}`.as(
           't_updatedAt',
         ),
       })
       .from(match)
-      .where(eq(match.tournoiId, tournoiId))
+      .where(and(eq(match.tournoiId, tournoiId), eq(match.deleted, false)))
       .innerJoin(equipe1, eq(equipe1.id, match.equipe1))
       .innerJoin(equipe2, eq(equipe2.id, match.equipe2))
       .leftJoin(terrains, eq(terrains.id, match.terrainId));
   },
 
-  getJoueursTournoi(tournoiId: number) {
+  getJoueursTournoi(tournoiId: string) {
     const e1 = alias(equipe, 'e1');
     const e2 = alias(equipe, 'e2');
 
     return getDrizzleDb()
       .selectDistinct({
-        j_id: sql<number>`${joueurs.id}`.as('j_id'),
+        j_id: sql<string>`${joueurs.id}`.as('j_id'),
         j_joueurId: sql<number>`${joueurs.joueurId}`.as('j_joueurId'),
         j_name: sql<string>`${joueurs.name}`.as('j_name'),
         j_type: sql<string | null>`${joueurs.type}`.as('j_type'),
@@ -92,7 +99,7 @@ export const MatchsRepository = {
         j_isChecked: sql<number | null>`${joueurs.isChecked}`.as('j_isChecked'),
       })
       .from(match)
-      .where(eq(match.tournoiId, tournoiId))
+      .where(and(eq(match.tournoiId, tournoiId), eq(match.deleted, false)))
       .innerJoin(e1, eq(e1.id, match.equipe1))
       .innerJoin(e2, eq(e2.id, match.equipe2))
       .innerJoin(
@@ -106,41 +113,55 @@ export const MatchsRepository = {
   },
 
   insertMatch(newMatchs: NewMatch[]) {
-    return getDrizzleDb().insert(match).values(newMatchs).returning();
+    const values = newMatchs.map((m) => ({
+      ...m,
+      ...stampForSync(),
+    }));
+    return getDrizzleDb().insert(match).values(values).returning();
   },
 
-  delete(idlist: number[]) {
-    return getDrizzleDb().delete(match).where(inArray(match.id, idlist));
+  delete(idlist: string[]) {
+    return getDrizzleDb()
+      .update(match)
+      .set(stampForDelete())
+      .where(inArray(match.id, idlist));
   },
 
   deleteAll() {
     return getDrizzleDb().delete(match);
   },
 
-  updateScore(id: number, score1: number, score2: number) {
+  softDeleteAll() {
     return getDrizzleDb()
       .update(match)
-      .set({ score1, score2 })
+      .set(stampForDelete())
+      .where(eq(match.deleted, false));
+  },
+
+  updateScore(id: string, score1: number, score2: number) {
+    return getDrizzleDb()
+      .update(match)
+      .set({ score1, score2, ...stampForSync() })
       .where(eq(match.id, id));
   },
 
   updateMatchNext(
-    tournoiId: number,
-    equipeId: number,
+    tournoiId: string,
+    equipeId: string,
     matchId: number,
     nextEquipeNumber: 0 | 1,
   ) {
     const fieldToUpdate = nextEquipeNumber === 0 ? 'equipe1' : 'equipe2';
     return getDrizzleDb()
       .update(match)
-      .set({ [fieldToUpdate]: equipeId })
+      .set({ [fieldToUpdate]: equipeId, ...stampForSync() })
       .where(and(eq(match.tournoiId, tournoiId), eq(match.matchId, matchId)));
   },
 
-  resetScore(id: number) {
+  resetScore(id: string) {
     return getDrizzleDb()
       .update(match)
-      .set({ score1: null, score2: null })
+      .set({ score1: null, score2: null, ...stampForSync() })
       .where(eq(match.id, id));
   },
 };

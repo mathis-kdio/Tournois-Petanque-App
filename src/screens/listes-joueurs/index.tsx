@@ -22,11 +22,11 @@ type SearchParams = {
   loadListScreen?: string;
 };
 
-const handleDelete = async (id: number) => {
+const handleDelete = async (id: string) => {
   await deleteListeJoueurs(id);
 };
 
-const handleUpdateName = async (id: number, name: string) => {
+const handleUpdateName = async (id: string, name: string) => {
   await renameListeJoueurs(id, name);
 };
 

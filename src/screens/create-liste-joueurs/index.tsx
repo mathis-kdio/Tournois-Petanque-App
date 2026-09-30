@@ -27,11 +27,11 @@ import { useListeJoueurListeId } from './hooks/useListeJoueurListeId';
 
 export interface Props {
   type: listeType;
-  idList: number;
+  idList: string;
 }
 
 const preparationTournoi: PreparationTournoiModel = {
-  id: 0,
+  id: '0',
   typeEquipes: TypeEquipes.TETEATETE,
   mode: ModeTournoi.SAUVEGARDE,
   typeTournoi: TypeTournoi.MELEDEMELE,
@@ -68,7 +68,7 @@ const CreateListeJoueur: React.FC<Props> = ({ type, idList }) => {
     await addJoueurInList(joueurName, joueurType, idList);
   };
 
-  const handleDeleteJoueur = async (id: number) => {
+  const handleDeleteJoueur = async (id: string) => {
     await removeJoueurList(idList, id);
   };
 

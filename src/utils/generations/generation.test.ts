@@ -11,7 +11,7 @@ import {
 } from './generation';
 
 const makeJoueur = (id: number): JoueurModel => ({
-  uniqueBDDId: id,
+  uniqueBDDId: String(id),
   joueurTournoiId: id,
   name: `Joueur ${id}`,
   type: undefined,

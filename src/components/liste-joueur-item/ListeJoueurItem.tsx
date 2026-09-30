@@ -24,7 +24,7 @@ export interface Props {
   showCheckbox: boolean;
   listesJoueurs: JoueurModel[];
   teamCounts: Record<number, number>;
-  onDeleteJoueur: (id: number) => Promise<void>;
+  onDeleteJoueur: (id: string) => Promise<void>;
   onAddEquipeJoueur: (
     joueurModel: JoueurModel,
     equipeId: number,

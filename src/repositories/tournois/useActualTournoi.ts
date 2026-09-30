@@ -79,7 +79,7 @@ export const useActualTournoi = () => {
   );
 
   const tournoiActuel = tournois.find((tournoi) => tournoi.estTournoiActuel);
-  const tournoiId = tournoiActuel ? tournoiActuel.id : -1;
+  const tournoiId = tournoiActuel ? tournoiActuel.id : '';
   const { data: fullMatchs } = useLiveQuery(
     MatchsRepository.getFullMatchsTournoi(tournoiId),
     [tournoiId],
@@ -94,7 +94,7 @@ export const useActualTournoi = () => {
       fullMatch.m_equipe2,
     ]);
 
-    const equipes = new Set();
+    const equipes = new Set<string>();
     return allEquipes.filter((equipeId) => {
       if (equipes.has(equipeId)) {
         return false;
@@ -107,7 +107,7 @@ export const useActualTournoi = () => {
 
   const { data: equipesWithJoueursTournoi } = useLiveQuery(
     JoueursRepository.getEquipes(equipesTournoiId()),
-    [equipesTournoiId],
+    [equipesTournoiId()],
   );
 
   const actualTournoiVM = () => {
