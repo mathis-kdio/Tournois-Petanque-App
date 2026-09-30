@@ -38,4 +38,4 @@ ALTER TABLE `match` ADD `deleted` integer DEFAULT false NOT NULL;--> statement-b
 ALTER TABLE `terrains` ADD `deleted` integer DEFAULT false NOT NULL;--> statement-breakpoint
 ALTER TABLE `tournoi` ADD `synced` integer DEFAULT false NOT NULL;--> statement-breakpoint
 ALTER TABLE `tournoi` ADD `deleted` integer DEFAULT false NOT NULL;--> statement-breakpoint
-CREATE UNIQUE INDEX `nameUniqueIndex` ON `joueurs_suggestion` (`name`);
+CREATE UNIQUE INDEX IF NOT EXISTS `nameUniqueIndex` ON `joueurs_suggestion` (`name`);
