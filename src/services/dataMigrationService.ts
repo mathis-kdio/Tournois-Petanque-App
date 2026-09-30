@@ -345,25 +345,17 @@ export class DataMigrationService {
   }
 
   private static async migrateTournamentMatches(
-    tournoiId: number,
+    tournoiId: string,
     matches: ReduxMatch[],
     joueurs: Joueur[],
   ): Promise<void> {
     let nextTeamId = 1;
     for (const matchData of matches) {
       // Create teams for this match
-      const newTeam1: NewEquipe = {
-        equipeId: nextTeamId,
-        updatedAt: Date.now(),
-        synced: 0,
-      };
+      const newTeam1: NewEquipe = { equipeId: nextTeamId };
       nextTeamId++;
       const createdTeam1 = await EquipeRepository.insert(newTeam1);
-      const newTeam2: NewEquipe = {
-        equipeId: nextTeamId,
-        updatedAt: Date.now(),
-        synced: 0,
-      };
+      const newTeam2: NewEquipe = { equipeId: nextTeamId };
       const createdTeam2 = await EquipeRepository.insert(newTeam2);
       nextTeamId++;
 
@@ -400,7 +392,7 @@ export class DataMigrationService {
 
   private static async migrateJoueursEquipes(
     equipe: [number, number, number, number],
-    teamId: number,
+    teamId: string,
     joueurs: Joueur[],
   ): Promise<void> {
     const joueursMap = new Map<number, Joueur>(
@@ -435,7 +427,10 @@ export class DataMigrationService {
       return;
     }
     const options = listeMatchs.at(-1) as ReduxTournoiOptions;
-    await TournoisRepository.setActualTournoi(options.tournoiID, true);
+    const newTournoiUuid = this.tournoiIdMap.get(options.tournoiID);
+    if (newTournoiUuid) {
+      await TournoisRepository.setActualTournoi(newTournoiUuid, true);
+    }
 
     console.log('Fin migration tournoi actuel');
   }
