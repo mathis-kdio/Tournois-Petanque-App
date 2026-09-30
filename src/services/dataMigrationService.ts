@@ -249,7 +249,7 @@ export class DataMigrationService {
 
   private static async migrateJoueursListe(
     listeJoueur: ReduxListesSauvegardeJoueurs[],
-    listeId: number,
+    listeId: string,
   ) {
     if (listeJoueur.length === 0) {
       console.log(`Aucune joueur dans la liste ${listeId} à migrer`);
@@ -257,26 +257,25 @@ export class DataMigrationService {
     }
     // Insertion joueurs de la liste
     const listeNewJoueur: NewJoueur[] = listeJoueur.map(
-      ({ id, name, type, equipe }) => {
-        return {
-          joueurId: id,
-          name,
-          type:
-            type !== undefined && type !== '' && type.length !== 0
-              ? type
-              : undefined,
-          equipe,
-          isChecked: false,
-        };
-      },
+      ({ id, name, type, equipe }) => ({
+        joueurId: id,
+        name,
+        type:
+          type !== undefined && type !== '' && type.length !== 0
+            ? type
+            : undefined,
+        equipe,
+        isChecked: false,
+      }),
     );
     const joueurs = await JoueursRepository.insertMultiples(listeNewJoueur);
-    const joueursListes = joueurs.map((joueur) => {
-      return {
-        joueurId: joueur.id,
-        listeId: listeId,
-      } as NewJoueursListes;
-    });
+    const joueursListes = joueurs.map(
+      (joueur) =>
+        ({
+          joueurId: joueur.id,
+          listeId: listeId,
+        }) as NewJoueursListes,
+    );
     await JoueursListesRepository.insertMultiple(joueursListes);
   }
 
