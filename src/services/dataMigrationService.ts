@@ -127,6 +127,10 @@ type ReduxTerrain = {
 };
 
 export class DataMigrationService {
+  // Mapping des anciens IDs numériques (Redux) vers les nouveaux UUIDs
+  private static tournoiIdMap = new Map<number, string>();
+  private static terrainIdMap = new Map<number, string>();
+
   static async migrateDataFromRedux(
     listesJoueurs: ReduxListesJoueurs,
     listesSauvegarde: ReduxListesSauvegarde,
