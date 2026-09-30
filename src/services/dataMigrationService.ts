@@ -313,16 +313,17 @@ export class DataMigrationService {
         createAt: new Date(tournoiData.creationDate),
         updatedAt: new Date(tournoiData.updateDate),
       };
-
-      await TournoisRepository.insertTournoi(newTournoi);
-
+      const insertedTournoi =
+        await TournoisRepository.insertTournoi(newTournoi);
+      const newTournoiUuid = insertedTournoi[0].id;
+      this.tournoiIdMap.set(tournoiId, newTournoiUuid);
       console.log(`Début migration joueurs tournoi ${tournoiId}`);
       const joueurs = await this.migrateTournamentPlayers(options.listeJoueurs);
       console.log(`Fin migration joueurs tournoi`);
 
       console.log(`Début migration matchs tournoi ${tournoiId}`);
       const matches = tournoiData.tournoi.slice(0, -1) as ReduxMatch[];
-      await this.migrateTournamentMatches(tournoiId, matches, joueurs);
+      await this.migrateTournamentMatches(newTournoiUuid, matches, joueurs);
       console.log(`Fin migration matchs tournoi`);
       console.log(`Fin migration tournoi: ${tournoiName} (ID: ${tournoiId})`);
     }
@@ -368,9 +369,9 @@ export class DataMigrationService {
         equipe2: createdTeam2.id,
         score1: matchData.score1,
         score2: matchData.score2,
-        terrainId: matchData.terrain?.id,
-        updatedAt: Date.now(),
-        synced: 0,
+        terrainId: matchData.terrain
+          ? (this.terrainIdMap.get(matchData.terrain.id) ?? null)
+          : null,
       };
 
       await MatchsRepository.insertMatch([newMatch]);
