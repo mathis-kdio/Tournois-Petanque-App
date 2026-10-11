@@ -7,7 +7,12 @@
  *
  * Le `delete()` devient un soft-delete (`deleted = true`) et passe aussi par
  * ce helper.
+ *
+ * Chaque appel notifie le bus d'écritures (`writeBus`) pour déclencher le push
+ * debouncé côté syncTrigger.
  */
+
+import { notifySyncWrite } from './writeBus';
 
 /**
  * Objet partiel à fusionner dans un `insert().values(...)` ou `update().set(...)`.
@@ -16,6 +21,7 @@
  * (Drizzle infère alors le type JS comme `Date`, pas `number`).
  */
 export function stampForSync(): { updatedAt: Date; synced: boolean } {
+  notifySyncWrite();
   return {
     updatedAt: new Date(),
     synced: false,
@@ -30,6 +36,7 @@ export function stampForDelete(): {
   synced: boolean;
   deleted: boolean;
 } {
+  notifySyncWrite();
   return {
     updatedAt: new Date(),
     synced: false,
