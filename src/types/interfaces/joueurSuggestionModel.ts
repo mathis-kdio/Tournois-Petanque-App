@@ -1,4 +1,4 @@
 export interface JoueurSuggestionModel {
-  id: number;
+  id: string;
   name: string;
 }

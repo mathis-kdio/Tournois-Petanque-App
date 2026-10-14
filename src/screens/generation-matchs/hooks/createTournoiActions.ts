@@ -46,17 +46,17 @@ function toNewTournoi(
     typeEquipes: typeEquipes,
     typeTournoi: typeTournoi,
     avecTerrains: avecTerrains,
-    createAt: Date.now(),
-    updatedAt: Date.now(),
+    createAt: new Date(),
+    updatedAt: new Date(),
   };
 }
 
 function toNewMatch(
   matchGeneration: MatchGeneration,
   matchId: number,
-  tournoiId: number,
-  equipe1Id: number,
-  equipe2Id: number,
+  tournoiId: string,
+  equipe1Id: string,
+  equipe2Id: string,
 ): NewMatch {
   const { manche, mancheName, terrain } = matchGeneration;
 
@@ -78,8 +78,8 @@ function toNewEquipe(equipeId: number): NewEquipe {
 }
 
 function toNewEquipesJoueurs(
-  equipeId: number,
-  joueurId: number,
+  equipeId: string,
+  joueurId: string,
 ): NewEquipesJoueurs {
   return {
     joueurId: joueurId,
@@ -88,7 +88,7 @@ function toNewEquipesJoueurs(
 }
 
 const addEquipesJoueur = async (
-  equipeId: number,
+  equipeId: string,
   equipeMatch: EquipeGenerationType,
   listeJoueurs: Joueur[],
 ) => {
@@ -124,7 +124,7 @@ const addEquipes = async (
 
 export const addMatchs = async (
   matchModels: MatchGeneration[],
-  tournoiId: number,
+  tournoiId: string,
 ) => {
   //Récupère la liste joueur du tournoi, permettra de retrouver le joueur de la BDD avec l'id associé aux matchs
   const listeJoueurs: Joueur[] =

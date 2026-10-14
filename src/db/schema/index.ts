@@ -7,6 +7,7 @@ export * from './joueursSuggestion';
 export * from './listesJoueurs';
 export * from './match';
 export * from './preparationTournoi';
+export * from './syncState';
 export * from './terrain';
 export * from './terrainsPreparationTournoi';
 export * from './tournoi';

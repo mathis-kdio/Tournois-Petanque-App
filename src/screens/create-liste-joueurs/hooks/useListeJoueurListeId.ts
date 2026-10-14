@@ -14,7 +14,7 @@ function toJoueurModel(joueur: Joueur): JoueurModel {
   };
 }
 
-export const useListeJoueurListeId = (listeId: number) => {
+export const useListeJoueurListeId = (listeId: string) => {
   const { data: joueursListe } = useLiveQuery(
     JoueursRepository.getJoueursListe(listeId),
   );

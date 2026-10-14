@@ -5,6 +5,7 @@ import {
   useTheme,
 } from '@/components/ui/theme-provider/ThemeProvider';
 import { DatabaseInitializer } from '@/db/DatabaseInitializer';
+import { SyncTrigger } from '@/services/sync/syncTrigger';
 import '@/navigation/gesture-handler'; //https://reactnavigation.org/docs/stack-navigator/
 import { SELECTED_LANGUAGE_KEY } from '@/utils/async-storage/key';
 import { getTheme } from '@/utils/theme/theme';
@@ -97,6 +98,7 @@ export default function RootLayout() {
             <GluestackWrapper>
               <I18nextProvider i18n={i18n} defaultNS={'common'}>
                 <DatabaseInitializer>
+                  <SyncTrigger />
                   <Stack screenOptions={{ headerShown: false }} />
                 </DatabaseInitializer>
               </I18nextProvider>

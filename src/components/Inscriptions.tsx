@@ -25,7 +25,7 @@ export interface Props {
     joueurName: string,
     joueurType: JoueurTypeEnum | undefined,
   ) => Promise<void>;
-  onDeleteJoueur: (id: number) => Promise<void>;
+  onDeleteJoueur: (id: string) => Promise<void>;
   onAddEquipeJoueur: (
     joueurModel: JoueurModel,
     equipeId: number,

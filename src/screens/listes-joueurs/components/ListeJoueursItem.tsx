@@ -17,8 +17,8 @@ import ModalDeleteListe from './ModalDeleteListe';
 export interface Props {
   listeJoueursInfos: ListeJoueursInfos;
   loadListScreen: boolean;
-  onDelete: (id: number) => Promise<void>;
-  onUpdateName: (id: number, name: string) => Promise<void>;
+  onDelete: (id: string) => Promise<void>;
+  onUpdateName: (id: string, name: string) => Promise<void>;
 }
 
 const ListeJoueursItem: React.FC<Props> = ({
@@ -34,7 +34,7 @@ const ListeJoueursItem: React.FC<Props> = ({
   const [listNameText, setListNameText] = useState('');
   const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false);
 
-  const modifyList = (listId: number) => {
+  const modifyList = (listId: string) => {
     router.navigate({
       pathname: '/listes-joueurs/create-liste-joueurs',
       params: {
@@ -44,7 +44,7 @@ const ListeJoueursItem: React.FC<Props> = ({
     });
   };
 
-  const modalSupprimerListe = (listId: number) => {
+  const modalSupprimerListe = (listId: string) => {
     return (
       <ModalDeleteListe
         listId={listId}
@@ -55,7 +55,7 @@ const ListeJoueursItem: React.FC<Props> = ({
     );
   };
 
-  const showRenameList = (listId: number) => {
+  const showRenameList = (listId: string) => {
     let name: IIconComponentType<
       | SvgProps
       | { fill?: ColorValue | undefined; stroke?: ColorValue | undefined }
@@ -85,7 +85,7 @@ const ListeJoueursItem: React.FC<Props> = ({
     );
   };
 
-  const renameList = async (listId: number) => {
+  const renameList = async (listId: string) => {
     if (listNameText !== '') {
       await onUpdateName(listId, listNameText);
     }
@@ -98,7 +98,7 @@ const ListeJoueursItem: React.FC<Props> = ({
     setRenommerOn(true);
   };
 
-  const buttons = (listId: number) => {
+  const buttons = (listId: string) => {
     if (loadListScreen) {
       return (
         <Button action="positive" onPress={() => loadList(listId)}>
@@ -122,7 +122,7 @@ const ListeJoueursItem: React.FC<Props> = ({
     }
   };
 
-  const loadList = async (listId: number) => {
+  const loadList = async (listId: string) => {
     await addJoueursPreparationTournoiFromList(listId);
     router.back();
   };

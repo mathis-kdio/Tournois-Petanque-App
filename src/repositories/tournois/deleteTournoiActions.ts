@@ -5,12 +5,12 @@ import { MatchsRepository } from '../matchs/matchsRepository';
 import { TerrainsRepository } from '../terrains/terrainsRepository';
 import { TournoisRepository } from './tournoisRepository';
 
-export const deleteTournoi = async (tournoiId: number) => {
-  const matchsId = new Set<number>();
-  const joueursIds = new Set<number>();
-  const equipesIds = new Set<number>();
-  const equipesJoueursIds = new Set<number>();
-  const terrainsIds = new Set<number>();
+export const deleteTournoi = async (tournoiId: string) => {
+  const matchsId = new Set<string>();
+  const joueursIds = new Set<string>();
+  const equipesIds = new Set<string>();
+  const equipesJoueursIds = new Set<string>();
+  const terrainsIds = new Set<string>();
 
   const matchs = await MatchsRepository.getFullMatchsTournoi(tournoiId);
   matchs.map((match) => {

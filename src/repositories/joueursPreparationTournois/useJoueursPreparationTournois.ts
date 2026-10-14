@@ -17,7 +17,7 @@ function toJoueurModel(joueurs: Joueur): JoueurModel {
 
 export function toNewJoueursPreparationTournois(
   joueur: Joueur,
-  preparationTournoiId: number,
+  preparationTournoiId: string,
 ): NewJoueursPreparationTournois {
   return {
     joueurId: joueur.id,

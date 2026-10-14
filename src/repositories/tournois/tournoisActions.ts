@@ -15,13 +15,13 @@ function toJoueurModel(joueur: JoueursTournoi): JoueurModel {
   };
 }
 
-export const renameTournoi = async (id: number, name: string) => {
+export const renameTournoi = async (id: string, name: string) => {
   await TournoisRepository.renameTournoi(id, name);
 };
 
 export const setActualTournoi = async (
   actualTournoi: TournoiModel | undefined,
-  id: number,
+  id: string,
 ) => {
   if (actualTournoi) {
     await TournoisRepository.setActualTournoi(actualTournoi.tournoiId, false);
@@ -29,7 +29,7 @@ export const setActualTournoi = async (
   await TournoisRepository.setActualTournoi(id, true);
 };
 
-export const getJoueursTournoi = async (tournoiId: number) => {
+export const getJoueursTournoi = async (tournoiId: string) => {
   const joueurs = await MatchsRepository.getJoueursTournoi(tournoiId);
   return joueurs.map((joueur) => toJoueurModel(joueur));
 };

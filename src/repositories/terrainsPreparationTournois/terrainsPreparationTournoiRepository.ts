@@ -13,7 +13,7 @@ export type TerrainsPreparationTournoisWithJoueur = {
 };
 
 export const TerrainsPreparationTournoisRepository = {
-  getIdsInPreparation(preparationId: number) {
+  getIdsInPreparation(preparationId: string) {
     return getDrizzleDb()
       .select({ terrainId: terrainsPreparationTournois.terrainId })
       .from(terrainsPreparationTournois)
@@ -28,15 +28,13 @@ export const TerrainsPreparationTournoisRepository = {
       .values(newTerrainsPreparationTournois);
   },
 
-  delete(terrainId: number) {
+  delete(terrainId: string) {
     return getDrizzleDb()
       .delete(terrainsPreparationTournois)
       .where(eq(terrainsPreparationTournois.terrainId, terrainId));
   },
 
   deleteAll() {
-    return getDrizzleDb()
-      .delete(terrainsPreparationTournois)
-      .where(eq(terrainsPreparationTournois.preparationTournoiId, 0));
+    return getDrizzleDb().delete(terrainsPreparationTournois);
   },
 };
