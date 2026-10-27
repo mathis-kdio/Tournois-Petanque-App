@@ -7,7 +7,9 @@
  *  - pull() : lit les lignes distantes depuis le curseur server_updated_at,
  *    applique LWW localement, met à jour le curseur ;
  *  - verrou (mutex) : un seul push/pull/cycle à la fois ;
- *  - clockOffset : décalage horloge serveur/locales stocké dans sync_state.
+ *  - clockOffset : décalage horloge serveur/locales stocké dans sync_state ;
+ *  - purge des tombstones locales : delete physique des soft-deletes de plus
+ *    de 30 jours déjà poussées, à la fin de chaque cycle complet.
  *
  * Le moteur ne dépend pas de React — il est purement logique et testable
  * avec une base sqlite in-memory et un mock de supabase-js.
@@ -27,7 +29,7 @@ import {
 } from '@/db/schema';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { supabaseClient } from '@/utils/supabase';
-import { eq, inArray, sql } from 'drizzle-orm';
+import { and, eq, inArray, lt, sql } from 'drizzle-orm';
 import { SYNC_MAPPERS } from './syncMappers';
 import { PULL_ORDER, PUSH_ORDER, type SyncTableName } from './syncTables';
 
@@ -416,6 +418,14 @@ export async function syncCycle(
     const pullResult = await runPull(options);
     const pushResult = await runPush(options);
 
+    // Purge différée des tombstones locales (> 30 jours, déjà sync).
+    // Best-effort : un échec de purge ne fait pas échouer le cycle.
+    try {
+      await purgeLocalTombstones();
+    } catch (err) {
+      console.warn(`[sync] purge des tombstones échouée: ${errorMessage(err)}`);
+    }
+
     return {
       pushed: pushResult.pushed,
       pulled: pullResult.pulled,
@@ -424,6 +434,59 @@ export async function syncCycle(
   } finally {
     isSyncing = false;
   }
+}
+
+// ─── Purge des tombstones locales ──────────────────────────────────────────
+
+/** Rétention des tombstones locales : 30 jours. */
+const TOMBSTONE_RETENTION_MS = 30 * 24 * 60 * 60 * 1_000;
+
+/**
+ * Purge différée des tombstones locales : delete physique des lignes
+ * `deleted = true` déjà poussées (`synced = true`) dont le soft-delete
+ * (`updated_at`, horodaté par `stampForDelete()`) date de plus de 30 jours.
+ *
+ * Miroir local de la purge `purge_old_tombstones()` côté Supabase : la
+ * tombstone a été propagée aux autres appareils au push, elle n'a plus
+ * d'utilité localement. Ordre enfants d'abord (PULL_ORDER) pour ne pas
+ * laisser de FK locales pendantes vers une ligne purgée.
+ *
+ * Les écritures ne passent pas par le writeBus (écriture interne à la
+ * synchro — pas de boucle de rétroaction).
+ *
+ * @returns Le nombre de tombstones supprimées.
+ */
+export async function purgeLocalTombstones(): Promise<number> {
+  const db = getDrizzleDb();
+  const cutoff = new Date(Date.now() - TOMBSTONE_RETENTION_MS);
+  let purged = 0;
+
+  for (const tableName of PULL_ORDER) {
+    const table = TABLES_BY_NAME[tableName];
+
+    const candidates = await db
+      .select({ id: table.id })
+      .from(table)
+      .where(
+        and(
+          eq(table.deleted, true),
+          eq(table.synced, true),
+          lt(table.updatedAt, cutoff),
+        ),
+      );
+
+    if (candidates.length === 0) continue;
+
+    await db.delete(table).where(
+      inArray(
+        table.id,
+        candidates.map((row: any) => row.id),
+      ),
+    );
+    purged += candidates.length;
+  }
+
+  return purged;
 }
 
 // ─── clockOffset ─────────────────────────────────────────────────────────────

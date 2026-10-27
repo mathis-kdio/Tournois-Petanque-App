@@ -9,6 +9,8 @@
  *  - tombstones : delete local physique si sync, conserver si non sync ;
  *  - pull : échec de fetch → rien n'est appliqué, curseur non avancé ;
  *  - updateClockOffset : rpc('now') scalaire → offset stocké ;
+ *  - purge des tombstones locales : delete physique des soft-deletes de
+ *    plus de 30 jours déjà syncées, à la fin de chaque cycle complet ;
  *  - verrou (mutex) : pas de cycle concurrent.
  */
 
@@ -16,7 +18,13 @@
 
 // ─── Import après les mocks ──────────────────────────────────────────────────
 
-import { pull, push, syncCycle, updateClockOffset } from './syncEngine';
+import {
+  pull,
+  purgeLocalTombstones,
+  push,
+  syncCycle,
+  updateClockOffset,
+} from './syncEngine';
 
 const mockUpsert = jest.fn();
 const mockSelectRemote = jest.fn();
@@ -43,6 +51,7 @@ jest.mock('@/db/schema', () => {
     id: `${name}.id`,
     synced: `${name}.synced`,
     updatedAt: `${name}.updatedAt`,
+    deleted: `${name}.deleted`,
   });
   return {
     joueurs: ft('joueurs'),
@@ -439,6 +448,69 @@ describe('syncEngine', () => {
 
       await expect(updateClockOffset(USER_ID)).resolves.toBeUndefined();
       expect(mockInsertValues).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('purgeLocalTombstones', () => {
+    it('supprime physiquement les tombstones éligibles (sync + > 30 jours)', async () => {
+      // 1re table de PULL_ORDER (match) → 2 tombstones éligibles,
+      // les 8 tables suivantes → aucune.
+      mockSelectWhereFn
+        .mockResolvedValueOnce([{ id: 'ts-1' }, { id: 'ts-2' }])
+        .mockResolvedValue([]);
+
+      const purged = await purgeLocalTombstones();
+
+      expect(purged).toBe(2);
+      expect(mockDb.delete).toHaveBeenCalledTimes(1);
+    });
+
+    it('ne supprime rien si aucune tombstone éligible', async () => {
+      mockSelectWhereFn.mockResolvedValue([]);
+
+      const purged = await purgeLocalTombstones();
+
+      expect(purged).toBe(0);
+      expect(mockDb.delete).not.toHaveBeenCalled();
+    });
+
+    it("interroge les 9 tables dans l'ordre enfants d'abord (PULL_ORDER)", async () => {
+      mockSelectWhereFn.mockResolvedValue([]);
+
+      await purgeLocalTombstones();
+
+      expect(mockSelectWhereFn).toHaveBeenCalledTimes(9);
+    });
+
+    it('est appelée à la fin de chaque cycle complet', async () => {
+      // Ordre des selects dans syncCycle : 1 (sync_state, pull)
+      // + 9 (outbox, push) + 9 (purge). La 11e requête = purge de `match`.
+      let call = 0;
+      mockSelectWhereFn.mockImplementation(async () => {
+        call++;
+        if (call === 11) return [{ id: 'old-tombstone' }];
+        return [];
+      });
+      setupSelectRemoteAlwaysEmpty();
+
+      const result = await syncCycle({ userId: USER_ID });
+
+      expect(result.errors).toHaveLength(0);
+      expect(mockDb.delete).toHaveBeenCalledTimes(1);
+    });
+
+    it('un échec de purge ne fait pas échouer le cycle', async () => {
+      let call = 0;
+      mockSelectWhereFn.mockImplementation(async () => {
+        call++;
+        if (call === 11) throw new Error('purge boom');
+        return [];
+      });
+      setupSelectRemoteAlwaysEmpty();
+
+      const result = await syncCycle({ userId: USER_ID });
+
+      expect(result.errors).toHaveLength(0);
     });
   });
 
