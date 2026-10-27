@@ -131,26 +131,37 @@ export function useSyncTrigger() {
     let cancelled = false;
 
     (async () => {
+      let plan: LoginSyncPlan | null = null;
       try {
         // Adoption AVANT tout cycle : purge des lignes syncées du compte
         // précédent, éventuel choix « fusionner / remplacer ».
-        const plan = await prepareLoginSync(userId);
-
-        if (!cancelled && plan.needsChoice) {
-          const prompt = { userId, plan };
-          adoptionPromptRef.current = prompt;
-          setAdoptionPrompt(prompt);
-        } else if (!cancelled) {
-          // Login sur un nouvel appareil / changement de compte avec données
-          // distantes → premier pull potentiellement long : écran dédié.
-          if (plan.isNewLogin && plan.remoteHasData) {
-            setIsRecovering(true);
-          }
-
-          await runCycle('app_open');
-        }
+        plan = await prepareLoginSync(userId);
       } catch (err) {
         console.warn('[sync] sync de login échouée:', err);
+      }
+
+      if (cancelled) return;
+      if (plan === null) {
+        setIsRecovering(false);
+        return;
+      }
+
+      if (plan.needsChoice) {
+        const prompt = { userId, plan };
+        adoptionPromptRef.current = prompt;
+        setAdoptionPrompt(prompt);
+      } else {
+        // Login sur un nouvel appareil / changement de compte avec données
+        // distantes → premier pull potentiellement long : écran dédié.
+        if (plan.isNewLogin && plan.remoteHasData) {
+          setIsRecovering(true);
+        }
+
+        try {
+          await runCycle('app_open');
+        } catch (err) {
+          console.warn('[sync] sync de login échouée:', err);
+        }
       }
       if (!cancelled) setIsRecovering(false);
     })();
