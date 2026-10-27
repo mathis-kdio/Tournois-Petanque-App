@@ -81,6 +81,12 @@ entre pages pendant des écritures concurrentes.
 
 ## 3. Failles sécurité (vérifiées en direct sur le projet Supabase)
 
+> **Statut : corrigées** via la migration `0004_security_hardening.sql`,
+> appliquée au projet distant (vérifiée en direct : privilèges, policies,
+> advisor sécurité). Restent hors SQL : la protection des mots de passe
+> compromis (dashboard Auth) et l'exposition GraphQL aux utilisateurs
+> authentifiés (désactiver l'API GraphQL si inutilisée).
+
 ### 3.1 `purge_old_tombstones()` exécutable par anon ET authenticated
 
 Vérifié via `has_function_privilege` : `true` pour les deux rôles. N'importe qui avec
