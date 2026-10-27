@@ -249,6 +249,14 @@ describe('syncEngine', () => {
       // Écritures + curseur commités dans une seule transaction, avec les
       // FK désactivées autour (PRAGMA OFF, BEGIN, COMMIT, PRAGMA ON).
       expect(mockRun).toHaveBeenCalledTimes(4);
+      // Curseur avec recul de sécurité (PULL_CURSOR_LAG_MS = 5 s) :
+      // lastPulledAt = max(server_updated_at) - 5 s.
+      expect(mockInsertValues).toHaveBeenCalledWith(
+        expect.objectContaining({
+          userId: USER_ID,
+          lastPulledAt: Date.parse('2026-01-01T00:00:01.000Z') - 5_000,
+        }),
+      );
     });
 
     it('écrase une ligne locale synced=true avec une ligne distante plus récente', async () => {

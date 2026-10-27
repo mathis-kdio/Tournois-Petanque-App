@@ -135,6 +135,18 @@ async function upsertSyncState(
   }
 }
 
+// ─── Constantes de sync ──────────────────────────────────────────────────────
+
+/**
+ * Recul de sécurité du curseur de pull. Une ligne poussée par un autre
+ * appareil juste après la lecture de sa table, mais avec un
+ * server_updated_at <= max vu sur une autre table, serait sautée
+ * définitivement (le curseur avance au max global). En stockant
+ * max - 5 s, la fenêtre est relue au cycle suivant et réappliquée —
+ * l'application LWW / tombstone est idempotente.
+ */
+const PULL_CURSOR_LAG_MS = 5_000;
+
 // ─── Push ────────────────────────────────────────────────────────────────────
 
 /**
@@ -164,7 +176,9 @@ export async function push(
  *  1. select where synced = false (tombstones incluses) ;
  *  2. mapping SQLite → Postgres (ajout user_id) ;
  *  3. upsert par batch (chunks de ~200, onConflict user_id,id) ;
- *  4. succès → update synced = true localement ;
+ *  4. succès → update synced = true localement, uniquement si updatedAt
+ *     est inchangé depuis la lecture (sinon l'écriture UI concurrente
+ *     restera synced = false et sera repoussée) ;
  *  5. échec → retry avec backoff exponentiel (max maxRetries tentatives).
  */
 async function runPush(
@@ -216,11 +230,21 @@ async function runPush(
       }
 
       if (success) {
-        const ids = batch.map((r) => r.id);
-        await db
-          .update(table)
-          .set({ synced: true })
-          .where(inArray(table.id, ids));
+        // Marquer synced uniquement si la ligne n'a pas été réécrite par
+        // l'UI entre le select du batch et maintenant : une écriture
+        // concurrente pose synced = false + nouvel updatedAt — le where
+        // ne matche alors pas et la nouvelle version sera repoussée au
+        // prochain cycle (sinon elle serait marquée sync sans avoir été
+        // poussée, puis écrasée par un pull avec des données plus
+        // anciennes).
+        for (const row of batch) {
+          await db
+            .update(table)
+            .set({ synced: true })
+            .where(
+              and(eq(table.id, row.id), eq(table.updatedAt, row.updatedAt)),
+            );
+        }
         pushed += batch.length;
       }
     }
@@ -411,9 +435,13 @@ async function runPull(
         }
       }
 
-      // Curseur commité dans la même transaction que les écritures
+      // Curseur commité dans la même transaction que les écritures, avec
+      // le recul de sécurité (les lignes de la fenêtre relues au prochain
+      // cycle sont réappliquées — LWW idempotent).
       if (newCursor > lastPulledAt) {
-        await upsertSyncState(db, userId, { lastPulledAt: newCursor });
+        await upsertSyncState(db, userId, {
+          lastPulledAt: newCursor - PULL_CURSOR_LAG_MS,
+        });
       }
     });
   } catch (err) {

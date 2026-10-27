@@ -134,6 +134,15 @@ anon révoqué, `auth.uid()` obligatoire), mais :
 
 ## 4. Failles moyennes
 
+> **Statut : corrigées.** 4.1 : marquage `synced = true` conditionné à
+> `updatedAt` inchangé (`syncEngine.ts`) ; 4.2 : curseur de pull avec recul
+> de sécurité de 5 s (`PULL_CURSOR_LAG_MS`, réapplication idempotente) ;
+> 4.3 : push suspendu pendant le dialogue d'adoption (`firePush` garde
+> `adoptionPromptRef`) ; 4.4 : migration `0005_lww_clock_clamp.sql` — le
+> trigger serveur plafonne `updated_at` à `now()` avant la comparaison LWW
+> (appliquée au projet distant, testée en direct : un futur plafonné, un
+> update obsolète rejeté).
+
 ### 4.1 Race `synced = true` dans `runPush`
 
 Une écriture UI entre le `select` du batch et le `set({ synced: true })` (marquage par

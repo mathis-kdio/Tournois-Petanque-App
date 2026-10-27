@@ -78,7 +78,7 @@ export function useSyncTrigger() {
 
   const lastSyncRef = useRef<number>(0);
   const isOnlineRef = useRef<boolean>(true);
-  const triggerPushRef = useRef<() => void>(() => { });
+  const triggerPushRef = useRef<() => void>(() => {});
   const adoptionPromptRef = useRef<AdoptionPrompt | null>(null);
 
   const [adoptionPrompt, setAdoptionPrompt] = useState<AdoptionPrompt | null>(
@@ -175,6 +175,12 @@ export function useSyncTrigger() {
     };
 
     const firePush = (retriesLeft: number) => {
+      // Adoption en attente de choix (« fusionner » / « remplacer ») :
+      // ne rien pousser tant que la décision n'est pas prise — sinon des
+      // données locales seraient envoyées au nouveau compte avant que
+      // l'utilisateur ait choisi « remplacer ».
+      if (adoptionPromptRef.current) return;
+
       // Un cycle est en cours → réessayer un peu plus tard plutôt que
       // d'abandonner (sinon l'écriture resterait en outbox jusqu'au
       // prochain déclencheur).
