@@ -1,21 +1,89 @@
 import TopBarBack from '@/components/topBar/TopBarBack';
+
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { Divider } from '@/components/ui/divider';
 import { LoaderIcon, TrashIcon } from '@/components/ui/icon';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { VStack } from '@/components/ui/vstack';
-import { supabaseClient } from '@/utils/supabase';
+import { useAuth } from '@/components/supabase/SessionProvider';
+import { checkLogout, logoutAndPurge } from '@/services/sync/syncAccount';
+import { syncCycle } from '@/services/sync/syncEngine';
 import Item from '@components/Item';
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Alert } from 'react-native';
+import BlockLogoutAlertDialog from './components/BlockLogoutAlertDialog';
+import DeleteAccountAlertDialog from './components/DeleteAccountAlertDialog';
 
 const Compte = () => {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const router = useRouter();
 
+  const [logoutBlockedOpen, setLogoutBlockedOpen] = useState(false);
+  const [deleteAccountOpen, setDeleteAccountOpen] = useState(false);
+  const [actionLoading, setActionLoading] = useState(false);
+
   const deconnexion = async () => {
-    router.navigate('.');
-    await supabaseClient.auth.signOut();
+    if (!user || actionLoading) return;
+    setActionLoading(true);
+    let canLogout: boolean;
+    try {
+      const check = await checkLogout();
+      canLogout = check.canLogout;
+    } catch (err) {
+      Alert.alert(
+        t('erreur_inattendue', {
+          erreur: err instanceof Error ? err.message : String(err),
+        }),
+      );
+      setActionLoading(false);
+      return;
+    }
+
+    if (!canLogout) {
+      setLogoutBlockedOpen(true);
+      setActionLoading(false);
+      return;
+    }
+
+    try {
+      await logoutAndPurge(user.id);
+      router.navigate('.');
+    } catch (err) {
+      Alert.alert(
+        t('erreur_inattendue', {
+          erreur: err instanceof Error ? err.message : String(err),
+        }),
+      );
+    }
+    setActionLoading(false);
+  };
+
+  const forcerSynchronisation = async () => {
+    if (!user || actionLoading) return;
+    setActionLoading(true);
+    let syncErrors: string[];
+    try {
+      const result = await syncCycle({ userId: user.id });
+      syncErrors = result.errors;
+    } catch (err) {
+      Alert.alert(
+        t('erreur_inattendue', {
+          erreur: err instanceof Error ? err.message : String(err),
+        }),
+      );
+      setActionLoading(false);
+      return;
+    }
+
+    if (syncErrors.length === 0) {
+      Alert.alert(t('sync_reussie'));
+    } else {
+      Alert.alert(t('sync_echouee', { erreur: syncErrors.join('\n') }));
+    }
+    setActionLoading(false);
   };
 
   return (
@@ -40,21 +108,40 @@ const Compte = () => {
           />
         </VStack>
         <VStack space="xl" className="mt-5">
-          <Button onPress={() => deconnexion()}>
+          <Button onPress={deconnexion} isDisabled={!user || actionLoading}>
             <ButtonText>{t('se_deconnecter')}</ButtonText>
           </Button>
-          <Button isDisabled={true} onPress={() => undefined}>
+          <Button
+            onPress={forcerSynchronisation}
+            isDisabled={!user || actionLoading}
+          >
             <ButtonIcon as={LoaderIcon} />
             <ButtonText className="ml-2">
               {t('forcer_synchronisation')}
             </ButtonText>
           </Button>
-          <Button action="negative" isDisabled={true}>
+          <Button
+            action="negative"
+            isDisabled={!user || actionLoading}
+            onPress={() => setDeleteAccountOpen(true)}
+          >
             <ButtonIcon as={TrashIcon} />
             <ButtonText className="ml-2">{t('supprimer_compte')}</ButtonText>
           </Button>
         </VStack>
       </VStack>
+
+      <BlockLogoutAlertDialog
+        logoutBlockedOpen={logoutBlockedOpen}
+        setLogoutBlockedOpen={setLogoutBlockedOpen}
+        setActionLoading={setActionLoading}
+      />
+
+      <DeleteAccountAlertDialog
+        deleteAccountOpen={deleteAccountOpen}
+        setDeleteAccountOpen={setDeleteAccountOpen}
+        setActionLoading={setActionLoading}
+      />
     </ScrollView>
   );
 };

@@ -291,6 +291,20 @@
     "choix_mode_creation_equipes": "Choix du mode de création des équipes",
     "equipes_aleatoires": "Equipes constituées aléatoirement",
     "equipes_manuelles": "Equipes constituées manuellement",
-    "initialisation_base": "Initialisation de la base, veuillez ne pas fermer l'application..."
+    "initialisation_base": "Initialisation de la base, veuillez ne pas fermer l'application...",
+    "adoption_titre": "Nicht synchronisierte lokale Daten",
+    "adoption_texte": "Auf diesem Gerät erstellte Daten wurden noch nicht synchronisiert, und dieses Konto enthält bereits Daten. Was möchtest du tun?",
+    "adoption_fusionner": "Lokale Daten behalten und zusammenführen",
+    "adoption_remplacer": "Durch Kontodaten ersetzen",
+    "recuperation_donnees": "Ihre Daten werden abgerufen, bitte warten...",
+    "logout_non_sync_titre": "Nicht synchronisierte Daten",
+    "logout_non_sync_texte": "Einige lokale Daten konnten nicht synchronisiert werden. Wenn du dich jetzt abmeldest, gehen sie verloren.",
+    "logout_reessayer_sync": "Synchronisierung erneut versuchen",
+    "logout_forcer": "Trotzdem abmelden (Daten gehen verloren)",
+    "sync_reussie": "Synchronisierung erfolgreich",
+    "sync_echouee": "Synchronisierung fehlgeschlagen: {{erreur}}",
+    "supprimer_compte_modal_titre": "Konto löschen",
+    "supprimer_compte_modal_texte": "Dein Konto und alle zugehörigen Daten werden dauerhaft von unseren Servern gelöscht, auf allen Geräten. Diese Aktion kann nicht rückgängig gemacht werden.",
+    "erreur_inattendue": "Ein Fehler ist aufgetreten: {{erreur}}"
   }
 }

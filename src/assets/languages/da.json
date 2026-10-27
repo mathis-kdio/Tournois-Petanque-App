@@ -291,6 +291,20 @@
     "choix_mode_creation_equipes": "Valg af, hvordan man opretter teams",
     "equipes_aleatoires": "Tilfældigt dannede hold",
     "equipes_manuelles": "Manuelt dannede hold",
-    "initialisation_base": "Initialiserer databasen, luk venligst ikke programmet..."
+    "initialisation_base": "Initialiserer databasen, luk venligst ikke programmet...",
+    "adoption_titre": "Usynkroniserede lokale data",
+    "adoption_texte": "Data oprettet på denne enhed er endnu ikke synkroniseret, og denne konto indeholder allerede data. Hvad vil du gøre?",
+    "adoption_fusionner": "Behold lokale data og flet",
+    "adoption_remplacer": "Erstat med kontodata",
+    "recuperation_donnees": "Henter dine data, vent venligst...",
+    "logout_non_sync_titre": "Usynkroniseret data",
+    "logout_non_sync_texte": "Nogle lokale data kunne ikke synkroniseres. Hvis du logger ud nu, går de tabt.",
+    "logout_reessayer_sync": "Prøv synkronisering igen",
+    "logout_forcer": "Log ud alligevel (data går tabt)",
+    "sync_reussie": "Synkronisering lykkedes",
+    "sync_echouee": "Synkronisering mislykkedes: {{erreur}}",
+    "supprimer_compte_modal_titre": "Sletning af konto",
+    "supprimer_compte_modal_texte": "Din konto og alle tilknyttede data slettes permanent fra vores servere på alle enheder. Denne handling kan ikke fortrydes.",
+    "erreur_inattendue": "Der opstod en fejl: {{erreur}}"
   }
 }

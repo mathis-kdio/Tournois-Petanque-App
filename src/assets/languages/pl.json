@@ -291,6 +291,20 @@
     "choix_mode_creation_equipes": "Wybór trybu tworzenia drużyn",
     "equipes_aleatoires": "Drużyny utworzone losowo",
     "equipes_manuelles": "Drużyny utworzone ręcznie",
-    "initialisation_base": "Initialisation de la base, veuillez ne pas fermer l'application..."
+    "initialisation_base": "Initialisation de la base, veuillez ne pas fermer l'application...",
+    "adoption_titre": "Niezsynchronizowane dane lokalne",
+    "adoption_texte": "Dane utworzone na tym urządzeniu nie zostały jeszcze zsynchronizowane, a to konto zawiera już dane. Co chcesz zrobić?",
+    "adoption_fusionner": "Zachowaj dane lokalne i połącz",
+    "adoption_remplacer": "Zamień na dane konta",
+    "recuperation_donnees": "Pobieranie Twoich danych, proszę czekać...",
+    "logout_non_sync_titre": "Niezsynchronizowane dane",
+    "logout_non_sync_texte": "Niektórych danych lokalnych nie udało się zsynchronizować. Jeśli wylogujesz się teraz, zostaną utracone.",
+    "logout_reessayer_sync": "Spróbuj ponownie synchronizacji",
+    "logout_forcer": "Wyloguj mimo to (dane zostaną utracone)",
+    "sync_reussie": "Synchronizacja zakończona pomyślnie",
+    "sync_echouee": "Synchronizacja nie powiodła się: {{erreur}}",
+    "supprimer_compte_modal_titre": "Usunięcie konta",
+    "supprimer_compte_modal_texte": "Twoje konto i wszystkie powiązane dane zostaną trwale usunięte z naszych serwerów na wszystkich urządzeniach. Tej operacji nie można cofnąć.",
+    "erreur_inattendue": "Wystąpił błąd: {{erreur}}"
   }
 }

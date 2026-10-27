@@ -33,7 +33,8 @@ import { PULL_ORDER, PUSH_ORDER, type SyncTableName } from './syncTables';
 
 // ─── Tables Drizzle par nom ──────────────────────────────────────────────────
 
-const TABLES_BY_NAME: Record<SyncTableName, any> = {
+/** Tables synchronisées par nom — exporté pour syncAccount (purges). */
+export const TABLES_BY_NAME: Record<SyncTableName, any> = {
   joueurs_suggestion: joueursSuggestion,
   joueurs,
   listes_joueurs: listesJoueurs,
@@ -323,7 +324,7 @@ async function runPull(
   // Le driver expo-sqlite de Drizzle n'accepte que des transactions
   // synchrones (DrizzleTypeError sinon) ; on pilote donc BEGIN/COMMIT
   // directement sur la même connexion — les écritures et le curseur sont
-  // commités ensemble (§3.3.4), sur mobile comme sur le proxy web.
+  // commités ensemble, sur mobile comme sur le proxy web.
   let applied = 0;
 
   try {
@@ -378,7 +379,7 @@ async function runPull(
       }
     }
 
-    // Curseur commité dans la même transaction que les écritures (§3.3.4)
+    // Curseur commité dans la même transaction que les écritures
     if (newCursor > lastPulledAt) {
       await upsertSyncState(db, userId, { lastPulledAt: newCursor });
     }

@@ -1,5 +1,5 @@
 /**
- * Bus d'événements « écriture locale » (architecture §3.4).
+ * Bus d'événements « écriture locale ».
  *
  * `stampForSync()` / `stampForDelete()` notifient chaque écriture des
  * repositories ; le hook `useSyncTrigger` s'abonne pour déclencher le push

@@ -80,7 +80,7 @@ const mockDb = {
     where: jest.fn().mockResolvedValue(undefined),
   })),
   // Le pull délimite ses écritures + le curseur par BEGIN/COMMIT
-  // (une seule transaction SQLite, §3.3.4).
+  // (une seule transaction SQLite).
   run: mockRun.mockResolvedValue(undefined),
 };
 jest.mock('@/db/useDatabaseMigrations', () => ({
@@ -388,7 +388,7 @@ describe('syncEngine', () => {
     });
 
     it("n'applique rien et n'avance pas le curseur si le fetch échoue", async () => {
-      // Tout ou rien (§3.3.4) : erreur réseau au fetch → aucune écriture
+      // Tout ou rien : erreur réseau au fetch → aucune écriture
       // locale, pas de commit de curseur, retentente au prochain cycle.
       mockSelectWhereFn.mockResolvedValue([]);
 

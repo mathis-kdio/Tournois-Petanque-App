@@ -2,7 +2,7 @@
 -- 0002 : fonction public.now() pour le calcul du clockOffset
 --
 -- syncEngine.updateClockOffset() appelle supabase.rpc('now') après chaque cycle
--- de sync réussi (architecture §1.2 / §3.3 : le serveur renvoie son now() pour
+-- de sync réussi (le serveur renvoie son now() pour
 -- corriger les comparaisons LWW des horloges décalées).
 --
 -- PostgREST n'expose que les fonctions du schéma public : la builtin now()
