@@ -135,27 +135,24 @@ export function useSyncTrigger() {
         // Adoption AVANT tout cycle : purge des lignes syncées du compte
         // précédent, éventuel choix « fusionner / remplacer ».
         const plan = await prepareLoginSync(userId);
-        if (cancelled) return;
 
-        if (plan.needsChoice) {
+        if (!cancelled && plan.needsChoice) {
           const prompt = { userId, plan };
           adoptionPromptRef.current = prompt;
           setAdoptionPrompt(prompt);
-          return;
-        }
+        } else if (!cancelled) {
+          // Login sur un nouvel appareil / changement de compte avec données
+          // distantes → premier pull potentiellement long : écran dédié.
+          if (plan.isNewLogin && plan.remoteHasData) {
+            setIsRecovering(true);
+          }
 
-        // Login sur un nouvel appareil / changement de compte avec données
-        // distantes → premier pull potentiellement long : écran dédié.
-        if (plan.isNewLogin && plan.remoteHasData) {
-          setIsRecovering(true);
+          await runCycle('app_open');
         }
-
-        await runCycle('app_open');
       } catch (err) {
         console.warn('[sync] sync de login échouée:', err);
-      } finally {
-        if (!cancelled) setIsRecovering(false);
       }
+      if (!cancelled) setIsRecovering(false);
     })();
 
     triggerPushRef.current = () => {
@@ -209,9 +206,8 @@ export function useSyncTrigger() {
       }
     } catch (err) {
       console.warn('[sync] adoption échouée:', err);
-    } finally {
-      setIsRecovering(false);
     }
+    setIsRecovering(false);
   }, []);
 
   // ─── 2. Écriture locale (repositories → stampForSync → writeBus) ──────────
