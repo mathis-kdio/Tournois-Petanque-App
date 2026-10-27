@@ -49,11 +49,13 @@ jest.mock('@/utils/supabase', () => ({
     from: jest.fn(() => ({
       upsert: mockUpsert,
       // remoteAccountHasData : select('id').limit(1)
-      // pull : select('*').gt(...).range(...)
+      // pull : select('*').gt(...).order(...).range(...)
       select: jest.fn(() => ({
         limit: (...args: any[]) => mockSelectRemoteLimit(...args),
         gt: jest.fn().mockReturnValue({
-          range: (...args: any[]) => mockSelectRemoteRange(...args),
+          order: jest.fn().mockReturnValue({
+            range: (...args: any[]) => mockSelectRemoteRange(...args),
+          }),
         }),
       })),
     })),

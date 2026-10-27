@@ -29,6 +29,10 @@ import {
 } from '@/db/schema';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { supabaseClient } from '@/utils/supabase';
+import {
+  runInBulkTransaction,
+  withForeignKeysDisabled,
+} from '@/db/sync/localTransaction';
 import { and, eq, inArray, lt, sql } from 'drizzle-orm';
 import { SYNC_MAPPERS } from './syncMappers';
 import { PULL_ORDER, PUSH_ORDER, type SyncTableName } from './syncTables';
@@ -242,8 +246,11 @@ async function runPush(
  *
  * LWW : si updated_at distant (corrigé du clockOffset) > updated_at local
  * OU ligne locale synced = true → écraser ; sinon ignorer.
- * Tombstone distante → delete local physique si ligne locale sync, sinon
- * conserver (l'écriture locale non sync gagne).
+ * Tombstone distante → conversion en tombstone locale (deleted = true,
+ * synced = true) si la ligne locale est sync — pas de delete physique ici,
+ * les enfants éventuels gardent un parent référençable ; la purge 30 jours
+ * fera le delete physique. Ligne locale non sync → conserver (l'écriture
+ * locale gagne).
  */
 export async function pull(
   options: SyncEngineOptions,
@@ -291,6 +298,10 @@ async function runPull(
           .from(mapper.pgTable)
           .select('*')
           .gt('server_updated_at', new Date(lastPulledAt).toISOString())
+          // Tri déterministe obligatoire : sans ORDER BY, la pagination
+          // Postgres est non déterministe (lignes sautées/dupliquées
+          // entre pages pendant des écritures concurrentes).
+          .order('server_updated_at', { ascending: true })
           .range(offset, offset + batchSize - 1);
 
         if (error) throw error;
@@ -330,69 +341,82 @@ async function runPull(
   let applied = 0;
 
   try {
-    await db.run(sql`BEGIN`);
+    await runInBulkTransaction(db, async () => {
+      // Application parents d'abord (PUSH_ORDER) : les inserts enfant
+      // référencent des parents déjà insérés dans la même transaction.
+      // (Les deletes sont exclus du pull — les tombstones distantes
+      // deviennent des tombstones locales, la purge 30 jours fait le
+      // reste.) Les FK locales sont désactivées pour cette écriture
+      // interne : le miroir distant — source de vérité — n'a pas de FK
+      // inter-tables, une ligne peut référencer un parent tombstoné
+      // absent localement sans que le pull soit bloqué pour autant.
+      const rowsByTable = new Map(fetched.map((f) => [f.tableName, f.rows]));
 
-    for (const { tableName, rows } of fetched) {
-      const mapper = SYNC_MAPPERS[tableName];
-      const table = TABLES_BY_NAME[tableName];
+      for (const tableName of PUSH_ORDER) {
+        const rows = rowsByTable.get(tableName);
+        if (!rows) continue;
 
-      for (const remoteRow of rows) {
-        const isTombstone = remoteRow.deleted_at != null;
-        const sqliteRow = mapper.fromPostgres(remoteRow);
+        const mapper = SYNC_MAPPERS[tableName];
+        const table = TABLES_BY_NAME[tableName];
 
-        // Vérifier si la ligne existe localement
-        const localRows = await db
-          .select()
-          .from(table)
-          .where(eq(table.id, remoteRow.id));
-        const localRow = localRows[0];
+        for (const remoteRow of rows) {
+          const isTombstone = remoteRow.deleted_at != null;
+          const sqliteRow = mapper.fromPostgres(remoteRow);
 
-        if (isTombstone) {
-          // Tombstone distante
-          if (localRow && localRow.synced) {
-            // Ligne locale sync → delete physique
-            await db.delete(table).where(eq(table.id, remoteRow.id));
-            applied++;
-          }
-          // Si localRow non sync → conserver (l'écriture locale gagne)
-          continue;
-        }
+          // Vérifier si la ligne existe localement
+          const localRows = await db
+            .select()
+            .from(table)
+            .where(eq(table.id, remoteRow.id));
+          const localRow = localRows[0];
 
-        if (!localRow) {
-          // Absente localement → insert
-          await db.insert(table).values(sqliteRow as any);
-          applied++;
-        } else {
-          // Présente localement → LWW
-          const remoteUpdatedAtCorrected =
-            new Date(remoteRow.updated_at).getTime() + clockOffset;
-          const localUpdatedAt = new Date(localRow.updatedAt).getTime();
-
-          if (remoteUpdatedAtCorrected > localUpdatedAt || localRow.synced) {
-            // Écraser la ligne locale
+          if (isTombstone) {
+            // Tombstone distante
+            if (!localRow || !localRow.synced) {
+              // Absente localement → rien à convertir ; non sync →
+              // l'écriture locale gagne, la ligne sera poussée.
+              continue;
+            }
+            // Ligne locale sync → conversion en tombstone locale (miroir
+            // de l'état distant). Delete physique différé à la purge 30
+            // jours : les enfants éventuels gardent une FK valide.
             await db
               .update(table)
               .set(sqliteRow as any)
               .where(eq(table.id, remoteRow.id));
             applied++;
+            continue;
           }
-          // Sinon : ignorer (la ligne locale synced = false sera poussée)
+
+          if (!localRow) {
+            // Absente localement → insert
+            await db.insert(table).values(sqliteRow as any);
+            applied++;
+          } else {
+            // Présente localement → LWW
+            const remoteUpdatedAtCorrected =
+              new Date(remoteRow.updated_at).getTime() + clockOffset;
+            const localUpdatedAt = new Date(localRow.updatedAt).getTime();
+
+            if (remoteUpdatedAtCorrected > localUpdatedAt || localRow.synced) {
+              // Écraser la ligne locale
+              await db
+                .update(table)
+                .set(sqliteRow as any)
+                .where(eq(table.id, remoteRow.id));
+              applied++;
+            }
+            // Sinon : ignorer (la ligne locale synced = false sera poussée)
+          }
         }
       }
-    }
 
-    // Curseur commité dans la même transaction que les écritures
-    if (newCursor > lastPulledAt) {
-      await upsertSyncState(db, userId, { lastPulledAt: newCursor });
-    }
-
-    await db.run(sql`COMMIT`);
+      // Curseur commité dans la même transaction que les écritures
+      if (newCursor > lastPulledAt) {
+        await upsertSyncState(db, userId, { lastPulledAt: newCursor });
+      }
+    });
   } catch (err) {
-    try {
-      await db.run(sql`ROLLBACK`);
-    } catch {
-      // La transaction est déjà fermée — rien à annuler.
-    }
     errors.push(`Pull apply: ${errorMessage(err)}`);
     return { pulled: 0, errors };
   }
@@ -461,30 +485,35 @@ export async function purgeLocalTombstones(): Promise<number> {
   const cutoff = new Date(Date.now() - TOMBSTONE_RETENTION_MS);
   let purged = 0;
 
-  for (const tableName of PULL_ORDER) {
-    const table = TABLES_BY_NAME[tableName];
+  // FK désactivées : un parent tombstoné peut encore avoir des enfants
+  // vivants non sync (l'écriture locale gagne) qui le référencent — la
+  // purge ne doit pas échouer pour autant.
+  await withForeignKeysDisabled(db, async () => {
+    for (const tableName of PULL_ORDER) {
+      const table = TABLES_BY_NAME[tableName];
 
-    const candidates = await db
-      .select({ id: table.id })
-      .from(table)
-      .where(
-        and(
-          eq(table.deleted, true),
-          eq(table.synced, true),
-          lt(table.updatedAt, cutoff),
+      const candidates = await db
+        .select({ id: table.id })
+        .from(table)
+        .where(
+          and(
+            eq(table.deleted, true),
+            eq(table.synced, true),
+            lt(table.updatedAt, cutoff),
+          ),
+        );
+
+      if (candidates.length === 0) continue;
+
+      await db.delete(table).where(
+        inArray(
+          table.id,
+          candidates.map((row: any) => row.id),
         ),
       );
-
-    if (candidates.length === 0) continue;
-
-    await db.delete(table).where(
-      inArray(
-        table.id,
-        candidates.map((row: any) => row.id),
-      ),
-    );
-    purged += candidates.length;
-  }
+      purged += candidates.length;
+    }
+  });
 
   return purged;
 }

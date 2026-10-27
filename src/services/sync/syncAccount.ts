@@ -26,9 +26,10 @@ import {
 } from '@/db/schema';
 import { LOCAL_DATA_OWNER_KEY } from '@/utils/async-storage/key';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
+import { runInBulkTransaction } from '@/db/sync/localTransaction';
 import { supabaseClient } from '@/utils/supabase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { eq, sql } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import {
   addPurgeLogEntry,
   type PurgeAction,
@@ -62,29 +63,29 @@ async function setLocalDataOwner(userId: string | null): Promise<void> {
  * Purge les lignes locales déjà synchronisées : elles proviennent
  * nécessairement du compte précédent (le logout purge tout, sinon).
  * Le pull du nouveau compte restitue les siennes si besoin.
+ *
+ * Enfants d'abord (PULL_ORDER) : les FK locales voient les enfants
+ * disparaître avant leurs parents. Les FK sont en outre désactivées le
+ * temps de la purge : un parent sync peut avoir des enfants non sync
+ * (conservés — l'écriture locale gagne) qui le référencent.
  */
 async function purgeSyncedRows(): Promise<void> {
   const db = getDrizzleDb();
-  await db.run(sql`BEGIN`);
-  try {
-    for (const table of Object.values(TABLES_BY_NAME)) {
+  await runInBulkTransaction(db, async () => {
+    for (const tableName of PULL_ORDER) {
+      const table = TABLES_BY_NAME[tableName];
       await db.delete(table).where(eq(table.synced, true));
     }
-    await db.run(sql`COMMIT`);
-  } catch (err) {
-    try {
-      await db.run(sql`ROLLBACK`);
-    } catch {
-      // Transaction déjà fermée.
-    }
-    throw err;
-  }
+  });
 }
 
 /**
  * Purge totale des données locales : toutes les tables —
  * synchronisées et transitoires (preparation_*) — plus sync_state.
  * Purge atomique (une seule transaction SQLite), puis journal.
+ *
+ * FK désactivées le temps de la purge : les tables transitoires
+ * référencent les lignes syncées et peuvent être supprimées après elles.
  */
 export async function purgeLocalData(
   action: PurgeAction,
@@ -99,21 +100,12 @@ export async function purgeLocalData(
     preparationTournoi,
   ];
 
-  await db.run(sql`BEGIN`);
-  try {
+  await runInBulkTransaction(db, async () => {
     for (const table of tables) {
       await db.delete(table);
     }
     await db.delete(syncState);
-    await db.run(sql`COMMIT`);
-  } catch (err) {
-    try {
-      await db.run(sql`ROLLBACK`);
-    } catch {
-      // Transaction déjà fermée.
-    }
-    throw err;
-  }
+  });
 
   await setLocalDataOwner(null);
   await addPurgeLogEntry({ action, userId });

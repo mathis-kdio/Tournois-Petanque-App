@@ -6,7 +6,8 @@
  *  - push : outbox → upsert → synced = true ; verrou mutex ;
  *  - pull : LWW (ligne distante plus récente écrase, ligne locale synced=true
  *    écrasée, ligne locale synced=false conservée) ;
- *  - tombstones : delete local physique si sync, conserver si non sync ;
+ *  - tombstones : conversion en tombstone locale (update, pas de delete
+ *    physique) si ligne locale sync, conservation si non sync ;
  *  - pull : échec de fetch → rien n'est appliqué, curseur non avancé ;
  *  - updateClockOffset : rpc('now') scalaire → offset stocké ;
  *  - purge des tombstones locales : delete physique des soft-deletes de
@@ -37,6 +38,7 @@ jest.mock('@/utils/supabase', () => ({
       upsert: mockUpsert,
       select: mockSelectRemote,
       gt: jest.fn().mockReturnThis(),
+      order: jest.fn().mockReturnThis(),
       range: jest.fn().mockReturnThis(),
     })),
     // Wrapper paresseux : la factory jest.mock s'exécute avant
@@ -77,7 +79,7 @@ const mockDb = {
       where: mockSelectWhereFn,
     })),
   })),
-  insert: jest.fn(() => ({
+  insert: jest.fn((_table?: any) => ({
     values: mockInsertValues,
   })),
   update: jest.fn(() => ({
@@ -117,7 +119,9 @@ function setupUpsertSuccess() {
 function setupSelectRemoteAlwaysEmpty() {
   mockSelectRemote.mockReturnValue({
     gt: jest.fn().mockReturnValue({
-      range: jest.fn().mockResolvedValue({ data: [], error: null }),
+      order: jest.fn().mockReturnValue({
+        range: jest.fn().mockResolvedValue({ data: [], error: null }),
+      }),
     }),
   });
 }
@@ -126,10 +130,12 @@ function setupSelectRemoteWithRows(rowsByCall: any[][]) {
   let call = 0;
   mockSelectRemote.mockReturnValue({
     gt: jest.fn().mockReturnValue({
-      range: jest.fn().mockImplementation(async () => {
-        const rows = rowsByCall[call] ?? [];
-        call++;
-        return { data: rows, error: null };
+      order: jest.fn().mockReturnValue({
+        range: jest.fn().mockImplementation(async () => {
+          const rows = rowsByCall[call] ?? [];
+          call++;
+          return { data: rows, error: null };
+        }),
       }),
     }),
   });
@@ -240,8 +246,9 @@ describe('syncEngine', () => {
 
       expect(result.pulled).toBe(1);
       expect(mockDb.insert).toHaveBeenCalled();
-      // Écritures + curseur commités dans une seule transaction (BEGIN + COMMIT)
-      expect(mockRun).toHaveBeenCalledTimes(2);
+      // Écritures + curseur commités dans une seule transaction, avec les
+      // FK désactivées autour (PRAGMA OFF, BEGIN, COMMIT, PRAGMA ON).
+      expect(mockRun).toHaveBeenCalledTimes(4);
     });
 
     it('écrase une ligne locale synced=true avec une ligne distante plus récente', async () => {
@@ -322,7 +329,7 @@ describe('syncEngine', () => {
       expect(mockDb.update).not.toHaveBeenCalled();
     });
 
-    it('supprime physiquement une ligne locale syncée quand tombstone distante', async () => {
+    it('convertit en tombstone locale une ligne syncée face à une tombstone distante', async () => {
       const localRow = makeRow({
         id: 'remote-1',
         synced: true,
@@ -356,7 +363,11 @@ describe('syncEngine', () => {
       const result = await pull({ userId: USER_ID });
 
       expect(result.pulled).toBe(1);
-      expect(mockDb.delete).toHaveBeenCalled();
+      // Pas de delete physique dans le pull : conversion en tombstone
+      // locale (deleted = true, synced = true) — la purge 30 jours fera
+      // le reste, les enfants éventuels gardent une FK valide.
+      expect(mockDb.update).toHaveBeenCalled();
+      expect(mockDb.delete).not.toHaveBeenCalled();
     });
 
     it('conserve une ligne locale non sync face à une tombstone distante', async () => {
@@ -396,6 +407,75 @@ describe('syncEngine', () => {
       expect(mockDb.delete).not.toHaveBeenCalled();
     });
 
+    it("applique les inserts parents d'abord (FK locales satisfaites)", async () => {
+      // Fetch en PULL_ORDER (match d'abord) ; l'application doit se faire
+      // en PUSH_ORDER : le tournoi (parent) doit être inséré avant le
+      // match (enfant qui le référence par FK locale).
+      mockSelectWhereFn.mockResolvedValue([]);
+
+      const tournoiRow = {
+        id: 'tournoi-1',
+        name: 'T',
+        nb_tours: 1,
+        nb_matchs: 1,
+        nb_pt_victoire: 13,
+        speciaux_incompatibles: false,
+        memes_equipes: false,
+        memes_adversaires: 1,
+        type_equipes: 'doublette',
+        type_tournoi: 'championnat',
+        avec_terrains: false,
+        mode: 'avecEquipes',
+        est_tournoi_actuel: true,
+        create_at: '2026-01-01T00:00:00.000Z',
+        user_id: USER_ID,
+        updated_at: '2026-01-01T00:00:00.000Z',
+        deleted: false,
+        deleted_at: null,
+        server_updated_at: '2026-01-01T00:00:01.000Z',
+      };
+      const matchRow = {
+        id: 'match-1',
+        match_id: 1,
+        tournoi_id: 'tournoi-1',
+        tour_id: 1,
+        tour_name: null,
+        equipe1_id: 'eq-1',
+        equipe2_id: 'eq-2',
+        score1: null,
+        score2: null,
+        terrain_id: null,
+        user_id: USER_ID,
+        updated_at: '2026-01-01T00:00:00.000Z',
+        deleted: false,
+        deleted_at: null,
+        server_updated_at: '2026-01-01T00:00:01.000Z',
+      };
+
+      // PULL_ORDER : match (appel 0) puis tournoi (appel 4).
+      const empty: any[] = [];
+      setupSelectRemoteWithRows([
+        [matchRow],
+        empty,
+        empty,
+        empty,
+        [tournoiRow],
+        empty,
+        empty,
+        empty,
+        empty,
+      ]);
+
+      const result = await pull({ userId: USER_ID });
+
+      expect(result.pulled).toBe(2);
+      // 2 inserts de données + 1 insert du curseur (sync_state absent).
+      expect(mockDb.insert).toHaveBeenCalledTimes(3);
+      // Parent inséré avant enfant, même si le fetch l'a lu après.
+      expect(mockDb.insert.mock.calls[0][0].id).toBe('tournoi.id');
+      expect(mockDb.insert.mock.calls[1][0].id).toBe('match.id');
+    });
+
     it("n'applique rien et n'avance pas le curseur si le fetch échoue", async () => {
       // Tout ou rien : erreur réseau au fetch → aucune écriture
       // locale, pas de commit de curseur, retentente au prochain cycle.
@@ -403,9 +483,11 @@ describe('syncEngine', () => {
 
       mockSelectRemote.mockReturnValue({
         gt: jest.fn().mockReturnValue({
-          range: jest.fn().mockResolvedValue({
-            data: null,
-            error: { message: 'Network error' },
+          order: jest.fn().mockReturnValue({
+            range: jest.fn().mockResolvedValue({
+              data: null,
+              error: { message: 'Network error' },
+            }),
           }),
         }),
       });
