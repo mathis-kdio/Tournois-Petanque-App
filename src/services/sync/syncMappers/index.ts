@@ -9,17 +9,32 @@
  * définit l'ordre de dépendance FK.
  */
 
-import { Equipe, NewEquipe } from '@/db/schema';
-import { EquipesJoueurs, NewEquipesJoueurs } from '@/db/schema';
-import { Joueur, NewJoueur } from '@/db/schema';
-import { JoueursListes, NewJoueursListes } from '@/db/schema';
-import { JoueursSuggestion, NewJoueursSuggestion } from '@/db/schema';
-import { ListesJoueurs, NewListesJoueurs } from '@/db/schema';
-import { Match, NewMatch } from '@/db/schema';
-import { NewTerrain, Terrain } from '@/db/schema';
-import { NewTournoi, Tournoi } from '@/db/schema';
+import {
+  Equipe,
+  NewEquipe,
+  EquipesJoueurs,
+  NewEquipesJoueurs,
+  Joueur,
+  NewJoueur,
+  JoueursListes,
+  NewJoueursListes,
+  JoueursSuggestion,
+  NewJoueursSuggestion,
+  ListesJoueurs,
+  NewListesJoueurs,
+  Match,
+  NewMatch,
+  NewTerrain,
+  Terrain,
+  NewTournoi,
+  Tournoi,
+} from '@/db/schema';
 
-import { equipeFromPostgres, equipeToPostgres, EquipePostgresRow } from './equipeMapper';
+import {
+  equipeFromPostgres,
+  equipeToPostgres,
+  EquipePostgresRow,
+} from './equipeMapper';
 import {
   equipesJoueursFromPostgres,
   equipesJoueursToPostgres,
@@ -64,11 +79,21 @@ import {
 export interface SyncMapper<
   TSqlite,
   TNewSqlite,
-  TPostgres extends { id: string; user_id: string; updated_at: string; deleted: boolean; deleted_at: string | null; server_updated_at: string },
+  TPostgres extends {
+    id: string;
+    user_id: string;
+    updated_at: string;
+    deleted: boolean;
+    deleted_at: string | null;
+    server_updated_at: string;
+  },
 > {
   /** Nom de la table Postgres (utilisé par supabase-js `.from(name)`). */
   pgTable: string;
-  toPostgres: (row: TSqlite, userId: string) => Omit<TPostgres, 'deleted_at' | 'server_updated_at'>;
+  toPostgres: (
+    row: TSqlite,
+    userId: string,
+  ) => Omit<TPostgres, 'deleted_at' | 'server_updated_at'>;
   fromPostgres: (row: TPostgres) => TNewSqlite;
 }
 
@@ -77,7 +102,11 @@ export const SYNC_MAPPERS = {
     pgTable: 'joueurs_suggestion',
     toPostgres: joueursSuggestionToPostgres,
     fromPostgres: joueursSuggestionFromPostgres,
-  } as SyncMapper<JoueursSuggestion, NewJoueursSuggestion, JoueursSuggestionPostgresRow>,
+  } as SyncMapper<
+    JoueursSuggestion,
+    NewJoueursSuggestion,
+    JoueursSuggestionPostgresRow
+  >,
 
   joueurs: {
     pgTable: 'joueurs',
