@@ -34,8 +34,31 @@ import {
   withForeignKeysDisabled,
 } from '@/db/sync/localTransaction';
 import { and, eq, inArray, lt, sql } from 'drizzle-orm';
+import { Platform } from 'react-native';
 import { SYNC_MAPPERS } from './syncMappers';
 import { PULL_ORDER, PUSH_ORDER, type SyncTableName } from './syncTables';
+
+/**
+ * Nombre de lignes affectées par un update/delete Drizzle.
+ *
+ * Sur mobile (expo-sqlite), le résultat est un `SQLiteRunResult` avec `.changes`.
+ * Sur web (sqlite-proxy), le callback ne renvoie que `{ rows }` — on ne peut
+ * pas compter les lignes affectées. Dans ce cas, on considère que l'update a
+ * réussi si aucune erreur n'est levée (la garde `updatedAt` reste correcte,
+ * elle empêche l'écrasement ; on perd juste le comptage `applied`).
+ */
+function affectedRows(result: unknown): number {
+  if (
+    typeof result === 'object' &&
+    result !== null &&
+    'changes' in result &&
+    typeof (result as { changes: unknown }).changes === 'number'
+  ) {
+    return (result as { changes: number }).changes;
+  }
+  // Proxy web : pas de compteur disponible, on suppose 1 si pas d'erreur.
+  return Platform.OS === 'web' ? 1 : 0;
+}
 
 // ─── Tables Drizzle par nom ──────────────────────────────────────────────────
 
@@ -74,10 +97,26 @@ type DbOrTx = any;
 
 // ─── Verrou (mutex) ───────────────────────────────────────────────────────────
 
+/** Délai après lequel un verrou est considéré comme périmé (2 minutes). */
+const SYNC_LOCK_TIMEOUT_MS = 120_000;
+
 let isSyncing = false;
+let syncStartedAt = 0;
 
 export function isSyncRunning(): boolean {
+  if (isSyncing && Date.now() - syncStartedAt > SYNC_LOCK_TIMEOUT_MS) {
+    // Verrou périmé (crash sans finally) : le libérer.
+    isSyncing = false;
+  }
   return isSyncing;
+}
+
+/** Acquiert le mutex. Retourne false si déjà verrouillé (ou verrou actif). */
+function acquireLock(): boolean {
+  if (isSyncRunning()) return false;
+  isSyncing = true;
+  syncStartedAt = Date.now();
+  return true;
 }
 
 // ─── Utilitaires ──────────────────────────────────────────────────────────────
@@ -157,10 +196,9 @@ const PULL_CURSOR_LAG_MS = 5_000;
 export async function push(
   options: SyncEngineOptions,
 ): Promise<{ pushed: number; errors: string[] }> {
-  if (isSyncing) {
+  if (!acquireLock()) {
     return { pushed: 0, errors: ['Sync already running'] };
   }
-  isSyncing = true;
   try {
     return await runPush(options);
   } finally {
@@ -279,10 +317,9 @@ async function runPush(
 export async function pull(
   options: SyncEngineOptions,
 ): Promise<{ pulled: number; errors: string[] }> {
-  if (isSyncing) {
+  if (!acquireLock()) {
     return { pulled: 0, errors: ['Sync already running'] };
   }
-  isSyncing = true;
   try {
     return await runPull(options);
   } finally {
@@ -404,11 +441,21 @@ async function runPull(
             // Ligne locale sync → conversion en tombstone locale (miroir
             // de l'état distant). Delete physique différé à la purge 30
             // jours : les enfants éventuels gardent une FK valide.
-            await db
+            // Garde sur updatedAt : si l'UI a réécrit la ligne entre le
+            // select local et ce update (synced repassé à false), la
+            // tombstone distante ne doit pas écraser l'écriture locale.
+            const tombResult = await db
               .update(table)
               .set(sqliteRow as any)
-              .where(eq(table.id, remoteRow.id));
-            applied++;
+              .where(
+                and(
+                  eq(table.id, remoteRow.id),
+                  eq(table.updatedAt, localRow.updatedAt),
+                ),
+              );
+            if (affectedRows(tombResult) > 0) {
+              applied++;
+            }
             continue;
           }
 
@@ -418,17 +465,29 @@ async function runPull(
             applied++;
           } else {
             // Présente localement → LWW
+            // clockOffset = serverNow - localNow : pour convertir un timestamp
+            // serveur en équivalent heure locale, il faut SOUSTRAIRE l'offset.
             const remoteUpdatedAtCorrected =
-              new Date(remoteRow.updated_at).getTime() + clockOffset;
+              new Date(remoteRow.updated_at).getTime() - clockOffset;
             const localUpdatedAt = new Date(localRow.updatedAt).getTime();
 
             if (remoteUpdatedAtCorrected > localUpdatedAt || localRow.synced) {
-              // Écraser la ligne locale
-              await db
+              // Écraser la ligne locale, avec garde sur updatedAt : si l'UI a
+              // réécrit la ligne entre le select local et ce update, la ligne
+              // a synced = false + updatedAt plus récent — le where ne matche
+              // pas et la modification locale est préservée (elle sera poussée).
+              const result = await db
                 .update(table)
                 .set(sqliteRow as any)
-                .where(eq(table.id, remoteRow.id));
-              applied++;
+                .where(
+                  and(
+                    eq(table.id, remoteRow.id),
+                    eq(table.updatedAt, localRow.updatedAt),
+                  ),
+                );
+              if (affectedRows(result) > 0) {
+                applied++;
+              }
             }
             // Sinon : ignorer (la ligne locale synced = false sera poussée)
           }
@@ -461,11 +520,10 @@ async function runPull(
 export async function syncCycle(
   options: SyncEngineOptions,
 ): Promise<SyncResult> {
-  if (isSyncing) {
+  if (!acquireLock()) {
     return { pushed: 0, pulled: 0, errors: ['Sync already running'] };
   }
 
-  isSyncing = true;
   try {
     const pullResult = await runPull(options);
     const pushResult = await runPush(options);

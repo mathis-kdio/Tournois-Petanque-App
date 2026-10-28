@@ -84,7 +84,7 @@ const mockDb = {
   })),
   update: jest.fn(() => ({
     set: jest.fn(() => ({
-      where: jest.fn().mockResolvedValue(undefined),
+      where: jest.fn().mockResolvedValue({ changes: 1 }),
     })),
   })),
   delete: jest.fn(() => ({
@@ -294,6 +294,99 @@ describe('syncEngine', () => {
 
       const result = await pull({ userId: USER_ID });
 
+      expect(result.pulled).toBe(1);
+      expect(mockDb.update).toHaveBeenCalled();
+    });
+
+    it('corrige le clockOffset : serveur en avance ne fait pas gagner une vieille écriture distante', async () => {
+      // Serveur à 12:00:10, client à 12:00:00 → clockOffset = +10 000 ms.
+      // Écriture distante à 12:00:05 serveur = 11:59:55 équivalent local.
+      // Écriture locale à 12:00:03 local.
+      // LWW correct : locale gagne (12:00:03 > 11:59:55 équivalent).
+      // Avec le bug (+ clockOffset), la distante aurait gagné (12:00:15 > 12:00:03).
+      const localRow = makeRow({
+        id: 'remote-1',
+        synced: false,
+        updatedAt: new Date('2026-01-01T12:00:03.000Z'),
+      });
+
+      let callCount = 0;
+      mockSelectWhereFn.mockImplementation(async function () {
+        const idx = callCount++;
+        if (idx === 0) {
+          // sync_state avec clockOffset = +10 000 ms
+          return [{ userId: USER_ID, lastPulledAt: 0, clockOffset: 10_000 }];
+        }
+        if (idx === 1) return [localRow];
+        return [];
+      });
+
+      const remoteRow = {
+        id: 'remote-1',
+        joueur_id: 1,
+        name: 'Remote',
+        type: null,
+        equipe: null,
+        is_checked: false,
+        user_id: USER_ID,
+        updated_at: '2026-01-01T12:00:05.000Z',
+        deleted: false,
+        deleted_at: null,
+        server_updated_at: '2026-01-01T12:00:06.000Z',
+      };
+
+      setupSelectRemoteWithRows([[remoteRow]]);
+
+      const result = await pull({ userId: USER_ID });
+
+      // L'écriture locale (12:00:03) est plus récente que la distante corrigée
+      // (12:00:05 - 10s = 11:59:55) → pas d'écrasement.
+      expect(result.pulled).toBe(0);
+      expect(mockDb.update).not.toHaveBeenCalled();
+    });
+
+    it('le clockOffset ne fait pas perdre une écriture distante réellement plus récente', async () => {
+      // Serveur à 12:00:10, client à 12:00:00 → clockOffset = +10 000 ms.
+      // Écriture distante à 12:00:08 serveur = 11:59:58 équivalent local.
+      // Écriture locale à 12:00:03 local → distante gagne (11:59:58 < 12:00:03 ?
+      // non : 12:00:08 - 10s = 11:59:58 < 12:00:03 → locale gagne, OK).
+      // Prenons une distante clairement plus récente :
+      // distante à 12:00:20 serveur = 12:00:10 équivalent local > 12:00:03 local.
+      const localRow = makeRow({
+        id: 'remote-1',
+        synced: false,
+        updatedAt: new Date('2026-01-01T12:00:03.000Z'),
+      });
+
+      let callCount = 0;
+      mockSelectWhereFn.mockImplementation(async function () {
+        const idx = callCount++;
+        if (idx === 0) {
+          return [{ userId: USER_ID, lastPulledAt: 0, clockOffset: 10_000 }];
+        }
+        if (idx === 1) return [localRow];
+        return [];
+      });
+
+      const remoteRow = {
+        id: 'remote-1',
+        joueur_id: 1,
+        name: 'Remote newer',
+        type: null,
+        equipe: null,
+        is_checked: false,
+        user_id: USER_ID,
+        updated_at: '2026-01-01T12:00:20.000Z',
+        deleted: false,
+        deleted_at: null,
+        server_updated_at: '2026-01-01T12:00:21.000Z',
+      };
+
+      setupSelectRemoteWithRows([[remoteRow]]);
+
+      const result = await pull({ userId: USER_ID });
+
+      // 12:00:20 - 10s = 12:00:10 > 12:00:03 → la distante gagne.
       expect(result.pulled).toBe(1);
       expect(mockDb.update).toHaveBeenCalled();
     });

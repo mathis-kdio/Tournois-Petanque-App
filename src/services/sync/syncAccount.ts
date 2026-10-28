@@ -24,7 +24,10 @@ import {
   syncState,
   terrainsPreparationTournois,
 } from '@/db/schema';
-import { LOCAL_DATA_OWNER_KEY } from '@/utils/async-storage/key';
+import {
+  ADOPTION_PENDING_KEY,
+  LOCAL_DATA_OWNER_KEY,
+} from '@/utils/async-storage/key';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { runInBulkTransaction } from '@/db/sync/localTransaction';
 import { supabaseClient } from '@/utils/supabase';
@@ -54,6 +57,24 @@ async function setLocalDataOwner(userId: string | null): Promise<void> {
     await AsyncStorage.setItem(LOCAL_DATA_OWNER_KEY, userId);
   } else {
     await AsyncStorage.removeItem(LOCAL_DATA_OWNER_KEY);
+  }
+}
+
+/**
+ * Vrai si une adoption est en attente de choix utilisateur (persistant).
+ * Si l'app est fermée avant le choix, le prochain lancement doit
+ * re-proposer le dialogue au lieu de pousser les données de l'ancien
+ * compte vers le nouveau.
+ */
+export async function isAdoptionPending(): Promise<boolean> {
+  return (await AsyncStorage.getItem(ADOPTION_PENDING_KEY)) === '1';
+}
+
+async function setAdoptionPending(pending: boolean): Promise<void> {
+  if (pending) {
+    await AsyncStorage.setItem(ADOPTION_PENDING_KEY, '1');
+  } else {
+    await AsyncStorage.removeItem(ADOPTION_PENDING_KEY);
   }
 }
 
@@ -108,6 +129,7 @@ export async function purgeLocalData(
   });
 
   await setLocalDataOwner(null);
+  await setAdoptionPending(false);
   await addPurgeLogEntry({ action, userId });
 }
 
@@ -140,15 +162,15 @@ export interface LoginSyncPlan {
  */
 export async function prepareLoginSync(userId: string): Promise<LoginSyncPlan> {
   const previousOwner = await getLocalDataOwner();
-  const isNewLogin = previousOwner !== userId;
+  // Adoption en attente d'un choix précédent (app fermée avant la décision) :
+  // le propriétaire n'a PAS été enregistré, on force la re-présentation du
+  // dialogue au lieu de pousser les données de l'ancien compte vers le nouveau.
+  const adoptionPending = await isAdoptionPending();
+  const isNewLogin = previousOwner !== userId || adoptionPending;
 
-  if (isNewLogin && previousOwner !== null) {
+  if (isNewLogin && previousOwner !== null && !adoptionPending) {
     await purgeSyncedRows();
     await addPurgeLogEntry({ action: 'login_previous_account_purged', userId });
-  }
-
-  if (isNewLogin) {
-    await setLocalDataOwner(userId);
   }
 
   if (!isNewLogin) {
@@ -162,8 +184,24 @@ export async function prepareLoginSync(userId: string): Promise<LoginSyncPlan> {
     };
   }
 
+  // Le propriétaire n'est enregistré qu'APRÈS le choix de l'utilisateur
+  // (adoptMerge / adoptReplace). Persistant : si l'app est fermée avant le
+  // choix, le flag ADOPTION_PENDING_KEY force la re-présentation du dialogue
+  // au prochain lancement, et les données de l'ancien compte ne fuient pas.
+
   const unsyncedCount = await countUnsynced();
   const remoteHasData = await remoteAccountHasData();
+
+  const needsChoice =
+    unsyncedCount > 0 && (remoteHasData || previousOwner !== null);
+
+  if (needsChoice) {
+    // Marquer l'adoption comme en attente AVANT de présenter le dialogue.
+    await setAdoptionPending(true);
+  } else {
+    // Pas de conflit : enregistrer le propriétaire directement.
+    await setLocalDataOwner(userId);
+  }
 
   return {
     previousOwner,
@@ -174,7 +212,7 @@ export async function prepareLoginSync(userId: string): Promise<LoginSyncPlan> {
     // hors ligne datent du compte précédent (elles ne doivent pas être
     // poussées vers le nouveau compte sans confirmation, même si le compte
     // distant paraît vide ou si la vérification a échoué hors ligne).
-    needsChoice: unsyncedCount > 0 && (remoteHasData || previousOwner !== null),
+    needsChoice,
   };
 }
 
@@ -202,12 +240,16 @@ async function remoteAccountHasData(): Promise<boolean> {
 
 /** Choix « conserver les données locales et fusionner » : cycle complet. */
 export async function adoptMerge(userId: string) {
+  await setAdoptionPending(false);
+  await setLocalDataOwner(userId);
   return syncCycle({ userId });
 }
 
 /** Choix « remplacer par les données du compte » : purge puis pull complet. */
 export async function adoptReplace(userId: string) {
+  await setAdoptionPending(false);
   await purgeLocalData('login_replace_purge', userId);
+  await setLocalDataOwner(userId);
   return pull({ userId });
 }
 
@@ -226,8 +268,21 @@ export async function checkLogout(): Promise<LogoutCheck> {
   return { canLogout: unsyncedCount === 0, unsyncedCount };
 }
 
-/** Déconnexion sûre : purge locale (journalisée) puis signOut. */
+/**
+ * Déconnexion sûre : purge locale (journalisée) puis signOut.
+ *
+ * Re-vérifie l'outbox juste avant la purge (TOCTOU) : entre le checkLogout()
+ * de l'UI et cet appel, une écriture UI a pu arriver (debounce 2 s). Sans
+ * cette re-vérification, la purge supprimerait des données non synchronisées.
+ * Lève une erreur si l'outbox n'est pas vide.
+ */
 export async function logoutAndPurge(userId: string): Promise<void> {
+  const unsyncedCount = await countUnsynced();
+  if (unsyncedCount > 0) {
+    throw new Error(
+      `Logout bloqué : ${unsyncedCount} ligne(s) non synchronisée(s).`,
+    );
+  }
   await purgeLocalData('logout_purge', userId);
   await supabaseClient.auth.signOut();
 }

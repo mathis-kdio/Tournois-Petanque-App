@@ -290,71 +290,47 @@ ALTER TABLE "equipes_joueurs" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "joueurs_listes" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "match" ENABLE ROW LEVEL SECURITY;
 
--- Politiques : SELECT + FOR ALL (write) sur chaque table
--- Pattern : user_id = auth.uid()
+-- Politiques : une seule FOR ALL par table (SELECT inclus dans ALL).
+-- Pattern : user_id = (select auth.uid()) — évalué une seule fois par requête
+-- (évite la réévaluation par ligne, lint 0003 auth_rls_initplan).
+-- Le rôle anon n'a aucun privilège (révoqué en section 8) : seules les
+-- policies authenticated s'appliquent.
 
-CREATE POLICY joueurs_owner_select ON "joueurs"
-  FOR SELECT USING (user_id = auth.uid());
+CREATE POLICY joueurs_owner ON "joueurs"
+  FOR ALL USING (user_id = (select auth.uid()))
+  WITH CHECK (user_id = (select auth.uid()));
 
-CREATE POLICY joueurs_owner_write ON "joueurs"
-  FOR ALL USING (user_id = auth.uid())
-  WITH CHECK (user_id = auth.uid());
+CREATE POLICY joueurs_suggestion_owner ON "joueurs_suggestion"
+  FOR ALL USING (user_id = (select auth.uid()))
+  WITH CHECK (user_id = (select auth.uid()));
 
-CREATE POLICY joueurs_suggestion_owner_select ON "joueurs_suggestion"
-  FOR SELECT USING (user_id = auth.uid());
+CREATE POLICY listes_joueurs_owner ON "listes_joueurs"
+  FOR ALL USING (user_id = (select auth.uid()))
+  WITH CHECK (user_id = (select auth.uid()));
 
-CREATE POLICY joueurs_suggestion_owner_write ON "joueurs_suggestion"
-  FOR ALL USING (user_id = auth.uid())
-  WITH CHECK (user_id = auth.uid());
+CREATE POLICY terrains_owner ON "terrains"
+  FOR ALL USING (user_id = (select auth.uid()))
+  WITH CHECK (user_id = (select auth.uid()));
 
-CREATE POLICY listes_joueurs_owner_select ON "listes_joueurs"
-  FOR SELECT USING (user_id = auth.uid());
+CREATE POLICY tournoi_owner ON "tournoi"
+  FOR ALL USING (user_id = (select auth.uid()))
+  WITH CHECK (user_id = (select auth.uid()));
 
-CREATE POLICY listes_joueurs_owner_write ON "listes_joueurs"
-  FOR ALL USING (user_id = auth.uid())
-  WITH CHECK (user_id = auth.uid());
+CREATE POLICY equipe_owner ON "equipe"
+  FOR ALL USING (user_id = (select auth.uid()))
+  WITH CHECK (user_id = (select auth.uid()));
 
-CREATE POLICY terrains_owner_select ON "terrains"
-  FOR SELECT USING (user_id = auth.uid());
+CREATE POLICY equipes_joueurs_owner ON "equipes_joueurs"
+  FOR ALL USING (user_id = (select auth.uid()))
+  WITH CHECK (user_id = (select auth.uid()));
 
-CREATE POLICY terrains_owner_write ON "terrains"
-  FOR ALL USING (user_id = auth.uid())
-  WITH CHECK (user_id = auth.uid());
+CREATE POLICY joueurs_listes_owner ON "joueurs_listes"
+  FOR ALL USING (user_id = (select auth.uid()))
+  WITH CHECK (user_id = (select auth.uid()));
 
-CREATE POLICY tournoi_owner_select ON "tournoi"
-  FOR SELECT USING (user_id = auth.uid());
-
-CREATE POLICY tournoi_owner_write ON "tournoi"
-  FOR ALL USING (user_id = auth.uid())
-  WITH CHECK (user_id = auth.uid());
-
-CREATE POLICY equipe_owner_select ON "equipe"
-  FOR SELECT USING (user_id = auth.uid());
-
-CREATE POLICY equipe_owner_write ON "equipe"
-  FOR ALL USING (user_id = auth.uid())
-  WITH CHECK (user_id = auth.uid());
-
-CREATE POLICY equipes_joueurs_owner_select ON "equipes_joueurs"
-  FOR SELECT USING (user_id = auth.uid());
-
-CREATE POLICY equipes_joueurs_owner_write ON "equipes_joueurs"
-  FOR ALL USING (user_id = auth.uid())
-  WITH CHECK (user_id = auth.uid());
-
-CREATE POLICY joueurs_listes_owner_select ON "joueurs_listes"
-  FOR SELECT USING (user_id = auth.uid());
-
-CREATE POLICY joueurs_listes_owner_write ON "joueurs_listes"
-  FOR ALL USING (user_id = auth.uid())
-  WITH CHECK (user_id = auth.uid());
-
-CREATE POLICY match_owner_select ON "match"
-  FOR SELECT USING (user_id = auth.uid());
-
-CREATE POLICY match_owner_write ON "match"
-  FOR ALL USING (user_id = auth.uid())
-  WITH CHECK (user_id = auth.uid());
+CREATE POLICY match_owner ON "match"
+  FOR ALL USING (user_id = (select auth.uid()))
+  WITH CHECK (user_id = (select auth.uid()));
 
 -- ─── 6. Purge des tombstones (0001 + 0004 + 0006, version finale) ─────────────
 --
@@ -440,19 +416,26 @@ $$;
 REVOKE ALL ON FUNCTION public.handle_new_user()
   FROM PUBLIC, anon, authenticated;
 
--- anon ne lit plus les tables miroirs ni profiles : RLS bloquait déjà les
--- lignes, ceci interdit en plus la découverte du schéma via l'API / GraphQL.
-REVOKE SELECT ON public."joueurs", public."joueurs_suggestion", public."listes_joueurs",
+-- anon n'a AUCUN privilège sur les tables miroirs ni profiles : RLS bloquait
+-- déjà les lignes, ceci révoque en plus INSERT/UPDATE/DELETE/TRUNCATE (défense
+-- en profondeur) et interdit la découverte du schéma via l'API / GraphQL.
+REVOKE ALL ON public."joueurs", public."joueurs_suggestion", public."listes_joueurs",
   public."terrains", public."tournoi", public."equipe", public."equipes_joueurs",
   public."joueurs_listes", public."match", public.profiles
 FROM anon;
+
+-- Seul le rôle authenticated a les privilèges de lecture/écriture (RLS filtre).
+GRANT SELECT, INSERT, UPDATE, DELETE ON public."joueurs", public."joueurs_suggestion",
+  public."listes_joueurs", public."terrains", public."tournoi", public."equipe",
+  public."equipes_joueurs", public."joueurs_listes", public."match"
+TO authenticated;
 
 -- profiles : lecture restreinte au propriétaire — le template starter
 -- exposait full_name / avatar_url publiquement (l'app n'utilise pas cette table).
 DROP POLICY IF EXISTS "Public profiles are viewable by everyone." ON public.profiles;
 
 CREATE POLICY profiles_owner_select ON public.profiles
-  FOR SELECT USING (id = auth.uid());
+  FOR SELECT USING (id = (select auth.uid()));
 
 -- ─── 9. Non couvert ici (config Auth, pas du ressort du SQL) ──────────────────
 --

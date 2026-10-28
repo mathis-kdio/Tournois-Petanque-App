@@ -184,9 +184,32 @@ describe('syncAccount', () => {
       expect(plan.unsyncedCount).toBe(9); // 9 tables × 1
       expect(plan.remoteHasData).toBe(true);
       expect(plan.needsChoice).toBe(true);
-      // Purge des lignes syncées (9 tables), owner réattribué, journal écrit.
+      // Purge des lignes syncées (9 tables), journal écrit.
       expect(mockDb.delete).toHaveBeenCalledTimes(9);
-      expect(mockSetItem).toHaveBeenCalledWith('localDataOwnerKey', USER_ID);
+      // Le propriétaire n'est PAS encore enregistré (attente du choix) :
+      // le flag adoptionPending est posé pour forcer le dialogue au prochain
+      // lancement si l'app est fermée avant la décision.
+      expect(mockSetItem).not.toHaveBeenCalledWith(
+        'localDataOwnerKey',
+        USER_ID,
+      );
+      expect(mockSetItem).toHaveBeenCalledWith('adoptionPendingKey', '1');
+    });
+
+    it('adoption en attente (app fermée avant le choix) : re-présente le dialogue', async () => {
+      // Le propriétaire n'a pas été enregistré, mais le flag pending est posé.
+      asyncStorageStore.set('adoptionPendingKey', '1');
+      mockSelectWhereFn.mockResolvedValue([{ count: 1 }]);
+      mockSelectRemoteLimit.mockResolvedValue({
+        data: [{ id: 'remote-row' }],
+        error: null,
+      });
+
+      const plan = await prepareLoginSync(USER_ID);
+
+      // isNewLogin forcé par le flag pending, même sans previousOwner.
+      expect(plan.isNewLogin).toBe(true);
+      expect(plan.needsChoice).toBe(true);
     });
 
     it('premier login sans écritures hors ligne : pas de choix', async () => {
@@ -205,6 +228,8 @@ describe('syncAccount', () => {
       expect(plan.needsChoice).toBe(false); // rien à fusionner → pull direct
       // Pas de previous owner → pas de purge des lignes syncées
       expect(mockDb.delete).not.toHaveBeenCalled();
+      // Pas de conflit → propriétaire enregistré immédiatement.
+      expect(mockSetItem).toHaveBeenCalledWith('localDataOwnerKey', USER_ID);
     });
 
     it('hors ligne : remoteHasData à false → pas de choix (fusion par défaut)', async () => {
@@ -268,8 +293,11 @@ describe('syncAccount', () => {
       // Pull exécuté (select distant paginé)
       expect(mockSelectRemoteRange).toHaveBeenCalled();
       expect(result.errors).toHaveLength(0);
-      // Propriétaire effacé + purge journalisée
+      // Propriétaire effacé (purgeLocalData) puis réenregistré (adoptReplace),
+      // flag adoption pending cleared, purge journalisée.
       expect(mockRemoveItem).toHaveBeenCalledWith('localDataOwnerKey');
+      expect(mockSetItem).toHaveBeenCalledWith('localDataOwnerKey', USER_ID);
+      expect(mockRemoveItem).toHaveBeenCalledWith('adoptionPendingKey');
       expect(mockSetItem).toHaveBeenCalledWith(
         'syncPurgeLogKey',
         expect.stringContaining('login_replace_purge'),
@@ -278,7 +306,10 @@ describe('syncAccount', () => {
   });
 
   describe('logoutAndPurge', () => {
-    it('purge les données locales puis signOut', async () => {
+    it('purge les données locales puis signOut si outbox vide', async () => {
+      // Outbox vide : countUnsynced retourne 0 pour les 9 tables.
+      mockSelectWhereFn.mockResolvedValue([{ count: 0 }]);
+
       await logoutAndPurge(USER_ID);
 
       expect(mockDb.delete).toHaveBeenCalledTimes(13);
@@ -287,6 +318,18 @@ describe('syncAccount', () => {
         'syncPurgeLogKey',
         expect.stringContaining('logout_purge'),
       );
+    });
+
+    it('refuse la purge si des lignes sont encore non synchronisées (TOCTOU)', async () => {
+      // Une écriture UI est arrivée entre checkLogout() et logoutAndPurge().
+      mockSelectWhereFn.mockResolvedValue([{ count: 4 }]);
+
+      await expect(logoutAndPurge(USER_ID)).rejects.toThrow(
+        'Logout bloqué : 36 ligne(s) non synchronisée(s).',
+      );
+
+      expect(mockDb.delete).not.toHaveBeenCalled();
+      expect(mockSignOut).not.toHaveBeenCalled();
     });
   });
 
