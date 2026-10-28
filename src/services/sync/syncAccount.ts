@@ -131,8 +131,12 @@ export interface LoginSyncPlan {
  *  1. si les données locales appartiennent à un autre compte → purge des
  *     lignes syncées (elles seront restituées par le pull) ;
  *  2. enregistre le nouveau propriétaire ;
- *  3. si l'appareil a des écritures hors ligne ET que le compte distant a
- *     déjà des données → un choix utilisateur est requis.
+ *  3. si l'appareil a des écritures hors ligne ET (que le compte distant a
+ *     déjà des données OU que ces écritures ont été créées sous le compte
+ *     précédent) → un choix utilisateur est requis. Sans cette seconde
+ *     condition, un changement de compte transférerait silencieusement les
+ *     écritures locales du compte précédent vers le nouveau (y compris si
+ *     la vérification du compte distant échoue, hors ligne).
  */
 export async function prepareLoginSync(userId: string): Promise<LoginSyncPlan> {
   const previousOwner = await getLocalDataOwner();
@@ -166,7 +170,11 @@ export async function prepareLoginSync(userId: string): Promise<LoginSyncPlan> {
     isNewLogin: true,
     unsyncedCount,
     remoteHasData,
-    needsChoice: unsyncedCount > 0 && remoteHasData,
+    // Conflit si le compte distant a déjà des données ; ou si les écritures
+    // hors ligne datent du compte précédent (elles ne doivent pas être
+    // poussées vers le nouveau compte sans confirmation, même si le compte
+    // distant paraît vide ou si la vérification a échoué hors ligne).
+    needsChoice: unsyncedCount > 0 && (remoteHasData || previousOwner !== null),
   };
 }
 

@@ -1,8 +1,10 @@
 /**
  * Registre ordonné des tables synchronisées.
  *
- * PUSH_ORDER : parents d'abord (les FK doivent exister avant les enfants).
- * PULL_ORDER : ordre inverse (FK locales satisfaites à l'insert).
+ * PUSH_ORDER : parents d'abord — utilisé pour le push, pour l'application du
+ * pull (les inserts enfants exigent leurs parents déjà présents) et pour les
+ * purges. PULL_ORDER : ordre inverse — réservé aux suppressions (enfants
+ * d'abord) et aux lectures.
  *
  * Tables non synchronisées (état transitoire) — absentes :
  *   preparation_tournoi, joueurs_preparation_tournois, terrains_preparation_tournois

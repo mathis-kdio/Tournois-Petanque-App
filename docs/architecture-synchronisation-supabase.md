@@ -191,7 +191,9 @@ src/services/sync/
 ### 3.1 Ordre de sync (dépendances FK)
 
 ```ts
-// push : parents d'abord ; pull : ordre inverse (FK locales satisfaites à l'insert)
+// push et pull (inserts) : parents d'abord — un enfant inséré doit trouver
+// son parent déjà présent dans la même transaction. L'ordre inverse (enfants
+// d'abord) ne vaut que pour les suppressions/purges.
 // NB : preparation_tournoi, joueurs_preparation_tournois, terrains_preparation_tournois
 // ne sont pas synchronisées (état transitoire) — absentes du PUSH_ORDER.
 const PUSH_ORDER = [
@@ -228,9 +230,13 @@ const PUSH_ORDER = [
    - présente localement → LWW : si `updated_at` distant (corrigé du `clockOffset`) >
      `updated_at` local **ou** ligne locale `synced = true` → écraser ; sinon ignorer
      (la ligne locale `synced = false` sera poussée au cycle suivant) ;
-   - tombstone distante → delete local physique si la ligne locale est sync, sinon conserver
-     (l'écriture locale non sync gagne, cas rare : suppression sur appareil A pendant une
-     édition hors ligne sur appareil B — l'édition survit, ce qui est le comportement LWW) ;
+   - tombstone distante → conversion en tombstone locale (`deleted = true`,
+     `synced = true`) si la ligne locale est sync — pas de delete physique
+     immédiat : les enfants éventuels gardent un parent référencable, la
+     purge à 30 jours fait le delete ; sinon conserver
+     (l'écriture locale non sync gagne, cas rare : suppression sur appareil A
+     pendant une édition hors ligne sur appareil B — l'édition survit, ce qui
+     est le comportement LWW) ;
 4. nouveau `last_pulled_at` = max `server_updated_at` reçu, **commité en même temps** que les
    écritures locales (une seule transaction SQLite) — pas de perte de curseur en cas de crash.
 

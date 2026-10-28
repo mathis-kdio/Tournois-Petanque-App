@@ -1,5 +1,6 @@
 import { uuidv7 } from '@/utils/uuid/uuidv7';
 import { SQLiteDatabase } from 'expo-sqlite';
+import { TABLES, type TableMigration } from './uuidMigrationTables';
 
 /**
  * Migration programmatique : conversion des clés primaires `integer` → UUID v7 `text`
@@ -13,255 +14,6 @@ import { SQLiteDatabase } from 'expo-sqlite';
  *
  * Idempotente : si les tables ont déjà des IDs `text`, la migration est ignorée.
  */
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-interface TableMigration {
-  /** Nom de la table originale (ex. "joueurs"). */
-  name: string;
-  /** Définition CREATE TABLE de la version _v2 (sans le nom). */
-  v2Columns: string;
-  /** Index supplémentaires à recréer sur la table _v2. */
-  indexes?: string[];
-  /** Colonnes non-FK à copier telles quelles (noms SQL exacts). */
-  dataColumns: string[];
-  /** FK à mapper : { colonneSource: nomTableParent }. */
-  fkMappings: Record<string, string>;
-  /** La table avait-elle déjà une colonne `updated_at` ? */
-  hadUpdatedAt: boolean;
-}
-
-// ─── Configuration des tables (ordre parents → enfants) ───────────────────────
-
-const TABLES: TableMigration[] = [
-  {
-    name: 'joueurs',
-    v2Columns: [
-      '`id` text PRIMARY KEY NOT NULL',
-      '`joueur_id` integer NOT NULL',
-      '`name` text NOT NULL',
-      '`type` text',
-      '`equipe` integer',
-      '`isChecked` integer DEFAULT false',
-      '`synced` integer DEFAULT 0 NOT NULL',
-      '`updated_at` integer NOT NULL',
-      '`deleted` integer DEFAULT 0 NOT NULL',
-    ].join(', '),
-    dataColumns: ['joueur_id', 'name', 'type', 'equipe', 'isChecked'],
-    fkMappings: {},
-    hadUpdatedAt: false,
-  },
-  {
-    name: 'joueurs_suggestion',
-    v2Columns: [
-      '`id` text PRIMARY KEY NOT NULL',
-      '`name` text NOT NULL',
-      '`occurence` integer NOT NULL',
-      '`cacher` integer DEFAULT false',
-      '`synced` integer DEFAULT 0 NOT NULL',
-      '`updated_at` integer NOT NULL',
-      '`deleted` integer DEFAULT 0 NOT NULL',
-    ].join(', '),
-    indexes: [
-      'CREATE UNIQUE INDEX `nameUniqueIndex_v2` ON `joueurs_suggestion_v2` (`name`)',
-    ],
-    dataColumns: ['name', 'occurence', 'cacher'],
-    fkMappings: {},
-    hadUpdatedAt: false,
-  },
-  {
-    name: 'listes_joueurs',
-    v2Columns: [
-      '`id` text PRIMARY KEY NOT NULL',
-      '`name` text',
-      '`synced` integer DEFAULT 0 NOT NULL',
-      '`updated_at` integer NOT NULL',
-      '`deleted` integer DEFAULT 0 NOT NULL',
-    ].join(', '),
-    dataColumns: ['name'],
-    fkMappings: {},
-    hadUpdatedAt: true,
-  },
-  {
-    name: 'terrains',
-    v2Columns: [
-      '`id` text PRIMARY KEY NOT NULL',
-      '`name` text NOT NULL',
-      '`synced` integer DEFAULT 0 NOT NULL',
-      '`updated_at` integer NOT NULL',
-      '`deleted` integer DEFAULT 0 NOT NULL',
-    ].join(', '),
-    dataColumns: ['name'],
-    fkMappings: {},
-    hadUpdatedAt: true,
-  },
-  {
-    name: 'preparation_tournoi',
-    v2Columns: [
-      '`id` text PRIMARY KEY NOT NULL',
-      '`nbTours` integer',
-      '`nbPtVictoire` integer',
-      '`speciauxIncompatibles` integer',
-      '`memesEquipes` integer',
-      '`memesAdversaires` integer',
-      '`typeTournoi` text',
-      '`typeEquipes` text',
-      '`mode` text',
-      '`modeCreationEquipes` text',
-      '`complement` text',
-      '`avecTerrains` integer DEFAULT false NOT NULL',
-    ].join(', '),
-    dataColumns: [
-      'nbTours',
-      'nbPtVictoire',
-      'speciauxIncompatibles',
-      'memesEquipes',
-      'memesAdversaires',
-      'typeTournoi',
-      'typeEquipes',
-      'mode',
-      'modeCreationEquipes',
-      'complement',
-      'avecTerrains',
-    ],
-    fkMappings: {},
-    hadUpdatedAt: false,
-  },
-  {
-    name: 'tournoi',
-    v2Columns: [
-      '`id` text PRIMARY KEY NOT NULL',
-      '`name` text NOT NULL',
-      '`nbTours` integer NOT NULL',
-      '`nbMatchs` integer NOT NULL',
-      '`nbPtVictoire` integer NOT NULL',
-      '`speciauxIncompatibles` integer NOT NULL',
-      '`memesEquipes` integer NOT NULL',
-      '`memesAdversaires` integer NOT NULL',
-      '`typeEquipes` text NOT NULL',
-      '`typeTournoi` text NOT NULL',
-      '`avecTerrains` integer NOT NULL',
-      '`mode` text NOT NULL',
-      '`estTournoiActuel` integer NOT NULL',
-      '`create_at` integer NOT NULL',
-      '`updated_at` integer NOT NULL',
-      '`synced` integer DEFAULT 0 NOT NULL',
-      '`deleted` integer DEFAULT 0 NOT NULL',
-    ].join(', '),
-    dataColumns: [
-      'name',
-      'nbTours',
-      'nbMatchs',
-      'nbPtVictoire',
-      'speciauxIncompatibles',
-      'memesEquipes',
-      'memesAdversaires',
-      'typeEquipes',
-      'typeTournoi',
-      'avecTerrains',
-      'mode',
-      'estTournoiActuel',
-      'create_at',
-    ],
-    fkMappings: {},
-    hadUpdatedAt: true,
-  },
-  {
-    name: 'equipe',
-    v2Columns: [
-      '`id` text PRIMARY KEY NOT NULL',
-      '`equipe_id` integer NOT NULL',
-      '`synced` integer DEFAULT 0 NOT NULL',
-      '`updated_at` integer NOT NULL',
-      '`deleted` integer DEFAULT 0 NOT NULL',
-    ].join(', '),
-    dataColumns: ['equipe_id'],
-    fkMappings: {},
-    hadUpdatedAt: true,
-  },
-  {
-    name: 'equipes_joueurs',
-    v2Columns: [
-      '`id` text PRIMARY KEY NOT NULL',
-      '`joueur_id` text NOT NULL',
-      '`equipe_id` text NOT NULL',
-      '`synced` integer DEFAULT 0 NOT NULL',
-      '`updated_at` integer NOT NULL',
-      '`deleted` integer DEFAULT 0 NOT NULL',
-    ].join(', '),
-    dataColumns: [],
-    fkMappings: { joueur_id: 'joueurs', equipe_id: 'equipe' },
-    hadUpdatedAt: false,
-  },
-  {
-    name: 'joueurs_listes',
-    v2Columns: [
-      '`id` text PRIMARY KEY NOT NULL',
-      '`joueur_id` text NOT NULL',
-      '`liste_id` text NOT NULL',
-      '`synced` integer DEFAULT 0 NOT NULL',
-      '`updated_at` integer NOT NULL',
-      '`deleted` integer DEFAULT 0 NOT NULL',
-    ].join(', '),
-    dataColumns: [],
-    fkMappings: { joueur_id: 'joueurs', liste_id: 'listes_joueurs' },
-    hadUpdatedAt: false,
-  },
-  {
-    name: 'joueurs_preparation_tournois',
-    v2Columns: [
-      '`id` text PRIMARY KEY NOT NULL',
-      '`joueur_id` text NOT NULL',
-      '`preparation_tournoi_id` text NOT NULL',
-    ].join(', '),
-    dataColumns: [],
-    fkMappings: {
-      joueur_id: 'joueurs',
-      preparation_tournoi_id: 'preparation_tournoi',
-    },
-    hadUpdatedAt: false,
-  },
-  {
-    name: 'terrains_preparation_tournois',
-    v2Columns: [
-      '`id` text PRIMARY KEY NOT NULL',
-      '`terrain_id` text NOT NULL',
-      '`preparation_tournoi_id` text NOT NULL',
-    ].join(', '),
-    dataColumns: [],
-    fkMappings: {
-      terrain_id: 'terrains',
-      preparation_tournoi_id: 'preparation_tournoi',
-    },
-    hadUpdatedAt: false,
-  },
-  {
-    name: 'match',
-    v2Columns: [
-      '`id` text PRIMARY KEY NOT NULL',
-      '`match_id` integer NOT NULL',
-      '`tournoi_id` text NOT NULL',
-      '`tour_id` integer NOT NULL',
-      '`tour_name` text',
-      '`equipe1_id` text NOT NULL',
-      '`equipe2_id` text NOT NULL',
-      '`score1` integer',
-      '`score2` integer',
-      '`terrain_id` text',
-      '`synced` integer DEFAULT 0 NOT NULL',
-      '`updated_at` integer NOT NULL',
-      '`deleted` integer DEFAULT 0 NOT NULL',
-    ].join(', '),
-    dataColumns: ['match_id', 'tour_id', 'tour_name', 'score1', 'score2'],
-    fkMappings: {
-      tournoi_id: 'tournoi',
-      equipe1_id: 'equipe',
-      equipe2_id: 'equipe',
-      terrain_id: 'terrains',
-    },
-    hadUpdatedAt: true,
-  },
-];
 
 // ─── Utilitaires ──────────────────────────────────────────────────────────────
 
@@ -290,9 +42,12 @@ export async function runUuidMigration(db: SQLiteDatabase): Promise<void> {
 
   const now = Date.now();
 
-  await db.withTransactionAsync(async () => {
-    await db.execAsync('PRAGMA foreign_keys = OFF;');
-
+  // PRAGMA foreign_keys est un no-op à l'intérieur d'une transaction SQLite :
+  // il est appliqué hors transaction (avant le BEGIN), puis réactivé après —
+  // sinon les FK resteraient actives pendant toute la migration.
+  await db.execAsync('PRAGMA foreign_keys = OFF;');
+  try {
+    await db.withTransactionAsync(async () => {
     // 1. Créer la table de mapping
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS \`id_mapping\` (
@@ -421,6 +176,12 @@ export async function runUuidMigration(db: SQLiteDatabase): Promise<void> {
       );
     `);
 
-    await db.execAsync('PRAGMA foreign_keys = ON;');
   });
+  } finally {
+    try {
+      await db.execAsync('PRAGMA foreign_keys = ON;');
+    } catch {
+      // La réouverture de la base réactivera les FK (défaut expo-sqlite).
+    }
+  }
 }

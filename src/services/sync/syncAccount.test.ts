@@ -218,6 +218,22 @@ describe('syncAccount', () => {
       expect(plan.needsChoice).toBe(false);
       expect(plan.isNewLogin).toBe(true);
     });
+
+    it('changement de compte avec écritures hors ligne : choix requis même si le compte distant semble vide', async () => {
+      // Les écritures hors ligne datent du compte précédent : elles ne
+      // doivent pas être poussées vers le nouveau compte sans confirmation,
+      // même si le compte distant paraît vide (ou vérification impossible).
+      asyncStorageStore.set('localDataOwnerKey', OTHER_USER_ID);
+      mockSelectWhereFn.mockResolvedValue([{ count: 2 }]);
+      setupRemoteEmpty();
+
+      const plan = await prepareLoginSync(USER_ID);
+
+      expect(plan.isNewLogin).toBe(true);
+      expect(plan.remoteHasData).toBe(false);
+      expect(plan.unsyncedCount).toBe(18); // 9 tables × 2
+      expect(plan.needsChoice).toBe(true);
+    });
   });
 
   describe('checkLogout', () => {
