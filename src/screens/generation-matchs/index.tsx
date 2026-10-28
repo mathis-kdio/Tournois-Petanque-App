@@ -290,7 +290,7 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
 
       //Ajout des options du match à la fin du tableau contenant les matchs
       const tournoiOptions: PreparationTournoiModel = {
-        id: 0,
+        id: '',
         nbTours: finalNbTours,
         nbMatchs: nbMatchs,
         nbPtVictoire: nbPtVictoire,

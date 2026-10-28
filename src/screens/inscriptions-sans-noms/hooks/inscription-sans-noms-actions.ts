@@ -23,7 +23,7 @@ export const addJoueurs = async (
   const joueursBDD = await JoueursRepository.insertMultiples(joueurs);
 
   const joueursPreparationTournois = joueursBDD.map((joueur) =>
-    toNewJoueursPreparationTournois(joueur, 0),
+    toNewJoueursPreparationTournois(joueur, '0'),
   );
 
   await JoueursPreparationTournoisRepository.insert(joueursPreparationTournois);

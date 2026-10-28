@@ -56,7 +56,7 @@ export function tournoiFromPostgres(row: TournoiPostgresRow): NewTournoi {
     nbPtVictoire: row.nb_pt_victoire,
     speciauxIncompatibles: row.speciaux_incompatibles,
     memesEquipes: row.memes_equipes,
-    memesAdversaires: row.memes_adversaires,
+    memesAdversaires: row.memes_adversaires as NewTournoi['memesAdversaires'],
     typeEquipes: row.type_equipes as NewTournoi['typeEquipes'],
     typeTournoi: row.type_tournoi as NewTournoi['typeTournoi'],
     avecTerrains: row.avec_terrains,
