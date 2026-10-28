@@ -26,9 +26,7 @@ describe('uuidMigrationTables', () => {
       for (const column of fkColumns) {
         const parent = table.fkMappings[column];
         // la colonne doit référencer parent(id), comme le schéma Drizzle
-        expect(table.v2Columns).toContain(
-          `REFERENCES \`${parent}\`(\`id\`)`,
-        );
+        expect(table.v2Columns).toContain(`REFERENCES \`${parent}\`(\`id\`)`);
       }
     }
   });
