@@ -33,6 +33,9 @@ export interface Props {
   setActionLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+const getErrorMessage = (err: unknown): string =>
+  err instanceof Error ? err.message : String(err);
+
 const DeleteAccountAlertDialog: React.FC<Props> = ({
   deleteAccountOpen,
   setDeleteAccountOpen,
@@ -83,7 +86,7 @@ const DeleteAccountAlertDialog: React.FC<Props> = ({
       } catch (err) {
         Alert.alert(
           t('erreur_inattendue', {
-            erreur: err instanceof Error ? err.message : String(err),
+            erreur: getErrorMessage(err),
           }),
         );
       }
@@ -91,7 +94,7 @@ const DeleteAccountAlertDialog: React.FC<Props> = ({
     } catch (err) {
       Alert.alert(
         t('erreur_inattendue', {
-          erreur: err instanceof Error ? err.message : String(err),
+          erreur: getErrorMessage(err),
         }),
       );
       setStepUpLoading(false);
