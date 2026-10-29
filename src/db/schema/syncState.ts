@@ -8,7 +8,6 @@ export const syncState = sqliteTable('sync_state', {
   userId: text('user_id').primaryKey(),
   lastPulledAt: integer('last_pulled_at'),
   clockOffset: integer('clock_offset'),
-  purgedAt: integer('purged_at'),
 });
 
 export type SyncState = typeof syncState.$inferSelect;

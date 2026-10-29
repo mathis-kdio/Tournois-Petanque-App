@@ -16,8 +16,7 @@
 CREATE TABLE `sync_state` (
 	`user_id` text PRIMARY KEY,
 	`last_pulled_at` integer,
-	`clock_offset` integer,
-	`purged_at` integer
+	`clock_offset` integer
 );
 --> statement-breakpoint
 ALTER TABLE `equipe` ADD `deleted` integer DEFAULT false NOT NULL;--> statement-breakpoint

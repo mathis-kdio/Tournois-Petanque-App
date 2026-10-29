@@ -287,6 +287,18 @@ export async function logoutAndPurge(userId: string): Promise<void> {
   await supabaseClient.auth.signOut();
 }
 
+/**
+ * Déconnexion forcée : purge locale SANS vérifier l'outbox, puis signOut.
+ *
+ * À n'utiliser que sur confirmation explicite de l'utilisateur
+ * (« se déconnecter quand même et perdre ces données ») : les lignes non
+ * synchronisées sont alors définitivement perdues, c'est le choix assumé.
+ */
+export async function forceLogoutAndPurge(userId: string): Promise<void> {
+  await purgeLocalData('logout_forced_purge', userId);
+  await supabaseClient.auth.signOut();
+}
+
 // ─── Suppression du compte : purge Supabase RGPD ──────────────────────
 
 /**
@@ -294,8 +306,19 @@ export async function logoutAndPurge(userId: string): Promise<void> {
  * (SECURITY DEFINER, migration 0003) : le ON DELETE CASCADE sur
  * `user_id REFERENCES auth.users(id)` purge toutes les tables du compte.
  * Puis purge locale (comme logout) et déconnexion.
+ *
+ * Re-vérifie l'outbox avant la RPC (comme logoutAndPurge) : sans cela, des
+ * écritures locales non synchronisées seraient purgées localement en même
+ * temps que le compte distant, sans avertissement. Lève une erreur si
+ * l'outbox n'est pas vide.
  */
 export async function deleteAccountAndPurge(userId: string): Promise<void> {
+  const unsyncedCount = await countUnsynced();
+  if (unsyncedCount > 0) {
+    throw new Error(
+      `Suppression bloquée : ${unsyncedCount} ligne(s) non synchronisée(s).`,
+    );
+  }
   const { error } = await supabaseClient.rpc('delete_own_account');
   if (error) throw error;
   await purgeLocalData('account_deleted_purge', userId);

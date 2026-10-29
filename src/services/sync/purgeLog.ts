@@ -16,6 +16,8 @@ export type PurgeAction =
   | 'login_replace_purge'
   /** Purge locale au logout, outbox vide. */
   | 'logout_purge'
+  /** Purge locale au logout forcé (outbox non vide, choix explicite). */
+  | 'logout_forced_purge'
   /** Purge locale après suppression du compte. */
   | 'account_deleted_purge';
 

@@ -13,9 +13,9 @@ import { Heading } from '@/components/ui/heading';
 import { CloseIcon, Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { checkLogout, logoutAndPurge } from '@/services/sync/syncAccount';
+import { checkLogout, forceLogoutAndPurge, logoutAndPurge } from '@/services/sync/syncAccount';
 import { syncCycle } from '@/services/sync/syncEngine';
-import { useRouter } from 'node_modules/expo-router/build';
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 
@@ -39,7 +39,9 @@ const BlockLogoutAlertDialog: React.FC<Props> = ({
     setLogoutBlockedOpen(false);
     setActionLoading(true);
     try {
-      await logoutAndPurge(user.id);
+      // Choix explicite de l'utilisateur : purge sans vérifier l'outbox,
+      // les lignes non synchronisées sont perdues.
+      await forceLogoutAndPurge(user.id);
       router.navigate('.');
     } catch (err) {
       Alert.alert(

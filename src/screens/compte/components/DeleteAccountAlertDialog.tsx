@@ -13,7 +13,8 @@ import { Heading } from '@/components/ui/heading';
 import { CloseIcon, Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { deleteAccountAndPurge } from '@/services/sync/syncAccount';
-import { useRouter } from 'node_modules/expo-router/build';
+import { syncCycle } from '@/services/sync/syncEngine';
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 
@@ -37,6 +38,10 @@ const DeleteAccountAlertDialog: React.FC<Props> = ({
     setDeleteAccountOpen(false);
     setActionLoading(true);
     try {
+      // La suppression vérifie l'outbox : on tente d'abord une synchro forcée
+      // pour vider l'outbox, et l'erreur « non synchronisée(s) » reste un
+      // blocage explicite plutôt qu'une perte silencieuse.
+      await syncCycle({ userId: user.id });
       await deleteAccountAndPurge(user.id);
       router.navigate('.');
     } catch (err) {

@@ -95,7 +95,6 @@ export const syncState = sqliteTable('sync_state', {
   userId: text('user_id').primaryKey(),        // id du compte Supabase
   lastPulledAt: integer('last_pulled_at'),     // curseur de pull (epoch ms, horloge serveur)
   clockOffset: integer('clock_offset'),        // décalage horloge serveur/locales
-  purgedAt: integer('purged_at'),              // date de la dernière purge (logout)
 });
 ```
 

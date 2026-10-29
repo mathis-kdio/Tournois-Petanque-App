@@ -749,16 +749,6 @@
       "table": "sync_state"
     },
     {
-      "type": "integer",
-      "notNull": false,
-      "autoincrement": false,
-      "default": null,
-      "generated": null,
-      "name": "purged_at",
-      "entityType": "columns",
-      "table": "sync_state"
-    },
-    {
       "type": "text",
       "notNull": false,
       "autoincrement": false,

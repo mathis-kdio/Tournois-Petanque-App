@@ -157,22 +157,15 @@ export async function runUuidMigration(db: SQLiteDatabase): Promise<void> {
         );
       }
 
-      // 4. Renommer l'index unique de joueurs_suggestion si nécessaire
-      await db.execAsync(`DROP INDEX IF EXISTS \`nameUniqueIndex_v2\`;`);
-      await db.execAsync(
-        `CREATE UNIQUE INDEX IF NOT EXISTS \`nameUniqueIndex\` ON \`joueurs_suggestion\` (\`name\`);`,
-      );
-
-      // 5. Supprimer la table de mapping
+      // 4. Supprimer la table de mapping
       await db.execAsync(`DROP TABLE IF EXISTS \`id_mapping\`;`);
 
-      // 6. Créer la table sync_state
+      // 5. Créer la table sync_state
       await db.execAsync(`
       CREATE TABLE IF NOT EXISTS \`sync_state\` (
         \`user_id\` text PRIMARY KEY NOT NULL,
         \`last_pulled_at\` integer,
-        \`clock_offset\` integer,
-        \`purged_at\` integer
+        \`clock_offset\` integer
       );
     `);
     });

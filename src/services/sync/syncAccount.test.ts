@@ -19,6 +19,7 @@ import {
   adoptReplace,
   checkLogout,
   deleteAccountAndPurge,
+  forceLogoutAndPurge,
   logoutAndPurge,
   prepareLoginSync,
 } from './syncAccount';
@@ -333,8 +334,27 @@ describe('syncAccount', () => {
     });
   });
 
+  describe('forceLogoutAndPurge', () => {
+    it('purge les données locales sans vérifier l\'outbox, puis signOut', async () => {
+      // Outbox NON vide : la purge forcée passe quand même (choix explicite).
+      mockSelectWhereFn.mockResolvedValue([{ count: 4 }]);
+
+      await forceLogoutAndPurge(USER_ID);
+
+      expect(mockDb.delete).toHaveBeenCalledTimes(13);
+      expect(mockSignOut).toHaveBeenCalledTimes(1);
+      expect(mockSetItem).toHaveBeenCalledWith(
+        'syncPurgeLogKey',
+        expect.stringContaining('logout_forced_purge'),
+      );
+    });
+  });
+
   describe('deleteAccountAndPurge', () => {
     it('supprime le compte via RPC, purge localement puis signOut', async () => {
+      // Outbox vide : la suppression est autorisée.
+      mockSelectWhereFn.mockResolvedValue([{ count: 0 }]);
+
       await deleteAccountAndPurge(USER_ID);
 
       expect(mockRpc).toHaveBeenCalledWith('delete_own_account');
@@ -346,7 +366,22 @@ describe('syncAccount', () => {
       );
     });
 
+    it('bloque la suppression si des lignes ne sont pas synchronisées', async () => {
+      // Outbox non vide : on ne supprime ni le compte distant ni les données
+      // locales sans avertissement.
+      mockSelectWhereFn.mockResolvedValue([{ count: 2 }]);
+
+      await expect(deleteAccountAndPurge(USER_ID)).rejects.toThrow(
+        'Suppression bloquée : 18 ligne(s) non synchronisée(s).',
+      );
+
+      expect(mockRpc).not.toHaveBeenCalled();
+      expect(mockDb.delete).not.toHaveBeenCalled();
+      expect(mockSignOut).not.toHaveBeenCalled();
+    });
+
     it('ne purge rien si la RPC échoue', async () => {
+      mockSelectWhereFn.mockResolvedValue([{ count: 0 }]);
       mockRpc.mockResolvedValue({
         data: null,
         error: { message: 'PGRST202' },
