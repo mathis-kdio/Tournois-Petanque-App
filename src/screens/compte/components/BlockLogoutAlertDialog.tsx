@@ -13,7 +13,11 @@ import { Heading } from '@/components/ui/heading';
 import { CloseIcon, Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { checkLogout, forceLogoutAndPurge, logoutAndPurge } from '@/services/sync/syncAccount';
+import {
+  checkLogout,
+  forceLogoutAndPurge,
+  logoutAndPurge,
+} from '@/services/sync/syncAccount';
 import { syncCycle } from '@/services/sync/syncEngine';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';

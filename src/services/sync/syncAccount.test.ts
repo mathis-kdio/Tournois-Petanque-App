@@ -335,7 +335,7 @@ describe('syncAccount', () => {
   });
 
   describe('forceLogoutAndPurge', () => {
-    it('purge les données locales sans vérifier l\'outbox, puis signOut', async () => {
+    it("purge les données locales sans vérifier l'outbox, puis signOut", async () => {
       // Outbox NON vide : la purge forcée passe quand même (choix explicite).
       mockSelectWhereFn.mockResolvedValue([{ count: 4 }]);
 
