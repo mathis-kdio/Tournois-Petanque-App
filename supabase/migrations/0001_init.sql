@@ -182,18 +182,6 @@ CREATE TABLE "match" (
   PRIMARY KEY ("user_id", "id")
 );
 
--- ─── 3. Index pour un pull efficace (0001) ────────────────────────────────────
-
-CREATE INDEX "joueurs_pull_idx" ON "joueurs" ("user_id", "updated_at");
-CREATE INDEX "joueurs_suggestion_pull_idx" ON "joueurs_suggestion" ("user_id", "updated_at");
-CREATE INDEX "listes_joueurs_pull_idx" ON "listes_joueurs" ("user_id", "updated_at");
-CREATE INDEX "terrains_pull_idx" ON "terrains" ("user_id", "updated_at");
-CREATE INDEX "tournoi_pull_idx" ON "tournoi" ("user_id", "updated_at");
-CREATE INDEX "equipe_pull_idx" ON "equipe" ("user_id", "updated_at");
-CREATE INDEX "equipes_joueurs_pull_idx" ON "equipes_joueurs" ("user_id", "updated_at");
-CREATE INDEX "joueurs_listes_pull_idx" ON "joueurs_listes" ("user_id", "updated_at");
-CREATE INDEX "match_pull_idx" ON "match" ("user_id", "updated_at");
-
 -- Index secondaire sur server_updated_at pour le curseur de pull
 CREATE INDEX "joueurs_server_updated_idx" ON "joueurs" ("user_id", "server_updated_at");
 CREATE INDEX "joueurs_suggestion_server_updated_idx" ON "joueurs_suggestion" ("user_id", "server_updated_at");
@@ -204,6 +192,20 @@ CREATE INDEX "equipe_server_updated_idx" ON "equipe" ("user_id", "server_updated
 CREATE INDEX "equipes_joueurs_server_updated_idx" ON "equipes_joueurs" ("user_id", "server_updated_at");
 CREATE INDEX "joueurs_listes_server_updated_idx" ON "joueurs_listes" ("user_id", "server_updated_at");
 CREATE INDEX "match_server_updated_idx" ON "match" ("user_id", "server_updated_at");
+
+-- Limites de taille des champs texte (anti-DoS stockage) : un compte
+-- authentifié ne peut pas pousser des lignes de plusieurs Mo en boucle.
+
+ALTER TABLE "joueurs" ADD CONSTRAINT "joueurs_name_len_check" CHECK (length("name") <= 200);
+ALTER TABLE "joueurs" ADD CONSTRAINT "joueurs_type_len_check" CHECK (length("type") <= 50);
+ALTER TABLE "joueurs_suggestion" ADD CONSTRAINT "joueurs_suggestion_name_len_check" CHECK (length("name") <= 200);
+ALTER TABLE "listes_joueurs" ADD CONSTRAINT "listes_joueurs_name_len_check" CHECK (length("name") <= 200);
+ALTER TABLE "terrains" ADD CONSTRAINT "terrains_name_len_check" CHECK (length("name") <= 200);
+ALTER TABLE "tournoi" ADD CONSTRAINT "tournoi_name_len_check" CHECK (length("name") <= 200);
+ALTER TABLE "tournoi" ADD CONSTRAINT "tournoi_type_equipes_len_check" CHECK (length("type_equipes") <= 20);
+ALTER TABLE "tournoi" ADD CONSTRAINT "tournoi_type_tournoi_len_check" CHECK (length("type_tournoi") <= 20);
+ALTER TABLE "tournoi" ADD CONSTRAINT "tournoi_mode_len_check" CHECK (length("mode") <= 20);
+ALTER TABLE "match" ADD CONSTRAINT "match_tour_name_len_check" CHECK (length("tour_name") <= 200);
 
 -- ─── 4. Trigger générique : LWW + clamp horloge + server_updated_at + deleted_at
 --     (0001 + 0004 + 0005, version finale) ─────────────────────────────────────
