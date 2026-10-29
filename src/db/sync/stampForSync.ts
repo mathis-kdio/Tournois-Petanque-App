@@ -14,6 +14,14 @@
 
 import { notifySyncWrite } from './writeBus';
 
+/** Valeurs de stamp (sans notifier) — à utiliser en masse, puis notifier une fois. */
+function stampValues(): { updatedAt: Date; synced: boolean } {
+  return {
+    updatedAt: new Date(),
+    synced: false,
+  };
+}
+
 /**
  * Objet partiel à fusionner dans un `insert().values(...)` ou `update().set(...)`.
  *
@@ -22,10 +30,7 @@ import { notifySyncWrite } from './writeBus';
  */
 export function stampForSync(): { updatedAt: Date; synced: boolean } {
   notifySyncWrite();
-  return {
-    updatedAt: new Date(),
-    synced: false,
-  };
+  return stampValues();
 }
 
 /**
@@ -38,8 +43,18 @@ export function stampForDelete(): {
 } {
   notifySyncWrite();
   return {
-    updatedAt: new Date(),
-    synced: false,
+    ...stampValues(),
     deleted: true,
   };
+}
+
+/**
+ * Stamp sans notification pour les inserts en masse : notifier UNE SEULE fois
+ * après l'insert (ex. `stampForSyncBulk(n)`), sinon N lignes = N notifications.
+ */
+export function stampForSyncBulk(
+  count: number,
+): { updatedAt: Date; synced: boolean }[] {
+  if (count > 0) notifySyncWrite();
+  return Array.from({ length: count }, () => stampValues());
 }

@@ -127,10 +127,6 @@ export const MatchsRepository = {
       .where(inArray(match.id, idlist));
   },
 
-  deleteAll() {
-    return getDrizzleDb().delete(match);
-  },
-
   softDeleteAll() {
     return getDrizzleDb()
       .update(match)

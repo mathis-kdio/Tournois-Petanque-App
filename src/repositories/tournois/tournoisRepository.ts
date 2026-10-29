@@ -33,10 +33,6 @@ export const TournoisRepository = {
       .where(eq(tournoi.id, id));
   },
 
-  deleteAll() {
-    return getDrizzleDb().delete(tournoi);
-  },
-
   softDeleteAll() {
     return getDrizzleDb()
       .update(tournoi)

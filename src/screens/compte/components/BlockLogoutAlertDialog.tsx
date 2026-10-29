@@ -18,10 +18,10 @@ import {
   forceLogoutAndPurge,
   logoutAndPurge,
 } from '@/services/sync/syncAccount';
-import { syncCycle } from '@/services/sync/syncEngine';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
+import { useForceSync } from '../hooks/useForceSync';
 
 export interface Props {
   logoutBlockedOpen: boolean;
@@ -57,27 +57,15 @@ const BlockLogoutAlertDialog: React.FC<Props> = ({
     setActionLoading(false);
   };
 
+  const forceSync = useForceSync();
+
   const reessayerSync = async () => {
     if (!user) return;
     setLogoutBlockedOpen(false);
     setActionLoading(true);
-    let syncErrors: string[];
-    let canLogout: boolean;
-    try {
-      // Synchro forcée, même hors ligne.
-      const result = await syncCycle({ userId: user.id });
-      const check = await checkLogout();
-      syncErrors = result.errors;
-      canLogout = check.canLogout;
-    } catch (err) {
-      Alert.alert(
-        t('erreur_inattendue', {
-          erreur: err instanceof Error ? err.message : String(err),
-        }),
-      );
-      setActionLoading(false);
-      return;
-    }
+    // Synchro forcée, même hors ligne.
+    const syncErrors = await forceSync();
+    const canLogout = (await checkLogout()).canLogout;
 
     if (syncErrors.length === 0 && canLogout) {
       try {
@@ -90,8 +78,6 @@ const BlockLogoutAlertDialog: React.FC<Props> = ({
           }),
         );
       }
-    } else {
-      Alert.alert(t('sync_echouee', { erreur: syncErrors.join('\n') }));
     }
     setActionLoading(false);
   };

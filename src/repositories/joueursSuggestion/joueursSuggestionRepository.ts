@@ -18,14 +18,16 @@ export const JoueursSuggestionRepository = {
   },
 
   insertOrUpdateOccurence(newJoueursSuggestion: NewJoueursSuggestion) {
+    // Un seul stamp (et donc une seule notification) partagé par les deux branches.
+    const stamp = stampForSync();
     return getDrizzleDb()
       .insert(joueursSuggestion)
-      .values({ ...newJoueursSuggestion, ...stampForSync() })
+      .values({ ...newJoueursSuggestion, ...stamp })
       .onConflictDoUpdate({
         target: joueursSuggestion.name,
         set: {
           occurence: sql`${joueursSuggestion.occurence} + 1`,
-          ...stampForSync(),
+          ...stamp,
         },
       });
   },
@@ -35,10 +37,6 @@ export const JoueursSuggestionRepository = {
       .update(joueursSuggestion)
       .set({ cacher: true, ...stampForSync() })
       .where(eq(joueursSuggestion.id, id));
-  },
-
-  deleteAll() {
-    return getDrizzleDb().delete(joueursSuggestion);
   },
 
   softDeleteAll() {

@@ -33,16 +33,14 @@ import { runInBulkTransaction } from '@/db/sync/localTransaction';
 import { supabaseClient } from '@/utils/supabase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { eq } from 'drizzle-orm';
+import { addPurgeLogEntry, type PurgeAction } from './purgeLog';
+import { countUnsynced, pull, syncCycle } from './syncEngine';
 import {
-  addPurgeLogEntry,
-  type PurgeAction,
-  type PurgeLogEntry,
-} from './purgeLog';
-import { countUnsynced, pull, syncCycle, TABLES_BY_NAME } from './syncEngine';
-import { SYNC_MAPPERS } from './syncMappers';
-import { PULL_ORDER, PUSH_ORDER, type SyncTableName } from './syncTables';
-
-export type { PurgeAction, PurgeLogEntry };
+  PULL_ORDER,
+  PUSH_ORDER,
+  SYNC_TABLES,
+  type SyncTableName,
+} from './syncTables';
 
 // ─── Propriétaire des données locales ────────────────────────────────────────
 
@@ -94,7 +92,7 @@ async function purgeSyncedRows(): Promise<void> {
   const db = getDrizzleDb();
   await runInBulkTransaction(db, async () => {
     for (const tableName of PULL_ORDER) {
-      const table = TABLES_BY_NAME[tableName];
+      const table = SYNC_TABLES[tableName].table;
       await db.delete(table).where(eq(table.synced, true));
     }
   });
@@ -115,7 +113,7 @@ export async function purgeLocalData(
   const db = getDrizzleDb();
   // Enfants d'abord (FK), comme PULL_ORDER, puis les tables transitoires.
   const tables = [
-    ...PULL_ORDER.map((name: SyncTableName) => TABLES_BY_NAME[name]),
+    ...PULL_ORDER.map((name: SyncTableName) => SYNC_TABLES[name].table),
     joueursPreparationTournois,
     terrainsPreparationTournois,
     preparationTournoi,
@@ -136,8 +134,6 @@ export async function purgeLocalData(
 // ─── Login : adoption des données locales ────────────────────────────
 
 export interface LoginSyncPlan {
-  /** Compte propriétaire des données locales avant ce login (null = vierge). */
-  previousOwner: string | null;
   /** Vrai si c'est un vrai login (changement/first compte), pas une réouverture. */
   isNewLogin: boolean;
   /** Lignes en attente de push (écritures hors ligne). */
@@ -176,7 +172,6 @@ export async function prepareLoginSync(userId: string): Promise<LoginSyncPlan> {
   if (!isNewLogin) {
     // Réouverture avec la même session : rien à adopter, cycle normal.
     return {
-      previousOwner,
       isNewLogin: false,
       unsyncedCount: 0,
       remoteHasData: false,
@@ -204,7 +199,6 @@ export async function prepareLoginSync(userId: string): Promise<LoginSyncPlan> {
   }
 
   return {
-    previousOwner,
     isNewLogin: true,
     unsyncedCount,
     remoteHasData,
@@ -229,7 +223,7 @@ async function remoteAccountHasData(): Promise<boolean> {
     PUSH_ORDER.map(async (tableName) => {
       try {
         const { data, error } = await supabaseClient
-          .from(SYNC_MAPPERS[tableName].pgTable)
+          .from(SYNC_TABLES[tableName].pgTable)
           .select('id')
           .limit(1);
 

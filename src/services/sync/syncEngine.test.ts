@@ -31,15 +31,18 @@ const mockUpsert = jest.fn();
 const mockSelectRemote = jest.fn();
 const mockRpc = jest.fn();
 const mockOnConflictDoNothing = jest.fn();
+const mockOnConflictDoUpdate = jest.fn();
 const mockInsertValues = jest.fn();
-/** Chaîne thenable + onConflictDoNothing (garde-fou nameUniqueIndex au pull). */
+/** Chaîne thenable + onConflict* (upsert sync_state, garde-fou nameUniqueIndex au pull). */
 function setupInsertValuesMock() {
   mockInsertValues.mockImplementation(() => {
     const p: any = Promise.resolve(undefined);
     p.onConflictDoNothing = mockOnConflictDoNothing;
+    p.onConflictDoUpdate = mockOnConflictDoUpdate;
     return p;
   });
   mockOnConflictDoNothing.mockResolvedValue(undefined);
+  mockOnConflictDoUpdate.mockResolvedValue(undefined);
 }
 
 const mockSelectIn = jest.fn();

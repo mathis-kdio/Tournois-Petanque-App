@@ -7,7 +7,6 @@ import { ScrollView } from '@/components/ui/scroll-view';
 import { VStack } from '@/components/ui/vstack';
 import { useAuth } from '@/components/supabase/SessionProvider';
 import { checkLogout, logoutAndPurge } from '@/services/sync/syncAccount';
-import { syncCycle } from '@/services/sync/syncEngine';
 import Item from '@components/Item';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
@@ -15,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 import BlockLogoutAlertDialog from './components/BlockLogoutAlertDialog';
 import DeleteAccountAlertDialog from './components/DeleteAccountAlertDialog';
+import { useForceSync } from './hooks/useForceSync';
 
 const Compte = () => {
   const { t } = useTranslation();
@@ -61,28 +61,12 @@ const Compte = () => {
     setActionLoading(false);
   };
 
+  const forceSync = useForceSync();
+
   const forcerSynchronisation = async () => {
     if (!user || actionLoading) return;
     setActionLoading(true);
-    let syncErrors: string[];
-    try {
-      const result = await syncCycle({ userId: user.id });
-      syncErrors = result.errors;
-    } catch (err) {
-      Alert.alert(
-        t('erreur_inattendue', {
-          erreur: err instanceof Error ? err.message : String(err),
-        }),
-      );
-      setActionLoading(false);
-      return;
-    }
-
-    if (syncErrors.length === 0) {
-      Alert.alert(t('sync_reussie'));
-    } else {
-      Alert.alert(t('sync_echouee', { erreur: syncErrors.join('\n') }));
-    }
+    await forceSync();
     setActionLoading(false);
   };
 

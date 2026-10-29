@@ -31,10 +31,6 @@ export const TerrainsRepository = {
       .where(inArray(terrains.id, idlist));
   },
 
-  deleteAll() {
-    return getDrizzleDb().delete(terrains);
-  },
-
   softDeleteAll() {
     return getDrizzleDb()
       .update(terrains)

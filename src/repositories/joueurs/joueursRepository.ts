@@ -1,5 +1,9 @@
 import { equipesJoueurs, joueurs, joueursListes, NewJoueur } from '@/db/schema';
-import { stampForDelete, stampForSync } from '@/db/sync/stampForSync';
+import {
+  stampForDelete,
+  stampForSync,
+  stampForSyncBulk,
+} from '@/db/sync/stampForSync';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { JoueurType } from '@/types/enums/joueurType';
 import { and, eq, inArray, sql } from 'drizzle-orm';
@@ -35,9 +39,9 @@ export const JoueursRepository = {
   },
 
   insertMultiples(newJoueurs: NewJoueur[]) {
-    const values = newJoueurs.map((j) => ({
+    const values = newJoueurs.map((j, i) => ({
       ...j,
-      ...stampForSync(),
+      ...stampForSyncBulk(newJoueurs.length)[i],
     }));
     return getDrizzleDb().insert(joueurs).values(values).returning();
   },
@@ -47,10 +51,6 @@ export const JoueursRepository = {
       .update(joueurs)
       .set(stampForDelete())
       .where(inArray(joueurs.id, id));
-  },
-
-  deleteAll() {
-    return getDrizzleDb().delete(joueurs);
   },
 
   softDeleteAll() {

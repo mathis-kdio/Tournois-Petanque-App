@@ -1,5 +1,9 @@
 import { joueursListes, NewJoueursListes } from '@/db/schema';
-import { stampForDelete, stampForSync } from '@/db/sync/stampForSync';
+import {
+  stampForDelete,
+  stampForSync,
+  stampForSyncBulk,
+} from '@/db/sync/stampForSync';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { and, eq } from 'drizzle-orm';
 
@@ -11,9 +15,9 @@ export const JoueursListesRepository = {
   },
 
   insertMultiple(newJoueursListes: NewJoueursListes[]) {
-    const values = newJoueursListes.map((j) => ({
+    const values = newJoueursListes.map((j, i) => ({
       ...j,
-      ...stampForSync(),
+      ...stampForSyncBulk(newJoueursListes.length)[i],
     }));
     return getDrizzleDb().insert(joueursListes).values(values);
   },
@@ -42,10 +46,6 @@ export const JoueursListesRepository = {
       .update(joueursListes)
       .set(stampForDelete())
       .where(eq(joueursListes.listeId, listeId));
-  },
-
-  deleteAll() {
-    return getDrizzleDb().delete(joueursListes);
   },
 
   softDeleteAll() {

@@ -15,18 +15,7 @@
  * avec une base sqlite in-memory et un mock de supabase-js.
  */
 
-import {
-  equipe,
-  equipesJoueurs,
-  joueurs,
-  joueursListes,
-  joueursSuggestion,
-  listesJoueurs,
-  match,
-  syncState,
-  terrains,
-  tournoi,
-} from '@/db/schema';
+import { joueursSuggestion, syncState } from '@/db/schema';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { supabaseClient } from '@/utils/supabase';
 import {
@@ -35,8 +24,12 @@ import {
 } from '@/db/sync/localTransaction';
 import { and, eq, inArray, lt, sql } from 'drizzle-orm';
 import { Platform } from 'react-native';
-import { SYNC_MAPPERS } from './syncMappers';
-import { PULL_ORDER, PUSH_ORDER, type SyncTableName } from './syncTables';
+import {
+  PULL_ORDER,
+  PUSH_ORDER,
+  SYNC_TABLES,
+  type SyncTableName,
+} from './syncTables';
 
 /**
  * Nombre de lignes affectées par un update/delete Drizzle.
@@ -59,23 +52,6 @@ function affectedRows(result: unknown): number {
   // Proxy web : pas de compteur disponible, on suppose 1 si pas d'erreur.
   return Platform.OS === 'web' ? 1 : 0;
 }
-
-// ─── Tables Drizzle par nom ──────────────────────────────────────────────────
-
-/** Tables synchronisées par nom — exporté pour syncAccount (purges). */
-export const TABLES_BY_NAME: Record<SyncTableName, any> = {
-  joueurs_suggestion: joueursSuggestion,
-  joueurs,
-  listes_joueurs: listesJoueurs,
-  terrains,
-  tournoi,
-  joueurs_listes: joueursListes,
-  equipe,
-  equipes_joueurs: equipesJoueurs,
-  match,
-};
-
-// ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface SyncResult {
   pushed: number;
@@ -158,20 +134,19 @@ function getSyncStateRow(dbOrTx: DbOrTx, userId: string) {
     .then((rows: any[]) => rows[0] ?? null);
 }
 
+/** Upsert de la ligne sync_state en UNE requête (INSERT ... ON CONFLICT DO UPDATE). */
 async function upsertSyncState(
   dbOrTx: DbOrTx,
   userId: string,
   values: { lastPulledAt?: number | null; clockOffset?: number | null },
 ) {
-  const existing = await getSyncStateRow(dbOrTx, userId);
-  if (existing) {
-    await dbOrTx
-      .update(syncState)
-      .set(values)
-      .where(eq(syncState.userId, userId));
-  } else {
-    await dbOrTx.insert(syncState).values({ userId, ...values });
-  }
+  await dbOrTx
+    .insert(syncState)
+    .values({ userId, ...values })
+    .onConflictDoUpdate({
+      target: syncState.userId,
+      set: values,
+    });
 }
 
 // ─── Constantes de sync ──────────────────────────────────────────────────────
@@ -243,8 +218,8 @@ async function runPush(
   const clockOffset = stateRow?.clockOffset ?? 0;
 
   for (const tableName of PUSH_ORDER) {
-    const mapper = SYNC_MAPPERS[tableName];
-    const table = TABLES_BY_NAME[tableName];
+    const mapper = SYNC_TABLES[tableName];
+    const table = SYNC_TABLES[tableName].table;
 
     // Sélectionner les lignes non sync (synced = false)
     // Les tombstones (deleted = true, synced = false) doivent aussi être push
@@ -281,11 +256,11 @@ async function runPush(
 
           if (error) throw error;
 
-          const ids = batch.map((row) => row.id as string);
+          const batchIds = batch.map((row) => row.id as string);
           const { data: appliedRows, error: selectError } = await supabaseClient
             .from(mapper.pgTable)
             .select('id, server_updated_at, updated_at')
-            .in('id', ids);
+            .in('id', batchIds);
 
           if (selectError) throw selectError;
 
@@ -309,18 +284,20 @@ async function runPush(
           //      toute façon — marquer synced évite de bloquer l'outbox (et le
           //      logout) indéfiniment sur une ligne que le serveur refusera
           //      toujours.
-          pushedIds = batch
-            .filter((row) => {
-              const applied = appliedById.get(row.id as string);
-              if (!applied) return false;
-              const localInServerTime =
-                new Date(row.updatedAt as Date).getTime() + clockOffset;
-              return (
-                applied.serverAt >= localInServerTime - 1_000 ||
-                applied.remoteUpdatedAt > localInServerTime
-              );
-            })
-            .map((row) => row.id as string);
+          const ids: string[] = [];
+          for (const row of batch) {
+            const applied = appliedById.get(row.id as string);
+            if (!applied) continue;
+            const localInServerTime =
+              new Date(row.updatedAt as Date).getTime() + clockOffset;
+            if (
+              applied.serverAt >= localInServerTime - 1_000 ||
+              applied.remoteUpdatedAt > localInServerTime
+            ) {
+              ids.push(row.id as string);
+            }
+          }
+          pushedIds = ids;
         } catch (err) {
           if (attempt < maxRetries - 1) {
             await sleep(backoffDelay(attempt));
@@ -338,8 +315,9 @@ async function runPush(
         // prochain cycle (sinon elle serait marquée sync sans avoir été
         // poussée, puis écrasée par un pull avec des données plus
         // anciennes).
+        const pushedIdSet = new Set(pushedIds);
         for (const row of batch) {
-          if (!pushedIds.includes(row.id as string)) continue;
+          if (!pushedIdSet.has(row.id as string)) continue;
           await db
             .update(table)
             .set({ synced: true })
@@ -417,7 +395,7 @@ async function runPull(
   let newCursor = lastPulledAt;
 
   for (const tableName of PULL_ORDER) {
-    const mapper = SYNC_MAPPERS[tableName];
+    const mapper = SYNC_TABLES[tableName];
     const rows: any[] = [];
 
     let offset = 0;
@@ -496,8 +474,8 @@ async function runPull(
         const rows = rowsByTable.get(tableName);
         if (!rows) continue;
 
-        const mapper = SYNC_MAPPERS[tableName];
-        const table = TABLES_BY_NAME[tableName];
+        const mapper = SYNC_TABLES[tableName];
+        const table = SYNC_TABLES[tableName].table;
 
         for (const remoteRow of rows) {
           const isTombstone = remoteRow.deleted_at != null;
@@ -688,7 +666,7 @@ export async function purgeLocalTombstones(): Promise<number> {
   // purge ne doit pas échouer pour autant.
   await withForeignKeysDisabled(db, async () => {
     for (const tableName of PULL_ORDER) {
-      const table = TABLES_BY_NAME[tableName];
+      const table = SYNC_TABLES[tableName].table;
 
       const candidates = await db
         .select({ id: table.id })
@@ -756,7 +734,7 @@ export async function countUnsynced(): Promise<number> {
   let total = 0;
 
   for (const tableName of PUSH_ORDER) {
-    const table = TABLES_BY_NAME[tableName];
+    const table = SYNC_TABLES[tableName].table;
     const rows = await db
       .select({ count: sql<number>`count(*)` })
       .from(table)
@@ -765,11 +743,4 @@ export async function countUnsynced(): Promise<number> {
   }
 
   return total;
-}
-
-/**
- * Vérifie si l'outbox est vide (toutes les lignes sont synced).
- */
-export async function isOutboxEmpty(): Promise<boolean> {
-  return (await countUnsynced()) === 0;
 }
