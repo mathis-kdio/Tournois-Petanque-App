@@ -538,9 +538,34 @@ async function runPull(
             continue;
           }
 
-          if (!localRow) {
-            // Absente localement → insert
-            await db.insert(table).values(sqliteRow as any);
+          // Ligne cible locale : par id, et pour joueurs_suggestion aussi par
+          // name. L'index unique local nameUniqueIndex n'a pas d'équivalent
+          // serveur (l'upsert distant porte sur user_id,id) : deux appareils
+          // hors ligne peuvent créer la même suggestion avec des ids
+          // différents, et un insert brut au pull ferait échouer toute la
+          // transaction (curseur compris) à chaque cycle.
+          let targetRow = localRow;
+          if (!targetRow && tableName === 'joueurs_suggestion') {
+            const name = (sqliteRow as { name?: unknown }).name;
+            if (typeof name === 'string') {
+              const sameNameRows = await db
+                .select()
+                .from(table)
+                .where(eq(joueursSuggestion.name, name));
+              targetRow = sameNameRows[0];
+            }
+          }
+
+          if (!targetRow) {
+            // Absente localement → insert. Pour joueurs_suggestion,
+            // onConflictDoNothing sur name en garde-fou contre la course
+            // entre le lookup et l'insert.
+            const insertBuilder = db.insert(table).values(sqliteRow as any);
+            await (tableName === 'joueurs_suggestion'
+              ? (insertBuilder as any).onConflictDoNothing({
+                  target: joueursSuggestion.name,
+                })
+              : insertBuilder);
             applied++;
           } else {
             // Présente localement → LWW
@@ -548,10 +573,18 @@ async function runPull(
             // serveur en équivalent heure locale, il faut SOUSTRAIRE l'offset.
             const remoteUpdatedAtCorrected =
               new Date(remoteRow.updated_at).getTime() - clockOffset;
-            const localUpdatedAt = new Date(localRow.updatedAt).getTime();
+            const targetUpdatedAt = new Date(
+              targetRow.updatedAt as Date,
+            ).getTime();
 
-            if (remoteUpdatedAtCorrected > localUpdatedAt || localRow.synced) {
-              // Écraser la ligne locale, avec garde sur updatedAt : si l'UI a
+            if (
+              remoteUpdatedAtCorrected > targetUpdatedAt ||
+              targetRow.synced
+            ) {
+              // Écraser la ligne locale (en adoptant l'id distant en cas de
+              // match par name : la ligne locale devient identique à la
+              // distante, plus de conflit d'unicité au cycle suivant), avec
+              // garde sur updatedAt : si l'UI a
               // réécrit la ligne entre le select local et ce update, la ligne
               // a synced = false + updatedAt plus récent — le where ne matche
               // pas et la modification locale est préservée (elle sera poussée).
@@ -560,8 +593,8 @@ async function runPull(
                 .set(sqliteRow as any)
                 .where(
                   and(
-                    eq(table.id, remoteRow.id),
-                    eq(table.updatedAt, localRow.updatedAt),
+                    eq(table.id, targetRow.id),
+                    eq(table.updatedAt, targetRow.updatedAt),
                   ),
                 );
               if (affectedRows(result) > 0) {

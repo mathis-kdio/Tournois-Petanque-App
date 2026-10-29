@@ -30,7 +30,17 @@ import {
 const mockUpsert = jest.fn();
 const mockSelectRemote = jest.fn();
 const mockRpc = jest.fn();
-const mockInsertValues = jest.fn().mockResolvedValue(undefined);
+const mockOnConflictDoNothing = jest.fn();
+const mockInsertValues = jest.fn();
+/** Chaîne thenable + onConflictDoNothing (garde-fou nameUniqueIndex au pull). */
+function setupInsertValuesMock() {
+  mockInsertValues.mockImplementation(() => {
+    const p: any = Promise.resolve(undefined);
+    p.onConflictDoNothing = mockOnConflictDoNothing;
+    return p;
+  });
+  mockOnConflictDoNothing.mockResolvedValue(undefined);
+}
 
 const mockSelectIn = jest.fn();
 
@@ -66,7 +76,10 @@ jest.mock('@/db/schema', () => {
   });
   return {
     joueurs: ft('joueurs'),
-    joueursSuggestion: ft('joueurs_suggestion'),
+    joueursSuggestion: {
+      ...ft('joueurs_suggestion'),
+      name: 'joueurs_suggestion.name',
+    },
     listesJoueurs: ft('listes_joueurs'),
     terrains: ft('terrains'),
     tournoi: ft('tournoi'),
@@ -168,10 +181,10 @@ function setupSelectRemoteWithRows(rowsByCall: any[][]) {
 describe('syncEngine', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    setupInsertValuesMock();
     setupUpsertSuccess();
     setupSelectRemoteAlwaysEmpty();
     mockRun.mockResolvedValue(undefined);
-    mockInsertValues.mockResolvedValue(undefined);
   });
 
   describe('push', () => {
@@ -784,6 +797,111 @@ describe('syncEngine', () => {
       expect(mockRun).not.toHaveBeenCalled();
       expect(mockDb.insert).not.toHaveBeenCalled();
       expect(mockDb.update).not.toHaveBeenCalled();
+    });
+
+    it('fusionne par name une suggestion distante dont la ligne locale a un id différent (nameUniqueIndex)', async () => {
+      // Deux appareils hors ligne ont créé la même suggestion « Dupont » avec
+      // des ids différents : le lookup par id rate, le lookup par name retrouve
+      // la ligne locale → update (adoption de l'id distant), pas d'insert →
+      // pas de violation de nameUniqueIndex, la transaction (curseur comprise)
+      // n'échoue pas à chaque cycle.
+      const localSuggestion = makeRow({
+        id: 'local-uuid',
+        name: 'Dupont',
+        synced: true,
+        updatedAt: new Date('2026-01-01T00:00:00Z'),
+      });
+      let callCount = 0;
+      mockSelectWhereFn.mockImplementation(async function () {
+        const idx = callCount++;
+        if (idx === 0) return []; // sync_state
+        if (idx === 1) return []; // lookup par id → rien
+        if (idx === 2) return [localSuggestion]; // lookup par name → trouvé
+        return [];
+      });
+
+      const remoteSuggestion = {
+        id: 'remote-uuid',
+        name: 'Dupont',
+        occurence: 3,
+        cacher: false,
+        user_id: USER_ID,
+        updated_at: '2026-01-02T00:00:00.000Z',
+        deleted: false,
+        deleted_at: null,
+        server_updated_at: '2026-01-02T00:00:01.000Z',
+      };
+      // PULL_ORDER : match, equipes_joueurs, equipe, joueurs_listes, tournoi,
+      // terrains, listes_joueurs, joueurs, joueurs_suggestion (9e table).
+      setupSelectRemoteWithRows([
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [remoteSuggestion],
+      ]);
+
+      const result = await pull({ userId: USER_ID });
+
+      expect(result.errors).toHaveLength(0);
+      expect(result.pulled).toBe(1);
+      // Update (fusion), pas d'insert de la ligne distante :
+      expect(mockDb.update).toHaveBeenCalledTimes(1);
+      expect(mockInsertValues).not.toHaveBeenCalledWith(
+        expect.objectContaining({ name: 'Dupont' }),
+      );
+      expect(mockOnConflictDoNothing).not.toHaveBeenCalled();
+    });
+
+    it('insère une suggestion distante absente localement avec onConflictDoNothing sur name', async () => {
+      // Garde-fou : si une ligne de même name apparaît entre le lookup et
+      // l'insert, l'insert est ignoré au lieu de faire échouer la transaction.
+      let callCount = 0;
+      mockSelectWhereFn.mockImplementation(async function () {
+        const idx = callCount++;
+        if (idx === 0) return []; // sync_state
+        if (idx === 1) return []; // lookup par id
+        if (idx === 2) return []; // lookup par name
+        return [];
+      });
+
+      const remoteSuggestion = {
+        id: 'remote-uuid',
+        name: 'Nouveau',
+        occurence: 1,
+        cacher: false,
+        user_id: USER_ID,
+        updated_at: '2026-01-02T00:00:00.000Z',
+        deleted: false,
+        deleted_at: null,
+        server_updated_at: '2026-01-02T00:00:01.000Z',
+      };
+      setupSelectRemoteWithRows([
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [remoteSuggestion],
+      ]);
+
+      const result = await pull({ userId: USER_ID });
+
+      expect(result.errors).toHaveLength(0);
+      expect(result.pulled).toBe(1);
+      expect(mockInsertValues).toHaveBeenCalledWith(
+        expect.objectContaining({ id: 'remote-uuid', name: 'Nouveau' }),
+      );
+      expect(mockOnConflictDoNothing).toHaveBeenCalledWith({
+        target: 'joueurs_suggestion.name',
+      });
     });
   });
 
