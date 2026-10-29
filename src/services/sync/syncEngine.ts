@@ -186,6 +186,16 @@ async function upsertSyncState(
  */
 const PULL_CURSOR_LAG_MS = 5_000;
 
+/**
+ * Âge maximal du curseur de pull au-delà duquel on force un pull COMPLET
+ * (curseur remis à 0). Au-delà de la rétention des tombstones (30 jours,
+ * purge pg_cron purge_old_tombstones), les suppressions distante ne sont
+ * plus disponibles : un appareil revenu après 30+ jours hors ligne
+ * réapparaîtrait avec ses lignes supprimées (« résurrection »). Un pull
+ * complet resynchronise l'état depuis zéro.
+ */
+const PULL_CURSOR_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1_000;
+
 // ─── Push ────────────────────────────────────────────────────────────────────
 
 /**
@@ -370,7 +380,14 @@ async function runPull(
   const errors: string[] = [];
 
   const stateRow = await getSyncStateRow(db, userId);
-  const lastPulledAt = stateRow?.lastPulledAt ?? 0;
+  // Curseur trop vieux (> rétention des tombstones) → pull complet :
+  // les suppressions des 30 derniers jours ne sont plus récupérables,
+  // repartir de zéro évite de ressusciter des lignes supprimées ailleurs.
+  const storedPulledAt = stateRow?.lastPulledAt ?? 0;
+  const cursorTooOld =
+    storedPulledAt > 0 &&
+    Date.now() - storedPulledAt > PULL_CURSOR_MAX_AGE_MS;
+  const lastPulledAt = cursorTooOld ? 0 : storedPulledAt;
   const clockOffset = stateRow?.clockOffset ?? 0;
 
   // ─── Phase 1 : fetch réseau, bufférisé, aucune écriture ────────────────────

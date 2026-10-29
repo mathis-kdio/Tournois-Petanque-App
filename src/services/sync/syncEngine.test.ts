@@ -144,18 +144,21 @@ function setupSelectRemoteAlwaysEmpty() {
   });
 }
 
+const mockGtRemote = jest.fn();
+
 function setupSelectRemoteWithRows(rowsByCall: any[][]) {
   let call = 0;
-  mockSelectRemote.mockReturnValue({
-    gt: jest.fn().mockReturnValue({
-      order: jest.fn().mockReturnValue({
-        range: jest.fn().mockImplementation(async () => {
-          const rows = rowsByCall[call] ?? [];
-          call++;
-          return { data: rows, error: null };
-        }),
+  mockGtRemote.mockReturnValue({
+    order: jest.fn().mockReturnValue({
+      range: jest.fn().mockImplementation(async () => {
+        const rows = rowsByCall[call] ?? [];
+        call++;
+        return { data: rows, error: null };
       }),
     }),
+  });
+  mockSelectRemote.mockReturnValue({
+    gt: mockGtRemote,
   });
 }
 
@@ -261,6 +264,43 @@ describe('syncEngine', () => {
   });
 
   describe('pull', () => {
+    it('force un pull complet (curseur remis à 0) si lastPulledAt a plus de 30 jours', async () => {
+      // 1er appel = sync_state → curseur vieux de 40 jours (les tombstones
+      // de cette période ont été purgées côté serveur : pull complet sinon
+      // les lignes supprimées ailleurs ressusciteraient).
+      const oldCursor = Date.now() - 40 * 24 * 60 * 60 * 1_000;
+      let callCount = 0;
+      mockSelectWhereFn.mockImplementation(async function () {
+        const idx = callCount++;
+        if (idx === 0) return [{ userId: USER_ID, lastPulledAt: oldCursor, clockOffset: 0 }];
+        return [];
+      });
+
+      const remoteRow = {
+        id: 'remote-1',
+        joueur_id: 1,
+        name: 'Test',
+        type: null,
+        equipe: null,
+        is_checked: false,
+        user_id: USER_ID,
+        updated_at: '2026-01-01T00:00:00.000Z',
+        deleted: false,
+        deleted_at: null,
+        server_updated_at: '2026-01-01T00:00:01.000Z',
+      };
+      setupSelectRemoteWithRows([[remoteRow]]);
+
+      await pull({ userId: USER_ID });
+
+      // Le filtre .gt('server_updated_at', ...) doit partir de l'epoch 0
+      // (pull complet) et non de l'ancien curseur.
+      expect(mockGtRemote).toHaveBeenCalledWith(
+        'server_updated_at',
+        new Date(0).toISOString(),
+      );
+    });
+
     it('insère une ligne distante absente localement', async () => {
       // pull boucle sur 9 tables (PULL_ORDER = reverse de PUSH_ORDER).
       // Le 1er appel à mockSelectWhereFn = sync_state → []
