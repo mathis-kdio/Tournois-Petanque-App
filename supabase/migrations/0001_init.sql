@@ -377,12 +377,14 @@ SELECT cron.schedule('purge_old_tombstones', '0 3 * * *', 'SELECT public.purge_o
 -- postgres) : seul l'utilisateur authentifié peut se supprimer lui-même, et
 -- uniquement via cette RPC — auth.users n'est pas accessible autrement.
 --
--- Step-up obligatoire : la suppression exige un niveau d'assurance AAL2
--- (authentification récente avec un second facteur ou re-saisie du mot de
--- passe, cf. signInWithPassword côté client). Un simple token de session
--- (AAL1) ne suffit pas : un token volé ne doit pas permettre de supprimer
--- le compte. auth.jwt() lit le JWT courant ; 'aal' = Authentication
--- Assurance Level, 'amr' = méthodes utilisées.
+-- Step-up obligatoire : la suppression exige une authentification récente.
+-- Deux cas acceptés (auth.jwt() lit le JWT courant ; 'aal' = Authentication
+-- Assurance Level, 'amr' = méthodes d'authentification avec leur timestamp) :
+--   - aal2 (MFA ou re-saisie récente du mot de passe) ;
+--   - OU méthode 'password' dans amr datant de moins de 10 minutes
+--     (signInWithPassword côté client produit exactement cela).
+-- Un simple token de session AAL1 vieux ne suffit pas : un token volé ne
+-- doit pas permettre de supprimer le compte.
 
 CREATE OR REPLACE FUNCTION public.delete_own_account()
 RETURNS void
@@ -390,13 +392,35 @@ LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path = ''
 AS $$
+DECLARE
+  v_aal text;
+  v_amr jsonb;
+  v_method jsonb;
+  v_recent_password boolean := false;
 BEGIN
   IF auth.uid() IS NULL THEN
     RAISE EXCEPTION 'Utilisateur non authentifié';
   END IF;
 
-  IF coalesce(auth.jwt() ->> 'aal', 'aal1') <> 'aal2' THEN
-    RAISE EXCEPTION 'Ré-authentification requise (niveau AAL2) pour supprimer le compte';
+  v_aal := coalesce(auth.jwt() ->> 'aal', 'aal1');
+  v_amr := coalesce((auth.jwt() -> 'amr')::jsonb, '[]'::jsonb);
+
+  IF v_aal = 'aal2' THEN
+    DELETE FROM auth.users WHERE id = auth.uid();
+    RETURN;
+  END IF;
+
+  FOR v_method IN SELECT * FROM jsonb_array_elements(v_amr)
+  LOOP
+    IF v_method ->> 'method' = 'password'
+       AND (v_method ->> 'timestamp')::bigint >= extract(epoch from now()) - 600 THEN
+      v_recent_password := true;
+      EXIT;
+    END IF;
+  END LOOP;
+
+  IF NOT v_recent_password THEN
+    RAISE EXCEPTION 'Ré-authentification requise (mot de passe saisi dans les 10 dernières minutes) pour supprimer le compte';
   END IF;
 
   DELETE FROM auth.users WHERE id = auth.uid();
