@@ -216,7 +216,7 @@ describe('syncEngine', () => {
       expect(result.errors[0]).toContain('Network error');
     });
 
-    it('ne marque PAS synced=true si le serveur a ignoré l\'écriture (LWW, server_updated_at non avancé)', async () => {
+    it("ne marque PAS synced=true si le serveur a ignoré l'écriture (LWW, server_updated_at non avancé)", async () => {
       // Ligne locale récente (2026-01-01) mais le serveur renvoie un
       // server_updated_at ancien : le trigger LWW a ignoré l'upsert
       // (RETURN NULL, pas d'erreur) — la ligne doit rester synced=false.
@@ -272,7 +272,8 @@ describe('syncEngine', () => {
       let callCount = 0;
       mockSelectWhereFn.mockImplementation(async function () {
         const idx = callCount++;
-        if (idx === 0) return [{ userId: USER_ID, lastPulledAt: oldCursor, clockOffset: 0 }];
+        if (idx === 0)
+          return [{ userId: USER_ID, lastPulledAt: oldCursor, clockOffset: 0 }];
         return [];
       });
 

@@ -256,7 +256,11 @@ async function runPush(
       const pgRows = batch.map((row) => mapper.toPostgres(row as any, userId));
       let pushedIds: string[] = [];
 
-      for (let attempt = 0; attempt < maxRetries && pushedIds.length === 0; attempt++) {
+      for (
+        let attempt = 0;
+        attempt < maxRetries && pushedIds.length === 0;
+        attempt++
+      ) {
         try {
           // Upsert + relecture : le trigger LWW serveur (maintain_sync_columns)
           // peut ignorer une écriture (RETURN NULL) sans erreur PostgREST —
@@ -385,8 +389,7 @@ async function runPull(
   // repartir de zéro évite de ressusciter des lignes supprimées ailleurs.
   const storedPulledAt = stateRow?.lastPulledAt ?? 0;
   const cursorTooOld =
-    storedPulledAt > 0 &&
-    Date.now() - storedPulledAt > PULL_CURSOR_MAX_AGE_MS;
+    storedPulledAt > 0 && Date.now() - storedPulledAt > PULL_CURSOR_MAX_AGE_MS;
   const lastPulledAt = cursorTooOld ? 0 : storedPulledAt;
   const clockOffset = stateRow?.clockOffset ?? 0;
 
