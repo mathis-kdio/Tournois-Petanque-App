@@ -218,24 +218,30 @@ export async function prepareLoginSync(userId: string): Promise<LoginSyncPlan> {
 
 /**
  * Le compte distant a-t-il déjà des données ?
- * Hors ligne / en erreur → false : on ne propose pas le choix, le
- * comportement par défaut (« fusionner », conservateur) s'applique.
+ * Les 9 tables sont interrogées en parallèle (une requête `limit(1)` chacune)
+ * : en séquentiel, un compte vide coûterait 9 allers-réseau au login.
+ * Hors ligne / en erreur sur une table → false pour cette table ; le
+ * comportement par défaut (« fusionner », conservateur) s'applique si tout
+ * échoue.
  */
 async function remoteAccountHasData(): Promise<boolean> {
-  for (const tableName of PUSH_ORDER) {
-    try {
-      const { data, error } = await supabaseClient
-        .from(SYNC_MAPPERS[tableName].pgTable)
-        .select('id')
-        .limit(1);
+  const results = await Promise.all(
+    PUSH_ORDER.map(async (tableName) => {
+      try {
+        const { data, error } = await supabaseClient
+          .from(SYNC_MAPPERS[tableName].pgTable)
+          .select('id')
+          .limit(1);
 
-      if (error) throw error;
-      if ((data ?? []).length > 0) return true;
-    } catch {
-      // Table illisible (hors ligne) → table suivante.
-    }
-  }
-  return false;
+        if (error) throw error;
+        return (data ?? []).length > 0;
+      } catch {
+        // Table illisible (hors ligne) → false pour cette table.
+        return false;
+      }
+    }),
+  );
+  return results.some(Boolean);
 }
 
 /** Choix « conserver les données locales et fusionner » : cycle complet. */

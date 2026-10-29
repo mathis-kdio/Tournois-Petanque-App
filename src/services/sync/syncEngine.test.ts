@@ -39,9 +39,9 @@ jest.mock('@/utils/supabase', () => ({
     from: jest.fn(() => ({
       upsert: mockUpsert,
       select: (...args: any[]) => {
-        // select('id, server_updated_at') suivi de .in(...) = relecture post-upsert ;
-        // select('*') suivi de .gt(...) = pull paginé.
-        if (args[0] === 'id, server_updated_at') {
+        // select('id, server_updated_at, updated_at') suivi de .in(...) =
+        // relecture post-upsert ; select('*') suivi de .gt(...) = pull paginé.
+        if (args[0] === 'id, server_updated_at, updated_at') {
           return { in: (...inArgs: any[]) => mockSelectIn(...inArgs) };
         }
         return mockSelectRemote(...args);
@@ -129,6 +129,7 @@ function setupUpsertSuccess() {
     data: ids.map((id) => ({
       id,
       server_updated_at: new Date('2026-06-01T00:00:00Z').toISOString(),
+      updated_at: new Date('2026-06-01T00:00:00Z').toISOString(),
     })),
     error: null,
   }));
@@ -175,12 +176,12 @@ describe('syncEngine', () => {
 
   describe('push', () => {
     it('pousse les lignes synced=false et les marque synced=true', async () => {
-      // Le push boucle sur 9 tables. Pour la première table avec des lignes,
-      // on retourne 2 lignes. Les autres retournent [].
+      // Le push lit d'abord sync_state (clockOffset), puis boucle sur 9 tables.
+      // Pour la première table avec des lignes, on retourne 2 lignes.
       mockSelectWhereFn.mockImplementation(async function () {
         const idx = mockSelectWhereFn.mock.calls.length - 1;
-        // Premier appel = première table (joueurs_suggestion) → 2 lignes
-        if (idx === 0) return [makeRow({ id: 'a' }), makeRow({ id: 'b' })];
+        // idx 0 = sync_state → [] ; idx 1 = première table (joueurs_suggestion)
+        if (idx === 1) return [makeRow({ id: 'a' }), makeRow({ id: 'b' })];
         return [];
       });
 
@@ -204,7 +205,7 @@ describe('syncEngine', () => {
     it('retourne une erreur si upsert échoue après max retries', async () => {
       mockSelectWhereFn.mockImplementation(async function () {
         const idx = mockSelectWhereFn.mock.calls.length - 1;
-        if (idx === 0) return [makeRow({ id: 'a' })];
+        if (idx === 1) return [makeRow({ id: 'a' })];
         return [];
       });
       mockUpsert.mockRejectedValue(new Error('Network error'));
@@ -216,13 +217,14 @@ describe('syncEngine', () => {
       expect(result.errors[0]).toContain('Network error');
     });
 
-    it("ne marque PAS synced=true si le serveur a ignoré l'écriture (LWW, server_updated_at non avancé)", async () => {
-      // Ligne locale récente (2026-01-01) mais le serveur renvoie un
-      // server_updated_at ancien : le trigger LWW a ignoré l'upsert
-      // (RETURN NULL, pas d'erreur) — la ligne doit rester synced=false.
+    it("ne marque PAS synced=true si le serveur a ignoré l'écriture (LWW, ligne distante inchangée)", async () => {
+      // Ligne locale récente (2026-01-01) mais le serveur renvoie une ligne
+      // inchangée (server_updated_at ET updated_at anciens) : le trigger LWW
+      // a ignoré l'upsert (RETURN NULL, pas d'erreur) — la ligne doit rester
+      // synced=false.
       mockSelectWhereFn.mockImplementation(async function () {
         const idx = mockSelectWhereFn.mock.calls.length - 1;
-        if (idx === 0) return [makeRow({ id: 'a' })];
+        if (idx === 1) return [makeRow({ id: 'a' })];
         return [];
       });
       mockSelectIn.mockResolvedValue({
@@ -230,6 +232,7 @@ describe('syncEngine', () => {
           {
             id: 'a',
             server_updated_at: new Date('2025-01-01T00:00:00Z').toISOString(),
+            updated_at: new Date('2025-01-01T00:00:00Z').toISOString(),
           },
         ],
         error: null,
@@ -239,6 +242,71 @@ describe('syncEngine', () => {
 
       expect(result.pushed).toBe(0);
       expect(mockDb.update).not.toHaveBeenCalled();
+    });
+
+    it('marque synced=true malgré une horloge locale en avance (clamp serveur + clockOffset)', async () => {
+      // Horloge locale 60 s en avance sur le serveur : clockOffset = -60 000.
+      // Ligne locale à 00:01:00 (heure locale) = 00:00:00 en base serveur.
+      // Le serveur a clampé updated_at à son now() (00:00:00) et a accepté
+      // l'écriture (server_updated_at = 00:00:00). Sans correction du
+      // clockOffset, server_updated_at (00:00:00) < updatedAt local (00:01:00)
+      // → la ligne ne serait jamais marquée synced (outbox bloquée).
+      let callCount = 0;
+      mockSelectWhereFn.mockImplementation(async function () {
+        const idx = callCount++;
+        if (idx === 0) {
+          return [{ userId: USER_ID, lastPulledAt: 0, clockOffset: -60_000 }];
+        }
+        if (idx === 1) {
+          return [
+            makeRow({ id: 'a', updatedAt: new Date('2026-06-01T00:01:00Z') }),
+          ];
+        }
+        return [];
+      });
+      mockUpsert.mockResolvedValue({ data: null, error: null });
+      mockSelectIn.mockResolvedValue({
+        data: [
+          {
+            id: 'a',
+            server_updated_at: '2026-06-01T00:00:00.000Z',
+            updated_at: '2026-06-01T00:00:00.000Z',
+          },
+        ],
+        error: null,
+      });
+
+      const result = await push({ userId: USER_ID });
+
+      expect(result.pushed).toBe(1);
+      expect(mockDb.update).toHaveBeenCalled();
+    });
+
+    it('marque synced=true si le serveur détient une version plus récente (écriture locale perdante au LWW)', async () => {
+      // Le trigger serveur a ignoré notre upsert car une version plus récente
+      // existe déjà (updated_at distante 2026-06-01 > notre 2026-01-01).
+      // La ligne locale sera écrasée au prochain pull de toute façon : on la
+      // marque synced pour ne pas bloquer l'outbox (et le logout) indéfiniment.
+      mockSelectWhereFn.mockImplementation(async function () {
+        const idx = mockSelectWhereFn.mock.calls.length - 1;
+        if (idx === 1) return [makeRow({ id: 'a' })]; // updatedAt = 2026-01-01
+        return [];
+      });
+      mockSelectIn.mockResolvedValue({
+        data: [
+          {
+            id: 'a',
+            server_updated_at: new Date('2026-06-01T00:00:00Z').toISOString(),
+            updated_at: new Date('2026-06-01T00:00:00Z').toISOString(),
+          },
+        ],
+        error: null,
+      });
+
+      const result = await push({ userId: USER_ID });
+
+      expect(result.pushed).toBe(1);
+      expect(mockDb.update).toHaveBeenCalled();
     });
 
     it("retourne 'Sync already running' si une sync est en cours", async () => {
@@ -661,6 +729,37 @@ describe('syncEngine', () => {
       expect(mockDb.insert.mock.calls[1][0].id).toBe('match.id');
     });
 
+    it('persiste le curseur même si le pull complet ne ramène aucune ligne (compte distant vide)', async () => {
+      // Curseur vieux de 40 jours → pull complet. Si le compte distant est
+      // vide, le curseur stocké doit quand même avancer (sinon chaque cycle
+      // referait un pull complet depuis l'epoch 0 indéfiniment).
+      const oldCursor = Date.now() - 40 * 24 * 60 * 60 * 1_000;
+      let callCount = 0;
+      mockSelectWhereFn.mockImplementation(async function () {
+        const idx = callCount++;
+        if (idx === 0) {
+          return [{ userId: USER_ID, lastPulledAt: oldCursor, clockOffset: 0 }];
+        }
+        return [];
+      });
+      setupSelectRemoteAlwaysEmpty();
+
+      const result = await pull({ userId: USER_ID });
+
+      expect(result.pulled).toBe(0);
+      expect(result.errors).toHaveLength(0);
+      // Curseur réinitialisé à ~now (base serveur) via insert de sync_state.
+      expect(mockInsertValues).toHaveBeenCalledWith(
+        expect.objectContaining({
+          userId: USER_ID,
+          lastPulledAt: expect.any(Number),
+        }),
+      );
+      const lastPulledAt = mockInsertValues.mock.calls[0][0].lastPulledAt;
+      expect(lastPulledAt).toBeGreaterThan(Date.now() - 60_000);
+      expect(mockDb.insert).toHaveBeenCalledTimes(1);
+    });
+
     it("n'applique rien et n'avance pas le curseur si le fetch échoue", async () => {
       // Tout ou rien : erreur réseau au fetch → aucune écriture
       // locale, pas de commit de curseur, retentente au prochain cycle.
@@ -750,12 +849,13 @@ describe('syncEngine', () => {
     });
 
     it('est appelée à la fin de chaque cycle complet', async () => {
-      // Ordre des selects dans syncCycle : 1 (sync_state, pull)
-      // + 9 (outbox, push) + 9 (purge). La 11e requête = purge de `match`.
+      // Ordre des selects dans syncCycle : 1 (sync_state, pull) + 1 (sync_state,
+      // push, pour le clockOffset) + 9 (outbox, push) + 9 (purge).
+      // La 12e requête = purge de `match`.
       let call = 0;
       mockSelectWhereFn.mockImplementation(async () => {
         call++;
-        if (call === 11) return [{ id: 'old-tombstone' }];
+        if (call === 12) return [{ id: 'old-tombstone' }];
         return [];
       });
       setupSelectRemoteAlwaysEmpty();
@@ -770,7 +870,7 @@ describe('syncEngine', () => {
       let call = 0;
       mockSelectWhereFn.mockImplementation(async () => {
         call++;
-        if (call === 11) throw new Error('purge boom');
+        if (call === 12) throw new Error('purge boom');
         return [];
       });
       setupSelectRemoteAlwaysEmpty();

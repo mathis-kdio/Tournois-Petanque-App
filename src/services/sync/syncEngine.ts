@@ -237,6 +237,11 @@ async function runPush(
   let pushed = 0;
   const errors: string[] = [];
 
+  // clockOffset (serverNow - localNow) : pour comparer un timestamp serveur à
+  // un updatedAt local, on ramène le local en base serveur (local + offset).
+  const stateRow = await getSyncStateRow(db, userId);
+  const clockOffset = stateRow?.clockOffset ?? 0;
+
   for (const tableName of PUSH_ORDER) {
     const mapper = SYNC_MAPPERS[tableName];
     const table = TABLES_BY_NAME[tableName];
@@ -279,26 +284,40 @@ async function runPush(
           const ids = batch.map((row) => row.id as string);
           const { data: appliedRows, error: selectError } = await supabaseClient
             .from(mapper.pgTable)
-            .select('id, server_updated_at')
+            .select('id, server_updated_at, updated_at')
             .in('id', ids);
 
           if (selectError) throw selectError;
 
-          const upsertedAt = new Map(
+          const appliedById = new Map(
             (appliedRows ?? []).map((r: any) => [
               r.id as string,
-              new Date(r.server_updated_at).getTime(),
+              {
+                serverAt: new Date(r.server_updated_at).getTime(),
+                remoteUpdatedAt: new Date(r.updated_at).getTime(),
+              },
             ]),
           );
-          // server_updated_at du serveur avance à chaque écriture acceptée
-          // (trigger) : on considère la ligne poussée si son server_updated_at
-          // est >= l'updatedAt local (horloges clampées côté serveur à now()).
+          // On marque synced=true si :
+          //  (a) le serveur a appliqué notre écriture : server_updated_at a
+          //      avancé au-delà de notre updatedAt ramené en base serveur
+          //      (local + clockOffset, tolérance 1 s) — couvre le clamp serveur
+          //      des horloges locales en avance (updated_at = now() serveur) ;
+          //  (b) le serveur détient une version strictement plus récente
+          //      (updated_at distante > notre updatedAt corrigé) : l'écriture
+          //      locale a perdu au LWW et sera écrasée au prochain pull de
+          //      toute façon — marquer synced évite de bloquer l'outbox (et le
+          //      logout) indéfiniment sur une ligne que le serveur refusera
+          //      toujours.
           pushedIds = batch
             .filter((row) => {
-              const serverAt = upsertedAt.get(row.id as string);
+              const applied = appliedById.get(row.id as string);
+              if (!applied) return false;
+              const localInServerTime =
+                new Date(row.updatedAt as Date).getTime() + clockOffset;
               return (
-                serverAt !== undefined &&
-                serverAt >= new Date(row.updatedAt as Date).getTime() - 1000
+                applied.serverAt >= localInServerTime - 1_000 ||
+                applied.remoteUpdatedAt > localInServerTime
               );
             })
             .map((row) => row.id as string);
@@ -443,6 +462,15 @@ async function runPull(
 
   // ─── Phase 2 : application locale + curseur, une seule transaction ────────
   if (fetched.length === 0) {
+    // Même sans ligne reçue, un pull complet forcé (curseur > 30 jours) doit
+    // faire avancer le curseur stocké (base serveur : local + clockOffset) :
+    // sinon, avec un compte distant vide, chaque cycle referait un pull
+    // complet inutile indéfiniment.
+    if (cursorTooOld) {
+      await upsertSyncState(db, userId, {
+        lastPulledAt: Date.now() + clockOffset,
+      });
+    }
     return { pulled: 0, errors };
   }
 
