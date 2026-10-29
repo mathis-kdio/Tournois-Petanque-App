@@ -305,6 +305,7 @@
     "sync_echouee": "La synchronisation a échoué : {{erreur}}",
     "supprimer_compte_modal_titre": "Suppression du compte",
     "supprimer_compte_modal_texte": "Votre compte et toutes ses données seront définitivement supprimés de nos serveurs, sur tous les appareils. Cette action est irréversible.",
+    "supprimer_compte_reauth_texte": "Confirmez votre mot de passe pour supprimer définitivement votre compte (ré-authentification requise).",
     "erreur_inattendue": "Une erreur est survenue : {{erreur}}"
   }
 }

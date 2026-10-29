@@ -305,6 +305,7 @@
     "sync_echouee": "Synchronisierung fehlgeschlagen: {{erreur}}",
     "supprimer_compte_modal_titre": "Konto löschen",
     "supprimer_compte_modal_texte": "Dein Konto und alle zugehörigen Daten werden dauerhaft von unseren Servern gelöscht, auf allen Geräten. Diese Aktion kann nicht rückgängig gemacht werden.",
+    "supprimer_compte_reauth_texte": "Bestätigen Sie Ihr Passwort, um Ihr Konto endgültig zu löschen (erneute Authentifizierung erforderlich).",
     "erreur_inattendue": "Ein Fehler ist aufgetreten: {{erreur}}"
   }
 }

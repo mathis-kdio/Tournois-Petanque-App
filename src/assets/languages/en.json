@@ -305,6 +305,7 @@
     "sync_echouee": "Synchronization failed: {{erreur}}",
     "supprimer_compte_modal_titre": "Account deletion",
     "supprimer_compte_modal_texte": "Your account and all its data will be permanently deleted from our servers, on all devices. This action cannot be undone.",
+    "supprimer_compte_reauth_texte": "Confirm your password to permanently delete your account (re-authentication required).",
     "erreur_inattendue": "An error occurred: {{erreur}}"
   }
 }

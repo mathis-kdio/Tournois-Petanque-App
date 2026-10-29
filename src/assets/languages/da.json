@@ -305,6 +305,7 @@
     "sync_echouee": "Synkronisering mislykkedes: {{erreur}}",
     "supprimer_compte_modal_titre": "Sletning af konto",
     "supprimer_compte_modal_texte": "Din konto og alle tilknyttede data slettes permanent fra vores servere på alle enheder. Denne handling kan ikke fortrydes.",
+    "supprimer_compte_reauth_texte": "Bekræft din adgangskode for at slette din konto permanent (ny godkendelse påkrævet).",
     "erreur_inattendue": "Der opstod en fejl: {{erreur}}"
   }
 }

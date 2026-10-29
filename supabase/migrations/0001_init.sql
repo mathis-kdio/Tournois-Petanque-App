@@ -374,6 +374,13 @@ SELECT cron.schedule('purge_old_tombstones', '0 3 * * *', 'SELECT public.purge_o
 -- La fonction est SECURITY DEFINER (créée par la migration, donc propriétaire
 -- postgres) : seul l'utilisateur authentifié peut se supprimer lui-même, et
 -- uniquement via cette RPC — auth.users n'est pas accessible autrement.
+--
+-- Step-up obligatoire : la suppression exige un niveau d'assurance AAL2
+-- (authentification récente avec un second facteur ou re-saisie du mot de
+-- passe, cf. signInWithPassword côté client). Un simple token de session
+-- (AAL1) ne suffit pas : un token volé ne doit pas permettre de supprimer
+-- le compte. auth.jwt() lit le JWT courant ; 'aal' = Authentication
+-- Assurance Level, 'amr' = méthodes utilisées.
 
 CREATE OR REPLACE FUNCTION public.delete_own_account()
 RETURNS void
@@ -384,6 +391,10 @@ AS $$
 BEGIN
   IF auth.uid() IS NULL THEN
     RAISE EXCEPTION 'Utilisateur non authentifié';
+  END IF;
+
+  IF coalesce(auth.jwt() ->> 'aal', 'aal1') <> 'aal2' THEN
+    RAISE EXCEPTION 'Ré-authentification requise (niveau AAL2) pour supprimer le compte';
   END IF;
 
   DELETE FROM auth.users WHERE id = auth.uid();

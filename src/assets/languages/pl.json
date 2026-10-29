@@ -305,6 +305,7 @@
     "sync_echouee": "Synchronizacja nie powiodła się: {{erreur}}",
     "supprimer_compte_modal_titre": "Usunięcie konta",
     "supprimer_compte_modal_texte": "Twoje konto i wszystkie powiązane dane zostaną trwale usunięte z naszych serwerów na wszystkich urządzeniach. Tej operacji nie można cofnąć.",
+    "supprimer_compte_reauth_texte": "Potwierdź hasło, aby trwale usunąć konto (wymagane ponowne uwierzytelnienie).",
     "erreur_inattendue": "Wystąpił błąd: {{erreur}}"
   }
 }
