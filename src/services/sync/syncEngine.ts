@@ -244,10 +244,15 @@ async function runPush(
 
     for (const batch of batches) {
       const pgRows = batch.map((row) => mapper.toPostgres(row as any, userId));
-      let success = false;
+      let pushedIds: string[] = [];
 
-      for (let attempt = 0; attempt < maxRetries && !success; attempt++) {
+      for (let attempt = 0; attempt < maxRetries && pushedIds.length === 0; attempt++) {
         try {
+          // Upsert + relecture : le trigger LWW serveur (maintain_sync_columns)
+          // peut ignorer une écriture (RETURN NULL) sans erreur PostgREST —
+          // un simple { error: null } ne prouve PAS que la ligne a été écrite.
+          // On ne marque synced = true que les lignes dont server_updated_at
+          // a bien avancé (écriture réellement appliquée côté serveur).
           const { error } = await supabaseClient
             .from(mapper.pgTable)
             .upsert(pgRows, {
@@ -257,7 +262,32 @@ async function runPush(
 
           if (error) throw error;
 
-          success = true;
+          const ids = batch.map((row) => row.id as string);
+          const { data: appliedRows, error: selectError } = await supabaseClient
+            .from(mapper.pgTable)
+            .select('id, server_updated_at')
+            .in('id', ids);
+
+          if (selectError) throw selectError;
+
+          const upsertedAt = new Map(
+            (appliedRows ?? []).map((r: any) => [
+              r.id as string,
+              new Date(r.server_updated_at).getTime(),
+            ]),
+          );
+          // server_updated_at du serveur avance à chaque écriture acceptée
+          // (trigger) : on considère la ligne poussée si son server_updated_at
+          // est >= l'updatedAt local (horloges clampées côté serveur à now()).
+          pushedIds = batch
+            .filter((row) => {
+              const serverAt = upsertedAt.get(row.id as string);
+              return (
+                serverAt !== undefined &&
+                serverAt >= new Date(row.updatedAt as Date).getTime() - 1000
+              );
+            })
+            .map((row) => row.id as string);
         } catch (err) {
           if (attempt < maxRetries - 1) {
             await sleep(backoffDelay(attempt));
@@ -267,7 +297,7 @@ async function runPush(
         }
       }
 
-      if (success) {
+      if (pushedIds.length > 0) {
         // Marquer synced uniquement si la ligne n'a pas été réécrite par
         // l'UI entre le select du batch et maintenant : une écriture
         // concurrente pose synced = false + nouvel updatedAt — le where
@@ -276,6 +306,7 @@ async function runPush(
         // poussée, puis écrasée par un pull avec des données plus
         // anciennes).
         for (const row of batch) {
+          if (!pushedIds.includes(row.id as string)) continue;
           await db
             .update(table)
             .set({ synced: true })
@@ -283,7 +314,7 @@ async function runPush(
               and(eq(table.id, row.id), eq(table.updatedAt, row.updatedAt)),
             );
         }
-        pushed += batch.length;
+        pushed += pushedIds.length;
       }
     }
   }

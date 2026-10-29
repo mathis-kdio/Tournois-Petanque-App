@@ -32,11 +32,20 @@ const mockSelectRemote = jest.fn();
 const mockRpc = jest.fn();
 const mockInsertValues = jest.fn().mockResolvedValue(undefined);
 
+const mockSelectIn = jest.fn();
+
 jest.mock('@/utils/supabase', () => ({
   supabaseClient: {
     from: jest.fn(() => ({
       upsert: mockUpsert,
-      select: mockSelectRemote,
+      select: (...args: any[]) => {
+        // select('id, server_updated_at') suivi de .in(...) = relecture post-upsert ;
+        // select('*') suivi de .gt(...) = pull paginé.
+        if (args[0] === 'id, server_updated_at') {
+          return { in: (...inArgs: any[]) => mockSelectIn(...inArgs) };
+        }
+        return mockSelectRemote(...args);
+      },
       gt: jest.fn().mockReturnThis(),
       order: jest.fn().mockReturnThis(),
       range: jest.fn().mockReturnThis(),
@@ -114,6 +123,15 @@ function makeRow(overrides: Record<string, any> = {}) {
 
 function setupUpsertSuccess() {
   mockUpsert.mockResolvedValue({ data: null, error: null });
+  // Relecture post-upsert : toutes les lignes ont un server_updated_at récent
+  // (le trigger serveur a accepté l'écriture).
+  mockSelectIn.mockImplementation(async (col: string, ids: string[]) => ({
+    data: ids.map((id) => ({
+      id,
+      server_updated_at: new Date('2026-06-01T00:00:00Z').toISOString(),
+    })),
+    error: null,
+  }));
 }
 
 function setupSelectRemoteAlwaysEmpty() {
@@ -193,6 +211,31 @@ describe('syncEngine', () => {
       expect(result.pushed).toBe(0);
       expect(result.errors).toHaveLength(1);
       expect(result.errors[0]).toContain('Network error');
+    });
+
+    it('ne marque PAS synced=true si le serveur a ignoré l\'écriture (LWW, server_updated_at non avancé)', async () => {
+      // Ligne locale récente (2026-01-01) mais le serveur renvoie un
+      // server_updated_at ancien : le trigger LWW a ignoré l'upsert
+      // (RETURN NULL, pas d'erreur) — la ligne doit rester synced=false.
+      mockSelectWhereFn.mockImplementation(async function () {
+        const idx = mockSelectWhereFn.mock.calls.length - 1;
+        if (idx === 0) return [makeRow({ id: 'a' })];
+        return [];
+      });
+      mockSelectIn.mockResolvedValue({
+        data: [
+          {
+            id: 'a',
+            server_updated_at: new Date('2025-01-01T00:00:00Z').toISOString(),
+          },
+        ],
+        error: null,
+      });
+
+      const result = await push({ userId: USER_ID });
+
+      expect(result.pushed).toBe(0);
+      expect(mockDb.update).not.toHaveBeenCalled();
     });
 
     it("retourne 'Sync already running' si une sync est en cours", async () => {
