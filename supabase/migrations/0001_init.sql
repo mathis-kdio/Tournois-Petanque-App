@@ -445,6 +445,9 @@ TO authenticated;
 
 -- profiles : lecture restreinte au propriétaire — le template starter
 -- exposait full_name / avatar_url publiquement (l'app n'utilise pas cette table).
+-- RLS ne protège pas TRUNCATE/TRIGGER/REFERENCES : on les révoque aussi à
+-- authenticated (vérifié : le rôle les détenait encore en live).
+REVOKE TRUNCATE, TRIGGER, REFERENCES ON public.profiles FROM authenticated;
 DROP POLICY IF EXISTS "Public profiles are viewable by everyone." ON public.profiles;
 
 CREATE POLICY profiles_owner_select ON public.profiles
