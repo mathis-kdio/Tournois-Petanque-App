@@ -1,5 +1,9 @@
 # Architecture de synchronisation SQLite ↔ Supabase
 
+> **État** : document de conception, mis à jour pour refléter l'implémentation livrée
+> (moteur `src/services/sync/`, migrations `supabase/migrations/`, migration UUID
+> `src/db/runUuidMigration.ts`). Toute divergence avec le code doit être corrigée ici.
+
 ## Objectif
 
 Permettre à un utilisateur connecté de retrouver ses données (tournois, listes de joueurs,
@@ -12,16 +16,16 @@ hub de synchronisation.
 | Sujet | Décision |
 | --- | --- |
 | Résolution de conflits | **Dernier écrit gagne** (LWW sur `updated_at`, granularité ligne) |
-| Identifiants | **Migration vers UUID v7** générés côté client |
+| Identifiants | **Migration vers UUID v7** générés côté client (`src/utils/uuid/uuidv7.ts`, sans dépendance externe) |
 | Partage multi-comptes | Données personnelles maintenant, schéma conçu pour permettre un partage en **lecture** plus tard |
-| Réactivité | Sync à l'ouverture + sync continue après chaque écriture (score, etc.) quand l'appareil est en ligne |
-| Déconnexion | Purge des données locales, **uniquement après confirmation que tout est sync** |
-| Suppression de compte | Purge côté Supabase (RGPD) via cascade sur `user_id` |
+| Réactivité | Sync à l'ouverture + push après chaque écriture (debounce 2 s) quand l'appareil est en ligne |
+| Déconnexion | Purge des données locales, **uniquement après confirmation que tout est sync** (ou choix explicite « perdre ces données ») |
+| Suppression de compte | RPC `delete_own_account()` avec **step-up d'authentification** (aal2 ou mot de passe < 10 min), purge RGPD via cascade sur `user_id` |
 
 ## Principes directeurs
 
-1. **Offline-first** : toute écriture passe d'abord par SQLite (déjà le cas via les repositories
-   Drizzle). La synchro est un processus distinct, jamais bloquant pour l'UI.
+1. **Offline-first** : toute écriture passe d'abord par SQLite (via les repositories Drizzle).
+   La synchro est un processus distinct, jamais bloquant pour l'UI.
 2. **ID globalement uniques générés côté client** : indispensable pour créer des données hors
    ligne sans collision entre appareils.
 3. **Une seule direction de vérité par champ** : pas de fusion partielle, la ligne entière la
@@ -35,43 +39,37 @@ hub de synchronisation.
 
 ## 1. Schéma local (SQLite / Drizzle)
 
-### 1.1 IDs : migration integer → UUID
+### 1.1 IDs : migration integer → UUID v7
 
-Aujourd'hui toutes les tables utilisent `id: integer().primaryKey()` (auto-incrément implicite).
-Deux appareils hors ligne généreraient le même `id` → collision garantie.
+Toutes les tables utilisaient `id: integer().primaryKey()` (auto-incrément implicite) : deux
+appareils hors ligne auraient généré le même `id` → collision garantie.
 
-**Changement** : `id` devient `text().primaryKey()` contenant un **UUID v7** (triable, adapté aux
-index) généré côté client au moment de l'insertion.
+**Réalisé** : `id` est `text().primaryKey()` avec un **UUID v7** généré côté client
+(`$defaultFn(() => uuidv7())`), via une implémentation maison sans dépendance
+(`src/utils/uuid/uuidv7.ts`, `Date.now()` + `crypto.getRandomValues` avec fallback `Math.random`).
 
-- Dépendance : `uuid` (package `uuid` v9+, compatible React Native via `react-native-get-random-values`
-  ou l'option `crypto.getRandomValues` de `expo-sqlite`/Hermes ; alternative sans dépendance :
-  implémentation maison d'UUID v7 à partir de `Date.now()` + `crypto.getRandomValues`).
-- Les colonnes métier (`joueur_id`, `equipe_id`, `match_id`, etc.) restent des entiers : ce sont
-  des identifiants *métier* internes au tournoi, sans rapport avec la clé de sync.
-- Les clés étrangères (`references(() => joueurs.id)` etc.) passent de `integer` à `text`.
+- Les colonnes métier (`joueur_id`, `equipe_id`, `match_id`, etc.) restent des entiers : ce sont des
+  identifiants *métier* internes au tournoi, sans rapport avec la clé de sync.
+- Les clés étrangères (`references(() => joueurs.id)` etc.) sont passées de `integer` à `text`.
 
-**Migration des données existantes** : nouvelle migration Drizzle qui, pour chaque table :
-1. crée la nouvelle table `*_v2` avec `id text`,
-2. copie les lignes en générant un UUID v7 par ligne et un mapping
-   `ancien_id → nouvel_uuid` (table temporaire `id_mapping(table_name, old_id, new_id)`),
-3. réécrit les FK via le mapping (FK par FK, dans l'ordre de dépendance),
-4. remplace l'ancienne table,
-5. conserve le mapping jusqu'à la fin de la migration complète, puis le supprime.
+**Migration des données existantes** : migration **programmatique** `src/db/runUuidMigration.ts`
+(lancée après la migration Drizzle dans `useDatabaseMigrations.ts`, car la génération d'UUID et le
+remapping des FK sont impossibles en SQL pur) :
 
-Les IDs étant actuellement des `number` en TypeScript, l'impact se limite aux repositories et aux
-types (`Joueur.id: string`, etc.). Les IDs métier (`joueurId`, `equipeId`…) restent des `number`,
-ce qui limite la casse dans l'UI.
+1. crée la table de mapping `id_mapping(table_name, old_id, new_id)` ;
+2. pour chaque table (parents d'abord), crée `*_v2` avec `id text`, copie les lignes en générant un
+   UUID v7 par ligne et réécrit les FK via le mapping ;
+3. drop les anciennes tables, renomme les `_v2` ;
+4. drop `id_mapping`, crée `sync_state`.
 
-### 1.2 Colonnes de sync sur toutes les tables
+Idempotente (détection via `PRAGMA table_info(joueurs)`), exécutée dans une transaction avec
+`PRAGMA foreign_keys = OFF` appliqué hors transaction. La migration Drizzle
+(`drizzle/20260929211527_closed_deathbird`) ne crée que `sync_state` + les colonnes de sync ; son
+snapshot reflète le schéma final (IDs `text`) pour bloquer `drizzle-kit generate`.
 
-`equipe`, `match`, `terrains`, `listes_joueurs` ont déjà `updated_at` + `synced`. Il faut :
+### 1.2 Colonnes de sync sur les tables synchronisées
 
-- les **généraliser** à toutes les tables synchronisées, y compris `joueurs`, `tournoi`,
-  et les tables de jointure (`equipes_joueurs`, `joueurs_listes`) et `joueurs_suggestion` ;
-- **exception** : `preparation_tournoi`, `joueurs_preparation_tournois`,
-  `terrains_preparation_tournois` ne sont **pas** synchronisées (état transitoire de création
-  de tournoi, effacé une fois le tournoi généré) — pas de colonnes sync sur ces 3 tables ;
-- ajouter partout (sur les tables synchronisées) :
+Les 9 tables synchronisées portent désormais :
 
 ```ts
 synced: integer({ mode: 'boolean' }).default(false).notNull(),   // outbox : en attente de push
@@ -79,182 +77,182 @@ updatedAt: integer({ mode: 'timestamp_ms' }).notNull(),           // horloge LWW
 deleted: integer({ mode: 'boolean' }).default(false).notNull(),  // tombstone locale
 ```
 
-- les repositories passent par un **helper commun** `stampForSync()` qui, à chaque
-  insert/update, force `updatedAt = Date.now()` et `synced = false` ;
-- les `delete()` des repositories deviennent des updates `deleted = true` (+ purge différée des
-  tombstones de plus de 30 jours et déjà sync) ;
-- `updatedAt` est une **horloge locale** : pour rendre LWW robuste aux horloges désynchronisées,
-  le serveur renvoie son `now()` à chaque sync (endpoint `sync/ping` ou header de réponse) et
-  l'app stocke le décalage `clockOffset = serverNow - Date.now()` dans `sync_state` pour corriger
-  les comparaisons.
+- **exception** : `preparation_tournoi`, `joueurs_preparation_tournois`,
+  `terrains_preparation_tournois` ne sont **pas** synchronisées (état transitoire de création de
+  tournoi) — pas de colonnes sync sur ces 3 tables.
+- les repositories passent par le helper commun `stampForSync()` / `stampForDelete()`
+  (`src/db/sync/stampForSync.ts`) qui force `updatedAt = new Date()`, `synced = false` (et
+  `deleted = true` pour un delete) et notifie le bus d'écritures `writeBus` ;
+- les `delete()` des repositories sont devenus des soft-deletes (`deleted = true`) ;
+- purge différée des tombstones locales de plus de 30 jours **déjà sync** à la fin de chaque cycle
+  (`purgeLocalTombstones()` dans le moteur).
 
-### 1.3 Table locale `sync_state`
+### 1.3 Horloge et curseur : table `sync_state`
 
 ```ts
 export const syncState = sqliteTable('sync_state', {
   userId: text('user_id').primaryKey(),        // id du compte Supabase
   lastPulledAt: integer('last_pulled_at'),     // curseur de pull (epoch ms, horloge serveur)
-  clockOffset: integer('clock_offset'),        // décalage horloge serveur/locales
+  clockOffset: integer('clock_offset'),        // serverNow - localNow
 });
 ```
+
+`updatedAt` est une horloge **locale** ; pour rendre le LWW robuste aux horloges désynchronisées,
+le client récupère l'heure serveur via `rpc('now')` (wrapper `public.now()` — PostgREST n'expose pas
+`pg_catalog.now()`) après chaque cycle réussi (`updateClockOffset`) et stocke
+`clockOffset = serverNow - Date.now()`.
 
 ---
 
 ## 2. Schéma distant (Supabase / Postgres)
 
+`supabase/migrations/0001_init.sql` (installation neuve, état final consolidé) +
+`0002_security_hardening.sql` (delta idempotent pour le projet live).
+
 ### 2.1 Tables miroirs
 
-Une table Postgres par table SQLite, colonnes identiques (mêmes noms snake_case), plus :
+Une table Postgres par table SQLite synchronisée, colonnes métier identiques (snake_case), plus :
 
 ```sql
 user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-updated_at timestamptz NOT NULL DEFAULT now(),
-deleted_at timestamptz,                        -- tombstone distante
+updated_at timestamptz NOT NULL DEFAULT now(),   -- horloge LWW client
+deleted boolean NOT NULL DEFAULT false,          -- miroir du tombstone SQLite
+deleted_at timestamptz,                          -- timestamp de la tombstone (trigger)
 server_updated_at timestamptz NOT NULL DEFAULT now()  -- horodatage serveur (trigger)
 ```
 
-- `id text PRIMARY KEY` (l'UUID v7 généré par le client) ;
-- clé composite `PRIMARY KEY (user_id, id)` — même si l'UUID est global, cela prépare le partage
-  futur et rend les index pertinents ;
-- `(user_id, updated_at)` indexé pour un pull efficace ;
-- trigger `before update` qui maintient `server_updated_at = now()` ;
-- le pull utilise le **max(`server_updated_at`)** comme curseur, jamais `updated_at` client
-  (évite les trous dus aux horloges décalées).
+- clé composite `PRIMARY KEY (user_id, id)` — prépare le partage futur ;
+- index `(user_id, server_updated_at)` par table : le pull filtre sur `server_updated_at`
+  (jamais sur `updated_at` client, pour éviter les trous dus aux horloges décalées) ;
+- trigger `BEFORE INSERT OR UPDATE` (`maintain_sync_columns`) qui :
+  1. **plafonne** `updated_at` à `now()` si l'horloge client est en avance (anti domination) ;
+  2. applique le **LWW serveur** : sur UPDATE, ignore l'écriture (`RETURN NULL`) si
+     `NEW.updated_at <= OLD.updated_at` — le serveur est l'arbitre final ;
+  3. pose `server_updated_at = now()` ;
+  4. maintient `deleted_at` quand `deleted` passe à true.
+- contraintes `CHECK length(...) <= N` sur les colonnes texte métier (anti-DoS stockage).
 
 ### 2.2 Row Level Security
 
 ```sql
 ALTER TABLE tournoi ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY tournoi_owner_select ON tournoi
-  FOR SELECT USING (user_id = auth.uid());
-
-CREATE POLICY tournoi_owner_write ON tournoi
-  FOR ALL USING (user_id = auth.uid())
-  WITH CHECK (user_id = auth.uid());
+CREATE POLICY tournoi_owner ON tournoi
+  FOR ALL USING (user_id = (select auth.uid()))
+  WITH CHECK (user_id = (select auth.uid()));
 ```
 
-Répliqué sur chaque table. Le `ON DELETE CASCADE` sur `user_id` garantit la purge RGPD
-automatique à la suppression du compte (`auth.users` → toutes les lignes du compte supprimées).
+- une seule policy `FOR ALL` par table (`(select auth.uid())` évalué une fois par requête) ;
+- `REVOKE ALL ... FROM anon` sur les 9 tables + `profiles` ; `GRANT SELECT, INSERT, UPDATE, DELETE
+  ... TO authenticated` uniquement (défense en profondeur, en plus de la RLS) ;
+- `REVOKE TRUNCATE, TRIGGER, REFERENCES ON public.profiles FROM authenticated` et policy
+  `profiles_owner_select` (le template starter exposait `full_name`/`avatar_url` publiquement).
+
+Le `ON DELETE CASCADE` sur `user_id` garantit la purge RGPD automatique à la suppression du compte.
 
 ### 2.3 Préparation du partage futur (lecture seule)
 
-Le design actuel (données personnelles) n'ajoute **aucune table de partage**, mais le schéma est
-déjà compatible avec l'ajout ultérieur d'un modèle sans migration destructrice :
+Aucune table de partage aujourd'hui, mais le schéma reste compatible sans migration destructrice :
+clé composite `(user_id, id)`, UUID non porteurs d'information. Ultérieurement, une table
+`shared_refs(table_name, record_id, owner_id, shared_with, permission)` et une fonction
+`can_read(...)` s'ajouteront dans les policies `FOR SELECT` :
+`USING (user_id = auth.uid() OR can_read('tournoi', id))`.
 
-```sql
--- Prévu (plus tard) :
-CREATE TABLE shared_refs (
-  table_name text NOT NULL,
-  record_id text NOT NULL,
-  owner_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  shared_with uuid REFERENCES auth.users(id) ON DELETE CASCADE,
-  permission text NOT NULL DEFAULT 'read',  -- 'read' | 'write'
-  PRIMARY KEY (table_name, record_id, shared_with)
-);
-```
+### 2.4 Purge des tombstones et step-up
 
-Avec une fonction de policy réutilisable :
-
-```sql
-CREATE FUNCTION can_read(table_name text, record_id text) RETURNS boolean
-  SECURITY DEFINER ...  -- vérifie shared_refs + appartenance
-```
-
-Les policies `FOR SELECT` deviendront alors
-`USING (user_id = auth.uid() OR can_read('tournoi', id))`. Rien à faire maintenant, mais ne
-jamais intégrer `user_id` dans les UUID ni présumer dans le code que `user_id` est unique par ligne.
-
-### 2.4 Purge des tombstones
-
-Fonction RPC `purge_old_tombstones()` (pg_cron, exécution quotidienne) supprimant les lignes
-`deleted_at < now() - interval '30 days'`. Le pull ne renvoie jamais les tombstones purgées :
-les appareils qui reçoivent une tombstone appliquent le delete local et purgent leur propre
-tombstone après 30 jours.
+- `purge_old_tombstones()` (pg_cron quotidien 03:00 UTC) supprime les lignes
+  `deleted_at < now() - interval '30 days'` — SECURITY DEFINER, `search_path` vide, EXECUTE révoqué
+  à PUBLIC/anon/authenticated (réservée au cron).
+- `delete_own_account()` (SECURITY DEFINER) exige un **step-up** : `aal2`, OU méthode `password`
+  dans `amr` datant de moins de 10 minutes (produit par `signInWithPassword` côté client, demandé
+  dans le dialogue de suppression). Un simple token de session AAL1 ne suffit pas.
 
 ---
 
 ## 3. Moteur de synchronisation
 
-Nouveau module `src/services/sync/` :
-
 ```
 src/services/sync/
-├── syncEngine.ts          # orchestration push/pull, verrou, curseur, clockOffset
-├── syncTables.ts          # registre ordonné des tables (parents avant enfants)
-├── syncTrigger.ts         # hook React + NetInfo + debounce après écriture
-├── syncMappers/           # conversion ligne SQLite ↔ ligne Postgres, par table
-└── syncAccount.ts         # login (adoption), logout (purge), suppression compte
+├── syncEngine.ts          # push/pull/cycle, mutex (timeout 2 min), curseur, clockOffset, purge tombstones
+├── syncTables.ts          # registre unique SYNC_TABLES + PUSH_ORDER (parents d'abord) / PULL_ORDER (dérivé)
+├── syncTrigger.tsx        # composant racine : hook + NetInfo + AppState + debounce 2 s + dialogue d'adoption
+├── syncMappers/           # conversion ligne SQLite ↔ Postgres, par table (9 mappers)
+├── syncAccount.ts         # login (adoption), logout (purge), suppression compte
+└── purgeLog.ts            # journal des purges locales (AsyncStorage)
+src/db/sync/
+├── stampForSync.ts        # stamp updatedAt/synced/deleted + notification writeBus
+├── writeBus.ts            # bus d'événements « écriture locale » (découplé de React)
+└── localTransaction.ts    # BEGIN/COMMIT + PRAGMA foreign_keys OFF pour les écritures internes de la sync
 ```
 
 ### 3.1 Ordre de sync (dépendances FK)
 
 ```ts
-// push et pull (inserts) : parents d'abord — un enfant inséré doit trouver
-// son parent déjà présent dans la même transaction. L'ordre inverse (enfants
-// d'abord) ne vaut que pour les suppressions/purges.
-// NB : preparation_tournoi, joueurs_preparation_tournois, terrains_preparation_tournois
-// ne sont pas synchronisées (état transitoire) — absentes du PUSH_ORDER.
 const PUSH_ORDER = [
   'joueurs_suggestion', 'joueurs', 'listes_joueurs',
   'terrains', 'tournoi',
   'joueurs_listes', 'equipe', 'equipes_joueurs',
   'match',
-];
+]; // PULL_ORDER = reverse(PUSH_ORDER) — suppressions/purges enfants d'abord
 ```
+
+Push et application du pull : parents d'abord. Les tables `preparation_*` sont absentes du registre.
 
 ### 3.2 Push (outbox)
 
-1. `syncEngine.push()` : pour chaque table dans `PUSH_ORDER`,
-   `select * where synced = false` (hors `deleted = true` déjà push) ;
-2. mapping SQLite → Postgres (ajout de `user_id` = session courante) ;
-3. `upsert` par batch (`onConflict: 'user_id,id'`, `.upsert()` de supabase-js, chunks de ~200
-   lignes) avec `ignoreDuplicates: false` ;
-4. le serveur applique LWW côté distant : trigger `before insert or update` qui ignore l'écriture
-   si `EXCLUDED.updated_at <= updated_at` existante — le serveur est l'arbitre final du LWW ;
-5. succès → `update ... set synced = true where id in (...)` localement ;
-6. échec (réseau, RLS, conflit) → la transaction du batch est abandonnée, les lignes restent
-   `synced = false`, retry au prochain trigger avec backoff exponentiel (max 5 tentatives par
-   cycle, puis attente du prochain déclencheur).
+1. pour chaque table dans `PUSH_ORDER` : `select * where synced = false` (tombstones incluses) ;
+2. mapping SQLite → Postgres (ajout de `user_id` = session courante), upsert par batch de ~200
+   (`onConflict: 'user_id,id'`, `ignoreDuplicates: false`) ;
+3. **relecture** : après chaque upsert, `select id, server_updated_at, updated_at where id in (batch)`
+   — le trigger LWW serveur peut ignorer une écriture sans erreur PostgREST, donc `synced = true`
+   n'est posé que pour les lignes dont le serveur a réellement appliqué l'écriture
+   (`server_updated_at` avancé, ou version distante strictement plus récente) ;
+4. marquage `synced = true` avec **garde** `where id = ? and updatedAt = ?` : une écriture UI
+   concurrente (qui repasse `synced = false` + nouvel `updatedAt`) n'est pas marquée à tort ;
+5. échec → retry avec backoff exponentiel (max 5 tentatives par batch), les lignes restent
+   `synced = false`.
+
+Le `clockOffset` est pris en compte dans la comparaison (`local + offset`, tolérance 1 s) pour
+couvrir le clamp serveur des horloges en avance.
 
 ### 3.3 Pull
 
-1. Curseur `last_pulled_at` = max `server_updated_at` vu (stocké dans `sync_state`, horloge
-   serveur) ;
-2. pour chaque table (ordre inverse du push) :
-   `select * where user_id = auth.uid() and server_updated_at > last_pulled_at`
-   — les tombstones (`deleted_at not null`) incluses ;
-3. pour chaque ligne reçue :
-   - absente localement → insert (sauf tombstone : ignore) ;
-   - présente localement → LWW : si `updated_at` distant (corrigé du `clockOffset`) >
-     `updated_at` local **ou** ligne locale `synced = true` → écraser ; sinon ignorer
-     (la ligne locale `synced = false` sera poussée au cycle suivant) ;
-   - tombstone distante → conversion en tombstone locale (`deleted = true`,
-     `synced = true`) si la ligne locale est sync — pas de delete physique
-     immédiat : les enfants éventuels gardent un parent référencable, la
-     purge à 30 jours fait le delete ; sinon conserver
-     (l'écriture locale non sync gagne, cas rare : suppression sur appareil A
-     pendant une édition hors ligne sur appareil B — l'édition survit, ce qui
-     est le comportement LWW) ;
-4. nouveau `last_pulled_at` = max `server_updated_at` reçu, **commité en même temps** que les
-   écritures locales (une seule transaction SQLite) — pas de perte de curseur en cas de crash.
+Deux phases :
 
-Le pull est paginé (`.range()`) et adapté à un premier téléchargement complet sur un nouvel
-appareil (écran de chargement « Récupération de vos données… »).
+1. **fetch réseau bufferisé** : chaque table est lue par pages (`.range()`) depuis le curseur
+   `server_updated_at > last_pulled_at`, avec `ORDER BY server_updated_at` (pagination déterministe).
+   En cas d'erreur sur une table, **rien n'est appliqué** et le curseur n'avance pas ;
+2. **application locale** : inserts/updates/tombstones + nouveau curseur, **commit en une seule
+   transaction SQLite** (pas de perte de curseur en cas de crash), FK désactivées le temps de
+   l'écriture (le miroir distant n'a pas de FK inter-tables).
+
+Règles appliquées par ligne reçue :
+
+- absente localement → insert (tombstone distante ignorée) ;
+- présente → LWW : écraser si `updated_at` distant (corrigé du `clockOffset`) > `updated_at` local
+  **ou** ligne locale `synced = true`, avec garde `updatedAt` (écriture UI concurrente préservée) ;
+- tombstone distante → tombstone locale (`deleted = true`, `synced = true`) si la ligne locale est
+  sync ; une ligne locale non sync est conservée (l'écriture locale gagne) ;
+- cas particulier `joueurs_suggestion` : l'index unique local `nameUniqueIndex` n'a pas d'équivalent
+  serveur — le pull fusionne aussi **par `name`** (update de la ligne locale vers l'id distant,
+  `onConflictDoNothing` en garde-fou) pour éviter l'échec de toute la transaction.
+
+Le curseur stocké est `max(server_updated_at) - 5 s` (`PULL_CURSOR_LAG_MS`) : la fenêtre est relue
+au cycle suivant, l'application LWW étant idempotente. Si le curseur a plus de 30 jours
+(rétention des tombstones), le pull repart **complet** (curseur 0) pour ne pas ressusciter des
+lignes supprimées ailleurs.
 
 ### 3.4 Déclencheurs
 
 | Événement | Action |
 | --- | --- |
-| Ouverture de l'app (session existante) | `pull()` puis `push()` |
-| Login réussi | adoption (voir 4.1) puis `pull()` + `push()` |
-| Chaque écriture (score, ajout joueur…) | `push()` debouncé (2 s), uniquement si online |
+| Ouverture de l'app / login | adoption (voir 4.1) puis cycle complet `pull()` + `push()` |
+| Chaque écriture (repositories → `stampForSync` → `writeBus`) | `push()` debouncé (2 s), uniquement si online, avec retry si un cycle tourne |
 | Retour du réseau (NetInfo) | cycle complet |
 | Mise en avant de l'app (AppState → active) | cycle complet si le dernier date de > 5 min |
 | Logout | vérification outbox vide → purge (voir 4.2) |
 
-Un **verrou (mutex)** empêche deux cycles concurrents ; les écritures UI ne sont jamais
-bloquées par la synchro (SQLite local d'abord, toujours).
+Un **mutex** (avec timeout 2 min contre les crashs sans `finally`) empêche deux cycles concurrents.
+Les écritures UI ne sont jamais bloquées (SQLite local d'abord, toujours).
 
 ---
 
@@ -262,57 +260,79 @@ bloquées par la synchro (SQLite local d'abord, toujours).
 
 ### 4.1 Login : adoption des données locales
 
-Cas d'usage : l'utilisateur utilise l'app en anonyme, crée des tournois, puis se connecte.
+`prepareLoginSync(userId)` (avant tout cycle) :
 
-1. avant push : `select count(*) where synced = false` — s'il existe des lignes **et** que le
-   compte distant a déjà des données, afficher un choix à l'utilisateur :
-   - « Conserver les données locales et les fusionner » (push des lignes locales ; risque
-     minimal de doublon si la même donnée existe des deux côtés — les UUID distincts créent
-     deux lignes ; acceptable pour LWW et déterministe),
-   - « Remplacer par les données du compte » (purge locale puis pull complet) ;
-2. lignes déjà sync (d'un compte précédent) → purgées au login du nouveau compte (le device
-   appartenait à un autre compte) ;
-3. lignes jamais sync → conservées, `user_id` du nouveau compte appliqué au push.
+1. si les données locales appartiennent à un **autre compte** (propriétaire suivi dans
+   AsyncStorage `LOCAL_DATA_OWNER_KEY`) → purge des lignes `synced = true` (restituées par le pull) ;
+2. si l'appareil a des écritures hors ligne (`synced = false`) **et** (le compte distant a déjà des
+   données **ou** ces écritures datent du compte précédent) → dialogue « fusionner / remplacer ».
+   Le flag persistant `ADOPTION_PENDING_KEY` garantit que si l'app est fermée avant le choix, le
+   dialogue est **re-présenté au prochain lancement** au lieu de pousser les données de l'ancien
+   compte vers le nouveau ;
+3. « fusionner » → `adoptMerge` (cycle complet) ; « remplacer » → purge locale + pull complet ;
+4. sinon le propriétaire est enregistré et le cycle normal reprend.
 
 ### 4.2 Logout : purge locale conditionnelle
 
-1. si `synced = false` quelque part → bloquer le logout avec un message explicite
-   (« Des données ne sont pas synchronisées ») et proposer :
-   - « Réessayer la synchro » (forcée, même hors ligne → feedback),
-   - « Se déconnecter quand même et perdre ces données » (confirmation explicite) ;
-2. si outbox vide → `deleteAll()` sur toutes les tables + reset `sync_state`, puis `signOut()`.
+`checkLogout()` compte l'outbox ; `logoutAndPurge()` **re-vérifie l'outbox juste avant la purge**
+(TOCTOU : une écriture UI entre le check et le logout) et lève une erreur si elle n'est pas vide.
+Le dialogue propose « réessayer la synchro » ou « se déconnecter quand même » →
+`forceLogoutAndPurge()` (purge sans vérifier, perte assumée, journalisée `logout_forced_purge`).
+Outbox vide → purge totale (tables sync + `preparation_*` + `sync_state`, une transaction) puis
+`signOut()`.
 
-### 4.3 Suppression du compte : purge Supabase
+### 4.3 Suppression du compte : purge Supabase RGPD
 
-`ON DELETE CASCADE` sur `user_id REFERENCES auth.users(id)` fait tout le travail côté base.
-La suppression du compte est initiée par `supabase-js` (`auth.admin.deleteUser` via une Edge
-Function, ou deletion depuis l'app si la policy le permet) → toutes les tables du compte sont
-purgées. Purge locale ensuite (comme logout). Aucune donnée orpheline possible grâce à la FK.
+`deleteAccountAndPurge(userId)` : re-vérifie l'outbox, appelle la RPC `delete_own_account()`
+(step-up aal2 / mot de passe récent — le dialogue demande le mot de passe via `signInWithPassword`),
+puis purge locale et `signOut()`. Le `ON DELETE CASCADE` sur `user_id` purge toutes les tables du
+compte côté serveur.
 
 ---
 
-## 5. Plan d'implémentation
+## 5. Implémentation livrée
 
 | Phase | Contenu | Fichiers principaux |
 | --- | --- | --- |
-| **1. IDs + colonnes sync** | Migration UUID v7 + mapping, `synced/updatedAt/deleted` sur les 9 tables synchronisées, `sync_state`, helper `stampForSync`, repositories refactorés (delete → tombstone) | `src/db/schema/*`, `drizzle/` (migration), `src/repositories/*`, `src/db/runManualMigration.ts` (web) |
-| **2. Schéma distant** | SQL Supabase (tables miroirs, RLS, triggers LWW serveur, cron purge), mappers type-safe | `supabase/migrations/*.sql`, `src/services/sync/syncMappers/*` |
-| **3. Moteur** | `syncEngine` (push/pull/verrou/curseur/clockOffset), `syncTrigger` (NetInfo + AppState + debounce), tests Jest du moteur avec base sqlite in-memory | `src/services/sync/*`, `tests/` |
-| **4. Cycle de vie** | Adoption au login, purge au logout, suppression compte, écran « récupération des données », journal des purges | `src/services/sync/syncAccount.ts`, `src/app/compte/*`, `src/components/supabase/SessionProvider.tsx` |
+| **1. IDs + colonnes sync** | Migration UUID v7 programmatique + mapping FK, `synced/updatedAt/deleted` sur les 9 tables, `sync_state`, `stampForSync`, repositories (delete → tombstone) | `src/db/runUuidMigration.ts`, `src/db/uuidMigrationTables.ts`, `drizzle/20260929211527_*`, `src/db/schema/*`, `src/repositories/*` |
+| **2. Schéma distant** | SQL Supabase (tables miroirs, RLS, triggers LWW serveur, cron purge, step-up), mappers type-safe | `supabase/migrations/0001_init.sql`, `0002_security_hardening.sql`, `src/services/sync/syncMappers/*` |
+| **3. Moteur** | `syncEngine` (push/pull/mutex/curseur/clockOffset/purge), `syncTrigger` (NetInfo + AppState + debounce), tests Jest | `src/services/sync/*`, `src/db/sync/*` |
+| **4. Cycle de vie** | Adoption au login, purge au logout, suppression compte (step-up), écran « Récupération de vos données… », journal des purges, traductions (7 langues) | `src/services/sync/syncAccount.ts`, `src/screens/compte/*`, `src/services/sync/syncTrigger.tsx` |
 
-Chaque phase est livrable indépendamment : après la phase 1 l'app fonctionne comme avant
-(les colonnes sont juste ignorées), après la phase 3 la synchro est opérationnelle.
+## 6. Menaces et sécurité
 
-## 6. Points d'attention
+- **Clé anon publique** (`src/utils/supabase.ts`) : la protection vient exclusivement du serveur —
+  `REVOKE ALL FROM anon`, grants réservés à `authenticated`, RLS `user_id = (select auth.uid())`
+  en `FOR ALL` sur les 9 tables.
+- **Token volé** : la suppression de compte exige un step-up (aal2 ou mot de passe < 10 min) ;
+  `purge_old_tombstones` et `delete_own_account` ont EXECUTE révoqué à anon/authenticated pour la
+  purge (cron uniquement).
+- **Anti-DoS stockage** : CHECK de longueur sur les colonnes texte métier.
+- **Horloges** : clamp serveur de `updated_at`, curseur de pull sur `server_updated_at`,
+  `clockOffset` client.
+- **À activer manuellement dans le dashboard Supabase** (hors SQL) : Leaked Password Protection
+  (Authentication > Policies) ; pg_cron est créé par la migration.
 
-- **Web (Tauri/expo web)** : la synchro doit fonctionner aussi sur web (proxy Drizzle) —
-  les helpers ne doivent rien supposer de `Platform`.
-- **`useLiveQuery`** : le pull qui modifie SQLite déclenchera automatiquement le rafraîchissement
-  des écrans via les live queries Drizzle existants — aucun wiring UI supplémentaire nécessaire.
-- **Taille des batchs** : un tournoi complet (128 joueurs, ~500 matchs) tient largement dans les
-  limites d'upsert Postgres, mais le moteur découpe quand même en chunks de 200 lignes.
-- **Tests** : le moteur (merge LWW, adoption, purge, tombstones) est testé en Jest avec une base
-  sqlite in-memory et un mock de `supabase-js`, sans réseau.
-- **Sécurité** : la clé anon Supabase déjà présente dans `src/utils/supabase.ts` est conçue pour
-  être publique ; la protection vient exclusivement des RLS — à vérifier avec des tests
-  Postgres (`supabase/test`).
+## 7. Points d'attention
+
+- **Web (Tauri/expo web)** : la synchro fonctionne aussi sur le proxy Drizzle web ; `affectedRows()`
+  y retourne 1 par défaut (pas de compteur de lignes), la garde `updatedAt` reste correcte.
+- **`useLiveQuery`** : le pull modifie SQLite, les écrans se rafraîchissent automatiquement via les
+  live queries Drizzle existants — aucun wiring UI supplémentaire.
+- **Taille des batchs** : chunks de 200 lignes ; un tournoi complet (128 joueurs, ~500 matchs)
+  tient largement dans les limites PostgREST.
+- **Tests** : 138 tests, 12 suites Jest — le moteur est testé avec des mocks de `getDrizzleDb`,
+  `supabaseClient` et du schéma Drizzle (pas de base sqlite in-memory réelle), couvrant LWW,
+  clockOffset, tombstones, adoption pending, TOCTOU logout/suppression.
+
+## 8. Limites connues
+
+- **LWW à granularité ligne entière** : si deux appareils éditent des champs différents de la même
+  ligne hors ligne en même temps, un seul appareil gagne, l'autre champ est perdu. Accepté
+  (données personnelles, conflits rares).
+- **Pas de chiffrement end-to-end** : les données transitent et sont stockées en clair côté
+  Supabase, protégées par la RLS.
+- **Pas de partage effectif** aujourd'hui : le schéma est seulement *préparé* pour un partage en
+  lecture futur (§2.3).
+- **Fusion « merge » au login peut créer des doublons** (UUID distincts des deux côtés) — accepté,
+  déterministe.
