@@ -11,4 +11,3 @@ export * from './syncState';
 export * from './terrain';
 export * from './terrainsPreparationTournoi';
 export * from './tournoi';
-
