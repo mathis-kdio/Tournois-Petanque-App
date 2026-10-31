@@ -5,7 +5,9 @@
 --   1. delete_own_account : step-up (aal2 OU amr 'password' < 10 min) ;
 --   2. suppression des 9 index *_pull_idx morts (jamais utilisés) ;
 --   3. REVOKE TRUNCATE/TRIGGER/REFERENCES sur public.profiles FROM authenticated ;
---   4. CHECK de longueur sur les champs texte métier (anti-DoS stockage).
+--   4. CHECK de longueur sur les champs texte métier (anti-DoS stockage) ;
+--   5. DROP COLUMN tournoi.est_tournoi_actuel : le tournoi en cours est purement
+--      local (chaque appareil a le sien) — la colonne distante est supprimée.
 -- =============================================================================
 
 -- 1. Step-up avant suppression du compte
@@ -113,5 +115,13 @@ END $$;
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE connamespace = 'public'::regnamespace AND conname = 'match_tour_name_len_check') THEN
     ALTER TABLE public."match" ADD CONSTRAINT "match_tour_name_len_check" CHECK (length("tour_name") <= 200);
+  END IF;
+END $$;
+
+-- 5. Tournoi en cours local : la colonne distante n'est plus utilisée
+-- (idempotent : no-op si déjà supprimée)
+DO $$ BEGIN
+  IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'tournoi' AND column_name = 'est_tournoi_actuel') THEN
+    ALTER TABLE public."tournoi" DROP COLUMN "est_tournoi_actuel";
   END IF;
 END $$;
