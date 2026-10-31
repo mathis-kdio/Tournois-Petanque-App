@@ -13,7 +13,6 @@ export interface TournoiPostgresRow {
   type_tournoi: string;
   avec_terrains: boolean;
   mode: string;
-  est_tournoi_actuel: boolean;
   create_at: string;
   user_id: string;
   updated_at: string;
@@ -39,7 +38,6 @@ export function tournoiToPostgres(
     type_tournoi: row.typeTournoi,
     avec_terrains: row.avecTerrains,
     mode: row.mode,
-    est_tournoi_actuel: row.estTournoiActuel,
     create_at: row.createAt.toISOString(),
     user_id: userId,
     updated_at: row.updatedAt.toISOString(),
@@ -61,7 +59,9 @@ export function tournoiFromPostgres(row: TournoiPostgresRow): NewTournoi {
     typeTournoi: row.type_tournoi as NewTournoi['typeTournoi'],
     avecTerrains: row.avec_terrains,
     mode: row.mode as NewTournoi['mode'],
-    estTournoiActuel: row.est_tournoi_actuel,
+    // estTournoiActuel reste local (non synchronisé) : chaque appareil a
+    // son propre tournoi en cours.
+    estTournoiActuel: false,
     createAt: new Date(row.create_at),
     updatedAt: new Date(row.updated_at),
     synced: true,

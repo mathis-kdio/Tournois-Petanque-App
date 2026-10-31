@@ -40,10 +40,12 @@ export const TournoisRepository = {
       .where(eq(tournoi.deleted, false));
   },
 
+  // estTournoiActuel est volontairement LOCAL (hors stampForSync) : le
+  // tournoi en cours n'est pas synchronisé, chaque appareil a le sien.
   setActualTournoi(id: string, estTournoiActuel: boolean) {
     return getDrizzleDb()
       .update(tournoi)
-      .set({ estTournoiActuel, ...stampForSync() })
+      .set({ estTournoiActuel })
       .where(eq(tournoi.id, id));
   },
 

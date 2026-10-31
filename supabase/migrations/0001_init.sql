@@ -118,7 +118,8 @@ CREATE TABLE "tournoi" (
   "type_tournoi" text NOT NULL,
   "avec_terrains" boolean NOT NULL,
   "mode" text NOT NULL,
-  "est_tournoi_actuel" boolean NOT NULL,
+  -- est_tournoi_actuel volontairement ABSENT : le tournoi en cours est une
+  -- donnée purement locale (chaque appareil a le sien, pas de conflit LWW).
   "create_at" timestamptz NOT NULL,
   "user_id" uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   "updated_at" timestamptz NOT NULL DEFAULT now(),

@@ -327,6 +327,11 @@ compte côté serveur.
 
 ## 8. Limites connues
 
+- **Tournoi en cours purement local** : `estTournoiActuel` n'est **pas synchronisé** (colonne absente
+  côté Supabase, `setActualTournoi` hors `stampForSync`, valeur forcée à `false` au pull). Chaque
+  appareil a son propre tournoi en cours — évite tout conflit LWW sur un invariant « un seul actif
+  par compte » que la sync ne pourrait pas garantir. Conséquence : le tournoi en cours n'est pas
+  repris sur un autre appareil.
 - **LWW à granularité ligne entière** : si deux appareils éditent des champs différents de la même
   ligne hors ligne en même temps, un seul appareil gagne, l'autre champ est perdu. Accepté
   (données personnelles, conflits rares).

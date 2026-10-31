@@ -695,7 +695,6 @@ describe('syncEngine', () => {
         type_tournoi: 'championnat',
         avec_terrains: false,
         mode: 'avecEquipes',
-        est_tournoi_actuel: true,
         create_at: '2026-01-01T00:00:00.000Z',
         user_id: USER_ID,
         updated_at: '2026-01-01T00:00:00.000Z',
