@@ -348,6 +348,56 @@ describe('syncEngine', () => {
   });
 
   describe('pull', () => {
+    it('force un pull complet si le curseur a plus de 30 jours même avec une horloge locale en retard (clockOffset négatif)', async () => {
+      // Curseur vieux de 27 jours en heure locale, mais horloge locale 5 jours
+      // EN AVANCE (clockOffset = +5 j) : sans correction, Date.now() -
+      // storedPulledAt = 27 j < 30 j → pas de pull complet, alors que le curseur
+      // a réellement 32 jours côté serveur (rétention des tombstones dépassée).
+      const storedPulledAt = Date.now() - 27 * 24 * 60 * 60 * 1_000;
+      const clockOffset = 5 * 24 * 60 * 60 * 1_000;
+      let callCount = 0;
+      mockSelectWhereFn.mockImplementation(async function () {
+        const idx = callCount++;
+        if (idx === 0)
+          return [
+            { userId: USER_ID, lastPulledAt: storedPulledAt, clockOffset },
+          ];
+        return [];
+      });
+      setupSelectRemoteWithRows([[]]);
+
+      await pull({ userId: USER_ID });
+
+      // Pull complet forcé : le filtre part de l'epoch 0.
+      expect(mockGtRemote).toHaveBeenCalledWith(
+        'server_updated_at',
+        new Date(0).toISOString(),
+      );
+    });
+
+    it('ne force pas de pull complet si le curseur a moins de 30 jours après correction du clockOffset', async () => {
+      // Curseur vieux de 29 jours, clockOffset = 0 : Date.now() + 0 - curseur
+      // = 29 j < 30 j → pull incrémental normal.
+      const storedPulledAt = Date.now() - 29 * 24 * 60 * 60 * 1_000;
+      let callCount = 0;
+      mockSelectWhereFn.mockImplementation(async function () {
+        const idx = callCount++;
+        if (idx === 0)
+          return [
+            { userId: USER_ID, lastPulledAt: storedPulledAt, clockOffset: 0 },
+          ];
+        return [];
+      });
+      setupSelectRemoteWithRows([[]]);
+
+      await pull({ userId: USER_ID });
+
+      expect(mockGtRemote).toHaveBeenCalledWith(
+        'server_updated_at',
+        new Date(storedPulledAt).toISOString(),
+      );
+    });
+
     it('force un pull complet (curseur remis à 0) si lastPulledAt a plus de 30 jours', async () => {
       // 1er appel = sync_state → curseur vieux de 40 jours (les tombstones
       // de cette période ont été purgées côté serveur : pull complet sinon

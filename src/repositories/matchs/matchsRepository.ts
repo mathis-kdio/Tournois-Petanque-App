@@ -1,6 +1,10 @@
 import { equipe, equipesJoueurs, joueurs, terrains } from '@/db/schema';
 import { match, NewMatch } from '@/db/schema/match';
-import { stampForDelete, stampForSync } from '@/db/sync/stampForSync';
+import {
+  stampForDelete,
+  stampForSync,
+  stampForSyncBulk,
+} from '@/db/sync/stampForSync';
 import { getDrizzleDb } from '@/db/useDatabaseMigrations';
 import { and, eq, inArray, or, sql } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/sqlite-core';
@@ -113,9 +117,9 @@ export const MatchsRepository = {
   },
 
   insertMatch(newMatchs: NewMatch[]) {
-    const values = newMatchs.map((m) => ({
+    const values = newMatchs.map((m, i) => ({
       ...m,
-      ...stampForSync(),
+      ...stampForSyncBulk(newMatchs.length)[i],
     }));
     return getDrizzleDb().insert(match).values(values).returning();
   },

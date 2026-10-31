@@ -362,10 +362,16 @@ async function runPull(
   // les suppressions des 30 derniers jours ne sont plus récupérables,
   // repartir de zéro évite de ressusciter des lignes supprimées ailleurs.
   const storedPulledAt = stateRow?.lastPulledAt ?? 0;
-  const cursorTooOld =
-    storedPulledAt > 0 && Date.now() - storedPulledAt > PULL_CURSOR_MAX_AGE_MS;
-  const lastPulledAt = cursorTooOld ? 0 : storedPulledAt;
   const clockOffset = stateRow?.clockOffset ?? 0;
+  // Le curseur est en base serveur : on compare en ramenant l'heure locale
+  // en base serveur (local + clockOffset), sinon une horloge locale décalée
+  // fausse le test (pull complet trop tôt/trop tard — le "trop tard" est le
+  // cas dangereux : au-delà de la rétention des tombstones, des suppressions
+  // ne seraient plus récupérables).
+  const cursorTooOld =
+    storedPulledAt > 0 &&
+    Date.now() + clockOffset - storedPulledAt > PULL_CURSOR_MAX_AGE_MS;
+  const lastPulledAt = cursorTooOld ? 0 : storedPulledAt;
 
   // ─── Phase 1 : fetch réseau, bufférisé, aucune écriture ────────────────────
   // Fetch dans le même ordre que l'application (PUSH_ORDER) : les lectures
@@ -563,7 +569,7 @@ async function runPull(
       // cycle sont réappliquées — LWW idempotent).
       if (newCursor > lastPulledAt) {
         await upsertSyncState(db, userId, {
-          lastPulledAt: newCursor - PULL_CURSOR_LAG_MS,
+          lastPulledAt: Math.max(0, newCursor - PULL_CURSOR_LAG_MS),
         });
       }
     });

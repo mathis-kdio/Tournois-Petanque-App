@@ -95,11 +95,14 @@ export function useSyncTrigger() {
 
       console.log(`[sync] cycle triggered: ${reason}`);
       const result = await syncCycle({ userId });
-      lastSyncRef.current = Date.now();
 
       if (result.errors.length > 0) {
+        // Cycle partiel : on ne marque pas le sync comme à jour, pour que le
+        // prochain AppState → active (ou retour réseau) relance un cycle
+        // complet au lieu d'attendre le seuil de 5 min.
         console.warn(`[sync] errors:`, result.errors);
       } else {
+        lastSyncRef.current = Date.now();
         await updateClockOffset(userId);
       }
     },
