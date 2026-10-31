@@ -306,6 +306,9 @@
     "supprimer_compte_modal_titre": "Usunięcie konta",
     "supprimer_compte_modal_texte": "Twoje konto i wszystkie powiązane dane zostaną trwale usunięte z naszych serwerów na wszystkich urządzeniach. Tej operacji nie można cofnąć.",
     "supprimer_compte_reauth_texte": "Potwierdź hasło, aby trwale usunąć konto (wymagane ponowne uwierzytelnienie).",
-    "erreur_inattendue": "Wystąpił błąd: {{erreur}}"
+    "erreur_inattendue": "Wystąpił błąd: {{erreur}}",
+    "recuperation_donnees_progression": "Pobieranie Twoich danych… {{count}} wierszy",
+    "compte_supprime_ailleurs_titre": "Konto usunięte",
+    "compte_supprime_ailleurs_texte": "To konto zostało usunięte na innym urządzeniu. Lokalne niezsynchronizowane dane nie mogą zostać wysłane i zostaną usunięte."
   }
 }

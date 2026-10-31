@@ -142,12 +142,12 @@ export class DataMigrationService {
     // Check if migration already completed
     const migrationCompleted = await this.checkMigrationCompleted();
     if (migrationCompleted) {
-      console.log('Migration déjà complète');
+      console.debug('Migration déjà complète');
       return false;
     }
 
     try {
-      console.log('Début de la migration');
+      console.debug('Début de la migration');
 
       //Migrate Preparation Tournoi Options
       await this.migratePreparationTournoi(optionsTournoi);
@@ -170,7 +170,7 @@ export class DataMigrationService {
       // Migrate player suggestions from historique
       await this.migratePlayerSuggestions(listesJoueurs.historique);
 
-      console.log('Fin de la migration avec succès');
+      console.debug('Fin de la migration avec succès');
       return true;
     } catch (error) {
       console.error('Echec de la migration:', error);
@@ -188,7 +188,7 @@ export class DataMigrationService {
   private static async migrateJoueursPreparationTournoi(
     listesJoueurs: ReduxListesJoueurs,
   ): Promise<void> {
-    console.log('Début migration joueurs preparation tournoi');
+    console.debug('Début migration joueurs preparation tournoi');
 
     // Combine all player lists
     const allPlayers =
@@ -197,7 +197,7 @@ export class DataMigrationService {
         : listesJoueurs.avecNoms;
 
     if (allPlayers.length === 0) {
-      console.log('Aucun joueur preparation tournoi à migrer');
+      console.debug('Aucun joueur preparation tournoi à migrer');
       return;
     }
 
@@ -217,7 +217,7 @@ export class DataMigrationService {
     await JoueursPreparationTournoisRepository.insert(
       joueursPreparationTournois,
     );
-    console.log(
+    console.debug(
       `Fin migration joueurs preparation tournoi (${playersToInsert.length})`,
     );
   }
@@ -225,10 +225,10 @@ export class DataMigrationService {
   private static async migratePlayerLists(
     listesSauvegarde: ReduxListesSauvegarde,
   ) {
-    console.log('Début migration liste joueurs');
+    console.debug('Début migration liste joueurs');
 
     if (listesSauvegarde.avecNoms.length === 0) {
-      console.log('Aucune liste joueurs à migrer');
+      console.debug('Aucune liste joueurs à migrer');
       return;
     }
 
@@ -246,7 +246,7 @@ export class DataMigrationService {
       });
       await this.migrateJoueursListe(listeJoueur, newList[0].id);
     }
-    console.log(
+    console.debug(
       `Fin migration liste joueurs (${listesSauvegarde.avecNoms.length})`,
     );
   }
@@ -256,7 +256,7 @@ export class DataMigrationService {
     listeId: string,
   ) {
     if (listeJoueur.length === 0) {
-      console.log(`Aucune joueur dans la liste ${listeId} à migrer`);
+      console.debug(`Aucune joueur dans la liste ${listeId} à migrer`);
       return;
     }
     // Insertion joueurs de la liste
@@ -286,10 +286,10 @@ export class DataMigrationService {
   private static async migrateTournaments(
     listeTournois: ReduxTournament[],
   ): Promise<void> {
-    console.log('Début migration tournois');
+    console.debug('Début migration tournois');
 
     if (listeTournois.length === 0) {
-      console.log('Aucun tournoi à migrer');
+      console.debug('Aucun tournoi à migrer');
       return;
     }
 
@@ -297,7 +297,9 @@ export class DataMigrationService {
       const tournoiId = tournoiData.tournoiId;
       const tournoiName = tournoiData.name || String(tournoiId);
 
-      console.log(`Début migration tournoi: ${tournoiName} (ID: ${tournoiId})`);
+      console.debug(
+        `Début migration tournoi: ${tournoiName} (ID: ${tournoiId})`,
+      );
       // Extract tournament options from the tournament data
       const options = tournoiData.tournoi.at(-1) as ReduxTournoiOptions;
 
@@ -321,17 +323,17 @@ export class DataMigrationService {
         await TournoisRepository.insertTournoi(newTournoi);
       const newTournoiUuid = insertedTournoi[0].id;
       this.tournoiIdMap.set(tournoiId, newTournoiUuid);
-      console.log(`Début migration joueurs tournoi ${tournoiId}`);
+      console.debug(`Début migration joueurs tournoi ${tournoiId}`);
       const joueurs = await this.migrateTournamentPlayers(options.listeJoueurs);
-      console.log(`Fin migration joueurs tournoi`);
+      console.debug(`Fin migration joueurs tournoi`);
 
-      console.log(`Début migration matchs tournoi ${tournoiId}`);
+      console.debug(`Début migration matchs tournoi ${tournoiId}`);
       const matches = tournoiData.tournoi.slice(0, -1) as ReduxMatch[];
       await this.migrateTournamentMatches(newTournoiUuid, matches, joueurs);
-      console.log(`Fin migration matchs tournoi`);
-      console.log(`Fin migration tournoi: ${tournoiName} (ID: ${tournoiId})`);
+      console.debug(`Fin migration matchs tournoi`);
+      console.debug(`Fin migration tournoi: ${tournoiName} (ID: ${tournoiId})`);
     }
-    console.log('Fin migration tournois');
+    console.debug('Fin migration tournois');
   }
 
   private static async migrateTournamentPlayers(
@@ -424,10 +426,10 @@ export class DataMigrationService {
   private static async setActualTournament(
     listeMatchs: ReduxTournoi | undefined,
   ): Promise<void> {
-    console.log('Début migration tournoi actuel');
+    console.debug('Début migration tournoi actuel');
 
     if (!listeMatchs || listeMatchs.length === 0) {
-      console.log('Pas de tournoi en cours');
+      console.debug('Pas de tournoi en cours');
       return;
     }
     const options = listeMatchs.at(-1) as ReduxTournoiOptions;
@@ -436,13 +438,13 @@ export class DataMigrationService {
       await TournoisRepository.setActualTournoi(newTournoiUuid, true);
     }
 
-    console.log('Fin migration tournoi actuel');
+    console.debug('Fin migration tournoi actuel');
   }
 
   private static async migratePreparationTournoi(
     optionsTournoi: ReduxOptionsPreparationTournoi,
   ): Promise<void> {
-    console.log('Début migration preparation tournoi');
+    console.debug('Début migration preparation tournoi');
 
     const preparationData: NewPreparationTournoi = {
       id: '0',
@@ -462,16 +464,16 @@ export class DataMigrationService {
     await PreparationTournoisRepository.updatePreparationTournoi(
       preparationData,
     );
-    console.log('Fin migration preparation tournoi');
+    console.debug('Fin migration preparation tournoi');
   }
 
   private static async migrateTerrainsPreparationTournois(
     listeTerrains: ReduxTerrain[],
   ): Promise<void> {
-    console.log('Début migration terrains');
+    console.debug('Début migration terrains');
 
     if (listeTerrains.length === 0) {
-      console.log('Accun terrains à migrer');
+      console.debug('Accun terrains à migrer');
       return;
     }
 
@@ -485,16 +487,16 @@ export class DataMigrationService {
         terrainId: insertedTerrain.id,
       });
     }
-    console.log(`Fin migration terrains (${listeTerrains.length})`);
+    console.debug(`Fin migration terrains (${listeTerrains.length})`);
   }
 
   private static async migratePlayerSuggestions(
     historique: ReduxHistoriqueJoueurs[],
   ): Promise<void> {
-    console.log('Début migration joueurs suggérés');
+    console.debug('Début migration joueurs suggérés');
 
     if (historique.length === 0) {
-      console.log('Aucun joueur suggéré à migrer');
+      console.debug('Aucun joueur suggéré à migrer');
       return;
     }
 
@@ -505,6 +507,6 @@ export class DataMigrationService {
         cacher: false,
       });
     }
-    console.log(`Fin migration joueurs suggérés (${historique.length})`);
+    console.debug(`Fin migration joueurs suggérés (${historique.length})`);
   }
 }

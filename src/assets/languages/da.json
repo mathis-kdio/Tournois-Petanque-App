@@ -306,6 +306,9 @@
     "supprimer_compte_modal_titre": "Sletning af konto",
     "supprimer_compte_modal_texte": "Din konto og alle tilknyttede data slettes permanent fra vores servere på alle enheder. Denne handling kan ikke fortrydes.",
     "supprimer_compte_reauth_texte": "Bekræft din adgangskode for at slette din konto permanent (ny godkendelse påkrævet).",
-    "erreur_inattendue": "Der opstod en fejl: {{erreur}}"
+    "erreur_inattendue": "Der opstod en fejl: {{erreur}}",
+    "recuperation_donnees_progression": "Henter dine data… {{count}} rækker",
+    "compte_supprime_ailleurs_titre": "Konto slettet",
+    "compte_supprime_ailleurs_texte": "Denne konto blev slettet fra en anden enhed. Lokale ikke-synkroniserede data kan ikke uploades og slettes."
   }
 }

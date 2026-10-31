@@ -306,6 +306,9 @@
     "supprimer_compte_modal_titre": "Eliminación de la cuenta",
     "supprimer_compte_modal_texte": "Tu cuenta y todos sus datos se eliminarán permanentemente de nuestros servidores, en todos los dispositivos. Esta acción es irreversible.",
     "supprimer_compte_reauth_texte": "Confirme su contraseña para eliminar definitivamente su cuenta (se requiere una nueva autenticación).",
-    "erreur_inattendue": "Se ha producido un error: {{erreur}}"
+    "erreur_inattendue": "Se ha producido un error: {{erreur}}",
+    "recuperation_donnees_progression": "Recuperando sus datos… {{count}} filas",
+    "compte_supprime_ailleurs_titre": "Cuenta eliminada",
+    "compte_supprime_ailleurs_texte": "Esta cuenta se eliminó desde otro dispositivo. Los datos locales no sincronizados no se pueden subir y se borrarán."
   }
 }

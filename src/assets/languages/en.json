@@ -306,6 +306,9 @@
     "supprimer_compte_modal_titre": "Account deletion",
     "supprimer_compte_modal_texte": "Your account and all its data will be permanently deleted from our servers, on all devices. This action cannot be undone.",
     "supprimer_compte_reauth_texte": "Confirm your password to permanently delete your account (re-authentication required).",
-    "erreur_inattendue": "An error occurred: {{erreur}}"
+    "erreur_inattendue": "An error occurred: {{erreur}}",
+    "recuperation_donnees_progression": "Retrieving your data… {{count}} rows",
+    "compte_supprime_ailleurs_titre": "Account deleted",
+    "compte_supprime_ailleurs_texte": "This account was deleted from another device. Local unsynced data cannot be uploaded and will be erased."
   }
 }

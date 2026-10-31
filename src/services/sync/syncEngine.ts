@@ -34,6 +34,12 @@ export interface SyncResult {
   pushed: number;
   pulled: number;
   errors: string[];
+  /**
+   * Vrai si le serveur a répondu que le compte n'existe plus (violation FK
+   * user_id → auth.users, code Postgres 23503) : les données locales ne
+   * pourront jamais être synchronisées.
+   */
+  accountDeleted?: boolean;
 }
 
 export interface SyncEngineOptions {
@@ -43,6 +49,8 @@ export interface SyncEngineOptions {
   batchSize?: number;
   /** Nombre max de tentatives par batch en cas d'échec. */
   maxRetries?: number;
+  /** Progression du pull : appelé après chaque page téléchargée (lignes reçues au total). */
+  onProgress?: (received: number) => void;
 }
 
 /** Connexion Drizzle ou transaction ouverte (pull). */
@@ -157,9 +165,13 @@ const PULL_CURSOR_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1_000;
  */
 export async function push(
   options: SyncEngineOptions,
-): Promise<{ pushed: number; errors: string[] }> {
+): Promise<{ pushed: number; errors: string[]; accountDeleted: boolean }> {
   if (!acquireLock()) {
-    return { pushed: 0, errors: ['Sync already running'] };
+    return {
+      pushed: 0,
+      errors: ['Sync already running'],
+      accountDeleted: false,
+    };
   }
   try {
     return await runPush(options);
@@ -181,13 +193,27 @@ export async function push(
  *     restera synced = false et sera repoussée) ;
  *  5. échec → retry avec backoff exponentiel (max maxRetries tentatives).
  */
+/**
+ * Vrai si l'erreur Postgres est une violation de clé étrangère sur user_id
+ * (code 23503) : le compte auth.users n'existe plus — supprimé depuis un
+ * autre appareil. Les lignes locales ne pourront jamais être pushées.
+ */
+function isAccountDeletedError(err: unknown): boolean {
+  return (
+    typeof err === 'object' &&
+    err !== null &&
+    (err as { code?: unknown }).code === '23503'
+  );
+}
+
 async function runPush(
   options: SyncEngineOptions,
-): Promise<{ pushed: number; errors: string[] }> {
+): Promise<{ pushed: number; errors: string[]; accountDeleted: boolean }> {
   const { userId, batchSize = 200, maxRetries = 5 } = options;
   const db = getDrizzleDb();
   let pushed = 0;
   const errors: string[] = [];
+  let accountDeleted = false;
 
   // clockOffset (serverNow - localNow) : pour comparer un timestamp serveur à
   // un updatedAt local, on ramène le local en base serveur (local + offset).
@@ -276,6 +302,13 @@ async function runPush(
           }
           pushedIds = ids;
         } catch (err) {
+          if (isAccountDeletedError(err)) {
+            // Le compte n'existe plus côté serveur : inutile de retenter
+            // (backoff) ni de continuer les autres tables.
+            accountDeleted = true;
+            errors.push(`Push ${tableName}: compte supprimé côté serveur`);
+            break;
+          }
           if (attempt < maxRetries - 1) {
             await sleep(backoffDelay(attempt));
           } else {
@@ -283,6 +316,7 @@ async function runPush(
           }
         }
       }
+      if (accountDeleted) break;
 
       if (pushedIds.length > 0) {
         // Marquer synced uniquement si la ligne n'a pas été réécrite par
@@ -307,7 +341,7 @@ async function runPush(
     }
   }
 
-  return { pushed, errors };
+  return { pushed, errors, accountDeleted };
 }
 
 // ─── Pull ────────────────────────────────────────────────────────────────────
@@ -353,7 +387,7 @@ export async function pull(
 async function runPull(
   options: SyncEngineOptions,
 ): Promise<{ pulled: number; errors: string[] }> {
-  const { userId, batchSize = 200 } = options;
+  const { userId, batchSize = 200, onProgress } = options;
   const db = getDrizzleDb();
   const errors: string[] = [];
 
@@ -404,6 +438,9 @@ async function runPull(
         rows.push(...remoteRows);
         hasMore = remoteRows.length === batchSize;
         offset += remoteRows.length;
+        onProgress?.(
+          fetched.reduce((n, f) => n + f.rows.length, 0) + rows.length,
+        );
       }
     } catch (err) {
       // Tout ou rien : on n'applique rien, le curseur n'avance pas.
@@ -591,7 +628,12 @@ export async function syncCycle(
   options: SyncEngineOptions,
 ): Promise<SyncResult> {
   if (!acquireLock()) {
-    return { pushed: 0, pulled: 0, errors: ['Sync already running'] };
+    return {
+      pushed: 0,
+      pulled: 0,
+      errors: ['Sync already running'],
+      accountDeleted: false,
+    };
   }
 
   try {
@@ -610,6 +652,7 @@ export async function syncCycle(
       pushed: pushResult.pushed,
       pulled: pullResult.pulled,
       errors: [...pullResult.errors, ...pushResult.errors],
+      accountDeleted: pushResult.accountDeleted,
     };
   } finally {
     isSyncing = false;

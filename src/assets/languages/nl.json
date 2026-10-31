@@ -306,6 +306,9 @@
     "supprimer_compte_modal_titre": "Account verwijderen",
     "supprimer_compte_modal_texte": "Je account en alle bijbehorende gegevens worden definitief van onze servers verwijderd, op alle apparaten. Deze actie kan niet ongedaan worden gemaakt.",
     "supprimer_compte_reauth_texte": "Bevestig je wachtwoord om je account definitief te verwijderen (opnieuw inloggen vereist).",
-    "erreur_inattendue": "Er is een fout opgetreden: {{erreur}}"
+    "erreur_inattendue": "Er is een fout opgetreden: {{erreur}}",
+    "recuperation_donnees_progression": "Uw gegevens worden opgehaald… {{count}} rijen",
+    "compte_supprime_ailleurs_titre": "Account verwijderd",
+    "compte_supprime_ailleurs_texte": "Dit account is op een ander apparaat verwijderd. Lokale niet-gesynchroniseerde gegevens kunnen niet worden geüpload en worden gewist."
   }
 }

@@ -220,6 +220,8 @@ Deux phases :
 
 1. **fetch réseau bufferisé** : chaque table est lue par pages (`.range()`) depuis le curseur
    `server_updated_at > last_pulled_at`, avec `ORDER BY server_updated_at` (pagination déterministe).
+   Un callback `onProgress(reçues)` est appelé après chaque page — l'overlay « Récupération de vos
+   données… » affiche le compteur au-delà de 50 lignes.
    En cas d'erreur sur une table, **rien n'est appliqué** et le curseur n'avance pas ;
 2. **application locale** : inserts/updates/tombstones + nouveau curseur, **commit en une seule
    transaction SQLite** (pas de perte de curseur en cas de crash), FK désactivées le temps de
@@ -328,10 +330,16 @@ compte côté serveur.
 ## 8. Limites connues
 
 - **Tournoi en cours purement local** : `estTournoiActuel` n'est **pas synchronisé** (colonne absente
-  côté Supabase, `setActualTournoi` hors `stampForSync`, valeur forcée à `false` au pull). Chaque
-  appareil a son propre tournoi en cours — évite tout conflit LWW sur un invariant « un seul actif
-  par compte » que la sync ne pourrait pas garantir. Conséquence : le tournoi en cours n'est pas
-  repris sur un autre appareil.
+  côté Supabase — `DROP COLUMN` dans 0002, appliquée en live — `setActualTournoi` hors
+  `stampForSync`, valeur forcée à `false` au pull). Chaque appareil a son propre tournoi en cours —
+  évite tout conflit LWW sur un invariant « un seul actif par compte » que la sync ne pourrait pas
+  garantir. Conséquence : le tournoi en cours n'est pas repris sur un autre appareil.
+- **Compte supprimé depuis un autre appareil** : le push reçoit une violation de clé étrangère
+  `user_id → auth.users` (code Postgres `23503`). Le moteur pose alors `accountDeleted: true` sur le
+  résultat du cycle (sans retry/backoff inutile), `syncTrigger` fait une **purge forcée locale**
+  (`forceLogoutAndPurge`) et affiche un dialogue explicatif — sinon l'outbox resterait bloquée
+  indéfiniment et le logout impossible (« données non synchronisées » alors qu'elles ne pourront
+  jamais l'être).
 - **LWW à granularité ligne entière** : si deux appareils éditent des champs différents de la même
   ligne hors ligne en même temps, un seul appareil gagne, l'autre champ est perdu. Accepté
   (données personnelles, conflits rares).

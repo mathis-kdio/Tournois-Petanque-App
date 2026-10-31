@@ -43,6 +43,7 @@ import {
 import {
   adoptMerge,
   adoptReplace,
+  forceLogoutAndPurge,
   prepareLoginSync,
   type LoginSyncPlan,
 } from '@/services/sync/syncAccount';
@@ -65,6 +66,9 @@ interface AdoptionPrompt {
   plan: LoginSyncPlan;
 }
 
+/** Seuil à partir duquel on affiche le compteur de lignes pendant la récupération. */
+const PROGRESS_DISPLAY_THRESHOLD = 50;
+
 // ─── Hook ─────────────────────────────────────────────────────────────────────
 
 /**
@@ -85,6 +89,8 @@ export function useSyncTrigger() {
     null,
   );
   const [isRecovering, setIsRecovering] = useState(false);
+  const [recoveredCount, setRecoveredCount] = useState(0);
+  const [accountDeleted, setAccountDeleted] = useState(false);
 
   const runCycle = useCallback(
     async (reason: string) => {
@@ -94,7 +100,27 @@ export function useSyncTrigger() {
       if (adoptionPromptRef.current) return;
 
       console.log(`[sync] cycle triggered: ${reason}`);
-      const result = await syncCycle({ userId });
+      setRecoveredCount(0);
+      const result = await syncCycle({
+        userId,
+        onProgress: (n) => setRecoveredCount(n),
+      });
+
+      if (result.accountDeleted) {
+        // Le compte a été supprimé depuis un autre appareil : les données
+        // locales ne pourront jamais être synchronisées. Purge forcée et
+        // dialogue explicatif (une seule fois).
+        setAccountDeleted(true);
+        try {
+          await forceLogoutAndPurge(userId);
+        } catch (err) {
+          console.warn(
+            '[sync] purge après suppression distante du compte:',
+            err,
+          );
+        }
+        return;
+      }
 
       if (result.errors.length > 0) {
         // Cycle partiel : on ne marque pas le sync comme à jour, pour que le
@@ -284,7 +310,14 @@ export function useSyncTrigger() {
     return () => subscription.remove();
   }, [userId, runCycle]);
 
-  return { triggerPush, adoptionPrompt, confirmAdoption, isRecovering };
+  return {
+    triggerPush,
+    adoptionPrompt,
+    confirmAdoption,
+    isRecovering,
+    recoveredCount,
+    accountDeleted,
+  };
 }
 
 // ─── Composant racine ─────────────────────────────────────────────────────────
@@ -301,7 +334,13 @@ export function useSyncTrigger() {
  */
 export function SyncTrigger() {
   const { t } = useTranslation();
-  const { adoptionPrompt, confirmAdoption, isRecovering } = useSyncTrigger();
+  const {
+    adoptionPrompt,
+    confirmAdoption,
+    isRecovering,
+    recoveredCount,
+    accountDeleted,
+  } = useSyncTrigger();
 
   return (
     <>
@@ -320,11 +359,34 @@ export function SyncTrigger() {
           <VStack space="md" style={{ paddingHorizontal: 32 }}>
             <ActivityIndicator size="large" color="white" />
             <Text className="text-white text-center">
-              {t('recuperation_donnees')}
+              {recoveredCount > PROGRESS_DISPLAY_THRESHOLD
+                ? t('recuperation_donnees_progression', {
+                    count: recoveredCount,
+                  })
+                : t('recuperation_donnees')}
             </Text>
           </VStack>
         </Center>
       )}
+
+      <AlertDialog
+        isOpen={accountDeleted}
+        onClose={() => {
+          // Informatif : la purge a déjà été faite, rien à choisir.
+        }}
+      >
+        <AlertDialogBackdrop />
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <Heading className="color-custom-text-modal">
+              {t('compte_supprime_ailleurs_titre')}
+            </Heading>
+          </AlertDialogHeader>
+          <AlertDialogBody>
+            <Text>{t('compte_supprime_ailleurs_texte')}</Text>
+          </AlertDialogBody>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <AlertDialog
         isOpen={adoptionPrompt !== null}
