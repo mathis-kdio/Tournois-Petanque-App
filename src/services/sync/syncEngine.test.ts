@@ -387,7 +387,7 @@ describe('syncEngine', () => {
     });
 
     it('insère une ligne distante absente localement', async () => {
-      // pull boucle sur 9 tables (PULL_ORDER = reverse de PUSH_ORDER).
+      // pull boucle sur 9 tables (PUSH_ORDER).
       // Le 1er appel à mockSelectWhereFn = sync_state → []
       // Les appels suivants = local table lookups → [] (ligne absente)
 
@@ -407,7 +407,7 @@ describe('syncEngine', () => {
         server_updated_at: '2026-01-01T00:00:01.000Z',
       };
 
-      // Pour la première table de PULL_ORDER (match), retourner 1 ligne distante
+      // Pour la première table de PUSH_ORDER (joueurs_suggestion), retourner 1 ligne distante
       setupSelectRemoteWithRows([[remoteRow]]);
 
       const result = await pull({ userId: USER_ID });
@@ -677,9 +677,9 @@ describe('syncEngine', () => {
     });
 
     it("applique les inserts parents d'abord (FK locales satisfaites)", async () => {
-      // Fetch en PULL_ORDER (match d'abord) ; l'application doit se faire
-      // en PUSH_ORDER : le tournoi (parent) doit être inséré avant le
-      // match (enfant qui le référence par FK locale).
+      // Fetch et application dans le même ordre (PUSH_ORDER) : le tournoi
+      // (parent) est lu et inséré avant le match (enfant qui le référence
+      // par FK locale).
       mockSelectWhereFn.mockResolvedValue([]);
 
       const tournoiRow = {
@@ -721,10 +721,10 @@ describe('syncEngine', () => {
         server_updated_at: '2026-01-01T00:00:01.000Z',
       };
 
-      // PULL_ORDER : match (appel 0) puis tournoi (appel 4).
+      // PUSH_ORDER : tournoi (appel 4) puis match (appel 8).
       const empty: any[] = [];
       setupSelectRemoteWithRows([
-        [matchRow],
+        empty,
         empty,
         empty,
         empty,
@@ -732,7 +732,7 @@ describe('syncEngine', () => {
         empty,
         empty,
         empty,
-        empty,
+        [matchRow],
       ]);
 
       const result = await pull({ userId: USER_ID });
@@ -740,7 +740,7 @@ describe('syncEngine', () => {
       expect(result.pulled).toBe(2);
       // 2 inserts de données + 1 insert du curseur (sync_state absent).
       expect(mockDb.insert).toHaveBeenCalledTimes(3);
-      // Parent inséré avant enfant, même si le fetch l'a lu après.
+      // Parent inséré avant enfant.
       expect(mockDb.insert.mock.calls[0][0].id).toBe('tournoi.id');
       expect(mockDb.insert.mock.calls[1][0].id).toBe('match.id');
     });
@@ -834,18 +834,17 @@ describe('syncEngine', () => {
         deleted_at: null,
         server_updated_at: '2026-01-02T00:00:01.000Z',
       };
-      // PULL_ORDER : match, equipes_joueurs, equipe, joueurs_listes, tournoi,
-      // terrains, listes_joueurs, joueurs, joueurs_suggestion (9e table).
+      // PUSH_ORDER : joueurs_suggestion est la 1re table (appel 0).
       setupSelectRemoteWithRows([
-        [],
-        [],
-        [],
-        [],
-        [],
-        [],
-        [],
-        [],
         [remoteSuggestion],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
       ]);
 
       const result = await pull({ userId: USER_ID });
@@ -884,15 +883,15 @@ describe('syncEngine', () => {
         server_updated_at: '2026-01-02T00:00:01.000Z',
       };
       setupSelectRemoteWithRows([
-        [],
-        [],
-        [],
-        [],
-        [],
-        [],
-        [],
-        [],
         [remoteSuggestion],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
       ]);
 
       const result = await pull({ userId: USER_ID });

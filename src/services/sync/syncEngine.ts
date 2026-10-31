@@ -23,35 +23,12 @@ import {
   withForeignKeysDisabled,
 } from '@/db/sync/localTransaction';
 import { and, eq, inArray, lt, sql } from 'drizzle-orm';
-import { Platform } from 'react-native';
 import {
   PULL_ORDER,
   PUSH_ORDER,
   SYNC_TABLES,
   type SyncTableName,
 } from './syncTables';
-
-/**
- * Nombre de lignes affectées par un update/delete Drizzle.
- *
- * Sur mobile (expo-sqlite), le résultat est un `SQLiteRunResult` avec `.changes`.
- * Sur web (sqlite-proxy), le callback ne renvoie que `{ rows }` — on ne peut
- * pas compter les lignes affectées. Dans ce cas, on considère que l'update a
- * réussi si aucune erreur n'est levée (la garde `updatedAt` reste correcte,
- * elle empêche l'écrasement ; on perd juste le comptage `applied`).
- */
-function affectedRows(result: unknown): number {
-  if (
-    typeof result === 'object' &&
-    result !== null &&
-    'changes' in result &&
-    typeof (result as { changes: unknown }).changes === 'number'
-  ) {
-    return (result as { changes: number }).changes;
-  }
-  // Proxy web : pas de compteur disponible, on suppose 1 si pas d'erreur.
-  return Platform.OS === 'web' ? 1 : 0;
-}
 
 export interface SyncResult {
   pushed: number;
@@ -391,10 +368,12 @@ async function runPull(
   const clockOffset = stateRow?.clockOffset ?? 0;
 
   // ─── Phase 1 : fetch réseau, bufférisé, aucune écriture ────────────────────
+  // Fetch dans le même ordre que l'application (PUSH_ORDER) : les lectures
+  // réseau sont indépendantes par table, l'ordre de fetch n'a pas d'importance.
   const fetched: { tableName: SyncTableName; rows: any[] }[] = [];
   let newCursor = lastPulledAt;
 
-  for (const tableName of PULL_ORDER) {
+  for (const tableName of PUSH_ORDER) {
     const mapper = SYNC_TABLES[tableName];
     const rows: any[] = [];
 
@@ -460,20 +439,15 @@ async function runPull(
 
   try {
     await runInBulkTransaction(db, async () => {
-      // Application parents d'abord (PUSH_ORDER) : les inserts enfant
-      // référencent des parents déjà insérés dans la même transaction.
-      // (Les deletes sont exclus du pull — les tombstones distantes
-      // deviennent des tombstones locales, la purge 30 jours fait le
+      // Application dans l'ordre de fetch (PUSH_ORDER, parents d'abord) :
+      // les inserts enfant référencent des parents déjà insérés dans la même
+      // transaction. (Les deletes sont exclus du pull — les tombstones
+      // distantes deviennent des tombstones locales, la purge 30 jours fait le
       // reste.) Les FK locales sont désactivées pour cette écriture
       // interne : le miroir distant — source de vérité — n'a pas de FK
       // inter-tables, une ligne peut référencer un parent tombstoné
       // absent localement sans que le pull soit bloqué pour autant.
-      const rowsByTable = new Map(fetched.map((f) => [f.tableName, f.rows]));
-
-      for (const tableName of PUSH_ORDER) {
-        const rows = rowsByTable.get(tableName);
-        if (!rows) continue;
-
+      for (const { tableName, rows } of fetched) {
         const mapper = SYNC_TABLES[tableName];
         const table = SYNC_TABLES[tableName].table;
 
@@ -501,7 +475,11 @@ async function runPull(
             // Garde sur updatedAt : si l'UI a réécrit la ligne entre le
             // select local et ce update (synced repassé à false), la
             // tombstone distante ne doit pas écraser l'écriture locale.
-            const tombResult = await db
+            // Pas de lecture du nombre de lignes affectées : sur le proxy web
+            // il n'existe pas, et la garde `updatedAt` fait de toute façon le
+            // vrai travail (l'update qui ne matche pas = écriture UI
+            // concurrente préservée).
+            await db
               .update(table)
               .set(sqliteRow as any)
               .where(
@@ -510,9 +488,7 @@ async function runPull(
                   eq(table.updatedAt, localRow.updatedAt),
                 ),
               );
-            if (affectedRows(tombResult) > 0) {
-              applied++;
-            }
+            applied++;
             continue;
           }
 
@@ -566,7 +542,7 @@ async function runPull(
               // réécrit la ligne entre le select local et ce update, la ligne
               // a synced = false + updatedAt plus récent — le where ne matche
               // pas et la modification locale est préservée (elle sera poussée).
-              const result = await db
+              await db
                 .update(table)
                 .set(sqliteRow as any)
                 .where(
@@ -575,9 +551,7 @@ async function runPull(
                     eq(table.updatedAt, targetRow.updatedAt),
                   ),
                 );
-              if (affectedRows(result) > 0) {
-                applied++;
-              }
+              applied++;
             }
             // Sinon : ignorer (la ligne locale synced = false sera poussée)
           }
