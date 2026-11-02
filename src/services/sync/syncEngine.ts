@@ -134,6 +134,25 @@ async function upsertSyncState(
     });
 }
 
+/**
+ * Retire d'une ligne distante ses champs purement locaux (déclarés via
+ * `localOnlyFields` dans SYNC_TABLES) avant un update LWW au pull : ces champs
+ * n'existent pas côté Postgres et appartiennent à chaque appareil — le pull ne
+ * doit jamais les écraser (ex. tournoi.estTournoiActuel, sinon le tournoi que
+ * l'on vient de créer perd son statut de tournoi actuel au premier pull).
+ */
+function withoutLocalOnlyFields(tableName: SyncTableName, row: any) {
+  const localOnlyFields = SYNC_TABLES[tableName].localOnlyFields;
+  if (!localOnlyFields || localOnlyFields.length === 0) {
+    return row;
+  }
+  const copy = { ...row };
+  for (const field of localOnlyFields) {
+    delete copy[field];
+  }
+  return copy;
+}
+
 // ─── Constantes de sync ──────────────────────────────────────────────────────
 
 /**
@@ -585,9 +604,11 @@ async function runPull(
               // réécrit la ligne entre le select local et ce update, la ligne
               // a synced = false + updatedAt plus récent — le where ne matche
               // pas et la modification locale est préservée (elle sera poussée).
+              // Les champs purement locaux (localOnlyFields, ex.
+              // estTournoiActuel) sont exclus : le pull ne les écrase jamais.
               await db
                 .update(table)
-                .set(sqliteRow as any)
+                .set(withoutLocalOnlyFields(tableName, sqliteRow) as any)
                 .where(
                   and(
                     eq(table.id, targetRow.id),

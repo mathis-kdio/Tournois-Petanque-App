@@ -232,6 +232,9 @@ Règles appliquées par ligne reçue :
 - absente localement → insert (tombstone distante ignorée) ;
 - présente → LWW : écraser si `updated_at` distant (corrigé du `clockOffset`) > `updated_at` local
   **ou** ligne locale `synced = true`, avec garde `updatedAt` (écriture UI concurrente préservée) ;
+- champs purement locaux (`localOnlyFields` de `SYNC_TABLES`, ex. `tournoi.estTournoiActuel`) :
+  exclus de l'update LWW — le pull ne les écrase jamais ; à l'insert (ligne absente localement),
+  la valeur du mapper s'applique (`false` pour `estTournoiActuel`) ;
 - tombstone distante → tombstone locale (`deleted = true`, `synced = true`) si la ligne locale est
   sync ; une ligne locale non sync est conservée (l'écriture locale gagne) ;
 - cas particulier `joueurs_suggestion` : l'index unique local `nameUniqueIndex` n'a pas d'équivalent
@@ -331,9 +334,11 @@ compte côté serveur.
 
 - **Tournoi en cours purement local** : `estTournoiActuel` n'est **pas synchronisé** (colonne absente
   côté Supabase — `DROP COLUMN` dans 0002, appliquée en live — `setActualTournoi` hors
-  `stampForSync`, valeur forcée à `false` au pull). Chaque appareil a son propre tournoi en cours —
-  évite tout conflit LWW sur un invariant « un seul actif par compte » que la sync ne pourrait pas
-  garantir. Conséquence : le tournoi en cours n'est pas repris sur un autre appareil.
+  `stampForSync`). Le pull ne l'écrase jamais sur une ligne existante (champ déclaré
+  `localOnlyFields` dans `SYNC_TABLES`) ; `false` ne s'applique qu'à l'insert d'une ligne inconnue
+  localement. Chaque appareil a son propre tournoi en cours — évite tout conflit LWW sur un
+  invariant « un seul actif par compte » que la sync ne pourrait pas garantir. Conséquence : le
+  tournoi en cours n'est pas repris sur un autre appareil.
 - **Compte supprimé depuis un autre appareil** : le push reçoit une violation de clé étrangère
   `user_id → auth.users` (code Postgres `23503`). Le moteur pose alors `accountDeleted: true` sur le
   résultat du cycle (sans retry/backoff inutile), `syncTrigger` fait une **purge forcée locale**

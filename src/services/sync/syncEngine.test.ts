@@ -516,6 +516,66 @@ describe('syncEngine', () => {
       expect(mockDb.update).toHaveBeenCalled();
     });
 
+    it("préserve estTournoiActuel (champ local) quand le pull écrase un tournoi synced=true", async () => {
+      // Scénario : tournoi créé localement (estTournoiActuel=true), poussé
+      // (synced=true), puis reçu à nouveau au pull. Le mapper distant force
+      // estTournoiActuel=false : l'update LWW ne doit PAS l'écrire, sinon le
+      // tournoi que l'on vient de créer perd son statut de tournoi actuel.
+      const localRow = makeRow({
+        id: 'tournoi-1',
+        synced: true,
+        estTournoiActuel: true,
+        updatedAt: new Date('2026-01-01T00:00:00Z'),
+      });
+
+      let callCount = 0;
+      mockSelectWhereFn.mockImplementation(async function () {
+        const idx = callCount++;
+        if (idx === 0) return []; // sync_state
+        if (idx === 1) return [localRow]; // lookup de la ligne tournoi
+        return [];
+      });
+
+      const remoteTournoiRow = {
+        id: 'tournoi-1',
+        name: 'Mon tournoi',
+        nb_tours: 3,
+        nb_matchs: 6,
+        nb_pt_victoire: 13,
+        speciaux_incompatibles: true,
+        memes_equipes: true,
+        memes_adversaires: 0,
+        type_equipes: 'DOUBLETTE',
+        type_tournoi: 'MELEE',
+        avec_terrains: false,
+        mode: 'AVECNOMS',
+        create_at: '2026-01-01T00:00:00.000Z',
+        user_id: USER_ID,
+        updated_at: '2026-01-02T00:00:00.000Z',
+        deleted: false,
+        deleted_at: null,
+        server_updated_at: '2026-01-02T00:00:01.000Z',
+      };
+
+      // tournoi = 5e table de PUSH_ORDER → 4 pages vides avant la sienne.
+      setupSelectRemoteWithRows([[], [], [], [], [remoteTournoiRow]]);
+
+      const result = await pull({ userId: USER_ID });
+
+      expect(result.pulled).toBe(1);
+      expect(mockDb.update).toHaveBeenCalledTimes(1);
+      const setMock = mockDb.update.mock.results[0].value.set as jest.Mock;
+      const setArg = setMock.mock.calls[0][0];
+      // Champ local jamais écrasé par le pull…
+      expect(setArg).not.toHaveProperty('estTournoiActuel');
+      // …mais le reste de la ligne distante est bien appliqué.
+      expect(setArg).toMatchObject({
+        id: 'tournoi-1',
+        name: 'Mon tournoi',
+        synced: true,
+      });
+    });
+
     it('corrige le clockOffset : serveur en avance ne fait pas gagner une vieille écriture distante', async () => {
       // Serveur à 12:00:10, client à 12:00:00 → clockOffset = +10 000 ms.
       // Écriture distante à 12:00:05 serveur = 11:59:55 équivalent local.

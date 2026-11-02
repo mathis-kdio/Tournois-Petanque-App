@@ -110,6 +110,12 @@ export interface SyncMapper<
     userId: string,
   ) => Omit<TPostgres, 'deleted_at' | 'server_updated_at'>;
   fromPostgres: (row: TPostgres) => TNewSqlite;
+  /**
+   * Champs purement locaux de la table SQLite (absents du schéma Postgres) :
+   * retirés de la ligne distante avant l'update LWW du pull, jamais écrasés.
+   * Ex. tournoi.estTournoiActuel — le tournoi en cours propre à chaque appareil.
+   */
+  localOnlyFields?: string[];
 }
 
 export const SYNC_TABLES = {
@@ -150,6 +156,7 @@ export const SYNC_TABLES = {
     pgTable: 'tournoi',
     toPostgres: tournoiToPostgres,
     fromPostgres: tournoiFromPostgres,
+    localOnlyFields: ['estTournoiActuel'],
   } as SyncMapper<Tournoi, NewTournoi, TournoiPostgresRow>,
 
   equipe: {
