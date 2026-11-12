@@ -26,10 +26,13 @@ export const JoueursPreparationTournoisRepository = {
         joueurId: joueurs.joueurId,
         name: joueurs.name,
         type: joueurs.type,
+        synced: joueurs.synced,
+        updatedAt: joueurs.updatedAt,
+        deleted: joueurs.deleted,
       })
       .from(joueursPreparationTournois)
       .innerJoin(joueurs, eq(joueursPreparationTournois.joueurId, joueurs.id))
-      .where(eq(joueursPreparationTournois.preparationTournoiId, 0));
+      .where(eq(joueurs.deleted, false));
   },
 
   insert(newJoueursPreparationTournois: NewJoueursPreparationTournois[]) {
@@ -38,15 +41,13 @@ export const JoueursPreparationTournoisRepository = {
       .values(newJoueursPreparationTournois);
   },
 
-  delete(joueurIds: number[]) {
+  delete(joueurIds: string[]) {
     return getDrizzleDb()
       .delete(joueursPreparationTournois)
       .where(inArray(joueursPreparationTournois.joueurId, joueurIds));
   },
 
   deleteAll() {
-    return getDrizzleDb()
-      .delete(joueursPreparationTournois)
-      .where(eq(joueursPreparationTournois.preparationTournoiId, 0));
+    return getDrizzleDb().delete(joueursPreparationTournois);
   },
 };

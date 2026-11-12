@@ -1,15 +1,18 @@
-import { integer, sqliteTable } from 'drizzle-orm/sqlite-core';
+import { uuidv7 } from '@/utils/uuid/uuidv7';
+import { sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { joueurs } from './joueurs';
 import { preparationTournoi } from './preparationTournoi';
 
 export const joueursPreparationTournois = sqliteTable(
   'joueurs_preparation_tournois',
   {
-    id: integer('id').primaryKey(),
-    joueurId: integer('joueur_id')
+    id: text('id')
+      .primaryKey()
+      .$defaultFn(() => uuidv7()),
+    joueurId: text('joueur_id')
       .references(() => joueurs.id)
       .notNull(),
-    preparationTournoiId: integer('preparation_tournoi_id')
+    preparationTournoiId: text('preparation_tournoi_id')
       .references(() => preparationTournoi.id)
       .notNull(),
   },

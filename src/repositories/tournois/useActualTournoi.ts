@@ -5,6 +5,7 @@ import { MatchModel } from '@/types/interfaces/matchModel';
 import { TerrainModel } from '@/types/interfaces/terrainModel';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+import { useMemo } from 'react';
 import {
   Joueur_EquipesJoueurs,
   JoueursRepository,
@@ -79,13 +80,17 @@ export const useActualTournoi = () => {
   );
 
   const tournoiActuel = tournois.find((tournoi) => tournoi.estTournoiActuel);
-  const tournoiId = tournoiActuel ? tournoiActuel.id : -1;
+  // Sans tournoi actif, id volontairement impossible : la requête retourne
+  // 0 ligne sans jointure coûteuse.
+  const tournoiId = tournoiActuel ? tournoiActuel.id : '__no_tournoi__';
   const { data: fullMatchs } = useLiveQuery(
     MatchsRepository.getFullMatchsTournoi(tournoiId),
     [tournoiId],
   );
 
-  const equipesTournoiId = () => {
+  // useMemo : un nouveau tableau à chaque render ferait réexécuter la live
+  // query (deps [equipesTournoiId] jamais stable sinon).
+  const equipesTournoiId = useMemo(() => {
     if (!fullMatchs) {
       return [];
     }
@@ -94,7 +99,7 @@ export const useActualTournoi = () => {
       fullMatch.m_equipe2,
     ]);
 
-    const equipes = new Set();
+    const equipes = new Set<string>();
     return allEquipes.filter((equipeId) => {
       if (equipes.has(equipeId)) {
         return false;
@@ -103,10 +108,10 @@ export const useActualTournoi = () => {
         return true;
       }
     });
-  };
+  }, [fullMatchs]);
 
   const { data: equipesWithJoueursTournoi } = useLiveQuery(
-    JoueursRepository.getEquipes(equipesTournoiId()),
+    JoueursRepository.getEquipes(equipesTournoiId),
     [equipesTournoiId],
   );
 

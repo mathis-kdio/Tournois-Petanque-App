@@ -291,6 +291,26 @@
     "choix_mode_creation_equipes": "Elección del modo de creación de equipos",
     "equipes_aleatoires": "Equipos creados aleatoriamente",
     "equipes_manuelles": "Equipos creados manualmente",
-    "initialisation_base": "Initialisation de la base, veuillez ne pas fermer l'application..."
+    "initialisation_base": "Initialisation de la base, veuillez ne pas fermer l'application...",
+    "adoption_titre": "Datos locales no sincronizados",
+    "adoption_texte": "Los datos creados en este dispositivo aún no se han sincronizado, y esta cuenta ya contiene datos. ¿Qué quieres hacer?",
+    "adoption_fusionner": "Conservar los datos locales y fusionar",
+    "adoption_remplacer": "Reemplazar por los datos de la cuenta",
+    "recuperation_donnees": "Recuperando sus datos, espere...",
+    "logout_non_sync_titre": "Datos no sincronizados",
+    "logout_non_sync_texte": "Algunos datos locales no han podido sincronizarse. Si cierras sesión ahora, se perderán.",
+    "logout_reessayer_sync": "Reintentar la sincronización",
+    "logout_forcer": "Cerrar sesión de todos modos (datos perdidos)",
+    "sync_reussie": "Sincronización correcta",
+    "sync_echouee": "La sincronización falló: {{erreur}}",
+    "supprimer_compte_modal_titre": "Eliminación de la cuenta",
+    "supprimer_compte_modal_texte": "Tu cuenta y todos sus datos se eliminarán permanentemente de nuestros servidores, en todos los dispositivos. Esta acción es irreversible.",
+    "supprimer_compte_reauth_texte": "Confirme su contraseña para eliminar definitivamente su cuenta (se requiere una nueva autenticación).",
+    "erreur_inattendue": "Se ha producido un error: {{erreur}}",
+    "recuperation_donnees_progression": "Recuperando sus datos… {{count}} filas",
+    "compte_supprime_ailleurs_titre": "Cuenta eliminada",
+    "compte_supprime_ailleurs_texte": "Esta cuenta se eliminó desde otro dispositivo. Los datos locales no sincronizados no se pueden subir y se borrarán.",
+    "sync_hors_ligne_toast": "Sin conexión: no se pueden recuperar los datos ahora mismo.",
+    "rafraichir_donnees": "Actualizar datos"
   }
 }

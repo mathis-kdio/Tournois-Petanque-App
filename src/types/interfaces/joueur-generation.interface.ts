@@ -10,7 +10,7 @@ export interface JoueurGeneration {
 }
 
 export interface JoueurGenerationTeteATete {
-  uniqueBDDId: number;
+  uniqueBDDId: string;
   joueurTournoiId: number;
   name: string;
   type: JoueurType | undefined;

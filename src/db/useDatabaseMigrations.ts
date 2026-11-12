@@ -7,6 +7,7 @@ import { openDatabaseAsync, SQLiteDatabase } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import runManualMigration from './runManualMigration';
+import { runUuidMigration } from './runUuidMigration';
 
 type drizzleExpoSQLiteDatabase = ExpoSQLiteDatabase<
   Record<string, never>,
@@ -27,8 +28,10 @@ export function useDatabaseMigrations() {
   const [databaseMigrationDone, setDatabaseMigrationDone] = useState(false);
 
   useEffect(() => {
+    let rawDb: SQLiteDatabase;
     openDatabaseAsync(DATABASE_NAME, { enableChangeListener: true })
       .then(async (sqliteDatabase) => {
+        rawDb = sqliteDatabase;
         setSqliteDatabase(sqliteDatabase);
         // Drizzle expo-sqlite ne fonctionne pas sur WEB https://github.com/drizzle-team/drizzle-orm/issues/1009
         if (Platform.OS === 'web') {
@@ -49,6 +52,7 @@ export function useDatabaseMigrations() {
           return migrate(expoSQLiteDatabase, migrations);
         }
       })
+      .then(() => runUuidMigration(rawDb)) // Migration UUID v7 + colonnes de sync (après la migration Drizzle)
       .then(() => setDatabaseMigrationDone(true));
   }, []);
 

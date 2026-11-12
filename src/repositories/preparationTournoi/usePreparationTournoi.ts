@@ -29,9 +29,10 @@ export const usePreparationTournoi = () => {
   );
 
   const preparationTournoiVM = () => {
-    return preparationTournoi.length
-      ? toPreparationTournoiModel(preparationTournoi[0])
-      : undefined;
+    const preTournoi0 = preparationTournoi.find(
+      (preTournoi) => preTournoi.id === '0',
+    );
+    return preTournoi0 ? toPreparationTournoiModel(preTournoi0) : undefined;
   };
 
   return {

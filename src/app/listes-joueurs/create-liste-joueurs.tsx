@@ -17,14 +17,13 @@ const CreateListeJoueurScreen = () => {
   const param = useLocalSearchParams<SearchParams>();
   const { type, listId } = param;
 
-  const idList = parseInt(listId ?? '');
-  if ((type !== 'create' && type !== 'edit') || isNaN(idList)) {
+  if ((type !== 'create' && type !== 'edit') || listId === undefined) {
     return <Loading />;
   }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: color }}>
-      <CreateListeJoueur type={type} idList={idList} />
+      <CreateListeJoueur type={type} idList={listId} />
     </SafeAreaView>
   );
 };

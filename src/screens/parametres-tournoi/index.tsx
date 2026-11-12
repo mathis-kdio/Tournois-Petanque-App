@@ -26,7 +26,7 @@ const ParametresTournoi = () => {
     router.navigate('/tournoi');
   };
 
-  const modalSupprimerTournoi = (tournoiId: number) => {
+  const modalSupprimerTournoi = (tournoiId: string) => {
     return (
       <DeleteTournoiModal
         tournoiId={tournoiId}

@@ -4,10 +4,10 @@ import { Button, ButtonIcon } from '../ui/button';
 import { CloseIcon } from '../ui/icon';
 
 export interface Props {
-  joueurUniqueBDDId: number;
+  joueurUniqueBDDId: string;
   isInscription: boolean;
   setRenommerOn: React.Dispatch<React.SetStateAction<boolean>>;
-  onDeleteJoueur: (id: number) => Promise<void>;
+  onDeleteJoueur: (id: string) => Promise<void>;
 }
 
 const DeleteJoueurButton: React.FC<Props> = ({

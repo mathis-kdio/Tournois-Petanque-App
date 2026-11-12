@@ -1,9 +1,12 @@
-import { Joueur } from '@/db/schema';
 import { JoueursRepository } from '@/repositories/joueurs/joueursRepository';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
-function toJoueurModel(joueur: Joueur): JoueurModel {
+type JoueurListe = Awaited<
+  ReturnType<typeof JoueursRepository.getJoueursListe>
+>[number];
+
+function toJoueurModel(joueur: JoueurListe): JoueurModel {
   return {
     uniqueBDDId: joueur.id,
     joueurTournoiId: joueur.joueurId,
@@ -14,7 +17,7 @@ function toJoueurModel(joueur: Joueur): JoueurModel {
   };
 }
 
-export const useListeJoueurListeId = (listeId: number) => {
+export const useListeJoueurListeId = (listeId: string) => {
   const { data: joueursListe } = useLiveQuery(
     JoueursRepository.getJoueursListe(listeId),
   );

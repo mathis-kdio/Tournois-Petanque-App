@@ -11,7 +11,7 @@ jest.mock('@/repositories/matchs/matchsRepository', () => ({
 }));
 
 describe('nextMatch', () => {
-  const tournoiId = 1;
+  const tournoiId = '1';
 
   beforeEach(() => {
     jest.clearAllMocks();
