@@ -291,6 +291,26 @@
     "choix_mode_creation_equipes": "Team creation mode selection",
     "equipes_aleatoires": "Randomly formed teams",
     "equipes_manuelles": "Manually formed teams",
-    "initialisation_base": "Initialisation de la base, veuillez ne pas fermer l'application..."
+    "initialisation_base": "Initialisation de la base, veuillez ne pas fermer l'application...",
+    "adoption_titre": "Unsynced local data",
+    "adoption_texte": "Data created on this device has not been synchronized yet, and this account already contains data. What would you like to do?",
+    "adoption_fusionner": "Keep local data and merge",
+    "adoption_remplacer": "Replace with the account data",
+    "recuperation_donnees": "Retrieving your data, please wait...",
+    "logout_non_sync_titre": "Unsynced data",
+    "logout_non_sync_texte": "Some local data could not be synchronized. If you log out now, it will be lost.",
+    "logout_reessayer_sync": "Retry synchronization",
+    "logout_forcer": "Log out anyway (data will be lost)",
+    "sync_reussie": "Synchronization successful",
+    "sync_echouee": "Synchronization failed: {{erreur}}",
+    "supprimer_compte_modal_titre": "Account deletion",
+    "supprimer_compte_modal_texte": "Your account and all its data will be permanently deleted from our servers, on all devices. This action cannot be undone.",
+    "supprimer_compte_reauth_texte": "Confirm your password to permanently delete your account (re-authentication required).",
+    "erreur_inattendue": "An error occurred: {{erreur}}",
+    "recuperation_donnees_progression": "Retrieving your data… {{count}} rows",
+    "compte_supprime_ailleurs_titre": "Account deleted",
+    "compte_supprime_ailleurs_texte": "This account was deleted from another device. Local unsynced data cannot be uploaded and will be erased.",
+    "sync_hors_ligne_toast": "You are offline: data cannot be retrieved right now.",
+    "rafraichir_donnees": "Refresh data"
   }
 }

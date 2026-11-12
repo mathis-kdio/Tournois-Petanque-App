@@ -17,7 +17,7 @@ export const resetComplementPreparationTournoi = async () => {
   }
   const updated = {
     ...res.at(0),
-    id: 0,
+    id: '0',
     complement: null,
   };
   await PreparationTournoisRepository.updatePreparationTournoi(updated);
@@ -29,7 +29,7 @@ export const updateTypePreparationTournoi = async (
   const res = await PreparationTournoisRepository.getPreparationTournoi();
   const updated = {
     ...(res.at(0) || {}),
-    id: 0,
+    id: '0',
     typeTournoi,
   };
   await PreparationTournoisRepository.updatePreparationTournoi(updated);
@@ -46,7 +46,7 @@ export const updateModePreparationTournoi = async (
   }
   const updated = {
     ...res.at(0),
-    id: 0,
+    id: '0',
     typeEquipes,
     mode,
     modeCreationEquipes,
@@ -68,7 +68,7 @@ export const updateOptionsPreparationTournoi = async (
   }
   const updated = {
     ...res.at(0),
-    id: 0,
+    id: '0',
     nbTours,
     nbPtVictoire,
     speciauxIncompatibles,
@@ -88,7 +88,7 @@ export const updateComplementPreparationTournoi = async (
   }
   const updated = {
     ...res.at(0),
-    id: 0,
+    id: '0',
     complement,
   };
   await PreparationTournoisRepository.updatePreparationTournoi(updated);

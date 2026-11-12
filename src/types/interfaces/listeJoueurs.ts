@@ -3,6 +3,6 @@ import { JoueurModel } from './joueurModel';
 export type ListeJoueurs = (JoueurModel[] | ListeJoueursInfos)[];
 
 export interface ListeJoueursInfos {
-  listId: number;
+  listId: string;
   name: string | null;
 }

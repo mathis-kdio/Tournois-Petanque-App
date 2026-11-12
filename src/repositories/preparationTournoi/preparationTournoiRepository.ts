@@ -23,7 +23,7 @@ export const PreparationTournoisRepository = {
   delete() {
     return getDrizzleDb()
       .delete(preparationTournoi)
-      .where(eq(preparationTournoi.id, 0));
+      .where(eq(preparationTournoi.id, '0'));
   },
 
   deleteAll() {

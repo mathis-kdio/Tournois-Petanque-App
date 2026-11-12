@@ -1,5 +1,7 @@
 import ListeJoueurItem from '@/components/liste-joueur-item/ListeJoueurItem';
 import Loading from '@/components/Loading';
+import SyncRefreshButton from '@/components/SyncRefreshButton';
+import SyncRefreshControl from '@/components/SyncRefreshControl';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { Box } from '@/components/ui/box';
 import { Button, ButtonText } from '@/components/ui/button';
@@ -41,7 +43,6 @@ const onCheckJoueur = async (joueurModel: JoueurModel, isChecked: boolean) => {
 const JoueursTournoi = () => {
   const { t } = useTranslation();
   const router = useRouter();
-
   const { actualTournoi } = useActualTournoi();
   const { joueursActualTournoi } = useJoueursActualTournoi();
 
@@ -77,7 +78,10 @@ const JoueursTournoi = () => {
 
   return (
     <VStack className="flex-1 bg-custom-background">
-      <TopBarBack title={t('liste_joueurs_inscrits_navigation_title')} />
+      <TopBarBack
+        title={t('liste_joueurs_inscrits_navigation_title')}
+        rightAction={<SyncRefreshButton />}
+      />
       <Text className="text-typography-white text-xl text-center">
         {t('nombre_joueurs', { nb: joueursActualTournoi.length })}
       </Text>
@@ -88,6 +92,8 @@ const JoueursTournoi = () => {
         className="flex-1"
         getItemType={() => 'ListeJoueurItem'}
         recycleItems
+        // eslint-disable-next-line react-doctor/jsx-no-jsx-as-prop
+        refreshControl={<SyncRefreshControl />}
       />
       <Box className="px-10 mb-2">
         <Button action="primary" onPress={() => retourMatchs()}>

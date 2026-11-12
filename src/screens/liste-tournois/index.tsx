@@ -1,3 +1,5 @@
+import SyncRefreshButton from '@/components/SyncRefreshButton';
+import SyncRefreshControl from '@/components/SyncRefreshControl';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
@@ -39,7 +41,10 @@ export default function ListeTournois() {
 
   return (
     <VStack className="flex-1 bg-custom-background">
-      <TopBarBack title={t('choix_tournoi_navigation_title')} />
+      <TopBarBack
+        title={t('choix_tournoi_navigation_title')}
+        rightAction={<SyncRefreshButton />}
+      />
       <Text className="text-typography-white text-xl text-center px-10">
         {t('nombre_tournois', { nb: listeTournois.length })}
       </Text>
@@ -50,6 +55,8 @@ export default function ListeTournois() {
         className="flex-1 h-1"
         getItemType={() => 'ListeTournoiItem'}
         recycleItems
+        // eslint-disable-next-line react-doctor/jsx-no-jsx-as-prop
+        refreshControl={<SyncRefreshControl />}
       />
       {modalTournoiInfosIsOpen && infosTournoi && listeJoueurs && (
         <ModalInfosTournoi

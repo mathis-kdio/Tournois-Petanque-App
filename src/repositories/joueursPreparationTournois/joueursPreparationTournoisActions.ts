@@ -47,7 +47,7 @@ export const addJoueursPreparationTournoi = async (
     toNewJoueur(joueurTournoiId, joueurName, joueurType, equipe),
   );
   await JoueursPreparationTournoisRepository.insert([
-    toNewJoueursPreparationTournois(res, 0),
+    toNewJoueursPreparationTournois(res, '0'),
   ]);
 
   await JoueursSuggestionRepository.insertOrUpdateOccurence({
@@ -56,7 +56,7 @@ export const addJoueursPreparationTournoi = async (
   });
 };
 
-export const addJoueursPreparationTournoiFromList = async (listeId: number) => {
+export const addJoueursPreparationTournoiFromList = async (listeId: string) => {
   const joueursInscrits: Joueur[] =
     await JoueursPreparationTournoisRepository.getMany();
   let nbJoueursInscrits = joueursInscrits.length;
@@ -77,14 +77,14 @@ export const addJoueursPreparationTournoiFromList = async (listeId: number) => {
   const joueurs = await JoueursRepository.insertMultiples(newJoueurs);
 
   const newJoueursPreparationTournois = joueurs.map((joueur) =>
-    toNewJoueursPreparationTournois(joueur, 0),
+    toNewJoueursPreparationTournois(joueur, '0'),
   );
   await JoueursPreparationTournoisRepository.insert(
     newJoueursPreparationTournois,
   );
 };
 
-export const removeJoueursPreparationTournoi = async (joueurId: number) => {
+export const removeJoueursPreparationTournoi = async (joueurId: string) => {
   const joueur = await JoueursRepository.select(joueurId);
   await JoueursPreparationTournoisRepository.delete([joueur.id]);
   await JoueursRepository.delete([joueur.id]);

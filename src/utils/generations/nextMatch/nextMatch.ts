@@ -11,7 +11,7 @@ export const nextMatch = async (
   nbMatchs: number,
   typeTournoi: TypeTournoi,
   nbTours: number,
-  tournoiId: number,
+  tournoiId: string,
 ) => {
   if (typeTournoi === TypeTournoi.COUPE && matchId + 1 < nbMatchs) {
     //Tournoi de type Coupe sauf si dernier match

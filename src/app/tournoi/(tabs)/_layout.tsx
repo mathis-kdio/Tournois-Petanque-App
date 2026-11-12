@@ -1,5 +1,7 @@
 import BoutonMenuHeaderNav from '@/components/BoutonMenuHeaderNavigation';
 import { StyledTabs } from '@/components/navigation/styled-tabs';
+import SyncRefreshButton from '@/components/SyncRefreshButton';
+import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
 import { useTheme } from '@/components/ui/theme-provider/ThemeProvider';
 import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
@@ -44,7 +46,12 @@ export default function TabLayout() {
               {`${t('tournoi')} ${tournoiName}`}
             </Text>
           ),
-          headerRight: () => <BoutonMenuHeaderNav />,
+          headerRight: () => (
+            <HStack className="items-center">
+              <SyncRefreshButton />
+              <BoutonMenuHeaderNav />
+            </HStack>
+          ),
           tabBarLabel: t('resultats_classement_navigation_title'),
           tabBarIcon: ({ color }) => (
             <FontAwesome name="trophy" size={28} color={color} />
@@ -60,7 +67,12 @@ export default function TabLayout() {
               {`${t('tournoi')} ${tournoiName}`}
             </Text>
           ),
-          headerRight: () => <BoutonMenuHeaderNav />,
+          headerRight: () => (
+            <HStack className="items-center">
+              <SyncRefreshButton />
+              <BoutonMenuHeaderNav />
+            </HStack>
+          ),
           tabBarLabel: t('matchs_details_navigation_title'),
           tabBarIcon: ({ color }) => (
             <FontAwesome name="bars" size={28} color={color} />

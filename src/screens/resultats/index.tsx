@@ -1,4 +1,5 @@
 import Loading from '@/components/Loading';
+import SyncRefreshControl from '@/components/SyncRefreshControl';
 import { Divider } from '@/components/ui/divider';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
@@ -55,6 +56,8 @@ const ListeResultats = () => {
           className="flex-1"
           getItemType={() => 'ListeResultatItem'}
           recycleItems
+          // eslint-disable-next-line react-doctor/jsx-no-jsx-as-prop
+          refreshControl={<SyncRefreshControl />}
         />
       </VStack>
     </VStack>

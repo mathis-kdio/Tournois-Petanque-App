@@ -16,7 +16,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 export interface Props {
-  id: number;
+  id: string;
   modalRemoveIsOpen: boolean;
   setModalRemoveIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }

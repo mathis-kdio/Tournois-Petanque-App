@@ -1,3 +1,4 @@
+import { uuidv7 } from '@/utils/uuid/uuidv7';
 import {
   integer,
   sqliteTable,
@@ -8,10 +9,17 @@ import {
 export const joueursSuggestion = sqliteTable(
   'joueurs_suggestion',
   {
-    id: integer().primaryKey(),
-    name: text().notNull(),
-    occurence: integer().notNull(),
-    cacher: integer({ mode: 'boolean' }).default(false),
+    id: text('id')
+      .primaryKey()
+      .$defaultFn(() => uuidv7()),
+    name: text('name').notNull(),
+    occurence: integer('occurence').notNull(),
+    cacher: integer('cacher', { mode: 'boolean' }).default(false),
+    synced: integer('synced', { mode: 'boolean' }).default(false).notNull(),
+    updatedAt: integer('updated_at', { mode: 'timestamp_ms' })
+      .notNull()
+      .$defaultFn(() => new Date(Date.now())),
+    deleted: integer('deleted', { mode: 'boolean' }).default(false).notNull(),
   },
   (table) => [uniqueIndex('nameUniqueIndex').on(table.name)],
 );

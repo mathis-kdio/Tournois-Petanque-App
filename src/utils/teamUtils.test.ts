@@ -3,7 +3,7 @@ import { TypeEquipes } from '@/types/enums/typeEquipes';
 import { JoueurModel } from '@/types/interfaces/joueurModel';
 
 const makeJoueur = (equipe: number | undefined): JoueurModel => ({
-  uniqueBDDId: 0,
+  uniqueBDDId: '0',
   joueurTournoiId: 0,
   name: '',
   type: undefined,
