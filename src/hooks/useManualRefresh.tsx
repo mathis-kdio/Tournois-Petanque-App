@@ -12,7 +12,7 @@ export function useManualRefresh() {
 
   const onRefresh = async () => {
     const { isConnected, isInternetReachable } = await NetInfo.fetch();
-    const online = isConnected && isInternetReachable;
+    const online = isConnected === true && isInternetReachable !== false;
     if (!online) {
       toast.show({
         placement: 'top',

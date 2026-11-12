@@ -96,7 +96,7 @@ describe('SyncRefreshControl', () => {
       isConnected: true,
       isInternetReachable: true,
     });
-    let resolveRefresh: () => void = () => { };
+    let resolveRefresh: () => void = () => {};
     mockRefresh.mockImplementation(
       () =>
         new Promise<void>((res) => {

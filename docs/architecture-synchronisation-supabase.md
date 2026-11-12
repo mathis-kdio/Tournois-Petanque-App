@@ -174,7 +174,8 @@ clé composite `(user_id, id)`, UUID non porteurs d'information. Ultérieurement
 src/services/sync/
 ├── syncEngine.ts          # push/pull/cycle, mutex (timeout 2 min), curseur, clockOffset, purge tombstones
 ├── syncTables.ts          # registre unique SYNC_TABLES + PUSH_ORDER (parents d'abord) / PULL_ORDER (dérivé)
-├── syncTrigger.tsx        # composant racine : hook + NetInfo + AppState + debounce 2 s + dialogue d'adoption
+├── syncTrigger.tsx        # hook + NetInfo + AppState + debounce 2 s + SyncRefreshContext (pull-to-refresh manuel)
+├── components/            # UI de SyncTrigger : RecoveringOverlay, AccountDeletedDialog, AdoptionDialog, types.ts
 ├── syncMappers/           # conversion ligne SQLite ↔ Postgres, par table (9 mappers)
 ├── syncAccount.ts         # login (adoption), logout (purge), suppression compte
 └── purgeLog.ts            # journal des purges locales (AsyncStorage)
@@ -323,7 +324,7 @@ compte côté serveur.
 | **1. IDs + colonnes sync** | Migration UUID v7 programmatique + mapping FK, `synced/updatedAt/deleted` sur les 9 tables, `sync_state`, `stampForSync`, repositories (delete → tombstone) | `src/db/runUuidMigration.ts`, `src/db/uuidMigrationTables.ts`, `drizzle/20260929211527_*`, `src/db/schema/*`, `src/repositories/*` |
 | **2. Schéma distant** | SQL Supabase (tables miroirs, RLS, triggers LWW serveur, cron purge, step-up), mappers type-safe | `supabase/migrations/0001_init.sql`, `0002_security_hardening.sql`, `src/services/sync/syncMappers/*` |
 | **3. Moteur** | `syncEngine` (push/pull/mutex/curseur/clockOffset/purge), `syncTrigger` (NetInfo + AppState + debounce), tests Jest | `src/services/sync/*`, `src/db/sync/*` |
-| **4. Cycle de vie** | Adoption au login, purge au logout, suppression compte (step-up), écran « Récupération de vos données… », journal des purges, traductions (7 langues) | `src/services/sync/syncAccount.ts`, `src/screens/compte/*`, `src/services/sync/syncTrigger.tsx` |
+| **4. Cycle de vie** | Adoption au login, purge au logout, suppression compte (step-up), écran « Récupération de vos données… », journal des purges, traductions (7 langues) | `src/services/sync/syncAccount.ts`, `src/screens/compte/*`, `src/services/sync/syncTrigger.tsx`, `src/services/sync/components/*` |
 
 ## 6. Menaces et sécurité
 

@@ -9,7 +9,10 @@
  *  - Chaque écriture (repositories → stampForSync → writeBus) → push()
  *    debouncé (2 s), uniquement si en ligne ;
  *  - Retour du réseau (NetInfo) → cycle complet ;
- *  - Mise en avant de l'app (AppState → active) → cycle si > 5 min.
+ *  - Mise en avant de l'app (AppState → active) → cycle si > 5 min ;
+ *  - Pull-to-refresh manuel (écrans de liste, via SyncRefreshContext) →
+ *    cycle complet, raison « manual_refresh » ; la garde hors ligne
+ *    (NetInfo + toast) est faite côté UI dans SyncRefreshControl.
  *
  * Si l'appareil a des écritures hors ligne ET que le compte distant a déjà
  * des données, un dialogue propose « fusionner » ou « remplacer »;
@@ -20,20 +23,11 @@
  */
 
 import { useAuth } from '@/components/supabase/SessionProvider';
-import {
-  AlertDialog,
-  AlertDialogBackdrop,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-} from '@/components/ui/alert-dialog';
-import { Button, ButtonText } from '@/components/ui/button';
-import { Center } from '@/components/ui/center';
-import { Heading } from '@/components/ui/heading';
-import { Text } from '@/components/ui/text';
-import { VStack } from '@/components/ui/vstack';
 import { onSyncWrite } from '@/db/sync/writeBus';
+import { AccountDeletedDialog } from '@/services/sync/components/AccountDeletedDialog';
+import { AdoptionDialog } from '@/services/sync/components/AdoptionDialog';
+import { RecoveringOverlay } from '@/services/sync/components/RecoveringOverlay';
+import type { AdoptionPrompt } from '@/services/sync/components/types';
 import {
   isSyncRunning,
   push,
@@ -48,9 +42,17 @@ import {
   type LoginSyncPlan,
 } from '@/services/sync/syncAccount';
 import NetInfo from '@react-native-community/netinfo';
-import { useTranslation } from 'react-i18next';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, AppState, AppStateStatus } from 'react-native';
+
+import {
+  createContext,
+  use,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react';
+import { AppState, AppStateStatus } from 'react-native';
 
 // ─── Constantes ──────────────────────────────────────────────────────────────
 
@@ -59,15 +61,29 @@ const STALE_THRESHOLD_MS = 5 * 60 * 1_000; // 5 minutes
 const PUSH_RETRY_MS = 1_000; // retry si un cycle tourne au moment du push
 const PUSH_RETRY_MAX = 10;
 
-// ─── Types ───────────────────────────────────────────────────────────────────
+// ─── Contexte pull-to-refresh ────────────────────────────────────────────────
 
-interface AdoptionPrompt {
-  userId: string;
-  plan: LoginSyncPlan;
+export interface SyncRefreshContextValue {
+  /** Lance un cycle complet (pull + push) à la demande de l'utilisateur. */
+  refresh: () => Promise<void>;
+  /** Un cycle de synchro est en cours (automatique ou manuel). */
+  isSyncing: boolean;
 }
 
-/** Seuil à partir duquel on affiche le compteur de lignes pendant la récupération. */
-const PROGRESS_DISPLAY_THRESHOLD = 50;
+const SyncRefreshContext = createContext<SyncRefreshContextValue | null>(null);
+
+/**
+ * Accès au pull-to-refresh manuel depuis les écrans de liste.
+ * Hors provider (tests), retourne des no-op.
+ */
+export function useSyncRefresh(): SyncRefreshContextValue {
+  return (
+    use(SyncRefreshContext) ?? {
+      refresh: async () => {},
+      isSyncing: false,
+    }
+  );
+}
 
 // ─── Hook ─────────────────────────────────────────────────────────────────────
 
@@ -91,7 +107,9 @@ export function useSyncTrigger() {
   const [isRecovering, setIsRecovering] = useState(false);
   const [recoveredCount, setRecoveredCount] = useState(0);
   const [accountDeleted, setAccountDeleted] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
 
+  // eslint-disable-next-line react-doctor/react-compiler-no-manual-memoization
   const runCycle = useCallback(
     async (reason: string) => {
       if (!userId) return;
@@ -100,41 +118,45 @@ export function useSyncTrigger() {
       if (adoptionPromptRef.current) return;
 
       console.log(`[sync] cycle triggered: ${reason}`);
+      setIsSyncing(true);
       setRecoveredCount(0);
-      const result = await syncCycle({
+      await syncCycle({
         userId,
         onProgress: (n) => setRecoveredCount(n),
-      });
+      })
+        .then(async (result) => {
+          if (result.accountDeleted) {
+            // Le compte a été supprimé depuis un autre appareil : les données
+            // locales ne pourront jamais être synchronisées. Purge forcée et
+            // dialogue explicatif (une seule fois).
+            setAccountDeleted(true);
+            try {
+              await forceLogoutAndPurge(userId);
+            } catch (err) {
+              console.warn(
+                '[sync] purge après suppression distante du compte:',
+                err,
+              );
+            }
+            return;
+          }
 
-      if (result.accountDeleted) {
-        // Le compte a été supprimé depuis un autre appareil : les données
-        // locales ne pourront jamais être synchronisées. Purge forcée et
-        // dialogue explicatif (une seule fois).
-        setAccountDeleted(true);
-        try {
-          await forceLogoutAndPurge(userId);
-        } catch (err) {
-          console.warn(
-            '[sync] purge après suppression distante du compte:',
-            err,
-          );
-        }
-        return;
-      }
-
-      if (result.errors.length > 0) {
-        // Cycle partiel : on ne marque pas le sync comme à jour, pour que le
-        // prochain AppState → active (ou retour réseau) relance un cycle
-        // complet au lieu d'attendre le seuil de 5 min.
-        console.warn(`[sync] errors:`, result.errors);
-      } else {
-        lastSyncRef.current = Date.now();
-        await updateClockOffset(userId);
-      }
+          if (result.errors.length > 0) {
+            // Cycle partiel : on ne marque pas le sync comme à jour, pour que le
+            // prochain AppState → active (ou retour réseau) relance un cycle
+            // complet au lieu d'attendre le seuil de 5 min.
+            console.warn(`[sync] errors:`, result.errors);
+          } else {
+            lastSyncRef.current = Date.now();
+            await updateClockOffset(userId);
+          }
+        })
+        .finally(() => setIsSyncing(false));
     },
     [userId],
   );
 
+  // eslint-disable-next-line react-doctor/react-compiler-no-manual-memoization
   const runPush = useCallback(
     async (reason: string) => {
       if (!userId) return;
@@ -233,10 +255,11 @@ export function useSyncTrigger() {
     };
   }, [userId, runCycle, runPush]);
 
+  // eslint-disable-next-line react-doctor/react-compiler-no-manual-memoization
   const triggerPush = useCallback(() => triggerPushRef.current(), []);
 
   /** Applique le choix d'adoption et relance la synchro. */
-  const confirmAdoption = useCallback(async (choice: 'merge' | 'replace') => {
+  const confirmAdoption = async (choice: 'merge' | 'replace') => {
     const prompt = adoptionPromptRef.current;
     if (!prompt) return;
 
@@ -254,7 +277,7 @@ export function useSyncTrigger() {
       console.warn('[sync] adoption échouée:', err);
     }
     setIsRecovering(false);
-  }, []);
+  };
 
   // ─── 2. Écriture locale (repositories → stampForSync → writeBus) ──────────
   useEffect(() => {
@@ -310,8 +333,13 @@ export function useSyncTrigger() {
     return () => subscription.remove();
   }, [userId, runCycle]);
 
+  /** Pull-to-refresh manuel : cycle complet à la demande d'un écran de liste. */
+  const refresh = () => runCycle('manual_refresh');
+
   return {
     triggerPush,
+    refresh,
+    isSyncing,
     adoptionPrompt,
     confirmAdoption,
     isRecovering,
@@ -326,15 +354,17 @@ export function useSyncTrigger() {
  * Monte les déclencheurs de sync à la racine de l'app.
  * À placer dans `_layout.tsx`, à l'intérieur d'`AuthProvider` (pour useAuth)
  * et de `DatabaseInitializer` (les écritures supposent la base prête).
+ * Englobe les écrans (`children`) dans le `SyncRefreshContext.Provider`
+ * pour leur exposer le pull-to-refresh manuel (raison « manual_refresh »).
  *
- * Rend :
- *  - l'écran « Récupération de vos données… » pendant le premier pull
- *    d'un login;
- *  - le dialogue d'adoption « fusionner / remplacer ».
+ * Rend les composants d'UI extraits dans `./components/` (RecoveringOverlay,
+ * AccountDeletedDialog, AdoptionDialog), plus les écrans (`children`) dans
+ * le `SyncRefreshContext.Provider` pour le pull-to-refresh manuel.
  */
-export function SyncTrigger() {
-  const { t } = useTranslation();
+export function SyncTrigger({ children }: { children?: ReactNode }) {
   const {
+    refresh,
+    isSyncing,
     adoptionPrompt,
     confirmAdoption,
     isRecovering,
@@ -343,85 +373,18 @@ export function SyncTrigger() {
   } = useSyncTrigger();
 
   return (
-    <>
-      {isRecovering && (
-        <Center
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.7)',
-            zIndex: 999,
-          }}
-        >
-          <VStack space="md" style={{ paddingHorizontal: 32 }}>
-            <ActivityIndicator size="large" color="white" />
-            <Text className="text-white text-center">
-              {recoveredCount > PROGRESS_DISPLAY_THRESHOLD
-                ? t('recuperation_donnees_progression', {
-                    count: recoveredCount,
-                  })
-                : t('recuperation_donnees')}
-            </Text>
-          </VStack>
-        </Center>
-      )}
-
-      <AlertDialog
-        isOpen={accountDeleted}
-        onClose={() => {
-          // Informatif : la purge a déjà été faite, rien à choisir.
-        }}
-      >
-        <AlertDialogBackdrop />
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <Heading className="color-custom-text-modal">
-              {t('compte_supprime_ailleurs_titre')}
-            </Heading>
-          </AlertDialogHeader>
-          <AlertDialogBody>
-            <Text>{t('compte_supprime_ailleurs_texte')}</Text>
-          </AlertDialogBody>
-        </AlertDialogContent>
-      </AlertDialog>
-
-      <AlertDialog
-        isOpen={adoptionPrompt !== null}
-        onClose={() => {
-          // Le choix est obligatoire : la synchro est suspendue jusqu'à lui.
-        }}
-      >
-        <AlertDialogBackdrop />
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <Heading className="color-custom-text-modal">
-              {t('adoption_titre')}
-            </Heading>
-          </AlertDialogHeader>
-          <AlertDialogBody>
-            <Text>{t('adoption_texte')}</Text>
-          </AlertDialogBody>
-          <AlertDialogFooter>
-            <VStack space="sm" style={{ width: '100%' }}>
-              <Button onPress={() => confirmAdoption('merge')}>
-                <ButtonText>{t('adoption_fusionner')}</ButtonText>
-              </Button>
-              <Button
-                variant="outline"
-                action="secondary"
-                onPress={() => confirmAdoption('replace')}
-              >
-                <ButtonText className="color-custom-text-modal">
-                  {t('adoption_remplacer')}
-                </ButtonText>
-              </Button>
-            </VStack>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </>
+    // value inline volontaire : SyncTrigger ne re-render que sur ses propres
+    // setState de synchro (isSyncing, adoption…), impact négligeable ; un
+    // useMemo serait de toute façon mémoïsé par React Compiler (faux positif).
+    // eslint-disable-next-line react-doctor/jsx-no-constructed-context-values
+    <SyncRefreshContext.Provider value={{ refresh, isSyncing }}>
+      <RecoveringOverlay
+        isRecovering={isRecovering}
+        recoveredCount={recoveredCount}
+      />
+      <AccountDeletedDialog isOpen={accountDeleted} />
+      <AdoptionDialog prompt={adoptionPrompt} onConfirm={confirmAdoption} />
+      {children}
+    </SyncRefreshContext.Provider>
   );
 }
