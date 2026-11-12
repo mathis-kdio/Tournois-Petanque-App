@@ -309,6 +309,8 @@
     "erreur_inattendue": "Une erreur est survenue : {{erreur}}",
     "recuperation_donnees_progression": "Récupération de vos données… {{count}} lignes",
     "compte_supprime_ailleurs_titre": "Compte supprimé",
-    "compte_supprime_ailleurs_texte": "Ce compte a été supprimé depuis un autre appareil. Les données locales non synchronisées ne pourront pas être envoyées : elles vont être effacées."
+    "compte_supprime_ailleurs_texte": "Ce compte a été supprimé depuis un autre appareil. Les données locales non synchronisées ne pourront pas être envoyées : elles vont être effacées.",
+    "sync_hors_ligne_toast": "Vous êtes hors ligne : impossible de récupérer les données pour le moment.",
+    "rafraichir_donnees": "Rafraîchir les données"
   }
 }

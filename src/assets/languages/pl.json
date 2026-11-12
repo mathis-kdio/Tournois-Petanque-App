@@ -309,6 +309,8 @@
     "erreur_inattendue": "Wystąpił błąd: {{erreur}}",
     "recuperation_donnees_progression": "Pobieranie Twoich danych… {{count}} wierszy",
     "compte_supprime_ailleurs_titre": "Konto usunięte",
-    "compte_supprime_ailleurs_texte": "To konto zostało usunięte na innym urządzeniu. Lokalne niezsynchronizowane dane nie mogą zostać wysłane i zostaną usunięte."
+    "compte_supprime_ailleurs_texte": "To konto zostało usunięte na innym urządzeniu. Lokalne niezsynchronizowane dane nie mogą zostać wysłane i zostaną usunięte.",
+    "sync_hors_ligne_toast": "Jesteś offline: nie można teraz pobrać danych.",
+    "rafraichir_donnees": "Odśwież dane"
   }
 }

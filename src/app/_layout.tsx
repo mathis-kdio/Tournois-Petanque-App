@@ -98,8 +98,9 @@ export default function RootLayout() {
             <GluestackWrapper>
               <I18nextProvider i18n={i18n} defaultNS={'common'}>
                 <DatabaseInitializer>
-                  <SyncTrigger />
-                  <Stack screenOptions={{ headerShown: false }} />
+                  <SyncTrigger>
+                    <Stack screenOptions={{ headerShown: false }} />
+                  </SyncTrigger>
                 </DatabaseInitializer>
               </I18nextProvider>
             </GluestackWrapper>

@@ -309,6 +309,8 @@
     "erreur_inattendue": "Se ha producido un error: {{erreur}}",
     "recuperation_donnees_progression": "Recuperando sus datos… {{count}} filas",
     "compte_supprime_ailleurs_titre": "Cuenta eliminada",
-    "compte_supprime_ailleurs_texte": "Esta cuenta se eliminó desde otro dispositivo. Los datos locales no sincronizados no se pueden subir y se borrarán."
+    "compte_supprime_ailleurs_texte": "Esta cuenta se eliminó desde otro dispositivo. Los datos locales no sincronizados no se pueden subir y se borrarán.",
+    "sync_hors_ligne_toast": "Sin conexión: no se pueden recuperar los datos ahora mismo.",
+    "rafraichir_donnees": "Actualizar datos"
   }
 }

@@ -309,6 +309,8 @@
     "erreur_inattendue": "An error occurred: {{erreur}}",
     "recuperation_donnees_progression": "Retrieving your data… {{count}} rows",
     "compte_supprime_ailleurs_titre": "Account deleted",
-    "compte_supprime_ailleurs_texte": "This account was deleted from another device. Local unsynced data cannot be uploaded and will be erased."
+    "compte_supprime_ailleurs_texte": "This account was deleted from another device. Local unsynced data cannot be uploaded and will be erased.",
+    "sync_hors_ligne_toast": "You are offline: data cannot be retrieved right now.",
+    "rafraichir_donnees": "Refresh data"
   }
 }

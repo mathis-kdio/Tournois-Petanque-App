@@ -309,6 +309,8 @@
     "erreur_inattendue": "Er is een fout opgetreden: {{erreur}}",
     "recuperation_donnees_progression": "Uw gegevens worden opgehaald… {{count}} rijen",
     "compte_supprime_ailleurs_titre": "Account verwijderd",
-    "compte_supprime_ailleurs_texte": "Dit account is op een ander apparaat verwijderd. Lokale niet-gesynchroniseerde gegevens kunnen niet worden geüpload en worden gewist."
+    "compte_supprime_ailleurs_texte": "Dit account is op een ander apparaat verwijderd. Lokale niet-gesynchroniseerde gegevens kunnen niet worden geüpload en worden gewist.",
+    "sync_hors_ligne_toast": "Je bent offline: gegevens kunnen nu niet worden opgehaald.",
+    "rafraichir_donnees": "Gegevens vernieuwen"
   }
 }

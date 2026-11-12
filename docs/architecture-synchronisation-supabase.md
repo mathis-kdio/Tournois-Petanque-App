@@ -254,7 +254,28 @@ lignes supprimées ailleurs.
 | Chaque écriture (repositories → `stampForSync` → `writeBus`) | `push()` debouncé (2 s), uniquement si online, avec retry si un cycle tourne |
 | Retour du réseau (NetInfo) | cycle complet |
 | Mise en avant de l'app (AppState → active) | cycle complet si le dernier date de > 5 min |
+| Pull-to-refresh manuel (écrans de liste) | cycle complet (raison `manual_refresh`) ; hors ligne, aucun cycle + toast gluestack |
 | Logout | vérification outbox vide → purge (voir 4.2) |
+
+Le pull-to-refresh manuel est exposé par `SyncTrigger` via `SyncRefreshContext`
+(`useSyncRefresh()` → `refresh()` / `isSyncing`), consommé par
+`SyncRefreshControl` (`src/components/SyncRefreshControl.tsx`) branché sur le
+`refreshControl` des `LegendList` de `liste-tournois`, `listes-joueurs`,
+`joueurs-tournoi`, `resultats` et `matchs/MatchsManche`. La garde hors ligne
+est faite côté UI (`NetInfo.fetch()` avant tout cycle ; toast
+`sync_hors_ligne_toast`). Après le pull, les `useLiveQuery` re-rendent les
+listes sans wiring supplémentaire.
+
+Sur **web** (Tauri/expo web), le geste pull-to-refresh n'existe pas
+(`RefreshControl` y est un stub — LegendList web rend `null`, react-native-web
+un `<View>`), donc un bouton `SyncRefreshButton`
+(`src/components/SyncRefreshButton.tsx`, affiché uniquement si
+`Platform.OS === 'web'`) est placé dans la top bar (`TopBarBack.rightAction`)
+de `liste-tournois`, `listes-joueurs`, `joueurs-tournoi`, et dans le
+`headerRight` des onglets tournoi (`resultats`, `matchs`). La logique
+commune (garde NetInfo + toast + cycle + état) est factorisée dans le hook
+`useManualRefresh` (`src/hooks/useManualRefresh.ts`), utilisé par
+`SyncRefreshControl` et `SyncRefreshButton`.
 
 Un **mutex** (avec timeout 2 min contre les crashs sans `finally`) empêche deux cycles concurrents.
 Les écritures UI ne sont jamais bloquées (SQLite local d'abord, toujours).

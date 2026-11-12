@@ -1,3 +1,5 @@
+import SyncRefreshButton from '@/components/SyncRefreshButton';
+import SyncRefreshControl from '@/components/SyncRefreshControl';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { Box } from '@/components/ui/box';
 import { Button, ButtonText } from '@/components/ui/button';
@@ -71,7 +73,10 @@ const ListesJoueurs = () => {
 
   return (
     <VStack className="flex-1 bg-custom-background">
-      <TopBarBack title={t('listes_joueurs_navigation_title')} />
+      <TopBarBack
+        title={t('listes_joueurs_navigation_title')}
+        rightAction={<SyncRefreshButton />}
+      />
       <Text className="text-typography-white text-xl text-center">
         {t('nombre_listes', { nb: allListesJoueurs.length })}
       </Text>
@@ -83,6 +88,8 @@ const ListesJoueurs = () => {
         className="flex-1 h-1"
         getItemType={() => 'ListeJoueursItem'}
         recycleItems
+        // eslint-disable-next-line react-doctor/jsx-no-jsx-as-prop
+        refreshControl={<SyncRefreshControl />}
       />
     </VStack>
   );

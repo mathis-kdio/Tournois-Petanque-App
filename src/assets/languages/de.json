@@ -309,6 +309,8 @@
     "erreur_inattendue": "Ein Fehler ist aufgetreten: {{erreur}}",
     "recuperation_donnees_progression": "Ihre Daten werden abgerufen… {{count}} Zeilen",
     "compte_supprime_ailleurs_titre": "Konto gelöscht",
-    "compte_supprime_ailleurs_texte": "Dieses Konto wurde auf einem anderen Gerät gelöscht. Nicht synchronisierte lokale Daten können nicht hochgeladen werden und werden gelöscht."
+    "compte_supprime_ailleurs_texte": "Dieses Konto wurde auf einem anderen Gerät gelöscht. Nicht synchronisierte lokale Daten können nicht hochgeladen werden und werden gelöscht.",
+    "sync_hors_ligne_toast": "Sie sind offline: Daten können derzeit nicht abgerufen werden.",
+    "rafraichir_donnees": "Daten aktualisieren"
   }
 }
