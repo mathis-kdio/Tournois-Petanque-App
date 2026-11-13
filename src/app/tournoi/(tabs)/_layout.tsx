@@ -9,6 +9,10 @@ import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { Tabs } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
+export const unstable_settings = {
+  anchor: 'matchs',
+};
+
 export default function TabLayout() {
   const { t } = useTranslation();
 
@@ -27,7 +31,6 @@ export default function TabLayout() {
 
   return (
     <StyledTabs
-      initialRouteName="matchs"
       backBehavior="none"
       screenOptions={{
         tabBarInactiveTintColor,

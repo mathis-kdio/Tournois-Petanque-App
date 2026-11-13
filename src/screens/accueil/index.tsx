@@ -39,7 +39,7 @@ export default function Accueil() {
   const { actualTournoi } = useActualTournoi();
 
   const [appState, setAppState] = useState<AppStateStatus>(
-    AppState.currentState,
+    (AppState.currentState ?? 'active') as AppStateStatus,
   );
 
   useEffect(() => {

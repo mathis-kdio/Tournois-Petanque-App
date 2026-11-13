@@ -1,12 +1,13 @@
+import { createNavigatorFactory } from 'expo-router/react-navigation';
 import {
-  createMaterialTopTabNavigator,
   MaterialTopTabNavigationOptions,
+  MaterialTopTabView,
 } from 'expo-router/js-top-tabs';
 import { cssInterop } from 'nativewind';
 import React from 'react';
 import { ViewStyle } from 'react-native';
 
-const TopTab = createMaterialTopTabNavigator();
+const TopTab = createNavigatorFactory(MaterialTopTabView)();
 
 const StyledTopTabsImpl = ({
   ...props
