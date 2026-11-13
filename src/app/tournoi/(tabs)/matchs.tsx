@@ -6,12 +6,13 @@ import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
 import MatchsManche from '@/screens/matchs/components/MatchsManche';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import FontAwesome from '@react-native-vector-icons/fontawesome';
-import { createMaterialTopTabNavigator } from 'expo-router/js-top-tabs';
+import { createNavigatorFactory } from 'expo-router/react-navigation';
+import { MaterialTopTabView } from 'expo-router/js-top-tabs';
 import { useTranslation } from 'react-i18next';
 
 export default function MatchsScreen() {
   const { t } = useTranslation();
-  const { Screen } = createMaterialTopTabNavigator();
+  const { Screen } = createNavigatorFactory(MaterialTopTabView)();
   const { actualTournoi } = useActualTournoi();
 
   if (!actualTournoi) {

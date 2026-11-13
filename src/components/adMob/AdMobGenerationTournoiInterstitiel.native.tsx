@@ -27,7 +27,7 @@ const loadedListeners: (() => void)[] = [];
 const errorListeners: ((error: Error) => void)[] = [];
 const closedListeners: (() => void)[] = [];
 
-let timeoutId: NodeJS.Timeout | null = null;
+let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
 export const initInterstitial = async () => {
   const { createAPersonalisedAdsProfile, selectPersonalisedAds } =
