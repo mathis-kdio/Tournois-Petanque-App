@@ -32,7 +32,7 @@ import { generationDoublettes } from '@utils/generations/tournoiDoublettes';
 import { generationTeteATete } from '@utils/generations/tournoiTeteATete';
 import { generationTriplettes } from '@utils/generations/tournoiTriplettes';
 import { resetNavigationTo } from '@/navigation/resetNavigation';
-import { useNavigation } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import GenerationLoading from './components/GenerationLoading';
@@ -47,7 +47,7 @@ export interface Props {
 }
 
 const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
-  const navigation = useNavigation();
+  const router = useRouter();
 
   const { preparationTournoi } = usePreparationTournoi();
   const { joueursPreparationTournois } = useJoueursPreparationTournois();
@@ -92,10 +92,10 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
     }
 
     if (Platform.OS === 'web' || adClosed) {
-      resetNavigationTo(navigation, 'tournoi');
+      resetNavigationTo(router, '/tournoi');
       return;
     }
-  }, [isGenerationEnd, adLoaded, adClosed, navigation]);
+  }, [isGenerationEnd, adLoaded, adClosed, router]);
 
   const ajoutMatchs = useCallback(
     async (

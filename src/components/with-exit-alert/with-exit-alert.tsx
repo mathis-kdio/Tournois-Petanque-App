@@ -1,11 +1,11 @@
 import { resetNavigationTo } from '@/navigation/resetNavigation';
-import { useFocusEffect, useNavigation } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Alert, BackHandler } from 'react-native';
 
 const useExitAlertOnBack = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation();
+  const router = useRouter();
 
   useFocusEffect(() => {
     const onBackPress = () => {
@@ -16,7 +16,7 @@ const useExitAlertOnBack = () => {
           { text: t('rester'), onPress: () => null, style: 'cancel' },
           {
             text: t('retour_accueil'),
-            onPress: () => resetNavigationTo(navigation, 'index'),
+            onPress: () => resetNavigationTo(router, '/'),
           },
         ],
         { cancelable: true },

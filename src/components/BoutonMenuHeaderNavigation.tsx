@@ -2,13 +2,12 @@ import { Menu, MenuItem, MenuItemLabel } from '@/components/ui/menu';
 import { Pressable } from '@/components/ui/pressable';
 import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { resetNavigationTo } from '@/navigation/resetNavigation';
-import { useNavigation, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 const BoutonMenuHeaderNav = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const navigation = useNavigation();
 
   const showOptions = () => {
     router.navigate('/tournoi/parametres-tournoi');
@@ -23,7 +22,7 @@ const BoutonMenuHeaderNav = () => {
   };
 
   const showAccueil = () => {
-    resetNavigationTo(navigation, 'index');
+    resetNavigationTo(router, '/');
   };
 
   return (

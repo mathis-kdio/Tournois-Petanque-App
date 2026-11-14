@@ -12,7 +12,7 @@ import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import { IIconComponentType } from '@gluestack-ui/core/lib/esm/icon/creator/createIcon';
 import { resetNavigationTo } from '@/navigation/resetNavigation';
-import { useNavigation } from 'expo-router';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ColorValue } from 'react-native';
@@ -26,7 +26,7 @@ export interface Props {
 
 const ListeTournoiItem: React.FC<Props> = ({ tournoi, showModalInfos }) => {
   const { t } = useTranslation();
-  const navigation = useNavigation();
+  const router = useRouter();
   const { actualTournoi } = useActualTournoi();
 
   const [renommerOn, setRenommerOn] = useState(false);
@@ -38,7 +38,7 @@ const ListeTournoiItem: React.FC<Props> = ({ tournoi, showModalInfos }) => {
   const chargerTournoi = async () => {
     await setActualTournoi(actualTournoi, tournoiId);
 
-    resetNavigationTo(navigation, 'tournoi');
+    resetNavigationTo(router, '/tournoi');
   };
 
   const modalSupprimerTournoi = () => {

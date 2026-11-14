@@ -16,7 +16,7 @@ import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { _openPlateformLink, _openURL } from '@utils/link';
 import Constants from 'expo-constants';
 import { resetNavigationTo } from '@/navigation/resetNavigation';
-import { useNavigation, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AppState, AppStateStatus, Platform } from 'react-native';
@@ -33,7 +33,6 @@ const website = 'https://tournoispetanqueapp.fr/';
 export default function Accueil() {
   const { t } = useTranslation();
   const router = useRouter();
-  const navigation = useNavigation();
   const { session } = useAuth();
 
   const { actualTournoi } = useActualTournoi();
@@ -62,7 +61,7 @@ export default function Accueil() {
   }, [appState]);
 
   const _showMatchs = () => {
-    resetNavigationTo(navigation, 'tournoi');
+    resetNavigationTo(router, '/tournoi');
   };
 
   const _buttonShowMatchs = () => {
