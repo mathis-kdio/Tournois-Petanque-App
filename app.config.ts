@@ -51,13 +51,14 @@ export default () => ({
   web: {
     favicon: './src/assets/favicon.png',
     bundler: 'metro',
+    output: 'static',
   },
   runtimeVersion: {
     policy: 'sdkVersion',
   },
   plugins: [
     ['expo-localization'],
-    ['expo-router'],
+    ['expo-router', { asyncRoutes: 'production' }],
     ['expo-sharing'],
     ['expo-sqlite'],
     [
