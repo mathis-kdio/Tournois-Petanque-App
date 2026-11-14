@@ -1,8 +1,8 @@
 import { Menu, MenuItem, MenuItemLabel } from '@/components/ui/menu';
 import { Pressable } from '@/components/ui/pressable';
 import FontAwesome from '@react-native-vector-icons/fontawesome';
+import { resetNavigationTo } from '@/navigation/resetNavigation';
 import { useNavigation, useRouter } from 'expo-router';
-import { CommonActions } from 'expo-router/react-navigation';
 import { useTranslation } from 'react-i18next';
 
 const BoutonMenuHeaderNav = () => {
@@ -23,11 +23,7 @@ const BoutonMenuHeaderNav = () => {
   };
 
   const showAccueil = () => {
-    navigation.dispatch(
-      CommonActions.reset({
-        routes: [{ name: 'index' }],
-      }),
-    );
+    resetNavigationTo(navigation, 'index');
   };
 
   return (

@@ -11,8 +11,8 @@ import {
 import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
 import { TournoiModel } from '@/types/interfaces/tournoi';
 import { IIconComponentType } from '@gluestack-ui/core/lib/esm/icon/creator/createIcon';
+import { resetNavigationTo } from '@/navigation/resetNavigation';
 import { useNavigation } from 'expo-router';
-import { CommonActions } from 'expo-router/react-navigation';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ColorValue } from 'react-native';
@@ -38,11 +38,7 @@ const ListeTournoiItem: React.FC<Props> = ({ tournoi, showModalInfos }) => {
   const chargerTournoi = async () => {
     await setActualTournoi(actualTournoi, tournoiId);
 
-    navigation.dispatch(
-      CommonActions.reset({
-        routes: [{ name: 'tournoi' }],
-      }),
-    );
+    resetNavigationTo(navigation, 'tournoi');
   };
 
   const modalSupprimerTournoi = () => {

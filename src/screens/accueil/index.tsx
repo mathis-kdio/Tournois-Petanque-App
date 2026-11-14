@@ -15,8 +15,8 @@ import CardButton from '@components/buttons/CardButton';
 import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { _openPlateformLink, _openURL } from '@utils/link';
 import Constants from 'expo-constants';
+import { resetNavigationTo } from '@/navigation/resetNavigation';
 import { useNavigation, useRouter } from 'expo-router';
-import { CommonActions } from 'expo-router/react-navigation';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AppState, AppStateStatus, Platform } from 'react-native';
@@ -62,11 +62,7 @@ export default function Accueil() {
   }, [appState]);
 
   const _showMatchs = () => {
-    navigation.dispatch(
-      CommonActions.reset({
-        routes: [{ name: 'tournoi' }],
-      }),
-    );
+    resetNavigationTo(navigation, 'tournoi');
   };
 
   const _buttonShowMatchs = () => {

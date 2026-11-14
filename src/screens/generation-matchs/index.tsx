@@ -31,8 +31,8 @@ import { generationMultiChances } from '@utils/generations/multiChances';
 import { generationDoublettes } from '@utils/generations/tournoiDoublettes';
 import { generationTeteATete } from '@utils/generations/tournoiTeteATete';
 import { generationTriplettes } from '@utils/generations/tournoiTriplettes';
+import { resetNavigationTo } from '@/navigation/resetNavigation';
 import { useNavigation } from 'expo-router';
-import { CommonActions } from 'expo-router/react-navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import GenerationLoading from './components/GenerationLoading';
@@ -92,11 +92,7 @@ const GenerationMatchs: React.FC<Props> = ({ screenStackName }) => {
     }
 
     if (Platform.OS === 'web' || adClosed) {
-      navigation.dispatch(
-        CommonActions.reset({
-          routes: [{ name: 'tournoi' }],
-        }),
-      );
+      resetNavigationTo(navigation, 'tournoi');
       return;
     }
   }, [isGenerationEnd, adLoaded, adClosed, navigation]);
