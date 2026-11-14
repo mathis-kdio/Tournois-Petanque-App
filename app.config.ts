@@ -92,6 +92,10 @@ export default () => ({
         url: 'https://sentry.io/',
         project: 'tournois-petanque-gcu',
         organization: 'tournois-petanque-app',
+        useNativeInit: true,
+        options: {
+          dsn: 'https://ca59ddcb4fb74f3bb4f82a10a1378747@o1284678.ingest.sentry.io/6495554',
+        },
       },
     ],
     ['./plugins/builds/withDisableForcedDarkModeAndroid.js'],
