@@ -31,7 +31,7 @@ export default function TabLayout() {
 
   return (
     <StyledTabs
-      backBehavior="none"
+      backBehavior="initialRoute"
       screenOptions={{
         tabBarInactiveTintColor,
         tabBarLabelStyle: { fontSize: 15 },
