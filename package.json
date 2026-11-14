@@ -41,7 +41,7 @@
     "@react-native-community/netinfo": "12.0.1",
     "@react-native-vector-icons/fontawesome": "^14.0.0",
     "@react-native-vector-icons/material-icons": "^14.0.0",
-    "@sentry/react-native": "~8.28.0",
+    "@sentry/react-native": "~8.35.0",
     "@supabase/supabase-js": "^2.110.0",
     "@tauri-apps/api": "^2.11.1",
     "@tauri-apps/plugin-fs": "2.5.1",
