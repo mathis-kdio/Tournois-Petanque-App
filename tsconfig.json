@@ -4,7 +4,8 @@
     "strict": true,
     "jsxImportSource": "nativewind",
     "types": [
-      "jest"
+      "jest",
+      "node"
     ],
     "paths": {
       "tailwind.config": [

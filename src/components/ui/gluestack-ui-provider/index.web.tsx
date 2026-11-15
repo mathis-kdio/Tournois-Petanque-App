@@ -84,17 +84,21 @@ export function GluestackUIProvider({
     head.appendChild(style);
   }, [mode, theme]);
 
+  useSafeLayoutEffect(() => {
+    if (typeof window === 'undefined') return;
+    // Injecté via le DOM plutôt qu'un <script> dans le JSX : React interdit
+    // de rendre une balise <script> depuis un composant (SSR/hydratation).
+    const scriptElement = document.createElement('script');
+    scriptElement.text = `(${script.toString()})('${mode}')`;
+    document.head.appendChild(scriptElement);
+    return () => {
+      document.head.removeChild(scriptElement);
+    };
+  }, [mode]);
+
   return (
-    <>
-      <script
-        suppressHydrationWarning
-        dangerouslySetInnerHTML={{
-          __html: `(${script.toString()})('${mode}')`,
-        }}
-      />
-      <OverlayProvider>
-        <ToastProvider>{props.children}</ToastProvider>
-      </OverlayProvider>
-    </>
+    <OverlayProvider>
+      <ToastProvider>{props.children}</ToastProvider>
+    </OverlayProvider>
   );
 }

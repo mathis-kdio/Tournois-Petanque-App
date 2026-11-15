@@ -150,7 +150,6 @@ const AvatarImage = React.forwardRef<
       className={avatarImageStyle({
         class: className,
       })}
-      // @ts-expect-error : This is a workaround to fix the issue with the image style on web.
       style={
         Platform.OS === 'web'
           ? { height: 'revert-layer', width: 'revert-layer' }

@@ -1,18 +1,40 @@
 import Loading from '@/components/Loading';
-import { StyledTopTabs } from '@/components/navigation/styled-top-tabs';
 import { HStack } from '@/components/ui/hstack';
+import { Pressable } from '@/components/ui/pressable';
+import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
 import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
 import MatchsManche from '@/screens/matchs/components/MatchsManche';
 import { TypeTournoi } from '@/types/enums/typeTournoi';
 import FontAwesome from '@react-native-vector-icons/fontawesome';
-import { createMaterialTopTabNavigator } from 'expo-router/js-top-tabs';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { LayoutChangeEvent, type ScrollViewInstance } from 'react-native';
 
 export default function MatchsScreen() {
   const { t } = useTranslation();
-  const { Screen } = createMaterialTopTabNavigator();
   const { actualTournoi } = useActualTournoi();
+  const [mancheActive, setMancheActive] = useState(1);
+
+  const scrollRef = useRef<ScrollViewInstance>(null);
+  const scrollWidth = useRef(0);
+  const itemLayouts = useRef<Record<number, { x: number; width: number }>>({});
+
+  const onItemLayout = (numero: number) => (e: LayoutChangeEvent) => {
+    itemLayouts.current[numero] = {
+      x: e.nativeEvent.layout.x,
+      width: e.nativeEvent.layout.width,
+    };
+  };
+
+  const centrerTour = (numero: number) => {
+    setMancheActive(numero);
+    const layout = itemLayouts.current[numero];
+    if (!layout || !scrollRef.current) return;
+    const x = Math.max(0, layout.x - (scrollWidth.current - layout.width) / 2);
+    scrollRef.current.scrollTo({ x, animated: true });
+  };
 
   if (!actualTournoi) {
     return <Loading />;
@@ -37,6 +59,7 @@ export default function MatchsScreen() {
     type IconBattery = 'battery-half' | 'battery-full' | 'battery-empty';
     let iconName: IconBattery = 'battery-half';
     const matchsManche = matchs.filter((match) => match.manche === numero);
+
     let matchsRestant = matchsManche.length;
     if (matchsManche) {
       let count = matchsManche.reduce(
@@ -59,7 +82,7 @@ export default function MatchsScreen() {
     }
 
     return (
-      <HStack className="items-center">
+      <HStack className="items-center justify-center">
         <Text className="text-typography-white text-lg mr-2">
           {getTitle(numero)}
         </Text>
@@ -71,29 +94,39 @@ export default function MatchsScreen() {
     );
   };
 
-  const renderScreen = (i: number) => (
-    <Screen
-      key={`tour-${i + 1}`}
-      name={`tour-${i + 1}`}
-      options={{
-        tabBarLabel: () => topTabItemLabel(i + 1),
-      }}
-    >
-      {() => <MatchsManche mancheNumber={i + 1} />}
-    </Screen>
-  );
-
   return (
-    <StyledTopTabs
-      screenOptions={{
-        title: t('liste_matchs_navigation_title'),
-        tabBarScrollEnabled: true,
-        lazy: true,
-      }}
-      tabBarClassName="bg-custom-background"
-      tabBarIndicatorClassName="bg-custom-bg-inverse"
-    >
-      {Array.from({ length: options.nbTours }, (_, i) => renderScreen(i))}
-    </StyledTopTabs>
+    <VStack className="flex-1 bg-custom-background">
+      <ScrollView
+        ref={scrollRef}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        className="w-full flex-none bg-custom-background border-b border-outline-100"
+        contentContainerStyle={{
+          flexDirection: 'row',
+          minWidth: '100%',
+          alignItems: 'center',
+        }}
+        onLayout={(e) => {
+          scrollWidth.current = e.nativeEvent.layout.width;
+        }}
+      >
+        {Array.from({ length: options.nbTours }, (_, i) => {
+          const numero = i + 1;
+          const actif = numero === mancheActive;
+          return (
+            <Pressable
+              key={`tour-${numero}`}
+              onPress={() => centrerTour(numero)}
+              onLayout={onItemLayout(numero)}
+              style={{ flexGrow: 1, flexShrink: 0 }}
+              className={`items-center justify-center px-4 py-3 border-b-2 ${actif ? 'border-custom-bg-inverse' : 'border-transparent'}`}
+            >
+              {topTabItemLabel(numero)}
+            </Pressable>
+          );
+        })}
+      </ScrollView>
+      <MatchsManche mancheNumber={mancheActive} />
+    </VStack>
   );
 }

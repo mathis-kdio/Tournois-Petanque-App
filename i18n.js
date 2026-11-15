@@ -13,14 +13,13 @@ import francais from '@assets/languages/fr.json';
 import neerlandais from '@assets/languages/nl.json';
 import polonais from '@assets/languages/pl.json';
 import * as Localization from 'expo-localization';
-import i18n from 'i18next';
+import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
-i18n
-  .use(initReactI18next) // passes i18n down to react-i18next
+i18next
+  .use(initReactI18next) // passes i18next down to react-i18next
   .init({
     fallbackLng: 'fr-FR',
-    compatibilityJSON: 'v3',
     lng: Localization.getLocales()[0]['languageTag'],
     resources: {
       'fr-FR': {
@@ -55,45 +54,21 @@ i18n
         common: espagnol.translation,
         changelog: changelogES,
       },
-      ns: ['common', 'changelog'],
-      supportedLngs: [
-        {
-          code: 'fr-FR',
-          locale: 'Français - France',
-        },
-        {
-          code: 'en-US',
-          locale: 'Anglais - Etats-Unis',
-        },
-        {
-          code: 'en-GB',
-          locale: 'Anglais - Royaume-Uni',
-        },
-        {
-          code: 'pl-PL',
-          locale: 'Polonais - Pologne',
-        },
-        {
-          code: 'nl-NL',
-          locale: 'Neerlandais - Pays-Bas',
-        },
-        {
-          code: 'de-DE',
-          locale: 'Allemand - Allemagne',
-        },
-        {
-          code: 'dk-DK',
-          locale: 'Danois - Danemark',
-        },
-        {
-          code: 'es-ES',
-          locale: 'Espagnol - Espagne',
-        },
-      ],
-      defaultNS: 'common',
-      interpolation: {
-        escapeValue: false, // not needed for react
-      },
+    },
+    ns: ['common', 'changelog'],
+    supportedLngs: [
+      'fr-FR',
+      'en-US',
+      'en-GB',
+      'pl-PL',
+      'nl-NL',
+      'de-DE',
+      'dk-DK',
+      'es-ES',
+    ],
+    defaultNS: 'common',
+    interpolation: {
+      escapeValue: false, // not needed for react
     },
   });
-export default i18n;
+export default i18next;

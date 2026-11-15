@@ -1,5 +1,15 @@
 # Change Log
 
+## [4.0.0] - 13-11-2026
+
+### Ajouté
+
+- Synchronisation des données entre appareils
+
+### Changement
+
+### Corrigé
+
 ## [3.0.5] - 20-09-2026
 
 ### Ajouté

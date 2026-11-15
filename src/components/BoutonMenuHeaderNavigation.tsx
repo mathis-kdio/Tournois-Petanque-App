@@ -1,14 +1,17 @@
 import { Menu, MenuItem, MenuItemLabel } from '@/components/ui/menu';
 import { Pressable } from '@/components/ui/pressable';
 import FontAwesome from '@react-native-vector-icons/fontawesome';
-import { useNavigation, useRouter } from 'expo-router';
-import { CommonActions } from 'expo-router/react-navigation';
+import { resetNavigationTo } from '@/navigation/resetNavigation';
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import { Platform, StatusBar } from 'react-native';
+
+const menuOffset =
+  Platform.OS === 'android' ? -(StatusBar.currentHeight ?? 0) : 0;
 
 const BoutonMenuHeaderNav = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const navigation = useNavigation();
 
   const showOptions = () => {
     router.navigate('/tournoi/parametres-tournoi');
@@ -23,19 +26,16 @@ const BoutonMenuHeaderNav = () => {
   };
 
   const showAccueil = () => {
-    navigation.dispatch(
-      CommonActions.reset({
-        routes: [{ name: 'index' }],
-      }),
-    );
+    resetNavigationTo(router, '/');
   };
 
   return (
     <Menu
       placement="bottom left"
+      offset={menuOffset}
       trigger={({ ...triggerProps }) => {
         return (
-          <Pressable {...triggerProps} className="mr-10">
+          <Pressable {...triggerProps} className="mr-4">
             <FontAwesome
               name="bars"
               size={28}

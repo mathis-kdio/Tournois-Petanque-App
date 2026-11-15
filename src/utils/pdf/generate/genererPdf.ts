@@ -1,7 +1,6 @@
 import { downloadDir, sep } from '@tauri-apps/api/path';
 import { BaseDirectory, exists, writeFile } from '@tauri-apps/plugin-fs';
 import { openPath } from '@tauri-apps/plugin-opener';
-import html2pdf from 'html2pdf.js';
 
 export const genererPdf = async (
   fileName: string,
@@ -43,6 +42,10 @@ const genererPdfTauri = async (
     name = `${fileName}-${counter}.pdf`;
     counter++;
   }
+
+  // Lazy import: html2pdf.js references `self` at module scope, which crashes
+  // during static web prerendering in Node.
+  const { default: html2pdf } = await import('html2pdf.js');
 
   const worker = html2pdf()
     .from(html)

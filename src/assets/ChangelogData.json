@@ -1,4 +1,11 @@
 {
+  "43": {
+    "id": "43",
+    "version": "4.0.0",
+    "infos": [
+      "- Synchronisation des données entre appareils"
+    ]
+  },
   "42": {
     "id": "42",
     "version": "3.0.5",
