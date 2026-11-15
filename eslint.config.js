@@ -16,6 +16,7 @@ module.exports = defineConfig([
       'src-tauri/*',
       'src/components/ui/*',
       'plugins/*',
+      '.agents/*',
     ],
   },
 ]);
