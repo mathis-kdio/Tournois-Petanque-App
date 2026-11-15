@@ -92,7 +92,6 @@ const JoueursTournoi = () => {
         className="flex-1"
         getItemType={() => 'ListeJoueurItem'}
         recycleItems
-        // eslint-disable-next-line react-doctor/jsx-no-jsx-as-prop
         refreshControl={<SyncRefreshControl />}
       />
       <Box className="px-10 mb-2">

@@ -56,7 +56,6 @@ const InscriptionListeJoueurs: React.FC<Props> = ({
   }
 
   const sortedListeJoueurs = () => {
-    // eslint-disable-next-line react-doctor/js-tosorted-immutable
     return [...listeJoueurs].sort((a, b) => {
       if (triType === Tri.ID) {
         return a.joueurTournoiId - b.joueurTournoiId;

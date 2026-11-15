@@ -40,7 +40,6 @@ const MatchsManche: React.FC<Props> = ({ mancheNumber }) => {
         className="flex-1"
         getItemType={() => 'MatchItem'}
         recycleItems
-        // eslint-disable-next-line react-doctor/jsx-no-jsx-as-prop
         refreshControl={<SyncRefreshControl />}
       />
     </VStack>

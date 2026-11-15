@@ -56,7 +56,6 @@ const ListeResultats = () => {
           className="flex-1"
           getItemType={() => 'ListeResultatItem'}
           recycleItems
-          // eslint-disable-next-line react-doctor/jsx-no-jsx-as-prop
           refreshControl={<SyncRefreshControl />}
         />
       </VStack>
