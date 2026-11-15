@@ -1,7 +1,7 @@
 import ListeJoueurItem from '@/components/liste-joueur-item/ListeJoueurItem';
 import Loading from '@/components/Loading';
 import SyncRefreshButton from '@/components/SyncRefreshButton';
-import SyncRefreshControl from '@/components/SyncRefreshControl';
+import { useSyncRefreshProps } from '@/hooks/useSyncRefreshProps';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { Box } from '@/components/ui/box';
 import { Button, ButtonText } from '@/components/ui/button';
@@ -45,6 +45,8 @@ const JoueursTournoi = () => {
   const router = useRouter();
   const { actualTournoi } = useActualTournoi();
   const { joueursActualTournoi } = useJoueursActualTournoi();
+
+  const syncRefreshProps = useSyncRefreshProps();
 
   if (!actualTournoi || !joueursActualTournoi) {
     return <Loading />;
@@ -92,7 +94,7 @@ const JoueursTournoi = () => {
         className="flex-1"
         getItemType={() => 'ListeJoueurItem'}
         recycleItems
-        refreshControl={<SyncRefreshControl />}
+        {...syncRefreshProps}
       />
       <Box className="px-10 mb-2">
         <Button action="primary" onPress={() => retourMatchs()}>

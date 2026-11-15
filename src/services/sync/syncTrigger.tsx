@@ -12,7 +12,7 @@
  *  - Mise en avant de l'app (AppState → active) → cycle si > 5 min ;
  *  - Pull-to-refresh manuel (écrans de liste, via SyncRefreshContext) →
  *    cycle complet, raison « manual_refresh » ; la garde hors ligne
- *    (NetInfo + toast) est faite côté UI dans SyncRefreshControl.
+ *    (NetInfo + toast) est faite côté UI dans useManualRefresh.
  *
  * Si l'appareil a des écritures hors ligne ET que le compte distant a déjà
  * des données, un dialogue propose « fusionner » ou « remplacer »;

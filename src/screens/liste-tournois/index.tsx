@@ -1,5 +1,5 @@
 import SyncRefreshButton from '@/components/SyncRefreshButton';
-import SyncRefreshControl from '@/components/SyncRefreshControl';
+import { useSyncRefreshProps } from '@/hooks/useSyncRefreshProps';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
@@ -28,6 +28,8 @@ export default function ListeTournois() {
 
   const { listeTournois } = useListeTournois();
 
+  const syncRefreshProps = useSyncRefreshProps();
+
   const showModalInfos = async (tournoi: TournoiModel) => {
     setModalTournoiInfosIsOpen(true);
     setInfosTournoi(tournoi);
@@ -55,7 +57,7 @@ export default function ListeTournois() {
         className="flex-1 h-1"
         getItemType={() => 'ListeTournoiItem'}
         recycleItems
-        refreshControl={<SyncRefreshControl />}
+        {...syncRefreshProps}
       />
       {modalTournoiInfosIsOpen && infosTournoi && listeJoueurs && (
         <ModalInfosTournoi

@@ -1,5 +1,5 @@
 import Loading from '@/components/Loading';
-import SyncRefreshControl from '@/components/SyncRefreshControl';
+import { useSyncRefreshProps } from '@/hooks/useSyncRefreshProps';
 import { Divider } from '@/components/ui/divider';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
@@ -20,6 +20,8 @@ const ListeResultats = () => {
 
   const { actualTournoi } = useActualTournoi();
   const { joueursActualTournoi } = useJoueursActualTournoi();
+
+  const syncRefreshProps = useSyncRefreshProps();
 
   if (!actualTournoi || !joueursActualTournoi) {
     return <Loading />;
@@ -56,7 +58,7 @@ const ListeResultats = () => {
           className="flex-1"
           getItemType={() => 'ListeResultatItem'}
           recycleItems
-          refreshControl={<SyncRefreshControl />}
+          {...syncRefreshProps}
         />
       </VStack>
     </VStack>

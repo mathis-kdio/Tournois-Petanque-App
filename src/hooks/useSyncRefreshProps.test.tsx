@@ -1,19 +1,13 @@
-import { act, render } from '@testing-library/react-native';
+import { act, renderHook } from '@testing-library/react-native';
 
-import SyncRefreshControl from './SyncRefreshControl';
+import { useSyncRefreshProps } from './useSyncRefreshProps';
 
 import NetInfo from '@react-native-community/netinfo';
 
+import { Platform } from 'react-native';
+
 const mockRefresh = jest.fn();
 const mockToastShow = jest.fn();
-let capturedProps: any = null;
-
-jest.mock('@/components/ui/refresh-control', () => ({
-  RefreshControl: (props: any) => {
-    capturedProps = props;
-    return null;
-  },
-}));
 
 jest.mock('@/components/ui/toast', () => ({
   useToast: () => ({ show: mockToastShow }),
@@ -36,11 +30,27 @@ jest.mock('react-i18next', () => ({
 
 const mockNetInfoFetch = NetInfo.fetch as jest.Mock;
 
-describe('SyncRefreshControl', () => {
+describe('useSyncRefreshProps', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    capturedProps = null;
     mockRefresh.mockResolvedValue(undefined);
+    Platform.OS = 'android';
+  });
+
+  it('natif : retourne onRefresh + refreshing (pas de refreshControl)', async () => {
+    const { result } = await renderHook(() => useSyncRefreshProps());
+
+    expect(result.current).toHaveProperty('onRefresh');
+    expect(result.current).toHaveProperty('refreshing');
+    expect(result.current).not.toHaveProperty('refreshControl');
+    expect(result.current.refreshing).toBe(false);
+  });
+
+  it('web : retourne un objet vide (pas de pull-to-refresh navigateur)', async () => {
+    Platform.OS = 'web';
+    const { result } = await renderHook(() => useSyncRefreshProps());
+
+    expect(result.current).toEqual({});
   });
 
   it('hors ligne : affiche le toast et ne lance aucun cycle', async () => {
@@ -49,11 +59,10 @@ describe('SyncRefreshControl', () => {
       isInternetReachable: false,
     });
 
-    await render(<SyncRefreshControl />);
-    expect(capturedProps.refreshing).toBe(false);
+    const { result } = await renderHook(() => useSyncRefreshProps());
 
     await act(async () => {
-      await capturedProps.onRefresh();
+      await result.current.onRefresh?.();
     });
 
     expect(mockRefresh).not.toHaveBeenCalled();
@@ -67,14 +76,14 @@ describe('SyncRefreshControl', () => {
       isInternetReachable: true,
     });
 
-    await render(<SyncRefreshControl />);
+    const { result } = await renderHook(() => useSyncRefreshProps());
     await act(async () => {
-      await capturedProps.onRefresh();
+      await result.current.onRefresh?.();
     });
 
     expect(mockRefresh).toHaveBeenCalledTimes(1);
     expect(mockToastShow).not.toHaveBeenCalled();
-    expect(capturedProps.refreshing).toBe(false);
+    expect(result.current.refreshing).toBe(false);
   });
 
   it('isInternetReachable indéterminé (null) mais connecté → traité en ligne', async () => {
@@ -83,9 +92,9 @@ describe('SyncRefreshControl', () => {
       isInternetReachable: null,
     });
 
-    await render(<SyncRefreshControl />);
+    const { result } = await renderHook(() => useSyncRefreshProps());
     await act(async () => {
-      await capturedProps.onRefresh();
+      await result.current.onRefresh?.();
     });
 
     expect(mockRefresh).toHaveBeenCalledTimes(1);
@@ -104,17 +113,18 @@ describe('SyncRefreshControl', () => {
         }),
     );
 
-    await render(<SyncRefreshControl />);
+    const { result } = await renderHook(() => useSyncRefreshProps());
     let pending: Promise<void> = Promise.resolve();
+
     await act(async () => {
-      pending = capturedProps.onRefresh();
+      pending = Promise.resolve(result.current.onRefresh?.());
     });
-    expect(capturedProps.refreshing).toBe(true);
+    expect(result.current.refreshing).toBe(true);
 
     await act(async () => {
       resolveRefresh();
       await pending;
     });
-    expect(capturedProps.refreshing).toBe(false);
+    expect(result.current.refreshing).toBe(false);
   });
 });

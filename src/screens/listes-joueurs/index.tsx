@@ -1,5 +1,5 @@
 import SyncRefreshButton from '@/components/SyncRefreshButton';
-import SyncRefreshControl from '@/components/SyncRefreshControl';
+import { useSyncRefreshProps } from '@/hooks/useSyncRefreshProps';
 import TopBarBack from '@/components/topBar/TopBarBack';
 import { Box } from '@/components/ui/box';
 import { Button, ButtonText } from '@/components/ui/button';
@@ -38,6 +38,8 @@ const ListesJoueurs = () => {
   const { loadListScreen = 'false' } = useLocalSearchParams<SearchParams>();
 
   const { allListesJoueurs } = useAllListesJoueurs();
+
+  const syncRefreshProps = useSyncRefreshProps();
 
   const addList = async () => {
     const listeJoueurs = await insertListeJoueurs();
@@ -88,7 +90,7 @@ const ListesJoueurs = () => {
         className="flex-1 h-1"
         getItemType={() => 'ListeJoueursItem'}
         recycleItems
-        refreshControl={<SyncRefreshControl />}
+        {...syncRefreshProps}
       />
     </VStack>
   );
