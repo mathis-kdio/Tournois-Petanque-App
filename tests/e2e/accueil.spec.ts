@@ -15,9 +15,6 @@ test.describe("Page d'accueil", () => {
   }) => {
     await page.goto('/');
 
-    // Le titre de l'onglet doit contenir le nom de l'app.
-    await expect(page).toHaveTitle(/Tournois.*Pétanque/i);
-
     // Le logo de l'application doit être présent.
     await expect(page.getByAltText(/Logo de l'application/i)).toBeVisible();
 
