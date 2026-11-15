@@ -50,7 +50,7 @@ export default function TabLayout() {
           headerLeft: () => (
             <Text
               numberOfLines={1}
-              ellipsizeMode="tail"
+              isTruncated
               className="text-typography-white text-xl ml-2 shrink"
             >
               {`${t('tournoi')} ${tournoiName}`}
@@ -77,7 +77,7 @@ export default function TabLayout() {
           headerLeft: () => (
             <Text
               numberOfLines={1}
-              ellipsizeMode="tail"
+              isTruncated
               className="text-typography-white text-xl ml-2 shrink"
             >
               {`${t('tournoi')} ${tournoiName}`}
