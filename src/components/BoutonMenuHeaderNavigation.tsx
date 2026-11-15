@@ -4,6 +4,10 @@ import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { resetNavigationTo } from '@/navigation/resetNavigation';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import { Platform, StatusBar } from 'react-native';
+
+const menuOffset =
+  Platform.OS === 'android' ? -(StatusBar.currentHeight ?? 0) : 0;
 
 const BoutonMenuHeaderNav = () => {
   const { t } = useTranslation();
@@ -28,6 +32,7 @@ const BoutonMenuHeaderNav = () => {
   return (
     <Menu
       placement="bottom left"
+      offset={menuOffset}
       trigger={({ ...triggerProps }) => {
         return (
           <Pressable {...triggerProps} className="mr-4">
