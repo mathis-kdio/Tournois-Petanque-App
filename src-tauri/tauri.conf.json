@@ -2,7 +2,7 @@
   "identifier": "fr.tournoispetanqueapp.desktop",
   "productName": "Tournois Petanque App",
   "mainBinaryName": "Tournois Petanque App",
-  "version": "4.0.0",
+  "version": "4.0.0-beta-2",
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:8081/",

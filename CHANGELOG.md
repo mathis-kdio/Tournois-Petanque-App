@@ -8,6 +8,8 @@
 
 ### Changement
 
+- Mise à jour des dépendances
+
 ### Corrigé
 
 ## [3.0.5] - 20-09-2026
