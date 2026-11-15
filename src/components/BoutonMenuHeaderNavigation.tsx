@@ -30,7 +30,7 @@ const BoutonMenuHeaderNav = () => {
       placement="bottom left"
       trigger={({ ...triggerProps }) => {
         return (
-          <Pressable {...triggerProps} className="mr-10">
+          <Pressable {...triggerProps} className="mr-4">
             <FontAwesome
               name="bars"
               size={28}
