@@ -1,17 +1,14 @@
-import { useFocusEffect, useNavigation } from 'expo-router';
-import { CommonActions } from 'expo-router/react-navigation';
+import { resetNavigationTo } from '@/navigation/resetNavigation';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Alert, BackHandler } from 'react-native';
 
 const useExitAlertOnBack = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation();
+  const router = useRouter();
 
   useFocusEffect(() => {
     const onBackPress = () => {
-      const resetAccueil = CommonActions.reset({
-        routes: [{ name: 'index' }],
-      });
       Alert.alert(
         t('quitter_tournoi'),
         t('quitter_tournoi_question'),
@@ -19,7 +16,7 @@ const useExitAlertOnBack = () => {
           { text: t('rester'), onPress: () => null, style: 'cancel' },
           {
             text: t('retour_accueil'),
-            onPress: () => navigation.dispatch(resetAccueil),
+            onPress: () => resetNavigationTo(router, '/'),
           },
         ],
         { cancelable: true },

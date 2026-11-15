@@ -8,6 +8,11 @@ import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
 import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { Tabs } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native';
+
+export const unstable_settings = {
+  anchor: 'matchs',
+};
 
 export default function TabLayout() {
   const { t } = useTranslation();
@@ -27,8 +32,7 @@ export default function TabLayout() {
 
   return (
     <StyledTabs
-      initialRouteName="matchs"
-      backBehavior="none"
+      backBehavior="initialRoute"
       screenOptions={{
         tabBarInactiveTintColor,
         tabBarLabelStyle: { fontSize: 15 },
@@ -41,8 +45,14 @@ export default function TabLayout() {
         name="resultats"
         options={{
           headerTitle: '',
+          headerLeftContainerStyle: styles.headerLeftContainer,
+          headerRightContainerStyle: styles.headerRightContainer,
           headerLeft: () => (
-            <Text className="text-typography-white text-xl ml-2">
+            <Text
+              numberOfLines={1}
+              isTruncated
+              className="text-typography-white text-xl ml-2 shrink"
+            >
               {`${t('tournoi')} ${tournoiName}`}
             </Text>
           ),
@@ -62,8 +72,14 @@ export default function TabLayout() {
         name="matchs"
         options={{
           headerTitle: '',
+          headerLeftContainerStyle: styles.headerLeftContainer,
+          headerRightContainerStyle: styles.headerRightContainer,
           headerLeft: () => (
-            <Text className="text-typography-white text-xl ml-2">
+            <Text
+              numberOfLines={1}
+              isTruncated
+              className="text-typography-white text-xl ml-2 shrink"
+            >
               {`${t('tournoi')} ${tournoiName}`}
             </Text>
           ),
@@ -82,3 +98,14 @@ export default function TabLayout() {
     </StyledTabs>
   );
 }
+
+const styles = StyleSheet.create({
+  headerLeftContainer: {
+    flexShrink: 1,
+    maxWidth: 'auto',
+  },
+  headerRightContainer: {
+    flexBasis: 'auto',
+    flexShrink: 0,
+  },
+});

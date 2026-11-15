@@ -20,6 +20,13 @@ const Text = React.forwardRef<React.ComponentRef<'span'>, ITextProps>(
     }: { className?: string } & ITextProps,
     ref
   ) {
+    // Props React Native uniquement : on les retire pour ne pas les propager
+    // au <span> DOM (évite les warnings "React does not recognize ...").
+    const {
+      numberOfLines: _numberOfLines,
+      ellipsizeMode: _ellipsizeMode,
+      ...domProps
+    } = props as Record<string, unknown>;
     return (
       <span
         className={textStyle({
@@ -33,7 +40,7 @@ const Text = React.forwardRef<React.ComponentRef<'span'>, ITextProps>(
           highlight: highlight as boolean,
           class: className,
         })}
-        {...props}
+        {...domProps}
         ref={ref}
       />
     );

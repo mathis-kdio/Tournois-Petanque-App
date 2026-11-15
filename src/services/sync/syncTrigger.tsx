@@ -12,7 +12,7 @@
  *  - Mise en avant de l'app (AppState → active) → cycle si > 5 min ;
  *  - Pull-to-refresh manuel (écrans de liste, via SyncRefreshContext) →
  *    cycle complet, raison « manual_refresh » ; la garde hors ligne
- *    (NetInfo + toast) est faite côté UI dans SyncRefreshControl.
+ *    (NetInfo + toast) est faite côté UI dans useManualRefresh.
  *
  * Si l'appareil a des écritures hors ligne ET que le compte distant a déjà
  * des données, un dialogue propose « fusionner » ou « remplacer »;
@@ -79,7 +79,9 @@ const SyncRefreshContext = createContext<SyncRefreshContextValue | null>(null);
 export function useSyncRefresh(): SyncRefreshContextValue {
   return (
     use(SyncRefreshContext) ?? {
-      refresh: async () => {},
+      refresh: async () => {
+        /**/
+      },
       isSyncing: false,
     }
   );
@@ -98,7 +100,9 @@ export function useSyncTrigger() {
 
   const lastSyncRef = useRef<number>(0);
   const isOnlineRef = useRef<boolean>(true);
-  const triggerPushRef = useRef<() => void>(() => {});
+  const triggerPushRef = useRef<() => void>(() => {
+    /* */
+  });
   const adoptionPromptRef = useRef<AdoptionPrompt | null>(null);
 
   const [adoptionPrompt, setAdoptionPrompt] = useState<AdoptionPrompt | null>(
@@ -109,7 +113,6 @@ export function useSyncTrigger() {
   const [accountDeleted, setAccountDeleted] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
 
-  // eslint-disable-next-line react-doctor/react-compiler-no-manual-memoization
   const runCycle = useCallback(
     async (reason: string) => {
       if (!userId) return;
@@ -156,7 +159,6 @@ export function useSyncTrigger() {
     [userId],
   );
 
-  // eslint-disable-next-line react-doctor/react-compiler-no-manual-memoization
   const runPush = useCallback(
     async (reason: string) => {
       if (!userId) return;
@@ -255,7 +257,6 @@ export function useSyncTrigger() {
     };
   }, [userId, runCycle, runPush]);
 
-  // eslint-disable-next-line react-doctor/react-compiler-no-manual-memoization
   const triggerPush = useCallback(() => triggerPushRef.current(), []);
 
   /** Applique le choix d'adoption et relance la synchro. */

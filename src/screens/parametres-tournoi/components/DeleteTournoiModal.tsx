@@ -11,9 +11,9 @@ import { Button, ButtonGroup, ButtonText } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { CloseIcon, Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
+import { resetNavigationTo } from '@/navigation/resetNavigation';
 import { deleteTournoi } from '@/repositories/tournois/deleteTournoiActions';
-import { useNavigation } from 'expo-router';
-import { CommonActions } from 'expo-router/react-navigation';
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 export interface Props {
@@ -28,15 +28,11 @@ const DeleteTournoiModal: React.FC<Props> = ({
   setModalDeleteIsOpen,
 }) => {
   const { t } = useTranslation();
-  const navigation = useNavigation();
+  const router = useRouter();
 
   const supprimerTournoi = (tournoiId: string) => {
     setModalDeleteIsOpen(false);
-    navigation.dispatch(
-      CommonActions.reset({
-        routes: [{ name: 'index' }],
-      }),
-    );
+    resetNavigationTo(router, '/');
 
     setTimeout(async () => {
       await deleteTournoi(tournoiId);

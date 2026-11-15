@@ -15,8 +15,8 @@ import CardButton from '@components/buttons/CardButton';
 import FontAwesome from '@react-native-vector-icons/fontawesome';
 import { _openPlateformLink, _openURL } from '@utils/link';
 import Constants from 'expo-constants';
-import { useNavigation, useRouter } from 'expo-router';
-import { CommonActions } from 'expo-router/react-navigation';
+import { resetNavigationTo } from '@/navigation/resetNavigation';
+import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AppState, AppStateStatus, Platform } from 'react-native';
@@ -33,13 +33,12 @@ const website = 'https://tournoispetanqueapp.fr/';
 export default function Accueil() {
   const { t } = useTranslation();
   const router = useRouter();
-  const navigation = useNavigation();
   const { session } = useAuth();
 
   const { actualTournoi } = useActualTournoi();
 
   const [appState, setAppState] = useState<AppStateStatus>(
-    AppState.currentState,
+    (AppState.currentState ?? 'active') as AppStateStatus,
   );
 
   useEffect(() => {
@@ -62,11 +61,7 @@ export default function Accueil() {
   }, [appState]);
 
   const _showMatchs = () => {
-    navigation.dispatch(
-      CommonActions.reset({
-        routes: [{ name: 'tournoi' }],
-      }),
-    );
+    resetNavigationTo(router, '/tournoi');
   };
 
   const _buttonShowMatchs = () => {

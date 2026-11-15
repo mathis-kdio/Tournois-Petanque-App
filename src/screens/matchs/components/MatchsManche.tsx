@@ -1,5 +1,5 @@
 import Loading from '@/components/Loading';
-import SyncRefreshControl from '@/components/SyncRefreshControl';
+import { useSyncRefreshProps } from '@/hooks/useSyncRefreshProps';
 import { VStack } from '@/components/ui/vstack';
 import useExitAlertOnBack from '@/components/with-exit-alert/with-exit-alert';
 import { useActualTournoi } from '@/repositories/tournois/useActualTournoi';
@@ -23,6 +23,8 @@ const MatchsManche: React.FC<Props> = ({ mancheNumber }) => {
 
   const { actualTournoi } = useActualTournoi();
 
+  const syncRefreshProps = useSyncRefreshProps();
+
   if (!actualTournoi) {
     return <Loading />;
   }
@@ -40,8 +42,7 @@ const MatchsManche: React.FC<Props> = ({ mancheNumber }) => {
         className="flex-1"
         getItemType={() => 'MatchItem'}
         recycleItems
-        // eslint-disable-next-line react-doctor/jsx-no-jsx-as-prop
-        refreshControl={<SyncRefreshControl />}
+        {...syncRefreshProps}
       />
     </VStack>
   );

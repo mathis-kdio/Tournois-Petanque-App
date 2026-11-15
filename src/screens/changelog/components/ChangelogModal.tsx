@@ -45,11 +45,13 @@ const ChangelogModal: React.FC<Props> = ({
         </ModalHeader>
         <ModalBody>
           <Text>
-            {t(`${modalChangelogItem.id}.infos`, {
-              ns: 'changelog',
-              returnObjects: true,
-              joinArrays: '\n',
-            })}
+            {
+              t(`${modalChangelogItem.id}.infos`, {
+                ns: 'changelog',
+                returnObjects: true,
+                joinArrays: '\n',
+              }) as unknown as string
+            }
           </Text>
         </ModalBody>
       </ModalContent>
