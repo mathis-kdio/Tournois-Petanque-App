@@ -1,3 +1,4 @@
+import { getIsPremium } from '@/services/purchases/premiumStore';
 import { Platform } from 'react-native';
 import {
   AdEventType,
@@ -36,6 +37,11 @@ export const initInterstitial = async () => {
   const requestNonPersonalizedAdsOnly =
     selectPersonalisedAds === false || createAPersonalisedAdsProfile === false;
 
+  if (getIsPremium()) {
+    errorListeners.forEach((cb) => cb(new Error('premium: no ads')));
+    return;
+  }
+
   interstitialAd = InterstitialAd.createForAdRequest(getUnitId(), {
     requestNonPersonalizedAdsOnly,
   });
@@ -67,6 +73,9 @@ export const initInterstitial = async () => {
 };
 
 export const showInterstitialAd = () => {
+  if (getIsPremium()) {
+    return;
+  }
   if (isLoaded && interstitialAd) {
     interstitialAd.show();
   } else {
