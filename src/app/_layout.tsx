@@ -5,6 +5,9 @@ import {
   useTheme,
 } from '@/components/ui/theme-provider/ThemeProvider';
 import { DatabaseInitializer } from '@/db/DatabaseInitializer';
+import { initPremiumListener } from '@/services/purchases/premiumStore';
+import { initRevenueCat } from '@/services/purchases/revenuecat';
+import { useWebPurchaseRedemption } from '@/services/purchases/useWebPurchaseRedemption';
 import { SyncTrigger } from '@/services/sync/syncTrigger';
 import '@/navigation/gesture-handler'; //https://reactnavigation.org/docs/stack-navigator/
 import { SELECTED_LANGUAGE_KEY } from '@/utils/async-storage/key';
@@ -80,6 +83,13 @@ export default function RootLayout() {
     };
     fetchLanguage();
   }, []);
+
+  useEffect(() => {
+    initRevenueCat();
+    initPremiumListener();
+  }, []);
+
+  useWebPurchaseRedemption();
 
   useEffect(() => {
     const unlockScreenOerientation = async () => {

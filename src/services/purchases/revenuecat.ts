@@ -14,7 +14,7 @@ export function isPurchasesConfigured(): boolean {
   return !!API_KEY;
 }
 
-export async function initRevenueCat(appUserID?: string): Promise<void> {
+export async function initRevenueCat(): Promise<void> {
   if (!API_KEY) {
     console.warn('[RevenueCat] Clé API manquante (EXPO_PUBLIC_REVENUECAT_*)');
     return;
@@ -22,7 +22,7 @@ export async function initRevenueCat(appUserID?: string): Promise<void> {
   if (__DEV__) {
     Purchases.setLogLevel(LOG_LEVEL.VERBOSE);
   }
-  Purchases.configure({ apiKey: API_KEY, appUserID });
+  Purchases.configure({ apiKey: API_KEY });
 }
 
 export async function loginRevenueCat(
