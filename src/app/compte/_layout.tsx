@@ -9,6 +9,7 @@ export default function StackLayout() {
         <Stack.Screen name="index" />
         <Stack.Screen name="infos-perso" />
         <Stack.Screen name="securite" />
+        <Stack.Screen name="abonnement" />
       </Stack.Protected>
     </Stack>
   );
