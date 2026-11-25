@@ -90,6 +90,14 @@ const Compte = () => {
             type={''}
             drapeau={undefined}
           />
+          <Divider />
+          <Item
+            text={t('abonnement_titre')}
+            action={() => router.navigate('/compte/abonnement')}
+            icon={'star'}
+            type={''}
+            drapeau={undefined}
+          />
         </VStack>
         <VStack space="xl" className="mt-5">
           <Button onPress={deconnexion} isDisabled={!user || actionLoading}>
