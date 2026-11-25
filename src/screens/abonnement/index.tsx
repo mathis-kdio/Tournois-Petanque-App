@@ -10,6 +10,7 @@ import { restorePurchases } from '@/services/purchases/revenuecat';
 import { useRouter } from 'expo-router';
 import { Alert, Linking, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import Avantages from '@/components/abonnement/Avantages';
 
 const openStoreSubscriptions = () => {
   if (Platform.OS === 'ios') {
@@ -37,13 +38,6 @@ const Abonnement = () => {
     }
   };
 
-  const avantages = [
-    t('premium_sans_pub'),
-    t('premium_sync_multi'),
-    t('premium_nouvelles_fonctions'),
-    t('premium_soutien'),
-  ];
-
   return (
     <ScrollView className="h-1 bg-custom-background">
       <TopBarBack title={t('abonnement_titre')} />
@@ -63,14 +57,7 @@ const Abonnement = () => {
         <Text className="text-typography-white text-md font-bold">
           {t('avantages_premium')}
         </Text>
-        <VStack space="sm">
-          {avantages.map((a) => (
-            <Text key={a} className="text-typography-white">
-              {'• '}
-              {a}
-            </Text>
-          ))}
-        </VStack>
+        <Avantages />
         {isPremium ? (
           <Button onPress={openStoreSubscriptions}>
             <ButtonIcon as={StarIcon} />
