@@ -1,5 +1,5 @@
 import { useTheme } from '@/components/ui/theme-provider/ThemeProvider';
-import Abonnement from '@/screens/compte/abonnement';
+import Abonnement from '@/screens/abonnement/abonnement';
 import { getThemeColor } from '@/utils/theme/theme';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -12,6 +12,6 @@ const AbonnementScreen = () => {
       <Abonnement />
     </SafeAreaView>
   );
-}
+};
 
 export default AbonnementScreen;
