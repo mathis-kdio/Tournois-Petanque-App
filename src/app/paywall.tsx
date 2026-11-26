@@ -8,7 +8,10 @@ const PaywallScreen = () => {
   const color = getThemeColor(theme);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: color }}>
+    <SafeAreaView
+      edges={['left', 'right']}
+      style={{ flex: 1, backgroundColor: color }}
+    >
       <Paywall />
     </SafeAreaView>
   );
