@@ -19,6 +19,12 @@ jest.mock('@/services/sync/syncTrigger', () => ({
   useSyncRefresh: () => ({ refresh: mockRefresh, isSyncing: false }),
 }));
 
+let mockGate: 'allowed' | 'premium_required' = 'allowed';
+
+jest.mock('@/services/sync/autoSyncSetting', () => ({
+  checkSyncGate: () => mockGate,
+}));
+
 jest.mock('@react-native-community/netinfo', () => ({
   __esModule: true,
   default: { fetch: jest.fn() },
@@ -34,6 +40,7 @@ describe('useSyncRefreshProps', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockRefresh.mockResolvedValue(undefined);
+    mockGate = 'allowed';
     Platform.OS = 'android';
   });
 
@@ -51,6 +58,23 @@ describe('useSyncRefreshProps', () => {
     const { result } = await renderHook(() => useSyncRefreshProps());
 
     expect(result.current).toEqual({});
+  });
+
+  it('gate premium_required : affiche le toast premium et ne lance aucun cycle', async () => {
+    mockGate = 'premium_required';
+    mockNetInfoFetch.mockResolvedValue({
+      isConnected: true,
+      isInternetReachable: true,
+    });
+
+    const { result } = await renderHook(() => useSyncRefreshProps());
+    await act(async () => {
+      await result.current.onRefresh?.();
+    });
+
+    expect(mockRefresh).not.toHaveBeenCalled();
+    expect(mockToastShow).toHaveBeenCalledTimes(1);
+    expect(mockToastShow.mock.calls[0][0].placement).toBe('top');
   });
 
   it('hors ligne : affiche le toast et ne lance aucun cycle', async () => {

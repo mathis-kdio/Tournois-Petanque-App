@@ -1,4 +1,5 @@
 import { VStack } from '@/components/ui/vstack';
+import { usePremium } from '@/services/purchases/premiumStore';
 import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import {
@@ -10,6 +11,7 @@ import {
 
 const AdMobMatchDetailBanner = () => {
   const [nonPersonalizedAdsOnly, setNonPersonalizedAdsOnly] = useState(false);
+  const { isPremium } = usePremium();
 
   const fetchConsent = async () => {
     const { createAPersonalisedAdsProfile, selectPersonalisedAds } =
@@ -26,6 +28,10 @@ const AdMobMatchDetailBanner = () => {
   useEffect(() => {
     fetchConsent();
   }, []);
+
+  if (isPremium) {
+    return null;
+  }
 
   let size = BannerAdSize.MEDIUM_RECTANGLE;
 

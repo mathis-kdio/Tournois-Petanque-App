@@ -250,6 +250,8 @@
     "confirmation_email_text_2": "Veuillez cliquer sur le lien dans le mail.",
     "retour_accueil": "Retourner à l'accueil",
     "forcer_synchronisation": "Forcer la synchronisation",
+    "sync_auto_titre": "Synchronisation automatique",
+    "sync_auto_premium": "Réservé aux membres Premium",
     "supprimer_compte": "Supprimer mon compte",
     "informations_personnelles": "Informations personnelles",
     "prenom": "Prenom",
@@ -311,6 +313,20 @@
     "compte_supprime_ailleurs_titre": "Compte supprimé",
     "compte_supprime_ailleurs_texte": "Ce compte a été supprimé depuis un autre appareil. Les données locales non synchronisées ne pourront pas être envoyées : elles vont être effacées.",
     "sync_hors_ligne_toast": "Vous êtes hors ligne : impossible de récupérer les données pour le moment.",
-    "rafraichir_donnees": "Rafraîchir les données"
+    "rafraichir_donnees": "Rafraîchir les données",
+    "passer_premium": "Passer Premium",
+    "gerer_abonnement": "Gérer mon abonnement",
+    "abonnement_titre": "Abonnement",
+    "abonnement_premium_actif": "Abonnement Premium actif",
+    "aucun_abonnement": "Aucun abonnement actif",
+    "restaurer_achats": "Restaurer mes achats",
+    "avantages_premium": "Avantages Premium",
+    "premium_sans_pub": "Aucune publicité",
+    "premium_sync_multi": "Synchronisation sur tous vos appareils",
+    "premium_nouvelles_fonctions": "Nouvelles fonctionnalités en avant-première",
+    "premium_soutien": "Soutenez le développement de l'application",
+    "achat_indisponible": "Achats indisponibles pour le moment.",
+    "paywall_web_note": "Paiement sécurisé (Stripe) dans votre navigateur, puis retour automatique dans l'application.",
+    "voir_offres_payer": "Voir les offres et payer"
   }
 }

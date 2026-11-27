@@ -24,16 +24,15 @@
 
 import { useAuth } from '@/components/supabase/SessionProvider';
 import { onSyncWrite } from '@/db/sync/writeBus';
+import { usePremium } from '@/services/purchases/premiumStore';
+import {
+  isAutoSyncActive,
+  isSyncAllowed,
+} from '@/services/sync/autoSyncSetting';
 import { AccountDeletedDialog } from '@/services/sync/components/AccountDeletedDialog';
 import { AdoptionDialog } from '@/services/sync/components/AdoptionDialog';
 import { RecoveringOverlay } from '@/services/sync/components/RecoveringOverlay';
 import type { AdoptionPrompt } from '@/services/sync/components/types';
-import {
-  isSyncRunning,
-  push,
-  syncCycle,
-  updateClockOffset,
-} from '@/services/sync/syncEngine';
 import {
   adoptMerge,
   adoptReplace,
@@ -41,6 +40,12 @@ import {
   prepareLoginSync,
   type LoginSyncPlan,
 } from '@/services/sync/syncAccount';
+import {
+  isSyncRunning,
+  push,
+  syncCycle,
+  updateClockOffset,
+} from '@/services/sync/syncEngine';
 import NetInfo from '@react-native-community/netinfo';
 
 import {
@@ -97,6 +102,7 @@ export function useSyncRefresh(): SyncRefreshContextValue {
 export function useSyncTrigger() {
   const { user } = useAuth();
   const userId = user?.id;
+  const { isPremium } = usePremium();
 
   const lastSyncRef = useRef<number>(0);
   const isOnlineRef = useRef<boolean>(true);
@@ -114,8 +120,12 @@ export function useSyncTrigger() {
   const [isSyncing, setIsSyncing] = useState(false);
 
   const runCycle = useCallback(
-    async (reason: string) => {
+    async (reason: string, automatic = true) => {
       if (!userId) return;
+      // Toute la synchro est réservée au premium : les déclencheurs
+      // automatiques exigent en plus le réglage « synchro auto » activé ;
+      // le refresh manuel (automatic = false) exige seulement le premium.
+      if (automatic ? !(await isAutoSyncActive()) : !isSyncAllowed()) return;
       // Adoption en attente de choix → suspendre les cycles automatiques
       // (le choix de l'utilisateur déclenchera la synchro adaptée).
       if (adoptionPromptRef.current) return;
@@ -162,6 +172,8 @@ export function useSyncTrigger() {
   const runPush = useCallback(
     async (reason: string) => {
       if (!userId) return;
+      // Push automatique = synchro automatique (premium uniquement).
+      if (!(await isAutoSyncActive())) return;
 
       console.log(`[sync] push triggered: ${reason}`);
       const result = await push({ userId });
@@ -184,6 +196,13 @@ export function useSyncTrigger() {
     let cancelled = false;
 
     (async () => {
+      // Toute la synchro est réservée au premium : hors premium, ni adoption
+      // ni cycle au login (prepareLoginSync interroge déjà le compte distant).
+      if (!isSyncAllowed()) {
+        if (!cancelled) setIsRecovering(false);
+        return;
+      }
+
       let plan: LoginSyncPlan | null = null;
       try {
         // Adoption AVANT tout cycle : purge des lignes syncées du compte
@@ -255,7 +274,7 @@ export function useSyncTrigger() {
       cancelled = true;
       if (timer) clearTimeout(timer);
     };
-  }, [userId, runCycle, runPush]);
+  }, [userId, isPremium, runCycle, runPush]);
 
   const triggerPush = useCallback(() => triggerPushRef.current(), []);
 
@@ -335,7 +354,7 @@ export function useSyncTrigger() {
   }, [userId, runCycle]);
 
   /** Pull-to-refresh manuel : cycle complet à la demande d'un écran de liste. */
-  const refresh = () => runCycle('manual_refresh');
+  const refresh = () => runCycle('manual_refresh', false);
 
   return {
     triggerPush,

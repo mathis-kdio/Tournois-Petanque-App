@@ -18,6 +18,7 @@ import {
   forceLogoutAndPurge,
   logoutAndPurge,
 } from '@/services/sync/syncAccount';
+import { useSyncGate } from '@/services/sync/useSyncGate';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
@@ -36,6 +37,7 @@ const BlockLogoutAlertDialog: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const { user } = useAuth();
+  const { gate } = useSyncGate();
   const router = useRouter();
 
   const deconnexionForcer = async () => {
@@ -102,9 +104,11 @@ const BlockLogoutAlertDialog: React.FC<Props> = ({
         </AlertDialogBody>
         <AlertDialogFooter>
           <VStack space="sm" style={{ width: '100%' }}>
-            <Button onPress={reessayerSync}>
-              <ButtonText>{t('logout_reessayer_sync')}</ButtonText>
-            </Button>
+            {gate === 'allowed' && (
+              <Button onPress={reessayerSync}>
+                <ButtonText>{t('logout_reessayer_sync')}</ButtonText>
+              </Button>
+            )}
             <Button
               variant="outline"
               action="negative"

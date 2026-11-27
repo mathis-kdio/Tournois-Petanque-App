@@ -17,6 +17,7 @@ module.exports = defineConfig([
       'src/components/ui/*',
       'plugins/*',
       '.agents/*',
+      'supabase',
     ],
   },
 ]);

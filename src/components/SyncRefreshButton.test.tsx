@@ -1,17 +1,31 @@
 import { fireEvent, render } from '@testing-library/react-native';
 import { Platform } from 'react-native';
-
 import SyncRefreshButton from './SyncRefreshButton';
 
 const mockOnRefresh = jest.fn();
+const mockPush = jest.fn();
+
 const mockIcon = { name: '' };
 let mockRefreshing = false;
+let mockGate: 'allowed' | 'premium_required' = 'allowed';
 
 jest.mock('@/hooks/useManualRefresh', () => ({
   useManualRefresh: () => ({
     refreshing: mockRefreshing,
     onRefresh: mockOnRefresh,
   }),
+}));
+
+jest.mock('@/services/sync/useSyncGate', () => ({
+  useSyncGate: () => ({
+    gate: mockGate,
+    isPremium: mockGate === 'allowed',
+    isLoading: false,
+  }),
+}));
+
+jest.mock('expo-router', () => ({
+  useRouter: () => ({ push: mockPush }),
 }));
 
 jest.mock('react-i18next', () => ({
@@ -32,6 +46,7 @@ describe('SyncRefreshButton', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockRefreshing = false;
+    mockGate = 'allowed';
     mockIcon.name = '';
     (Platform as any).OS = 'web';
   });
@@ -40,12 +55,22 @@ describe('SyncRefreshButton', () => {
     (Platform as any).OS = originalOS;
   });
 
-  it('sur web : rend le bouton refresh et appelle onRefresh au press', async () => {
+  it('sur web, premium : rend le bouton refresh et appelle onRefresh au press', async () => {
     const { getByLabelText } = await render(<SyncRefreshButton />);
 
     expect(mockIcon.name).toBe('refresh');
     fireEvent.press(getByLabelText('rafraichir_donnees'));
     expect(mockOnRefresh).toHaveBeenCalledTimes(1);
+    expect(mockPush).not.toHaveBeenCalled();
+  });
+
+  it('sur web, gate premium_required : renvoie vers le paywall sans rafraîchir', async () => {
+    mockGate = 'premium_required';
+    const { getByLabelText } = await render(<SyncRefreshButton />);
+
+    fireEvent.press(getByLabelText('rafraichir_donnees'));
+    expect(mockPush).toHaveBeenCalledWith('/paywall');
+    expect(mockOnRefresh).not.toHaveBeenCalled();
   });
 
   it('sur web : affiche le spinner pendant un cycle', async () => {

@@ -1,4 +1,5 @@
 import { useAuth } from '@/components/supabase/SessionProvider';
+import { checkSyncGate } from '@/services/sync/autoSyncSetting';
 import { syncCycle } from '@/services/sync/syncEngine';
 import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
@@ -13,7 +14,7 @@ export function useForceSync() {
   const { user } = useAuth();
 
   return async (): Promise<string[]> => {
-    if (!user) return [];
+    if (!user || checkSyncGate() === 'premium_required') return [];
     try {
       const result = await syncCycle({ userId: user.id });
       if (result.errors.length === 0) {

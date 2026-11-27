@@ -77,6 +77,8 @@
     "react-native-gesture-handler": "~3.3.0",
     "react-native-google-mobile-ads": "^17.4.0",
     "react-native-pager-view": "9.0.7",
+    "react-native-purchases": "^11.0.2",
+    "react-native-purchases-ui": "^11.0.2",
     "react-native-reanimated": "4.7.1",
     "react-native-safe-area-context": "~5.11.1",
     "react-native-screens": "~4.30.1",

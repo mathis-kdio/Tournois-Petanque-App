@@ -1,8 +1,24 @@
+import { refreshPremium } from '@/services/purchases/premiumStore';
+import {
+  loginRevenueCat,
+  logoutRevenueCat,
+} from '@/services/purchases/revenuecat';
 import { Session, User } from '@supabase/supabase-js';
 import { supabaseClient } from '@utils/supabase';
 import { createContext, use, useEffect, useState } from 'react';
 
-// create a context for authentication
+const linkRevenueCat = (userId: string | undefined) => {
+  if (userId) {
+    loginRevenueCat(userId)
+      .then(() => refreshPremium())
+      .catch((e) => console.warn('[RevenueCat] logIn error', e));
+  } else {
+    logoutRevenueCat()
+      .then(() => refreshPremium())
+      .catch((e) => console.warn('[RevenueCat] logOut error', e));
+  }
+};
+
 const AuthContext = createContext<{
   session: Session | null | undefined;
   user: User | null | undefined;
@@ -30,6 +46,7 @@ export const AuthProvider = ({ children }: any) => {
       setSession(session);
       setUser(session?.user);
       setLoading(false);
+      linkRevenueCat(session?.user?.id);
     };
 
     const { data: listener } = supabaseClient.auth.onAuthStateChange(
@@ -37,6 +54,7 @@ export const AuthProvider = ({ children }: any) => {
         setSession(session);
         setUser(session?.user);
         setLoading(false);
+        linkRevenueCat(session?.user?.id);
       },
     );
 
