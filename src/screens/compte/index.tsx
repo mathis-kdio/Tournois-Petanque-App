@@ -1,17 +1,19 @@
 import TopBarBack from '@/components/topBar/TopBarBack';
 
+import { useAuth } from '@/components/supabase/SessionProvider';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { Divider } from '@/components/ui/divider';
-import { LoaderIcon, TrashIcon } from '@/components/ui/icon';
+import { LoaderIcon, LockIcon, TrashIcon } from '@/components/ui/icon';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { VStack } from '@/components/ui/vstack';
-import { useAuth } from '@/components/supabase/SessionProvider';
 import { checkLogout, logoutAndPurge } from '@/services/sync/syncAccount';
+import { useSyncGate } from '@/services/sync/useSyncGate';
 import Item from '@components/Item';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
+import AutoSyncToggle from './components/AutoSyncToggle';
 import BlockLogoutAlertDialog from './components/BlockLogoutAlertDialog';
 import DeleteAccountAlertDialog from './components/DeleteAccountAlertDialog';
 import { useForceSync } from './hooks/useForceSync';
@@ -19,6 +21,7 @@ import { useForceSync } from './hooks/useForceSync';
 const Compte = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
+  const { gate } = useSyncGate();
   const router = useRouter();
 
   const [logoutBlockedOpen, setLogoutBlockedOpen] = useState(false);
@@ -64,6 +67,10 @@ const Compte = () => {
   const forceSync = useForceSync();
 
   const forcerSynchronisation = async () => {
+    if (gate === 'premium_required') {
+      router.push('/paywall');
+      return;
+    }
     if (!user || actionLoading) return;
     setActionLoading(true);
     await forceSync();
@@ -98,6 +105,8 @@ const Compte = () => {
             type={''}
             drapeau={undefined}
           />
+          <Divider />
+          <AutoSyncToggle />
         </VStack>
         <VStack space="xl" className="mt-5">
           <Button onPress={deconnexion} isDisabled={!user || actionLoading}>
@@ -107,7 +116,7 @@ const Compte = () => {
             onPress={forcerSynchronisation}
             isDisabled={!user || actionLoading}
           >
-            <ButtonIcon as={LoaderIcon} />
+            <ButtonIcon as={gate === 'allowed' ? LoaderIcon : LockIcon} />
             <ButtonText className="ml-2">
               {t('forcer_synchronisation')}
             </ButtonText>

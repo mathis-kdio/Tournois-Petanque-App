@@ -250,6 +250,8 @@
     "confirmation_email_text_2": "Veuillez cliquer sur le lien dans le mail.",
     "retour_accueil": "Retourner à l'accueil",
     "forcer_synchronisation": "Forcer la synchronisation",
+    "sync_auto_titre": "Synchronisation automatique",
+    "sync_auto_premium": "Réservé aux membres Premium",
     "supprimer_compte": "Supprimer mon compte",
     "informations_personnelles": "Informations personnelles",
     "prenom": "Prenom",

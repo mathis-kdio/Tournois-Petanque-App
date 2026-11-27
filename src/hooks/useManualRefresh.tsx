@@ -1,4 +1,5 @@
 import { Toast, ToastTitle, useToast } from '@/components/ui/toast';
+import { checkSyncGate } from '@/services/sync/autoSyncSetting';
 import { useSyncRefresh } from '@/services/sync/syncTrigger';
 import NetInfo from '@react-native-community/netinfo';
 import { useState } from 'react';
@@ -11,6 +12,17 @@ export function useManualRefresh() {
   const [manualRefreshing, setManualRefreshing] = useState(false);
 
   const onRefresh = async () => {
+    if (checkSyncGate() === 'premium_required') {
+      toast.show({
+        placement: 'top',
+        render: () => (
+          <Toast action="warning" variant="solid">
+            <ToastTitle>{t('sync_auto_premium')}</ToastTitle>
+          </Toast>
+        ),
+      });
+      return;
+    }
     const { isConnected, isInternetReachable } = await NetInfo.fetch();
     const online = isConnected === true && isInternetReachable !== false;
     if (!online) {
